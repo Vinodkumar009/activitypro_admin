@@ -1,0 +1,50 @@
+<ion-content padding class="loginbg">
+    <div class="backgroundurl">
+        <div id="divlogo" style="margin-top: 8%;" text-center>
+
+            <img src="assets/images/logo.svg" id="logo" class="parentimg" >
+            
+            <div>
+                <img src="assets/images/bgi.png" class="parentimg" style="top: 26%;">
+                <div style="background: rgba(228, 229, 244, 0);">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <ion-grid class="input-grid">
+        <ion-row>
+            <ion-col>
+                <p class="message">Thank you for your interest. Please provide your details below and we shall get back to you within 2 working days.</p>
+            </ion-col>
+        </ion-row>
+        <ion-row class="input-row">
+            <ion-col col-1>
+                <ion-icon name="mail" class="input-icon"></ion-icon>
+            </ion-col>
+            <ion-col col-11 class="input-col">
+                <ion-input type="email"[(ngModel)]="clubObj.EmailID" placeholder="Email" id="admin_input" name="admin_input"></ion-input>
+            </ion-col>
+           
+        </ion-row>
+        <ion-row  class="input-row">
+            <ion-col col-12 class="input-col">
+                <ion-label class="labelstyle">
+                    <ion-icon class="input-icon" name="chatbubbles"></ion-icon>
+                    <span>Message</span>
+                </ion-label>
+                
+                <ion-textarea rows="5" [(ngModel)]="clubObj.Message"></ion-textarea>
+            </ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col>
+                <button ion-button block (click)="sendEmailNotification()" class="login_btn">Submit</button>          
+                <p class="ForgotPassword">
+                    <span (click)="goToLogin()" class="underline">Login</span>
+                </p>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

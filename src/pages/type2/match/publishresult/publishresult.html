@@ -1,0 +1,80 @@
+<!--
+  Generated template for the PublishresultPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Result Publish</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h4 style="font-weight:500;margin:0px 0px 0px 5px">Select Winner</h4>
+  <ion-row *ngIf="teams && teams.length > 0" class="teams_row">
+    <ion-col *ngFor="let team of teams;let i=index;" col-12>
+      <div class="participant_div" [ngClass]="{'team_a_active': team.isWinner && i==0,'team_b_active': team.isWinner && i==1}" *ngIf="team.Participants.length > 0">
+        <ion-item (click)="makeWinner(i)" >
+          <ion-row>
+            <ion-col col-11 class="margin_auto">
+              <span style=""  *ngFor="let participant of team.Participants;let j=index;" >{{participant.User.FirstName}} {{participant.User.LastName}}<span *ngIf="j!=team.Participants.length-1">,</span></span>
+            </ion-col>
+            <ion-col col-1 class="margin_auto">
+              <ion-icon name="md-trophy" *ngIf="team.isWinner"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="teams && teams.length > 0" class="teams_row">
+    <ion-col *ngFor="let team of teams;let i=index;" col-12>
+      <div class="participant_div" ng *ngIf="team.Participants.length > 0">
+        <ion-row class="user_sets_row">
+          <ion-col col-12 class="margin_auto" style="padding:0px 5px 5px 5px !important" >
+            <div style="">
+              <p><span *ngFor="let participant of team.Participants;let j=index;" >{{participant.User.FirstName}} {{participant.User.LastName}}<span *ngIf="j!=team.Participants.length-1">,</span></span></p>
+            </div>
+            <div style="width:100%;display: flex;align-items: center;justify-content: center">
+              <span *ngFor="let set of team.sets;let k=index" >
+                <ion-input type="number" [style.border]="i==0 ? '1px solid green' : '1px solid red'"  [(ngModel)]="team.sets[k]" ></ion-input>
+              </span>
+            </div>
+          </ion-col>
+        </ion-row> 
+      </div>
+    </ion-col>
+    <ion-col col-12>
+      <ion-row class="user_sets_row points"> 
+        <ion-col col-2 style=" margin:auto !important">
+          <button ion-button icon-only clear (click)="removeSets()">
+            <ion-icon name="remove-circle"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col col-8 style=" margin:auto !important;font-size: 25px;">{{sets}} set(s)</ion-col>
+        <ion-col col-2 style=" margin:auto !important">
+          <button ion-button icon-only clear (click)="addSets()">
+            <ion-icon name="add-circle"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12>
+          <ion-item>
+            <ion-textarea 
+              type="text" placeholder="Enter comments" rows="5" maxLength="500" [(ngModel)]="result_input.resultDescription"></ion-textarea>
+            </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-12 >
+      <button ion-button block class="btn_BG" (click)="publishresult()">Publish</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

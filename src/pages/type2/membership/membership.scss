@@ -1,0 +1,240 @@
+page-membership {
+    ion-card {
+        border-radius: 4px !important;
+        margin: 0px !important;
+        width: 100% !important;
+        padding:5px !important;
+        //-webkit-box-shadow: none !important;
+        //box-shadow: none !important;
+        background: #fff;
+        //border-bottom: 1px solid #f6ae4d !important;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .nopad {
+        padding: 0px;
+        //margin: 6px;
+    }
+
+    .border-bottom-2px {
+        border-bottom: 1px solid #faae4e !important;
+    }
+
+    .venuedropdown {
+        padding: 0px 3px 3px 0px;
+        max-width: none;
+        font-size: 18px;
+        //margin: auto;
+        width: -webkit-fill-available;
+    }
+
+    .list-md {
+        margin: -1px 0 16px;
+    }
+
+    ion-list {
+        margin: 0;
+        padding: 0;
+        display: block;
+        list-style-type: none;
+    }
+
+    ion-card-content {
+        padding: 0px !important;
+    }
+
+    .Location-head {
+        font-size: 1.6rem;
+        color: #222;
+        padding: 5px;
+        padding-top: 10px;
+        border-bottom: 1px solid #c4b8b8 !important;
+    }
+
+    .nonmembercard {
+        margin-top: 30px !important;
+        padding: 14px 0;
+    }
+
+    .fabTop {
+        margin-bottom: 13px;
+    }
+
+    .fabEmailText {
+       
+        margin-left: -144px;
+        background-color: #2b92bb !important;
+        margin-top: -47px;
+        padding: 5px 12px 5px 11px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        border-radius: 3px;
+        margin-right: 36px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nonmemcard {
+        padding: 14px 0;
+    }
+    .iosMargin{
+        margin-top:88px !important;
+    }
+    .androidMargin{
+        margin-top:44px !important;
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+ 
+    .location-cards>p {
+        line-height: 1.1;
+        color: #8c8c8c;
+    }
+
+    .location-cards>h3 {
+        font-size: 15px;
+        color: blue;
+        font-weight: 600;
+    }
+
+    .location-cards {
+        padding: 10px 10px;
+        border-bottom: yellow;
+    }
+
+    .pricespace {
+        padding-left: 3px;
+    }
+
+    .all {
+        // border-left: 3px solid #35adff;
+        border-width: 1px;
+        // border-style: solid;
+        // -webkit-border-image: -webkit-gradient(linear, 0 0, 0 100%, from(#35adff), to(#7dbce6)) 1 100%;
+        // -webkit-border-image: -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+        // -moz-border-image: -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+        // -o-border-image: -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+        // border-image: linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+    }
+
+    .border-left-style {
+        height: 59px;
+        position: absolute;
+        bottom: 6px;
+        left: 7px;
+    }
+
+    .name {
+        color: rgba(0, 0, 0, 0.85) !important;
+        font-size: 18px !important;
+    }
+
+    .topborder {
+        border-top: #8c8c8c;
+    }
+
+    .card-text {
+        //color: #c5b495;
+        width: 100%;
+        font-size: 16px !important;
+        color: rgba(0, 0, 0, 0.65);
+    }
+
+    .card-text>span {
+     //   color: gray;
+    }
+
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+       // left: 3px !important;
+    }
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+       // text-align: right;
+        padding-right: 5px;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+
+    .right {
+        float: right;
+    }
+
+    // .search_add {
+    //     .item-inner {
+    //         border-bottom: 0px !important;
+    //         ion-icon {
+    //             margin-top: 18px;
+    //         }
+    //         div {
+    //             ion-label {
+    //                 //margin-top: 0px;
+    //                 margin-bottom: 0px;
+    //                 background: yellow
+    //             }
+    //         }
+    //     }
+    // }
+    .item-inner{
+        border-bottom: none !important;
+    }
+    .sub-container {
+        button {
+            width: 80%;
+            height: 76%;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 73% !important;
+            margin-top: 4px !important;
+            padding: 2px 0px
+        }
+
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+
+        }
+
+        .searchbar-search-icon {
+            display: none !important;
+        }
+
+        ion-icon {
+            font-size: 20px;
+        }
+
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow:none
+        }
+    }
+
+}

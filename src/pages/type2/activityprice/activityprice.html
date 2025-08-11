@@ -1,0 +1,97 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Activity Price</ion-title>
+    </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+
+      
+
+            <ion-item class="borderbottom">
+                <ion-label class="venue-text">Venue</ion-label>
+                <ion-select style="max-width: none !important;" [(ngModel)]="selectedClubKey"
+                    (ionChange)="onClubChange()">
+                    <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+
+
+            </ion-item>
+
+
+            <div *ngIf="activity.length > 0" style="margin-top: 12px;">
+                <h4><span class="fontheading">Activity Level Price</span></h4>
+                <ion-list>
+
+                    <ion-row  *ngFor="let activity of activity" class="margin_activity ion_item_1">
+                        <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+                            <span class="para" style="color: rgba(0, 0, 0, 0.85);" class="font-color"> {{activity.ActivityName}} <span style="color:rgba(0, 0, 0, 0.65); font-size: 12px;">(per hour price)</span></span>
+                                 
+                                  <label class="toggle">
+                                    <input type="checkbox" [(ngModel)]="activity.PriceSetup.IsActive">
+                                    <span data-unchecked="No" data-checked="Yes"></span>
+                                  </label>
+                               
+                            
+                        </ion-col>
+                        
+                        <div *ngIf='activity.PriceSetup != undefined' style="width: 100%">
+                        
+
+                    
+                                    <!-- <div class="box">
+                                       
+
+                                        <span  *ngIf="currencyDetails.CurrencySymbol!= undefined"
+                                            style="font-size: 16px;color:black;">MemberPricePerHour {{currencyDetails.CurrencySymbol}}: </span>&nbsp;
+                                      
+                                        
+                                    </div> -->
+                                    <ion-item style="color: rgba(0, 0, 0, 0.65);">
+                                        <ion-label style="max-width: 250px;" *ngIf="currencyDetails.CurrencySymbol!= undefined">Member ({{currencyDetails.CurrencySymbol}}) :</ion-label>
+                                        <ion-input type='number' [(ngModel)]='activity.PriceSetup.MemberPricePerHour'></ion-input>
+                                    </ion-item>
+                                    <ion-item style="color: rgba(0, 0, 0, 0.65);">
+                                        <ion-label style="max-width: 250px;" *ngIf="currencyDetails.CurrencySymbol!= undefined">Non Member ({{currencyDetails.CurrencySymbol}}) :</ion-label>
+                                        <ion-input type='number'[(ngModel)]='activity.PriceSetup.NonMemberPricePerHour'></ion-input>
+                                    </ion-item>
+                        
+                              
+
+                               
+                
+
+                          
+                        </div>
+
+                    </ion-row>
+                 
+
+
+
+                </ion-list>
+
+            </div>
+
+          
+            <ion-card *ngIf="activity.length == 0" class="nonmembercard">
+                <ion-card-content style="text-align: center; padding:0px !important ;">
+                    <p class="danger_color2 nonlocationcard">It seemes there are no activity present </p>
+                </ion-card-content>
+            </ion-card>
+         
+            <ion-grid>
+                <ion-row>
+                    
+                    <ion-col col-12>
+                        <button ion-button block class="timekare-primary-btn" (click)="save()">Save</button>
+                    </ion-col>
+    
+                </ion-row>
+            </ion-grid>
+
+
+
+
+</ion-content>

@@ -1,0 +1,171 @@
+page-matchdetails {
+  .toolbar-title{
+    color:#fff;
+  }
+  .cardrow {
+    div {
+      display: flex;
+      align-items: baseline;
+      width: 100%;
+    }
+    ion-icon{
+      font-size: 1.5em !important;
+      color: #2b92bb !important;
+    }
+  }
+
+  .largetext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 20px;
+    color: #154766;
+  }
+  .deletebtn{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    position: absolute;
+    right: 0px;
+    bottom: 10px;
+    background: none;
+    background-color: none !important;
+    color: white !important;
+  }
+
+  .smalltext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 16px;
+    color: #154766;
+  }
+  //   .cardrow {
+  //     margin: 0 0px;
+  //     padding: 0 0px;
+  //   }
+  .selected {
+    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+    // border: 1.5px solid #2b92bb;
+    color: #2b92bb !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 10px;
+  }
+  .select-type {
+    text-transform: capitalize;
+    background-color: transparent;
+    width: 95%;
+    margin: 0px !important;
+    color: #707070;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+  .invitedlist_row{
+    ion-item {
+      //display: flex;
+      border-bottom: 1px solid #dedede;
+      padding-left:5px !important;
+      .item-inner{
+        border-bottom:none !important
+      }
+      p{
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+  }
+  .teams_dev{
+    .teams_row {
+      .user_sets_row{
+        ion-input{
+          width: 50px;
+          border-radius: 5px;
+          margin: auto;
+          border:1px solid grey;
+          margin: 0px 5px;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 600;
+          
+          .text-input {
+            text-align: center !important;
+          }
+          .text-input-ios{
+            text-align: center;
+            margin: 11px 2px 11px 2px !important;
+          }
+        }
+        .result_para{
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          ion-icon{
+            font-size: 2em !important;
+            color: gold !important;
+          }
+        }
+        
+        
+        
+      }
+      .participant_div{
+        margin:10px 0px 10px 0px;
+        padding: 5px;
+      }
+      ion-col:nth-child(odd) .participant_div{
+        border: 1px solid #2b92bb; 
+        border-radius: 5px; 
+      }
+      ion-col:nth-child(even) .participant_div{
+        border: 1px solid red;
+        border-radius: 5px; 
+      }
+  
+      ion-item {
+        //display: flex;
+        border-bottom: 1px solid #dedede;
+        padding-left:5px !important;
+        .item-inner{
+          border-bottom:none !important
+        }
+        p{
+          font-weight: 600;
+          font-size: 15px;
+        }
+      }
+      button{
+        padding: 0 0.6em;
+        height: 35px;
+        width: 35px;
+        font-size: 1.2rem;
+        border-radius:5px;
+        //background-color: #2b92bb;
+        color: white !important;
+        ion-icon{
+          font-size: 20px;
+        }
+      }
+      .vs_div{
+        width: 100%;
+        p{
+          border: 1px solid grey;
+          border-radius: 50%;
+          padding: 14px 10px;
+          width: 50px;
+          text-align: center;
+          margin: auto;
+          background: #2b92bb;
+          color: #fff;
+          font-weight: 600;
+        }
+      }
+    }
+    
+        
+  }
+  
+  
+  
+}

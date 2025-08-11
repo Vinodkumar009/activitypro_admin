@@ -1,0 +1,119 @@
+page-publishresult {
+    .toolbar-title{
+        color:#fff;
+    }
+
+    .teams_row{
+        .participant_div{
+          margin:5px 0px 5px 0px;
+          padding: 0px 5px 5px 5px !important;
+        }
+        ion-col:nth-child(odd) .participant_div{
+          border: 1px solid green; 
+          border-radius: 5px; 
+        }
+        ion-col:nth-child(even) .participant_div{
+          border: 1px solid red;
+          border-radius: 5px; 
+        }
+        .points{
+          padding: 0px 50px;
+          text-align: center;
+        }
+        .user_sets_row{
+          
+          div p{
+            margin: 10px 0px !important;
+            font-size: 16px;
+          }
+          
+          ion-input{
+            width: 50px;
+            border-radius: 5px;
+            margin: auto;
+            border:1px solid grey;
+            margin: 0px 5px;
+            text-align: center;
+            .text-input {
+              text-align: center !important;
+            }
+            font-size: 20px;
+            font-weight: 600;
+            .text-input-ios{
+              text-align: center;
+              margin: 11px 2px 11px 2px !important;
+            }
+            
+          }
+          ion-icon{
+            color: rgba(23, 68, 91, 0.870588);
+          }
+        }
+        
+    
+        ion-item {
+          //border-bottom: 1px solid #dedede;
+          padding-left:0px !important;
+          .item-inner{
+            border-bottom:none !important
+          }
+          
+          ion-icon{
+            font-size: 1.4em;
+            color: gold;
+          }
+        }
+        .margin_auto{
+          margin:auto !important;
+        }
+        button{
+          padding: 0 0.6em;
+          height: 35px;
+          width: 35px;
+          font-size: 1.2rem;
+          border-radius:5px;
+          //background-color: #2b92bb;
+          color: white !important;
+          ion-icon{
+            font-size: 35px;
+          }
+        }
+    
+      }
+      ion-textarea{
+        border: 0.5px solid #707070;
+        border-radius: 5px;
+        padding-left: 10px;
+        .text-input{
+          margin: 13px 0px !important
+        }
+      }
+
+      .team_a_active{
+        background-color: green;
+        ion-item{
+          background: transparent !important;
+          span{
+            font-size: 22px !important;
+            color: #fff !important;
+          }
+        }
+      }
+      .team_b_active{
+        background-color: red;
+        ion-item{
+          background: transparent !important;
+          span{
+            font-size: 22px !important;
+            color: #fff !important;
+          }
+        }
+      }
+      .inactive{
+        background: none;
+        span{
+          font-size: 16px !important;
+        }
+      }
+      
+}

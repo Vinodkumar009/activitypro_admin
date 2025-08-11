@@ -1,0 +1,121 @@
+page-confirmmonthly {
+    .ses_card_col{
+        width:100%;
+        margin:auto;
+        .session_card{
+            margin:0px;
+            width:100%;
+            padding: 5px 5px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px -1px #b4b3b7;
+            background: #ffffff;
+            ion-card-content{
+                padding:5px;
+                .ses_name{
+                    font-size: 17px !important;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+    
+    .flex_col{
+        border-bottom: 1px solid #d9d7d4 !important;
+        //background: white;
+        padding: 10px 0 0 0;
+        display: flex;
+        justify-content: space-between;
+        p{
+            line-height: 30px;
+        }
+    }
+    .price_col{
+        margin: auto;
+        text-align: center;
+        padding: 6px;
+        p{
+            margin: auto;
+            color: rgba(0, 0, 0, 0.70);
+            font-size: 18px;
+            font-weight: 500;
+            border-radius: 30px;
+            width: 80%;
+            border: 1px solid rgba(0, 0, 0, 0.34902);
+            padding: 15px 5px;  
+        }
+    }
+
+    .confirm_dev{
+        margin-top: 40px;
+        //position:absolute;
+        //bottom: 3%;
+        width: 100%; 
+        ion-input{
+            border: 1px solid rgba(0, 0, 0, 0.34902);
+            padding: 4px 8px;
+            border-radius: 5px;
+            .text-input{
+                font-size: 18px !important;
+            }
+        }
+    }
+    .action_dev{
+        padding: 10px 0px;
+        margin: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.34902);
+        border-radius: 10px;
+    }
+
+    .para{
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 14px;
+        padding: 4px 0px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+    .para_col {
+        border-bottom: 1px solid #d2cbcbb5;
+        padding: 6px;
+    }
+
+    .creation{
+        //padding-left: 12px;
+        margin: 5px 0px;
+        font-size: 18px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .para_price_header{
+        font-size: 18px;
+        font-weight: 200;
+      //  text-align: center;
+    }
+    .active{
+        background: orange !important;
+        color: #fff !important;
+    }
+
+    .schedule_date_item{
+        background-color: transparent !important;
+        padding-left: 5px !important;
+        font-size: 18px !important;
+        border: 1px solid rgba(0, 0, 0, 0.34902);
+        border-radius: 10px;
+        .item-inner{
+            border-bottom:none !important;
+            .label{
+                color: 1px solid rgba(0,0,0,0.65);
+            }
+            ion-datetime{
+                padding: 8px 8px 8px 16px;
+            }
+        }
+        
+    }
+
+    
+
+
+}

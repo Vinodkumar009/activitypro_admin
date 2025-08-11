@@ -1,0 +1,114 @@
+<!--
+  Generated template for the CreatestripeconnectsetupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Stripe Setup</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="show_selection_view">
+    <ion-grid class="container">
+      <ion-slides  class="group-slides" [ngStyle]="{'height.px': height }" [slidesPerView]="2.2">
+        <ion-slide id="ionslide">
+          <ion-card style="position: absolute;
+                         top: 5px;" class="facilityCard" [class.selected]="isSelectAll" (click)="selectVenue('All')">
+            <ion-card-content>
+              <p class="facilities-text">All</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+        <ion-slide *ngFor="let club of allClub">
+          <ion-card style="position: absolute;
+                 top: 5px;" class="facilityCard" [class.selected]="club.isSelect" (click)="selectVenue(club)">
+            <ion-card-content>
+              <p class="facilities-text">{{club.ClubName}}</p>
+            </ion-card-content>
+          </ion-card>
+          <div id="div2" class="divactivity">
+            <ion-list style="margin: 0px 0 4px;" *ngFor="let activity of club.Activity">
+              <ion-row style="height: 1.5em;" [ngStyle]="{'width.px': widthofact }" [class.select]="activity.isSelect"
+                (click)="selectActivity(club, activity)" class="facilityCard" *ngIf="club.isSelect">
+                <ion-col style="padding: 2px !important;">
+                  <p style="margin: 0 !important;font-size: 14px;" class="facilities-text">{{activity.ActivityName}}</p>
+                </ion-col>
+              </ion-row>
+            </ion-list>
+          </div>
+        </ion-slide>
+      </ion-slides>
+      <!-- <ion-slides class="group-slides" [slidesPerView]="2.2">
+             <ion-slide *ngFor="let activity of activityList">
+                 <ion-card class="facilityCard" [class.selected]="activity.isSelect" >
+                     <ion-card-content >
+     
+                         <p class="facilities-text">{{activity.ActivityName}}</p>
+     
+                     </ion-card-content>
+                 </ion-card>
+             </ion-slide>
+        </ion-slides> -->
+      <ion-row>
+        <ion-col col-11>
+          <ion-label style="font-size:18px;">Account Name
+            <img style="width: 4%;" src="assets/images/info.svg" (click)="accountNameHint()">
+          </ion-label>
+          <ion-input class="acc_name_input" type="text" placeholder="e.g. Venue 1 - Tennis Account" [(ngModel)]="setupObj.name"></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <ion-card style="border-bottom: 2px solid #faa928d3;margin-top: 5px;">
+          <ion-card-content text-center style="font-size: 20px;font-weight:bold;">Steps to link stripe account</ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 no-padding>
+        <!-- <ion-item>
+          <ion-icon name="ios-arrow-forward" item-left></ion-icon>
+          <p text-wrap>Please click on the + sign</p>
+        </ion-item> -->
+        <ion-item *ngFor="let instruction of instructions_arry;let i=index;">
+          <ion-row>
+            <ion-col col-1 text-center style="margin:auto;color:rgb(52, 52, 52);">
+              {{i+1}}
+            </ion-col>
+            <ion-col col-11 text-wrap>
+              <p>{{instruction.text}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </div>
+
+
+  <!-- the below div will be shown after the user selects the club and activity and wanted to copy existing account -->
+  <div *ngIf="!show_selection_view && uniqueStripeAccounts.length > 0">
+    <ion-list radio-group style="padding-top:15px;" [(ngModel)]="selected_account_id">
+      <ion-item *ngFor="let account of uniqueStripeAccounts;">
+        <ion-label>{{account.formatted_acc_id}}</ion-label>
+        <!-- <p class="activity" style="color: rgba(0,0,0,0.45)">{{account.formatted_acc_id}}</p> -->
+        <ion-radio item-start value="{{account.setup_id}}"></ion-radio>
+      </ion-item>
+    </ion-list>
+    <!-- <ion-list radio-group style="padding-top: 15px;">
+      <ion-item *ngFor="let t of team;">
+        <ion-label> {{t.teamName}}
+        </ion-label>
+        <ion-radio (ionSelect)="selectWinner(t)"></ion-radio>
+      </ion-item>
+    </ion-list> -->
+  </div>
+  
+</ion-content>
+
+<ion-footer>
+  <button *ngIf="show_selection_view" ion-button (click)="addSetup()" block>Link Stripe Account</button>
+  <button *ngIf="!show_selection_view" ion-button (click)="copyStripeAccount()" block>Copy Account</button>
+</ion-footer>

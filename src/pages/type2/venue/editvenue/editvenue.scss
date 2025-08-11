@@ -1,0 +1,108 @@
+editvenue-page{
+    .list{
+    margin:0px;
+}
+.list-header-md {
+     margin-bottom: 0px; 
+   
+    margin-top: 3px;
+}
+.sub-container {
+    button {
+        width: 90%;
+        height: 86%;
+        margin-top: 4px;
+        background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+        border-radius: 5px;
+        color: white;
+        box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+    }
+
+    .searchbar {
+        border: none !important;
+        background: #ffffff !important;
+        border-radius: 5px !important;
+        height: 86% !important;
+        margin-top: 4px !important;
+        padding: 2px 0px
+    }
+
+    .searchbar-input {
+        padding-left: 15px !important;
+        box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+
+    }
+
+    .searchbar-search-icon {
+        display: none !important;
+    }
+
+    ion-icon {
+        font-size: 20px;
+    }
+
+    .searchbar-clear-icon {
+        margin: 0;
+        box-shadow:none
+    }
+}
+
+ion-item {
+    ion-label {
+        color: #b5b2ae !important;
+        margin-top: -1px !important;
+        padding: 5px 0px 0px 0px;
+    }
+    .act {
+        margin-top: 15px !important;
+    }
+    border-bottom: 1px solid #f1c98d !important;
+    box-shadow: inset 0 -1px 0 0 #dedede!important;
+}
+ .item-inner {
+    border: none !important;
+    box-shadow: none !important;
+}
+.select-icon {
+    position: relative !important;
+    width: 25px !important;
+    height: 25px !important;
+    background: #faae4e !important;
+    border-radius: 50% !important;
+    color: white !important;
+   // left: 3px !important;
+}
+
+.select-text {
+    padding-top: 2px !important;
+    color: #faae4e !important;
+   // text-align: right;
+    padding-right: 5px;
+}
+
+.select-icon .select-icon-inner {
+    left: 7px !important;
+    top: 49%;
+    color: white !important;
+}
+
+.search_add {
+    background-color: transparent;
+    padding-left: 6px;
+}
+.scroll-content {
+    //margin-top: 44px !important; 
+    padding: 6px !important;
+    background-image: none !important; // background: white !important;
+    background: #f7f7f7 !important;
+}
+.list > .list-header-md {
+    margin-top: 0px;
+}
+.list-modifier{
+
+    font-size: 1.8rem;
+    background-color: #d6d6d6;
+    color: #030303;
+}
+}

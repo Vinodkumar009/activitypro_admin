@@ -1,0 +1,60 @@
+<!--
+  Generated template for the AddcommentPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add Comment</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row>
+    <ion-col col-6>
+      <ion-icon name="pin" style="color:#2B92BB"></ion-icon>
+    <span style="color: #2B92BB;font-weight: 700;"> London Bridge</span>
+    </ion-col>
+    <ion-col col-6 style="text-align: end;
+    color: #2B92BB;"> 1 Nov 2022,13:00</ion-col>
+  </ion-row>
+  <ion-row style="margin-top: 10px;">
+    <ion-col col-4>
+      <div class="img">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" />
+        <p style="text-align: center;
+        margin-top: 2px;
+        font-weight: 700;
+        color: #3A3A3A">CSK</p>
+      </div>
+    </ion-col>
+    <ion-col col-4 class="versus">vs</ion-col>
+    <ion-col col-4 class="rightCol">
+      <div class="img">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" />
+        <p  style="text-align: center;
+        margin-top: 2px;
+        font-weight: 700;
+        color: #3A3A3A">CSK</p>
+      </div>
+    </ion-col>
+  </ion-row>
+
+
+  <div class="textArea">
+  <ion-item>
+    <ion-textarea rows="8" type="text" style="white-space:pre-wrap; background-color: #FFFFFF;" placeholder="Write a comment here...">
+    </ion-textarea>
+  </ion-item>
+</div>
+
+
+
+</ion-content>
+
+<ion-footer>
+  <button (click)="inviteUsers()" ion-button block class="timekare-primary-btn">
+    Add Comment
+  </button>
+</ion-footer>

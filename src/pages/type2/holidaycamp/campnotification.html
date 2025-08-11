@@ -1,0 +1,58 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Camp Notification</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Camp Notification
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+
+
+    <ion-item>
+        <ion-label stacked>Message</ion-label>
+        <ion-textarea rows="13" type="text" style="white-space:pre-wrap;" [(ngModel)]="notificationObj.Message" placeholder="Type a message here..."></ion-textarea>
+    </ion-item>
+    <!-- [(ngModel)]="notificationObj.Message" -->
+    <!-- <ion-item>
+            <ion-label stacked>Message</ion-label>
+            <ion-textarea rows="13" type="text" style="white-space:pre-wrap;" placeholder="Type a message here..."></ion-textarea>
+        </ion-item>-->
+    <ion-grid> 
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="sendNotification()">Send</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

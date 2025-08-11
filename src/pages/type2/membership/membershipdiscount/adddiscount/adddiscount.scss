@@ -1,0 +1,187 @@
+page-adddiscount {
+    ion-card {
+        margin: 0px !important;
+        width: 100% !important;
+        // -webkit-box-shadow: none !important;
+        // box-shadow: none !important;
+        border-bottom: 1px solid #f6ae4d !important;
+    }
+
+    ion-card-content {
+        padding: 0px !important;
+    }
+
+   
+
+    .sublabel {
+        font-size: 10%
+    }
+
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+
+    .help_btn {
+        padding: 0px !important;
+        font-size: 24px !important;
+        margin: 0px !important;
+        height: 42px !important;
+        width: 42px;
+    }
+
+    .custom_ionitem {
+        input{
+            padding-left: 20px !important;
+            text-align: center !important;
+        }
+        ion-label[fixed]{
+            flex: 0 0 250px !important;
+        }
+        // margin-top:-10px; 
+        div {
+            padding-right: 0px !important;
+        }
+    }
+
+    .custom_ionlist {
+        background: white;
+        margin: -1px 0 17px;
+        padding-top: 5px;
+        margin-bottom: 14px !important;
+        // box-shadow: 0px 10px 10px -8px #faae4e;
+        // border-bottom: 2px solid #faae4e;
+    }
+
+    .segment-button {
+        border-color: #faae4e !important;
+        color: #faae4e !important;
+        margin: 0 4px;
+        border-radius: 7px;
+        background-color: #dfdfdf;
+    }
+
+    .segment-button.segment-activated {
+        color: #ffffff !important;
+        background-color: #faae4e !important;
+    }
+
+    h3 {
+        color: #b5b2ae !important;
+        font-size: inherit;
+    }
+
+    .list-ios>.item-block:first-child {
+        border-top: none
+    }
+
+    .toggle {
+        overflow: hidden;
+        display: inline-block;
+        width: 5em;
+        background: #2f2a2a;
+        padding: 0.135em;
+        cursor: pointer;
+        font-size: 19px;
+        margin: -3px 0 -3px 15px;
+    }
+
+    .toggle input {
+        position: absolute;
+        visibility: hidden;
+    }
+
+    .toggle span {
+        position: relative;
+        left: 0%;
+        display: block;
+        text-align: center;
+        /**
+       * Holo doesn't have any transition, but
+       * it's added here for demo purposes
+       */
+        -webkit-transition: left 200ms ease-out;
+        -moz-transition: left 200ms ease-out;
+        -o-transition: left 200ms ease-out;
+        transition: left 200ms ease-out;
+    }
+
+    .toggle :checked+span {
+        left: 50%;
+    }
+
+    /* Default unchecked state */
+    .toggle span:before {
+        content: attr(data-unchecked);
+        display: block;
+        width: 50%;
+        background-color: #912121;
+        border-radius: 0.15em;
+        box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    /* Checked state */
+    .toggle :checked+span:before {
+        content: attr(data-checked);
+        background-color: #08a1f4;
+        color: white;
+    }
+
+    .toogle-label {
+        padding-left: 10px;
+        color: #b5b2ae !important;
+        font-size: 17px;
+    }
+
+    .floating {
+        margin: 11px 8px 11px 0 !important;
+    }
+
+    ion-label {
+        margin: 9px 8px 0px 0 !important;
+        ;
+    }
+
+    .allign-right .text-input {
+        text-align: right;
+    }
+
+    ion-item {
+        ion-label {
+            color: #b5b2ae;
+            margin-top: -1px !important;
+        }
+
+        .act {
+            margin-top: 15px !important;
+        }
+
+        // border-bottom: 1px solid #dedede !important;
+        // box-shadow: inset 0 -1px 0 0 #dedede!important;
+    }
+
+    .input-has-focus .item-inner {
+        border-bottom-color: #dedede !important;
+        box-shadow: inset 0 -1px 0 0 #dedede !important;
+    }
+
+    .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        border-bottom-color: #dedede;
+        box-shadow: inset 0 -1px 0 0 #dedede;
+    }
+
+    .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+    .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        border-bottom-color: #dedede;
+        box-shadow: inset 0 -1px 0 0 #dedede;
+    }
+
+    .allign-assist {
+        // position: absolute;
+        // width: 96%;
+        // bottom: 14px;
+    }
+  
+}

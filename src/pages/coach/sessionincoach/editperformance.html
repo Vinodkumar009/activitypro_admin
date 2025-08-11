@@ -1,0 +1,93 @@
+<!--
+  Generated template for the EditperformancePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>editperformance</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-grid class="head_container">
+        <ion-row>
+          <ion-col col-12 class="rate_contain">
+            <p class="name" color="primary">{{memberDetails.FirstName}} {{memberDetails.LastName}} </p>
+              <span>
+                <rating  [(ngModel)]="templateInfo.AveragePerformance" 
+                      readOnly="false" 
+                      max="5" 
+                      emptyStarIconName="star-outline" 
+                      halfStarIconName="star-half" 
+                      starIconName="star" 
+                      nullable="false" 
+                      (ngModelChange)="templateInfo.AveragePerformance =$event"></rating>
+              </span>
+          </ion-col>
+        </ion-row>
+        </ion-grid>
+<ion-grid>
+  <ion-row>
+    <ion-col col-6>
+      <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime displayFormat="MM/YYYY" [(ngModel)]="templateInfo.StartDate"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col col-6>
+        <ion-item>
+            <ion-label>End Date</ion-label>
+            <ion-datetime displayFormat="MM/YYYY" [(ngModel)]="templateInfo.EndDate"></ion-datetime>
+          </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
+        <ion-textarea rows="5" [(ngModel)]="templateInfo.Summary" class="area" placeholder="summary"></ion-textarea>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngFor="let data of templateInfo.EvaluationCriteria; let i = index" class="rows">
+    <ion-col col-12><span class="text" >{{data.DisplayText}}</span></ion-col>
+    <ion-col col-2></ion-col>
+    <ion-col *ngFor="let data2 of dataRating[i]" col-11>
+      <div class="contain" *ngIf="data2.RaterName == templateInfo.CoachName">
+        <ion-grid >
+          <ion-row>
+            <ion-col col-5 class="cols" >
+            <rating  [(ngModel)]="data2.Rating" 
+            readOnly="false" 
+            max="5" 
+            emptyStarIconName="star-outline" 
+            halfStarIconName="star-half" 
+            starIconName="star" 
+            nullable="false" 
+            (ngModelChange)="data2.Rating = $event"></rating>
+           
+            </ion-col >
+            <ion-col col-7 class="cols">
+                <ion-textarea [(ngModel)]="data2.Comments" rows="3" class="area area2 animate-zoom" placeholder="comments"></ion-textarea>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+      </div>
+        
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<ion-grid style="text-align: bottom;">
+    <ion-row>
+        <ion-col>
+          <ion-textarea rows="5" [(ngModel)]="templateInfo.ReferedCoachComment" disabled="true" class="area"></ion-textarea>
+        </ion-col>
+      </ion-row>
+</ion-grid>
+</ion-content>
+<ion-footer>
+  <button ion-button block class="timekare-primary-btn animate-bottom btn" (click)="update()">update</button>
+</ion-footer>

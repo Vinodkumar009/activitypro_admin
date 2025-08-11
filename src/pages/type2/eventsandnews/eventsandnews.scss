@@ -1,0 +1,252 @@
+page-eventsandnews {
+    .ion_card {
+        margin: 6px 0px;
+        width: 100%;
+        border-top: 4px solid rgb(98, 91, 160);
+    }
+    .ion_card_content {
+        padding-bottom: 5px;
+    }
+    .names {
+        font-size: 16px;
+    }
+    .card_content {
+        // margin-left: 10px;
+    }
+    .scroll-content {
+        //padding: 6px !important;
+        background-image: none !important;
+        background: #f7f7f7;
+    }
+    .header_text {
+        background-color: white;
+        margin-top: -28px;
+        padding-top: 10px; //
+        width: 110%;
+        padding-bottom: 1px;
+    
+        p {
+            margin-left: 7px;
+        }
+        .rightspan {
+            color: #bc2219;
+        }
+    }
+    .left {
+        float: left;
+    }
+    .right {
+        float: left;
+    }
+    .header_div{
+        width:100%;
+        height:50%;
+        img{
+            height: 100%;
+            width:100%;
+            object-fit: fill;//cover
+        }
+    }
+    .restImg {
+        //height: 115px;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+ 
+    .nopadding {
+        padding: 0px;
+    }
+    .title {
+        font-weight: bold;
+       
+        padding-right: 1px;
+    }
+    .pad-left {
+        padding-left: 8px;
+    }
+    ion-grid {
+        .title {
+            // margin: -12px;
+            // margin-left: -25px;
+        }
+        .rest {
+            // margin-top: 30px;
+            // margin-left: -25px;
+        }
+        .rightspan {
+            color: #bc2219;
+        }
+    }
+   
+    .leftspan {
+        color: rgb(150, 146, 146);
+    }
+    .iconhead {
+        float: left;
+        font-size: 25px;
+        color: white;
+        transform: translate(90px, 0px);
+    }
+    .icontitle {
+        float: left;
+    }
+    .animate-zoom {
+        animation: animatezoom 0.6s
+    }
+    .list_card{
+        margin: 6px 2px;
+        border-radius: 2px;
+        width: calc(100% - 3px);
+    }
+    @keyframes animatezoom {
+        from {
+            transform: scale(0)
+        }
+        to {
+            transform: scale(1)
+        }
+    }
+    .noEvents {
+        font-size: 20px;
+        text-align: center;
+        margin-top: 30%;
+        color:#fab754 !important;
+    }
+    h3{
+        margin: 4px !important;
+        margin-left: 3%;
+        width: 90%;
+        margin-top: 20px !important;
+    }
+
+    .rest{
+        bottom: 0px;
+        position: absolute;
+    }
+
+
+
+
+
+
+//--------------------------------------------
+//
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content {
+    height: 303px;
+    width: 64% !important;
+    margin-top: 49% !important;
+    margin-left: 17%;
+    background-color: #fefefe;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s;
+    border-radius: 16px;
+}
+.para_overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+
+
+.images{
+    font-size:  25px;
+    margin-left: 10px;
+}
+.btn{
+    text-align: right;
+
+}
+.backbtn{
+    color: #585050;
+    font-size: 38px;
+    transform: rotate(43deg);
+    margin-left: 19px;
+    margin-top: -8px;
+    font-weight: bold;
+}
+.name{
+   font-size: 15px;
+    margin-left: 32px;
+}
+.insta{
+    height: 19px;
+    margin-left: 11px;
+}
+.borderRight{
+    border-right: 3px solid #af2222;
+}
+}

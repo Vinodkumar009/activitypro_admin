@@ -1,0 +1,140 @@
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>Availability</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+
+<ion-content >
+  <!-- <ion-row class="top-row">
+    <ion-col col-12 class="padding-0 allign-center">
+        <label class="toggle">
+            <input type="checkbox"  [(ngModel)]="courtType" (change)="changeType()">
+            <span data-unchecked="By Court   : :" data-checked=" : :   By Date" ></span>
+          </label>
+    </ion-col>
+  </ion-row> -->
+  
+
+    <!-- <ion-row class="padding-bottom-10 mar-top-5">
+        <ion-col col-12 class="padding-0">
+            <ion-slides class="court-slide" [slidesPerView]="3.6">
+                <ion-slide  class="courts-slider"  [style.backgroundImage]="'url('+imgURL+')'" (click)="select(courtInfo)" [class.selected]="selectedCourts === courtInfo">
+                    <h2 class="name">{{courtInfo.CourtName}}</h2>
+                    <h3 class="type">{{courtInfo.CourtType}}</h3>
+                  </ion-slide>
+                <ion-slide  class="courts-slider" *ngFor="let courts of courtDetailsTemp" [style.backgroundImage]="'url('+imgURL+')'" (click)="select(courts)" [class.selected]="selectedCourts === courts">
+                  <h2 class="name">{{courts.CourtName}}</h2>
+                  <h3 class="type">{{courts.CourtType}}</h3>
+                </ion-slide>
+              
+              </ion-slides>
+        </ion-col>
+      
+    </ion-row> -->
+
+    <ion-row *ngIf="clubs.length > 1 || ActivityList.length > 1" class="venuerow">
+      <ion-col  *ngIf="clubs.length > 1" col-1 text-center>
+        <img src="assets/imgs/location.png">
+      </ion-col>
+      <ion-col  *ngIf="clubs.length > 1" col-5 text-left>
+        <ion-select [(ngModel)]="selectedClubKey" (ionChange)="getAllActivity()">
+          <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+      </ion-col>
+      <ion-col *ngIf="ActivityList.length > 1" col-1 text-center>
+        <img src="assets/imgs/activity.png">
+      </ion-col>
+      <ion-col col-5 *ngIf="ActivityList.length > 1" text-left>
+        <ion-select [(ngModel)]="selectedActivity" (ionChange)="getAllCourts()">
+          <ion-option *ngFor="let item of ActivityList" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="venuerow">
+      <ion-col col-1 text-center>
+        <img src="assets/imgs/tenniscourt.png">
+      </ion-col>
+      <ion-col col-5 text-left>
+        <ion-select [(ngModel)]="courtSelected" (ionChange)="changeCourt()">
+          <ion-option  *ngFor="let court of allCourts" value={{court.$key}}>{{court.CourtName}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+
+
+      <!-- <ion-slides [slidesPerView]="3.2" class="padding-top-8">
+
+        <ion-slide *ngFor="let slideInfo of allSlots" class="slot-slider">
+          <p class="head">{{slideInfo.label}}</p>
+          <p class="head">  {{slideInfo.Day}}</p>
+          <div style="overflow: scroll !important;height: 900px !important;">
+          <ion-card class="court" *ngFor="let court of slideInfo.Slots"  [ngClass]="{'selected-court':court.IsBooked == true}" >
+            <ion-card-content class="padding-0 slots" (click)="book(court,slideInfo)" [ngClass]="{'booked-court':court.IsEnable == false}">
+
+             <span class="time">{{court.StartHour}}:{{court.StartMin}}</span>-<span class="time">{{court.EndHour}}:{{court.EndMin}}</span> 
+
+             <p class="amount" *ngIf="court.Price != 0 && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{court.Price}}</p>
+          
+             <span *ngIf="court.IsEnable == false"  class="book-span">Booked</span>
+             <p *ngIf="court.Price == 0 && court.IsEnable == true" class="book-span">{{ bookingConfig.FreeCourtText}}</p>
+            
+             <p *ngIf="court.IsEnable == false">{{court.MemberName}}</p>
+            </ion-card-content>
+            
+          </ion-card>
+          
+          <p *ngIf="slideInfo['Slots'].length == 0" class="not-available">No Slots Available</p>
+        </div>
+         
+        </ion-slide>
+      
+      </ion-slides> -->
+
+      <ion-slides [slidesPerView]="3.2" >
+
+        <ion-slide *ngFor="let slideInfo of allSlots"  class="slot-slider">
+          <div style="background: rgba(43, 146, 187, 0.85);    border-right: 1px solid rgba(255, 255, 255, 0.65);">
+            <p class="head">{{slideInfo.label}}</p>
+            <p style="color: rgba(255, 255, 255, 0.85);font-weight: normal;" class="head">  {{slideInfo.Day}}</p>
+          </div>
+         
+          <div style="overflow: scroll !important;height: 84vh !important;">
+          <ion-card class="court" *ngFor="let court of slideInfo.Slots"  [ngClass]="{'selected-court':court.IsBooked == true}" >
+            <ion-card-content class="padding-0 slots" (click)="book(court,slideInfo)" [ngClass]="{'booked-court':court.IsEnable == false,'admin_back': court.MemberKey == 'admin'}">
+      
+              <span class="time">{{court.StartHour}}:{{court.StartMin}}</span>-<span class="time">{{court.EndHour}}:{{court.EndMin}}</span> 
+
+              <p class="amount" *ngIf="court.Price != 0 && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{court.Price}}</p>
+              <!-- <img class="img-free" [src]="freeImageURl" *ngIf="court.Price == 0 && court.IsEnable == true"> -->
+              <!-- <span *ngIf="court.IsEnable == false"  class="book-span">Booked</span> -->
+              <p *ngIf="court.Price == 0 && court.IsEnable == true" class="book-span">{{ bookingConfig.FreeCourtText}}</p>
+             
+              <p *ngIf="court.IsEnable == false">{{court.MemberName}}</p>
+            </ion-card-content>
+            
+          </ion-card>
+          
+          <p *ngIf="slideInfo['Slots'].length == 0" class="not-available">No Slots Available</p>
+        </div>
+         
+        </ion-slide>
+      
+      </ion-slides>
+      
+
+<!-- <div *ngIf="courtType == true">
+  <p class="cm">Coming Soon</p>
+</div> -->
+
+
+</ion-content>
+<ion-footer *ngIf="noOfSlootBook > 0" class="animate-zoom" no-border>
+    <button ion-button (click)="bookCourt()" class="next-btn">Continue
+    </button>
+</ion-footer>
+
+

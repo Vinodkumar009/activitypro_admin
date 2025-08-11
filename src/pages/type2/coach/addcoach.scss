@@ -1,0 +1,32 @@
+addcoach-page{
+//    .scroll-content{
+//         background-image: url("../assets/images/background/innerbg.png");
+//         background-size: 100% 100%;
+//     }
+    .social-cards ion-col {
+        padding: 8px;
+     }
+     .right{
+         float: right;
+     }
+     .scroll-content{
+        background-image: none !important;
+        background-size: 100% 100%;
+       padding:6px !important;
+    }
+    ion-item {
+        ion-label {
+            color: #b5b2ae !important;
+            margin-top: -1px !important;
+        }
+        .act {
+            margin-top: 15px !important;
+        }
+        border-bottom: 1px solid #f1c98d !important;
+        box-shadow: inset 0 -1px 0 0 #dedede!important;
+    }
+    .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}

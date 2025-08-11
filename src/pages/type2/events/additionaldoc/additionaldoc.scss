@@ -1,0 +1,89 @@
+page-additionaldoc {
+    ion-label {
+        color: #b5b2ae
+    }
+    .coach-img{
+        width: 60%;
+        height: 60%;
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important;
+        background: white !important;
+    }
+    .input-wrapper {
+        height: 54px;
+    }
+    ion-item {
+        ion-label {
+            color: #b5b2ae !important;
+            margin-top: -1px !important;
+        }
+        .act {
+            margin-top: 15px !important;
+        }
+        background: #f7f7f7;
+        //border-bottom: 1px solid #f1c98d !important;
+        border-bottom: 0.55px solid #c8c7cc !important;
+        box-shadow: inset 0 -1px 0 0 #dedede!important;
+    }
+   
+  
+     .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .text {
+        font-size: 17px; //margin-bottom: -0px !important;
+    }
+    .iconhead {
+        float: left;
+        font-size: 25px;
+        color: white;
+        transform: translate(70px, 0px);
+    }
+    .icontitle {
+        float: left;
+    }
+    .cate {
+        margin-left: 48px !important;
+        font-size: 15px;
+        transform: translate(10 px, 0px);
+    }
+    .btn {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        background-color: rgb(189, 183, 183);
+        margin-left: 75px;
+        transform: translate(5px, 0px);
+    }
+    .ico {
+        color: #488aff;
+        font-size: 25px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .sub-image {
+        height: 50px;
+        width: 70px;
+    }
+    ion-toggle {}
+    .down-item {
+        .item-md.item-block,
+        .item-inner {
+            //padding-right: 8px !important;
+            border: none !important;
+            margin: -3px !important;
+            margin-left: -8px !important;
+        }
+    }
+    .row1 {
+        margin-left: 5px !important
+    }
+    .row5 {
+        margin-top: -3px !important;
+        margin-bottom: -8px !important;
+    }
+
+}

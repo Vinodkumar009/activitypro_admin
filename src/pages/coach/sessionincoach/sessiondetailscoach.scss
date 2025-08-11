@@ -1,0 +1,74 @@
+sessiondetailscoach-page{
+    .right{
+      float: right;
+  }
+  .dotted{
+        width : 100%;
+        overflow:hidden;
+        display:inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .card_list{
+        margin: 3px !important;
+        width: 98%;
+    }
+    .textcenter{
+        text-align:center;
+    }
+    .cardlist{
+        width:100%;
+        margin:0px !important;
+        border-radius: 6px !important;
+        background-color: rgba(11, 18, 29, 0.53);
+    }
+    .content_height{
+        height: 74px;
+    }
+    .month_block{
+        text-align: center;
+        text-align: center;
+        line-height: 44px;
+        color:white;
+    }
+    ion-card{
+        margin:0px;
+    }
+    .row_class{
+        margin-top: 6px;
+        ion-col{
+          padding: 3px;
+        }
+    }
+    .pendingBox {
+       display: inline-block;
+        width: 18px;
+        background-color: rgba(11, 18, 29, 0.53);
+    }
+    .takenBox{
+        display: inline-block;
+        width: 18px;
+    }
+ .cancelBox{
+        display: inline-block;
+        width: 18px;
+            background-color: rgba(246, 0, 0, 0.8);
+    }
+    .left_1{
+        margin-left: 11px;
+        margin-top: 4px;
+    }
+    .right_align{
+            float: right ;
+    }
+    .cancelSession{
+           background-color: rgba(246, 0, 0, 0.8);
+    }
+    .margintop{
+        margin-top: 5px;
+    }
+        .contentwrapper {
+        display: inline-block;
+        width: 70px;
+    }
+}

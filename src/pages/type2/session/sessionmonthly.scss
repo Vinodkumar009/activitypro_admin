@@ -1,0 +1,20 @@
+page-sessionmonthly {
+   
+    .scroll-content {
+        padding: 3px !important;
+        background-image: none !important;
+    }
+    ion-item {
+        ion-label {
+            overflow: visible !important;
+        }
+    }
+
+
+    .textareastyle {
+        input {
+            text-align: right;
+        }
+    }
+   
+}

@@ -1,0 +1,91 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Create Session</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Create Session
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" padding>
+    <ion-item>
+        <ion-label>Term</ion-label>
+        <ion-select [(ngModel)]="selectedTerm" (ionChange)="onChangeOfTerm()">
+            <ion-option value="">Select</ion-option>
+            <ion-option *ngFor="let term of terms" value={{term.term_id}}>{{term.term_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-card *ngFor="let session of sessionList;let i=index">
+        <ion-card-header class="card_header">
+            {{session.session_name}}
+            <span style="float:right;color: red;" *ngIf="memberList!=undefined && memberList[i]!=undefined && memberList[i].length > 0">   <ion-icon md="md-people" class="icon_people"></ion-icon> {{memberList[i].length}}</span>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-12 class="ion_col middle_content">{{session.days}} - {{session.start_time}} - {{session.duration}}min</ion-col>
+                <ion-col col-6 class="ion_col">
+                    <p style="margin-top: 6px;">{{currencyDetails.CurrencySymbol}}{{session.session_fee}}</p>
+
+                </ion-col>
+                <ion-col col-6 class="ion_col">
+                    <button ion-button icon-left outline small style="background-color:#2b92bb !important; color: white !important" class="member_btn_sm" (click)="showFee(i)">
+                        <ion-icon name="ios-card"></ion-icon>
+                        <div>Edit fee </div>
+                    </button>
+                </ion-col>
+                <ion-item class="activity_select" *ngIf="session.group_status == 1">
+                    <ion-label>Status</ion-label>
+                    <ion-select [(ngModel)]="session.group_status" class="venuedropdown" style="padding-left: 15px;">
+                        <ion-option *ngFor="let status of Status" value={{status.StatusCode}}>{{status.StatusText}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item style="padding: 0px;" *ngIf="session.IsShowFee">
+                    <ion-label floating>Member Fees</ion-label>
+                    <ion-input type="number" [(ngModel)]="session.session_fee" min="1.00"></ion-input>
+                </ion-item>
+                <ion-item style="padding: 0px;" *ngIf="session.IsShowFee">
+                    <ion-label floating>Non-member Fees</ion-label>
+                    <ion-input type="number" [(ngModel)]="session.session_fee_for_nonmember" min="1.00"></ion-input>
+                </ion-item>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col width-50>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col width-50>
+                <button ion-button block class="timekare-primary-btn" (click)="save()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

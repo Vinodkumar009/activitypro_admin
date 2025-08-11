@@ -1,0 +1,294 @@
+page-loyaltyprofile {
+    .walletCard {
+        padding: 10px 10px 10px 15px;
+
+        border-radius: 5px;
+
+        //background: rgba(92, 43, 187, 0.15);
+        .avatardiv {
+            //margin-top: 20px;
+
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            max-width: 70px;
+            border-radius: 50%;
+            border: 1px solid grey;
+            padding: 2px;
+            margin: auto;
+        }
+
+        .Pointsdiv {
+            margin-top: 33px;
+            margin-bottom: 30px;
+
+            display: flex;
+            //margin-top: 10px;
+            justify-content: space-between;
+
+            .pointText {
+                font-size: 10px;
+                float: right;
+                color: rgba(255, 255, 255, 0.85);
+                margin-top: -5px;
+                margin-right: 3px;
+
+            }
+
+            .point {
+                font-size: 30px;
+                color: rgba(255, 255, 255, 0.85);
+
+                span {
+                    font-size: 15px;
+                }
+            }
+
+            .pointsbal {
+                margin-right: 24px;
+                margin-top: 18px;
+            }
+
+            .line {
+                border-left: 1.5px solid rgba(128, 128, 128, 0.28);
+                height: 11vh;
+            }
+        }
+
+    }
+
+    .btngrid {
+        position: absolute;
+        width: 100%;
+        bottom: -61vh;
+    }
+
+    .point {
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.85);
+
+        span {
+            font-size: 15px;
+        }
+    }
+
+    .debitcheck {
+        background: rgba(255, 255, 255, 0%);
+
+        .item-inner {
+            border-bottom: none !important;
+        }
+    }
+
+    .ion_input {
+        border: 1px solid rgba(0, 0, 0, 0.34902);
+        padding: 4px 8px;
+        border-radius: 5px;
+        width: 85%;
+        margin: auto;
+    }
+
+    .debitTxt {
+        color: blue;
+        font-size: 16px;
+        float: right;
+        position: relative;
+        top: 34px;
+        left: 129px;
+        margin-bottom: 42px;
+    }
+
+    .name {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.85);
+        //margin: 8px 0 0;
+        text-transform: capitalize;
+    }
+
+    .transRow {
+        background: white;
+        width: 90%;
+        margin: auto;
+        margin-top: 12px;
+        border-radius: 6px;
+        box-shadow: 0px 1px 4px -1px #c6c2c3;
+
+        .line {
+            border-left: 1.5px solid rgba(128, 128, 128, 0.28);
+            height: 11vh;
+        }
+
+        .admin {
+            margin: 0;
+            color: rgba(0, 0, 0, 0.45);
+        }
+        .margin_auto{
+            margin: auto;
+        }
+        img {
+            width: 25px;
+            margin-top: 8px;
+        }
+
+        .type {
+            margin: 4px 0;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.65);
+        }
+
+        .borderleft {
+            border-left: 1px solid rgba(128, 128, 128, 0.14);
+            //padding-left: 10px;
+        }
+
+        .typename {
+            margin: 6px 0;
+            color: rgba(0, 0, 0, 0.85);
+            font-size: 16px;
+        }
+
+        .date {
+            margin: 6px 0;
+            color: rgba(0, 0, 0, 0.85);
+            font-size: 14px;
+        }
+
+        .pointcol {
+            text-align: -webkit-right;
+            padding: 8px 7px;
+        }
+
+        .divpoints{
+            text-align: end;
+            margin-top: auto;
+            margin-bottom: auto;
+            .point{
+                color: #4cb050;
+                font-size: 16px;
+                margin: 0;
+                span{
+                    //font-size: 14px;
+                }
+            }
+        }
+
+        .pointText {
+            color: rgba(0, 0, 0, 0.55);
+            margin: 0 0;
+        }
+    }
+
+    .btn {
+        width: 35%;
+        float: right;
+        margin-right: 12px;
+    }
+
+    .cashButton {
+        width: 35%;
+        /* Set the width of the "Cash" button to match the "Reward Points" button */
+        float: left;
+        /* Align "Cash" button to the left */
+        margin-right: 12px;
+        /* Adjust the right margin if necessary */
+    }
+
+    .spentCashCard {
+        padding: 10px 10px 10px 15px;
+        border-radius: 5px;
+    }
+
+    .ionlist {
+        margin: -1px 0px 7px;
+    }
+
+    // ion-label {
+    //     color: rgba(0, 0, 0, 0.8);
+    // }
+
+    .input-list ion-item {
+        border-bottom: 1px solid #ccc;
+        /* Change the color as per your preference */
+        padding-bottom: 5px;
+        /* Optional: add some spacing between items */
+    }
+
+    .selected {
+        background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+        // border: 1.5px solid #2b92bb;
+        color: #2b92bb !important;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 10px;
+    }
+
+    .select-type {
+        text-transform: capitalize;
+        background-color: transparent;
+        width: 95%;
+        margin: 0px !important;
+        color: #707070;
+        border-radius: 10px;
+        box-shadow: none;
+    }
+
+    .tab-container {
+        padding-top: 10px;
+        /* Add the desired space from the upper side */
+        padding-bottom: 10px;
+    }
+
+    .content-section {
+        margin-top: -10px;
+        /* Adjust this value to reduce the gap between the sections */
+    }
+
+    .cashTxt {
+        color: blue;
+        font-size: 16px;
+        /* Remove positioning properties and float */
+        /* float: right;
+        position: relative;
+        top: 34px;
+        left: 129px; */
+
+        float: right;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        /* Adjust the margin-bottom value as needed */
+        /* Add display property if necessary */
+        /* display: block; or display: inline-block; */
+    }
+
+    .euro-label {
+        display: flex;
+        align-items: center;
+    }
+
+    .euro-symbol {
+        margin-right: 5px;
+        font-size: 18px;
+    }
+
+    /* Custom CSS */
+    .custom-input-container {
+        // display: flex;
+        // align-items: center;
+        // border: 1px solid #ccc;
+        // padding: 6px;
+        // border-radius: 4px;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        padding: 6px;
+        border-radius: 4px;
+    }
+
+    .euro-symbol {
+        margin-right: 5px;
+        font-size: 18px;
+    }
+
+}

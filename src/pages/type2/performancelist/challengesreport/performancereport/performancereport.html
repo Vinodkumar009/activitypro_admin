@@ -1,0 +1,91 @@
+<!--
+  Generated template for the MemberchallengesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Performance</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+
+
+<ion-content padding>
+
+
+  <ion-content padding>
+    <!-- <ion-row class="choose-row top-row">
+      <ion-col col-6>
+        <button ion-button class="select-type" (click)="changeType(true)"
+          [class.selected]="selectedType">Challenges</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button class="select-type" (click)="changeType(false)"
+          [class.selected]="!selectedType">Leaderboard</button>
+      </ion-col>
+    </ion-row> -->
+
+    <!-- <ion-row class="ses_tabs border-bottom-2px" *ngIf="!selectedType">
+      <ion-col col-6 no-padding [ngClass]="{'active':LeaderboardObj.Duration==3}" (click)="SelectDuration(3)">
+        <p>Monthly</p>
+      </ion-col>
+      <ion-col col-6 no-padding [ngClass]="{'active':LeaderboardObj.Duration==1}" (click)="SelectDuration(1)">
+        <p>Weekly</p>
+      </ion-col>
+    </ion-row> -->
+
+    <ion-row *ngIf="selectedType">
+      <ion-col col-12>
+        <ion-list>
+          <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
+            *ngFor="let challenge of Challenges;let i=index"  (click)="gotoDets(challenge)">
+            <ion-card-content>
+              <ion-row>
+                <ion-col col-8>
+                  <p class="p1">{{challenge.ChallengeName}} </p>
+                  <p class="paidmembercount">Level(s): {{challenge.Levels.length}}</p>
+                  <p style="font-size:14px;" class="paidmembercount" *ngFor="let user of challenge.Users">{{user.FirstName}} {{user.LastName}}</p>
+                </ion-col>
+                <ion-col col-3 class="pts_col">
+                  <p class="points" *ngIf="challenge.TotalPoints">{{challenge.TotalPoints}} Pts</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                  <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!selectedType">
+      <ion-col col-12 no-padding>
+        <ion-list>
+          <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
+            *ngFor="let leaderboard of Leaderboard;let i=index">
+            <ion-card-content (click)="goToPage(i)">
+              <ion-row>
+                <ion-col col-9>
+                  <p class="p1">{{leaderboard.FirstName}} {{leaderboard.LastName}}</p>
+                </ion-col>
+                <ion-col col-3 class="catg_age_col" text-center>
+                  <p class="p2"><span>{{leaderboard.EarnedPoints}}</span></p>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+
+
+  <!-- <ion-fab mini right bottom *ngIf="isuserAvail">
+    <p class="fabEmailText" (tap)="gotoAssignTemplate()">Assign Template</p>
+    <button (tap)="gotoAssignTemplate()" ion-fab mini>
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab> -->

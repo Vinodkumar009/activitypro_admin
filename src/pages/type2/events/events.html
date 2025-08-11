@@ -1,0 +1,133 @@
+<!--
+  Generated template for the EventsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Events</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- <ion-refresher slot="fixed" style="background: #f7f7f7 !important;" pullFactor="0.5" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher> -->
+  <ion-row
+    class="choose-row top-row"
+    [ngStyle]="{'margin-top.px': this.isAndroid ? 0 : 28 }"
+  >
+    <ion-col col-6>
+      <button
+        ion-button
+        class="select-type"
+        (click)="changeType(true)"
+        [class.selected]="selectedType"
+      >
+        ACTIVE
+      </button>
+    </ion-col>
+    <ion-col col-6>
+      <button
+        ion-button
+        class="select-type"
+        (click)="changeType(false)"
+        [class.selected]="!selectedType"
+      >
+        PAST
+      </button>
+    </ion-col>
+  </ion-row>
+
+  <ion-list>
+    <ion-card
+      class="facilityCard seession-cards"
+      style="border-radius: 0px !important"
+      *ngFor="let event of events"
+      (click)="GotoDets(event)"
+    >
+      <!-- <img [src]="event.TitleImageUrl" style="height:20vh"> -->
+      <ion-card-content>
+        <ion-row style="margin: 0px 0px 5px 0px">
+          <ion-col col-9 class="mar-auto-all pad-left-15">
+            <p class="mar0 event_date">
+              <span>{{event.event_date}}</span>
+            </p>
+            <p class="mar0 eventname">{{event.event_name}}</p>
+            <p class="p1" style="font-size: 15px; color: #111164; margin-top: 0px" *ngIf="event.is_paid">
+              <span>{{event.min_max_amount}}</span>
+            </p>
+            <p class="p1" *ngIf="!event.is_paid" style="font-size: 15px; color: #111164; margin-top: 0px">
+              <span>Free</span>
+            </p>
+            <p class="event_date">
+              <span>
+                <ion-icon name="ios-pin-outline"></ion-icon>
+              </span>
+              <span>{{event.event_location}}</span>
+          </ion-col>
+          <ion-col col-3 style="padding-top: 0px;margin: auto;">
+            <div><p class="draft" *ngIf="event.status==0">Draft</p></div>
+            <div class="circle" float-right>
+              <p class="paidmembercount">
+                <span>{{event.ticket_count}}</span>
+                <span>/</span>
+                <span>{{event.capacity}}</span>
+              </p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <ion-row *ngIf="!isEventsFound" class="not_found">
+    <ion-col col-12 text-center>
+      <p>No Events Found</p>
+    </ion-col>
+  </ion-row>
+
+  <!-- <page-paymentgatewaysetup
+    *ngIf="this.isShowPaymentModal"
+    InstructTxt="Please connect to payment gateway for events"
+    (skip)="skip()"
+    (navigate)="GotoPaymentSetup()"
+  ></page-paymentgatewaysetup> -->
+
+  <ion-fab mini right bottom #fab>
+    <button (click)="isShowPaymentModal=false" ion-fab mini style="background-color: #2b92bb !important; color: white !important" id="fav-ico">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <p class="fabEmailText" style="margin-left: -102px !important" (click)="GotoAdd(fab)">
+        Add Event
+      </p>
+      <button style="background-color: #2b92bb !important ; color: white !important" ion-fab class="fabTop" (tap)="GotoAdd(fab)">
+        <ion-icon name="md-create"></ion-icon>
+      </button>
+      <p class="fabEmailText" style="margin-left: -141px" (click)="GotoAddCaption(fab)">
+        Manage Caption
+      </p>
+      <button
+        style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="GotoAddCaption(fab)"
+      >
+        <ion-icon name="md-create"></ion-icon>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
+  
+</ion-content>
+
+<!-- <ion-fab mini right bottom #fab>
+
+  <button ion-fab mini style='background-color: #2b92bb;'(click)="showNewPost()">
+      <ion-icon name="add"></ion-icon>
+  </button>
+  <ion-fab-list side="top"> -->
+<!-- *ngIf="!this.isShowPaymentModal" -->
+
+
+
+
+

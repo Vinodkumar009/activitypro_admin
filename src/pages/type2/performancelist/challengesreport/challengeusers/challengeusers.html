@@ -1,0 +1,140 @@
+<!--
+  Generated template for the ChallengeusersPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Challenge Users</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+<div *ngIf="Challenge">
+  <ion-row>
+    <ion-col col-12 text-center>
+      <div class="circleProgress">
+        <p><span>{{Challenge.Users ? Challenge.Users.length : 0}}</span></p>
+        <img src="assets/images/check-mark.svg">
+      </div>
+      <div>
+        <p class="progress_txt">{{Challenge.ChallengeName}}</p>
+      </div>
+    </ion-col>
+  </ion-row>
+  <!-- <ion-row class="choose-row top-row">
+    <ion-col col-6>
+      <button ion-button class="select-type" (click)="isSelected=!isSelected" [class.selected]="!isSelected">
+        <span class="tab_header">Completed</span>&nbsp;
+        <span class="trns_count">({{PaidMembers.length}})</span>
+      </button>
+    </ion-col>
+    <ion-col col-6>
+      <button ion-button class="select-type" (click)="isSelected=!isSelected" [class.selected]="isSelected">
+          <span class="tab_header">Pending</span>&nbsp;
+          <span class="trns_count">({{PendingMembers.length}})</span>
+      </button>
+    </ion-col>
+  </ion-row> -->
+  <!-- <ion-row *ngIf="!isSelected">
+    <ion-col col-12 style="padding:0px !important">
+      <ion-list>
+        <ion-grid>
+          <ion-row class="innercard_style row" (click)="openActionSheet(memberDetials)"
+            *ngFor="let memberDetials of PaidMembers">
+            <ion-col col-3 class="margin-auto" text-center>
+              
+              <p class="transactiondate">
+               <span>{{memberDetials.ValidityDate}}</span> Expires
+              </p>
+            </ion-col>
+            <ion-col col-6 text-left class="mem_col margin-auto border-left">
+              <p class="member_name">{{memberDetials.DisplayName}}</p>
+              <p class="paymentOption">{{memberDetials.PaymentOptions}}</p>
+            </ion-col>
+            <ion-col col-3 text-center class="margin-auto">
+              <p class="amt">
+                <span
+                  *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{memberDetials.Amount}}
+              </p>
+              <p *ngIf="memberDetials.IsPaid" style="font-size:12px;margin: 0; color:green; font-weight: 200; ">Paid</p>
+              <p *ngIf="memberDetials.IsCancelled" style="font-size:12px;margin: 0; color:red; font-weight: 200; ">Cancelled</p>
+              
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="isSelected">
+    <ion-col col-12 style="padding:0px !important">
+      <ion-list>
+        <ion-grid>
+          <ion-row class="innercard_style row" (click)="openActionSheet(memberDetials)"
+            *ngFor="let memberDetials of PendingMembers">
+            <ion-col col-3 class="margin-auto" text-center>
+              
+              <p class="transactiondate">
+               <span>{{memberDetials.ValidityDate}}</span> Expires
+              </p>
+            </ion-col>
+            <ion-col col-6 text-left class="mem_col margin-auto border-left">
+              <p class="member_name">{{memberDetials.DisplayName}}</p>
+              <p class="paymentOption">{{memberDetials.PaymentOptions}}</p>
+            </ion-col>
+            <ion-col col-3 text-center class="margin-auto">
+              <p class="amt">
+                <span
+                  *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{memberDetials.Amount}}
+              </p>
+              <p *ngIf="!memberDetials.IsPaid && !memberDetials.subsOn " style="font-size:12px;margin: 0; color:red; font-weight: 200; ">Pending</p>
+              <p *ngIf="!memberDetials.IsPaid && memberDetials.subsOn " style="font-size:12px;margin: 0; color:blue; font-weight: 200; ">Subs On</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12 *ngIf="!isSelected && PaidMembers.length == 0" text-center>
+      <p>No paid payments found</p>
+    </ion-col>
+    <ion-col col-12 *ngIf="isSelected && PendingMembers.length == 0" text-center>
+        <p>No due payments found</p>
+    </ion-col>
+  </ion-row>
+</div> -->
+
+<ion-row *ngIf="Challenge && Challenge.Users">
+  <ion-col col-12 style="padding:0px !important">
+    <ion-list style="overflow-y: scroll;">
+      <ion-grid>
+        <!-- <ion-row class="innercard_style row" (click)="GotoMemberProfChallenges(user.Id)"
+          *ngFor="let user of Challenge.Users"> -->
+          <ion-row class="innercard_style row" *ngFor="let user of Challenge.Users;let i=index">
+          <ion-col col-11 text-left class="mem_col margin-auto" (click)="showActions(i)">
+            <p class="member_name">{{user.FirstName}} {{user.LastName}}</p>
+            <p class="paymentOption">Levels: {{Challenge.Levels.length}}</p>
+          </ion-col>
+          <!-- <ion-col col-3 text-center class="margin-auto">
+            <p class="amt">{{Challenge.Points}}
+            </p>
+          </ion-col> -->
+          <ion-col col-1 class="margin-auto" >
+            <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  </ion-col>
+</ion-row>
+</div>
+
+
+</ion-content>
+<ion-fab mini right bottom>
+  <button (tap)="gotoAddMember()" ion-fab mini>
+    <ion-icon name="add"></ion-icon>
+  </button>
+</ion-fab>

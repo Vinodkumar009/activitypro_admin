@@ -1,0 +1,182 @@
+<!--
+  Generated template for the FilterbookingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Promotion</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col col-12 item-right>
+      <button class="btn" ion-button block (click)="sink()">
+        Sync
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="sub-container">
+    <ion-col col-2 style="text-align: -webkit-right;">
+      <button>
+        <ion-icon name="ios-search"></ion-icon>
+      </button>  
+    </ion-col>
+
+    <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+      <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getFilterItems($event)" autocorrect="off">
+      </ion-searchbar>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col col-12 no-padding>
+      <ion-list *ngIf="TempParentClubs.length > 0">
+        <ion-row style="background:#fff;" *ngFor="let parent of TempParentClubs;let i=index;" (click)="GetSetupInfo(parent)">
+          <ion-col col-2 style="margin:auto">
+            <img [src]="parent.Logo" class="avatar">
+          </ion-col>
+          <ion-col col-10>
+            <p class="parentclubname">{{parent.ParentClubName}}</p>
+          </ion-col>
+          
+        </ion-row>
+      </ion-list>
+    </ion-col>
+    
+  </ion-row>
+
+  <div *ngIf="selectedPrentClub">
+    <ion-row>
+      <ion-col col-12 class="nopadd">
+        <p class="parentclubname">{{selectedPrentClub}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-segment class="segment" [(ngModel)]="setupType">
+      <ion-segment-button value="Home">
+        <ion-label>Home</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="DashBoard">
+        <ion-label>DashBoard</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="APPro">
+        <ion-label>AP Pro+</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <div *ngIf="setupType == 'Home'">
+      <ion-row>
+        <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+          <span class="para" style="color: rgba(0, 0, 0, 0.85);">Enable</span>
+    
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="HomeSetupPromotion.IsEnable">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+        <ion-col col-12 class="nopadd">
+          <ion-item>
+            <ion-label>
+              Size
+            </ion-label>
+            <ion-select [(ngModel)]="HomeSetupPromotion.Size">
+              <ion-option *ngFor="let item of sizeArr" value={{item.code}}>{{item.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col col-12 class="nopadd">
+          <ion-item>
+            <ion-label>
+              Placement
+            </ion-label>
+            <ion-select [(ngModel)]="HomeSetupPromotion.Placement">
+              <ion-option *ngFor="let item of placementArr" value={{item.code}}>{{item.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </div>
+  
+    <div *ngIf="setupType == 'DashBoard'">
+      <ion-row>
+      <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+        <span class="para" style="color: rgba(0, 0, 0, 0.85);">Enable</span>
+  
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="DashBoardSetupPromotion.IsEnable">
+          <span data-unchecked="No" data-checked="Yes"></span>
+        </label>
+      </ion-col>
+      <ion-col col-12 class="nopadd">
+        <ion-item>
+          <ion-label>
+            Size
+          </ion-label>
+          <ion-select [(ngModel)]="DashBoardSetupPromotion.Size">
+            <ion-option *ngFor="let item of sizeArr" value={{item.code}}>{{item.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col col-12 class="nopadd">
+        <ion-item>
+          <ion-label>
+            Placement
+          </ion-label>
+          <ion-select [(ngModel)]="DashBoardSetupPromotion.Placement">
+            <ion-option *ngFor="let item of placementArr" value={{item.code}}>{{item.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    </div>
+
+    <div *ngIf="setupType == 'APPro'">
+      <ion-row>
+      <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+        <span class="para" style="color: rgba(0, 0, 0, 0.85);">Enable</span>
+  
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="APProSetupPromotion.IsEnable">
+          <span data-unchecked="No" data-checked="Yes"></span>
+        </label>
+      </ion-col>
+      <ion-col col-12 class="nopadd">
+        <ion-item>
+          <ion-label>
+            Size
+          </ion-label>
+          <ion-select [(ngModel)]="APProSetupPromotion.Size">
+            <ion-option *ngFor="let item of sizeArr" value={{item.code}}>{{item.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col col-12 class="nopadd">
+        <ion-item>
+          <ion-label>
+            Placement
+          </ion-label>
+          <ion-select [(ngModel)]="APProSetupPromotion.Placement">
+            <ion-option *ngFor="let item of placementArr" value={{item.code}}>{{item.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    </div>
+    <div style="margin-bottom: 50px;">
+      <button class="btn" ion-button block
+          (click)="saveSetup()">
+        {{isUpdate ? 'Update' : 'Save'}}
+      </button>
+    </div>
+    <p class="parentclubname" *ngIf="promotion.length > 0" style="color:rgba(0, 0, 0, 0.65);font-size: 12px;">Promotions</p>
+    <div class="promoList" *ngFor="let promo of promotion" (click)="gotoeditPromo(promo)">
+      <p>{{promo.Title}}</p>
+    </div>
+    <ion-fab right bottom (click)="gotoCreatePromotion()">
+      <button ion-fab style='background-color: #2b92bb;' mini style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </div>
+ 
+
+</ion-content>

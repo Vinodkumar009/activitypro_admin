@@ -1,0 +1,93 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Create Discount List</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>Edit Discount</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div class="discount_form_div" style="padding:10px">
+        <ion-item class="padding_left_10">
+            <ion-label floating>Discount Name</ion-label>
+            <ion-input type="text" [(ngModel)]="disocuntDetails.discount_name"></ion-input>
+        </ion-item>
+        <!--<ion-item>
+            <ion-label floating>Discount Code</ion-label>
+            <ion-input type="number" [(ngModel)]="disocuntDetails.DiscountCode"></ion-input>
+        </ion-item>-->
+        <ion-item class="padding_left_10">
+            <ion-label floating>Amount</ion-label>
+            <ion-input type="number" [(ngModel)]="disocuntDetails.absolute_value"></ion-input>
+        </ion-item>
+        <ion-item class="padding_left_10">
+            <ion-label floating>% Value</ion-label>
+            <ion-input type="number" [(ngModel)]="disocuntDetails.percentage_value"></ion-input>
+        </ion-item>
+    
+        <ion-item *ngIf="disocuntDetails.discount_code == '3005' || disocuntDetails.discount_code == '3006'" class="padding_left_10">
+            <ion-label floating>No of Session</ion-label>
+            <ion-input type="number" [(ngModel)]="disocuntDetails.no_of_sessions"></ion-input>
+        </ion-item>
+    
+        <ion-item class="left_margin padding_left_10" *ngIf="disocuntDetails.discount_code == '3002'">
+            <ion-label>Apply the discount to all</ion-label>
+            <ion-checkbox [(ngModel)]="disocuntDetails.is_apply_to_all"></ion-checkbox>
+        </ion-item>
+    
+        <!-- <ion-item *ngIf="disocuntDetails.discount_code == '3007' || disocuntDetails.discount_code == '3007'">
+            <ion-row>
+                <ion-col col-9 class="padding_left_10" style="margin:auto">
+                    <p class="toggle_para">Pre Order Type</p>
+                </ion-col>
+                <ion-col col-3 class="padding_left_10" style="margin:auto">
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="disocuntDetails.pre_order_type">
+                        <span data-unchecked="Session" data-checked="Camp"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item> -->
+    
+        <ion-item *ngIf="disocuntDetails.discount_code == '3001' || disocuntDetails.discount_code == '3007'" class="padding_left_10">
+            <ion-label floating>Days Before</ion-label>
+            <ion-input type="number" [(ngModel)]="disocuntDetails.threshold_days"></ion-input>
+        </ion-item>
+    </div>
+    
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="updateDiscounts()">Update</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+
+</ion-content>

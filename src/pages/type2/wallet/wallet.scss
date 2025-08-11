@@ -1,0 +1,41 @@
+page-wallet {
+    .marginauto{
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    .venueList{
+        color: rgba(0, 0, 0, 0.5294117647058824);
+    }
+    .selecteachvenue{
+        background-color: #FFC107 !important;
+        span{
+            color:white;
+        }
+       
+    }
+    .scroll-content {
+        padding: 2px !important;
+    }
+    .cardpending {
+        margin-bottom: 10px;
+        padding:8px 8px 8px;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0px 2px 8px -1px #b4b3b7;
+        ion-card-content{
+            height:110px;
+            img{
+                width:90px;
+                height:90px;
+            }
+        }
+        ion-icon{
+            color: #7a7878 !important;
+            font-size: 31px !important;
+        }
+    }
+     .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}

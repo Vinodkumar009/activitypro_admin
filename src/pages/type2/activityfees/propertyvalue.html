@@ -1,0 +1,88 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Add Values</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Add Values
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+
+
+
+<ion-content padding class="cards-bg social-cards">
+    <!--<ion-card class="no-margin">
+        <div>
+            <p *ngFor="let item of propertiesArr" class="sss">{{item}}
+                <p>dsfgsdfgsdfg</p>
+                <ion-fab right class="margin_bottom_session_fab" (click)="addSingleProperty()">
+                    <button ion-fab mini color="primary"><ion-icon name="add"></ion-icon></button>
+                </ion-fab>
+
+            </p>
+
+            <div class="session_margintop1" *ngFor="let prop of propertyArr;let i=index">
+                <ion-item>
+                    <ion-input type="text"></ion-input>
+                </ion-item>
+            </div>
+
+        </div>
+    </ion-card>-->
+
+    <ion-card *ngFor="let item of propertiesArrList" class="no-margin">
+        <ion-card-header class="gradient">
+            {{item.Name}}
+        </ion-card-header>
+
+        <!--<ion-card-content *ngFor="let val of item.Value">
+
+        </ion-card-content>-->
+
+        <div class="session_margintop1" *ngFor="let prop of item.Value;let i=index">
+            <ion-item>
+                <ion-input type="text" [(ngModel)]="prop.PropertyValue"></ion-input>
+            </ion-item>
+        </div>
+        <ion-fab right class="margin_bottom_session_fab" (click)="addSingleProperty(item)">
+            <button ion-fab mini color="primary"><ion-icon name="add"></ion-icon></button>
+        </ion-fab>
+    </ion-card>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col width-50>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelProperties()">Cancel</button>
+            </ion-col>
+            <ion-col width-50>
+                <button ion-button block class="timekare-primary-btn" (click)="saveProperties()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>

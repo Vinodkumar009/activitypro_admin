@@ -1,0 +1,108 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Membership</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content >
+    <ion-grid class="nopad">
+        <ion-row class="border-bottom-2px ">
+
+            <ion-item class="venueionitem">
+                <ion-select class="venuedropdown" [(ngModel)]="selectedClubKey" (ionChange)="getSetupByVenue()">
+                <!-- <ion-select class="venuedropdown" [(ngModel)]="selectedClubKey"> -->
+                    <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+        </ion-row>
+    </ion-grid>
+    <ion-row class="sub-container ">
+        <ion-col col-2 style="text-align: -webkit-right;">
+            <button>
+                <ion-icon name="ios-search"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+            <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getFilterItems($event)"
+                autocorrect="off"></ion-searchbar>
+        </ion-col>
+    </ion-row>
+
+    <ion-list class="margin_bottom">
+        <ion-row *ngIf="SetupDisplay.length > 0">
+            <ion-col col-12 style="padding-left:10px " *ngFor="let eachSetup of SetupDisplay;let i = index">
+                <div class="all border-left-style"></div>
+                <ion-card (click)="showOptions(i)">
+                    <!-- <ion-card-header class="Location-head">
+                        <ion-row *ngIf="ClubNameData">
+                            <span class="name">{{ClubNameData}}</span>
+                        </ion-row>
+                    </ion-card-header> -->
+                    <ion-card-content>
+                        <ion-row>
+                            <ion-col col-12>
+                                <p class="name para_overflow">{{eachSetup.membership_name}}</p>
+                                <p class="card-text para_overflow" *ngIf="eachSetup.membership_tier">{{eachSetup.membership_tier.name}}</p>
+                            </ion-col>
+                        </ion-row>
+                        <p class="card-text name pricespace">
+                            <span *ngIf="eachSetup.monthly">Monthly - {{eachSetup.monthly_price}}</span> 
+                            <span *ngIf="eachSetup.monthly && eachSetup.yearly">, </span>
+                            <span *ngIf="eachSetup.yearly">Yearly - {{eachSetup.yearly_price}} </span>                                 
+                        </p>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-card *ngIf="Setups.length == 0 && SetupDisplay.length == 0" class="nonmembercard">
+                <ion-card-content style="text-align: center;color: #bc2a26;">
+                    <p class="danger_color2 nonmemcard"> No Membership Added</p>
+                </ion-card-content>
+            </ion-card>
+            <ion-card *ngIf="Setups.length > 0 && SetupDisplay.length == 0" class="nonmembercard">
+                <ion-card-content style="text-align: center;color: #bc2a26;">
+                    <p class="danger_color2 nonmemcard"> No Membership Found</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+    </ion-list>
+
+
+    <ion-fab mini right  bottom #fab>
+        <!-- <p *ngIf="isShowNewPost" class="newPost">New Post</p> -->
+        <button style="background-color:#2b92bb !important; color: white !important" (click)="checkforSetup()" ion-fab mini>
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+
+            <span class="fabEmailText" (tap)="setupMembership()" style="margin-left: -76px!important;">Create</span>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="setupMembership()">
+                <ion-icon name="md-create"></ion-icon>
+            </button>
+            <span class="fabEmailText" style="margin-left: -76px !important;" (tap)="goToMembershipYear()">Setup</span>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="goToMembershipYear()">
+                <ion-icon name="calendar"></ion-icon>
+            </button>
+
+
+            <span class="fabEmailText" style="margin-right: -19px !important;" (tap)="goToDiscount()">Discount</span>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="goToDiscount()">
+                <span style="font-size: 150%;">%</span>
+            </button>
+
+          
+            <span class="fabEmailText" style="margin-left: -88px !important;" (tap)="goToMembershipRenewal()">Renewal</span>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="goToMembershipRenewal()">
+                <ion-icon style="font-size: 175%;" name="refresh"></ion-icon>
+            </button>
+
+          
+        </ion-fab-list>
+
+    </ion-fab>
+
+</ion-content>

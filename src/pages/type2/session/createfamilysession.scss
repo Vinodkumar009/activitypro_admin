@@ -1,0 +1,24 @@
+createfamilysession-page{
+.margin_top{
+        margin-top: 10px;
+    }
+.padding_class{
+        padding-top: 20px;
+        //font-size: 15px;
+    }
+    .days{
+        ion-col{
+            text-align: center;
+            p{
+                border: 1px solid #76747d;;
+            }
+        }
+        
+    }
+    .selected_days{
+        color: white;border: 1px solid red;background-color: red;
+    }
+    .comments{
+        margin-top: 10px;
+    }
+}

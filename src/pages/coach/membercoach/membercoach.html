@@ -1,0 +1,126 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Member</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Member
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards">
+    <ion-item>
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="selectedClubKey" (ionChange)="venueSelected(selectedClubKey)">
+            <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+ 
+
+    <ion-searchbar class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItems($event)" autocorrect="off" placeholder="Search by LastName"></ion-searchbar>
+    <!-- <div *ngFor="let member of members;let i = index" (click)="presentActionSheet(member,i)">
+        <ion-list clas="ion_listsss" *ngIf="!member.IsChild">
+            <ion-item-sliding #item class="ion_item_sliding1">
+                <ion-item class="ion_item_1">
+                    <ion-col col-12>
+                        <span>{{member.FirstName}} {{member.MiddleName}} {{member.LastName}}  &nbsp;( +{{member.ChildMember.length}} )</span>
+                    </ion-col>
+                    <ion-row>
+                      
+                        <ion-col col-12>
+                            Ph:- {{member.PhoneNumber}}
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+               
+            </ion-item-sliding>
+        </ion-list>
+
+        <div *ngIf="this.selectedIndex == i" class="f_member">
+            <ion-list *ngFor="let fm of member.ChildMember" class="margin_member">
+                <ion-item-sliding #item>
+                    <ion-item>
+                        <ion-col col-12> {{fm.FirstName}} {{fm.LastName}}</ion-col>
+                    </ion-item>
+                   
+                </ion-item-sliding>
+            </ion-list>
+
+            <ion-card class="ion_card" *ngIf="member.ChildMember.length ==0">
+                <ion-card-content>
+                    <p class="danger_color2">It seems,You have not added any family member.</p>
+                </ion-card-content>
+            </ion-card>
+
+
+        </div>
+
+    </div>
+
+    <ion-card class="ion_card" *ngIf="members.length ==0 && isShow">
+        <ion-card-content>
+            <p class="danger_color2">It seems there is no member.</p>
+        </ion-card-content>
+    </ion-card> -->
+
+
+    <div *ngFor="let member of members;let i = index">
+        <ion-card *ngIf="!member.IsChild" (click)="presentActionSheet(member,i)">
+            <ion-card-content>
+                <p>{{member.FirstName}} {{member.MiddleName}} {{member.LastName}} &nbsp;( +{{member.ChildMember.length}} )</p>
+                <span> Ph:- {{member.PhoneNumber}}</span>
+                <p>{{member.EmailID}}</p>
+            </ion-card-content>
+        </ion-card>
+        <div *ngIf="this.selectedIndex == i" class="f_member">
+            
+            <ion-card *ngFor="let fm of member.ChildMember">
+                <ion-card-content>
+                    <ion-col col-12> {{fm.FirstName}} {{fm.LastName}}</ion-col>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="ion_card" *ngIf="member.ChildMember.length ==0">
+                <ion-card-content>
+                    <p class="danger_color2">No family member added.</p>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+
+   
+    <ion-card class="ion_card" *ngIf="members.length ==0">
+        <ion-card-content>
+            <p class="danger_color2">It seems no members present under this selected club.</p>
+        </ion-card-content>
+    </ion-card>
+
+    <!-- <ion-fab right bottom (click)="addMember()">
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab> -->
+
+
+
+</ion-content>

@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title >{{isEdit ? 'Update Document' : 'Create Document'}}</ion-title>
+      <ion-buttons end>
+        <button ion-button (click)="dismiss()">Close</button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <ion-item>
+      <ion-label>Document Title</ion-label>
+      <ion-textarea type="text" rows="1" [(ngModel)]="docTitle"></ion-textarea>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Document Description</ion-label>
+      <textarea rows="5" [(ngModel)]="docDescription" class="message-input"></textarea>
+    </ion-item>
+  
+    <!-- <div style="width:100%;height:200px;" *ngIf="this.Policies.PolicyDocs.length < 2 || this.Policies.PolicyDocs.length < '2' ">
+      <img src="assets/images/img_placehlder.png" (click)="ChoosePolicies()" style="width:100%;height:100%;object-fit: cover">
+    </div> -->
+    <div style="width: 100%; height: 200px;">
+      <img src="assets/images/img_placehlder.png" *ngIf="!docFile" (click)="PolicyDocActions(i)"
+        style="width: 100%; height: 100%; object-fit: cover;">
+      <div *ngIf="docFile" style="width: 100px; height: 100px;">
+        <img src="assets/images/pdf.svg" *ngIf="docFileType === 'pdf'">
+        <img src="assets/images/image.svg" *ngIf="docFileType === 'jpg' || docFileType === 'jpeg'" (click)="PolicyDocActions(i)">
+      </div>
+    </div>
+  
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button block class="timekare-primary-btn" (click)="saveDocument()">Save</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>  
+  </ion-content>

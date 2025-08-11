@@ -1,0 +1,240 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{LangObj.hldycamp_title}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.hldycamp_title}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+
+    <ion-item class="btm_margin">
+        <ion-label>{{LangObj.hldycamp_venue}}</ion-label>
+        <!-- <ion-label>{{selectedClub}}</ion-label> -->
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeClub()" class="club-select">
+            <ion-option value="All">{{LangObj.hldycamp_all}}</ion-option>
+            <ion-option *ngFor="let club of clubVenues" value={{club.Id}}>{{club.ClubName}}</ion-option>
+
+        </ion-select>
+    </ion-item>
+    <!-- <ion-row class="top-row">
+            <ion-col col-12 class="padding-0 allign-center">
+                <label class="toggle">
+                    <input type="checkbox"  [(ngModel)]="sessionType">
+                    <span data-unchecked="Active   : :" data-checked=" : :   Past" ></span>
+                  </label>
+            </ion-col>
+          </ion-row> -->
+    <!-- <ion-row class="choose-row top-row">
+        <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(true)"
+                [class.selected]="selectedType">{{LangObj.hldycamp_active}}</button>
+        </ion-col>
+        <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(false)"
+                [class.selected]="!selectedType">{{LangObj.hldycamp_past}}</button>
+        </ion-col>
+    </ion-row> -->
+    <ion-row class="choose-row top-row">
+        <ion-col col-4>
+            <button ion-button class="select-type" (click)="changeType(0)"
+                [class.selected]="activeIndex===0">{{LangObj.hldycamp_active}}</button>
+        </ion-col>
+       
+        <ion-col col-4>
+            <button ion-button class="select-type" (click)="changeType(1)" [class.selected]="activeIndex==1">Pending
+                Payment</button>
+        </ion-col>
+
+        <ion-col col-4>
+            <button ion-button class="select-type" (click)="changeType(2)"
+                [class.selected]="activeIndex==2">{{LangObj.hldycamp_past}}</button>
+        </ion-col>
+    </ion-row>
+
+
+    <ion-row class="sub-container rows-allign2" *ngIf="activeIndex==1">
+        <ion-col col-1 style="text-align:center;margin:auto;">
+            <ion-icon name="ios-search"></ion-icon>
+        </ion-col>
+        <ion-col col-11 class="search-bar">
+            <ion-searchbar placeholder="Search by camp and player name" id="customsearchbar"
+                (ionInput)="getFilteredPlayer($event)" showCanelButton="shouldShowCancel"
+                autocorrect="off"></ion-searchbar>
+        </ion-col>
+    </ion-row>
+
+
+   <!-- the below code is for active&pastholidaycamps -->
+    <div *ngIf="HolidayCampList.length > 0">
+        <ion-card *ngFor="let camp of HolidayCampList" class="ion_card " (click)="gotoCampDetails(camp)">
+            <ion-card-content class="nopad borderleft">
+                <ion-grid class="nopad">
+                    <ion-row>
+                        <!-- <div  class="all border-left-style"></div>        -->
+                        <ion-col col-3 class="nopad">
+                            <div *ngIf="can_coach_see_revenue">
+                                <circle-progress class="circlesvg" [titleFontSize]="14"
+                                    [subtitle]=formatCurrency(camp.paidAmount) [titleColor]="'#3ebbd1'"
+                                    [title]=formatCurrency(totalAmount)
+                                    [percent]=calculatePercentComplete(camp.dueAmount,camp.paidAmount) [units]="''"
+                                    [radius]="40" [showUnits]="false" [outerStrokeWidth]="3" [innerStrokeWidth]="2"
+                                    [outerStrokeColor]="'#78C000'" [subtitleColor]="'#78C000'"
+                                    [innerStrokeColor]="'#3ebbd1'" [animation]="true" [animationDuration]="1000">
+                                </circle-progress>
+                            </div>
+                            <div *ngIf="!can_coach_see_revenue">
+                                <circle-progress class="circlesvg" [titleFontSize]="12" [subtitle]=''
+                                    [titleColor]="'#3ebbd1'" [title]=getDays(camp.days) [percent]="100" [units]="''"
+                                    [radius]="40" [showUnits]="false" [outerStrokeWidth]="2" [innerStrokeWidth]="1"
+                                    [outerStrokeColor]="'#78C000'" [subtitleColor]="'#78C000'"
+                                    [innerStrokeColor]="'#3ebbd1'" [animation]="true" [animationDuration]="100">
+                                </circle-progress>
+                                <!-- {{getDays(camp.Days)}} -->
+                            </div>
+                        </ion-col>
+                        <ion-col col-8 class="mid-col">
+                            <p class="campname elipsesdot">{{camp.camp_name}}</p>
+                            <p class="holidaycampcard_p">
+                                <ion-icon name="pin"></ion-icon> {{camp.venue_name}}
+                            </p>
+                            <!-- <div *ngIf="camp.CampType == 501"> -->
+                            <!-- <div>
+                                <p class="holidaycampcard_p">
+                                    <ion-icon name="calendar"></ion-icon> {{camp.start_date}}
+                                </p>
+                            </div> -->
+                            <!-- <div *ngIf="camp.CampType == 502"> -->
+                            <div>
+                                <p class="holidaycampcard_p">
+                                    <ion-icon name="calendar"></ion-icon> {{camp.start_date}}
+                                    To {{camp.end_date}}
+                                </p>
+                            </div>
+                        </ion-col>
+                        <ion-col col-1 style="margin: auto;">
+                            <ion-icon name="ios-people" class="people_icon">
+                                <p class="people_size">{{camp.bookingCount || 0}}</p>
+                            </ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+        <ion-row>
+            <ion-card *ngIf="HolidayCampList.length==0" class="nonmembercard">
+                <ion-card-content style="text-align: center;color: #bc2a26;">
+                    <p class="danger_color2 nonlocationcard"> Add Holiday Camp</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+    </div>
+
+    <!-- the below code is for pending payment -->
+    <div *ngIf="filteredUsers && filteredUsers.length > 0 && activeIndex==1">
+        <ion-card *ngFor="let camp of filteredUsers;let i=index" class="ion_card " >
+            <ion-card-content class="nopad borderleft" (click)="showPendingActionSheet(i)">
+                <ion-grid class="nopad">
+                    <ion-row>
+                        <ion-col col-12 class="mid-col">
+                            <p class="campname elipsesdot" style="margin-top: -2px;font-size: 1.2em;">{{camp.username}}</p>
+                            <p class="campname" style="margin-top: -2px;font-weight: 400;">{{camp.campname}}</p>
+                            <p class="campname elipsesdot" style="margin-top: -2px;">{{camp.sessionname}}</p>
+                            <p class="holidaycampcard_p">
+                                <ion-icon name="calendar"></ion-icon> {{comonService.getdateInDDMMYYYY(camp.sessiondate)}}
+                            </p>
+                            <div>
+                                <p class="holidaycampcard_p">
+                                    <ion-icon name="pin"></ion-icon> {{camp.venuename}}
+                                </p>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+            <!-- <ion-card-content *ngIf="camp.is_selected" class="card_content">
+                <div style="margin:5px;text-align: center;">
+                  <p (click)="viewCampDetails(camp)">View Camp</p>
+                </div>
+                <div  style="margin:auto;text-align: center;">
+                  <p (click)="removePlayer(camp)">Remove Player</p>
+                </div>
+              </ion-card-content> -->
+        </ion-card>
+        <ion-row>
+            <ion-card *ngIf="pendingUsers.length==0" class="nonmembercard">
+                <ion-card-content style="text-align: center;color: #bc2a26;">
+                    <p class="danger_color2 nonlocationcard"> No Data Found</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+        <!-- <ion-card *ngFor="let camp of pendingUsers" class="ion_card " (click)="gotoCampDetails(camp)">
+            <ion-card-content class="nopad borderleft">
+                <ion-grid class="nopad">
+
+                    <ion-row>
+                        <ion-col col-12 class="mid-col">
+                            <p class="campname elipsesdot">{{camp.username}}</p>
+                            <p class="campname elipsesdot"> {{camp.campname}}</p>
+                        </ion-col>
+
+
+                        <ion-col col-12>
+                            <p class="session-name">{{camp.sessionname }}</p>
+                        </ion-col>
+
+                        <ion-col col-12>
+                            <p class="enrollment-date"> {{camp.enrolmentdate }}</p>
+                        </ion-col>
+
+
+                        <ion-col col-12>
+                            <p class="holidaycampcard_p"> <ion-icon name="pin"></ion-icon> {{camp.venuename}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                            <ion-col col-12>
+                                <p class="date-time"> {{camp.start_date}}</p>
+                                <p class="date-time"> {{camp.start_time }}</p>
+                            </ion-col>
+                        </ion-row> 
+
+                </ion-grid>
+            </ion-card-content>
+        </ion-card> -->
+    </div>
+
+
+    <!-- <page-paymentgatewaysetup *ngIf="this.isShowPaymentModal" InstructTxt="Please connect to payment gateway for sessions" (skip)="skip()" (navigate)="GotoPaymentSetup()"></page-paymentgatewaysetup> -->
+
+    <ion-fab bottom right *ngIf="loggedin_type!=4">
+        <button ion-fab mini style="background-color: #2b92bb;" (click)="gotoCreateHolidayCamp()"
+            style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+
+</ion-content>

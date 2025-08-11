@@ -1,0 +1,97 @@
+<ion-header *ngIf="themeType == 1">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Activity Setup List</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+    <ion-title>
+      Activity Setup List
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item class="margin">
+    <ion-label>Club</ion-label>
+    <ion-select [(ngModel)]="selectedClubKey" (ionChange)="onClubChange()">
+      <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivity" (ionChange)="getActivitySetup()">
+            <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+  <ion-list class="card-view">
+    <ion-item-sliding #item *ngFor="let fm of orgActivitySetupArr" class="slidingcards">
+      <ion-item class="ion_item_1">
+        <p><span>Start Time :</span><span> {{fm.StartTime}}</span></p>
+        <p><span>End Time :</span><span> {{fm.EndTime}}</span></p>
+        <p><span>Days: </span><span> {{fm.Days}}</span></p>
+
+        <div *ngFor="let item of fm.IndoorArr">
+          <p class="underline">Indoor Fees</p>
+          <p><span>Peak Fees 1st 30 Min:</span><span> {{item.IndoorMemberPeakFeeFor1st30Min}}</span></p>
+          <p><span>Peak Fees evry 30 Min:</span><span> {{item.IndoorMemberPeakFeeForEvry30Min}}</span></p>
+          <p><span>Off Peak Fees 1st 30 Min:</span><span> {{item.IndoorMemberOffPeakFeeFor1st30Min}}</span></p>
+          <p><span>Off Peak Fees every 30 Min:</span><span> {{item.IndoorMemberOffPeakFeeForEvry30Min}}</span></p>
+          <p><span>Standard Fees 1st 30 Min:</span><span> {{item.IndoorMemberStandardFeeFor1st30Min}}</span></p>
+          <p><span>Standard Fees every 30 Min:</span><span> {{item.IndoorMemberStandardFeeForForEvry30Min}}</span></p>
+        </div>
+
+        <div *ngFor="let item of fm.OutdoorArr">
+          <p class="underline">Outdoor Fees</p>
+          <p><span>Peak Fees 1st 30 Min:</span><span> {{item.OutdoorMemberPeakFeeFor1st30Min}}</span></p>
+          <p><span>Peak Fees evry 30 Min:</span><span> {{item.OutdoorMemberPeakFeeForEvry30Min}}</span></p>
+          <p><span>Off Peak Fees 1st 30 Min:</span><span> {{item.OutdoorMemberOffPeakFeeFor1st30Min}}</span></p>
+          <p><span>Off Peak Fees every 30 Min:</span><span> {{item.OutdoorMemberOffPeakFeeForEvry30Min}}</span></p>
+          <p><span>Standard Fees 1st 30 Min:</span><span> {{item.OutdoorMemberStandardFeeFor1st30Min}}</span></p>
+          <p><span>Standard Fees every 30 Min:</span><span> {{item.OutdoorMemberStandardFeeForEvry30Min}}</span></p>
+        </div>
+
+      </ion-item>
+
+      <ion-item-options side="left">
+        <button ion-button class="timekare-primary-btn" (click)="editActivitySetup(fm)">
+          <ion-icon name="create"></ion-icon>
+            Edit
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+  </ion-list>
+
+  <ion-card *ngIf="orgActivitySetupArr.length == 0" class="card-view1">
+    <ion-card-content class="slidingcards">
+      <p class="text-color">It seems there are no activity setup is present</p>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-fab right bottom>
+    <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="gotoActivitySetupHome()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>

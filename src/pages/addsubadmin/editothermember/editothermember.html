@@ -1,0 +1,69 @@
+<!--
+  Generated template for the AddsubadminPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit Team</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-grid class="body">
+    <ion-row>
+      <ion-col col-12>
+        <ion-row>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label floating>First Name</ion-label>
+              <ion-input  [(ngModel)]="saveObj.FirstName"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label floating>Last Name</ion-label>
+              <ion-input  [(ngModel)]="saveObj.LastName"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-item class="disabled_cls">
+          <ion-input placeholder="Email" [disabled]="true" [readonly]="true" [(ngModel)]="saveObj.EmailID" autocomplete="off" ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <p class="reset_para" (click)="resetAlertConfirmation()">Reset Password ?</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="toggle_section">
+      <ion-col col-12>
+        <ion-list *ngIf="Menus.length > 0">
+          <ion-item *ngFor="let menu of Menus;let i=index">
+            <ion-row>
+              <ion-col col-9 no-padding class="flex_col" style="margin:auto">
+                <p class="custom_toggle_para">{{menu.DisplayTitle}}</p>
+              </ion-col>
+              <ion-col col-3>
+                <label class="custom_toggle">
+                  <input type="checkbox" [(ngModel)]="menu.MobileAccess">
+                  <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <button ion-button block class="timekare-primary-btn" (click)="updateUser()">Update</button>
+</ion-footer>

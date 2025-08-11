@@ -1,0 +1,96 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Edit Member Attendance</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Edit Member Attendance
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards">
+
+    <ion-card class="card_list">
+        <ion-card-content class="card_content">
+            <ion-row>
+                <ion-col>
+                    <h2>Attendance on {{ this.choosenDate.SessionOn.getDate()}} - {{this.choosenDate.SessionMonth}}</h2>
+                </ion-col>
+
+            </ion-row>
+            <ion-row *ngIf="attendanceStatus == 'Canceled'">
+                <ion-col col-12>
+                    <p class="cancelstyle">This session was cancelled - {{cancelReason}}</p>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="attendanceStatus != 'Canceled'">
+                <ion-col col-4>
+                    <button ion-button block class="timekare-primary-btn" [disabled]="true" (click)="saveAttendanceDetails()">Done</button>
+                </ion-col>
+                <ion-col col-8>
+                    <ion-item class="border_box">
+                        <ion-label>Cancel</ion-label>
+                        <ion-select [(ngModel)]="cancelReason" (ionChange)="onChangeCancel()" [disabled]="true">
+                            <ion-option value="">Select</ion-option>
+
+                            <ion-option value="Rainy Day">Rainy Day</ion-option>
+                            <ion-option value="Snow on the Court">Snow on the Court</ion-option>
+                            <ion-option value="Half Term">Half Term</ion-option>
+                            <ion-option value=" Slippery Court"> Slippery Court</ion-option>
+                            <ion-option value="Others">Others</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+
+
+        </ion-card-content>
+    </ion-card>
+    <ion-scroll scrollY="true" class="block_height" *ngIf="attendanceStatus != 'Canceled'">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-6 class="right_pad">
+                    <ion-item>
+                        <ion-label>All</ion-label>
+                        <ion-checkbox [(ngModel)]="isSelectAll" (click)="selectAllToggole()" [disabled]="true"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-6 class="left_pad">
+                    <ion-item>
+                        <ion-label>None</ion-label>
+                        <ion-checkbox [(ngModel)]="isUnselectAll" (click)="selectNoneToggole()" [disabled]="true"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <ion-list class="margin marginleftright">
+            <p *ngFor="let member of selectedMembersForTheSession" class="pmargin">
+                <ion-item *ngIf="member.IsActive">
+                    <ion-label>{{member.FirstName}} {{member.MiddleName}} {{member.LastName}}</ion-label>
+                    <ion-checkbox [(ngModel)]="member.isSelect" (click)="changeMembers()"></ion-checkbox>
+                </ion-item>
+            </p>
+        </ion-list>
+    </ion-scroll>
+</ion-content>

@@ -1,0 +1,87 @@
+<!--
+  Generated template for the UpdateproductPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--
+  Generated template for the CreteproductPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Update Product</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div>
+    <ion-item *ngIf="gallery_categories && gallery_categories.length > 0">
+      <ion-label>Select Product Category</ion-label>
+      <ion-select [(ngModel)]="product_category" [disabled]="true">
+        <ion-option *ngFor="let category of gallery_categories" value={{category.id}}>{{category.category_name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Item Name</ion-label>
+      <ion-input type="text" [(ngModel)]="gallery_item.variant_shortname" plcaeholder="enter variant short name...">
+      </ion-input>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label>Item Size</ion-label>
+      <ion-select [(ngModel)]="gallery_item.variant_size">
+        <ion-option *ngFor="let size of variant_sizes" value={{size.id}}>{{size.name}}</ion-option>
+      </ion-select>
+    </ion-item> -->
+    <ion-item>
+      <ion-label stacked>Points to buy</ion-label>
+      <ion-input type="number" [(ngModel)]="gallery_item.variant_price" plcaeholder="enter variant price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Quantity Available</ion-label>
+      <ion-input type="number" [(ngModel)]="gallery_item.quantity" plcaeholder="enter variant quantity"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Description</ion-label>
+      <ion-textarea rows="4" [(ngModel)]="gallery_item.variant_description" class="area"></ion-textarea>
+    </ion-item>
+  </div>
+  <div *ngIf="gallery_item.images && gallery_item.images.length > 0">
+    <ion-row class="image-container">
+      <ion-col col-6 *ngFor="let img of gallery_item.images;let j=index;" >
+        <div class="image_div">
+          <!-- <ion-icon name="close-circle" (click)="deleteImage(i)"></ion-icon> -->
+          <!-- <img class="default_tit_img" src="assets/images/img_placehlder.png"> -->
+          <img src="{{img.image_url}}" alt="" srcset="" (click)="showImageActions(j)">
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-fab right bottom class="bottom_10" *ngIf="prod_imgs_len < 5">
+    <p class="fabEmailText" (click)="chooseGalleryImages(true)" >
+      Upload Photos
+    </p>
+    <button ion-fab mini style="background-color: #2b92bb;" (click)="chooseGalleryImages(true)"
+        style="background-color:#2b92bb !important; color: white !important">
+        <ion-icon ios="ios-cloud-upload" md="md-cloud-upload"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>
+
+<div class="img_viewer_wrapper" *ngIf="showFullImage">
+  <div class="img_viewer_div">
+    <ion-icon name="close-circle" (click)="showFullImage=false"></ion-icon>
+    <img src="{{full_view_img}}" alt="" srcset="">
+  </div>
+</div>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button large block class="createbutton" (click)="showUpdatePrompt()">Update</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

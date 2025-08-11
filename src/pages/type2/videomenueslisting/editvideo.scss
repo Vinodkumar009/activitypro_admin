@@ -1,0 +1,69 @@
+page-editvideo {
+    ion-label{
+        color: rgba(0,0,0,0.85);
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important;
+        background:white !important;
+    }
+   .input-wrapper{
+    height: 55px;
+   }
+   ion-item{
+    margin-bottom:10px !important;
+    ::placeholder {
+        color: rgba(0,0,0,0.85);
+      }
+    ion-label{
+        color: rgba(0,0,0,0.85);
+        margin-top: 0px !important;
+    }
+    .textarea{
+        .text-input-md{
+            margin: 13px 0px !important;
+        }
+    }
+    .act{
+        margin-top: 15px !important;
+    }
+
+}
+.toggle_row{
+    .flex_col{
+        //padding: 0px 0px 0px 10px !important;
+        font-size:16px;
+    }
+    .custom_toggle_para{
+        //color: #b5b2ae !important;
+    }
+    ion-col{
+        margin:auto !important
+    }
+    margin-left: 10px;
+    border-bottom: 1px solid #dedede;
+}
+.label[floating],
+.label[stacked],
+.input-has-focus .label[floating] {
+    margin-top:-1px !important;
+}
+.help_btn {
+    padding: 0px !important;
+    font-size: 24px !important;
+    margin: 0px !important;
+    height: 42px !important;
+    width: 42px;
+}
+.text{
+    font-size: 17px;
+}
+.innerdiv{
+    .item-md.item-block ,.item-inner {
+        //padding-right: 8px !important;
+       border:none !important;
+    //   / margin: -1px !important;
+       margin-left: -2px !important;
+    }
+}
+}

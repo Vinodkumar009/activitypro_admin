@@ -1,0 +1,72 @@
+<!--
+  Generated template for the DashboardreportPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>Das</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+    <ion-header>
+        <ion-navbar >
+            <button ion-button icon-only menuToggle>
+          <ion-icon name="apps"></ion-icon>
+        </button>
+            <ion-title>
+                Menu
+                <!--<img src="assets/images/logo.png" class="logo-img">-->
+            </ion-title>
+            <ion-buttons end>
+                    <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                            <img src="assets/images/home.svg" class="home_btn">
+                        </button>
+                <button ion-button icon-only (click)="presentPopover($event)"> 
+            <ion-icon name="more"></ion-icon>
+          </button>
+            </ion-buttons>
+        </ion-navbar>
+    </ion-header>
+<ion-content padding>
+
+        <ion-grid>
+                <ion-row wrap>
+                    <ion-col col-6 class="dashboard_col_item_block" (click)="goTo(m)"
+                        *ngFor="let m of menus;let i=index" [ngClass]="{'evenbox': i%2 == 0, 'oddbox':  i%2 != 0}">
+                        <div class="dashboard_col_item" >
+                            <span *ngIf="unreadNotificationCounts> 0 && m.MobComponent=='Type2notification'"
+                                class="notification">{{unreadNotificationCounts}}</span>
+                            <ion-icon *ngIf="m.MobIcon !=undefined && m.MobIcon != ''" [name]="m.MobIcon" class="dashboard_user"></ion-icon>
+                            <img *ngIf="m.MobLocalImage !=undefined && m.MobLocalImage != ''" [src]="m.MobLocalImage"
+                                style="height:42px;width:42px;margin-top:10px;" />
+                            <!-- <object id="svg1" *ngIf="m.SvgLink != undefined " [data]="m.SvgLink" type="image/svg+xml"></object> -->
+                            <!-- <img *ngIf="m.SvgLink != undefined " [src]="m.SvgLink"
+                                style="height: 42px;width:42px;margin-top: 10px;"> vinod commented after menus api done -->
+                            <p class="dashboard_col_item_name"> {{getLabel('menu_' +m.DisplayTitle)}} </p>
+                            <!-- {{m.title}} -->
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+              <!-- [ngClass]="{
+        'member-color':m.title === 'Member',
+         'session-color': m.title == 'Group', 
+         'schoolsession-color': m.title == 'School Session',
+         'holidaycamp-color': m.title == 'Holiday Camp' || m.title == 'Tournaments',
+         'booking-color': m.title == 'Booking',
+         'attendance-color': m.title == 'Member Attnd' ||  m.title == 'Attendance',
+         'attendance-color2': m.title == 'Staff Attnd',
+         'payment-color': m.title == 'Payment' ||  m.title == 'Direct Debit',
+         'setup-color': m.title == 'Setup',
+         'report-color': m.title == 'Report',
+         'schedule-color': m.title == 'Schedule',
+         'history-color': m.title == 'History',
+         'notification-color': m.title == 'Notification',
+         'newsevent-color': m.title == 'News & Events' || m.title == 'Performance' ,
+         'videos-color': m.title == 'Videos',
+         'appraisal-color':m.title == 'Appraisal',
+         'location-color':m.title == 'Locations' 
+    }" -->
+</ion-content>

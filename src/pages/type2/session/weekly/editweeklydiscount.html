@@ -1,0 +1,78 @@
+<!--
+  Generated template for the EditweeklydiscountPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="color-theme-1">
+    <!-- <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button> -->
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>Add Discount</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToDashboardMenuPage()">
+        <img src="assets/images/home.svg" class="home_btn">
+      </button>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label floating>Discount Name</ion-label>
+    <ion-input type="text" [(ngModel)]="discountDetails.discount_name"></ion-input>
+  </ion-item>
+  <!--<ion-item>
+        <ion-label floating>Discount Code</ion-label>
+        <ion-input type="number" [(ngModel)]="discountDetails.DiscountCode"></ion-input>
+    </ion-item>-->
+  <ion-item *ngIf="discountDetails.no_of_session!=undefined">
+    <ion-label floating>No of Sessions</ion-label>
+    <ion-input type="number" [(ngModel)]="discountDetails.no_of_session"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Discount Amount</ion-label>
+    <ion-input type="number" [(ngModel)]="discountDetails.discount_amount"></ion-input>
+  </ion-item>
+  <!-- <ion-item>
+        <ion-label floating>% Value</ion-label>
+        <ion-input type="number" [(ngModel)]="discountDetails.PercentageValue"></ion-input>
+    </ion-item> -->
+  <!-- <ion-item class="left_margin" >
+        <ion-label>Apply the discount to all.</ion-label>
+        <ion-checkbox [(ngModel)]="discountDetails.IsApplyToAll"></ion-checkbox>
+    </ion-item> -->
+  <ion-item>
+    <ion-row>
+      <ion-col col-12 no-padding class="flex_col">
+        <p class="para">Include Advance Booking Discount</p>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="discountDetails.include_advance_booking_discount">
+          <span data-unchecked="No" data-checked="Yes"></span>
+        </label>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+          (click)="cancel()">Cancel</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button block class="timekare-primary-btn" (click)="updateDiscounts()">Update</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

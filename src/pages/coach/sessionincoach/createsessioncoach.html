@@ -1,0 +1,161 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Create Session</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Create Session
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" padding>
+    <ion-item>
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="venueForPrivate">
+            <ion-option value="s">South Croydon</ion-option>
+            <ion-option value="l">Lords</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Activity Type</ion-label>
+        <ion-select [(ngModel)]="activityTypeForPrivate">
+            <ion-option value="a1">Activity1</ion-option>
+            <ion-option value="a2">Activity2</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>1:1 or Family</ion-label>
+        <ion-select [(ngModel)]="sessionTypeForPrivate">
+            <ion-option value="1">1:1</ion-option>
+            <ion-option value="f">Family</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <!--another section-->
+
+    <div class="middle_section">
+
+        <ion-item>
+            <ion-label>Coach</ion-label>
+            <ion-select [(ngModel)]="coachForPrivateSession">
+                <ion-option value="a">Andy Ross</ion-option>
+                <ion-option value="m">Mark Love</ion-option>
+            </ion-select>
+        </ion-item>
+        <!--
+        <ion-grid>
+            <ion-row>
+                <ion-col width-25 class="padding_class">Age Group</ion-col>
+                <ion-col width-75>
+                    <ion-slides [options]="ageGroup" class="member_slider">
+                        <ion-slide>
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        12U
+                                    </ion-col>
+                                    <ion-col>
+                                        14U
+                                    </ion-col>
+                                    <ion-col>
+                                        16U
+                                    </ion-col>
+                                    <ion-col>
+                                        18U
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-slide>
+                    </ion-slides>
+
+
+                </ion-col>
+            </ion-row>
+        </ion-grid>-->
+
+        <ion-item>
+            <ion-label>Start Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
+        </ion-item>
+
+
+
+        <div>
+            <ion-item>
+                <ion-label>Session</ion-label>
+                <ion-select [(ngModel)]="sessionForPrivatesession">
+                    <ion-option value="s1">Session1</ion-option>
+                    <ion-option value="s2">Session2</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label>Duration</ion-label>
+                <ion-select [(ngModel)]="durationForPrivateSession">
+                    <ion-option value="1">1 hour</ion-option>
+                    <ion-option value="2">2 hour</ion-option>
+                    <ion-option value="3">3 hour</ion-option>
+                    <ion-option value="4">4 hour</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label>Repeat</ion-label>
+                <ion-select [(ngModel)]="repeatForPrivateSession">
+                    <ion-option value="r1">Repeat1</ion-option>
+                    <ion-option value="r2">Repeat2</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Session Fee</ion-label>
+                <ion-input type="text"></ion-input>
+            </ion-item>
+        </div>
+        <ion-item class="search_add">
+            <ion-searchbar></ion-searchbar>
+            <!--<ion-icon item-right ios="ios-add-circle" md="md-add-circle" class="btn-clr"></ion-icon>-->
+
+        </ion-item>
+    </div>
+
+    <ion-item>
+        <ion-label floating>Notes</ion-label>
+        <ion-textarea></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label>Reffered By</ion-label>
+        <ion-select [(ngModel)]="refByForPrivateSession">
+            <ion-option value="a">Andy Ross</ion-option>
+            <ion-option value="m">Mark Love</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn">Create</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

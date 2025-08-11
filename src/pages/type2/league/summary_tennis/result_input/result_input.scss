@@ -1,0 +1,43 @@
+page-tennis-result-input {
+    .result-input-container {
+        padding: 20px;
+
+        h3 {
+            color: #154766;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .team-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 8px;
+
+            h4 {
+                color: #2b92bb;
+                margin-bottom: 15px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            ion-item {
+                background: white;
+                margin-bottom: 10px;
+                border-radius: 4px;
+            }
+        }
+
+        .vs-divider {
+            text-align: center;
+            margin: 20px 0;
+
+            p {
+                font-size: 24px;
+                font-weight: bold;
+                color: #f6ae4d;
+                margin: 0;
+            }
+        }
+    }
+}

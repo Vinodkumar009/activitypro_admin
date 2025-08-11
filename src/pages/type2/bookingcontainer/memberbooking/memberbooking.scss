@@ -1,0 +1,175 @@
+page-memberbooking {
+    .club-slider{
+        width: 100%;
+        height: 55px;
+    }
+    .club-name{
+        margin: 0 !important;
+        color: #f6ae4d;
+        font-size: 20px;
+        font-weight: 400 !important;
+        //margin-top: -20px !important;
+    }
+    .padding-0{
+        padding:0 !important;
+    }
+    .group-slides .select{
+        background-color: rgba(250, 174, 78, 0.43137254901960786) !important;
+        border: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+       
+        transition: 80ms;
+    }
+    .group-slides {
+       // margin: 15px 5px;
+        height: 3.5em;
+    }
+    .group-slides .selected {
+        border: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+       
+        transition: 80ms;
+        background-color: #faae4e !important;
+
+    }
+    .facilityCard {
+        color: #918e8e;
+        background:#f7f7f7;
+        border-radius: 7px;
+        //height: 3.5em;  
+        border: 1px solid #faae4e;
+       
+        padding-left:0 !important;
+        width: calc(100% - 11px) !important;
+        ion-card-content{
+            padding: 5px;
+        }
+    }
+    .selected .facilities-text {
+        color: #ffffff
+    }
+    .facilities-text{
+        color: #faae4e;
+        //padding: 14px 0px;
+    }
+    ion-card-header{
+        text-transform: capitalize !important;
+        font-size: 20px !important;
+        color: #35adff !important;
+        font-family: 'Ubuntu', sans-serif;
+    }
+    margin-0{
+        margin: 0 !important;
+    }
+    ion-col > p{
+        text-transform: capitalize !important;
+    }
+    .right-allign > .amount{
+        position: absolute;
+        right: 15px;
+        top: -13px;
+        color: green;
+        font-weight: 500;
+        font-size: 16px;
+    }
+    .right-allign > .time{
+        position: absolute;
+        right: 15px;
+        bottom: 1px;
+        ion-icon{
+            color: #bbb8b8;
+            font-size: 20px;
+            font-weight: 600;
+            transform: translate(-2px,1px);
+        }
+        .time-duration{
+            color: gray;
+            font-weight: 500;
+        }
+    }
+    ion-card{
+        padding: 5px !important;
+        //width:100% !important;
+        //margin: 0 !important;
+        margin-top: 2px !important;
+        padding-left: 23px !important;
+        //border-bottom: 2px solid #faae4e;
+        border-left: 2px solid #35ADFF;
+        box-shadow: none !important;
+       // padding: 14px !important;
+        font-family: 'Ubuntu', sans-serif;
+    }
+    .type{
+        font-weight: 500;
+        color: #a09c9c;
+    }
+    .col-gray{
+        color: #a09c9c !important;
+    }
+    .favs{
+        background-color:#35adff;
+        border-radius: 50%;
+        button{
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            background-color:#35adff;
+            img{
+                height: 20px;
+                width: 20px;
+            }
+        } 
+    }
+    .no{
+        text-align: center;
+        color:#35adff;
+    }
+    .arr{
+        right: 12px;
+        position: absolute;
+        color: #f6ae4d;
+        //color: white;
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        font-size: 15px;
+        background-color: #f8f8f8;
+    }
+    .arr1{
+        left: 12px;
+        position: absolute;
+        color: #f6ae4d;
+       // color: white;
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        font-size: 15px;
+        background-color: #f8f8f8;
+    }
+    .scroll-content {
+      background-image: none !important;
+    }
+    .back{
+       // height: 100%;
+       // background-color: rgba(70, 63, 63, 0.6);
+        //margin-top: -1%;
+    }
+    .tennis_back{
+        background-image: url("https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FBookingPhotos%2FCourt_Booking_Tennis.jpg?alt=media&token=af0390b3-9dc1-425c-afd8-a8ec2b3beddf") !important;
+        background-size: 100% 100%;
+    }
+    .bedMinton_back{
+        background-image: url("https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FBookingPhotos%2FCourt_Booking_Badminton.jpg?alt=media&token=5a3e59bf-28d5-4315-9773-346672b2f6b7") !important;
+       
+        background-size: 100% 100%;
+    }
+    .swiper-pagination-bullet-active {
+        background: #f6ae4d !important;
+        
+    }
+    .align-text-left{
+        text-align: left !important;
+    }
+    .add-court{
+        transform: translate(0px,115px)
+    }
+    
+}

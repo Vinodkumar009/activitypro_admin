@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+    <ion-title>
+      Edit Fees
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div>
+      <ion-card style="border-radius: 8px; box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.3);">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-9>
+              <p>{{memberShipType == 'Monthly' ? 'Monthly':'Yearly'}}</p>
+            </ion-col>
+            <ion-col col-3>
+              <p style="font-weight: 500;" text-center>{{membership_amt_with_currency}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div *ngIf="eachSetup != undefined">
+      <ion-card style="border-radius: 8px; box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.3);">
+        <ion-card-content style="padding-top: 0px !important;padding-bottom: 0px !important;">
+          <ion-row>
+            <ion-col col-9 style="margin: auto;">
+              <p text-left>Admin Fees</p>
+            </ion-col>
+            <ion-col col-3 style="display: flex;align-items: center;">
+              <span>{{currencyDetails?.CurrencySymbol}}</span>
+              <ion-input type="number" class="admin_fee_input" placeholder="Enter amount"
+              style="" [min]="0" (ionChange)="onAdminFeesChange($event)" [(ngModel)]="adminFees"></ion-input>
+            </ion-col>
+            <!-- <div style="display: flex; justify-content: flex-end; align-items: center;">
+              <span style="margin-right: 8px;"></span>
+            </div> -->
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+
+    <hr style="border: 0; height: 1px; opacity: 0.5; background: black; margin: 20px 0;">
+    <ion-row style="margin-top: -15px; align-items: center;">
+      <ion-col col-8 style="text-align: left; font-weight: 500;">
+        <p style="padding-left: 15px">Sub Total</p>
+      </ion-col>
+      <ion-col col-4 style="font-weight: 500;">
+        <p text-center>
+          <span>{{currencyDetails?.CurrencySymbol}}</span>
+          <span style="margin-left: -2px;">{{subtotalAmount | number: '1.2-2'}}</span>
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <div style="margin-top:30px;" *ngIf="bookingDetails && bookingDetails.booking_payment_summary && bookingDetails.booking_payment_summary.discounts.length > 0">
+      <ion-card *ngFor="let discount of bookingDetails.booking_payment_summary.discounts" style="border-radius: 8px; box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.3);">
+        <ion-card-content style="">
+          <ion-row>
+            <ion-col col-9 style="margin: auto;">
+              <p text-left>{{discount.discount_name}}</p>
+            </ion-col>
+            <ion-col col-3>
+              <p style="text-align:center;">
+                <span>{{currencyDetails?.CurrencySymbol}}</span>
+                <span>{{discount.discount_amount}}</span>
+              </p>
+              <!-- <ion-input type="number" id="text" class="admin_fee_input"
+                 [min]="0" [disabled]="true" (ionChange)="onDiscountChange($event)" [(ngModel)]="discount.discount_amount">
+              </ion-input> -->
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="custom_discount">
+        <ion-row>
+          <ion-col col-8 style="margin: auto;">
+            <p style="padding-left: 10px;">Enter Discount({{currencyDetails?.CurrencySymbol}})</p>
+          </ion-col>
+          <ion-col col-4>
+            <ion-input type="number" id="text" class="admin_fee_input" [(ngModel)]="oneTimeDiscount"
+              [min]="0" (ionChange)="onDiscountChange($event)">
+          </ion-input>
+          </ion-col>
+        </ion-row>
+    </div>
+
+
+    <hr style="border: 0; height: 1px; opacity: 0.5; background: black; margin: 20px 0;">
+    <ion-row style="align-items: center;">
+      <ion-col col-8 style="text-align: left; font-weight: 500;">
+        <p style="padding-left: 15px">Total-First Payment</p>
+      </ion-col>
+      <ion-col scol-4 style="font-weight: 500;color: #55a959">
+        <p text-center>
+          <span>{{currencyDetails?.CurrencySymbol}}</span>
+          <span style="margin-left: -2px;">{{totalAmount | number: '1.2-2'}}</span>
+        </p>
+      </ion-col>
+    </ion-row>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn" (click)="save()">Update</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

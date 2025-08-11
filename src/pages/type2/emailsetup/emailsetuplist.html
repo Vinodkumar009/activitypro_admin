@@ -1,0 +1,140 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Email Setup</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="emailSetupTab">
+            <ion-segment-button value="activity">
+                Activity
+            </ion-segment-button>
+            <ion-segment-button value="membership">
+                Membership
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Email Setup
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="emailSetupTab">
+            <ion-segment-button value="activity">
+                Activity
+            </ion-segment-button>
+            <ion-segment-button value="membership">
+                Membership
+            </ion-segment-button>
+
+
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+
+
+
+
+<ion-content padding class="cards-bg social-cards">
+    <div [ngSwitch]="emailSetupTab" class="div-box-margin">
+        <ion-list *ngSwitchCase="'activity'" class="card-view">
+            <ion-item class="margin">
+                <ion-label>Venue</ion-label>
+                <ion-select [(ngModel)]="selectedClub" (ionChange)="onClubChange()">
+                    <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item class="margin">
+                <ion-label>Activity</ion-label>
+                <ion-select [(ngModel)]="selectedActivity" (ionChange)="getEmailSetup()">
+                    <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-list *ngFor="let ac of activityEmailSetupArr" (click)='presentpopover(ac)' class="slidingcards">
+                <ion-item-sliding>
+                    <ion-item>
+                        <p><span>{{ac.EmailSetupName}}</span></p>
+                    </ion-item>
+                     
+                </ion-item-sliding>
+            </ion-list>
+
+            <ion-row *ngIf="activityEmailSetupArr.length == 0">
+                <ion-card style=" margin:30px 0px 0px 0px !important; width:100% !important; -webkit-box-shadow: none !important; box-shadow: none !important; border-bottom: 1px solid #f6ae4d !important;">
+                    <ion-card-content style="text-align: center; ">
+                        <p class="danger_color2  padding: 0; ">{{AddEmailSetup}}</p>
+                    </ion-card-content>
+                </ion-card>
+            </ion-row>
+            <!-- <page-commentforemptiness *ngIf="activityEmailSetupArr.length == 0" [customTitle]="AddEmailSetup" (click)="goToAddEmailSetup()"  ></page-commentforemptiness> -->
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'membership'" class="card-view">
+            <ion-item class="margin">
+                <ion-label>Venue</ion-label>
+                <ion-select [(ngModel)]="selectedClub" (ionChange)="getMembershipEmailSetup()">
+                    <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-list *ngFor="let ps of membershipEmailSetupArr" class="slidingcards">
+                <ion-item-sliding>
+                    <ion-item>
+                        <p><span>Email Setup Name: </span><span>{{ps.EmailSetupName}}</span></p>
+                    </ion-item>
+                </ion-item-sliding>
+            </ion-list>
+
+
+            <ion-row *ngIf="membershipEmailSetupArr.length == 0">
+                <ion-card style=" margin:30px 0px 0px 0px !important; width:100% !important; -webkit-box-shadow: none !important; box-shadow: none !important; border-bottom: 1px solid #f6ae4d !important;">
+                    <ion-card-content style="text-align: center; ">
+                        <p class="danger_color2  padding: 0; ">{{AddEmailSetup}}</p>
+                    </ion-card-content>
+                </ion-card>
+            </ion-row>
+            <!-- <page-commentforemptiness *ngIf="membershipEmailSetupArr.length == 0" [customTitle]="AddEmailSetup" (click)="goToAddEmailSetup()"  ></page-commentforemptiness> -->
+
+        </ion-list>
+
+
+
+
+
+
+
+    </div>
+
+
+    <ion-fab right bottom *ngIf="this.allClub.length > 0">
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important"  (click)="goToAddEmailSetup()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+
+    </ion-fab>
+
+
+
+</ion-content>

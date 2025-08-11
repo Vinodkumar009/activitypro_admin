@@ -1,0 +1,227 @@
+<!--
+  Generated template for the AddeventPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add Event</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding #content>
+  <ion-row>
+    <ion-col col-12>
+      <ion-row>
+        <ion-col col-12>
+          <ion-item no-lines class="slider_title">
+            <ion-label class="danger_color2">Event Details</ion-label>
+          </ion-item>
+          <ion-item class="input_item">
+            <ion-label>Event Name</ion-label>
+            <ion-input type="text" [(ngModel)]="eventsDto.name"></ion-input>
+          </ion-item>
+          <ion-row style="background-color:#fff !important;border-bottom: 1px solid #ded8d8;">
+            <ion-col col-12 no-padding>
+              <ion-item class="input_item" no-lines>
+                <ion-label>Event Location</ion-label>
+                <ion-select [(ngModel)]="eventsDto.location_id" (ionChange)="onChangeLocation()">
+                  <ion-option *ngFor="let loc of eventLocation" [value]="loc.id">{{loc.name}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-item class="input_item">
+            <ion-label>Event Type</ion-label>
+            <ion-select [(ngModel)]="eventsDto.event_type_id" (ionChange)="onChangeEventType()">
+              <ion-option *ngFor="let eventtype of eventTypes" [value]="eventtype.id">{{eventtype.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item class="input_item">
+            <ion-label>Event Start Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [min]="min" [max]="max"
+              (ionChange)="startDateChange()" [(ngModel)]="eventsDto.start_date">
+            </ion-datetime>
+          </ion-item>
+          <ion-item class="input_item">
+            <ion-label>Event End Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [min]="min" [max]="max"
+              [(ngModel)]="eventsDto.end_date">
+            </ion-datetime>
+          </ion-item>
+          <ion-row>
+            <ion-col col-6 style="padding: 0px !important;">
+              <ion-item class="input_item">
+                <ion-label stacked>Start Time</ion-label>
+                <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,15,30,45"
+                  [(ngModel)]="eventsDto.start_time">
+                </ion-datetime>
+              </ion-item>
+            </ion-col>
+            <ion-col col-6 style="padding: 0px !important;">
+              <ion-item class="input_item">
+                <ion-label stacked>End Time</ion-label>
+                <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,15,30,45"
+                  [(ngModel)]="eventsDto.end_time">
+                </ion-datetime>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <!-- Event Summary -->
+          <ion-item class="input_item">
+            <textarea placeholder="Event summary" class="message-input" rows="5"
+              [(ngModel)]="eventsDto.summary" (tap)="modifyDescription(eventsDto.summary,1)"></textarea>
+          </ion-item>
+          
+          <!-- Event Description -->
+          <ion-item class="input_item">
+            <textarea placeholder="Event Description" class="message-input" rows="5" [(ngModel)]="eventsDto.description"
+              (tap)="modifyDescription(eventsDto.description,2)"></textarea>
+          </ion-item>
+
+          <!-- Title Image Upload -->
+          <ion-item class="event_title_img">
+            <ion-row>
+              <ion-col col-10 style="margin:auto">
+                <p class="para">Upload Title Image</p>
+                <img *ngIf="eventsDto.title_img" [src]="eventsDto.title_img">
+              </ion-col>
+              <ion-col col-2 style="margin:auto">
+                <button ion-button icon-only clear (click)="SelectProfImg(1)">
+                  <img src="assets/images/upload.svg" class="add_icon">
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+
+          <!-- Capacity -->
+          <ion-item class="input_item">
+            <ion-label>Capacity</ion-label>
+            <ion-input type="number" class="textright" [(ngModel)]="eventsDto.capacity"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- Contact Details Section -->
+      <ion-row>
+        <ion-col col-12>
+          <ion-item no-lines style="border-bottom: 2px solid #faae4e">
+            <p class="danger_color2">Contact Details</p>
+          </ion-item>
+          <ion-item class="input_item">
+            <ion-label>Name</ion-label>
+            <ion-input type="text" class="" [(ngModel)]="eventsDto.contact_name"></ion-input>
+          </ion-item>
+          <ion-item class="input_item">
+            <ion-label>Phone</ion-label>
+            <ion-input type="text" class="" [(ngModel)]="eventsDto.contact_no"></ion-input>
+          </ion-item>
+          <ion-item class="input_item">
+            <ion-label>Email</ion-label>
+            <ion-input type="text" class="" [(ngModel)]="eventsDto.contact_email"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="background-color:#fff !important;border-bottom: 1px solid #ded8d8;margin: 0px 5px;">
+        <ion-col col-12>
+          <!-- Organized By Section -->
+          <ion-row>
+            <ion-col col-11 no-padding>
+              <ion-item class="input_item">
+                <ion-label>Organized By</ion-label>
+                <ion-select [(ngModel)]="eventsDto.clubId" (ionChange)="onChangeVenue()">
+                  <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col col-1 no-padding style="margin: auto;"><ion-icon name="ios-information-circle-outline"
+              (click)="this.commonService.toastMessage('This is required for payment processing',2500)"></ion-icon>
+            </ion-col>
+          </ion-row>
+          
+
+          <!-- Speaker/Trainer Toggle and Image -->
+          <ion-item class="input_item">
+            <ion-row>
+              <ion-col col-12 no-padding class="flex_col">
+                <p class="para">Speaker/Trainer</p>
+                <label class="toggle">
+                  <input type="checkbox" [(ngModel)]="eventsDto.speaker_avail">
+                  <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+
+          <!-- Conditionally Displayed Speaker/Trainer Name and Image Upload -->
+          <ion-item class="input_item" *ngIf="eventsDto.speaker_avail">
+            <ion-label stacked>Speaker/Trainer Name</ion-label>
+            <ion-input type="text" [(ngModel)]="eventsDto.speaker_trainer_name"></ion-input>
+          </ion-item>
+          <ion-item class="event_title_img" *ngIf="eventsDto.speaker_avail">
+            <ion-row>
+              <ion-col col-10 style="padding-left: 0px !important;margin:auto">
+                <p>Upload Speaker/Trainee Image</p>
+                <img [src]="eventsDto.speaker_trainer_url" *ngIf="eventsDto.speaker_trainer_url">
+              </ion-col>
+              <ion-col col-2 style="margin:auto">
+                <button ion-button icon-only clear (click)="SelectProfImg(2)">
+                  <img src="assets/images/upload.svg" class="add_icon">
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+
+        </ion-col>
+      </ion-row>
+
+      <!-- event more images -->
+      <ion-row class="images_row">
+        <ion-col col-12 no-padding text-center>
+          <button ion-button clear (click)="SelectProfImg(3)" class="add_btn">
+            <span>Add More Images</span>
+            <span><ion-icon name="add"></ion-icon></span>
+          </button>
+        </ion-col>
+        <ion-col col-12>
+          <div *ngIf="eventsDto.event_images && eventsDto.event_images.length > 0">
+            <ion-row class="image-container">
+              <ion-col col-6 *ngFor="let img_url of eventsDto.event_images;let j=index;" >
+                <div class="image_div">
+                  <img src="{{img_url}}" alt="" srcset="" (click)="showImageActions(j)">
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+
+    </ion-col>
+  </ion-row>
+  
+</ion-content>
+
+
+
+<div class="img_viewer_wrapper" *ngIf="showFullImage">
+  <div class="img_viewer_div">
+    <ion-icon name="close-circle" (click)="showFullImage=false"></ion-icon>
+    <img src="{{full_view_img}}" alt="" srcset="">
+  </div>
+</div>
+
+<ion-footer>
+  <ion-row>
+    <!-- <ion-col col-2 text-center class="margin_auto" *ngIf="!isBeginSlide">
+          <button ion-button (click)="GotoPrevious()" ion-button block class="timekare-primary-btn">
+              <ion-icon name="ios-arrow-back"></ion-icon>
+          </button>
+      </ion-col> -->
+    <ion-col col-12 text-center class="margin_auto">
+      <button ion-button block class="timekare-primary-btn" (click)="createEvent()">Create</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

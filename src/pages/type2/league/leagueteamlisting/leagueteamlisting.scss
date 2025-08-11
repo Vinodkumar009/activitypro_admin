@@ -1,0 +1,326 @@
+page-leagueteamlisting {
+  .Location-head {
+    font-size: 1.6rem;
+    color: #222;
+    padding: 10px;
+    border-bottom: 1px solid #ded8d8 !important;
+  }
+
+
+  // ✅ Style for the team logo image
+  .team-logo {
+    width: 40px; // Adjust size as needed
+    height: 40px; // Adjust size as needed
+    border-radius: 50%; // Make it round if desired
+    margin-right: 0px; // Space between logo and name
+    object-fit: cover; // Ensure image covers the area without distortion
+    flex-shrink: 0; // Prevent image from shrinking
+  }
+
+  .name {
+    color: #5ea68d;
+    font-size: 20px !important;
+    font-weight: 600;
+    margin: 0; // ✅ Remove default margin
+    overflow: hidden; // Hide overflow text
+    text-overflow: ellipsis; // Add ellipsis for overflow
+    white-space: nowrap; // Prevent wrapping
+  }
+
+  .headercard {
+    margin: 10 10px;
+    padding: 0 0px;
+    border-radius: 2px;
+    background: #ffffff;
+    -webkit-box-shadow: 0px 2px 8px -1px #b4b3b7;
+    box-shadow: 0px 2px 8px -1px #b4b3b7;
+    border-bottom: none !important;
+
+    ion-card-content {
+      padding: 0 5px;
+
+      span {
+        font-size: 20px;
+
+      }
+
+      p {
+        font-size: 20px;
+        color: #4b6051;
+      }
+    }
+  }
+
+  .sub-container {
+    ion-icon {
+      width: 90%;
+      height: 46px;
+      background: transparent !important;
+
+      border-radius: 5px;
+
+      color: rgba(250, 169, 40, 0.827451)
+    }
+
+    .search-bar {
+      padding: 0px 5px;
+    }
+
+    .searchbar {
+      border: none !important;
+      background: #ffffff !important;
+      border-radius: 5px !important;
+      height: 86% !important;
+      margin-top: 4px !important;
+      padding: 8px 5px;
+    }
+
+    .searchbar-input {
+      padding-left: 4px !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      border-bottom: 1px solid #34343442;
+      border-radius: 0;
+
+    }
+
+    .search {
+      padding: 0 0 -50px 0;
+    }
+
+    .searchbar-search-icon {
+      display: none !important;
+    }
+
+    ion-icon {
+      font-size: 30px;
+    }
+  }
+
+  .flex-style {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .fab_btn1 {
+    position: sticky;
+    right: 30px;
+    float: right;
+    bottom: 60px !important;
+  }
+
+  .card-text {
+    color: #c5b495;
+    width: 100%;
+  }
+
+  .card-text>span {
+    color: gray;
+  }
+
+
+  .amount {
+    text-align: right;
+  }
+
+  .name {
+    color: #5ea68d;
+    font-size: 20px !important;
+    width: 100%;
+    font-weight: 600;
+  }
+
+  .Location-head {
+    font-size: 1.6rem;
+    color: #222;
+    padding: 10px;
+    border-bottom: 1px solid #ded8d8 !important;
+  }
+
+
+  .all {
+
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-image: -webkit-gradient(linear,
+        0 0,
+        0 100%,
+        from(#35adff),
+        to(#7dbce6)) 1 100%;
+    -webkit-border-image: -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+    -moz-border-image: -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+    -o-border-image: -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+    border-image: linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+  }
+
+  ion-card {
+    margin: 0px !important;
+    width: 100% !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    //border-bottom: 1px solid #f6ae4d !important;
+  }
+
+  ion-card-content {
+    padding: 0px !important;
+  }
+
+  .border-left-style {
+    height: 70px;
+    position: absolute;
+    top: 35px;
+    left: 7px;
+  }
+
+
+  .matchesplayed {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    color: #4b6051;
+
+    ion-card-content {
+      padding: 0 5px;
+    }
+  }
+
+  .searchbar-input {
+    border-bottom: 1px solid #141414;
+    box-shadow: none !important;
+  }
+
+  .search {
+    padding: 0 0 -50px 0;
+  }
+
+  .matchcard {
+    margin: 15 10px;
+    padding: 5 5px;
+    border-radius: 12px;
+
+    ion-card-content {
+      padding: 0 5px;
+      justify-content: right;
+    }
+
+    -webkit-box-shadow: 0px 2px 8px -1px #b4b3b7;
+    box-shadow: 0px 3px 4px -1px #b4b3b7;
+  }
+
+  .date {
+    padding: 0 5px;
+    font-size: 19px;
+    color: black;
+    font-weight: 600;
+  }
+
+  .host {
+    padding: 0 0 0 5px;
+    font-size: 17px;
+    color: #4b6051;
+    font-weight: 600;
+  }
+
+  .cardrow {
+    display: flex;
+
+    p {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
+  .largetext {
+    padding: 0 0 0 5px;
+    font-size: 18px;
+    color: black;
+  }
+
+  .smalltext {
+    padding: 0 0 0 5px;
+    font-size: 16px;
+    color: #4b6051;
+  }
+
+  .pending {
+    padding: 0 0 0 5px;
+    color: #2b92bb;
+    font-size: 16px;
+  }
+
+  .selected {
+    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+
+    color: #2b92bb !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 10px;
+  }
+
+  .select-type {
+    text-transform: capitalize;
+    background-color: transparent;
+    width: 95%;
+    margin: 0px !important;
+    color: #707070;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .fabs {
+    position: absolute;
+    background: #fff;
+
+    padding: 0px 0px;
+
+
+    z-index: 999;
+  }
+
+  .fab_btn {
+    position: absolute;
+    right: 12px;
+    float: right;
+    bottom: 70px !important;
+  }
+
+  .fabTop {
+    margin-bottom: 13px;
+  }
+
+  .fabEmailText {
+    margin-left: -115px;
+    background-color: #2b92bb;
+    margin-top: -47px;
+    padding: 5px 12px 5px 11px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    border-radius: 3px;
+    margin-right: 36px;
+    -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .datetext {
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0.54;
+    color: black;
+  }
+
+  .visibility {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    color: #c5b495;
+  }
+
+  .align-right {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+}

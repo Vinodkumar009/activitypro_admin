@@ -1,0 +1,29 @@
+applydiscount-page {
+    .scroll-content {
+        padding: 9px 7px 7px 7px;
+        // margin-top: 41px !important;
+    }
+    .list-header-md {
+        margin-bottom: 0px !important;
+    }
+    ion-list {
+        margin-top: 24px !important;
+    }
+    .trash_style {
+        // float: right;
+        // padding: 0px 13px 0px 13px;
+        // margin-top: -11px;
+        // // font-size: 16px;
+        // font-size: 26px !important;
+        float: right;
+        padding: 0px 13px 0px 13px;
+        margin-top: -13px;
+        font-size: 23px !important;
+    }
+    .trash_icon {
+        font-size: 25px !important;
+        line-height: 0px !important;
+        float: right !important;
+        margin-right: 10px !important;
+    }
+}

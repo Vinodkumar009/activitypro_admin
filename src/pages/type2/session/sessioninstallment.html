@@ -1,0 +1,83 @@
+<!--
+  Generated template for the SessioninstallmentPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Session Installment</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <!-- <ion-item *ngIf="sessionDetails.PaymentOption != 104">
+    <ion-label fixed>Total Fees - Member</ion-label>
+    <ion-input type="number" class="textareastyle" [(ngModel)]="sessionDetails.SessionFee" min="1.00"></ion-input>
+  </ion-item> -->
+    <div *ngFor="let installment of installments" class="installmentblock">
+        <ion-item class="installmentnamearea">
+            <!-- <ion-label fixed>Name</ion-label> -->
+            <ion-input type="text" class="textareastyle installmentName" [(ngModel)]="installment.InstallmentName" min="1.00"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="installment.InstallmentAmountForMember" min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label fixed>NonMember
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="installment.InstallmentAmountForNonMember" min="1.00" (ionChange)="onChangeOfNonMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Due Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="installment.InstallmentDate" max={{maxDate}} (ionChange)="dateChanged()"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>Early Payment Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="installment.EarlyPaymentDate" max={{maxDate}} (ionChange)="dateChanged()"></ion-datetime>
+        </ion-item>
+        <ion-item class="comments">
+            <ion-label fixed>Comments</ion-label>
+            <ion-textarea type="text" class="textareastyle" rows="3" [(ngModel)]="installment.Comments"></ion-textarea>
+        </ion-item>
+    </div>
+
+    <ion-item>
+        <ion-label fixed>Full Payment-Member
+            <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+        </ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="installmentSesionObject.FullInstallmentAmountForMember" min="1.00"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label fixed>Full Payment-NonMember
+            <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+        </ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="installmentSesionObject.FullInstallmentAmountForNonMember" min="1.00"></ion-input>
+    </ion-item>
+
+
+    <ion-grid style="margin-bottom:60%">
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelSessionCreation()">Back</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="createSession()">Create</button>
+            </ion-col>
+
+
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>

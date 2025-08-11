@@ -1,0 +1,118 @@
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>Availability</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+
+<ion-content >
+  <!-- <ion-item>
+    <ion-label>Venue</ion-label>
+    <ion-select [(ngModel)]="selectedClubKey" (ionChange)="changeCourt()">
+      <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+    </ion-select>
+  </ion-item> -->
+  <ion-row *ngIf="clubs.length > 1 || ActivityList.length > 1" class="venuerow">
+    <ion-col  *ngIf="clubs.length > 1" col-1 text-center>
+      <img src="assets/imgs/location.png">
+    </ion-col>
+    <ion-col  *ngIf="clubs.length > 1" col-5 text-left>
+      <ion-select [(ngModel)]="selectedClubKey" (ionChange)="changeClub()">
+        <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+      </ion-select>
+    </ion-col>
+    <ion-col *ngIf="ActivityList.length > 1" col-1 text-center>
+      <img src="assets/imgs/activity.png">
+    </ion-col>
+    <ion-col col-5 *ngIf="ActivityList.length > 1" text-left>
+      <ion-select [(ngModel)]="selectedActivity" (ionChange)="changeActivity()">
+        <ion-option *ngFor="let item of ActivityList" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+  <!-- <ion-item class="margin">
+    <ion-label>Activity</ion-label>
+    <ion-select [(ngModel)]="selectedActivity" (ionChange)="changeCourt()">
+      <ion-option *ngFor="let item of ActivityList" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+    </ion-select>
+  </ion-item> -->
+
+  <ion-row class="venuerow">
+    <ion-col col-1 text-center>
+      <img src="assets/imgs/tenniscourt.png">
+    </ion-col>
+    <ion-col col-5 text-left>
+      <ion-select [(ngModel)]="courtSelected" (ionChange)="changeCourt()">
+        <ion-option  *ngFor="let court of CourtFilter" value={{court.key}}>{{court.court}}</ion-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+<!-- <ion-item>
+  <ion-icon name="ios-film-outline" items-left></ion-icon>
+  <ion-select [(ngModel)]="courtSelected" (ionChange)="changeCourt()">
+      <ion-option *ngFor="let court of CourtFilter" value={{court.key}}>{{court.court}}</ion-option>
+  </ion-select>
+</ion-item> -->
+<ion-row  (click)="showCalender = true" class="venuerow">
+  <ion-col col-1 text-center>
+    <img src="assets/imgs/calendar.png">
+  </ion-col>
+  <ion-col col-5 text-left>
+    <p>{{showDate}}</p>
+  </ion-col>
+</ion-row>
+
+<div *ngIf="showCalender" class="divmodal">
+  <ion-calendar  #calendar (onDaySelect)="onDaySelect($event)"></ion-calendar>
+</div>
+<!-- <ion-item (click)="showCalender = true">
+  <ion-icon name="ios-calendar-outline" items-left></ion-icon>
+  <p>{{showDate}}</p>
+</ion-item> -->
+
+<ion-slides [slidesPerView]="3.2" >
+
+  <ion-slide *ngFor="let slideInfo of slotofAllCourt"  class="slot-slider">
+    <div style="background: rgba(43, 146, 187, 0.85);    border-right: 1px solid rgba(255, 255, 255, 0.65);">
+      <p class="head">{{slideInfo.courtInfo.CourtName}}</p>
+      <p *ngIf="!slideInfo.courtInfo.Capcity" style="color: rgba(255, 255, 255, 0.85);font-weight: normal;" class="head">  {{slideInfo.courtInfo.Surface}}</p>
+      <p *ngIf="slideInfo.courtInfo.Capcity" style="color: rgba(255, 255, 255, 0.85);font-weight: normal;" class="head">Capacity {{slideInfo.courtInfo.Capcity}}</p>
+    </div>
+   
+    <div style="overflow: scroll !important;height: 84vh !important;">
+    <ion-card class="court" *ngFor="let court of slideInfo.slotData.slots" (click)="bookslot(court,slideInfo)"  [ngClass]="{'selected-court':court.IsBooked == true}" >
+      <ion-card-content class="padding-0 slots" [ngClass]="{'booked-court':court.IsEnable == false, 'admin_back': court.MemberKey == 'admin'}" >
+
+       <span class="time">{{court.StartHour}}:{{court.StartMin}}</span>-<span class="time">{{court.EndHour}}:{{court.EndMin}}</span> 
+
+       <p class="amount" *ngIf="court.Price != 0 && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{court.Price}}</p>
+       <!-- <img class="img-free" [src]="freeImageURl" *ngIf="court.Price == 0 && court.IsEnable == true"> -->
+       <p class="amount" *ngIf="court.Price == 0 && court.text && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined"></span>{{court.text}}</p>
+       <!-- <span *ngIf="court.IsEnable == false"  class="book-span">Booked</span> -->
+       <p *ngIf="court.IsEnable == false">{{court.MemberName}}</p>
+      </ion-card-content>
+      
+    </ion-card>
+    
+    <p *ngIf="slideInfo['slotData']['slots'] && slideInfo['slotData']['slots'].length == 0" class="not-available">No Slots Available</p>
+  </div>
+   
+  </ion-slide>
+
+</ion-slides>
+
+<ion-row *ngIf="courts.length == 0">
+  <ion-col>
+    <p>No Court Available</p>
+  </ion-col>
+</ion-row>
+
+</ion-content>
+<ion-footer style="position: fixed;" *ngIf="noOfSlootBook > 0" class="animate-zoom" no-border>
+    <button ion-button (click)="continue()" class="next-btn">Continue
+    </button>
+</ion-footer>
+
+

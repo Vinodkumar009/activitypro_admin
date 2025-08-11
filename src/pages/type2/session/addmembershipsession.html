@@ -1,0 +1,59 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Add Memebr</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Add Member
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards">
+    <ion-list class="ion_list">
+        <ion-list-header class="session_header">
+            Member Lists
+        </ion-list-header>
+    </ion-list>
+    <ion-scroll scrollY="true" class="block_height">
+
+        <ion-list class="margin">
+            <ion-item *ngFor="let member of members">
+                <ion-label>{{member.FirstName}} {{member.MiddleName}} {{member.LastName}} ({{member.Age}})</ion-label>
+                <ion-checkbox [(ngModel)]="member.isSelect"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+    </ion-scroll>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <button ion-button block class="timekare-primary-btn" (click)="addMember()">Add Member</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-content>

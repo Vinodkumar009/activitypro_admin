@@ -1,0 +1,158 @@
+page-inbox {
+  $toolbar-background-color1: #2b92bb;
+  $toolbar-title-color1: #ffffff;
+  $toolbar-button-text-color1: #ffffff;
+  .toolbar-title-ios {
+      color: #f4f4f4 !important;
+      padding-top: 25px !important;
+  }
+  .bar-button {
+      color: $toolbar-button-text-color1;
+  }
+  .toolbar {
+      //padding-top: 25px !important;
+  }
+  .toolbar-ios{
+    padding-top: 25px !important;
+    //min-height: 60px !important;
+}
+  .bar-button-default-ios,
+  .bar-button-default.bar-button-ios-default,
+  .bar-button-clear-ios-default {
+      color: #f4f4f4 !important;
+  }
+  .toolbar-title {
+      color: $toolbar-title-color1;
+      //added after dashboard color change.
+      font-weight: 400;
+  }
+  .toolbar-background {
+      background-color: $toolbar-background-color1 !important;
+  }
+  .toolbar-background-ios {
+      background: #2b92bb !important;
+  }
+  .scroll-content {
+    margin-top: 44px !important;
+    padding: 6px !important;
+    background-image: none !important; // background: white !important;
+    background: #f4efef !important;
+  }
+
+
+
+
+
+
+    .msg_row{
+        background: #FFFFFF;
+        margin-top:2px;
+        border-bottom: 1px solid #d2cbcb !important;
+    }
+    .user_img_cls{
+        max-width: 50px;
+        //background: var(--button-color);
+        //background: blueviolet;
+        height: 50px !important;
+        padding: 8px 8px;
+        width: 50px !important;
+        border-radius: 50%;
+        border: 1px solid #e4e4e4;
+        margin-top: 0px !important;
+        border-radius: 50%;
+    }
+   .msg_date{
+        float: right;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+        font-size: 11px;
+        font-style: italic;
+    }
+    .message-input {
+        width: 100%;
+        height:100%;
+        //border: 1px solid var(--ion-color-medium);
+        border: 1px solid gold;
+        border-radius: 10px;
+        background: #fff;
+        resize: none;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .para-msg{
+        font-size: 14px;
+        line-height: 1.5em;
+        height: 2.7em;
+        overflow: hidden;
+        padding: 0px 14px 0px 0px;
+    }
+    .msg-btn {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+    .margin-top-bottom-5{
+      margin: 5px 0px 5px 0px !important;
+    }
+    .para-list-header{
+      ////Default theme color//////
+        font-weight: bold;
+        font-size: 1rem !important;
+        color: grey !important;
+        //background: #e4e4e4 !important;
+        //color: var(--primary-color) !important;
+    }
+    .para-text-color{
+      color:#504d4a ; 
+      margin: 0px 0px 3px 0px !important;
+      font-weight: 300;
+    }
+    // modal styles
+.footer {
+  //   position: absolute;
+  //   left: 0;
+  //   top: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   z-index: 9999;
+  //   background-color: rgba(0, 0, 0, 0.5);
+  //   opacity: 1;
+  //   ///transform: scale(1.1);
+  //  // transition: opacity 500ms ease-in;
+  //  animation: popup 0.7s;
+    bottom:-7px;
+   button{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    padding: 6px;
+    margin: auto;
+    background: #2b92bb;
+     ion-icon{
+      font-size:2.5em;
+      margin-left: -2px;
+      color:#FFFFFF;
+      transform: rotateZ(42deg);
+     }
+   }
+  }
+  .close_fab{
+    top:70% !important;
+  }
+  .inbox_empty_icon{
+    font-size: 5.2em;
+    color: #FFFFFF;
+  }
+
+  @keyframes popup {
+    0%{
+      transform: scale(0);
+    }
+    50%{
+      transform: scale(1.2);
+    }
+    100%{
+      transform: scale(1);
+    }
+  }
+}

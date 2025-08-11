@@ -1,0 +1,124 @@
+<!--
+  Generated template for the MemberprofilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+    <ion-title>
+      Membership
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg social-cards">
+      <!-- <ion-grid *ngIf="userMemberShip?.length > 0">
+        <ion-row>
+          <ion-col *ngFor="let eachSetup of userMemberShip; let i = index" size="12">
+            <ion-card class="facilityCard" (click)="presentActionSheet(eachSetup)">
+              <ion-card-content style="padding: 10px 5px 3px;">
+                <p class="name para_overflow">{{eachSetup.membership_name}}</p>
+                <p style="color:rgb(159, 195, 228)">
+                  {{eachSetup.membership_packages[0].membership_type_text}} - {{eachSetup.amount_to_show}}
+                </p>
+                <p style="color:rgb(182, 63, 42)">
+                  <span class="validity">{{formatMatchStartDate(eachSetup.membership_package.start_date)}}</span>
+                  <span *ngIf="eachSetup.membership_package.subscription_status=='1'" class="paid">Paid</span>
+                  <span *ngIf="eachSetup.membership_package.subscription_status=='0'" class="pending">Pending</span>
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid> -->
+
+      <ion-grid *ngIf="userMemberShip?.length > 0">
+        <ion-row>
+          <ion-col size="12">
+            <ion-slides class="group-slides" [slidesPerView]="1.3">
+              <ion-slide *ngFor="let eachSetup of userMemberShip; let i = index">
+                <ion-card class="facilityCard eachmembership" (click)="presentActionSheet(eachSetup)">
+                  <ion-card-content style="padding: 10px 5px 3px 5px;">
+                    <p class="name para_overflow">{{eachSetup.membership_name}}</p>
+                    <p>
+                      <span style="color:#64b8e8">{{eachSetup.membership_packages[0].membership_type_text}} - {{eachSetup.amount_to_show}},</span>
+                      <span *ngIf="eachSetup.membership_package.subscription_status=='1'" class="paid">Paid</span>
+                      <span *ngIf="eachSetup.membership_package.subscription_status=='0'" class="pending">Pending</span>
+                    </p>
+                    <p style="color:#64b8e8;display: flex;">
+                      <span class="validity">Starts On:{{eachSetup.membership_package.start_date}}</span>
+                      <span class="validity">Ends On:{{eachSetup.membership_package.membership_expiry_date}}</span>
+                    </p>
+                    <p class="count_badge" [style.background]="eachSetup.membership_package.subscription_status=='1' ? '#64b8e8' : '#5ea68d'">{{eachSetup.membership_package.enrolled_count}}</p>
+                  </ion-card-content>
+                </ion-card>
+              </ion-slide>
+            </ion-slides>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+      
+  <ion-row class="sub-container">
+    <ion-col col-1 style="">
+        <button>
+            <ion-icon name="ios-search"></ion-icon>
+        </button>
+    </ion-col>
+    <ion-col col-11 class="search-bar">
+        <ion-searchbar placeholder="Search Membership" id="customsearchbar" (ionInput)="getFilterItems($event)"
+            autocorrect="off"></ion-searchbar>
+    </ion-col>
+</ion-row>
+
+  
+<div *ngIf="parentClubMemberShip?.memberships?.length > 0">
+  <ion-list class="ion_list">
+    <ion-list-header class="session_header" style="align-items: center;">
+      Please select a membership
+    </ion-list-header>
+  </ion-list>
+
+  <ion-list class="block_height1" style="background-image: none !important">
+    <!-- <ion-row class="margin" *ngFor="let eachSetup of parentClubMemberShip.memberships;let i = index">
+      <ion-col class="eachmembership"> -->
+        <div class="all border-left-style"></div>
+        <ion-card class="membership_card" (click)="gotoassignfromrecommended(eachSetup)"  *ngFor="let eachSetup of parentClubMemberShip.memberships;let i = index">
+          <ion-card-content style="padding: 10px 5px 3px;">
+            <p class="name para_overflow">{{eachSetup.membership_name}}</p>
+            <p class="card-text para_overflow">{{eachSetup.membership_tier?.name || '&nbsp;'}}</p>
+            <p class="pricestyle">
+              <span *ngIf="eachSetup.monthly">
+                Monthly: <span style="color:green">{{eachSetup.monthly_price}}</span>
+              </span>
+              <span *ngIf="eachSetup.yearly">
+                Yearly: <span style="color:green">{{eachSetup.yearly_price}}</span>
+              </span>
+            </p>
+            <p class="loc-text">
+              <ion-icon style="font-size: 14px; color: #2b92bb" name="pin"></ion-icon>
+              <span>{{eachSetup.club.ClubName}}</span>
+            </p>
+          </ion-card-content>
+        </ion-card>
+      <!-- </ion-col>
+    </ion-row> -->
+  </ion-list>
+</div>
+<div *ngIf="parentClubMemberShip?.memberships?.length == 0">
+  <ion-row>
+    <ion-card class="nonmembercard">
+        <ion-card-content style="text-align: center;color: #bc2a26;">
+            <p class="danger_color2 nonlocationcard"> No Membership Setup</p>
+        </ion-card-content>
+    </ion-card>
+</ion-row>
+</div>
+  
+
+</ion-content>

@@ -1,0 +1,70 @@
+<!--
+  Generated template for the HolidaycamphistoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Holiday Camp</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <div *ngIf="holidayCampList.length ==0 && isNoData" style="margin: 0px;width: 100%;">
+        <img src="assets/images/noitem.jpg" class="logo-img" style="margin-top:20px;padding: 17px 31px 0px 32px;">
+        <p style="color: red;text-align: center;margin-bottom: 51px;font-size: 16px;">
+            No Holiday Camp
+        </p>
+    </div>
+    <ion-card *ngFor="let camp of holidayCampList" class="ion_card">
+        <ion-card-content class="nopad">
+            <ion-grid class="nopad">
+                <ion-row>
+                    <ion-col col-3 class="nopad">
+
+                        <circle-progress class="circlesvg" [titleFontSize]="14" [subtitle]=camp.Subtitle [titleColor]="'#3ebbd1'" [title]=camp.CircleTitle [percent]=camp.TotalPaidPercentage [units]="''" [radius]="40" [showUnits]="false" [outerStrokeWidth]="3" [innerStrokeWidth]="2"
+                            [outerStrokeColor]="'#3ebbd1'" [subtitleColor]="'#c62d2d'" [innerStrokeColor]="'#3ebbd1'" [animation]="true" [animationDuration]="1000"></circle-progress>
+
+                    </ion-col>
+                    <ion-col col-9>
+                        <p class="campname elipsesdot">{{camp.CampName}}</p>
+                        <p class="holidaycampcard_p">
+                            <ion-icon name="pin"></ion-icon> {{camp.VenueName}}
+
+
+                            <ion-icon name="ios-people" class="people_icon">
+                                <p class="people_size"> {{camp.ActiveMemberStrength}}</p>
+                            </ion-icon>
+
+                        </p>
+                        <div *ngIf="camp.CampType == 501">
+                            <p class="holidaycampcard_p">
+                                <ion-icon name="calendar"></ion-icon> {{getDateIn_DDMMYYYY_Format(camp.StartDate)}}
+                            </p>
+                        </div>
+                        <div *ngIf="camp.CampType == 502">
+                            <p class="holidaycampcard_p">
+                                <ion-icon name="calendar"></ion-icon> {{getDateIn_DDMMYYYY_Format(camp.StartDate)}} To {{getDateIn_DDMMYYYY_Format(camp.EndDate)}}
+                            </p>
+                        </div>
+                    </ion-col>
+
+                </ion-row>
+
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>

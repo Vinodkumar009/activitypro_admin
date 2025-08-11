@@ -1,0 +1,59 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Manage Coach</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Manage Coach
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-list no-border *ngFor="let item of clubs">
+
+        <ion-list-header class="list-modifier">
+            <!--<ion-icon name="leaf" item-left></ion-icon>-->
+            <ion-label>{{item.ClubName}}</ion-label>
+            <ion-checkbox [(ngModel)]="item.IsSelected" [disabled]="item.disabled" [checked]="item.IsSelected"></ion-checkbox>
+        </ion-list-header>
+
+        <ion-item *ngFor="let inneritem of item.Activities">
+            <ion-label>{{inneritem.ActivityName}}</ion-label>
+            <ion-checkbox [(ngModel)]="inneritem.IsSelected" [disabled]="inneritem.disabled"></ion-checkbox>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelVenueToCoach()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="assignVenueToCoach()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

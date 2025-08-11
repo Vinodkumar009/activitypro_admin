@@ -1,0 +1,127 @@
+page-schoolpaymentreport {
+    .scroll-content {
+        padding: 0px !important;
+   }
+   .padding-0{
+       padding: 0px !important;
+   }
+   .margon-0{
+       margin: 0px !important;
+   }
+   .swiper-wrapper{
+       height: 65px !important;
+   }
+   .filter_items{
+        background: transparent !important;
+   }
+   .scroll-content {
+    background-image: none !important; 
+    }
+    .header-container{
+        background-image: linear-gradient(to right,#3797e4 ,#4faee8) !important;
+        color: white !important;
+    }
+    .school-con{
+        height: 50px !important;
+      
+        //background-image: linear-gradient(to bottom right, #5eb1ca,#6ed0ec) !important;
+        background-color: #7bc6e5;
+        p{
+            color:white !important;
+        }
+    }
+    .days-slide{
+        //background-image: linear-gradient(to bottom right, #5eb1ca,#6ed0ec) !important;
+        background-color: #7bc6e5;
+        height: 40px !important;
+    }
+    .day{
+        position: absolute;
+        left: 29%;
+        top: 32%;
+        font-size: 16px;
+        color: white;
+    }
+    .member-grid{
+        overflow-y: scroll;
+        height: 420px !important;
+        margin-top: 5px;
+    }
+    .text{
+        color: #d1d1d4;
+        font-size: 14px;
+        margin: 0;
+        text-align: -webkit-center;
+        margin-top: 8px;
+    }
+    .school-name{
+        font-size: 18px;
+        font-weight: 400;
+        margin: 6px 0px 0px 9px;
+        color: white;
+       
+    }
+    .paid,.select-days{
+        margin: 0 !important;
+        text-align: -webkit-center !important;
+        font-size: 20px;
+    }
+    .paid-amount{
+        text-align: -webkit-center;
+        color: green;
+    }
+    .date{
+        color: #a7a4a4 !important;
+    }
+    .member-name{
+        font-size: 16px;
+        color: #8e8e92;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 500;
+    }
+    .alignment{
+        position: absolute;
+        top: 11px;
+    }
+    .devider{
+        border-bottom: 1px solid #d2cccc;   
+        padding: 4px; 
+    }
+    .padd-9{
+        padding: 9px !important;
+    }
+    .paid-amount{
+        width: 100%;
+        text-align: -webkit-right;
+        font-size: 16px;
+    }
+    .school-name-bottom{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #b1afaf;
+    }
+    .align-center{
+        text-align: center !important;
+    }
+    .selectedDays{
+        background-image: linear-gradient(to right, #fbc46d ,#f9b457) !important;
+        p{
+            border-bottom: 1px solid white;
+        }
+       
+        
+    }
+    .date{
+        width: 100%;
+        //text-align: -webkit-right;
+    }
+    .school-con p {
+        font-size: 15px;
+    }
+    .schoolBackground{
+        background-image: linear-gradient(to right, #fbc46d ,#f9b457) !important;
+    }
+}

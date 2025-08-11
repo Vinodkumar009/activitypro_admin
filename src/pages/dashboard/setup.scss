@@ -1,0 +1,89 @@
+ setup-page {
+    .scroll-content {
+        background-image: none !important;
+        padding: 6px !important;
+        background-color: #f7f7f7;
+    }
+     $user-icon-size: 44px;
+     .dashboard_user {
+         font-size: $user-icon-size;
+         color:#2292bb !important;
+     }
+    //  .myStyle{
+    //      background-color: #f1ca99;
+    //  }
+     .dashboard_col_item_block {
+        padding: 8px 8px 0px 8px;
+        text-align: center;
+        margin-bottom: 10px;
+        border-radius: 7px;
+        background: #fffefe;
+      //  -webkit-box-shadow: 0px 1px 5px -1px #7b7a76;
+        box-shadow: 0px 2px 5px -1px #887f82;
+        height: 11.5rem;
+        margin: 5px;
+        max-width: 30%;
+     }
+     .dashboard_col_item {
+        background-color: rgba(255, 254, 254, 0);
+         //background-color: rgba(155, 147, 147, 0.34);
+         padding-bottom: 1px;
+         border-radius: 5px;
+     }
+     .dashboard_col_item_name {
+         color: #3a4a50 !important;
+       //  font-weight: bold;
+         margin-top: 0px;
+         font-size:13px;
+     }
+    //  @media screen and (min-width : 360px) and (max-width : 375px) {
+    //     .dashboard_col_item_block {
+    //         padding: 12px 8px 0px 8px;
+    //         text-align: center;
+    //         margin-bottom: 10px;
+    //         border-radius: 7px;
+    //         background: #fffefe;
+    //         -webkit-box-shadow: 0px 2px 5px -1px #887f82;
+    //         box-shadow: 0px 2px 5px -1px #887f82;
+    //         height:  11.5rem;
+    //         margin: 5px;
+    //         max-width: 10.6rem;
+    //     }
+    //  }
+     @media screen and (max-width : 360px){
+        .dashboard_col_item_block {
+            padding: 12px 8px 0px 8px;
+            text-align: center;
+            margin-bottom: 10px;
+            border-radius: 7px;
+            background: #fffefe;
+            -webkit-box-shadow: 0px 2px 5px -1px #887f82;
+            box-shadow: 0px 2px 5px -1px #887f82;
+            height: 12.5rem;
+            margin: 5px;
+            max-width: 29.8%;
+        }
+     }
+     
+    //  @media screen and (max-width : 320px){
+    //     .dashboard_col_item_block {
+    //         padding: 12px 8px 0px 8px;
+    //         text-align: center;
+    //         margin-bottom: 10px;
+    //         border-radius: 7px;
+    //         background: #fffefe;
+    //         -webkit-box-shadow: 0px 2px 5px -1px #887f82;
+    //         box-shadow: 0px 2px 5px -1px #887f82;
+    //         height: 13.2rem;
+    //         margin: 5px;
+    //         max-width: 8.8rem;
+    //     }
+    //  }
+     
+
+ 
+     .logo-img {
+         margin-top: 5px;
+         height: 39px;
+     }
+ }

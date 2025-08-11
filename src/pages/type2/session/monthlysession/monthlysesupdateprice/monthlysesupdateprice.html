@@ -1,0 +1,89 @@
+<!--
+  Generated template for the FilterbookingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Update Price</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div style="margin-bottom: 20px;" [ngStyle]="{'margin-top.px': this.platformType=='ios' ? 30 : 0 }">
+    <ion-row *ngIf="user_subscription">
+      <ion-col col-12 style="padding:0px !important">
+          <ion-row>
+            <ion-col col-8 style="font-size:20px">
+              <p style="margin: 5px 0;color:rgba(0,0,0,0.65);">{{user_subscription.session_name}}</p>
+              <p style="margin: 10px 0 7px;color: rgba(0,0,0,0.85);font-weight: 500">{{user_subscription.user_name}}</p>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <p style="font-size: 16px;margin: 5px 0px;">{{user_subscription.end_month}}</p>
+              <p class="expires">(Expires)</p>
+            </ion-col>
+          </ion-row>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <!-- <div>
+    <ion-row>
+      <ion-col style="padding: 0 7px;" col-7>
+        <p style="margin: 3px 0 7px;color: rgba(0,0,0,0.65);font-size: 20px;">{{member_session_info.member_name}}</p>
+      </ion-col>
+    </ion-row>
+  </div>   -->
+  <div class="ses_update_note" *ngIf="!this.is_price_changed">
+    <p style="font-style: italic;color:red">Make sure to ‘edit’ the session to reflect the new price before proceeding. This page will automatically pick up the updated price as ‘revised price’. This page shows the current monthly amount being paid and the new price to be paid by the user after confirmation. Please modify the ‘revised price’ date as needed and type ‘CONFIRM’.</p>
+  </div>
+  <div>
+    <ion-row style="margin-top: 5px;">
+      <ion-col col-7 style="margin:auto">
+        <p class="para_price_header" text-left>Current Amount</p>
+      </ion-col>
+      <ion-col col-5 text-center class="margin_auto">
+        <button ion-button block outline style="color:rgba(0,0,0,0.50)" class="price_btn">{{user_subscription.currency}}{{user_subscription.old_price | number:'1.2-2'}}</button>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: 5px;">
+      <ion-col col-7 style="margin:auto">
+        <p class="para_price_header" text-left>Revised Amount</p>
+      </ion-col>
+      <ion-col col-5 text-center class="margin_auto">
+          <button ion-button block outline style="color:rgba(0,0,0,0.80)" class="price_btn">{{user_subscription.currency}}{{user_subscription.new_price | number:'1.2-2'}}</button>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top:5px">
+        <ion-col col-7 style="margin:auto">
+        <!-- <ion-item class="schedule_date_item"></ion-item> -->
+          <p class="para_price_header" text-left>Effective Date</p>
+        </ion-col>
+        <ion-col col-5 style="margin:auto">
+          <ion-item class="schedule_date_item">
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY"
+            [(ngModel)]="scheduled_date" min="{{minDate}}" max={{maxDate}}></ion-datetime>
+          </ion-item>
+        </ion-col>
+    </ion-row>
+  </div>
+  <div class="ses_update_note">
+    <p style="font-style: italic">Note: Depending on the 'effective date' selected the next payment amount would vary as it's calculated prorated for the running month. However, the amount from the following month would be as per the 'revised amount' as shown</p>
+  </div>
+  <div class="confirm_dev">
+    <ion-row>
+      <ion-col col-12>
+        <ion-input type="text" [(ngModel)]="price_confirm" placeholder="Type 'CONFIRM' here..." ></ion-input>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+  
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn" [disabled]="!this.is_price_changed" (click)="updatePrice()">Update Price</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

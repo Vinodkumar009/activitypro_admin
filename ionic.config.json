@@ -1,5 +1,12 @@
 {
   "name": "activitypro_copy",
-  "integrations": {},
-  "type": "ionic-angular"
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "environmentSource": "environments/environment.ts",
+  "environments": {
+    "dev": "environments/environment.ts",
+    "prod": "environments/environment.prod.ts"
+  }
 }

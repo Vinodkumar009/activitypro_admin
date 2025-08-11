@@ -1,0 +1,88 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Discount List</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>Discount List</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+
+
+
+    <ion-list class="list1">
+        <ion-list-header class="list_header">
+            Activity Discounts
+        </ion-list-header>
+    </ion-list>
+    <ion-item *ngIf="activityDiscountList.length ==0">
+        <p style="text-align: center;color: red;"> No Discounts</p>
+    </ion-item>
+    <ion-list>
+        <ion-item-sliding #item *ngFor="let discount of activityDiscountList">
+            <ion-item>
+                {{discount.DiscountName}}
+            </ion-item>
+            <ion-item-options side="left">
+                <button ion-button class="btn-width">
+                        <ion-icon name="create"></ion-icon>
+                 </button>
+            </ion-item-options>
+            <ion-item-options side="right">
+                <button ion-button class="btn-width" (click)="moveToTrashActivityDiscount(discount)">
+                        <ion-icon name="trash"></ion-icon>
+                 </button>
+            </ion-item-options>
+
+        </ion-item-sliding>
+    </ion-list>
+    <ion-list class="list2">
+        <ion-list-header class="list_header">
+            Club Discounts
+        </ion-list-header>
+    </ion-list>
+    <ion-item *ngIf="clubDiscountList.length ==0">
+        <p style="text-align: center;color: red;"> No Discounts</p>
+    </ion-item>
+    <ion-list>
+        <ion-item-sliding #item *ngFor="let discount of clubDiscountList">
+            <ion-item>
+                {{discount.DiscountName}}
+            </ion-item>
+            <ion-item-options side="left">
+                <button ion-button class="btn-width">
+                        <ion-icon name="create"></ion-icon>
+                 </button>
+            </ion-item-options>
+            <ion-item-options side="right">
+                <button ion-button class="btn-width" (click)="moveToTrashClubDiscount(discount)">
+                        <ion-icon name="trash"></ion-icon>
+                 </button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+
+
+
+</ion-content>

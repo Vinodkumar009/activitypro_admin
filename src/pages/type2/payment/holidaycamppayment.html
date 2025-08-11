@@ -1,0 +1,135 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+        <ion-title>Payment</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+          <ion-icon name="more"></ion-icon>
+        </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="reportType">
+            <ion-segment-button value="Overall" (click)="paymentTabClick('Overall')">
+                Overall
+            </ion-segment-button>
+            <ion-segment-button value="Current" (click)="paymentTabClick('Current')">
+                Current
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle>
+        <ion-icon name="apps"></ion-icon>
+      </button>
+        <ion-title>
+            Payment
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                   <img src="assets/images/home.svg" class="home_btn">
+              </button>
+
+
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+          <ion-icon name="more"></ion-icon>
+        </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="reportType">
+            <ion-segment-button value="Overall" (click)="paymentTabClick('Overall')">
+                Overall
+            </ion-segment-button>
+            <ion-segment-button value="Current" (click)="paymentTabClick('Current')">
+                Current
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+    <div [ngSwitch]="reportType">
+        <div *ngSwitchCase="'Overall'">
+            <ion-item>
+                <ion-label>Holiday Camp</ion-label>
+                <ion-select [(ngModel)]="selectedHolidaycamp" (ionChange)="onChangeOfHolidayCamp()">
+                    <ion-option value="All">All</ion-option>
+                    <ion-option *ngFor="let holidayCamp of holidayCampFolder" value={{holidayCamp.$key}}>{{holidayCamp.CampName}}@{{holidayCamp.VenueName}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <!-- <ion-item class="margin_top" *ngIf="this.coaches.length >0">
+      <ion-label>Coach</ion-label>
+      <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeOfCoach()">
+         <ion-option value="All">All</ion-option>
+        <ion-option *ngFor="let coach of coaches" value={{coach.$key}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+      </ion-select>
+    </ion-item> -->
+
+
+
+
+
+            <ion-row no-padding class="due_paid_lbl">
+                <ion-col>
+                    <h1 text-center class="text_t"><span class="discount-title">Paid</span></h1>
+                </ion-col>
+                <ion-col text-center>
+                    <h1 text-center class="text_t"><span class="discount-title">Due</span></h1>
+                </ion-col>
+
+            </ion-row>
+            <ion-row no-padding class="margin">
+                <ion-col>
+                    <h1 text-center class="marg_top"><span class="blue" (tap)="goToPaymentDetailsListPage()"> &pound; {{amountPaid}}</span></h1>
+                </ion-col>
+                <ion-col text-center>
+                    <h1 text-center class="marg_top"><span class="red" (tap)="goToPaymentDetailsListPage()"> &pound;  {{amountDue}}</span></h1>
+                </ion-col>
+
+            </ion-row>
+        </div>
+
+        <div *ngSwitchCase="'Current'">
+            <ion-item>
+                <ion-label>Holiday Camp</ion-label>
+                <ion-select [(ngModel)]="selectedCurrentHolidaycamp" (ionChange)="onChangeOfCurrentHolidayCamp()">
+                    <ion-option value="All">All</ion-option>
+                    <ion-option *ngFor="let holidayCamp of holidayCampFolder" value={{holidayCamp.$key}}>{{holidayCamp.CampName}}@{{holidayCamp.VenueName}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <!--<ion-item class="margin_top" *ngIf="this.coaches.length >0">
+      <ion-label>Coach</ion-label>
+      <ion-select [(ngModel)]="selectedCurrentCoach" (ionChange)="onChangeOfCoachForCurrent()">
+         <ion-option value="All">All</ion-option>
+        <ion-option *ngFor="let coach of coaches" value={{coach.$key}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+      </ion-select>
+    </ion-item> -->
+            <ion-row no-padding class="due_paid_lbl">
+                <ion-col>
+                    <h1 text-center class="text_t"><span class="discount-title">Paid</span></h1>
+                </ion-col>
+                <ion-col text-center>
+                    <h1 text-center class="text_t"><span class="discount-title">Due</span></h1>
+                </ion-col>
+
+            </ion-row>
+            <ion-row no-padding class="margin">
+                <ion-col>
+                    <h1 text-center class="marg_top"><span class="blue" (tap)="goToCurrentPaymentDetailsListPage()"> &pound; {{currentAmountPaid}}</span></h1>
+                </ion-col>
+                <ion-col text-center>
+                    <h1 text-center class="marg_top"><span class="red" (tap)="goToCurrentPaymentDetailsListPage()"> &pound;  {{currentAmountDue}}</span></h1>
+                </ion-col>
+
+            </ion-row>
+        </div>
+    </div>
+</ion-content>

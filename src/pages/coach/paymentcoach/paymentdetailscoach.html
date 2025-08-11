@@ -1,0 +1,204 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Payment Details</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="paymentStatus">
+            <ion-segment-button value="Paid" (click)="paymentTabClick()">
+                Paid
+            </ion-segment-button>
+            <ion-segment-button value="Pending Verification" (click)="paymentTabClick()">
+                Pending Verification
+            </ion-segment-button>
+            <ion-segment-button value="Due" (click)="paymentTabClick()">
+                Due
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Payment Details
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="paymentStatus">
+            <ion-segment-button value="Paid" (click)="paymentTabClick()">
+                Paid
+            </ion-segment-button>
+            <ion-segment-button value="Pending Verification" (click)="paymentTabClick()">
+                Pending Verification
+            </ion-segment-button>
+            <ion-segment-button value="Due" (click)="paymentTabClick()">
+                Due
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+    <!--Tab1-->
+    <div [ngSwitch]="paymentStatus">
+
+        <ion-list *ngSwitchCase="'Paid'">
+            <ion-searchbar class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItemsPaid($event)" autocorrect="off" placeholder="Search by First or Last Name"></ion-searchbar>
+            <ion-item-sliding #item class="margin_bottom" *ngFor="let paidMember of paidMemberList">
+                <ion-item>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+
+                            {{paidMember.DisplayName}}
+                            <p class="paidbystatus">{{paidMember.PaidBy}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            &pound; {{paidMember.AmountPaid}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            {{paidMember.TransactionDate}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Session : {{paidMember.SessionName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Coach : {{paidMember.CoachName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Club : {{paidMember.ClubName}}</ion-col>
+                    </ion-row>
+                </ion-item>
+            </ion-item-sliding>
+        </ion-list>
+        <!--Tab2-->
+        <ion-list *ngSwitchCase="'Pending Verification'">
+
+
+            <ion-searchbar class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItemsPending($event)" autocorrect="off" placeholder="Search by First or Last Name"></ion-searchbar>
+
+
+            <ion-item-sliding #item class="margin_bottom" *ngFor="let pvMember of pendingVerificationMemberList">
+                <ion-item>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            {{pvMember.DisplayName}}
+                            <p class="paidbystatus">{{pvMember.PaidBy}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            &pound; {{pvMember.AmountPaid}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            {{pvMember.TransactionDate}}
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Session : {{pvMember.SessionName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Coach : {{pvMember.CoachName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Club : {{pvMember.ClubName}}</ion-col>
+                    </ion-row>
+                </ion-item>
+                <ion-item-options side="right">
+                    <button ion-button class="detailsBtn btn-width">
+                                <ion-icon name="ribbon"></ion-icon>
+                                Verify
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </ion-list>
+
+        <!--Tab 3 -->
+        <ion-list *ngSwitchCase="'Due'">
+
+
+
+            <ion-searchbar class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItemsDue($event)" autocorrect="off" placeholder="Search by First or Last Name"></ion-searchbar>
+
+            <ion-item-sliding #item class="margin_bottom" *ngFor="let dMember of dueMemberList">
+                <ion-item>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            {{dMember.DisplayName}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            &pound; {{dMember.AmountDue}}
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Session : {{dMember.SessionName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Coach : {{dMember.CoachName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Club : {{dMember.ClubName}}</ion-col>
+                    </ion-row>
+                </ion-item>
+                <ion-item-options side="right">
+                    <button ion-button class="detailsBtn btn-width">
+                                <ion-icon name="md-notifications"></ion-icon>
+                                Notify
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+
+
+
+
+
+
+
+
+
+
+
+        </ion-list>
+    </div>
+</ion-content>

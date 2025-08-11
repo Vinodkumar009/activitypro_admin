@@ -1,0 +1,175 @@
+page-potm {
+  .scroll-content {
+    background: #f7f7f7 !important;
+  }
+
+  ion-title {
+    background-color: #2b92bb !important;
+
+    div {
+      color: #fff !important;
+    }
+  }
+
+  .toolbar-background-md {
+    background-color: #2b92bb;
+  }
+
+  ion-item {
+    padding-left: 5px !important;
+  }
+
+
+
+  // Selection info
+  .selection-info {
+    padding: 12px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+
+    .selection-count {
+      margin: 0;
+      font-weight: 600;
+      color: #2b92bb;
+      text-align: center;
+      font-size: 16px;
+    }
+  }
+
+  // Teams container
+  .teams-container {
+    padding: 8px;
+  }
+
+  .team-column {
+    padding: 4px;
+  }
+
+  .team-header {
+    padding: 12px 8px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+      margin: 0;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    &.home-team {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+    }
+
+    &.away-team {
+      background: linear-gradient(135deg, #f44336, #d32f2f);
+    }
+  }
+
+  // Player list
+  .player-list {
+    margin: 0;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .player-item {
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.selected {
+      background-color: #e8f5e8;
+
+      .player-label h3 {
+        color: #2e7d32;
+        font-weight: 600;
+      }
+    }
+
+    &.disabled {
+      opacity: 0.5;
+
+      .player-label h3 {
+        color: #999;
+      }
+    }
+
+    .player-label {
+      h3 {
+        margin: 8px 0;
+        font-size: 14px;
+        font-weight: 500;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      &.home-player h3 {
+        color: #2e7d32;
+      }
+
+      &.away-player h3 {
+        color: #c62828;
+      }
+    }
+
+
+  }
+
+  ion-checkbox {
+    margin: 0 5px 0 0 !important;
+    padding: 0 !important;
+  }
+
+  // No players message
+  .no-players {
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    border-radius: 0 0 8px 8px;
+
+    p {
+      margin: 0;
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  .save-btn {
+    background-color: #5be283;
+    height: 3.6rem;
+    font-size: 1.4rem;
+    color: white;
+
+    &:disabled {
+      background-color: #ccc;
+      color: #999;
+    }
+  }
+
+
+  // Responsive adjustments
+  @media (max-width: 480px) {
+    .team-header h4 {
+      font-size: 14px;
+    }
+
+    .player-item .player-label h3 {
+      font-size: 13px;
+    }
+
+    .selection-info .selection-count {
+      font-size: 14px;
+    }
+  }
+}

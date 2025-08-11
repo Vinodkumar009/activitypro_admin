@@ -1,0 +1,64 @@
+memberattendanceforgroupsessioncoach-page{
+ 
+     
+    .ion_list{
+            margin-bottom: 3px;
+    }
+   .block_height {
+        height: 80%;
+    }
+    .right{
+        float: right;
+    }
+    .marginleftright{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .card_list{
+        margin-top: 12px;
+        border-bottom: 2px solid #faa928d3 !important;
+       
+    }
+    ion-card{
+        box-shadow :none !important;
+        -webkit-box-shadow: none !important;
+    }
+    .right_pad{
+        padding-right: 0px;
+    }
+     .left_pad{
+        padding-left: 0px;
+    }
+    ion-select{
+        padding:0px !important;
+        max-width: 100%;
+        .select-icon{
+            width: 17px !important;
+        }
+    }
+    .dropdown{
+        padding-left: 2px !important;
+    }
+    .margin_bottom{
+        margin-top: 6px !important;
+        min-height:3.3rem !important;
+        .item-inner{
+            padding-left: 5px !important;
+            border: 1px solid #eb464f !important;
+        }
+    }
+    .textcenter{
+        text-align: center;
+    }
+    .card_list {
+        margin: 1px !important;
+        width:100% !important;
+    }
+    .card_content{
+        padding: 2px !important;
+    }
+    .pmargin{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+}

@@ -1,0 +1,98 @@
+<!--
+  Generated template for the MemberbookingPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>Courts</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+<!-- <ion-content class="back-image" [ngClass]="{'tennis_back':selActivityname == 'Tennis','bedMinton_back': selActivityname == 'Badminton'}">  -->
+  <ion-content class="back-image" >  
+  <div class="back">
+     <!-- <ion-slides class="club-slider" *ngIf="clubDetails.length > 1" (ionSlideDidChange)="changeClub()" #clubSlider pager="true">
+       <ion-slide *ngFor="let club of clubDetails">
+         <h3 class="club-name">
+           
+           {{club.ClubName}}
+         
+          </h3>
+       </ion-slide>
+     </ion-slides> -->
+
+     <ion-slides *ngIf="clubDetails.length > 1" class="group-slides" style="margin-top: 10px;" [slidesPerView]="2.6">
+      <ion-slide *ngFor="let club of clubDetails">
+        <ion-card style="position: absolute;
+               top: 5px;" class="facilityCard" [class.selected]="club.isSelect" (click)="selectVenue(club)">
+          <ion-card-content>
+            <p class="facilities-text">{{club.ClubShortName}}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+
+    </ion-slides>
+   
+   
+<!--    
+     <ion-slides class="club-slider" *ngIf="activityList.length > 1" (ionSlideDidChange)="changeActivity()" pager="true">
+       <ion-slide *ngFor="let activity of activityList">
+         
+         <h3 class="club-name">
+          
+           {{activity.ActivityName}}
+           
+         </h3>
+        
+       </ion-slide>
+     </ion-slides> -->
+
+
+     <ion-slides *ngIf="activityList.length > 1" class="group-slides"  style="border-bottom: 1px solid #f6ae4d;" [slidesPerView]="3.2">
+      <ion-slide *ngFor="let activity of activityList">
+        <ion-card style="position: absolute;
+               top: 5px;" class="facilityCard" [class.selected]="activity.isSelect" (click)="selectactivity(activity)">
+          <ion-card-content style="padding: 2px">
+            <p class="facilities-text">{{activity.ActivityName}}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+    
+     <ion-card *ngFor="let court of courtDetails;let i = index" (click)="goToCourt(court,i)">
+   
+       <ion-card-header class="padding-0 align-text-left">
+         {{court.CourtName}}
+       </ion-card-header>
+     
+       <ion-card-content class="padding-0">
+         <ion-row>
+           <ion-col col-6 class="padding-0 align-text-left">
+             <p class="margin-0 col-gray" >{{court.Surface}}</p>
+             <p class="margin-0 type">{{court.CourtType}}</p>
+           </ion-col>
+         </ion-row>
+        
+       </ion-card-content>
+     
+     </ion-card>
+    
+     <ion-row *ngIf="courtDetails.length == 0">
+      <ion-card style=" margin:30px 0px 0px 0px !important; width:100% !important; -webkit-box-shadow: none !important; box-shadow: none !important; border-bottom: 1px solid #f6ae4d !important;">
+          <ion-card-content style="text-align: center; ">
+              <p class="danger_color2  padding: 0; ">{{AddaCourt}}</p>
+          </ion-card-content>
+      </ion-card>
+    </ion-row>
+     <!-- <page-commentforemptiness *ngIf="courtDetails.length == 0" [customTitle]="AddaCourt"></page-commentforemptiness> -->
+
+     
+  </div>
+  
+</ion-content>
+
+

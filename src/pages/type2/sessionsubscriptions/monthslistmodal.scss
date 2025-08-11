@@ -1,0 +1,104 @@
+page-monthslistmodal {
+    .scroll-content {
+        //margin-top: 65px !important; 
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+    .toolbar-title{
+        color:#FFF !important;
+     }
+     
+    .tab_header{
+        color:rgba(0,0,0,0.85) !important;
+    }
+    
+     .fabTop {
+         margin-bottom: 13px;
+     }
+     
+      .map-container{
+        height: 8em;
+        margin: 0px -2px;
+        // border-bottom: 2px solid #facf69;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .statistics_row{
+        background: rgba(128, 128, 128, 0.0392156862745098);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    .member_name{
+        font-weight: 500;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    .paymentOption{
+        font-weight: 500;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.65);
+    }
+    .margin-auto{
+        margin:auto;
+    }
+    .amt{
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.85);
+        margin:0px 0px 3px 0px;
+    }
+    .mem_col{
+        padding: 5px 0px 0px 0px;
+        p{
+            margin:0px 0px 3px 0px;
+        }
+    }
+    .innercard_style{
+        height: 9vh;
+        border-left: 2px solid #35adff;
+        padding: 3px 5px 0px 0px;
+        margin: 0px 10px 4px 0px;
+        width: 100%;
+        background: #fff;
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+       // border-bottom: 1px solid orange;
+    }
+    .progress_txt{
+        font-size: 14px;
+        margin: 4px 0;
+        //color: #000000ad;
+    }
+    .membercard{
+        border-left: 3px solid #35adff;
+        border-bottom: 1px solid orange;        
+    }
+    
+    .paidBlock {
+        padding: 1px 0px 0px 0px;
+        margin: auto;
+    }
+    .moneypaid {
+        line-height: 15px;
+        /* float: right; */
+        //text-align: left;
+        font-weight: bold;
+        color: green;
+    }
+    .transactiondate {
+        line-height: 14px;
+        font-size: 12px;
+        /* text-align: left; */
+        /* color: #aaada8; */
+        //font-style: italic;
+        margin: 3px;
+    }
+    .border-left {
+        border-left: .02em solid #bebcbc;
+        padding: 0px 0px 0px 6px;
+    }
+
+ 
+   
+
+}

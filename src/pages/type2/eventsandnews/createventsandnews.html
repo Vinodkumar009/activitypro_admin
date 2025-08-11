@@ -1,0 +1,187 @@
+<!--
+  Generated template for the CreatevideomenuPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header no-border>
+
+    <ion-navbar>
+      <ion-title class="icontitle"> {{LangObj.create_news_title}} </ion-title>
+
+    </ion-navbar>
+  
+  </ion-header>
+  
+
+
+<ion-content padding>
+   
+  <ion-item>
+    <ion-label floating>{{LangObj.create_news_imgurl}}</ion-label>
+    <ion-textarea type="text" rows="1" [(ngModel)]="ImageObj.ImageURL"></ion-textarea>
+</ion-item>
+<ion-item>
+  <ion-label floating>{{LangObj.create_news_header}}</ion-label>
+  <ion-textarea type="text" rows="1" [(ngModel)]="ImageObj.ImageTitle"></ion-textarea>
+</ion-item>
+<ion-row (click)="SelectProfImg()" style="border-bottom: 1px solid #f1c98d;">
+    <ion-col col-8  *ngIf= "!TitleUrl"  style="font-size: 16px;color: #cbc8c6;" text-left><p style="margin-left: 12px;">Upload Title Image </p></ion-col>
+    <ion-col  *ngIf= "TitleUrl"  col-8>
+        <img  src={{TitleUrl}} style="height: 50px;width: 70px;" > 
+      </ion-col>
+    <ion-col col-4 text-right><img style="width: 40%;" src="assets/images/upload.svg"></ion-col>   
+</ion-row>
+  
+
+<ion-item>
+  <ion-label floating>{{LangObj.create_news_caption}}</ion-label>
+  <ion-input type="text" [(ngModel)]="ImageObj.ImageCaption"></ion-input>
+</ion-item>
+  <ion-textarea rows="5" type="text" style="white-space:pre-wrap;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);"[(ngModel)]="ImageObj.ImageDescription" placeholder="Description"(tap)="focusedOnTextArea()"></ion-textarea>
+<ion-item>
+  <ion-label floating>{{LangObj.create_news_tag}}</ion-label>
+  <ion-input type="text" [(ngModel)]="ImageObj.ImageTag"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label class="act">{{LangObj.create_news_activities}}</ion-label> 
+  <ion-select [(ngModel)]="selectedActivity">
+    <ion-option  *ngFor="let activity of activityList" value={{activity.ActivityName}}>{{activity.ActivityName}}</ion-option>
+  </ion-select>
+</ion-item>
+<ion-grid>
+  <ion-row  (click)="presentProfileModal()">
+    <ion-col col-7 class="row5 row1"><ion-label class="text">{{LangObj.create_news_category}}</ion-label></ion-col>
+    <ion-col col-4 class="row5"><p class="cate">{{getCategory()}}</p></ion-col>
+  </ion-row>
+
+  <ion-row (click)="presentUploadModal()">
+    <ion-col col-7 class="row1"><ion-label class="text">{{LangObj.create_news_addphoto}}</ion-label></ion-col>
+    <ion-col col-5 text-right><button class="btn"><ion-icon name="add" class="ico"></ion-icon></button></ion-col>
+  </ion-row>
+  <ion-row *ngIf="getPhotoList().length > 0">
+    <ion-col col-3 *ngFor="let photo of photoList;let i = index">
+      <img src={{photo.ImageURL}} class="sub-image" (click)="presentActionSheet(i, photo)">
+    </ion-col>
+  </ion-row>
+  <ion-item style="padding-left: 12px !important;">
+    <ion-label floating>Tag</ion-label>
+    <ion-input type="text" [(ngModel)]="ImageObj.ImageTag"></ion-input>
+  </ion-item>
+  
+  <ion-row>
+   
+    <ion-col col-6 >
+        <button ion-button block  style="background-color:#2b92bb !important; color: white !important" (click)="resetVideo()">{{LangObj.create_news_cancel}}</button>
+    </ion-col> 
+    <ion-col col-6>
+      <button ion-button block class="timekare-primary-btn" (click)="saveVideo()">{{LangObj.create_news_save}}</button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content> -->
+
+
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title class="icontitle"> {{LangObj.create_news_title}} </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label floating>{{LangObj.create_news_header}}</ion-label>
+    <ion-textarea type="text" rows="1" [(ngModel)]="inputObj.image_title" ></ion-textarea>
+  </ion-item>
+  <ion-row (click)="SelectProfImg()" style="border-bottom: 0.55px solid #c8c7cc;">
+    <ion-col col-12 *ngIf="!title_url" style="font-size: 16px;color: #cbc8c6;" text-left>
+      <img class="default_tit_img" src="assets/images/img_placehlder.png">
+      <p style="margin:5px;" text-center>Upload Title Image</p>
+    </ion-col>
+    <ion-col *ngIf="title_url" col-12>
+      <img class="tit_img" src={{title_url}}>
+    </ion-col>
+    
+  </ion-row>
+  <ion-item>
+    <ion-label floating>{{LangObj.create_news_caption}}</ion-label>
+    <ion-input type="text" [(ngModel)]="inputObj.image_caption"  ></ion-input>
+  </ion-item>
+  <ion-textarea class="desc_cls" rows="3" type="text"
+    style="white-space:pre-wrap;font-size: 16px;color: rgba(0,0,0,0.65);padding: 0px 3px 0px 11px;border-bottom: 0.55px solid #c8c7cc;"
+    [(ngModel)]="inputObj.image_description" placeholder=" Type News Description..." (tap)="focusedOnTextArea()" >
+  </ion-textarea>
+  <ion-item>
+    <ion-label class="act">{{LangObj.create_news_activities}}</ion-label>
+    <ion-select [(ngModel)]="selectedActivity">
+      <ion-option *ngFor="let activity of activityList" value={{activity.ActivityKey}}>{{activity.ActivityName}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-row style="border-bottom: 0.55px solid #c8c7cc !important;" (click)="presentProfileModal()">
+    <ion-col col-7 style="padding-left: 12px;">
+      <ion-label class="text">{{LangObj.create_news_category}}</ion-label>
+    </ion-col>
+    <ion-col style="text-align: right" col-5 class="row5">
+      <p class="cate para_overflow">{{getCategory()}}</p>
+    </ion-col>
+  </ion-row>
+  <ion-row class="toggle_row">
+    <ion-col col-9 class="flex_col" style="margin:auto">
+      <p class="custom_toggle_para">Show in AP Play</p>
+    </ion-col>
+    <ion-col col-3>
+      <label class="custom_toggle">
+        <input type="checkbox" [(ngModel)]="ImageObj.is_show_applus">
+        <span data-unchecked="No" data-checked="Yes"></span>
+      </label>
+    </ion-col>
+  </ion-row>
+  <!-- the below one commented as per shubhanakr sir -->
+  <!-- <ion-row class="toggle_row">
+    <ion-col col-9 class="flex_col">
+      <p class="custom_toggle_para">Show In MemberApp</p>
+    </ion-col>
+    <ion-col col-3>
+      <label class="custom_toggle">
+        <input type="checkbox" [(ngModel)]="ImageObj.ShowInMemberApp">
+        <span data-unchecked="No" data-checked="Yes"></span>
+      </label>
+    </ion-col>
+  </ion-row> -->
+   <ion-grid>
+    <ion-row style="border-bottom: 0.55px solid #c8c7cc !important;" (click)="presentUploadModal()">
+      <ion-col col-8 style="padding-left: 12px;">
+        <ion-label class="text">{{LangObj.create_news_addphoto}}</ion-label>
+      </ion-col>
+      <ion-col class="col_margin" col-4 text-right><button class="btn">
+          <ion-icon name="add" class="ico"></ion-icon>
+        </button></ion-col>
+    </ion-row>
+
+
+    <ion-row *ngIf="getPhotoList().length > 0">
+      <ion-col col-3 *ngFor="let photo of photoList;let i = index">
+        <img src={{photo.ImageURL}} class="sub-image" (click)="presentActionSheet(i, photo)">
+      </ion-col>
+    </ion-row>
+ 
+    
+  </ion-grid> 
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-6>
+      <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+        (click)="resetVideo()">{{LangObj.create_news_cancel}}</button>
+    </ion-col>
+    <ion-col col-6>
+      <button ion-button block class="timekare-primary-btn"
+        (click)="saveNewsAndPhoto()">{{LangObj.create_news_save}}</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

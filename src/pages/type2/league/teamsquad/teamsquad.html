@@ -1,0 +1,231 @@
+<!--
+  Generated template for the TeamsquadPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Squad</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <!-- <div style="padding-bottom: 10px">
+    <ion-card style="width: 100%; margin: 0px">
+      <ion-card-content style="padding: 0px">
+        <ion-row>
+          <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(true)" [class.selected]="teamType">
+              CSK
+            </button>
+          </ion-col>
+          <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(false)" [class.selected]="!teamType">
+              MBI
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div> -->
+
+  <div style="padding-bottom: 10px">
+    <ion-card style="width: 100%; margin: 0px">
+      <ion-card-content style="padding: 0px">
+        <ion-row>
+          <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(true)" [class.selected]="teamType">
+             CSK
+            </button>
+          </ion-col>
+          <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(false)" [class.selected]="!teamType">
+              MBI
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+  <!-- <div>
+  <ion-card>
+<ion-list>
+  <ion-item>
+    <ion-label>Abc </ion-label>
+    <ion-checkbox></ion-checkbox>
+  </ion-item>
+</ion-list>
+</ion-card>
+</div> -->
+
+  <!-- <ion-list>
+  <ion-item style="border-bottom: 1px solid #f6ae4d ;">
+    <ion-label>
+     Suresh Raina</ion-label>
+   <span item-right>Role</span>
+    <ion-checkbox></ion-checkbox>
+  </ion-item>
+</ion-list> -->
+
+  <!-- <ion-row>
+  <ion-col>Suresh Raina</ion-col> 
+  <ion-col>Role</ion-col>
+  <ion-col>Pending</ion-col>
+</ion-row>  -->
+
+<!--<div style="border-bottom:0.5px solid black">
+  <ion-list class="margin marginleftright">
+    <div class="margin-bottom-2 pmargin member-item">
+  <ion-row *ngFor="let player of squad">
+    <ion-col col-8>
+      <ion-item style="background:transparent !important">
+        <ion-label>{{player.pName}}</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+    </ion-col>
+
+    <ion-col col-4 style="text-align:right" class="margin_auto">
+     
+      <p (click)="presentActionSheet(item)">{{player.role}}</p>
+      <p [ngStyle]="{'color':getColor(player.status)}">{{player.status}}</p>
+   
+    </ion-col>
+  </ion-row>
+</div>
+</ion-list>
+</div>-->
+
+
+<div class="container">
+ <div class="draggable" >
+    <ion-list class="margin marginleftright">
+        <div *ngFor="let player of squad" class="margin-bottom-2 pmargin member-item">
+            <ion-row >
+                <ion-col col-8>
+                    <ion-item style="background: transparent !important;" >
+                        <ion-label>{{player.pName}}</ion-label>
+                        <ion-checkbox 
+                          ></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-4 class="margin_auto" style="text-align:right">
+                    <p (click)="presentActionSheet(item)" style="margin-top: 2px;">{{player.role}}</p>
+                    <p [ngStyle]="{'color':getColor(player.status)}" style="margin-bottom: 1px;margin-top: -10px;">{{player.status}}</p>
+                </ion-col>
+            </ion-row>
+        </div> 
+    </ion-list>    
+</div>
+</div>
+
+
+<h3>Substitute Player</h3>
+
+
+<div class="container">
+  <div class="draggable" >
+     <ion-list class="margin marginleftright">
+         <div *ngFor="let player of squad" class="margin-bottom-2 pmargin member-item">
+             <ion-row>
+                 <ion-col col-8>
+                     <ion-item style="background: transparent !important;" >
+                         <ion-label>{{player.pName}}</ion-label>
+                         <ion-checkbox 
+                           ></ion-checkbox>
+                     </ion-item>
+                 </ion-col>
+                 <ion-col col-4 class="margin_auto" style="text-align:right">
+                     <p (click)="presentActionSheet(item)" style="margin-top: 2px;">{{player.role}}</p>
+                     <p [ngStyle]="{'color':getColor(player.status)}" style="margin-bottom: 1px;margin-top: -10px;">{{player.status}}</p>
+                 </ion-col>
+             </ion-row>
+         </div> 
+     </ion-list>    
+ </div>
+ </div>
+
+<!--<div class="example-box" cdkDrag>
+  Drag me around
+</div>-->
+
+<!-- <div mwlDroppable (drop)="this.droppedData = $event.dropData">
+
+  <span [hidden]="droppedData">Drop here</span>
+  <span [hidden]="!droppedData"
+    >Item dropped here with data: "{{ droppedData }}"!</span
+  >
+</div> -->
+
+
+
+
+
+  <!-- <ion-card (ionItemReorder)="reorderItems($event)">
+    
+    <ion-grid>
+      <ion-row *ngFor="let player of squad" style="border-bottom: 0.3px solid black;">
+        <ion-col col-1 style="margin-top: 5px;">
+          <ion-checkbox></ion-checkbox>
+        </ion-col>
+        <ion-col col-6 style="margin-top: 8px;">{{player.pName}}</ion-col>
+        <ion-col col-5 style="text-align:right">
+          <p (click)="presentActionSheet(item)">{{player.role}}</p>
+          <p [ngStyle]="{'color':getColor(player.status)}">{{player.status}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card> -->
+
+  
+
+
+  <!--<div>
+  <ion-card class="membercard" 
+      (tap)="presentActionSheet(memberDetials)">
+      <ion-card-content>
+          <ion-grid style="max-height: 40px;">
+              <ion-row>
+                  <ion-col col-6>
+                     Prince Kumar
+                  </ion-col>
+                  <ion-col col-1 class="margin_auto">
+                      <img src="assets/images/protection.svg">
+                  </ion-col>
+                  <ion-col col-2 style="padding: 5px 0px 0px 0px;">
+                     22
+                  </ion-col>
+                  <ion-col col-3 class="paidBlock">
+                      <div 
+                          style="float: right;margin-top:-9px;">
+                          <p class="moneypaid">
+                              <span>£</span>200
+                          </p>
+                          <p class="transactiondate">123</p>
+                          <p class="transactiondate">Cash</p>
+                      </div>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-card-content>
+  </ion-card>
+</div>-->
+
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button block style="background-color:#2b92bb !important; color: white !important">Invite</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button block class="timekare-primary-btn">Confirm</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

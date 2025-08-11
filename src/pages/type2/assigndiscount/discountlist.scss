@@ -1,0 +1,71 @@
+discountlist-page{
+    .scroll-content{
+        background-image: none !important;
+        background-color: #f7f7f7 !important;
+    }
+    .padding-div{
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: 7px;
+    }
+    ion-item{
+     //border-bottom: 1px solid grey !important;
+        border-top: none !important;
+    }
+    .font-color{
+        font-size: 20px;
+        font-weight:400;
+    }
+    .ion_item_1{
+        background-color: #ffff;
+        box-shadow: 1px 1px 5px rgba(142, 151, 152, 0.39);
+    }
+    .item-inner{
+        border-bottom:none !important;
+    }
+    .text-color{
+        color:red;
+    }
+    .borderbottom{
+        border-bottom: 1px solid #faae4e !important;
+    }
+    .top-distance{
+        margin-top: 14px;
+        border-bottom: 1px solid #faae4e !important;
+    }
+    .margin_activity{
+        margin-bottom:5px;
+    }
+    .fontheading{
+        font-size: 1.8rem;
+    font-weight: 400;
+    color: #9E9E9E;
+    }
+    .nonmembercard {
+        margin-top: 30px !important;
+
+    }
+    .nonlocationcard {
+        padding: 14px 0;
+        color:#aba5a5 !important;
+    }
+    .box{
+       //border: 1px solid #6fa3ac;
+      // border: 1px solid gray;
+    margin: 5px;
+    padding: 10px;
+    }
+    .scroll-content{
+    padding: 16px 9px !important;
+}
+.no-discount-text{
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5882352941176471);
+    text-align: center;
+}
+
+
+.venue-text,.select-text,.select-icon-inner{
+    color: #faae4e !important;
+}
+}

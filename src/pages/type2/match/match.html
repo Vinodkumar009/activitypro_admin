@@ -1,0 +1,183 @@
+<!--
+  Generated template for the MatchPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<div style="width: 100%; height: 100%">
+  <ion-card class="headercard">
+    <ion-card-content>
+      <ion-row>
+        <ion-col col-12>
+          <div style="display: flex; justify-content: space-around">
+            <div class="matchesplayed">
+              <span>{{Today}}</span>
+              <p>Today</p>
+            </div>
+
+            <div class="matchesplayed">
+              <span>{{matchlist?.length}}</span>
+              <p>Total</p>
+            </div>
+          </div>
+
+          <div>
+            <ion-row class="sub-container rows-allign2">
+              <ion-col col-1 style="text-align: center; margin-top: 12px; padding: 0px">
+                <ion-icon name="ios-search"></ion-icon>
+              </ion-col>
+              <ion-col col-11 class="search-bar">
+                <ion-searchbar placeholder="Search by Host, Title, Activity" id="customsearchbar"
+                  [(ngModel)]="searchInput" (ionInput)="getFilterEvents($event)" autocorrect="off"></ion-searchbar>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-row *ngIf="filteredMatchlist.length > 0">
+    <ion-col col-12 style="padding-left: 10px" *ngFor="let match of filteredMatchlist">
+
+      <ion-card class="maincard" (click)="gotoMatchdetailsPage(match)">
+        <ion-card-header class="Location-head " style="padding: 2px 0px 5px 0px;">
+
+          <ion-card-title style="font-weight: 600;font-size: 20px; color: #154766;text-align: center;">
+            {{formatMatchStartDate(match.MatchStartDate)}}
+          </ion-card-title>
+          <ion-card-title class="largetext" style="text-align: center;">
+            {{match.MatchTitle}}
+          </ion-card-title>
+        </ion-card-header>
+
+
+        <ion-card-content style="padding-right: 2px; padding-left: 5px;padding-top: 5px;">
+          <ion-row style="margin-top: -5px;">
+            <ion-col>
+              <p class="leftStyle">
+                <span>{{match.ActivityName}}</span> -
+                <span>{{getMatchTypeName(match.MatchType)}}
+                </span>
+
+              </p>
+            </ion-col>
+            <ion-col class="align-right" *ngFor="let host of match.Hosts">
+              <!-- <p class="roundStyle"> <span>{{host.Name}}</span></p> -->
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isPublish" style="margin-top: -5px;">
+            <ion-col col-6>
+
+              <ion-row>
+                <div>
+                  <p class="username">{{match.homeUserName}}</p>
+                </div>
+              </ion-row>
+
+              <ion-row style="margin-top: 5px; margin-bottom: 4px;">
+                <div style="width: 100%; height: 1px; background-color: #ded8d8; margin-right:  0;margin-left:0"></div>
+              </ion-row>
+
+              <ion-row>
+                <div>
+                  <p class="username">{{match.awayUserName}}
+                    <!-- <span style="padding-right: 2px;"> <ion-icon name="trophy"
+                    class="golden-trophy"></ion-icon></span> -->
+                  </p>
+                </div>
+              </ion-row>
+            </ion-col>
+
+            <ion-col col-6 *ngIf="!isPending">
+
+              <ion-row>
+                <ion-col style="padding-top: 2px;">
+                  <span class="gapBetween">30</span>
+                  <span class="gapBetween"><strong>20</strong></span>
+                  <span class="gapBetween"><strong>70</strong></span>
+                  <span class="gapBetween">38</span>
+                  <span class="gapBetween">50</span>
+                </ion-col>
+              </ion-row>
+              <ion-row style="font-size: 12px; margin-top: -10px;opacity: 0.60;">
+                <ion-col>
+                  Pts
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col style="padding-top: 0px">
+                  <span class="gapBetween"><strong>22</strong></span>
+                  <span class="gapBetween">56</span>
+                  <span class="gapBetween">30</span>
+                  <span class="gapBetween"><strong>80</strong></span>
+                  <span class="gapBetween"><strong>16</strong></span>
+                </ion-col>
+              </ion-row>
+
+
+            </ion-col>
+
+            <ion-col col-6 *ngIf="isPending">
+              <div class="pendingStyle">Result Pending...</div>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row class="username-row" *ngIf="!isPublish">
+            <ion-col class="username-col">
+              <div class="username-container">
+                <p class="username">{{match.homeUserName}}</p>
+              </div>
+            </ion-col>
+            <ion-col class="vs-col">
+              <div class="vs-container">
+                <span class="vs-circle">Vs</span>
+              </div>
+            </ion-col>
+            <ion-col class="username-col">
+              <div class="username-container">
+                <p class="username">
+                  {{match.awayUserName}}
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row style="margin-top: -10px;margin-bottom: -8px;">
+            <ion-col style="text-align: left;">
+              <p class="public-text">{{match.VenueName}}</p>
+            </ion-col>
+            <!-- <ion-col style="text-align: right;">
+              <p class="public-text"> {{getMatchTypeName(match.MatchType)}}</p>
+            </ion-col> -->
+          </ion-row>
+
+          <!-- <ion-row style="margin-top: -10px;margin-bottom: -8px;">
+           
+            <ion-col style="text-align: right;">
+              <p class="public-text"> {{match.ResultStatus==0?"Pending":"Published"}}</p>
+            </ion-col>
+          </ion-row> -->
+
+        </ion-card-content>
+
+
+
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <!-- <ion-fab right bottom>
+    <button
+      ion-fab
+      mini
+      (click)="gotoCreateMatch()"
+      style="background-color: #2b92bb !important; color: white !important"
+      class="fab_btn1"
+    >
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab> -->
+</div>

@@ -1,0 +1,34 @@
+page-sessioninstallment {
+    ion-item {
+        ion-label {
+            overflow: visible !important;
+        }
+    }
+    .item-block {
+        max-height: 35px !important;
+        min-height: 35px !important;
+    }
+    .textareastyle {
+        input {
+            text-align: right;
+        }
+    }
+    .installmentblock {
+        margin: 6px 0px;
+    }
+    .scroll-content {
+        padding: 5px !important;
+        background-image: none !important;
+    }
+    .installmentName {
+        div {
+            border-bottom-color: #81c7ff;
+        }
+        input {
+            text-align: center;
+        }
+    }
+    .installmentnamearea {
+        background-color: #81c7ff;
+    }
+}

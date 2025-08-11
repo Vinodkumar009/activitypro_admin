@@ -1,0 +1,115 @@
+<!--
+  Generated template for the CampcheckinPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Check-Out</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding *ngIf="selectedCampDetails">
+  <ion-card class="card_list hadder-card gold_border_bottom">
+    <ion-card-content style="padding:5px !important">
+      <p class="dotted1">{{selectedCampDetails.camp_name}}</p>
+      <p class="dotted1" style="margin-top:-7px">
+        {{selectedSessionObj.session_day}},{{selectedSessionObj.start_time}} -> {{selectedSessionObj.duration}}
+        hrs
+      </p>
+      <ion-row>
+        <ion-col col-md-4 col-sm-4 col-4 style="text-align:center;padding:0px;margin:auto;">
+          <ion-row style="padding:0px; margin:auto" >
+              <img class="img1" [src]="selectedCampDetails.Coach[0].profile_image && selectedCampDetails.Coach[0].profile_image!='' ? selectedCampDetails.Coach[0].profile_image : 'assets/images/dummyCoach.jpg'">
+          </ion-row>
+          <ion-row style="padding:0px; margin:auto" *ngFor="let c of coaches">
+              <p class="coachname">{{selectedCampDetails.Coach[0].first_name}} {{selectedCampDetails.Coach[0].last_name}}</p>
+          </ion-row>
+        </ion-col>
+        <ion-col col-md-8 col-sm-8 col-8 class="border-left">
+          <p class="dotted bottom-border-style" style="margin-top: -7px;">
+            <span>{{selectedSessionObj.session_name}}</span>
+          </p>
+          <p class="dotted bottom-border-style" style="margin-top: -7px;">
+            <span>{{selectedCampDetails.venue_name}}</span>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card class="card_list">
+    <ion-card-content class="card_content">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-12>
+            <p style="font-size: 14px;font-style: italic;color: green;">*Tap the trophy to give star of this session</p>
+          </ion-col>
+          <ion-col col-12 class="right_pad">
+            <ion-item class="member-item">
+              <ion-label>All</ion-label>
+              <!-- <ion-checkbox [(ngModel)]="isAllCheckedOut" (click)="selectAllToggle()"></ion-checkbox> -->
+              <ion-checkbox [disabled]="is_all_checked_out" [(ngModel)]="isSelectAll" (click)="selectAllToggle()"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+
+  <!-- lower half screen -->
+  <div class="block_height">
+    <ion-list class=" margin marginleftright">
+      <div class="container margin-bottom-2 pmargin member-item" *ngFor="let e of filteredMembers;let i=index">
+        <div class="container margin-bottom-2 pmargin member-item">
+          <div class="item1">
+            <ion-item style="background: transparent !important">
+              <ion-label>{{e.user.FirstName}} {{e.user.LastName}}
+                <span style="font-size: 14px;">({{e.user.DOB}}Yrs)</span>
+              </ion-label>
+             
+              <ion-checkbox [(ngModel)]="e.attendanceDetails.isSelect" [disabled]="e.attendanceDetails.checked_out == '1'"
+                (click)="changeMembers(e,i)"></ion-checkbox>
+
+              <!-- <ion-checkbox (click)="changeMembers()" [(ngModel)]="member.isSelect" [disabled]="member.is_alredy_checkedin"></ion-checkbox> -->
+            </ion-item>
+          </div>
+        </div>
+        <div class="item2">
+          <ion-icon name="md-trophy" class="trophy_icon" (click)="findOutStarIfSession(e,i)"
+            [ngClass]="e.attendanceDetails.star_of_the_session=='1' ? 'active' : 'inactive'"></ion-icon>
+        </div>
+        <div class="item4">
+          <ion-input class="points" type="number" [disabled]="e.attendanceDetails.checked_out==1"
+            [(ngModel)]="e.attendanceDetails.leaderboard_points"></ion-input>
+        </div>
+        <div class="item3">
+          <ion-textarea style="border: 0.5px solid #707070;border-radius: 5px;background: white;" class="points"
+            [(ngModel)]="e.attendanceDetails.check_out_comments" type="text"
+            [disabled]="e.attendanceDetails.checked_out==1"></ion-textarea>
+          <!-- <ion-textarea style="border: 0.5px solid #707070;border-radius: 5px;background: #fff;margin: 0px;"
+          [(ngModel)]="member.comments" row="2" class="points" type="text" [disabled]="member.is_alredy_checkedin">
+          </ion-textarea> -->
+
+        </div>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>
+<ion-footer>
+  <div>
+    <ion-row>
+      <!-- <ion-col col-12 style="padding:5px 0px 0px 0px">
+        <ion-item class="comments_item">
+          <ion-textarea type="text" [(ngModel)]="attendance.comments" rows="3" placeholder="Check-Out Comments">
+          </ion-textarea>
+        </ion-item>
+      </ion-col> -->
+      <ion-col col-12>
+        <button ion-button block class="timekare-primary-btn" (click)="saveCheckOut()"
+          [disabled]="this.is_all_checked_out">Save</button>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-footer>

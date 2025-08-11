@@ -1,0 +1,292 @@
+<ion-header>
+  <ion-toolbar class="toolbarheader">
+    <ion-title> Member Details </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios" style="color: white">Close</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<!-- status=FALSE then session -->
+<ion-content class="card-background-page">
+  <!-- <div *ngIf="block=='Session'"> -->
+  <div *ngIf="!status">
+    <div class="header" *ngIf="holidayCampDetails && selectedSessionObj">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>
+            <ion-grid>
+              <ion-row>
+                <ion-col col-12>
+                  <span class="name">{{selectedSessionObj.session_name}}</span>
+                </ion-col>
+              </ion-row>
+              <ion-row style="margin-bottom: 25px">
+                <ion-col col-12>
+                  <p class="headerp">{{selectedSessionObj.session_date}}, {{selectedSessionObj.days}}
+                  </p>
+                  <p class="headerp">
+                    {{selectedSessionObj.start_time}}, {{getHours(selectedSessionObj.duration)}}hrs
+                  </p>
+                  <p class="headerp" *ngIf="loggedin_type!=4">
+                   <span>Member fee: </span>
+                    <span>{{formatCurrency(selectedSessionObj.amount_for_member)}}</span>
+                  </p>
+                  <p class="headerp" *ngIf="loggedin_type!=4">
+                    <span>Non-Member fee: </span>
+                    <span>{{formatCurrency(selectedSessionObj.amount_for_non_member)}}</span>
+                  </p>
+                  <p class="headerp">
+                    Members: {{selectedSessionObj.bookingCount}}
+                  </p>
+                  <div class="grp_size_div">
+                    <p class="headerp">Capacity: {{selectedSessionObj.capacity}}</p>
+                    <button ion-button clear (click)="editGroupSizeConfirmation()">
+                      <ion-icon name="ios-create"></ion-icon>
+                    </button>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+
+          <ion-col col-6>
+            <div style="display: flex">
+              <button (click)="gotoCheckIn()" ion-button small block class="check-button">Check-In</button>
+              <button ion-button small block class="check-button" (click)="gotoCheckOut()">Check-Out</button>
+            </div>
+            <div text-center>
+              <button ion-button clear (click)="showPasscodes()" class="check-button">
+                Show Passcodes<ion-icon [name]="isShowPasscode?'eye':'eye-off'"></ion-icon>
+              </button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+   
+    <div style="margin-bottom: 60px">
+      <!-- <ion-card class="membercard" (tap)="removeActionSheet(item,i,$event)"> -->
+      <ion-card class="membercard" *ngFor="let item of enrolledMembers; let i = index"
+        (tap)="showUserActionSheet($event,item)" style="height: 60px;">
+        <ion-card-content style="width: 100%;height: 100%;">
+            <ion-row style="width: 100%;height: 100%;">
+              <ion-col col-6 style="margin:auto;">
+                <p>{{item.user.FirstName}} {{item.user.LastName}}</p>
+                <p class="passode" *ngIf="item.passcode && isPasscodesAvailable">{{item.passcode}}</p>
+              </ion-col>
+              <ion-col col-1 style="margin:auto;width: 100%;">
+                <img src="assets/images/protection.svg" class="medical_img" *ngIf="!this.inclusionSet.has(item.user.MedicalCondition)" />
+              </ion-col>
+              <ion-col col-2 style="margin:auto;width: 100%;">
+                <span >{{item.user.DOB && item.user.DOB!='NaN' && item.user.DOB!='0' ? item.user.DOB:'N.A'}}</span>Yrs
+              </ion-col>
+              <ion-col col-3 class="paidBlock" *ngIf="loggedin_type!=4" style="margin:auto;">
+                <div *ngIf="item.amount_pay_status =='Paid' || item.amount_pay_status =='PAID'" style="float: right; padding-right: 5px">
+                  <div class="paid_div">
+                    <p class="moneypaid">
+                      <span
+                        *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span><span>{{item.amount_paid |
+                          number:'1.2-2'}}</span>
+                    </p>
+                    <p class="transactiondate para_overflow">{{getPaymentMethod(item.transaction.paidby)}}</p>
+                    <p class="transactiondate para_overflow">{{item.transaction.transaction_date}}</p>
+                  </div>
+                </div>
+
+                <p *ngIf="item.amount_pay_status =='Pending Verification'" style="color: green; font-style: none"
+                  class="pending">Pending Verification</p>
+
+                <p class="pending" *ngIf="item.amount_pay_status =='Due'">Pending</p>
+              </ion-col>
+            </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="extra_info_div" *ngIf="this.camp_extra_info.length > 0">
+      <ion-list>
+        <ion-card class="width-100 ticket_card" no-padding *ngFor="let facility of camp_extra_info;let i=index">
+          <ion-card-header id="card_head" class="school-con1" (click)="getFacilityUsers(i)">
+            <ion-row>
+              <ion-col col-9 style="margin: auto;"><p>{{facility.facility}}</p></ion-col>
+              <ion-col col-1 style="margin: auto;"><p style="font-size: 16px;font-weight: 500;margin:auto">{{facility.count}}</p></ion-col>
+              <ion-col col-1 style="margin: auto;">
+                <ion-icon name="ios-arrow-forward" class="card_action_icon" *ngIf="!facility.is_selected"></ion-icon>
+                <ion-icon name="ios-arrow-down"  class="card_action_icon" *ngIf="facility.is_selected"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <ion-card-content *ngIf="facility.is_selected" class="card_content">
+            <div *ngIf="facility.user_names.length > 0">
+              <p *ngFor="let user of facility.user_names" style="margin:5px">{{user}}</p>
+            </div>
+            <div *ngIf="facility.user_names.length==0" style="margin:auto;text-align: center;">
+              <p>No users found</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-list>      
+    </div>
+
+  </div>
+
+  <!-- status=True then Member -->
+
+  <!-- <div *ngIf="block=='Member'"> -->
+  <div *ngIf="status">
+    <div class="header" *ngIf="holidayCampDetails">
+      <ion-grid>
+        <!-- <ion-row>
+                    <ion-col col-12>
+                        <span class="name">{{campDetails.CampName}}</span>
+                    </ion-col>
+                </ion-row> -->
+        <ion-row>
+          <ion-col col-12 style="margin: 5px 5px 21px 5px">
+            <p class="headerp">{{holidayCampDetails.camp_name}}</p>
+            <p class="headerp">{{holidayCampDetails.venue_name}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div class="containers">
+      <!-- <div class="containers" *ngIf=" memberLists.length>0"> -->
+      <div *ngFor="let item of enrolledUsersForCamp;let i = index">
+        <ion-card style="margin: 7px 0px 0px 0px; width: 100%" class="membercard" (click)="showBlock(item,i)">
+          <ion-card-content style="height: 70px !important;" >
+            <ion-grid>
+              <ion-row>
+                <ion-col col-11 >
+                  <div> 
+                    <ion-row>
+                      <ion-col col-7 style="margin:auto">
+                        <p class="person_name para_overflow">{{item.FirstName}}&nbsp;{{item.LastName}}</p>
+                      </ion-col>
+                      <ion-col col-5 text-right *ngIf="loggedin_type!=4">
+                        <p style="color: green;font-weight: bold;" *ngIf="item.amount_paid >0">
+                          <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{item.amount_paid|
+                            number:'1.2-2'}} for
+                            {{item.paid_txn_count}}
+                            <!-- <span *ngIf="item.PaidBy !='Online'" class="paymenttype">
+                              {{item.PaidBy}}</span> -->
+                        </p>
+                        <p style="color: #c7393c;font-weight: bold;" *ngIf="item.amount_due >0">
+                          <span >
+                            <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{item.amount_due|
+                            number:'1.2-2'}} <span *ngIf="item.amount_due > 0">for {{item.pending_txn_count}}</span>
+                          </span>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                  
+                  <div style="display: flex;">
+                    <div style="width:100%;display: flex;justify-content: flex-end;align-items: center" [ngStyle]="{ 'margin': item.txn_user_count > 0 ? 'auto' : '' }">
+                      <p style="font-size: 14px;padding-left: 5px;padding-top: 4px;position: absolute;right:0px;bottom:-10px;right: -18px">
+                      <span *ngIf="item.txn_user_count > 0" ><ion-icon name="md-person-add" style="font-size: 1.2em;color:#008000"></ion-icon></span>
+                      <span *ngIf="item.txn_user_count > 0"  style="font-size: 16px;font-weight:bold;color:#008000">{{item.txn_user_count}}</span>
+                      <span style="margin-right: -2px;font-size: 16px">*</span>
+                      <span style="color: #505050">Total Invoice:</span>
+                      <span style="font-size: 14px;color:#008000">{{currencyDetails.CurrencySymbol}}{{item.invoice_amount}}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <!-- <p class="transactiondate1"><span>{{item.TransactionDate}}</span></p> -->
+                </ion-col>
+                <ion-col col-1 style="text-align: center; padding: 0px;margin: auto;">
+                  <ion-icon name="ios-arrow-forward-outline" style="
+                      font-size: 25px !important;
+                      color: #d4d0d0 !important;
+                    "></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+        <div>
+          <!-- <div *ngIf="i==blockIndex && activeSessions.length > 0"> -->
+          <div *ngIf="item.enrollments && item.enrollments.length>0 && isShowArray[i]" class="innerblock">
+            <ion-card class="membersessioncard" *ngFor="let e of item.enrollments">
+              <ion-card-content style="padding: 00px 0px">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col col-9 style="margin: auto">
+                      <p style="color: white">
+                        {{e.session.session_name}}, {{e.session.session_day}}
+                        {{formatDate(e.session.session_date)}}, {{e.session.start_time}}
+                      </p>
+                    </ion-col>
+                    <ion-col col-3 *ngIf="loggedin_type!=4">
+                      <p class="para_overflow" style="color: white">
+                        <span>{{e.amount_pay_status}}</span>
+                      </p>
+                      <p class="transactiondate1" *ngIf="e.amount_pay_status=='Paid' || e.amount_pay_status=='PAID'">
+                        <span>{{formatDate(e.transaction.transaction_date)}}</span>
+                      </p>
+                      <!-- <p class="para_overflow" style="color: red;font-style: italic;font-size:12px"
+                        *ngIf="!e.transaction.is_active && e.amount_pay_status!='Due'">Deleted</p> -->
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="enrolledUsersForCamp && enrolledUsersForCamp.length>0">
+        <p class="discount_hint">* discounts/multiple members paid together</p>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-fab *ngIf="!status" mini left bottom #fab>
+  <button ion-fab mini style="background-color: #2b92bb !important; color: white !important"
+    (click)="deleteCampConfirm()">
+    <ion-icon name="trash"></ion-icon>
+  </button>
+</ion-fab>
+
+<ion-fab mini right bottom #fab *ngIf="!status">
+  <button style="background-color: #2b92bb !important; color: white !important" ion-fab mini id="fav-ico">
+    <ion-icon name="add"></ion-icon>
+  </button>
+  <ion-fab-list side="top">
+    <p class="fabAttendanceText" style="margin-left: -123px" (tap)="loyaltyPoint()">
+      Loyalty Points
+    </p>
+    <button style="background-color: #2b92bb !important ; color: white !important" ion-fab class="fabTop"
+      (tap)="loyaltyPoint()">
+      <ion-icon name="ios-cash"></ion-icon>
+    </button>
+
+    <p class="fabAttendanceText" style="margin-left: -130px" (tap)="gotoMembersheet()">
+      Member Sheet
+    </p>
+    <button style="background-color: #2b92bb !important ; color: white !important" ion-fab class="fabTop"
+      (tap)="gotoMembersheet()">
+      <ion-icon name="ios-clipboard"></ion-icon>
+    </button>
+
+    <p class="fabAttendanceText" style="margin-left: -76px" (tap)="notifyToAllMembers()">
+      Notify
+    </p>
+    <button style="background-color: #2b92bb !important ; color: white !important" ion-fab class="fabTop"
+      (tap)="notifyToAllMembers()">
+      <ion-icon name="ios-notifications"></ion-icon>
+    </button>
+
+    <p class="fabAttendanceText" style="margin-left: -76px" (tap)="EmailToAllMembers()">
+      Email
+    </p>
+    <button style="background-color: #2b92bb !important ; color: white !important" ion-fab class="fabTop"
+      (tap)="EmailToAllMembers()">
+      <ion-icon name="md-mail"></ion-icon>
+    </button>
+  </ion-fab-list>
+</ion-fab>

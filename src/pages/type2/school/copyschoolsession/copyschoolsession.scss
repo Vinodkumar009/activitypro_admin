@@ -1,0 +1,53 @@
+page-copyschoolsession {
+    .scroll-content {
+        margin-top: 56px;
+        padding: 6px !important;
+    }
+    .margin_top {
+        margin-top: 10px;
+    }
+    .padding_class {
+        padding-top: 20px;
+        //font-size: 15px;
+    }
+    .days {
+        ion-col {
+            text-align: center;
+            p {
+                border: 1px solid #76747d;
+            }
+        }
+    }
+    .text_white {
+        color: white;
+    }
+    .card_header {
+        padding: 3px 0px 5px 5px;
+    }
+    .rounded {
+        // width: 35px;
+        // height: 38px;
+        // border-radius: 19px;
+        // padding-top: 8px;
+        width: 33px;
+        height: 33px;
+        border-radius: 19px;
+        padding-top: 6px;
+    }
+    .card {
+        margin: 6px 0px 6px 0px;
+        width: 100%
+    }
+    ion-card-content {
+        padding: 0px !important;
+    }
+    .left_margin {
+        padding-left: 5px;
+        ion-checkbox {
+            margin: 9px 14px 9px 4px !important;
+        }
+        ion-label {
+            white-space: pre-wrap !important;
+        }
+    }
+}

@@ -1,0 +1,55 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Membership Discount</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content >
+    <ion-item>
+        <ion-select class="maxwidthionselect" [(ngModel)]="selectedClubKey" (ionChange)="getAllDiscounts()">
+            <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-row *ngIf="discountArr.length > 0">
+        <ion-col col-12 style="padding-left:10px" *ngFor="let discount of discountArr">
+            <ion-card (click)="showOptions(discount)" class="discount_card">
+                <ion-card-header class="Location-head name">{{discount.discount_name}}</ion-card-header>
+                <ion-card-content style="color: #c5b495">
+                    <ion-row>
+                        <ion-col col-6>
+                            <p class="card-text">Start Date: <span>{{discount.start_date}}</span></p>
+                            <p class="card-text">End Date: <span>{{discount.end_date}}</span></p>
+                        </ion-col>
+                        <ion-col col-6>
+                            <p class="card-text" *ngIf="discount.absolute != 0 && discount.absolute!= '' ">Discount:
+                                <span>
+                                    <span *ngIf="currencyDetails" style="color:green;" class="amount">{{currencyDetails.CurrencySymbol}}</span>{{discount.absolute}}</span></p>
+
+                            <p class="card-text" *ngIf="discount.percentage != 0 && discount.percentage!= '' ">
+                                Percentage: <span>{{discount.percentage}} %</span></p>
+
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="discountArr.length == 0">
+    <!-- <ion-row> -->
+        <ion-card class="nonmembercard">
+            <ion-card-content style="text-align: center;color: #bc2a26;">
+                <p class="danger_color2 nonlocationcard">No Active Discount(s)</p>
+            </ion-card-content>
+        </ion-card>
+    </ion-row>
+
+    <ion-fab right bottom (tap)="addDiscount()">
+        <button ion-fab style='background-color: #2b92bb;' mini
+            style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

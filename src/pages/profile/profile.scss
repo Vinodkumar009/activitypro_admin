@@ -1,0 +1,45 @@
+profile-page{
+    .prifile-card{
+       color: #ffffff;
+       padding-left: 0px !important; 
+    }
+    .scroll-content {
+        margin-top: 44px !important; 
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+    .profile-img{
+            border-radius: 70px;
+    }
+    ion-grid {
+        padding: 1px;
+    }
+
+    .item{
+        padding-left: 0px !important; 
+        .item-inner{
+            border-bottom: 0.55px solid #c8c7cc !important;
+        }
+    }
+    .delete {
+        margin-top:10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+        ion-label {
+          color: rgba(0, 0, 0, 0.85);
+        }
+        p{
+            color:#686464;
+            font-size: 18px;
+        }
+        .icon-col {
+            margin-top: auto;
+            margin-bottom: auto;
+            text-align: -webkit-center;
+            ion-icon {
+              color: #4c8fb4;
+              font-size: 30px;
+            }
+        }
+    }
+}

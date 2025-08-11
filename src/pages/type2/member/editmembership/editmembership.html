@@ -1,0 +1,153 @@
+<!--
+  Generated template for the EditmembershipPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Edit Membership</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="ioncard">
+    <ion-card-content>
+      <div style="padding: 5px;">
+        <p style="color: #5ea68d !important;font-size: 18px !important;">{{memberShipData?.membership_name}}</p>
+      </div>
+      <div>
+        <ion-row>
+          <ion-col col-6 style="margin: auto;">
+            <p>
+              <span>Started:</span>
+              <span style="color: rgba(0, 0, 0, 0.65); font-size: 16px;font-weight:500">{{memberShipData?.membership_package.start_date}}</span>
+            </p>
+          </ion-col>
+          <ion-col col-6 style="text-align: center;margin: auto;">
+            <p>
+              <span>Expires:</span>
+              <span style="color: rgba(0, 0, 0, 0.65); font-size: 16px;font-weight:500">{{memberShipData?.membership_package.membership_expiry_date}}</span>
+            </p>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-row radio-group [(ngModel)]="Duration" class="ionrow">
+    <ion-col class="ioncol" col-9>
+      <ion-item *ngIf="monthly" style="border-bottom: 1px solid rgba(0, 0, 0, 0.25);padding-left: 10px !important;">
+        <ion-label>Monthly - <span *ngIf="currencyDetails!=undefined"
+            style="color:green">{{currencyDetails.CurrencySymbol}}</span> 
+            <span style="margin-left: -2px;">{{memberShipData.monthly_price | number:'1.2-2'}}</span>&nbsp;
+        </ion-label>
+      </ion-item>
+
+      <!-- <ion-item *ngIf="yearly">
+        <ion-label position="stacked">
+          <span>Yearly</span>
+          <span style="float: right; color:green;"
+            *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+          <span style="float: right;">{{memberShipData.yearly_price}}</span>
+          <span *ngIf="memberShipData.yearly_discount_absolute != 0 || memberShipData.yearly_discount_percentage != 0">
+            <span>Discount-</span>
+            <span style="float: right; color:green;"
+              *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+            <span style="float: right;"
+              *ngIf="memberShipData.yearly_discount_absolute != 0">{{memberShipData.yearly_discount_absolute}}</span>
+            <span
+              *ngIf="memberShipData.yearly_discount_absolute != 0 && memberShipData.yearly_discount_percentage != 0"> or
+            </span>
+            <span style="float: right;"
+              *ngIf="memberShipData.yearly_discount_percentage != 0">{{memberShipData.yearly_discount_percentage}}%</span>
+          </span>
+        </ion-label>
+      </ion-item>  -->
+      
+      <ion-item *ngIf="yearly" style="border-bottom: 1px solid rgba(0, 0, 0, 0.25);padding-left: 10px !important;">
+        <ion-label>Yearly -
+          <span *ngIf="currencyDetails!=undefined" style="color:green;">{{currencyDetails.CurrencySymbol}}</span>
+          <span style="margin-left: -2px;">{{memberShipData.yearly_price}} ,</span>
+          <span *ngIf="memberShipData.yearly_discount_absolute != 0 || memberShipData.yearly_discount_percentage != 0">
+            Discount-
+            <span *ngIf="currencyDetails!=undefined" style="color:green">{{currencyDetails.CurrencySymbol}}</span>
+            <span
+              *ngIf="memberShipData.yearly_discount_absolute != 0" style="margin-left: -2px;">{{memberShipData.yearly_discount_absolute}}</span>
+            <span
+              *ngIf="memberShipData.yearly_discount_absolute != 0 && memberShipData.yearly_discount_percentage != 0"> or
+            </span>
+            <span
+              *ngIf="memberShipData.yearly_discount_percentage != 0">{{memberShipData.yearly_discount_percentage}}%</span>
+          </span>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col col-3 no-padding class="ioncol">
+      <ion-item style="border-bottom: 1px solid rgba(0, 0, 0, 0.25)">
+        <ion-label style="margin:0 !important">
+          <!-- <span>Status:</span> -->
+          <span [ngStyle]="{
+            'color': memberShipData?.membership_package?.subscription_status === 0 ? 'red' : 'green'
+          }" >{{memberShipData?.membership_package?.subscription_status === 0 ? 'Pending' : 'Paid'}}</span> 
+        </ion-label>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+
+
+  <h6 class="h6">Select Members</h6>
+  <!-- Display Available Family Members if No Enrolled Members -->
+  <ion-scroll scrollY="true" class="block_height1" *ngIf="familyMemberInfo.length > 0">
+    <ion-list class="margin">
+      <div *ngFor="let member of familyMemberInfo">
+        <ion-item *ngIf="!member.member_enrolled">
+          <ion-label>{{member.FirstName}} {{member.LastName}}</ion-label>
+          <ion-checkbox [(ngModel)]="member.IsSelect"  
+          (ionChange)="selectMember(member,$event)" item-right></ion-checkbox>
+        </ion-item>
+        <ion-item *ngIf="member.member_enrolled">
+          <ion-label>{{member.FirstName}} {{member.LastName}}
+            <button ion-button clear class="unenrol_btn" (tap)="unEnrolConfirmation(member.Id)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </ion-scroll>
+
+  <ion-row class="noMemberleft" *ngIf="familyMemberInfo.length == 0">
+    <p>No Member(s) Left</p>
+  </ion-row>
+
+  <ion-fab left bottom (tap)="deleteMemberShipConfirm()" class="trash_btn" *ngIf="familyMemberInfo.length > 0 && memberShipData?.membership_package?.subscription_status === 0">
+    <button ion-fab mini>
+      <ion-icon name="trash"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>
+
+
+
+
+<ion-footer>
+  <ion-grid>
+    <ion-row >
+      <ion-col col-12 *ngIf="memberShipData?.membership_package?.subscription_status === 1">
+        <button ion-button block class="timekare-primary-btn" (click)="cancelMemberShip()">Cancel Membership</button>
+      </ion-col>
+      <ion-col col-12 *ngIf="memberShipData?.membership_package?.subscription_status === 1">
+        <button ion-button block  [disabled]='all_family_enrolled' class="timekare-primary-btn" (click)="enrolIntoMembership()">Update Membership</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="memberShipData?.membership_package?.subscription_status === 0">
+      <ion-col col-12>
+        <button ion-button block  [disabled]='all_family_enrolled' class="timekare-primary-btn" (click)="enrolIntoMembership()">Update Membership</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

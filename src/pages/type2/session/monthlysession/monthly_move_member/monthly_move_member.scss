@@ -1,0 +1,139 @@
+page-monthly-move-member {
+    .custom-card {
+        border-radius: 4px;
+    }
+
+    .margin_top {
+        margin-top: 10px;
+    }
+
+    ion-card-content {
+        padding: 0px !important;
+    }
+
+    .marginauto {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+  
+    .venueList {
+        color: rgba(0, 0, 0, 0.5294117647058824);
+    }
+
+    .selecteachvenue {
+        background-color: #FFC107 !important;
+
+        span {
+            color: white;
+        }
+
+    }
+
+    .cardpending {
+        margin-bottom: 10px;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0px 2px 8px -1px #b4b3b7;
+
+        ion-card-content {
+            height: 120px;
+            img {
+                width: 65px;
+                height: 65px;
+            }
+        }
+
+        ion-icon {
+            color: #7a7878 !important;
+            font-size: 31px !important;
+        }
+    }
+
+    .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .nopad {
+        padding: 0px;
+    }
+
+    .filter_items {
+        background: transparent !important;
+    }
+
+    .ionlist {
+        margin: -1px 0px 7px;
+    }
+
+    $themelistheaderitemcolor: #00BED3;
+    $themelistotheritemcolor: #595959;
+    $themelistotheritemcolor1: #7F7F7F;
+
+    .themeheader {
+        font-size: 17px;
+        color:rgba(0,0,0,65);
+    }
+    
+
+    .para_overflow {
+        white-space: nowrap;
+        width: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        //border: 1px solid #000000;
+    }
+
+    .transaction_date {
+        font-size: 12px;
+        //float: right;
+        //font-weight: bold;
+    }
+
+    .card_style {
+        background-color: $backgroundcolor;
+        //margin-top: -16px;
+        margin: 0px 0px 0px 0px !important;
+        // border-left: 2px solid #00BED3;
+        //border-left:3px solid #35adff;
+    }
+
+    .innercard_style {
+        //height: 12vh;
+      //  border-left: 2px solid #35adff;
+        padding: 3px 5px 0px 5px;
+        //margin: 10px 10px 10px 0px;
+        margin: 0px 10px 0px 0px;
+        width: 100%;
+        background: #fff;
+        // -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        // box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+
+        //border-bottom: 1px solid orange;
+        p {
+            margin:5px 0px;
+            line-height: none;
+        }
+    }
+
+    .margin-auto {
+        margin: auto;
+    }
+
+    .paid_right_col{
+        text-align: center;
+        margin: auto;
+        ion-icon{
+            color:rgba(0, 0, 0, 0.65);
+            font-size: 2em;
+        }
+        .monthly_ses{
+            margin: 0px;
+            font-size: 12px;
+            left:0;
+            position: relative !important;
+        }
+    }
+}

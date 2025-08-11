@@ -1,0 +1,76 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Availability</ion-title>
+    </ion-navbar>
+
+</ion-header>
+<ion-content>
+    <ion-row class="choose-row top-row">
+        <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeIsSelect()" [class.selects]="!isSelected">
+        <span class="tab_header">Date</span>&nbsp;
+      </button>
+        </ion-col>
+        <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeIsSelect()" [class.selects]="isSelected">
+          <span class="tab_header">Individual</span>&nbsp;
+      </button>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isSelected" style="height: 100%">
+        <ion-col>
+            <page-newviewcourt></page-newviewcourt>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isSelected" style="height:100%">
+        <ion-col>
+            <page-viewcourt></page-viewcourt>
+        </ion-col>
+    </ion-row>
+
+    <!-- <ion-slides (ionSlideDidChange)="slideChanged()"> 
+      <ion-slide >
+        <page-memberbooking></page-memberbooking>
+      </ion-slide>  
+      <ion-slide >
+        <page-recuringbooking></page-recuringbooking>    
+      </ion-slide>
+      <ion-slide>
+        <page-booking></page-booking>
+      </ion-slide>
+  </ion-slides> -->
+</ion-content>
+<!-- style="margin-top: -32px;"  -->
+<ion-footer *ngIf="activeIndex == 1">
+    <!-- <ion-toolbar class="foogter-tool">
+    <button  (click)="addRecuringBooking()" style="background-color:#2b92bb !important; color: white !important" class="fab-style">
+      <ion-icon name="add"></ion-icon>
+  </button>
+  </ion-toolbar> -->
+
+</ion-footer>
+<ion-fab mini right bottom #fab *ngIf="activeIndex == 0">
+    <button ion-fab mini class="fav-ico" style="background-color: #2b92bb;" (click)="isShowPaymentModal=false">
+      <ion-icon name="add"></ion-icon>
+  </button>
+    <ion-fab-list side="top">
+        <p class="fabEmailText" (click)="GotoSlide(1)">Recurring Booking</p>
+        <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="GotoSlide(1)">
+          <ion-icon name="ios-create-outline"></ion-icon>
+      </button>
+
+        <p class="fabEmailText" style="margin-left: -153px;" (click)="GotoSlide(2)">Active Booking</p>
+        <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="GotoSlide(2)">
+          <ion-icon name="ios-create-outline"></ion-icon>
+      </button>
+
+        <!-- 
+      <p class="fabEmailText" style="margin-left: -153px;" (click)="this.navCtrl.push('NewViewcourtPage')">new courtBooking</p>
+      <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop"
+          (click)="this.navCtrl.push('NewViewcourtPage')">
+          <ion-icon name="ios-create-outline"></ion-icon>
+      </button> -->
+
+    </ion-fab-list>
+</ion-fab>

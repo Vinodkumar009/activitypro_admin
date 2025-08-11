@@ -1,0 +1,61 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Payment Report</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+      <ion-label>First Name</ion-label>
+      <ion-checkbox color="blue" checked="true" disabled="true"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+      <ion-label>Last Name</ion-label>
+      <ion-checkbox color="blue" checked="true" disabled="true"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>Event Name</ion-label>
+    <ion-checkbox color="blue" checked="true" disabled="true"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>Venue</ion-label>
+    <ion-checkbox color="blue" checked="selectOBj.isVanue" [(ngModel)]="selectOBj.isVanue"></ion-checkbox>
+</ion-item>
+<ion-item>
+  <ion-label>Total Tickets</ion-label>
+  <ion-checkbox color="blue" checked="selectOBj.isTickets" [(ngModel)]="selectOBj.isTickets"></ion-checkbox>
+</ion-item>
+<ion-item>
+  <ion-label>Payment Date</ion-label>
+  <ion-checkbox color="blue" checked="selectOBj.isDate" [(ngModel)]="selectOBj.isDate"></ion-checkbox>
+</ion-item>
+<!-- <ion-item *ngIf="this.showType != 'due'">
+  <ion-label>Payment Mode</ion-label>
+  <ion-checkbox color="blue" checked="selectOBj.isMode" [(ngModel)]="selectOBj.isMode"></ion-checkbox>
+</ion-item> -->
+<ion-item >
+  <ion-label>Discount Amount</ion-label>
+  <ion-checkbox color="blue" checked="selectOBj.isDiscount" [(ngModel)]="selectOBj.isDiscount"></ion-checkbox>
+</ion-item>
+<ion-item >
+  <ion-label>Paid Amount</ion-label>
+  <ion-checkbox color="blue" checked="selectOBj.isPaid" [(ngModel)]="selectOBj.isPaid"></ion-checkbox>
+</ion-item>
+<!-- <ion-item *ngIf="this.showType == 'due'">
+  <ion-label>Due Amount</ion-label>
+  <ion-checkbox color="blue" checked="selectOBj.isDue" [(ngModel)]="selectOBj.isDue"></ion-checkbox>
+</ion-item> -->
+  <ion-grid>
+      <ion-row>
+          <ion-col col-6>
+              <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelsendMailToParentClub()">Cancel</button>
+          </ion-col>
+          <ion-col col-6>
+              <button ion-button block class="timekare-primary-btn" (click)="presentActionSheet()">Print ({{memberList.length}})</button>
+          </ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-content> 

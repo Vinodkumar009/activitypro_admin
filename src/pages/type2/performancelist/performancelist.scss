@@ -1,0 +1,62 @@
+page-performancelist {
+    .scroll-content {
+        background-size: 100% 100%;
+        margin-top: 57px;
+        padding: 14px 8px 8px 8px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    }
+    .logo_center {
+        text-align: center;
+    }
+    $user-icon-size: 44px;
+    
+    .icon-img{
+        margin:auto;
+        width:60px;
+        height: 60px;
+    }
+
+    //latest card styles added by vinod
+    .marginauto{
+        // margin-top: auto;
+        // margin-bottom: auto;
+        margin:auto;
+        .forward_icon{
+            color: #7a7878 !important;
+            font-size: 31px !important;
+        }
+    }
+    .venueList{
+        color: rgba(0, 0, 0, 0.5294117647058824);
+    }
+    
+    .card_header{
+        font-size: 20px;
+        font-weight: 400;
+    }
+    .venueList{
+        color: rgba(0, 0, 0, 0.5294117647058824);
+    }
+    .cardpending {
+        margin-bottom: 10px;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0px 2px 8px -1px #b4b3b7;
+        height:120px;
+        ion-card-content{
+            //line-height: 73px; 
+            width: 100%;
+            height: 100%;
+            padding: 18px 16px 14px !important;
+        }
+    }
+     .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    .header_icon{
+        font-size:6rem;
+        color: #2292bb !important;
+    }
+}

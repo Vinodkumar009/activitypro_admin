@@ -1,0 +1,189 @@
+session-page {
+    
+    
+    .scroll-content {
+        padding: 3px !important;
+        background-image: none !important;
+    }
+    .margin_top {
+        margin-top: 10px;
+    }
+    .padding_class {
+        padding-top: 20px; //font-size: 15px;
+    }
+    .days {
+        padding-left: 11px !important;
+        ion-col {
+            text-align: center;
+            p {
+                border: 1px solid #76747d;
+                ;
+            }
+        }
+    }
+    .flex_col{
+        display: flex;
+        justify-content: space-between;
+        p{
+            line-height: 30px;
+        }
+    }
+    .toggle_para{
+        font-size: 16px;
+        color: #000;
+    }
+    //toggle button related classes
+
+    .toggle {
+        overflow: hidden;
+        display: inline-block;
+        width: 4.9em;
+        //background: #2f2a2a;
+        background-color: #ebf7fc;
+        //padding: 0.135em;
+        cursor: pointer;
+        font-size: 17px;
+        margin-left: 8px;
+        border-radius: 50px;
+        height: 30px;
+    }
+    .toggle input {
+        position: absolute;
+        visibility: hidden;
+    }
+    .toggle ion-input{
+        position: absolute;
+        visibility: hidden;
+    }
+    .toggle input[type="checkbox"]{
+        width:100%;
+        height: 100%;
+    }
+    .toggle span {
+        position: relative;
+        left: 0%;
+        display: block;
+        text-align: center;
+        -webkit-transition: left 100ms ease-out;
+        -moz-transition: left 100ms ease-out;
+        -o-transition: left 100ms ease-out;
+        transition: left 100ms ease-out;
+    }
+    .toggle :checked+span {
+        left: 50%;
+    }
+     /* Default unchecked state */
+     .toggle span:before {
+        content: attr(data-unchecked);
+        display: block;
+        width: 50%;
+        background-color: #f44336;
+        border-radius: 50px;
+        box-shadow: 0 10px 20px -8px #c5d6d6;
+        //box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+        color: white;
+        border-radius: 25px;
+        font-size: 12px;
+        height: 30px;
+        line-height: 30px;
+    }
+    /* Checked state */
+    .toggle :checked+span:before {
+        content: attr(data-checked);
+        background-color: #03A9F4;
+        color: white;
+        border-radius: 50px;
+        font-size: 12px;
+        height: 30px;
+        line-height: 30px;
+    }
+    .text_white {
+        color: white;
+    }
+    .card_header {
+        padding: 3px 0px 5px 19px;
+    }
+    .rounded {
+        width: 38px;
+        height: 38px;
+        border-radius: 19px;
+        padding-top: 8px;
+    }
+    .card {
+        margin: 6px 0px 0px 0px;
+        width: 100%;
+        box-shadow: none !important;
+    }
+    ion-card-content {
+        padding: 0px !important;
+    }
+    .left_margin {
+        padding-left: 5px;
+        ion-checkbox {
+            margin: 9px 14px 9px 4px !important;
+        }
+        ion-label {
+            white-space: pre-wrap !important;
+        }
+    }
+    .nopadding {
+        padding: 0px;
+    }
+    .textareastyle {
+        input {
+            text-align: right;
+        }
+    }
+    ion-item {
+        ion-label {
+            overflow: visible !important;
+        }
+    }
+    .venueionitem {
+        padding-left: 4px;
+    }
+    .venuedropdown {
+        padding: 13px 8px 13px 0px;
+    }
+    ion-select {
+        display: -webkit-box;
+        max-width: 100%;
+        width: 100%;
+        text-align: right;
+        // float: right;
+    }
+    // .activity_select {
+    //     ion-select {
+    //         display: -webkit-box;
+    //         max-width: 100%;
+    //         width: 100%;
+    //         text-align: right;
+    //         float: right;
+    //     }
+    // }
+
+
+    .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        border-bottom-color:#ffffff !important;
+        box-shadow:none !important;
+    
+    }
+    .border-btm-style{
+        border-bottom: 1px solid #faae4e !important;
+    }
+    .toggle_header{
+        background: rgba(0,0,0,0.01);
+        p{
+            text-align: center;
+            font-size: 15px;
+        }
+        p::before,p::after{
+            display: inline-block;
+            content: "";
+            border-top: 0.1rem solid #00000096;
+            width: 4rem;
+            margin: -6px 1rem;
+            -webkit-transform: translateY(-1rem);
+        }
+    }
+}

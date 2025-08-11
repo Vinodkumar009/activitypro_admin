@@ -1,0 +1,324 @@
+page-monthlymemberlisting {
+    .scroll-content {
+        //margin-top: 65px !important; 
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+    .toolbar-title{
+        color:#FFF !important;
+     }
+     .heder_tit_col{
+         height:100%;
+         img{
+             width:100%;
+             height:100%;
+             filter: brightness(0.5);
+             -webkit-filter: brightness(0.5);
+             -moz-filter: brightness(0.5);
+             -o-filter: brightness(0.5);
+             -ms-filter: brightness(0.5)
+         }
+     }
+     .section_row{
+         margin-bottom:10px;
+         border-bottom:0.7px solid #8080806b;
+         .inner_para{
+            color: #343434b8;
+            padding:0px 5px;
+         }
+     }
+     .select-type{
+        ///background-color: rgb(234, 234, 234) !important ;
+        background-color:transparent !important;
+        width: 102%;
+        margin: 0px !important;
+        //color: #fab754 !important;
+        color:rgba(0,0,0,0.85) !important;
+        border-radius: 0px !important;
+        box-shadow: none;
+    }
+    .tab_header{
+        color:rgba(0,0,0,0.85) !important;
+    }
+    .trns_count{
+        color:rgba(0,0,0,0.65) !important;
+    }
+     .para-overflow-hidden{
+        // padding: 0px 0px 0px 0px;
+        // overflow: hidden !important;
+        // text-overflow: ellipsis !important;
+        // white-space: nowrap;
+        display: -webkit-box;
+        max-width: 100%;
+        height: 28px;
+        margin: 0 auto;
+        font-size: 14px;
+        line-height: 1;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+     .event_info{
+        position: absolute;
+        top: 20px;
+        height: 75px;
+        left: 0px;
+        width: 195px;
+        clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+        background: rgba(47, 87, 108, 0.880941);
+        ion-col{
+            text-align: left;
+            margin: 0 10px;
+        }
+     }
+     .read_more{
+        float: right;
+        color: #17445b;
+        font-style: italic;
+        font-size: 12px;
+        margin: 10px 10px;
+     }
+     .header_txt{
+         margin:3px 0px;
+         color:#FFFFFF;
+     }
+     .dets_icon{
+         font-size: 1.5em;
+         color: #808080ed;
+     }
+     .sponsors_para{
+         margin: 5px;
+         color: #808080;
+     }
+     .date_para{
+         margin:5px 3px;
+         font-weight: 600;
+         color: #f6ae4d;
+     }
+     .time_para{
+         margin: 3px 3px;
+         color: #343434b8;
+         font-weight: 400;
+     }
+     .Add_para{
+         margin: 3px 3px;
+         color: #343434b8;
+         font-weight: 400;
+     }
+     .fabTop {
+         margin-bottom: 13px;
+     }
+     .fabEmailText {
+         line-height: 22px;
+         margin-left: -115px;
+         background-color: #2b92bb !important;
+         margin-top: -49px;
+         padding: 6px 13px 2px 11px;
+         margin-bottom: 5px;
+         color: #ffffff;
+         border-radius: 3px;
+         margin-right: 38px;
+         -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+         box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+     }
+     .para-overflow-hidden{
+        display: -webkit-box;
+        max-width: 100%;
+        height: 28px;
+        margin: 0 auto;
+        font-size: 14px;
+        line-height: 1;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .map-container{
+        height: 8em;
+        margin: 0px -2px;
+        // border-bottom: 2px solid #facf69;
+        position: relative;
+        overflow: hidden;
+    }
+    .social_icons{
+        position: absolute;
+        top:5px;
+        right:10px;
+        width:100px;
+        ion-col{
+            text-align: center;
+            margin:auto;
+        }
+        ion-icon{
+            font-size: 2.2em;
+            color: #FFFFFF;
+        }
+        img{
+            width:30px;
+            height:30px;
+        }
+    }
+    .tickts_btn {
+        background-color: #06326f;
+        height: 31px;
+        background-color: #009046;
+        ion-icon{
+            position: absolute;
+            right: 5px;
+            font-size: 2.6em;
+        }
+    } 
+    
+    
+    .choose-row {
+        // width: 106%;
+        margin-bottom: 5px;
+        padding:0px 5px;
+        button{
+            text-transform: capitalize !important;
+            font-size: 17px;
+        }
+        ion-col {
+            padding: 0 !important
+        }
+    }
+    .circleProgress{
+        border: 8px solid #e4e4e4;
+        border-radius: 50%;
+        width: 135px;
+        height: 135px;
+        padding: 5px;
+        margin: auto;
+        position: relative;
+        border-bottom-color: transparent;
+        p{
+            font-size: 18px;
+            color: #00000099;
+            text-align: center;
+            margin: 34px 0 0 0;
+            font-weight: 600;
+        }
+        img{
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            //background: rgba(255, 255, 255, 1);
+            bottom: 2px;
+            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+    }
+    .statistics_row{
+        background: rgba(128, 128, 128, 0.0392156862745098);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    .member_name{
+        font-weight: 500;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    .paymentOption{
+        font-weight: 500;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.65);
+    }
+    .margin-auto{
+        margin:auto;
+    }
+    .amt{
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.85);
+        margin:0px 0px 3px 0px;
+    }
+    .mem_col{
+        padding: 5px 0px 0px 0px;
+        p{
+            margin:0px 0px 3px 0px;
+        }
+    }
+    .innercard_style{
+        height: 9vh;
+        border-left: 2px solid #35adff;
+        padding: 3px 5px 0px 0px;
+        margin: 0px 10px 4px 0px;
+        width: 100%;
+        background: #fff;
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+       // border-bottom: 1px solid orange;
+    }
+    .progress_txt{
+        font-size: 14px;
+        margin: 4px 0;
+        //color: #000000ad;
+    }
+    .membercard{
+        border-left: 3px solid #35adff;
+        border-bottom: 1px solid orange;        
+    }
+    .select-type{
+        ///background-color: rgb(234, 234, 234) !important ;
+        background-color:transparent !important;
+        width: 102%;
+        margin: 0px !important;
+        //color: #fab754 !important;
+        color:rgba(0, 0, 0, 0.85) !important;
+        border-radius: 0px !important;
+        box-shadow: none;
+    }
+    .selected{
+        //background: #fab754 !important;
+        background-color:transparent !important;
+        border-bottom: 1.5px solid #fab754;
+        color:rgba(0, 0, 0, 0.85) !important;
+        box-shadow: none;
+    }
+    .paidBlock {
+        padding: 1px 0px 0px 0px;
+        margin: auto;
+    }
+    .moneypaid {
+        line-height: 15px;
+        /* float: right; */
+        //text-align: left;
+        font-weight: bold;
+        color: green;
+    }
+    .transactiondate {
+        line-height: 14px;
+        font-size: 12px;
+        /* text-align: left; */
+        /* color: #aaada8; */
+        //font-style: italic;
+        margin: 3px;
+    }
+    .border-left {
+        border-left: .02em solid #bebcbc;
+        padding: 0px 0px 0px 6px;
+    }
+
+
+    .active{
+        animation: scale 100ms ease-in-out forwards;
+    } 
+    @keyframes scale {
+        0% {
+            transform: scale(1.0);
+        }
+        50% {
+            transform: scale(1.3);
+        }
+        100% {
+            transform: scale(1.0);
+        }
+      }
+
+    
+ 
+   
+
+}

@@ -1,0 +1,20 @@
+<!--
+  Generated template for the PaymentgatewaysetupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-row class="half_circle">
+  <ion-col col-12 no-padding>
+    <p class="instrct_txt">{{text}}</p>
+    <p class="skip_txt" (click)="skipPayment()">Do it later</p>
+    <p class="doit_txt" (click)="navigateToPayment()">Setup now</p>
+    <div class="fab_div">
+      <!-- <ion-fab mini #fab>
+        <button ion-fab mini style='background-color: #2b92bb;' (click)="navigateToPayment()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab> -->
+    </div>
+  </ion-col>
+</ion-row>

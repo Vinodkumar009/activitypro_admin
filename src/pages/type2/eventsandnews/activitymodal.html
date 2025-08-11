@@ -1,0 +1,24 @@
+<!--
+  Generated template for the ActivitymodalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-content>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 style="text-align: right;">
+        <button class="btn"> <ion-icon name="close" class="ico" (click)="select('Session')"></ion-icon></button>
+ 
+      </ion-col>
+    </ion-row>
+    <ion-row>
+
+      <ion-col col-6 *ngFor="let activity of list ; let i = index" [ngClass]="{'bord': i % 2 !=0}" (click)="select(activity)">
+        <ion-icon name={{iconList[i]}} class="act_icons"></ion-icon> <span class="act_name"> {{activity}}</span>
+     </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,225 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Edit School Session</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Edit School Session
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" padding>
+
+
+    <ion-item>
+        <ion-label>School</ion-label>
+        <ion-select [(ngModel)]="selectedSchool" disabled="true">
+            <ion-option *ngFor="let school of schools" value={{school.id}}>{{school.school_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-item>
+        <ion-label>Venue</ion-label>
+        <!--(ionChange)="onChangeOfClub()"-->
+        <ion-select [(ngModel)]="selectedClub" disabled="true">
+            <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-item>
+        <ion-label>Term</ion-label>
+        <ion-select [(ngModel)]="selectedTerm" disabled="true">
+            <ion-option *ngFor="let term of terms" value={{term.term_id}}>{{term.term_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivityType" disabled="true">
+            <ion-option *ngFor="let type of club_activities" value={{type.ActivityKey}}>{{type.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="this.isActivityCategoryExist">
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="selectActivityCategory" disabled="true">
+            <ion-option *ngFor="let ac of activityCategoryList" value={{ac.ActivityCategoryId}}>{{ac.ActivityCategoryName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item *ngIf="this.isExistActivitySubCategory">
+        <ion-label>Sub Category</ion-label>
+        <ion-select [(ngModel)]="selectActivitySubCategory" disabled="true">
+            <ion-option *ngFor="let acs of activitySubCategoryList" value={{acs.ActivitySubCategoryId}}>{{acs.ActivitySubCategoryName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <div class="margin_top">
+    </div>
+    <ion-item>
+        <ion-label>Coach</ion-label>
+        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+            <ion-option *ngFor="let coach of coachs" value={{coach.CoachId}}>{{coach.FirstName}} {{coach.LastName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-card class="card">
+        <ion-card-header class="card_header">
+            Days
+        </ion-card-header>
+        <ion-card-content>
+
+            <ion-row class="days">
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Mon',1)" [ngClass]="{'timekare-primary-btn': isSelectMon,'text_white': isSelectMon,'un_selected': !isSelectMon}">M</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Tue',2)" [ngClass]="{'timekare-primary-btn': isSelectTue,'text_white': isSelectTue,'un_selected': !isSelectTue}">T</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Wed',3)" [ngClass]="{'timekare-primary-btn': isSelectWed,'text_white': isSelectWed,'un_selected': !isSelectWed}">W</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Thu',4)" [ngClass]="{'timekare-primary-btn': isSelectThu,'text_white': isSelectThu,'un_selected': !isSelectThu}">T</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Fri',5)" [ngClass]="{'timekare-primary-btn': isSelectFri,'text_white': isSelectFri,'un_selected': !isSelectFri}">F</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Sat',6)" [ngClass]="{'timekare-primary-btn': isSelectSat,'text_white': isSelectSat,'un_selected': !isSelectSat}">S</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Sun',7)" [ngClass]="{'timekare-primary-btn': isSelectSun,'text_white': isSelectSun,'un_selected': !isSelectSun}">S</p>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-item>
+        <ion-label floating>Session Name</ion-label>
+        <ion-input type="text" [(ngModel)]="edit_school_session.school_session_name"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="edit_school_session.start_date" max={{maxDate}}></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="edit_school_session.end_date" max={{maxDate}}></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Pay By Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="edit_school_session.pay_by_date" max={{maxDate}}></ion-datetime>
+    </ion-item>
+    <ion-item>
+            <ion-label floating>Number of weeks </ion-label>
+            <ion-input type="number" [(ngModel)]="edit_school_session.no_of_weeks" ></ion-input>
+        </ion-item>
+    
+    <ion-item>
+        <ion-label>Start Time</ion-label>
+        <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="edit_school_session.start_time"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Duration</ion-label>
+        <ion-input type="number" [(ngModel)]="edit_school_session.duration" max="60" min="1"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Group Size</ion-label>
+        <ion-input type="number" [(ngModel)]="edit_school_session.group_size" [disabled]="true" min="1"></ion-input>
+        <button ion-button clear item-right class="help_btn"
+            (click)="editGroupSizeConfirmation()">
+            <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+        </button>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Fees</ion-label>
+        <ion-input type="number" [(ngModel)]="edit_school_session.member_fee" min="1.00"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+        <ion-label>Payment Type</ion-label>
+        <ion-select [(ngModel)]="selectpaymenttype" (ionChange)="onChangePaymentType()">
+            <ion-option value="">Select</ion-option>
+            <ion-option *ngFor="let paymenttype of paymentTypes" value={{paymenttype.value}}>{{paymenttype.value}}</ion-option>
+        </ion-select>
+    </ion-item> -->
+
+    <ion-item class="comments">
+        <ion-label floating>Comments</ion-label>
+        <ion-textarea type="text" [(ngModel)]="edit_school_session.comments"></ion-textarea>
+    </ion-item>
+
+
+    <!-- <ion-item>
+        <ion-row>
+            <ion-col col-12 no-padding class="flex_col">
+                <p class="toggle_para">Auto Enrolment</p>
+                <label class="toggle">
+                    <input type="checkbox" [(ngModel)]="edit_school_session.auto_enrolment">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+            </ion-col>
+        </ion-row>
+    </ion-item> -->
+
+    <ion-item>
+        <ion-row>
+            <ion-col col-12 no-padding class="flex_col">
+                <p class="toggle_para">Allow Childcare Voucher</p>
+                <label class="toggle">
+                    <input type="checkbox" [(ngModel)]="edit_school_session.allow_childcare">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Button Text For Booking </ion-label>
+        <ion-input type="text" [(ngModel)]="edit_school_session.button_text_for_booking"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Button Text For Reserve </ion-label>
+        <ion-input type="text" [(ngModel)]="edit_school_session.button_text_for_reserve"></ion-input>
+    </ion-item>
+
+
+
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelSessionCreation()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="updateSession()">Update</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>

@@ -1,0 +1,128 @@
+<!--
+  Generated template for the SetupdirectdebitfromonthlyPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Monthly Direct Debit</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content *ngIf="mandatesList.length > 0">
+  
+  <p class="member-name">{{memberInfo.FirstName}} {{memberInfo.LastName}}</p>
+  <p class="session-name">{{sessionInfo.SessionName}}</p>
+  <ion-row style="border-top: 2px solid #FFC107;">
+    <ion-col col-12>
+        <ion-slides [slidesPerView]="4.1" >
+            <ion-slide *ngFor="let month of monthlyList;let i = index" (click)="selectMonth(month,i)" [class.changeBack]="selectStartCard == i">
+              <p class="month">{{getMonth(month)}}
+                  <ion-icon name="md-checkmark-circle-outline" class="ticmark" *ngIf="paymentMap.get(month.Key).AmountPayStatus =='Due' && selectStartCard == i" [class.changeBack]="selectStartCard == i"></ion-icon>
+                  <img *ngIf="paymentMap.get(month.Key).AmountPayStatus !='Due'" src="assets/images/acknowledgment.png"
+                    class="dueimage">
+                    <!-- <img  *ngIf="directDebitInfo.has(month.Key)" src="http://www.artp.org.uk/filemanager/root/site_assets/images/membership_dd_button.jpg"  class="DD"> -->
+              </p>
+              <p class="year">{{getYear(month)}}</p>
+            </ion-slide>
+        </ion-slides>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
+      <ion-item style="margin-left: -9px !important;">
+          <ion-label>Payment Date</ion-label>
+          <ion-datetime pickerFormat="DD MMM YYYY" displayFormat="DD"  (ionChange)="changeDate($event)" [(ngModel)]="selectedStartDates" id="startTime" ></ion-datetime>
+      </ion-item>
+     
+    </ion-col>
+    
+  </ion-row>
+  <ion-row>
+   
+    <ion-col col-12>
+        <p class="rec-text">
+            Pay every month <span class="amount">{{currencyDetails.CurrencySymbol}}{{getDecimalAmount(monthlyPayAmount)}}</span> starting <span class="amount">{{getFormatedDate(selectedStartDates)}}</span> <span class="amount">{{selectedMonth.Month}}</span> 
+        </p>
+    </ion-col>
+    <ion-col col-12>
+      <ion-item style="margin-left: -9px !important;">
+        <ion-label fixed>Discount</ion-label>
+        <ion-input type="number" [(ngModel)]="recurringDiscount" (ionChange)="applyDiscountOnRecurring($event)"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-12>
+      <ion-item style="margin-left: -9px !important;">
+          <ion-label>Description</ion-label>
+          <ion-select [(ngModel)]="discount">
+            <ion-option *ngFor="let discount of discounts" value="{discount}">{{discount}}</ion-option>
+          </ion-select>
+      </ion-item>
+      
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12 class="separate-row">
+        <button ion-button block (click)="subscribePayment()">Initiate Payment</button>
+    </ion-col>
+  </ion-row>
+  <ion-grid *ngIf="isTakePreviousAmount">
+      <ion-row *ngFor="let session of oneOffpaymentArray">
+          <ion-col col-4 style="padding:0 !important">
+            <p class="month-name">{{session.Key}}</p>
+          </ion-col>
+          <ion-col col-4 style="padding:0 !important"> 
+              <span class="curr">   {{currencyDetails.CurrencySymbol}}</span>
+              <ion-input [(ngModel)]="session.TotalFeesAmount" type="number" class="one-off-input"></ion-input>
+            </ion-col>
+            <ion-col col-4 style="padding:0 !important">
+              <button ion-button (click)="showShare(session)">pay now</button>
+            </ion-col>
+        </ion-row>
+  </ion-grid>
+  <!-- <ion-item>
+  </ion-item> -->
+    <ion-item class="chk">
+      <ion-label>
+        Take one-off payment prior to monthly payment
+      </ion-label>
+        <ion-checkbox checked="true" [(ngModel)]="isTakePreviousAmount"></ion-checkbox>
+    </ion-item>
+    <div id="myModal1" class="modal" (click)="closeModal()">
+
+     
+      <div class="modal-content">
+        
+          <ion-grid>
+            <ion-row>
+              <ion-col col-12><h3 class="modal-header-text">Choose Mandate</h3></ion-col>
+            </ion-row>
+              <ion-row>
+                <ion-col col-12 (click)="selectMandate(mandate)" *ngFor="let mandate of mandatesList" class="sep-col">
+                  <p class="mandate-id">{{mandate.MandateID}}</p>
+                  <p class="mandate-date">{{getcustomMandateDate(mandate.CreatedDate)}}</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+      </div>
+      </div>
+</ion-content>
+<ion-content *ngIf="mandatesList.length == 0">
+  <p style="text-align:center" class="pt">Please setup direct debit mandate </p>
+  <button ion-button (click)="goToMandateSetup()" block class="set-btn">Setup</button>
+</ion-content>
+<!-- <ion-footer>
+  <ion-row>
+    <ion-col col-6>
+      <div class="due">{{getDecimalAmount(dueAmount)}}</div> 
+      <div class="due">{{getDecimalAmount(monthlyPayAmount)}}</div> 
+    </ion-col>
+    <ion-col col-4>
+   
+    </ion-col>
+  </ion-row>
+</ion-footer> -->

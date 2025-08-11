@@ -1,0 +1,42 @@
+<!--
+  Generated template for the FilterbookingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>Pause Subscription</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-label>Pause Duration</ion-label>
+        <ion-select [(ngModel)]="selectedMonths" placeholder="Select months">
+            <ion-option *ngFor="let month of pause_subscription_months" [value]="month.id">
+                {{ month.month_text }}</ion-option>
+        </ion-select>
+    </ion-item>
+    <div class="ses_update_note">
+        <p style="font-style: italic">Note: When pausing payments, select how many upcoming payment cycles to skip. For
+            example, if monthly payments occur on the 1st of every month and are paused for "1 month" on June 20th, the
+            July 1st payment will be skipped and payments will resume on August 1st.</p>
+    </div>
+    <div class="confirm_dev">
+        <ion-row>
+            <ion-col col-12>
+                <ion-input type="text" [(ngModel)]="confirmText" placeholder="Type 'CONFIRM' here..."></ion-input>
+            </ion-col>
+        </ion-row>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-row>
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" [disabled]="!isFormValid"
+                (click)="onPauseClick(enroledId)">Pause</button>
+        </ion-col>
+    </ion-row>
+</ion-footer>

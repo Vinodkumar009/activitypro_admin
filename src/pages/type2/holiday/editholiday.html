@@ -1,0 +1,111 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Edit holiday</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Edit Holiday
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <!--<form>-->
+
+    <ion-item>
+        <ion-label>Holiday Name</ion-label>
+        <ion-input type="text" [(ngModel)]="slectedHolidayData.HolidayName"></ion-input>
+    </ion-item>
+
+
+    <!--<ion-item>
+            <ion-label>DOB</ion-label>
+            <ion-input type="text" ></ion-input>
+        </ion-item>-->
+    <ion-item>
+        <ion-label>Start Date</ion-label>
+        <!--<ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>-->
+        <ion-datetime pickerFormat="DD MM YYYY" [(ngModel)]="slectedHolidayData.HolidayStartDate" max="2028-10-31"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>End Date</ion-label>
+        <!--<ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>-->
+        <ion-datetime pickerFormat="DD MM YYYY" [(ngModel)]="slectedHolidayData.HolidayEndDate" max="2028-10-31"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Comments</ion-label>
+        <ion-textarea [(ngModel)]="slectedHolidayData.HolidayComments"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label>All Activity</ion-label>
+        <ion-checkbox color="dark" checked="true" [(ngModel)]="slectedHolidayData.IsForAllActivity" (click)="toggolSelectionAll()"></ion-checkbox>
+    </ion-item>
+
+    <div>
+        <ion-card *ngFor="let item of activity">
+            <ion-card-content>
+
+                <ion-item>
+                    <ion-label>{{item.ActivityName}}</ion-label>
+                    <ion-checkbox color="blue" checked="item.isSelect" [(ngModel)]="item.isSelect" (ionChange)="toggolSelectionActivity(item)"></ion-checkbox>
+                </ion-item>
+
+
+
+            </ion-card-content>
+
+
+
+        </ion-card>
+
+    </div>
+
+
+
+
+
+
+
+    <ion-grid>
+        <ion-row>
+
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="updateHoliday()">Save</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+    <!--
+    <button ion-button block>Add Todo</button>-->
+    <!--</form>-->
+
+
+
+
+</ion-content>

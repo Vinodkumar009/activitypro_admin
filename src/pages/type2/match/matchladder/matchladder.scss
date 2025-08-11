@@ -1,0 +1,112 @@
+page-matchladder {
+  // ion-label {
+  //   color: #faae4e;
+  // }
+
+  .segment-button {
+    color: #aba5a5 !important;
+    line-height: 1rem !important;
+  }
+  .segment-activated {
+    color: white !important;
+    background-color: #f6ae4d !important;
+  }
+  .sub-container {
+    ion-icon {
+        width: 90%;
+        height: 46px;
+        background: transparent !important;
+        //margin-top: 4px;
+        //background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+        border-radius: 5px;
+        //color: white;
+        color: rgba(250, 169, 40, 0.827451)
+        //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+    }
+
+    .search-bar{
+        padding: 0px 5px;
+    }
+    .searchbar {
+        border: none !important;
+        background: #f7f7f7 !important;
+        border-radius: 5px !important;
+        height: 86% !important;
+        margin-top: 4px !important;
+        padding: 8px 5px;
+    }
+
+    .searchbar-input {
+        padding-left: 4px !important;
+        box-shadow: none !important;
+        -webkit-box-shadow:none !important;
+        border-bottom: 1px solid #34343442;
+        border-radius: 0;
+        background-color: #f7f7f7 !important;
+        //margin-left:-8px !important;
+    }
+
+    .searchbar-search-icon {
+        display: none !important;
+    }
+
+    ion-icon {
+        font-size: 30px;
+    }
+}
+.dropdownrow{
+ 
+  ion-item{
+      width: 50%;
+      font-size: 16px;
+      color: rgba(0,0,0,0.65);
+      /* border-radius: 6px; */
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+      .item-inner{
+          border-bottom: none;
+      }
+  }
+  ion-select{
+      max-width: 100%;
+      padding: 7px;
+  }
+
+}
+  // .scroll-content {
+  //   padding: 0px !important;
+  //   background-image: none !important;
+  //   // background: white !important;
+  //   background: #f4efef !important;
+  //   // margin-bottom: 60px;
+  // }
+  .card-content {
+    padding: 5px 10px;
+  }
+  .item {
+    // border-bottom: 2px solid #f6ae4d !important;
+    padding-bottom: 10px;
+  }
+  .line {
+    border-right: 2px solid #f6ae4d;
+  }
+  .headings {
+    // color: #154766;
+    color: #4b6051;
+    font-weight: 600;
+    font-size: 16px;
+    border-right: 1px solid #faae4e;
+    padding-left: 5px;
+  }
+  .rightheading {
+    color: #4b6051;
+    font-weight: 600;
+    font-size: 16px;
+    padding-left: 5px;
+  }
+  .name {
+    font-size: 20px;
+    color: #707070 !important;
+    // font-weight: 500;
+  }
+}

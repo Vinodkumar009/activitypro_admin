@@ -1,0 +1,327 @@
+page-addroleforplayernstaff {
+  .scroll-content {
+    padding: 0px !important;
+    background-image: none !important;
+    // background: white !important;
+    background: #f4efef !important;
+    // margin-bottom: 60px;
+  }
+
+  .foobtn {
+    background-color: #5be283;
+    height: 3.6rem;
+    font-size: 1.4rem;
+  }
+
+  ion-card {
+    margin: 0px !important;
+    width: 100% !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    // border-bottom: 1px solid #f6ae4d !important;
+  }
+
+  ion-card-content {
+    padding: 0px !important;
+  }
+
+  .border-left-style {
+    height: 70px;
+    position: absolute;
+    top: 35px;
+    left: 7px;
+  }
+
+
+  .matchesplayed {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    color: #4b6051;
+
+    //font-weight: 600;
+    ion-card-content {
+      padding: 0 5px;
+    }
+  }
+
+  .searchbar-input {
+    border-bottom: 1px solid #141414;
+    box-shadow: none !important;
+  }
+
+  .search {
+    padding: 0 0 -50px 0;
+  }
+
+  .matchcard {
+    margin: 15 10px;
+    padding: 5 5px;
+    border-radius: 12px;
+
+    ion-card-content {
+      padding: 0 5px;
+      justify-content: right;
+    }
+
+    -webkit-box-shadow: 0px 2px 8px -1px #b4b3b7;
+    box-shadow: 0px 3px 4px -1px #b4b3b7;
+  }
+
+  .date {
+    padding: 0 5px;
+    font-size: 19px;
+    color: black;
+    font-weight: 600;
+  }
+
+  .host {
+    padding: 0 0 0 5px;
+    font-size: 17px;
+    color: #4b6051;
+    font-weight: 600;
+  }
+
+
+
+  .selected {
+    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+    // border: 1.5px solid #2b92bb;
+    color: #2b92bb !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 10px;
+  }
+
+  .select-type {
+    text-transform: capitalize;
+    background-color: transparent;
+    width: 95%;
+    margin: 0px !important;
+    color: #707070;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+
+
+
+
+  .marginleftright {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  .right_pad {
+    padding-right: 0px;
+  }
+
+  .left_pad {
+    padding-left: 0px;
+  }
+
+  .points {
+    .text-input {
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+
+  ion-select {
+    padding: 0px !important;
+    max-width: 100%;
+
+    .select-icon {
+      width: 17px !important;
+    }
+  }
+
+  .dropdown {
+    padding-left: 2px !important;
+  }
+
+  .margin_bottom {
+    margin-top: 6px !important;
+    min-height: 3.3rem !important;
+
+    .item-inner {
+      padding-left: 5px !important;
+      border: 1px solid #eb464f !important;
+    }
+  }
+
+  .margin_auto {
+    margin: auto;
+  }
+
+
+  .textcenter {
+    text-align: center;
+  }
+
+  .card_content {
+    padding: 0px !important;
+    background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+  }
+
+  .pmargin {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  // .scroll-content {
+  //   background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+  //   background-image: none !important;
+  // }
+
+  .member-item {
+    .item-inner {
+      border-bottom: none !important;
+      //border-bottom: 1px solid #faa928d3 !important;
+    }
+
+
+  }
+
+  .checkbox-icon {
+    border-radius: 50% !important;
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .checkbox-checked {
+    border-color: green !important;
+    background-color: green !important;
+
+    .checkbox-inner {
+      left: 9px !important;
+      top: 3px !important;
+      position: absolute !important;
+      width: 7px !important;
+      height: 16px !important;
+    }
+  }
+
+  .checkbox {
+    //margin: 9px 14px 0px -13px !important;
+    margin: 1px 9px 0px -14px !important;
+  }
+
+  .member-item {
+    background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+  }
+
+  .comments_item {
+
+    // position: absolute;
+    // bottom: 20px; 
+    // left: 0px;
+    // border-bottom:none !important;
+    ion-textarea {
+      border: 0.5px solid rgba(0, 0, 0, 0.50);
+      border-radius: 5px;
+
+      .text-input .text-input-md {
+        margin: 8px 8px !important;
+      }
+    }
+
+    .item-inner {
+      border-bottom: none !important;
+    }
+  }
+
+  .scroll-content {
+    background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+  }
+
+  .padding0 {
+    padding: 0 !important;
+  }
+
+  .back-row {
+    box-shadow: 0px -1px 31px 4px #8db07c;
+    width: 96%;
+    margin-left: 2%;
+    background: #6fb754;
+  }
+
+  .right-align {
+    position: absolute;
+    right: 1px;
+  }
+
+  .item-md.item-input.input-has-focus .item-inner {
+    border-bottom-color: #dedede !important;
+    box-shadow: none !important;
+  }
+
+
+  .card_list {
+    margin: 3px !important;
+    width: 98%;
+    //border-bottom: 2px solid #faa928d3;
+    box-shadow: none !important;
+    margin-top: 12px;
+    box-shadow: none !important;
+    margin: 0px !important;
+    width: 100% !important;
+  }
+
+  .gold_border_bottom {
+    border-bottom: 2px solid #faa928d3;
+  }
+
+  .margin-bottom-2 {
+    margin-bottom: 1.5px;
+  }
+
+  .dotted1 {
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 18px;
+    //color: white;
+    color: #114a70;
+    margin: 0px;
+    font-weight: bold;
+  }
+
+  .coachname {
+    color: #2a5168;
+    font-weight: 500;
+    margin: 0px;
+  }
+
+  .img1 {
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+    margin: auto;
+    border: 1px solid #d5d7dd;
+  }
+
+  .border-left {
+    border-left: .02em solid #d5d7dd;
+    padding: 12px 0px 0px 8px;
+    margin: auto;
+  }
+
+  .hadder-card {
+    background: #F2F5FA;
+  }
+
+  .dotted {
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    color: #2a5168;
+    font-weight: 500;
+    margin: 0px;
+  }
+}

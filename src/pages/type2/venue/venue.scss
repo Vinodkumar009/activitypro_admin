@@ -1,0 +1,86 @@
+venue-page{
+    
+    .social-cards {
+        padding: 0;
+     }
+     .btn-clr{
+         color: $dashoboard-icon-color;
+     }
+     ion-item h2{
+         color: $dashoboard-icon-color !important;
+     }
+    //  .scroll-content {
+    //     margin-top: 44px !important; 
+    //     padding: 6px !important;
+    //     background-image: none !important; // background: white !important;
+    //     background: #f4efef !important;
+    // }
+     .cross {
+         background-color: white;
+     }
+     .search_add{
+         background-color: transparent;
+         padding-left: 6px;
+     }
+     .right{
+         float: right;
+     }
+     .search_add{
+         .item-inner{
+             border-bottom: 0px !important;
+             ion-icon{
+                 margin-top: 18px;
+             }
+             div{
+                 ion-label{
+                     //margin-top: 0px;
+                     margin-bottom: 0px;
+                 }
+             }
+         }
+
+     }
+     .block_height {
+        height: 78%;
+    }
+    .card-md p {
+        margin: 0 0 0px;
+        font-size: 1.3rem;
+        font-weight: normal;
+        line-height: 1.4;
+        color: #222;
+    }
+    .ion-item-lable{
+        div{
+            ion-icon{
+                margin:0px 0px 9px 0px !important;
+            }
+            div{
+                ion-label{
+                    margin: 0px 0px 0px 0px;
+                }
+            }
+        }
+    }
+    .slidingcards {
+   // margin-bottom: 5px;
+   // border-top: 6px solid rgba(94, 199, 130, 0.79);
+  //  margin-bottom: 7px;
+    //border-top: 5px solid rgba(25, 92, 170, 0.79);
+    //margin-bottom: 4px;
+    //border-top: 7px solid rgba(236, 117, 21, 0.63);
+    //border-bottom: 2px solid rgba(180, 24, 148, 0.73);
+    // margin-bottom: 7px;
+    //border-top: 5px solid rgba(25, 92, 170, 0.79);
+    //border-bottom: 2px solid rgba(236, 117, 21, 0.63);
+    box-shadow: -1px 3px 6px rgba(142, 151, 152, 0.39);
+    margin-bottom: 7px;
+    border-bottom: 1px solid orange;
+  }
+//   .slidingcards :last-child {
+//   border-bottom: 5px solid #4180c1;
+//   }
+    .back-button {
+        display: block !important;
+    }
+}

@@ -1,0 +1,90 @@
+<ion-content padding class="loginbg">
+    <!--<p *ngFor="let user of usersList">{{user.EmailID}}</p>-->
+    
+
+            <!-- <ion-row>
+                    <ion-col col-12 class="logo-block">
+                        <img src="assets/images/logo.png" class="logo-img">
+                    </ion-col>
+                </ion-row> 
+                 [ngStyle]="{'background-image': 'url('+backUrl+')'}"-->
+            <div class="backgroundurl">
+                <div id="divlogo"  text-center>
+      
+                    <!-- <img src="assets/images/logo.svg" id="logo" class="parentimg" > -->
+                    <img src="assets/images/bgi.jpeg" class="parentimg" style="top: 26%;">
+                    
+                    <div>
+                        <!-- <img src="assets/images/bgi.png" class="parentimg" style="top: 26%;"> -->
+                        <div style="background: rgba(228, 229, 244, 0);">
+                                <!-- <ion-row class="login-inputfields">
+                                        <ion-col col-12>
+                                            <ion-item class="login-input">
+                                                <ion-label stacked >Email</ion-label>
+                                                <ion-label ><ion-icon name="mail"></ion-icon></ion-label>
+                                                <ion-input type="email" style="width: 78%;
+                                                margin: -30px 0px 8px 32px;" [(ngModel)]="user.emailID"></ion-input>
+                    
+                                            </ion-item>
+                                            <ion-item class="login-input">
+                                                <ion-label stacked >Password</ion-label>
+                                                <ion-label ><ion-icon name="lock"></ion-icon></ion-label>
+                                                <ion-input type="password" style="width: 78%;
+                                                margin: -30px 0px 8px 32px;" [(ngModel)]="user.password"></ion-input>
+                                            </ion-item>
+                                            <button ion-button block (click)="login()" class="login_btn">Login</button>
+                                            <p class="ForgotPassword">
+                                                <span (click)="goToForgotPassword()" class="underline">Forgot Password?</span>
+                                            </p>
+                                        </ion-col>
+                                </ion-row> -->
+                          
+                          
+                          
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ion-grid class="input-grid">
+                <!-- <ion-row>
+                    <ion-col>
+                        <p class="label-text">Email</p>
+                    </ion-col>
+                </ion-row> -->
+                <ion-row class="input-row">
+                    <ion-col col-1>
+                        <ion-icon name="mail" class="input-icon"></ion-icon>
+                    </ion-col>
+                    <ion-col col-11 class="input-col">
+                        <ion-input type="email"[(ngModel)]="user.emailID" placeholder="Email" id="admin_input" name="admin_input"></ion-input>
+                    </ion-col>
+                </ion-row>
+                <!-- <ion-row class="mar-top-10">
+                    <ion-col>
+                        <p class="label-text">Password</p>
+                    </ion-col>
+                </ion-row> -->
+                <ion-row class="input-row">
+                    <ion-col col-1>
+                        <ion-icon name="lock" class="input-icon"></ion-icon>
+                    </ion-col>
+                    <ion-col col-11 class="input-col">
+                        <ion-input type="email"[(ngModel)]="user.password" placeholder="Password" type="password" id="admin_password" name="admin_password"></ion-input>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col style="padding: 0;" col-12>
+                        <p style="text-align: right;">
+                            <span (click)="goToForgotPassword()" class="underline" item-right>Forgot Password?</span>
+                        </p>
+                    </ion-col>
+                    <ion-col col-12>
+                        <button ion-button block (click)="login()" class="login_btn" id="login-btn">Login</button>
+                        <!-- <p class="ForgotPassword">
+                            <span class="noacc" (click)="goToContactUs()">Don't have an account? <span style="color: #fb8c00;">Contact Us!</span></span>
+                        </p> -->
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+</ion-content> 

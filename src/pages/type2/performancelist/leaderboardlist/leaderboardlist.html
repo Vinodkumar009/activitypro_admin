@@ -1,0 +1,85 @@
+<!--
+  Generated template for the LeaderboardlistPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Leaderboard</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row class="border-bottom-2px">
+    <ion-col col-12 class="nopad">
+      <ion-row class="ses_tabs">
+        <!-- <ion-col col-6 [ngClass]="{'active':sessionType==3}" (click)="SelectDuration(3)">
+          <p>Monthly</p>
+        </ion-col>
+        <ion-col col-6 [ngClass]="{'active':sessionType==1}" (click)="SelectDuration(1)">
+          <p>Weekly</p>
+        </ion-col> -->
+        <!-- <ion-col col-4 [ngClass]="{'active':sessionType==2}" (click)="SelectDuration(2)">
+          <p>Term</p>
+        </ion-col> -->
+        <ion-col col-12 no-padding>
+          <ion-item class="date_item">
+            <ion-label>Choose Date</ion-label>
+            <ion-datetime displayFormat="MMM YYYY" pickerFormat="MMM YYYY"
+                [(ngModel)]="board_date" min={{minDate}} max={{maxDate}}
+                (ionChange)="getLeaderboard()"></ion-datetime>
+         </ion-item> 
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col col-12 class="nopad" >
+      <ion-row>
+        <ion-col col-12 class="slides_col">
+          <ion-slides class="group-slides" [slidesPerView]="3">
+            <ion-slide *ngFor="let age of ageCategories;let i=index">
+              <ion-card  class="ageCard" [class.selected]="age.isSelected" (click)="selectAge(i)">
+             <ion-card-content>
+               <p class="facilities-text">{{age.CategoryName}}</p>
+               <p class="age-text">( {{age.AgeFrom}} - {{age.AgeTo}} Years )</p>
+             </ion-card-content>
+           </ion-card>
+            </ion-slide>
+          </ion-slides>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <!-- <ion-col col-12 class="nopad">
+      <ion-item class="venueionitem">
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()" class="venuedropdown">
+          <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-col> -->
+    
+  </ion-row>
+  <ion-row>
+    <ion-col col-12 no-padding>
+      <ion-list>
+        <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
+            *ngFor="let leaderboard of Leaderboard;let i=index">
+            <ion-card-content (click)="goToPage(i)">
+              <ion-row>
+                <ion-col col-8>
+                  <p class="p1">{{leaderboard.FirstName}} {{leaderboard.LastName}}</p>
+                </ion-col>
+                <ion-col col-4 class="catg_age_col">
+                  <p class="p2"><span>{{leaderboard.EarnedPoints}}</span></p>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+      </ion-list>
+    </ion-col>
+    <ion-col col-12 text-center *ngIf="Leaderboard.length == 0">
+      <p style="font-size: 20px;font-weight:500">No data found...</p>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,65 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Book</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+
+  <ion-row style="margin-top: 12px;" class="venuerow">
+    <ion-col col-1 text-center>
+      <ion-icon style="    font-size: 23px;
+      color: #2B92BB;" name="md-bookmark"></ion-icon>
+    </ion-col>
+    <ion-col style=" padding: 5px 0px;text-align: end;" col-3>
+      <p>Booked for </p>
+    </ion-col>
+    <ion-col style="
+    font-weight: 500;" col-6 text-left>
+      <ion-select [(ngModel)]="forWhom" (ionChange)="showDetails()">
+        <ion-option  *ngFor="let whom of bookeedforList" value={{whom.code}}>{{whom.name}}</ion-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="venuerow">
+    <ion-col col-12>
+      <ion-input type="text" placeholder="Purpose" [(ngModel)]="purpose"></ion-input>
+    </ion-col>
+  </ion-row>
+  
+
+  <ion-row >
+    <ion-col class="slotheading" col-12>
+      <p>Slots selected for ({{dmmmyyyformatDtae}})</p>
+    </ion-col>
+    <ion-col col-4 *ngFor="let court of selectedSlots">
+      <ion-card class="court"  >
+        <ion-card-content class="padding-0 slots">
+  
+         <span class="time">{{court.StartHour}}:{{court.StartMin}}</span>-<span class="time">{{court.EndHour}}:{{court.EndMin}}</span> 
+  
+         <p class="amount" *ngIf="court.Price != 0 && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{court.Price}}</p>
+         
+         <!-- <p class="amount" *ngIf="court.Price == 0 && court.text && court.IsEnable == true">{{court.text}}</p>  -->
+         <p class="amount" *ngIf="court.Price == 0 && court.text && court.IsEnable == true">{{court.courtName}}</p>   
+        
+         <p *ngIf="court.IsEnable == false">{{court.MemberName}}</p>
+        </ion-card-content>
+        
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+
+</ion-content>
+<ion-footer *ngIf="noOfSlootBook > 0" class="animate-zoom" no-border>
+    <button ion-button (click)="bookslotforamin()" class="next-btn">Book
+    </button>
+</ion-footer>
+
+

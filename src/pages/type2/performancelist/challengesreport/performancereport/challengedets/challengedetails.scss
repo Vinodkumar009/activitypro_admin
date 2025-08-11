@@ -1,0 +1,123 @@
+page-challengedetails {
+    .scroll-content {
+        //margin-top: 65px !important; 
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+    .toolbar-title {
+        color:#fff !important;
+    }
+    .pending_para{
+        color:red;
+    }
+    .margin-3-0{
+        margin:3px 0px ;
+    }
+    .approved_para{
+        color:green;
+    }
+    .fabEmailText {
+        margin-left: -122px;
+        background-color: #f0f0f3;
+        padding: 8px 12px 8px 11px;
+        margin-bottom: -44px;
+        color: #202021;
+        border-radius: 3px;
+        margin-right: 55px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+    ion-fab {
+        //bottom: 40px !important;
+        button{
+            background-color: #2b92bb !important;
+            color: white !important;
+        }
+    }
+
+    
+    .choose-row {
+        // width: 106%;
+        margin-bottom: 5px;
+        padding:0px 5px;
+        button{
+            text-transform: capitalize !important;
+            font-size: 17px;
+        }
+        ion-col {
+            padding: 0 !important
+        }
+    }
+    .select-type{
+        ///background-color: rgb(234, 234, 234) !important ;
+        background-color:transparent !important;
+        width: 102%;
+        margin: 0px !important;
+        //color: #fab754 !important;
+        color:rgba(0, 0, 0, 0.85) !important;
+        border-radius: 0px !important;
+        box-shadow: none;
+    }
+    .selected{
+        //background: #fab754 !important;
+        background-color:transparent !important;
+        border-bottom: 1.5px solid #fab754;
+        color:rgba(0, 0, 0, 0.85) !important;
+        box-shadow: none;
+    }
+    .tab_header{
+        color:rgba(0,0,0,0.85) !important;
+    }
+    .trns_count{
+        color:rgba(0,0,0,0.65) !important;
+    }
+    .innercard_style{
+        height: 9vh;
+        border-left: 2px solid #35adff;
+        padding: 3px 5px 0px 0px;
+        margin: 0px 10px 4px 0px;
+        width: 100%;
+        background: #fff;
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+       // border-bottom: 1px solid orange;
+    }
+    .margin-auto{
+        margin:auto;
+    }
+    .transactiondate {
+        line-height: 14px;
+        font-size: 12px;
+        margin: 3px;
+    }
+    .member_name{
+        font-weight: 500;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    .paymentOption{
+        font-weight: 500;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.65);
+    }
+    .amt{
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.85);
+        margin:0px 0px 3px 0px;
+    }
+    .mem_col{
+        padding: 5px 0px 0px 10px;
+        p{
+            margin:0px 0px 3px 0px;
+        }
+    }
+    .border-left {
+        border-left: .02em solid #bebcbc;
+        padding: 0px 0px 0px 6px;
+    }
+    .forward_icon {
+        color: #7a7878 !important;
+        font-size: 25px !important;
+    }
+}

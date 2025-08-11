@@ -1,0 +1,248 @@
+page-weeklysessiondets {
+    .scroll-content {
+        // margin-top: 43px !important;
+        background-image: none !important;
+        padding: 0px !important;
+    }
+    .header-ios .toolbar-ios:last-child .toolbar-background-ios {
+       border:none !important;
+    }
+    // .header {
+    //     background: #1b2b3b;
+    //     color: rgb(230, 217, 217);
+    // }
+    // .containers {
+    //     margin-left: 2%;
+    //     margin-right: 2%;
+    //     background: rgba(231, 222, 222, 0.55);
+    //     border-radius: 9px;
+    //     -webkit-transform: translate(0px, -36px);
+    //     transform: translate(0px, -27px);
+    //     padding: 2px 7px 14px 8px;
+    // }
+    .passcode{
+        line-height: 10px;
+        font-size: 14px;
+        color: #343434a8;
+        font-style: italic;
+    }
+    
+    .card {
+        border-radius: 5px;
+    }
+    .pending{
+        line-height: 20px;
+        font-size: 15px;
+        text-align: right;
+        color: rgba(255, 0, 0,0.85);
+        font-style: italic;
+    }
+    .arrow {
+        transform: translate(0%, 80%);
+    }
+    .foot {
+        float: right;
+        transform: translate(0%, -130%)
+    }
+    .body {
+        transform: translate(20%, -50%);
+    }
+    .head {
+        transform: translate(0%, 50%);
+    }
+    #icon2 {
+        float: right;
+        transform: translate(0%, 60%);
+    }
+    .text_div {
+        transform: translate(7%, -50%);
+        border-left: 2px solid silver;
+    }
+    .text {
+        transform: translate(5%, 0%);
+    }
+    .content {
+        margin-bottom: -9%;
+    }
+    .name {
+        font-size: 20px;
+    }
+
+
+
+    .block {
+        background-color: #F2F5FA;
+        padding: 10px;
+        border-bottom: 1px solid #FF9800;
+    }
+    .session {
+        font-size: 20px; // color: #375e6d;
+        color: #114a70;
+        margin: 0px;
+        font-weight: bold;
+    }
+    .sessiondate {
+        font-size: 16px;
+    }
+    .themeheaderfont {
+        color: #021c2e;
+        font-size: 13px;
+        margin: -3px 5px 11px 1px;
+        font-weight: 500;
+    }
+    .cust_margin {
+        margin: 3px;
+    }
+    .margin_auto{
+        margin:auto;
+    }
+    .img1 {
+        width: 50px;
+        height: 50px;
+        border-radius: 30px;
+        margin-left: 9px; // border: 1px solid #4babdf;
+        border: 1px solid #d5d7dd;
+    }
+    .coachname {
+        color: #2a5168;
+        font-weight: 500;
+        margin: 0px;
+    }
+    .border-left {
+        border-left: .02em solid #d5d7dd;
+        padding: 0px 0px 0px 3px;
+    }
+    .sessionName {
+        color: #042133;
+        font-size: 15px;
+        font-weight: 500;
+        text-transform: capitalize;
+        ion-icon{
+            font-size: 25px;
+            right: 14px;
+            margin-left:5px;
+        }
+    }
+    .activity {
+        color: #2a5168;
+        font-size: 14px;
+        //font-style: italic;
+        font-weight: 500;
+    }
+    .venuename {
+        color: #2a5168;
+        font-size: 15px;
+        font-weight: 500;
+    }
+    .ellipse {
+        display: inline-block;
+        width: 95%;
+        white-space: nowrap;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+    }
+    .fabicon {
+        margin: -7px !important;
+        background-color: #2b92bb;
+    }
+
+
+
+    .session_name {
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #505050 !important;
+        font-family: 'Oswald', sans-serif !important;
+        margin: 4px;
+        ion-icon{
+            font-size: 1.4em;
+            margin: -5px 0px 0px 4px;
+        }
+    }
+    .person_name {
+        font-size: 14px !important;
+        color: #505050 !important;
+        font-family: 'Oswald', sans-serif !important;
+       // margin: 4px;
+    }
+    .moneypaid {
+        line-height: 15px;
+        text-align: center;
+        /* float: right; */
+        font-weight: bold;
+        color: green;
+    }
+    
+    .transactiondate {
+        line-height: 14px;
+        font-size: 12px;
+        text-align: center;
+        color: #aaada8;
+        font-style: italic;
+    }
+    
+    .due {
+        color: red;
+        font-size: 25px;
+        margin-top: 4px;
+    }
+    .pv {
+        font-size: 25px;
+        color: #128fa5;
+        margin-top: 4px;
+    }
+    .paid {
+        font-size: 25px;
+        color: green;
+        margin-top: 4px;
+    }
+    .innerblock {
+        margin: 3px 3px 6px 17px;
+    }
+    .membersessioncard {
+        margin: 7px 0px 0px 0px;
+        width: 100%; // background: linear-gradient(to right, #3ebbd1, white);
+        background: linear-gradient(to right, #3ebbd1, #c5e0e7);
+        color: white;
+    }
+   
+    .dueimage {
+        height: 43px;
+        margin-top: -6px;
+        width: 38px;
+        float: right;
+    }
+    .membercard {
+        border-left: 3px solid $themecardleftbordercolor;
+        border-bottom: 1px solid #FF9800;
+        ion-card-content {
+            padding: 5px 0px 5px 5px;
+        }
+        ion-col img{
+            width: 20px;
+            height: 20px;
+        }
+    }
+    .centerfab {
+        text-align: center;
+    }
+    
+    .fabTop {
+        margin-bottom: 13px;
+    }
+    
+    .fabEmailText {
+        width:108px;
+        text-align: center;
+        margin-left: -119px;
+        background-color:#2b92bb !important ;
+        margin-top: -47px;
+        padding: 6px 12px 6px 11px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        border-radius: 3px;
+        margin-right: 40px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+}

@@ -1,0 +1,42 @@
+page-note {
+    .scroll-content {
+        background-image:none !important;
+    }
+    ion-card-header{
+        padding: 0px !important;
+        p{
+            
+           // color: #f6ba63 !important;
+            font-size: 16px;
+            padding:!important;
+        }
+    }
+    ion-card-content{
+        padding: 0px !important;
+        p{
+           
+            color: gray !important;
+        
+        }
+    }
+    ion-card{
+        border-bottom: 2px solid #faa928d3 !important;
+    }
+    .mem-name{
+        color: #ef9f2e !important;
+         font-size: 15px !important;
+    }
+    .note-con{
+        color: gray;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    ion-card-content{
+        border-top: 1px solid gray !important;
+    }
+    ion-card{
+        padding: 10px !important;
+       // border-left: 3px solid #35adff;
+    }
+}

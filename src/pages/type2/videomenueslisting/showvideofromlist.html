@@ -1,0 +1,81 @@
+<!--
+  Generated template for the ShowvideofromlistPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{activityName}}
+      <img src="assets/images/share.png" class="shareimg" (click)="showShare()">
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+    <ion-slides (ionSlideDidChange)="slideChanged()">
+      <ion-slide>
+          <div>
+              <iframe width="100%" height="100%" [src]="url" frameborder="0" allow="encrypted-media"   allowfullscreen></iframe>     
+            </div>
+            <div class="header_text" *ngIf="HeaderInfo.video_title != undefined">
+              <h4> {{HeaderInfo.video_title}}</h4>
+              <p class="rest"><span class="leftspan">{{getTime(HeaderInfo.created_at)}} ago</span> | <span class="rightspan"> {{HeaderInfo.associated_activity}}</span></p> 
+              <p class="description" style="margin-top: -23px;" >
+                {{HeaderInfo.video_description}}
+              </p>
+               </div> 
+      </ion-slide>
+        <ion-slide *ngFor="let vid of VideoMenuList;let i = index">
+            <div>
+                <iframe width="380" height="200" [src]="vid.VideoURL" frameborder="0"  allowfullscreen></iframe>     
+              </div>
+              <div class="header_text" *ngIf="HeaderInfo.video_title != undefined">
+                <h4> {{vid.video_title}}</h4>
+                <p class="rest"><span class="leftspan">{{getTime(vid.created_at)}} ago</span> | <span class="rightspan"> {{vid.associated_activity}}</span></p>  
+                 </div> 
+                 <p class="description" style="margin-top: -23px;" >
+                  {{vid.video_description}}
+                </p>
+        </ion-slide>
+      </ion-slides>
+  <!-- <div>
+    <iframe *ngIf="HeaderInfo.VideoURL != null && HeaderInfo.VideoURL != undefined" width="350" height="200" [src]="safe(HeaderInfo.VideoURL)" frameborder="0" allow="autoplay" data-autoplay="true" allowfullscreen></iframe>     
+  </div>
+  <div class="header_text" *ngIf="HeaderInfo.VideoTitle != undefined">
+    <h4> {{HeaderInfo.VideoTitle}}</h4>
+      <p><span class="leftspan">{{getTime(HeaderInfo.Createddate)}} ago</span> | <span class="rightspan"> {{HeaderInfo.AssociatedActivity}}</span></p> -->
+    <!-- </div> --> 
+    <div id="myModal4" class="modal" (click)="closeModal()">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        
+          <ion-grid>
+            <ion-row>
+              <ion-col col-9><h3>Share</h3></ion-col>
+              <ion-col col-3> <ion-icon name="add" class="backbtn" (click)="close()"></ion-icon></ion-col>
+            </ion-row>
+              <ion-row>
+                <ion-col col-12 (click)="shareViaWhatsApp()">
+                  <ion-icon name="logo-whatsapp" class="images" style="color: #3caf3c"  > </ion-icon ><span class="name">WhatsApp</span>
+                </ion-col>
+                <ion-col col-12 (click)="shareViaFacebook()">
+                  <ion-icon name="logo-facebook" class="images" style="color: #1c71b9" > </ion-icon><span class="name">Facebook</span>
+                </ion-col>
+                <ion-col col-12 (click)="shareViaTwitter()">
+                    <ion-icon name="logo-twitter" class="images" style="color: #2cc1e2" ></ion-icon><span class="name">Twitter</span>
+                  </ion-col>
+                  <ion-col col-12 (click)="shareViaInstagram()">
+                      <img src="https://www.designpieces.com/wp-content/uploads/2016/05/Instagram-v051916-150x150.png" class="insta"><span class="name">Instagram</span>
+                  </ion-col>
+                  <ion-col col-12 (click)="shareViaEmail()">
+                    <ion-icon name="mail" class="images" style="color: #9e1d1d;font-size: 31px;" ></ion-icon><span class="name">Email</span>
+                  </ion-col>
+              </ion-row>
+             
+            </ion-grid>
+      </div>
+      </div>
+</ion-content>

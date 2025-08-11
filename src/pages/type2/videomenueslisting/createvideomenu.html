@@ -1,0 +1,78 @@
+<!--
+  Generated template for the CreatevideomenuPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header no-border>
+
+  <ion-navbar>
+    <ion-title class="icontitle">{{LangObj.create_video_title}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-label class="act">{{LangObj.create_video_activities}}</ion-label> 
+        <ion-select [(ngModel)]="selectedActivity">
+          <ion-option  *ngFor="let activity of activityList" value={{activity.ActivityKey}}>{{activity.ActivityName}}</ion-option>
+        </ion-select>
+      </ion-item>
+  <ion-item>
+    <!-- <ion-label floating>{{LangObj.create_video_videourl}}</ion-label> -->
+    <ion-textarea class="textarea" type="text" rows="4" placeholder="{{LangObj.create_video_videourl}}" [(ngModel)]="videoData.video_url"></ion-textarea>
+    <button ion-button clear item-right class="help_btn" (click)="showToaster()">
+      <img style="width: 50%;" src="assets/images/info.svg">
+    </button>
+</ion-item>
+<ion-item>
+  <ion-label floating>{{LangObj.create_video_header}}</ion-label>
+  <ion-textarea type="text" rows="1" [(ngModel)]="videoData.video_title"></ion-textarea>
+</ion-item>
+<ion-item>
+  <ion-textarea class="textarea" type="text" rows="5" style="white-space:pre-wrap;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);" placeholder="Description"  [(ngModel)]="videoData.video_description" (ionFocus)="focusedOnTextArea()"></ion-textarea>
+</ion-item>
+<ion-item>
+  <ion-label floating>{{LangObj.create_video_tag}}</ion-label>
+  <ion-input type="text" [(ngModel)]="videoData.video_tag"></ion-input>
+</ion-item>
+
+<ion-row class="toggle_row">
+  <ion-col col-9 class="flex_col" style="margin:auto">
+    <p class="custom_toggle_para">Show in AP Plus</p>
+  </ion-col>
+  <ion-col col-3>
+    <label class="custom_toggle">
+      <input type="checkbox" [(ngModel)]="videoData.is_show_applus">
+      <span data-unchecked="No" data-checked="Yes"></span>
+    </label>
+  </ion-col>
+</ion-row>
+
+
+ <!-- we are not showing the below one as shubhankar said -->
+<!-- <ion-row class="toggle_row">
+  <ion-col col-9 class="flex_col" style="margin:auto">
+    <p class="custom_toggle_para">Show In MemberApp</p>
+  </ion-col>
+  <ion-col col-3>
+    <label class="custom_toggle">
+      <input type="checkbox" [(ngModel)]="videoObj.ShowInMemberApp">
+      <span data-unchecked="No" data-checked="Yes"></span>
+    </label>
+  </ion-col>
+</ion-row> -->
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-6>
+        <button ion-button block  style="background-color:#bc2219;" (click)="resetVideo()">{{LangObj.create_video_cancel}}</button>
+    </ion-col>
+    <ion-col col-6 >
+        <button ion-button block class="timekare-primary-btn" (click)="addNewVideos()">{{LangObj.create_video_save}}</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

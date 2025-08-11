@@ -1,0 +1,195 @@
+<!--
+  Generated template for the TeamdetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Team Details</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="home"></ion-icon>
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <div *ngIf="teamsForParentClub">
+    <div style="background-color: #f2f5fa">
+      <ion-row row-12>
+        <ion-col col-7>
+          <ion-row class="cardrow">
+            <p style="font-weight: 600" class="largetext">
+              {{teamsForParentClub.teamName}}
+            </p>
+
+            <p class="largetext">
+
+            </p>
+          </ion-row>
+          <ion-row class="cardrow">
+            <p class="largetext" *ngIf="team.activity">{{teamsForParentClub?.activity?.ActivityName}} </p>
+            <p class="largetext"> </p>
+          </ion-row>
+          <ion-row class="cardrow">
+            <p class="smalltext">Age Group:{{teamsForParentClub.ageGroup}}</p>
+          </ion-row>
+
+          <ion-row class="cardrow">
+            <ion-icon class="smalltext" name="locate" style="color: #2b92bb"></ion-icon>
+
+            <p class="smalltext">{{teamsForParentClub.club.ClubName}}</p>
+          </ion-row>
+
+        </ion-col>
+        <ion-col col-5>
+
+          <div style="position: absolute;top:0px;right:1px;display:flex;align-items: center;padding-right: 9px;
+              padding-top: 4px;">
+            <ion-icon style="padding-left: 20px; color: #2b92bb;font-size: 1.5em;" name="ios-lock-outline"></ion-icon>
+            <p class="smalltext">{{teamsForParentClub.teamVisibility==0?"Public":"Private"}}</p>
+          </div>
+
+
+          <div>
+
+
+            <ion-fab right style="top: 27px;">
+              <button ion-fab mini style="background-color: #2b92bb" style="
+                background-color: #2b92bb !important;
+                color: white !important;
+              " (click)="gotoEditTeam()">
+                <ion-icon name="md-create"></ion-icon>
+              </button>
+            </ion-fab>
+
+            <ion-fab right bottom>
+              <button *ngIf="playerType" class="alignElement" ion-fab mini style="background-color: #2b92bb" style="
+                    background-color: #2b92bb !important;
+                    color: white !important;
+                  " (click)="gotoMultiplayeremailPage()">
+                <ion-icon name="md-mail"></ion-icon>
+              </button>
+
+              <button *ngIf="!playerType" class="alignElement" ion-fab mini style="background-color: #2b92bb" style="
+              background-color: #2b92bb !important;
+              color: white !important;
+            " (click)="gotoMemberemailPage()">
+                <ion-icon name="md-mail"></ion-icon>
+              </button>
+
+              <button class="alignElement" ion-fab mini style="background-color: #2b92bb" style="
+            background-color: #2b92bb !important;
+            color: white !important;
+          " (click)="removeteam()">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+            </ion-fab>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+
+
+
+  <!-- middle toggle button -->
+  <div style="padding-bottom: 10px">
+    <ion-card style="width: 100%; margin: 0px">
+      <ion-card-content style="padding: 0px">
+        <ion-row>
+          <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(true)" [class.selected]="playerType">
+              Players({{participantCount}})
+            </button>
+          </ion-col>
+          <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(false)" [class.selected]="!playerType">
+              Staffs({{staffCount}})
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="playerType">
+    <div>
+
+      <ion-row class="sub-container rows-allign2">
+        <ion-col col-1 style="text-align:center;margin:auto;">
+          <ion-icon name="ios-search"></ion-icon>
+        </ion-col>
+        <ion-col col-11 class="search-bar">
+          <ion-searchbar placeholder="Search Players by Name" id="customsearchbar"
+            (ionInput)="getFilteredPlayer($event)" showCanelButton="shouldShowCancel" autocorrect="off"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+    </div>
+
+
+
+    <ion-card class="cardStyle" (click)="presentActionSheet(player)" *ngFor="let player of   filteredParticipant">
+      <ion-row>
+        <ion-col col-6 class="applyPadding"> {{player.user.FirstName}} {{player.user.LastName}}</ion-col>
+        <ion-col col-6 class="margin-auto">{{player.teamrole.role_name}}</ion-col>
+      </ion-row>
+    </ion-card>
+
+
+
+    <!-- <ion-card class="cardStyle" (click)="presentActionSheet(member)" *ngFor="let player of roles">
+      <ion-row >
+        <ion-col col-6 class="applyPadding"> {{player.role_type}} {{player.role_name}}</ion-col>
+        <ion-col col-6 class="margin-auto">  </ion-col>
+      </ion-row>
+    </ion-card> -->
+
+
+  </div>
+
+  <div *ngIf="!playerType">
+    <div>
+      <ion-row class="sub-container rows-allign2">
+        <ion-col col-1 style="text-align:center;margin:auto;">
+          <ion-icon name="ios-search"></ion-icon>
+        </ion-col>
+        <ion-col col-11 class="search-bar">
+          <ion-searchbar placeholder="Search Staff by Name" id="customsearchbar" (ionInput)="FilterStaffs($event)"
+            autocorrect="off" showCanelButton="shouldShowCancel"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+    </div>
+
+
+
+
+    <ion-card class="cardStyle" (click)="actionSheetforStaff(player)" *ngFor="let player of filteredStaff;">
+      <ion-row>
+        <ion-col col-6 class="applyPadding">{{player.StaffDetail.name}}</ion-col>
+        <ion-col col-6 class="margin-auto">{{player.role.role_name}} </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+
+</ion-content>
+
+
+<ion-fab right bottom *ngIf="playerType">
+  <button ion-fab mini style="background-color: #2b92bb" (click)="gotoAddPlayer()"
+    style="background-color: #2b92bb !important; color: white !important">
+    <ion-icon name="md-person-add"></ion-icon>
+  </button>
+</ion-fab>
+
+<ion-fab right bottom *ngIf="!playerType">
+  <button ion-fab mini style="background-color: #2b92bb" (click)="gotoAddStaff()"
+    style="background-color: #2b92bb !important; color: white !important">
+    <ion-icon name="md-person-add"></ion-icon>
+  </button>
+</ion-fab>

@@ -1,0 +1,166 @@
+schoolsessionlistincoach-page {
+    .scroll-content {
+        background-image: none !important;
+        padding: 16px 9px !important;
+        background-color: #f7f7f7;
+    }
+    .ion_card {
+        margin: 6px 0px;
+        width: 100%;
+    }
+    .memeber_details_btn {
+        // height: 28px;
+        font-size: 15px;
+        margin-top: 0px;
+    }
+    .ion_col_p {
+        padding: 1px 5px 1px 5px;
+    }
+    .ion_col_p1 {
+        padding: 5px 5px 0px 1px;
+    }
+    .btn-width {
+        width: 70px;
+    }
+    .slidingcards {
+        // margin-bottom: 5px;
+        // border-top: 6px solid rgba(94, 199, 130, 0.79);
+        // margin-bottom: 7px;
+        // border-top: 5px solid rgba(25, 92, 170, 0.79);
+        // margin-bottom: 4px;
+        // border-top: 7px solid rgba(236, 117, 21, 0.63);
+        // border-bottom: 2px solid rgba(180, 24, 148, 0.73);
+        //  margin-bottom: 7px;
+        // border-top: 5px solid rgba(25, 92, 170, 0.79);
+        // border-bottom: 2px solid rgba(236, 117, 21, 0.63);
+        box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+        margin-bottom: 7px;
+        border-top: 5px solid rgba(25, 92, 170, 0.79);
+    }
+    .margin_bottom {
+        margin-bottom: 5px;
+        ion-item-sliding {
+            ion-item {
+                padding: 0px 9px;
+                div {
+                    padding-right: 0px!important;
+                }
+            }
+        }
+    }
+    .detailsBtn {
+        background-color: #2E64C3;
+    }
+    .member_input {
+        border-bottom: 1px solid #c8c7cc;
+    }
+    .memeber_list {
+        border-top: 1px solid #c8c7cc;
+    }
+    //   }
+    .btn_clr {
+        margin-top: 25px !important;
+        color: $dashoboard-icon-color;
+    }
+    .coach_detials_row {
+        text-align: center;
+        ion-col {
+            border: 1px solid #c8c7cc;
+        }
+    }
+    table,
+    th,
+    td {
+        border: 1px solid #95939c;
+        border-collapse: collapse;
+    }
+    .block_height {
+        height: 100%;
+    }
+    // ion-scroll{
+    //     .scroll-content{
+    //         height: 363px;
+    //         padding: 0px;
+    //         margin-top: 5px;
+    //     }
+    // }
+    .search_add {
+        padding: 0px !important;
+        .item-inner {
+            padding-right: 0px!important;
+        }
+        ion-searchbar {
+            padding: 2px;
+        }
+    }
+    .member_btn_sm {
+        padding: 0px;
+    }
+    .ion_cl {
+        padding: 0px;
+    }
+    .btn-clr {
+        margin: 0px !important;
+        color: $dashoboard-icon-color;
+    }
+    .ion_card_content {
+        padding-bottom: 5px;
+    }
+    .span_member_details1 {
+        //text-decoration: underline;
+        color: rgba(0, 0, 255, 0.81);
+        font-weight: bold;
+    }
+    .table_prop {
+        width: 100%;
+    }
+    .center_align {
+        text-align: center;
+    }
+    .checkmark_color {
+        color: #3ebad1;
+    }
+    .danger_color {
+        color: red;
+    }
+    .danger_color1 {
+        color: red;
+        text-align: center;
+    }
+    .middle_section {
+        margin-top: 15px;
+    }
+    .padding_class {
+        padding-top: 20px;
+        //font-size: 15px;
+    }
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+    .danger_color2 {
+        color: red;
+        text-align: center;
+        font-size: 16px;
+    }
+    .danger_color3 {
+        color: red;
+        font-size: 16px;
+    }
+    .member12 {
+        padding-left: 0px;
+    }
+    .nowrap {
+        white-space: pre-line !important;
+        margin-top: -35px;
+    }
+    .ion_card{
+        margin: 6px 0px;
+        width: 100%;
+    }
+ 
+    
+    .danger_color2{
+        color:red;
+    }
+}

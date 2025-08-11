@@ -1,0 +1,66 @@
+<ion-header *ngIf="themeType == 1" no-border>
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Edit Session </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header no-border>
+    <ion-navbar *ngIf="themeType == 2">
+        <!--<button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>-->
+        <ion-title>
+            Member Lists
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+            <div class="header_container">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <p class="text sname">{{NewSessionDetials.SessionName}}</p>
+                            <p class="text">{{NewSessionDetials.StartDate}} to {{NewSessionDetials.EndDate}}</p>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
+            <div>
+                    <div >
+                        <div >
+                                <ion-card  *ngFor="let mlist of this.selectedMembersForTheSession" (click)="presentActionSheet(mlist)" class="animate-right"> 
+                                        <ion-card-content >
+                                            <ion-grid class="content">
+                                                <ion-row>
+                                                    <ion-col>
+                                                            <ion-icon ios="ios-person" md="md-person" color="primary" class="ico"></ion-icon>
+                                                    </ion-col>
+                                                    <ion-col col-10>
+                                                        <p class="leftp leftp1"> {{mlist.FirstName}} {{mlist.MiddleName}} {{mlist.LastName}} ({{mlist.Age}})</p>
+                                                    </ion-col>
+                                                    <ion-col col-1>
+                                                        <ion-icon  name="ios-arrow-forward" class="ico ico2"></ion-icon>
+                                                    </ion-col>
+                                                </ion-row>
+                                            </ion-grid>
+                                        </ion-card-content>
+                                    </ion-card>
+                        </div>
+                        </div>
+                    </div>
+</ion-content>

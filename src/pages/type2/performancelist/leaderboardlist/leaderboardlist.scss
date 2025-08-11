@@ -1,0 +1,170 @@
+page-leaderboardlist {
+    .scroll-content {
+        padding: 0px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+        //margin-top:60px !important;
+    }
+    .item-inner {
+        //border-bottom: 1px solid #faae4e !important;
+    }
+    .age_label{
+
+    }
+    .facilities-text, .age-text{
+        color: #6d6d6d;
+    }
+    .date_item{
+        padding: 5px !important;
+        .item-inner{
+            border-bottom: none !important;
+        }
+    }
+    .board_row{
+        border-bottom: 2px solid #fff;
+        border-left: 2px solid #35ADFF;
+        margin: 2px 2%;
+        width: 96%;
+        ion-icon {
+            background: #e0e0e0;
+            display: inline-block;
+            font-size: 2.2em;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+        }
+    }
+    .mar_auto{
+        margin:auto;
+    }
+    .flex{
+        display:flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        // color: #fff;
+        // font-size: 15px;
+        img{
+            width: 30px;
+            height: 30px;
+        }
+    }
+    .venuedropdown{
+        width: 100%;
+        max-width: 100%;
+    }
+    .active{
+        p{
+            color:#3a92b5 !important;
+            font-weight:500;
+        }
+        //border-bottom: 1px solid #faae4e !important;
+        
+       // box-shadow: 0 8px 10px -10px black;
+    }
+    .nopad{
+        padding:0px !important;
+    }
+    .ses_tabs{
+        ion-col{
+            border-left: 1px solid #8080806e;
+            border-right: 1px solid #80808017;
+            border-bottom: 2px solid #80808017;
+            p{
+                text-align:center;
+                margin:8px 0px;
+                font-size:15px;
+                color:#666666;
+                font-weight:600;
+            }
+        }
+    }
+    .facilityCard{
+        border-radius: 0px !important;
+        box-shadow:none!important;
+        margin: 5px 12px;
+        padding: 5px 5px 5px 5px;
+        border-radius: 2px;
+        border-left:2px solid #35ADFF;
+        border-bottom: 0.5px solid rgba(0, 0, 0, 0.50) !important;
+    }
+    //slides css
+    .group-slides .selected {
+        //border-bottom: 3px solid #f7f7f7 !important; // border-right: 3px solid #faae4e !important;
+        transition: 80ms;
+        //background-color: #faae4e !important;
+        p{
+            color: #499bbd !important;
+        }
+        
+    }
+    .swiper-slide {
+        width: 140.667px !important;
+    }
+    .group-slides .select{
+        //background-color: rgba(250, 174, 78, 0.43137254901960786) !important;
+        //border-bottom: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+        transition: 80ms;
+    }
+    
+    .ageCard{
+        margin: 0px !important;
+        font-weight:400;
+        //background:#f7f7f7;
+        background:transparent !important;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0);
+        border-radius: 0px !important;
+        box-shadow: none !important;
+        ion-card-content{
+            padding:0px !important
+        }
+    }
+    .slides_col{
+        //background: #faae4e;
+        z-index: 999;
+        -webkit-box-shadow: 0px 0 3px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0 3px rgba(0, 0, 0, 0.2), 0px 0 3px rgba(0, 0, 0, 0.2);
+        padding: 0;
+        border-top: 1.5px solid #fff;
+        border-bottom: 1.5px solid #fff;
+    }
+    .facilityCard{
+        border-radius: 0px !important;
+        box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+        margin: 6px 12px;
+        padding: 5px 5px 5px 5px;
+        border-radius: 2px;
+        border-left:2px solid #35ADFF;
+        //border-bottom: 1px solid #faae4e !important;
+        .catg_age_col{
+            margin: auto;
+            text-align: center;
+        }
+        p{
+            line-height: 1.2 !important;
+        }
+        .p1{
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom:3px;
+         }
+         .p2{
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.529412);
+         }
+         
+        ion-card-content{
+            //height: 18vh;
+            padding: 0px 5px !important;
+        }
+        
+        .mar0 {
+            margin: 0 !important;
+        }
+          
+    }
+    .not_found{
+        margin-top:25%;
+    }
+    
+}

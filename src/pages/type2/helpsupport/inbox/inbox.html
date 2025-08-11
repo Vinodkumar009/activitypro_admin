@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Inbox</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding (click)="hideModal($event)">
+  <ion-grid *ngIf="messages.length > 0" style="margin:18px 0px 90px 0px;">
+    <ion-row class="msg_row" *ngFor="let msg of messages;let i=index;" (click)="gotoFullDets(msg)">
+      <ion-col col-2 style="margin: auto !important">
+        <img class="user_img_cls" src="assets/images/user2.png">
+      </ion-col>
+      <ion-col col-10>
+        <p class="margin-top-bottom-5 para-list-header">{{msg.lastconveruser}}</p>
+        <p class="margin-top-bottom-5 para-text-color para-msg" *ngIf="msg.lastmsg">{{msg.lastmsg}}</p>
+        <p class="margin-top-bottom-5 para-text-color msg_date" *ngIf="msg.lastconversion">
+          {{msg.lastconversion | date:'mediumDate'}}<br>
+          <span>{{msg.Chat_Status}}</span></p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <ion-row class="modal" *ngIf="!isCompose" (click)="hideModal($event)">
+    <ion-col col-12 style="background-color:white" style="position:absolute;bottom:0;width:100%">
+      <ion-row no-padding align-items-center>
+        <ion-col col-10 style="padding:5px 0px 5px 5px">
+          <textarea class="message-input" rows="5" [(ngModel)]="newMsg"></textarea>
+        </ion-col>
+        <ion-col col-2>
+          <button  ion-button expand="block" clear [disabled]="newMsg === ''" class="msg-btn"
+            (click)="sendMessage()">
+            <ion-icon name="ios-send" slot="icon-only"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row> -->
+  <ion-row *ngIf="this.isInboxempty" style="margin-top:40%;">
+    <ion-col col-12 text-center>
+      <ion-icon name="ios-chatbubbles" class="inbox_empty_icon"></ion-icon>
+      <p>No chat available</p>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer>
+  <ion-row *ngIf="!isCompose">
+    <ion-col col-12 style="background-color:white" style="position:absolute;bottom:0;width:100%">
+      <ion-row no-padding align-items-center>
+        <ion-col col-10 style="padding:5px 0px 5px 5px">
+          <textarea class="message-input" rows="5" [(ngModel)]="newMsg"></textarea>
+        </ion-col>
+        <ion-col col-2>
+          <button ion-button expand="block" clear [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
+            <ion-icon name="ios-send" slot="icon-only"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+
+
+<ion-fab right bottom *ngIf="isCompose">
+  <button ion-fab mini style="background-color: #2b92bb;" (click)="isCompose=false"
+    style="background-color:#2b92bb !important; color: white !important">
+    <ion-icon name="ios-create"></ion-icon>
+  </button>
+</ion-fab>

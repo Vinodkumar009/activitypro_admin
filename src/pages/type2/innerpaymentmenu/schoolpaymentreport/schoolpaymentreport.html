@@ -1,0 +1,148 @@
+<!--
+  Generated template for the SchoolpaymentreportPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{LangObj.scl_payment_title}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+  <ion-grid class="header-container padding-0">
+    <ion-row class="school-row">
+      <ion-col class="school-col padding-0">
+        <p class="school-name" style="text-align: center;">{{selectedSchoolName}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="cost-row">
+      <ion-col col-6 class="cost-row">
+        <p class="text" style="text-align:center;">{{LangObj.scl_payment_totamt}}</p>
+        <p class="paid" style="text-align:center;">{{currencyDetails.CurrencySymbol}}{{totalPaid}}</p>
+      </ion-col>
+      <ion-col col-6 class="duration-col">
+          <p  class="text" style="text-align:center;">{{LangObj.scl_payment_trns}}</p>
+        <p class="select-days" style="text-align:center;">{{totalPaidMemberLength}} </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <ion-slides   [slidesPerView]="2.2">
+          <ion-slide>
+              <ion-card class="padding-0 " (click)="changeSchool('all','all')" style="border-radius: 5px;" >
+                  <ion-card-content  class="padding-0 school-con" [ngClass]="{'schoolBackground': 'all' == selectedSchool}">
+                    <p>{{LangObj.scl_payment_allscls}}</p>
+                  </ion-card-content>
+                </ion-card>
+          </ion-slide>
+          <ion-slide *ngFor="let school of allSchoolDetails">
+            <ion-card class="padding-0" (click)="changeSchool(school.$key,school.SchoolName)" style="border-radius: 5px;">
+              <ion-card-content  class="padding-0 school-con" [ngClass]="{'schoolBackground': school.$key == selectedSchool}">
+                <p>{{school.SchoolName}}</p>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid style="border-bottom:1px solid #faae4e" >
+    <ion-row>
+      <ion-col class="padding-0" col-12>
+        <ion-slides [slidesPerView]="2.5">
+          <ion-slide style="width: 80px!important;" (click)="changeDays('dates')">
+            <ion-card class="padding-0 " style="border-radius: 5px;">
+              <ion-card-content class="padding-0 days-slide" [class.selectedDays]="beforeDays === 'dates'">
+                <ion-icon name="md-calendar" style="color:#ffff;font-size:2em"></ion-icon>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+          <ion-slide *ngFor="let day of days" (click)="changeDays(day)">
+            <ion-card class="padding-0">
+              <ion-card-content class="padding-0 days-slide" [class.selectedDays]="beforeDays === day">
+                <p class="day">{{day}} {{LangObj.scl_payment_days}}</p>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="this.beforeDays == 'dates'">
+    <ion-row >
+      <ion-col col-5 no-padding>
+        <ion-item class="filter_items" style="padding-left:3px">
+          <ion-label stacked>From</ion-label>
+          <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="startDate"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col col-5 no-padding>
+        <ion-item class="filter_items" style="padding-left:3px">
+          <ion-label stacked>To</ion-label>
+          <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="endDate" class="enddate">
+          </ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col col-2 text-center no-padding style="margin:auto">
+        <button ion-button class="timekare-primary-btn" (click)="Search()">Go</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <div class="member-grid"  *ngIf="totalPaidMemberLength > 0">
+    <div *ngFor="let member of selectedSchoolSessionDetails">
+        <ion-grid   *ngIf="member.paidMember.length > 0" style="padding: 2px;">
+            <ion-row  >
+                <ion-col col-12  *ngFor="let mem of member.paidMember">
+                    <ion-row class="devider">
+                        <ion-col col-6 class="padding-0" >
+                          <p class="member-name margon-0">{{mem.FirstName}} {{mem.LastName}} </p>
+                          <p class="school-name-bottom  margon-0">{{member.SessionName}}</p>
+                        </ion-col>
+                        <ion-col col-3 class="padding-0" >
+                          <p class="date  margon-0 alignment">{{getDay(mem.TransactionDate)}}</p>
+                        </ion-col>
+                        <ion-col col-3 class="padding-0" >
+                          <p class="paid-amount  margon-0 alignment">{{currencyDetails.CurrencySymbol}}{{mem.AmountPaid}}</p>
+                        </ion-col>
+                      </ion-row>
+                </ion-col>
+              </ion-row>
+        </ion-grid>
+    </div>
+  </div> -->
+  
+    <div *ngIf="paidMember.length > 0" style="padding: 2px;">
+      <ion-row>
+        <ion-col col-12 *ngFor="let mem of paidMember">
+          <ion-row class="devider">
+            <ion-col col-6 class="padding-0">
+              <p class="member-name margon-0">{{mem.FirstName}} {{mem.LastName}} </p>
+              <p class="school-name-bottom  margon-0">{{mem.SessionName}}</p>
+            </ion-col>
+            <ion-col col-3 class="padding-0">
+              <p class="date  margon-0">{{getDay(mem.TransactionDate)}}</p>
+              <p style="margin:2px" class="school-name-bottom ">{{mem.PaidBy}}</p>
+            </ion-col>
+            <ion-col col-3 class="padding-0">
+              <p class="paid-amount  margon-0 alignment">{{currencyDetails.CurrencySymbol}}{{mem.AmountPaid}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </div>
+    
+    <div *ngIf="paidMember.length == 0">
+      <p class="align-center">{{LangObj.scl_payment_norecfound}}</p>
+    </div>
+    </ion-content>
+
+
+<ion-fab right bottom>
+  <button ion-fab mini style="background-color: #2b92bb;" (click)="gotoPrint()"
+      style="background-color:#2b92bb !important; color: white !important">
+      <ion-icon name="ios-print-outline"></ion-icon>
+  </button>
+</ion-fab>

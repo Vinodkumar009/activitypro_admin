@@ -1,0 +1,124 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            School Session
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            School Session
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+
+    <ion-item class="margin_bottom">
+        <ion-label>School</ion-label>
+        <ion-select [(ngModel)]="selectedSchool" (ionChange)="onChangeOfSchool()">
+            <ion-option *ngFor="let school of schools" value={{school.$key}}>{{school.SchoolName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-list class="margin_bottom" *ngFor="let session of schoolSessions;let i=index;" (click)="presentActionSheetOption(session)">
+        <ion-item-sliding #item class="slidingcards">
+            <ion-item>
+                <!-- (click)="presentActionSheet(session)" -->
+                <div>
+
+                    <ion-row>
+                        <ion-col col-1>
+                            <img src="assets/images/dummyCoach.jpg">
+                        </ion-col>
+                        <ion-col col-11>
+                            {{session.CoachName}}
+                        </ion-col>
+                    </ion-row>
+                    <p>{{session.SessionName}}</p>
+                    <p>{{session.Days}} - {{session.StartTime}} - {{session.Duration}} min </p>
+                </div>
+                <ion-row>
+                    <ion-col class="ion_cl">
+                        <button ion-button icon-left clear small class="member_btn_sm" (click)="memberDetailsForGroup(i)">
+                            <ion-icon name="people"></ion-icon>
+                            <div>Member ({{this.sessionMemberLength[i]}})</div>
+                        </button>
+                    </ion-col>
+                </ion-row>
+
+                <ion-grid class="memeber_list" *ngIf="myIndex==i">
+                    <ion-row>
+                        <ion-col col-12>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-12 *ngIf="sessionMemberDetails.length >0">
+                            <table class="table_prop">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Paid</th>
+                                </tr>
+                                <tr *ngFor="let memberDetials of  sessionMemberDetails">
+                                    <ng-template [ngIf]="memberDetials.IsActive">
+                                        <td>{{memberDetials.FirstName}} {{memberDetials.MiddleName}} {{memberDetials.LastName}}</td>
+                                        <td class="center_align">{{memberDetials.Age}}</td>
+                                        <td class="center_align">
+                                            <ion-icon name="checkmark" class="checkmark_color" *ngIf="memberDetials.AmountPayStatus =='Paid'"></ion-icon>
+                                            <ion-icon name="alarm" class="danger_color" *ngIf="memberDetials.AmountPayStatus=='Due'"></ion-icon>
+                                        </td>
+                                    </ng-template>
+                                </tr>
+                            </table>
+                        </ion-col>
+                    </ion-row>
+                    <div class="danger_color3 nowrap" *ngIf="sessionMemberDetails.length == 0">
+                        No member added.
+                    </div>
+                </ion-grid>
+
+            </ion-item>
+
+        </ion-item-sliding>
+    </ion-list>
+
+    <ion-card class="ion_card" *ngIf="schoolSessions.length ==0">
+        <ion-card-content>
+            <p class="danger_color2">No school sessions</p>
+        </ion-card-content>
+    </ion-card>
+
+
+
+    <!-- 
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Please wait...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+
+
+</ion-content>

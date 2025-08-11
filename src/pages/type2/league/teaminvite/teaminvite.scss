@@ -1,0 +1,148 @@
+page-teaminvite {
+    .scroll-content {
+        padding: 0px !important;
+        background-image: none !important;
+        // background: white !important;
+        background: #f4efef !important;
+        // margin-bottom: 60px;
+      }
+      .searchbar-input {
+        border-bottom: 1px solid #141414;
+        box-shadow: none !important;
+      }
+      .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+      }
+      .search_add {
+        .item-inner {
+          border-bottom: 0px !important;
+          ion-icon {
+            margin-top: 18px;
+          }
+          div {
+            ion-label {
+              //margin-top: 0px;
+              margin-bottom: 0px;
+            }
+          }
+        }
+      }
+      .btn-clr {
+        color: $dashoboard-icon-color;
+      }
+      .button {
+        font-size: 2rem;
+      }
+      .align {
+        margin-top: 5px;
+        margin-left: 9px;
+        margin-right: 9px;
+      }
+      .label {
+        margin: 0px !important;
+      }
+    
+      .session_header,
+      ion-list {
+        margin-bottom: 0px !important;
+        border-bottom: 1px solid #f6ae4d;
+      }
+      .timekare-primary-btn {
+        background-color: #f6ae4d !important;
+      }
+      .block_height {
+        height: 80%;
+      }
+      .block_height1 {
+        margin-top: 5px;
+        height: 90%;
+        .margin {
+          padding: 0px 11px 0px 11px;
+        }
+      }
+      .block_height2 {
+        height: 32%;
+      }
+      .ion_list1 {
+        margin-top: 10px;
+        
+      }
+      .p_selected {
+        ion-card-content {
+          border-bottom: 1px solid #d1d1d5;
+          padding: 5px 0px 5px 13px;
+          color: rgba(0, 0, 0, 0.89);
+          font-size: 17px;
+        }
+      }
+      .ion-item-lable {
+        div {
+          ion-icon {
+            margin: 0px 0px 9px 0px !important;
+          }
+          div {
+            ion-label {
+              margin: 0px 0px 0px 0px;
+            }
+          }
+        }
+      }
+
+      .squad-type{
+        ///background-color: rgb(234, 234, 234) !important ;
+        text-transform: capitalize;
+        background-color:transparent !important;
+        width: 102%;
+        margin: 0px !important;
+        //color: #fab754 !important;
+        color:rgba(0,0,0,0.85) !important;
+        border-radius: 0px !important;
+        box-shadow: none;
+    }
+    
+    .squad{
+      //background: #fab754 !important;
+      background-color:transparent !important;
+      border-bottom: 1.5px solid #fab754;
+      color: #fab754 !important;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .right_pad{
+      padding-right: 0px;
+  }
+  .member-item{
+    .item-inner {
+        border-bottom:none !important;
+        //border-bottom: 1px solid #faa928d3 !important;
+    }
+   
+    
+}
+
+// .checkbox-icon{
+//   border-radius: 50% !important;
+//   width: 30px  !important;
+//   height: 30px  !important;
+//   }
+//   .checkbox-checked {
+//       border-color: green !important;
+//       background-color: green !important;
+//       .checkbox-inner {
+//           left: 9px !important;
+//           top: 3px !important;
+//           position: absolute  !important;
+//           width: 7px  !important;
+//           height: 16px  !important;
+//       }
+//   }
+//   .checkbox{
+//       //margin: 9px 14px 0px -13px !important;
+//       margin: 1px 9px 0px -14px !important;
+//   }
+//   .member-item{
+//       background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+//   }
+}

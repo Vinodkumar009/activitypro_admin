@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title class="logo_center">
+            Performance Templates
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-card class="cardpending" (click)="goTo(i)" *ngFor="let template of performanceList;let i=index">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <img [src]="template.ImageUrl" class="icon-img">
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p class="card_header">{{template.DisplayName}}</p>
+                    <p class="venueList">{{template.Description}}</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

@@ -1,0 +1,158 @@
+paymentdetails-page {
+  .scroll-content {
+    padding: 16px 9px !important;
+    background-image:none !important;
+  }
+  
+  //current page
+  .paidbystatus{
+        /* width: 0px; */
+    /* margin-top: -28px; */
+    /* position: absolute; */
+    float: RIGHT;
+    /* text-align: right; */
+    background-color: red;
+    color: white;
+    padding: 3px;
+    margin-top: -6px;
+    margin-right: -4px;
+  }
+  ion-label{
+    margin: 0px !important;
+  }
+  ion-item{
+    div{
+    padding: 0px !important;
+  }}
+  .margin_bottom{
+    margin-bottom: 5px;
+  }
+///-----------------------------------------------
+/////---------------------------------------------------
+//-------------------------------------------------
+
+
+$themelistheaderitemcolor:#00BED3;
+$themelistotheritemcolor:#595959;
+$themelistotheritemcolor1:#7F7F7F;
+.themeheaderfont {
+    font-size: 17px;
+    //font-weight: 600;
+    
+}
+$backgroundcolor: #f8f8f8;
+
+// ion-content{
+//     background-color: $backgroundcolor!important;
+// }
+
+$cardhightlighttextcolor:#111164;
+$deepblueundistinguishablebluecolor:#01012c;
+
+
+  .img1 {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+}
+.sessiondetails {
+    // margin-top: 13px;
+    color: $cardhightlighttextcolor;
+}
+.sessionName {
+    //color: $themelistotheritemcolor;
+    color: black;
+    font-size: 15px;
+    font-weight: 500;
+}
+.activity {
+    color: black;
+    //font-size: 15px;
+    font-style: italic;
+    //font-weight: 500;
+}
+.venuename {
+    color: $themelistotheritemcolor1;
+    //font-size: 15px;
+   // font-weight: 500;
+}
+.coachname {
+    color: $themelistotheritemcolor;
+   // font-weight: 500;
+    margin: 2px;
+}
+.cust_margin {
+    margin: 2px;
+}
+.border-left {
+    // border-left: 3px solid #FFFF4A;
+    // border-left: .10em solid #c5c5c3;
+    border-left: .02em solid #bebcbc;
+    padding: 0px 0px 0px 3px;
+}
+.innercard_style {
+  //   padding: 2px;
+  //  //border-left: 3px solid $themecolor;
+  //   margin: 10px;
+  //   border-radius: 2px;
+  //   width: calc(100% - 20px);
+    padding: 3px 5px 0px 0px;
+    margin: 10px 10px 10px 0px;
+    width: 100%;
+    background: #fff;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    p{
+      line-height: 21px;
+    }
+}
+.scroll-content {
+    // background-color: #f8f8f8;
+}
+.venueLable,
+.select-text {
+    color: $themelistotheritemcolor1 !important;
+}
+.funnel_custom {
+    // padding: 8px 6px 0px 0px;
+    // font-size: 30px;
+    // color: $themelistotheritemcolor1;
+    padding: 7px 6px 0px 0px;
+    font-size: 25px;
+    color: $themelistotheritemcolor1;
+}
+.card_style {
+    background-color: $backgroundcolor;
+    margin-top: -16px;
+    margin: -1px 0 -6px;
+   // border-left: 2px solid #00BED3;
+   border-left:3px solid #35adff;
+   padding-right:5px;
+}
+.ionitem {
+    background-color: $backgroundcolor;
+}
+.item-inner {
+    border-bottom: 0px !important;
+}
+.item-md,
+.item-ios {
+    padding-left: 11px;
+}
+  .payment_details{
+  font-size: 20px;
+      margin-top: 12px;
+      color: green;
+  }
+  .transaction_date{
+    font-size: 12px;
+    float: right;
+    //font-weight: bold;
+  }
+  .transaction_date1{
+    font-size: 12px;
+    float: right;
+    font-weight: bold;
+    color: #007990;
+  }
+}

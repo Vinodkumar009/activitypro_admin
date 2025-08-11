@@ -1,0 +1,203 @@
+page-performancereport {
+    .scroll-content {
+        padding: 0px !important;
+    }
+    .toolbar-title {
+        color:#fff !important;
+    }
+    .swiper-slide{
+        //box-shadow: 4px 5px 11px 2px #dedede;
+        box-shadow: 4px 3px 11px 1px #ef9f2e;
+        background-color: white !important;
+        height: 70px !important;
+        border-radius: 5px;
+        // border-top: 1px solid #ef9f2e;
+        // border-left: 1px solid #ef9f2e;
+    }
+    .ses_tabs{
+        ion-col{
+            border-left: 1px solid #8080806e;
+            border-right: 1px solid #80808017;
+            border-bottom: 2px solid #80808017;
+            p{
+                text-align:center;
+                margin:8px 0px;
+                font-size:15px;
+                color:#666666;
+                font-weight:500;
+            }
+        }
+    }
+    .active{
+        p{
+            color:#fab754 !important;
+            font-weight:500;
+        }
+        border-bottom: 1px solid #faae4e !important;
+        
+       // box-shadow: 0 8px 10px -10px black;
+    }
+    .family-name{
+        font-size: 15px !important;
+        margin: 2px !important;
+        color: #78797d;
+    }
+    .family-age{
+        font-size: 12px !important;
+        margin: 0px !important;
+        color: #b7b7b7;
+    }
+        .select-type{
+            ///background-color: rgb(234, 234, 234) !important ;
+            text-transform: capitalize;
+            background-color:transparent !important;
+            width: 102%;
+            margin: 0px !important;
+            //color: #fab754 !important;
+            color:rgba(0,0,0,0.85) !important;
+            border-radius: 0px !important;
+            box-shadow: none;
+        }
+        .selected{
+            //background: #fab754 !important;
+            background-color:transparent !important;
+            border-bottom: 1.5px solid #fab754;
+            color: #fab754 !important;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+        .item-inner {
+            border-bottom: 1px solid #faae4e !important;
+        }
+        
+        .name {
+            color: #5ea68d !important;
+            margin-bottom: -2px !important;
+        }
+        ion-slides{
+            width: 100%;
+            height: 80px !important;
+        }
+        .slideactive{
+            transform: scale(1.10) !important;
+            border: 1px solid orange !important;
+        }
+        //..............
+        .sub-container {
+            border: 1px solid #34343442;
+            border-radius: 5px;
+            margin:5px 15px;
+            
+            ion-icon {
+                width: 90%;
+                background: transparent !important;
+                border-radius: 5px;
+                //color: white;
+                color: rgba(250, 169, 40, 0.827451)
+                //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+            }
+    
+            .search-bar{
+                padding: 0px 5px;
+            }
+            .searchbar {
+                border: none !important;
+                background: #ffffff !important;
+                padding: 2px !important;
+            }
+    
+            .searchbar-input {
+                //padding-left: 4px !important;
+                padding: 1px 4px !important;
+                box-shadow: none !important;
+                -webkit-box-shadow:none !important;
+            }
+    
+            .searchbar-search-icon {
+                display: none !important;
+            }
+    
+            ion-icon {
+                font-size: 26px;
+                padding-left: 5px;
+            }
+        }
+        .facilityCard{
+            .age{
+                color:#5a809e;
+            }
+            border-radius: 0px !important;
+            box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+            margin: 6px 12px;
+            padding: 5px 5px 5px 5px;
+            border-radius: 2px;
+            border-left:2px solid #35ADFF;
+            //border-bottom: 2px solid #faae4e !important;
+            p{
+                line-height: 1.2 !important;
+            }
+            .p1 {
+                font-size: 16px;
+                font-weight: 500;
+                //margin-bottom:3px;
+             }
+             .challenge_len{
+                font-size: 11px;
+                font-weight: 400;
+                margin-bottom:3px;
+             }
+             
+            ion-card-content{
+                //height: 18vh;
+                padding: 0px 5px !important;
+            }
+            
+            .mar0 {
+                margin: 0 !important;
+            }
+            .points{
+                font-weight: bold;
+                font-size: 16px;
+                //color: #fab754 !important;
+            }
+            .pts_col{
+                margin:auto;
+                text-align:center;
+            }
+              
+        }
+        .paidmembercount {
+            color: rgba(36, 16, 16, 0.85);
+            //font-weight: bold;
+            font-size: 16px;
+            //margin-top: 2px;
+        }
+        .fabTop {
+            margin-bottom: 13px;
+        }
+        .fabEmailText {
+            margin-left: -122px;
+            background-color: #f0f0f3;
+            padding: 8px 12px 8px 11px;
+            margin-bottom: -44px;
+            color: #202021;
+            border-radius: 3px;
+            margin-right: 55px;
+            -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        }
+        ion-fab {
+            bottom: 55px !important;
+        }
+        .marginauto{
+            // margin-top: auto;
+            // margin-bottom: auto;
+            margin:auto;
+            .forward_icon{
+                color: #7a7878 !important;
+                font-size: 28px !important;
+            }
+        }
+    
+    
+}

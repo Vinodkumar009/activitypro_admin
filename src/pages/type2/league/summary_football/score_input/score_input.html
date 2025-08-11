@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>{{teamName}} - Goals</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()" style="color:#fff">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+
+  <!-- No Goals State -->
+  <div *ngIf="score === 0" class="no-goals-container">
+    <ion-icon name="football" class="no-goals-icon"></ion-icon>
+    <h3>No Goals to Record</h3>
+    <p>This team didn't score any goals in this match.</p>
+  </div>
+
+  <!-- Goals Input -->
+  <div *ngIf="score > 0" class="goals-container">
+    <div class="team-header">
+      <ion-icon name="football"></ion-icon>
+      <h4>{{teamName}} Goals ({{score}})</h4>
+    </div>
+
+    <ion-card class="goal-card" *ngFor="let i of getNumberArray(score); let idx = index"
+      [class.completed]="isGoalComplete(idx)">
+      <ion-card-header class="goal-header">
+        <div class="goal-number">
+          <ion-icon name="radio-button-on" [class.completed-icon]="isGoalComplete(idx)"></ion-icon>
+          <span>Goal {{idx + 1}}</span>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content class="goal-content">
+        <div class="input-group">
+          <ion-item class="player-select">
+            <ion-label stacked>Select Player</ion-label>
+            <ion-select [(ngModel)]="selectedPlayer[idx]" (ionChange)="onPlayerSelect(idx)"
+              placeholder="Choose a player" interface="popover">
+              <ion-option *ngFor="let player of leagueMatchParticipantRes" [value]="player.user.Id">
+                {{getPlayerDisplayName(player)}}
+              </ion-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="time-input">
+            <ion-label stacked>Goal Time (MM:SS)</ion-label>
+            <ion-datetime displayFormat="mm:ss" pickerFormat="mm:ss" [(ngModel)]="goalDateTime[idx]"
+              (ionChange)="onGoalTimeChange(idx)" placeholder="00:00" class="goal-datetime"
+              [disabled]="!selectedPlayer[idx]">
+            </ion-datetime>
+          </ion-item>
+        </div>
+
+        <!-- Goal Summary -->
+        <div *ngIf="isGoalComplete(idx)" class="goal-summary">
+          <ion-icon name="checkmark-circle" color="success"></ion-icon>
+          <span>{{getPlayerDisplayName(getPlayerById(selectedPlayer[idx]))}}
+            scored at {{getFormattedTime(idx)}}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button class="foobtn" ion-button block (click)="saveGoal()">Add Goal</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

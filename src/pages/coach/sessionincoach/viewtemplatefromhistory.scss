@@ -1,0 +1,69 @@
+page-viewtemplatefromhistory {
+.lab{
+    color:#488aff;
+    margin: -0.2px;
+}
+.lab1{
+    color:rgb(97, 93, 93);
+}
+
+.name{
+    font-size: 20px;
+    margin-top: -20px;
+    color:white;
+    transform: translate(0px,20px);
+}
+.scroll-content {
+    padding: 6px !important;
+    background-image: none !important;
+    background:white !important;
+}
+.area{
+    background-color: white;
+    color:black;
+    box-shadow: 1px 1px 4px 4px rgb(211, 198, 198);
+}
+.rating1{
+   
+    font-size: 15px;
+    float: right;
+}
+.rater{
+    font-size: 15px;
+    color:rgb(58, 55, 55);
+    margin-left: 7px;
+}
+.text{
+    font-size: 15px;
+    color:#488aff;
+}
+
+.comments{
+    margin-left: 60px;
+    font-size: 15px;
+    color:rgb(58, 55, 55);
+}
+ul {
+    padding:0px;
+    //transform: translate(-73%,-30%) !important;
+    &.rating li {
+      padding: 0px 2px !important;
+      background: none;
+      color: #ffb400;
+      ion-icon {
+        font-size: 30px;
+      }
+    }
+  }
+ 
+.rate_contain{
+    text-align: center;
+}
+  .head_container{
+    background:#3fbcd3;
+   width: 103.5%;
+    margin-left: -1.7%;
+    margin-top: -6px;
+    height: 90px;
+  }
+}

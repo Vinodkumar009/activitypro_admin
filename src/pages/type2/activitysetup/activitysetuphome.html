@@ -1,0 +1,270 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Activity Setup</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Activity Setup
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <ion-item class="margin">
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onClubChange()">
+            <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivity">
+            <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-card class="card">
+        <ion-card-header class="card_header">
+            OFF PEAK
+        </ion-card-header>
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-6 class="font-color">
+                    <ion-item>
+                        <ion-label floating>Start Time</ion-label>
+                        <ion-input type="text" [(ngModel)]="activitySetupDetails.StartTime"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-6 class="font-color">
+                    <ion-item>
+                        <ion-label floating>End Time</ion-label>
+                        <ion-input type="text" [(ngModel)]="activitySetupDetails.EndTime"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <!--<ion-item>
+                <ion-label floating>Start Time</ion-label>
+                <ion-input type="text" [(ngModel)]="activitySetupDetails.StartTime"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>End Time</ion-label>
+                <ion-input type="text" [(ngModel)]="activitySetupDetails.EndTime"></ion-input>
+            </ion-item>-->
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="card1">
+        <ion-card-header class="card_header">
+            DAYS
+        </ion-card-header>
+        <ion-card-content>
+
+            <ion-row class="days">
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Mon',1)" [ngClass]="{'timekare-primary-btn': isSelectMon,'text_white': isSelectMon,'un_selected': !isSelectMon}">M</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Tue',2)" [ngClass]="{'timekare-primary-btn': isSelectTue,'text_white': isSelectTue,'un_selected': !isSelectTue}">T</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Wed',3)" [ngClass]="{'timekare-primary-btn': isSelectWed,'text_white': isSelectWed,'un_selected': !isSelectWed}">W</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Thu',4)" [ngClass]="{'timekare-primary-btn': isSelectThu,'text_white': isSelectThu,'un_selected': !isSelectThu}">T</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Fri',5)" [ngClass]="{'timekare-primary-btn': isSelectFri,'text_white': isSelectFri,'un_selected': !isSelectFri}">F</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Sat',6)" [ngClass]="{'timekare-primary-btn': isSelectSat,'text_white': isSelectSat,'un_selected': !isSelectSat}">S</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Sun',7)" [ngClass]="{'timekare-primary-btn': isSelectSun,'text_white': isSelectSun,'un_selected': !isSelectSun}">S</p>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="card">
+        <ion-card-header class="card_header">
+            INDOOR
+        </ion-card-header>
+        <ion-card-content>
+            <div class="margintop">
+                <p class="padding-left">Member Peak Fee</p>
+                <ion-row>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>1st Thirty Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.IndoorMemberPeakFeeFor1st30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>Evry 30 Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.IndoorMemberPeakFeeForEvry30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+            <div>
+                <p class="padding-left">Member Off Peak Fee</p>
+                <ion-row>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>1st Thirty Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.IndoorMemberOffPeakFeeFor1st30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-12 class="font-color">
+                        <ion-item>
+                            <ion-label floating>Evry 30 Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.IndoorMemberOffPeakFeeForEvry30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+            <div>
+                <p class="padding-left">Member Standard Fee</p>
+                <ion-row>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>1st Thirty Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.IndoorMemberStandardFeeFor1st30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>Evry 30 Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.IndoorMemberStandardFeeForForEvry30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="card">
+        <ion-card-header class="card_header">
+            OUTDOOR
+        </ion-card-header>
+        <ion-card-content>
+            <div class="margintop">
+                <p class="padding-left">Member Peak Fee</p>
+                <ion-row>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>1st Thirty Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.OutdoorMemberPeakFeeFor1st30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>Evry 30 Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.OutdoorMemberPeakFeeForEvry30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+            <div>
+                <p class="padding-left">Member Off Peak Fee</p>
+                <ion-row>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>1st Thirty Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.OutdoorMemberOffPeakFeeFor1st30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>Evry 30 Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.OutdoorMemberOffPeakFeeForEvry30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+            <div>
+                <p class="padding-left">Member Standard Fee</p>
+                <ion-row>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>1st Thirty Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.OutdoorMemberStandardFeeFor1st30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 class="font-color">
+                        <ion-item>
+                            <ion-label floating>Evry 30 Minute</ion-label>
+                            <ion-input type="text" [(ngModel)]="activitySetupDetails.OutdoorMemberStandardFeeForEvry30Min"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ion-card-content>
+    </ion-card>
+    <ion-item>
+        <ion-label floating>Advance booking in days</ion-label>
+        <ion-input type="text" [(ngModel)]="activitySetupDetails.AdvanceBookingMaxDays"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Max total booking hours</ion-label>
+        <ion-input type="text" [(ngModel)]="activitySetupDetails.MaxBookingHours"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Max booking hours per day</ion-label>
+        <ion-input type="text" [(ngModel)]="activitySetupDetails.MaxBookingHoursPerDay"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Daily free booking hours</ion-label>
+        <ion-input type="text" [(ngModel)]="activitySetupDetails.AdjustFreeBookingHoursPerDay"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Adv booking by Coach in days</ion-label>
+        <ion-input type="text" [(ngModel)]="activitySetupDetails.AdvanceMaxFreeBookingHoursPerDayByCoach"></ion-input>
+    </ion-item>
+    <!--<ion-item>
+        <ion-label>Online Payment</ion-label>
+        <ion-select [(ngModel)]="activitySetupDetails.OnlinePayment">
+            <ion-option value="Yes">Yes</ion-option>
+            <ion-option value="No">No</ion-option>
+        </ion-select>
+    </ion-item>-->
+    <ion-item>
+        <ion-label>Online Payment</ion-label>
+        <ion-checkbox color="blue" checked="activitySetupDetails.OnlinePayment" [(ngModel)]="activitySetupDetails.OnlinePayment"></ion-checkbox>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelActivitySetup()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="saveActivitySetup()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

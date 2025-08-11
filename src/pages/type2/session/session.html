@@ -1,0 +1,474 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{LangObj.create_grp_session}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.create_grp_session}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" padding>
+    <ion-item>
+        <ion-label>{{LangObj.grp_session_sesname}}</ion-label>
+        <ion-input type="text" [(ngModel)]="sessionDetails.SessionName" plcaeholder="Type session name..."></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.grp_session_venue}}</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+            <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>{{LangObj.grp_session_term}}</ion-label>
+        <ion-select [(ngModel)]="selectedTerm" (ionChange)="onChangeOfTerm()">
+            <ion-option *ngFor="let term of terms" value={{term.term_id}}>{{term.term_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-grid style="padding:0px;">
+        <ion-row style="padding:0px;">
+            <ion-col col-6 style="padding:0px;">
+
+                <ion-item class="venueionitem activity_select">
+                    <!-- <ion-label>Activity</ion-label> -->
+                    <ion-select [(ngModel)]="selectedActivityType" (ionChange)="onChangeActivity()"
+                        class="venuedropdown" style="text-align:left;padding-left: 15px;">
+                        <ion-option *ngFor="let type of club_activities" value={{type.ActivityKey}}>{{type.ActivityName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+
+            <ion-col col-6 style="padding:0px;">
+                <ion-item class="venueionitem">
+                    <!-- <ion-label>Coach</ion-label> -->
+                    <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+                        <ion-option *ngFor="let coach of coachs" value={{coach.CoachId}}>{{coach.FirstName}}
+                           {{coach.LastName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivityType" (ionChange)="onChangeActivity()">
+            <ion-option *ngFor="let type of types" value={{type.$key}}>{{type.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Coach</ion-label>
+        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+            <ion-option *ngFor="let coach of coachs" value={{coach.CoachKey}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+        </ion-select>
+    </ion-item> -->
+    <!-- <div class="margin_top">
+    </div> -->
+    <div>
+        <ion-item>
+            <ion-label>{{LangObj.grp_session_category}}</ion-label>
+            <ion-select [(ngModel)]="selectActivityCategory" (ionChange)="onChangeActivityCategory()">
+                <ion-option *ngFor="let ac of activityCategoryList" value={{ac.ActivityCategoryId}}>{{ac.ActivityCategoryName}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{LangObj.grp_session_subcategory}}</ion-label>
+            <ion-select [(ngModel)]="selectActivitySubCategory">
+                <ion-option *ngFor="let acs of activitySubCategoryList" value={{acs.ActivitySubCategoryId}}>
+                    {{acs.ActivitySubCategoryName}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item class="border-btm-style">
+            <!-- <ion-label floating>Group Size</ion-label> -->
+            <ion-label fixed>{{LangObj.grp_session_grpsize}}</ion-label>
+            <ion-input type="number" [(ngModel)]="sessionDetails.GroupSize" min="1" class="textareastyle"></ion-input>
+        </ion-item>
+
+        <ion-item class="activity_select">
+            <ion-label>Status</ion-label>
+            <ion-select [(ngModel)]="sessionDetails.GroupStatus" class="venuedropdown" style="padding-left: 15px;">
+                <ion-option *ngFor="let status of Status" value={{status.StatusCode}}>{{status.StatusText}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </div>
+
+
+    <div style="margin: 6px 0px 6px 0px;" class="border-btm-style">
+        <ion-card class="card">
+            <ion-card-header class="card_header">
+                {{LangObj.grp_session_days}}
+            </ion-card-header>
+            <ion-card-content>
+
+                <ion-row class="days">
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Mon',1)"
+                            [ngClass]="{'timekare-primary-btn': isSelectMon,'text_white': isSelectMon,'un_selected': !isSelectMon}">
+                            M</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Tue',2)"
+                            [ngClass]="{'timekare-primary-btn': isSelectTue,'text_white': isSelectTue,'un_selected': !isSelectTue}">
+                            T</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Wed',3)"
+                            [ngClass]="{'timekare-primary-btn': isSelectWed,'text_white': isSelectWed,'un_selected': !isSelectWed}">
+                            W</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Thu',4)"
+                            [ngClass]="{'timekare-primary-btn': isSelectThu,'text_white': isSelectThu,'un_selected': !isSelectThu}">
+                            T</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Fri',5)"
+                            [ngClass]="{'timekare-primary-btn': isSelectFri,'text_white': isSelectFri,'un_selected': !isSelectFri}">
+                            F</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Sat',6)"
+                            [ngClass]="{'timekare-primary-btn': isSelectSat,'text_white': isSelectSat,'un_selected': !isSelectSat}">
+                            S</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Sun',7)"
+                            [ngClass]="{'timekare-primary-btn': isSelectSun,'text_white': isSelectSun,'un_selected': !isSelectSun}">
+                            S</p>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+        </ion-card>
+        <ion-item>
+            <ion-label>{{LangObj.grp_session_startime}}</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="sessionDetails.StartTime"
+                class="textareastyle" [minuteValues]="minuteValues"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-label fixed>{{LangObj.grp_session_duration}} ({{LangObj.grp_session_mins}})</ion-label>
+            <ion-input type="number" [(ngModel)]="sessionDetails.Duration" max="60" min="1" (ionChange)="inputChanged()"
+                class="textareastyle"></ion-input>
+        </ion-item>
+    </div>
+
+
+
+    <ion-item>
+        <ion-label>{{LangObj.grp_session_startdate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="sessionDetails.StartDate"
+             max={{maxDate}} (ionChange)="dateChanged()"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.grp_session_endate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="sessionDetails.EndDate"
+        min={{minDate}} max={{maxDate}} (ionChange)="dateChanged()"></ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="sessionDetails.PaymentOption == 100 || sessionDetails.PaymentOption == 101">
+        <ion-label>{{LangObj.grp_session_earlypaymentdate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="sessionDetails.PayByDate"
+            max={{maxDate}}></ion-datetime>
+    </ion-item>
+
+    <ion-item *ngIf="isHalfTermAvail">
+        <ion-row>
+            <ion-col col-12 no-padding class="flex_col">
+                <p class="toggle_para">Apply Half Term</p>
+                <label class="toggle">
+                    <input type="checkbox" [(ngModel)]="sessionDetails.HalfTerm" (click)="CheckIsHalfTerm()">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+    <ion-item>
+        <ion-row>
+            <ion-col col-12 no-padding class="flex_col">
+                <p class="toggle_para">Allow Pay Later</p>
+                <label class="toggle">
+                    <input type="checkbox" [(ngModel)]="sessionDetails.IsAllowPayLater">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+    
+    <ion-item class="border-btm-style">
+        <ion-label fixed>{{LangObj.grp_session_noof_weeks}}</ion-label>
+        <ion-input type="number" [(ngModel)]="sessionDetails.NoOfWeeks" (ionChange)="inputChanged()"
+            class="textareastyle"></ion-input>
+    </ion-item>
+
+
+    <!-- 
+    <ion-item>
+        <ion-label>{{LangObj.grp_session_paymentype}}</ion-label>
+        <ion-select [(ngModel)]="sessionDetails.PaymentOption" (ionChange)="paymentOptionChanged()">
+            <ion-option *ngFor="let opt of paymentOptions" value={{opt.Key}}>{{opt.Value}}</ion-option>
+        </ion-select>
+    </ion-item> -->
+
+    <!--<p>{{maxPayByDate}}</p>-->
+
+
+
+
+    <!-- <ion-item *ngIf="sessionDetails.PaymentOption == 100">
+        <ion-label fixed>{{LangObj.grp_session_perses_mem}}<span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span></ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="sessionDetails.FeesPerDayForMember" min="1.00"
+            (ionChange)="inputChanged()"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="sessionDetails.PaymentOption == 100">
+        <ion-label fixed>{{LangObj.grp_session_perses_nonmem}}
+            <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span></ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="sessionDetails.FeesPerDayForNonMember" min="1.00"
+            (ionChange)="inputChanged()"></ion-input>
+    </ion-item> -->
+
+    <!-- starts here-->
+    <ion-item *ngIf="sessionDetails.PaymentOption == 100">
+        <ion-label fixed>{{LangObj.grp_session_tottfee_mem}} <span
+                *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span></ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="sessionDetails.SessionFee" min="1.00"></ion-input>
+    </ion-item>
+
+
+    <ion-item *ngIf="sessionDetails.PaymentOption == 100" class="border-btm-style">
+        <ion-label fixed>{{LangObj.grp_session_totfee_nonmem}} <span
+                *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span></ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="sessionDetails.SessionFeeForNonMember" min="1.00">
+        </ion-input>
+    </ion-item>
+    <!--Ends here-->
+
+
+
+
+    <!-- installment amount section -->
+    <!--  -->
+    <ion-item *ngIf="sessionDetails.PaymentOption == 104">
+        <ion-label fixed>{{LangObj.grp_session_no_instl}}</ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="installmentSessionObj.NoOfInstallment" min="1">
+        </ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="sessionDetails.PaymentOption == 104">
+        <ion-label fixed>{{LangObj.grp_session_instl_mem}}<span
+                *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span></ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="installmentSessionObj.InstallmentAmountForMember"
+            min="1.00"></ion-input>
+    </ion-item>
+
+
+    <ion-item *ngIf="sessionDetails.PaymentOption == 104">
+        <ion-label fixed>{{LangObj.grp_session_instl_nonmem}} <span
+                *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span></ion-label>
+        <ion-input type="number" class="textareastyle" [(ngModel)]="installmentSessionObj.InstallmentAmountForNonMember"
+            min="1.00"></ion-input>
+    </ion-item>
+    <!--  -->
+    <!-- ends here -->
+
+
+
+    <!-- Monthly payment option  -->
+
+    <ion-item (tap)="selectFreeSessions()" *ngIf="sessionDetails.PaymentOption == 101">
+        <p style="font-size: 16px;">
+            <span style="float:left;">{{LangObj.grp_session_freeses}}(s)</span>
+            <span style="float:right;">{{monthlySessionObj.FreeSesionIntermsOfMonth}}</span>
+        </p>
+    </ion-item>
+
+    <ion-item (tap)="numberOfMonthMustPay()" *ngIf="sessionDetails.PaymentOption == 101">
+        <p style="font-size: 16px;">
+            <span style="float:left;">{{LangObj.grp_session_mustpay}}</span>
+            <span style="float:right;">{{monthlySessionObj.NoOfMonthMustPay}}</span>
+        </p>
+    </ion-item>
+
+
+    <!-- ends here   -->
+
+
+
+    <ion-item class="comments">
+        <ion-label fixed>{{LangObj.grp_session_comment}}</ion-label>
+        <ion-textarea type="text" class="textareastyle" [(ngModel)]="sessionDetails.Comments"></ion-textarea>
+    </ion-item>
+    <ion-grid class="nopadding">
+        <ion-row class="nopadding">
+            <!-- <ion-col col-12 class="nopadding">
+                <ion-item class="left_margin" class="border-btm-style">
+                    <ion-label>{{LangObj.grp_session_allow_edit}}</ion-label>
+                    <ion-checkbox [(ngModel)]="sessionDetails.IsAllMembertoEditFees"></ion-checkbox>
+                </ion-item>
+            </ion-col> -->
+            <ion-col col-12 class="nopadding">
+                <!-- <ion-item class="left_margin" class="border-btm-style">
+                    <ion-label>{{LangObj.grp_session_allow_member_edit}}</ion-label>
+                    <ion-checkbox [(ngModel)]="sessionDetails.IsAllMembertoEditAmendsFees"></ion-checkbox>
+                </ion-item> -->
+                <ion-item style="border-bottom: 0.55px solid #c8c7cc;">
+                    <ion-row>
+                        <ion-col col-12 no-padding class="flex_col">
+                            <!-- Need to do also in language -->
+                            <p class="toggle_para">Amend Price</p>
+                            <label class="toggle">
+                                <input type="checkbox" [(ngModel)]="sessionDetails.IsAllMembertoEditAmendsFees">
+                                <span data-unchecked="No" data-checked="Yes"></span>
+                            </label>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+                <ion-item>
+                    <ion-row>
+                        <ion-col col-12 no-padding class="flex_col">
+                            <p class="toggle_para">Allow Childcare Voucher</p>
+                            <label class="toggle">
+                                <input type="checkbox" [(ngModel)]="sessionDetails.AllowChildCare">
+                                <span data-unchecked="No" data-checked="Yes"></span>
+                            </label>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+    <div style="margin: 6px 0px 6px 0px;" class="border-btm-style">
+        <ion-item class="toggle_header">
+            <p>Loyalty Points Setup</p>
+        </ion-item>
+        <ion-item style="border-bottom: 0.55px solid #c8c7cc;">
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Reward Loyalty</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="sessionDetails.IsLoyaltyAllowed">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="sessionDetails.IsLoyaltyAllowed" style="border-bottom: 0.55px solid #c8c7cc;">
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Loyalty Mode</p>
+                    <label class="toggle">
+                        <input type="checkbox" (click)="CheckLoyaltyType()"
+                            [(ngModel)]="sessionDetails.IsFixedLoyaltyAllowed">
+                        <span data-unchecked="Manual" data-checked="Fixed"></span>
+                    </label>
+                </ion-col>
+                <!-- <ion-col col-1>
+                            <button style="padding:0px;width:100%" ion-button clear (tap)="clearCache()">
+                                <ion-icon name=""></ion-icon>
+                            </button> 
+                        </ion-col> -->
+            </ion-row>
+        </ion-item>
+        <ion-item class="border-btm-style" *ngIf="sessionDetails.IsLoyaltyAllowed">
+            <ion-label fixed>Total Points</ion-label>
+            <ion-input type="number" [disabled]="sessionDetails.IsFixedLoyaltyAllowed"
+                [(ngModel)]="sessionDetails.FixedLoyaltyPoints" class="textareastyle">
+            </ion-input>
+        </ion-item>
+        <!-- </ion-card-content>
+        </ion-card> -->
+    </div>
+
+
+    <div style="margin: 6px 0px 6px 0px;" class="border-btm-style">
+        <ion-item class="toggle_header">
+            <p>AP+ Setup</p>
+        </ion-item>
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Show In AP Play</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="sessionDetails.ShowInAPKids">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="sessionDetails.ShowInAPKids">
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Allow Group Chat</p>
+                    <label class="toggle">
+                        <input type="checkbox" (click)="showChatTermsAlert()"
+                            [(ngModel)]="sessionDetails.IsAllowGroupChat">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+    </div>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+                    (click)="cancelSessionCreation()">{{LangObj.grp_session_cancel}}</button>
+            </ion-col>
+            <ion-col col-6 *ngIf="sessionDetails.PaymentOption==100">
+                <button ion-button block class="timekare-primary-btn"
+                    (click)="createSession()">{{LangObj.grp_session_create}}</button>
+            </ion-col>
+            <!-- Monthly continue button -->
+            <ion-col col-6 *ngIf="sessionDetails.PaymentOption==101">
+                <button ion-button block class="timekare-primary-btn"
+                    (click)="continue(101)">{{LangObj.grp_session_continue}}</button>
+            </ion-col>
+            <!-- Installment continue button -->
+            <ion-col col-6 *ngIf="sessionDetails.PaymentOption==104">
+                <button ion-button block class="timekare-primary-btn"
+                    (click)="continue(104)">{{LangObj.grp_session_continue}}</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>
+
+<page-paymentgatewaysetup *ngIf="sessionDetails.PaymentOption==100 && isTermsEmpty"
+    InstructTxt="Please add  term for the venue" (skip)="skip()" (navigate)="GotoPaymentSetup()">
+</page-paymentgatewaysetup>
+<ion-fab right bottom *ngIf="sessionDetails.PaymentOption==100 && isTermsEmpty">
+    <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (tap)="GotoPaymentSetup()"
+        style="background-color:#2b92bb !important; color: white !important">
+        <ion-icon name="add"></ion-icon>
+    </button>
+</ion-fab>

@@ -1,0 +1,52 @@
+<!--
+  Generated template for the ApkidsubscriptionsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Subscriptions</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div>
+    <ion-row>
+      <ion-col col-12 text-center>
+        <div class="circleProgress">
+          <p><span>{{Subscriptions ? Subscriptions.SubscriptionDetails.length : 0}}</span></p>
+          <img src="assets/images/check-mark.svg">
+        </div>
+        <div>
+          <p class="progress_txt">Subscriptions</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="Subscriptions && Subscriptions.SubscriptionDetails">
+      <ion-col col-12 style="padding:0px !important">
+        <ion-list style="overflow-y: scroll !important;">
+          <ion-grid>
+            <ion-row class="innercard_style row"
+              *ngFor="let subscription of Subscriptions.SubscriptionDetails">
+              <ion-col col-8 text-left class="mem_col margin-auto">
+                <p class="member_name">{{subscription.ChildName}}</p>
+              </ion-col>
+              <ion-col col-4 text-center class="margin-auto">
+                <p class="amt">{{getFormattedDate(subscription.EnrolledOnLocal)}}
+                <p class="sub_para" *ngIf="subscription.SetupOptions ==1">Monthly</p>
+                <p class="sub_para" *ngIf="subscription.SetupOptions ==2">Yearly</p>
+              </ion-col>
+              <!-- <ion-col col-1 class="margin-auto" >
+                <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+              </ion-col> -->
+            </ion-row>
+          </ion-grid>
+        </ion-list>
+      </ion-col>
+    </ion-row>    
+  </div>
+</ion-content>

@@ -1,0 +1,90 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Coach Profile</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Coach Profile
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <!--<form>-->
+    <ion-card style="width: 100%;margin: 0;">
+        <ion-item>
+            <ion-label float>First Name</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.FirstName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label float>Last Name</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.LastName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>EmailID</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.EmailID"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Phone Number</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.PhoneNumber"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Gender</ion-label>
+            <ion-select [(ngModel)]="coachInfoObj.Gender">
+                <ion-option value="male">Male</ion-option>
+                <ion-option value="female">Female</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>DOB</ion-label>
+            <ion-datetime displayFormat="MMMM/YYYY" pickerFormat="MMMM YYYY" [(ngModel)]="coachInfoObj.DOB"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Registration Number</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.RegistrationNumber"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Recognition</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.Recognition"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>DBS Number</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.DBSNumber"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Detail Description</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.DetailDescription"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Short Description</ion-label>
+            <ion-input type="text" [(ngModel)]="coachInfoObj.ShortDescription"></ion-input>
+        </ion-item>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-6>
+                    <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelCoachDetails()">Cancel</button>
+                </ion-col>
+                <ion-col col-6>
+                    <button ion-button block class="timekare-primary-btn" (click)="updateCoachInfo()">Save</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-card>
+</ion-content>

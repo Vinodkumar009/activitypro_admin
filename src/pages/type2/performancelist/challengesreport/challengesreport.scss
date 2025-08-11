@@ -1,0 +1,125 @@
+page-challengesreport {
+    .scroll-content {
+        background-size: 100% 100%;
+        margin-top: 57px;
+        padding: 14px 8px 8px 8px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    }
+    ion-fab {
+        //bottom: 40px !important;
+        .fab{
+            background-color: #2b92bb;
+        }
+    }
+    .sub-container {
+        border: 1px solid #34343442;
+        border-radius: 5px;
+        margin:5px 15px;
+        
+        ion-icon {
+            width: 90%;
+            background: transparent !important;
+            border-radius: 5px;
+            //color: white;
+            color: rgba(250, 169, 40, 0.827451)
+            //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+        }
+
+        .search-bar{
+            padding: 0px 5px;
+        }
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            padding: 2px !important;
+        }
+
+        .searchbar-input {
+            //padding-left: 4px !important;
+            padding: 1px 4px !important;
+            box-shadow: none !important;
+            -webkit-box-shadow:none !important;
+        }
+
+        .searchbar-search-icon {
+            display: none !important;
+        }
+
+        ion-icon {
+            font-size: 26px;
+            padding-left: 5px;
+        }
+    }
+    .facilityCard{
+        border-radius: 0px !important;
+        box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+        margin: 6px 12px;
+        padding: 5px 5px 5px 5px;
+        border-radius: 2px;
+        border-left:2px solid #35ADFF;
+        //height: 20vh;
+        //border-bottom: 1px solid #fab754;
+        p{
+            line-height: 1.2 !important;
+        }
+        ion-card-content{
+            //height: 18vh;
+            padding: 0px 5px !important;
+        }
+        .margin-auto{
+            margin:auto;
+        }
+        .circle{
+            margin-top: -3px;
+            width: 50px;
+            float: right;
+            height: 50px;
+            border: 4px solid #e4e4e4;
+            border-radius: 50%;
+            padding: 12px 4px;
+            text-align: center;
+            // color: #000000;
+        }
+        .event_date {
+            color: #343434db;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .mar0 {
+            margin: 0 !important;
+        }
+        .eventname {
+            color: rgba(0, 0, 0, 0.85);
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 22px;
+        }
+        .event_more {
+            margin: 8px 0px 0px 0px;
+            color: #373737;
+            font-weight: 700;
+            font-size: 15px;
+            text-transform: capitalize;
+            width: 150px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            //display: flex;
+            padding: 5px 0px 4px 10px;
+            border: 0.5px solid rgba(128, 128, 128, 0.43);
+        }
+        
+        .event_more img {
+            width: 17px;
+            height: 17px;
+            margin: 0px 5px 0px 0px;
+        }
+        ion-list {
+            margin: 0;
+            padding: 0;
+            display: block;
+            list-style-type: none;
+        }
+                
+    }
+}

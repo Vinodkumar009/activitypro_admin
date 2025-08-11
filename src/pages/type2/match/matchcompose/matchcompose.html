@@ -1,0 +1,148 @@
+<!--
+  Generated template for the MatchcomposePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>matchcompose</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="ios-send-outline" class="ico"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-slides pager="true" (ionSlideDidChange)="slideChanged()">
+    <ion-slide>
+      <!-- <page-composenotification #notification></page-composenotification> -->
+      <ion-row style="border-bottom: 1px solid #faae4e !important">
+        <ion-col col-7>
+          <ion-item>
+            <ion-select
+              [(ngModel)]="selectedClub"
+              (ionChange)="onChangeOfClub(club)"
+              class="club-select"
+              style="width: 100%; max-width: 100%"
+            >
+              <ion-option>clubs</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col col-5>
+          <ion-item>
+            <ion-select
+              class="activity-select"
+              style="width: 100% !important; max-width: 100% !important"
+            >
+              <ion-option>activityname</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-item style="border-bottom: 1px solid #faae4e !important">
+        <ion-label>Coach</ion-label>
+        <ion-select>
+          <ion-option>coach name</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item style="border-bottom: 1px solid #faae4e !important">
+        <ion-label>Session</ion-label>
+        <ion-select>
+          <ion-option>sessionname</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item style="padding-right: 16px">
+        <ion-textarea
+          style="margin-top: 5px; white-space: pre-wrap"
+          type="text"
+          rows="10"
+          (focusout)="focusOutMessage()"
+          placeholder="Type a message here..."
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col col-12>
+            <button ion-button block style="background-color: #2b92bb">
+              Notify
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+
+    <ion-slide>
+      <!-- <page-composeemial #email></page-composeemial> -->
+      <ion-row style="border-bottom: 1px solid #faae4e !important">
+        <ion-col col-7>
+          <ion-item>
+            <ion-select
+              class="club-select"
+              style="width: 100%; max-width: 100%"
+            >
+              <ion-option>Club Name</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col col-5>
+          <ion-item>
+            <ion-select
+              class="activity-select"
+              style="width: 100% !important; max-width: 100% !important"
+            >
+              <ion-option>activity name</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-item style="border-bottom: 1px solid #faae4e !important">
+        <ion-label>Coach</ion-label>
+        <ion-select>
+          <ion-option>First middle last</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item style="border-bottom: 1px solid #faae4e !important">
+        <ion-label>Session</ion-label>
+        <ion-select>
+          <ion-option>session name</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item style="border-bottom: 1px solid gray">
+        <ion-label>Subject</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+
+      <ion-item style="padding-right: 16px">
+        <ion-textarea
+          style="margin-top: 5px; white-space: pre-wrap; padding-left: 8px"
+          type="text"
+          rows="10"
+          placeholder="Type a message here..."
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col col-12>
+            <button ion-button block style="background-color: #007a90">
+              <ion-icon
+                name="ios-send-outline"
+                style="font-size: 30px; margin-right: 10px"
+              ></ion-icon
+              >Send Email
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+  </ion-content
+>

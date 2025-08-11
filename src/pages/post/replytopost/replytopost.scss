@@ -1,0 +1,200 @@
+page-replytopost {
+  $toolbar-background-color1: #2b92bb;
+  $toolbar-title-color1: #ffffff;
+  $toolbar-button-text-color1: #ffffff;
+
+  .scroll-content {
+    padding: 5px !important;
+  }
+
+  .toolbar {
+      //padding-top: 30px !important;
+  }
+  .toolbar-title-ios {
+      //padding-top: 25px;
+  }
+  .toolbar-title {
+      color: #f4f4f4 !important;
+  }
+ 
+  .bar-button {
+      color: $toolbar-button-text-color1;
+  }
+  .bar-button-default-ios,
+  .bar-button-default.bar-button-ios-default,
+  .bar-button-clear-ios-default {
+      color: #f4f4f4 !important;
+  }
+  // .toolbar-background-ios {
+  //     background: #2b92bb !important;
+  // }
+  .toolbar-title {
+      color: $toolbar-title-color1;
+      //added after dashboard color change.
+      font-weight: 400;  
+  }
+  .toolbar-background {
+      background-color: $toolbar-background-color1 !important;
+  }
+
+
+
+
+
+
+
+
+    
+    .message {
+        padding: 0px 5px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        //white-space: pre-wrap;
+      }
+       
+      .my-message {
+        background: #faae4e;
+        color: #fff;
+      }
+       
+      .other-message {
+        background: #2b92bb !important;
+        color: #fff;
+        padding: 0px 10px;
+      }
+
+      .deleted-message{
+        background: #22222275 !important;
+        color: #fff;
+        padding: 0px 10px;
+        font-style: italic;
+      }
+       
+      .time {
+        color: #dfdfdf;
+        float: right;
+        font-size: small;
+      }
+       
+      .message-input {
+        width: 100%;
+        height: 100%;
+        border:1px solid gold;
+        border-radius: 10px;
+        background: #fff;
+        resize: none;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .msg{
+        //padding-left: 15px;
+      }
+       
+      .msg-btn {
+        width: 100%;
+        margin:auto;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+          ion-icon{
+           font-size:2.8em;
+           color:#3fbcd3;
+          }
+      }
+      .margin-top-bottom-5{
+        margin: 0px 0px -2px 0px !important !important;
+      }
+      .para-list-header{
+        ////Default theme color//////
+          font-weight: bold;
+          font-size: 1rem !important;
+          color: grey !important;
+          //background: #e4e4e4 !important;
+          //color: var(--primary-color) !important;
+      }
+      .para-text-color{
+        color:#504d4a ; 
+        margin: 0px 0px 3px 0px !important;
+        font-weight: 300;
+      }
+       // modal styles
+  .chatmodal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    ///transform: scale(1.1);
+   // transition: opacity 500ms ease-in;
+   animation: popup 0.7s;
+  }
+  
+  @keyframes popup {
+    0%{
+      transform: scale(0);
+    }
+    50%{
+      transform: scale(1.2);
+    }
+    100%{
+      transform: scale(1);
+    }
+  }
+
+  .footer{
+    button{
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      padding: 18%;
+      margin: auto;
+      background: #2b92bb;
+       ion-icon{
+        font-size:2em;
+        margin-left: -2px;
+        color:#FFFFFF;
+        transform: rotateZ(42deg);
+       }
+     }
+  }
+  .delete_div{
+    position: absolute;
+    top:30px;
+    background:#fff;
+    color:black;
+    right:10px;
+    border-radius: 5px;
+    padding: 5px 20px;
+    p{
+      margin:5px 5px 5px 10px;
+    }
+  }
+  .close_fab{
+    top:75% !important;
+    border-radius: 50%;
+    //transform: scale(1);
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+        //transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5);
+    }
+  
+    70% {
+        //transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+  
+    100% {
+        //transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+  }
+  
+
+
+}

@@ -1,0 +1,82 @@
+<!--
+  Generated template for the ChallengeTemplatePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Gallery</ion-title>
+    <ion-buttons end>
+      <!-- <button ion-button icon-only (click)="goToDashboardMenuPage()">
+          <img src="assets/images/home.svg" class="home_btn">
+      </button> -->
+      <button ion-button icon-only (click)="presentPopover($event)">
+          <ion-icon name="more"></ion-icon>
+      </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div style="height: 100%;">
+    <div style="width:100%;height:15%">
+      <ion-item  *ngIf="gallery_categories && gallery_categories.length > 0">
+        <ion-label class="select_label" >Select Category</ion-label>
+        <ion-select  [(ngModel)]="product_category" (ionChange)="onChangeProductCategory()" >
+          <ion-option value="all">All</ion-option>
+          <ion-option *ngFor="let category of gallery_categories" value={{category.id}}>{{category.category_name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-row class="sub-container rows-allign2">
+        <ion-col col-1 style="text-align:center;margin:auto;padding:0px">
+          <ion-icon name="ios-search"></ion-icon>
+        </ion-col>
+        <ion-col col-11 class="search-bar">
+          <ion-searchbar placeholder="Search by name,price" id="customsearchbar" (ionInput)="FilterGallery($event)"
+            autocorrect="off"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div style="width:100%;height:85%;overflow: hidden;overflow-y: scroll;margin-top:15px;">
+    <ion-row>
+      <ion-col col-12>
+        <ion-list>
+          <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
+            *ngFor="let gallery_item of gallery;let i=index">
+            <ion-card-content (click)="showActions(i)">
+              <ion-row>
+                <ion-col col-9>
+                  <p class="p1">{{gallery_item.variant_shortname}} </p>
+                  <p class="paidmembercount">{{gallery_item.variant_description}}</p>
+                </ion-col>
+                <ion-col col-3 class="pts_col" text-right>
+                  <p class="" style="color: rgba(0,0,0,0.65);font-weight: 500;">Points</p>
+                  <p class="points">{{gallery_item.variant_price}}</p>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </div>
+  </div>
+  <div class="not_found" *ngIf="is_gallery_empty">
+    <ion-row  >
+      <ion-col col-12 text-center>
+        <p>No gallery items found</p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+</ion-content>
+
+
+<ion-fab right bottom  (tap)="navigateCreateItem()" class="trash_icon">
+  <button ion-fab mini><ion-icon name="add"></ion-icon></button>
+</ion-fab>
+

@@ -1,0 +1,51 @@
+page-agecategory {
+    .scroll-content {
+        padding: 5px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+        //margin-top:60px !important;
+    }
+    .facilityCard{
+        border-radius: 0px !important;
+        box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+        margin: 6px 12px;
+        padding: 5px 5px 5px 5px;
+        border-radius: 2px;
+        border-left:2px solid #35ADFF;
+        border-bottom: 2px solid #faae4e !important;
+        .catg_age_col{
+            margin: auto;
+            text-align: center;
+        }
+        p{
+            line-height: 1.2 !important;
+        }
+        .p1 {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom:3px;
+         }
+         .p2{
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.529412);
+         }
+         
+        ion-card-content{
+            //height: 18vh;
+            padding: 0px 5px !important;
+        }
+        
+        .mar0 {
+            margin: 0 !important;
+        }
+          
+    }
+    .not_found{
+        margin-top:25%;
+    }
+    ion-fab button{
+        background-color: #2b92bb !important;
+        color: white !important;
+    }
+
+}

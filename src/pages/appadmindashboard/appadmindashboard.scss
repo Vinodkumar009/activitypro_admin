@@ -1,0 +1,108 @@
+page-appadmindashboard {
+    .scroll-content {
+        //background-image: url("../assets/images/background/backgroundimg1.png") !important;
+        //background-image: none !important;
+        background-size: 100% 100%;
+        margin-top: 57px;
+        padding: 14px 8px 8px 8px !important;
+        //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    }
+    .parentimg {
+        width: 30%;
+        margin-top: 2%;
+    }
+    .btn{
+        width: 40%;
+        margin-left: auto;
+    }
+    .dash_row{
+        margin:5px;
+        border-radius: 6px;
+        box-shadow: 0px 1px 3px -1px rgba(156, 156, 155, 1);
+        ion-col{
+            text-align: -webkit-center;
+            p{
+                color:rgba(0, 0, 0 ,0.6);
+                font-weight: 500;
+                font-size: 18px;
+            }
+        }
+        background: white;
+    
+    }
+    ion-list{
+        ion-item{
+            padding-left: 5px !important;
+        }
+        ion-icon{
+            font-size: 2.3rem !important;
+            color: rgba(128, 128, 128, 0.8);
+            margin-left: 0;
+            margin-top: 10px !important;
+            margin-bottom: 4px !important;
+        }
+    }
+    .avatar{
+        width:50px;
+        height:50px;
+        max-width: 50px;
+        border-radius: 50%;
+        border: 1px solid grey;
+        padding: 2px;
+    }
+    .sub-container {
+        border-bottom: 1px solid orange;
+        padding-bottom: 13px;
+        margin-top: 10px;
+        .search_btn{
+            width: 90%;
+            height: 86%;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 86% !important;
+            margin-top: 4px !important;
+            padding: 2px 0px
+        }
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+        .searchbar-ios .searchbar-input{
+            padding: 0 28px;
+            border-radius: 5px;
+            height: 4rem;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #000;
+            background-color: #fff;
+        }
+        .searchbar-search-icon {
+            display: none !important;
+        }
+        ion-icon {
+            font-size: 20px;
+        }
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow: none
+        }
+        .margin-auto{   
+            margin:auto;
+        }
+        .refresh_btn{
+            ion-icon{
+                color: rgba(250, 169, 40, 0.827451);
+                font-size: 28px;
+                margin-left: -7px;
+            }
+        }
+    }
+}

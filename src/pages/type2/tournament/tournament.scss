@@ -1,0 +1,191 @@
+page-tournament {
+  // ion-label {
+  //   color: #faae4e;
+  // }
+  width: 100%;
+  // p{
+  //     color: #949494 ;
+  // }
+  // .scroll-content {
+  //     padding: 6px !important;
+  //     background-image: none !important;
+  //     // background: white !important;
+  //     background:  #f4efef !important;
+  // }
+  // .create-cards-text{
+  //     text-align: left;
+  //     width: 100%;
+  // }
+
+  // .create-cards-img{
+  //     max-height: 5em;
+  //     // filter: grayscale(100%);
+  // }
+  // .create-cards-img:hover{
+  //     filter: grayscale(0%);
+  // }
+  // .cards-name{
+  //     color: #5ea68d;
+  //     font-size: 20px !important;
+  // }
+  // .tournament-header{
+  //     padding: 0 10px;
+  //     margin-bottom: -5px;
+  // }
+  // .location-head{
+  //     padding: 15px 0 0 15px;
+  // }
+  // .location-card{
+  //     box-shadow: 3px 4px 14px rgba(0, 0, 0, 0.3);
+  //     margin-bottom: 20px;
+  // }
+  
+  .ion-card {
+    margin: 0px !important;
+    width: 100% !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #f6ae4d !important;
+    
+    ion-card-content {
+      padding: 0px !important;
+    }
+  }
+
+
+  .segment-activated {
+    color: white !important;
+    background-color: #f6ae4d !important;
+  }
+
+  ion-segment-button {
+    color: #aba5a5 !important;
+  }
+
+  .Location-head {
+    font-size: 1.6rem;
+    color: #222;
+    padding: 10px;
+    border-bottom: 1px solid #ded8d8 !important;
+  }
+
+  .nonmembercard {
+    margin-top: 30px !important;
+  }
+
+  .nonlocationcard {
+    padding: 14px 0;
+  }
+
+  .scroll-content {
+    padding: 6px !important;
+    background-image: none !important;
+    // background: white !important;
+    background: #f7f7f7 !important;
+    // background: #f4efef !important;
+    margin-bottom: 60px;
+  }
+
+  .location-cards > p {
+    line-height: 1.1;
+    color: #8c8c8c;
+  }
+
+  .location-cards > h3 {
+    font-size: 15px;
+    color: blue;
+    font-weight: 600;
+  }
+
+  .location-cards {
+    padding: 10px 10px;
+    border-bottom: yellow;
+  }
+
+  .all {
+    // border-left: 3px solid #35adff;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-image: -webkit-gradient(
+        linear,
+        0 0,
+        0 100%,
+        from(#35adff),
+        to(#7dbce6)
+      )
+      1 100%;
+    -webkit-border-image: -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+    -moz-border-image: -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+    -o-border-image: -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+    border-image: linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+  }
+
+  .border-left-style {
+    height: 70px;
+    position: absolute;
+    top: 35px;
+    left: 7px;
+  }
+
+  .name {
+    color: #5ea68d;
+    font-size: 18px !important;
+    width: 100%;
+  }
+
+  .card-text {
+    color: #c5b495;
+    width: 100%;
+  }
+
+  .card-text > span {
+    color: gray;
+  }
+
+  .amount {
+    text-align: right;
+  }
+
+  .footer_div {
+    position: absolute;
+    background: #fff;
+    //border-top: 1px solid rgba(128, 128, 128, 0.23);
+    padding: 0px 0px;
+    bottom: 0px;
+    width: 100%;
+    z-index: 999;
+    box-shadow: 0px 0 3px rgba(0, 0, 0, 0.2);
+    ion-col {
+      margin: 0px;
+      text-align: center;
+      font-size: 13px;
+      p {
+        color: rgba(0, 0, 0, 0.65) !important;
+        margin: 0px 0px;
+      }
+    }
+    ion-icon {
+      font-size: 30px;
+      color: #2292bb !important;
+    }
+  }
+
+  .fabs{
+    position: absolute;
+    background: #fff;
+    //border-top: 1px solid rgba(128, 128, 128, 0.23);
+    padding: 0px 0px;
+   
+   
+    z-index: 999;
+  }
+  .fab_btn{
+    position: absolute;
+    right: 12px;
+    float: right;
+    bottom: 70px !important;
+  }
+  .selected {
+    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+  }
+}

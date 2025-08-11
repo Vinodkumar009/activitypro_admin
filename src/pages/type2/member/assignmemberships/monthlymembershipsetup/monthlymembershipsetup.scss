@@ -1,0 +1,34 @@
+page-monthlymembershipsetup {
+   
+    
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+    .item-inner{
+        border-bottom:none;
+    }
+    .allpayment  .selected{
+        box-shadow: 3px 4px 9px -4px #61554c !important;
+        background-color: #faae4e  !important;
+        color: white !important;
+    }
+    .dashboard_col_item_block {
+        padding: 5px 8px 0px 8px;
+        text-align: center;
+        margin-bottom: 10px;
+        border-radius: 7px;
+      //  -webkit-box-shadow: 0px 1px 5px -1px #7b7a76;
+        box-shadow: 0px 2px 5px -1px #887f82 !important;
+        height: 6rem;
+        margin: 5px;
+        max-width: 30%;
+    }
+    .btn{
+        position: absolute;
+        bottom: 0;
+        width: 94%;
+    }
+    
+}

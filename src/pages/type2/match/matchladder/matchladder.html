@@ -1,0 +1,133 @@
+<!--
+  Generated template for the MatchladderPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>Ladder</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<div style="width: 100%; height: 100%">
+  <ion-row style="margin-bottom: 10px">
+    <ion-segment [(ngModel)]="isPoints">
+      <ion-segment-button value="Points">
+        <ion-label>Points</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="HeadtoHead" (click)="callheadtohead()">
+        <ion-label>Head-to-Head</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-row>
+  <div>
+
+    <ion-row *ngIf="isPoints == 'Points'">
+      <ion-col class="dropdownrow" col-12 text-left>
+        <ion-select [(ngModel)]="selectedcat" (ionChange)="getLadderList()">
+          <ion-label>Age Category</ion-label>
+          <ion-option *ngFor="let cat of ageCategories" value={{cat.Id}}>{{cat.CategoryName}}({{cat.AgeFrom}} - {{cat.AgeTo}})</ion-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+
+  <ion-row class="sub-container rows-allign2">
+      <ion-col col-1 style="text-align:center;margin-top:12px;padding:0px">
+          <!-- <button>
+          <ion-icon name="ios-search"></ion-icon>
+      </button> -->
+          <ion-icon name="ios-search"></ion-icon>
+      </ion-col>
+      <ion-col col-11 class="search-bar">
+          <ion-searchbar placeholder="Search by Rank, Name" id="customsearchbar" [(ngModel)]="searchInput"
+              (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+      </ion-col>
+    
+  </ion-row>
+
+  </div>
+  <!-- <div>
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col class="headings" col-2>Rank</ion-col>
+          <ion-col class="headings" col-8>Names</ion-col>
+          <ion-col class="rightheading" col-2>Points</ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div> -->
+
+    <div [ngSwitch]="isPoints">
+      <div ng-if *ngSwitchCase="'Points'">
+        <ion-row>
+          <ion-col style="padding-left: 0px; padding-right: 0px">
+            <ion-item class="item" *ngFor="let ladder of filteredLadder">
+              <p
+                item-left
+                style="
+                  color: #4b6051;
+                  font-weight: 900 !important;
+                  font-size: 18px;
+                  padding-right: 10px;
+                "
+              >
+                {{ladder.rank}}
+              </p>
+              <p class="name" style="text-transform: capitalize">
+                {{ladder.FirstName}} {{ladder.LastName}}
+              </p>
+              <p
+                item-right
+                style="
+                  color: #2292bb;
+                  font-size: 18px;
+                  padding-left: 20px;
+                  padding-right: 10px;
+                "
+              >
+                {{ladder.Points}}
+              </p>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div ng-if *ngSwitchCase="'HeadtoHead'">
+        <ion-row>
+          <ion-col style="padding-left: 0px; padding-right: 0px">
+            <ion-item class="item" *ngFor="let ladder of filteredLadderHead">
+              <p
+                item-left
+                style="
+                  color: #4b6051;
+                  font-weight: 900 !important;
+                  font-size: 18px;
+                  padding-right: 10px;
+                "
+              >
+                {{ladder.rank}}
+              </p>
+              <p class="name" style="text-transform: capitalize">
+                {{ladder.FirstName}} {{ladder.LastName}}
+              </p>
+              <!-- <p
+                item-right
+                style="
+                  color: #2292bb;
+                  font-size: 18px;
+                  padding-left: 20px;
+                  padding-right: 10px;
+                "
+              >
+                {{ladder.Points}}
+              </p> -->
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+   
+     
+
+</div>

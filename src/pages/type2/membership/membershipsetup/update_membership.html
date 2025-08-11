@@ -1,0 +1,273 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Membership Setup</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div>
+        <ion-row class="border-bottom-2px">
+            <ion-item class="venueionitem">
+                <ion-select class="venuedropdown" [(ngModel)]="selectedClubKey" (ionChange)="onVenueChange()" [disabled]="true">
+                    <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-row>
+
+        <div *ngIf="membership_dets">
+            <ion-list class="custom-list">
+                <ion-item class="custom_ionitem mem_name" style="border-bottom: 1px solid #d2c6b7">
+                    <ion-label stacked>Membership Name</ion-label>
+                    <ion-input type="text" class="setupname" placeholder="Name of membership" [disabled]="true" [(ngModel)]="membership_dets.membership_name"></ion-input>
+                    <button ion-button clear item-right class="help_btn" (click)="editMembershipInfo(0)">
+                        <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+                    </button>
+                </ion-item>
+                <ion-card class="card-view">
+                    <ion-card-content>
+                        <ion-row>
+                            <ion-col col-12>
+                                <p class="mem_allowed_para">Number of member allowed</p>
+                            </ion-col>
+                            <ion-col col-12 class="border" style="padding: 0 1px 0 0 !important;" text-center>
+                                <ion-item class="custom_ionitem" style="border-bottom: 1px solid #d2c6b7">
+                                    <ion-label fixed>Minimum</ion-label>
+                                    <ion-input type="number" class="setupname rightalign" placeholder="Min no. of members"
+                                        [(ngModel)]="membership_dets.min_member" [disabled]="!can_min_edit"></ion-input>
+                                    <button ion-button clear item-right class="help_btn" (click)="can_min_edit=true">
+                                            <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+                                    </button>
+                                    <button ion-button clear item-right class="help_btn"
+                                        (click)="showHintToast('Minimum number of members must be added')">
+                                        <img style="width: 50%;" src="assets/images/info.svg">
+                                    </button>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col col-12 class="border" style="padding: 0 1px 0 0 !important;" text-center>
+                                <ion-item class="custom_ionitem" style="border-bottom: 1px solid #d2c6b7">
+                                    <ion-label fixed>Maximum</ion-label>
+                                    <ion-input type="number" class="setupname rightalign" placeholder="Max no. of members"
+                                        [(ngModel)]="membership_dets.max_member" [disabled]="!can_max_edit"></ion-input>
+                                    <button ion-button clear item-right class="help_btn" (click)="can_max_edit=true">
+                                        <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+                                    </button>
+                                    <button ion-button clear item-right class="help_btn"
+                                        (click)="showHintToast('Maximum number of members allowed')">
+                                        <img style="width: 50%;" src="assets/images/info.svg">
+                                    </button>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col col-12>
+                                <button ion-button block class="timekare-primary-btn" [disabled]="!can_max_edit && !can_min_edit"  (click)="updateMinMaxMembers()">update</button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+                
+                <ion-card class="card-view">
+                    <ion-card-content>
+                        <ion-row class="spacebtwrows">
+                            <ion-col col-12 class="colpaddingrem">
+                                <ion-item>
+                                    <ion-label class="orange">Monthly</ion-label>
+                                    <ion-checkbox [(ngModel)]="membership_dets.monthly" [disabled]="!can_edit_monthly"></ion-checkbox>
+                                    <button ion-button clear item-right class="help_btn" (click)="can_edit_monthly = true">
+                                        <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+                                    </button>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row class="border">
+                            <ion-col col-6 class="">
+                                <p class="pstyle">Price</p>
+                            </ion-col>
+                            <ion-col col-6>
+                                <ion-item no-lines>
+                                    <ion-input type="number" class="rightalign"
+                                        [(ngModel)]="membership_dets.monthly_price"
+                                        [disabled]="!membership_dets.monthly || !can_edit_monthly">
+                                    </ion-input>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-12>
+                                <button ion-button block [disabled]="!can_edit_monthly" class="timekare-primary-btn" (click)="updateMonthly()">update</button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card class="card-view">
+                    <ion-card-content>
+                        <ion-row class="spacebtwrows">
+                            <ion-col col-12 class="colpaddingrem">
+                                <ion-item>
+                                    <ion-label class="orange">Yearly</ion-label>
+                                    <ion-checkbox [(ngModel)]="membership_dets.yearly" [disabled]="!can_edit_yearly"></ion-checkbox>
+                                    <button ion-button clear item-right class="help_btn" (click)="can_edit_yearly=true">
+                                        <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+                                    </button>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row class="border">
+                            <ion-col col-6 class="">
+                                <p class="pstyle">Price</p>
+                            </ion-col>
+                            <ion-col col-6>
+                                <ion-item>
+                                    <ion-input type="number" [(ngModel)]="membership_dets.yearly_price"
+                                        class="rightalign" [disabled]="!membership_dets.yearly || !can_edit_yearly">
+                                    </ion-input>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row class="discountalign">
+                            <ion-col col-12 no-padding>
+                                <ion-row class="border">
+                                    <ion-col col-6>
+                                        <p class="pstyle">Discount(%)</p>
+                                    </ion-col>
+                                    <ion-col col-6>
+                                        <ion-item no-lines>
+                                            <ion-input type="number" class="rightalign"
+                                                [(ngModel)]="membership_dets.yearly_discount_percentage"
+                                                [disabled]="!membership_dets.yearly || !can_edit_yearly">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row class="border">
+                                    <ion-col col-6>
+                                        <p class="pstyle">Discount(<span>{{currencyDetails.CurrencySymbol}}</span>)</p>
+                                    </ion-col>
+                                    <ion-col col-6>
+                                        <ion-item no-lines>
+                                            <ion-input type="number" class="rightalign"
+                                                [(ngModel)]="membership_dets.yearly_discount_absolute"
+                                                [disabled]="!membership_dets.yearly || !can_edit_yearly">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-12>
+                                <button ion-button block [disabled]="!can_edit_yearly" class="timekare-primary-btn" (click)="updateYearly()">update</button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card  class="card-view" *ngIf="templateEditOpen">
+                    <ion-card-content>
+                        <ion-row class="spacebtwrows">
+                            <ion-col col-12 class="colpaddingrem">
+                                <ion-item>
+                                    <ion-label *ngIf="this.membership_dets.membership_template.length > 0" class="orange">Update membership description
+                                    </ion-label>
+                                    <ion-label *ngIf="this.master_templates.length > 0" class="orange">Create membership description
+                                    </ion-label>
+                                    <ion-checkbox [(ngModel)]="templateEditOpen" (ionChange)="openDescriptionModal($event)">
+                                    </ion-checkbox>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card *ngIf="templateEditOpen" class="card-view">
+                    <ion-card-content>
+                        <ion-row *ngFor="let desc of this.templates" class="spacebtwrows">
+                                <ion-col col-10 class="colpaddingrem">
+                                    <ion-item style="padding-left: 5px; color:rgba(0,0,0,0.85);font-weight: 500">
+                                        <ion-input type="text" [(ngModel)]="desc.header"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col (click)="desc.is_selected = !desc.is_selected" col-2>
+                                    <ion-icon name="ios-arrow-down" style="padding: 0px 12px 0px 0px;
+                                    float: right;"></ion-icon>
+                                </ion-col>    
+                                <ion-col *ngIf="desc.is_selected" col-12>
+                                    <ion-item style="padding-left: 6px;
+                                    font-size: 14px;
+                                    color:rgba(0,0,0,0.85)">
+                                    border-top: 1px solid rgba(128, 128, 128, 0.07);">
+                                        <ion-textarea  rows="3" type="text" [(ngModel)]="desc.description"></ion-textarea>
+                                    </ion-item>
+                                </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-12>
+                                <button ion-button block  class="timekare-primary-btn" (click)="updateTemplates()">update</button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+                
+
+                <div id="myModal5" *ngIf="modal && templateData" 
+                    class="modal2 animate-zoom mid-text">
+                    <ion-row style="margin: 5px 0;">
+                        <ion-col col-12 style="line-height: 2; padding: 6px;border-bottom: 1px solid rgba(0, 0, 0, 0.06);" text-center>
+                            <p class="exploretext">
+                                Template
+                            </p>
+                        </ion-col>
+                    </ion-row>
+                    <div style="position: absolute; height:65vh; overflow: scroll; width:100%">
+                        <ion-row style="font-size: 1.8rem !important;    margin: 0 0 14px 0;color: #4e4d4d !important;"
+                        *ngFor="let temp of templateData" >
+                        <ion-col (click)="temp.IsSelect = !temp.IsSelect" style="padding: 2px 11px;
+                        color: rgba(0, 0, 0, 0.85)!important;
+                        font-weight: 500;margin-top: auto;
+                    margin-bottom: auto;" col-10 text-wrap>
+                            {{temp.header}}
+                        </ion-col>
+                        <ion-col (click)="temp.IsSelect = !temp.IsSelect" col-2 style="margin:auto">
+                            <ion-icon name="ios-arrow-down" style="padding: 0px 12px 0px 0px;
+                            float: right;"></ion-icon>
+                        </ion-col>
+                        <ion-col *ngIf="temp.IsSelect" col-12>
+                            <p style="  margin: 0 6px;
+                            color: rgba(0, 0, 0, 0.65)!important;
+                            font-size: 15px;" class="white-space">{{temp.desc}}</p>
+                        </ion-col>
+                    </ion-row>
+                    </div>
+                    <ion-row class="rowbtn">
+                        <ion-col col-6>
+                            <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="closeModal()" >Cancel</button>
+                        </ion-col>
+                        <ion-col col-6>
+                            <button ion-button block class="timekare-primary-btn" (click)="copy()" >Save</button>
+                        </ion-col>
+                    </ion-row>
+                </div>
+
+                <!-- <ion-grid class="fixed-button">
+                    <ion-row>
+                        <ion-col col-6>
+                            <button ion-button block class="timekare-primary-btn" (click)="goBack()">Back</button>
+                        </ion-col>
+
+                        <ion-col col-6>
+                            <button ion-button block class="timekare-primary-btn" (click)="saveSetup()">Save</button>
+                        </ion-col>
+                        <ion-col col-6 *ngIf="selectedSetupKey">
+                            <button ion-button block class="timekare-primary-btn" (click)="saveSetup()">Update</button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid> -->
+            </ion-list>
+        </div>
+        <!-- </ion-list> -->
+
+    </div>
+
+
+</ion-content>

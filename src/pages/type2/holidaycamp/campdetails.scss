@@ -1,0 +1,538 @@
+campdetails-page {
+    $themelistotheritemcolor1: #7F7F7F;
+    $themelistheaderitemcolor: #00BED3;
+    $themecolor: #35adff;
+
+    .scroll-content {
+        margin-top: 44px !important;
+        padding: 0px !important;
+        background-image: none !important;
+    }
+
+    .fabTop {
+        margin-bottom: 13px;
+    }
+    .deleted_ses{
+        position: absolute;
+        color: red;
+        bottom: 5px;
+        right: -25px;
+        font-style: italic;
+    }
+
+    .fabAttendanceText {
+        margin-left: -120px;
+        background-color: #2b92bb !important;
+        margin-top: -47px;
+        padding: 6px 12px 6px 11px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        border-radius: 3px;
+        margin-right: 36px;
+    }
+
+    .fabEmailText {
+
+        margin-left: -115px;
+        background-color: #2b92bb !important;
+        margin-top: -47px;
+        padding: 6px 12px 6px 11px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        border-radius: 3px;
+        margin-right: 36px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    // .ion-cards {
+    //     background: linear-gradient(to right, #535050, rgb(59, 185, 208)) !important;
+    //     .p_class {
+    //         p {
+    //             color: white;
+    //         }
+    //     }
+    // } 
+    // ion-card {
+    //     margin-left: 0px !important;
+    //     margin-right: 0px !important;
+    //     width: 100% !important;
+    // }
+    // ion-card-header {
+    //     border-bottom: 1px solid #bfa7a7;
+    //     padding: 8px !important;
+    // }
+
+    // .ion_card {
+    //     margin: 6px 0px;
+    //     width: 100%;
+    // }
+    // .memeber_details_btn {
+    //     // height: 28px;
+    //     font-size: 15px;
+    //     margin-top: 0px;
+    // }
+    // .ion_col_p {
+    //     padding: 1px 5px 1px 5px;
+    // }
+    // .ion_col_p1 {
+    //     padding: 5px 5px 0px 1px;
+    // }
+    // .btn-width {
+    //     width: 70px;
+    // }
+    // .slidingcards {
+    //     // margin-bottom: 5px;
+    //     // border-top: 6px solid rgba(94, 199, 130, 0.79);
+    //     // margin-bottom: 7px;
+    //     // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    //     // margin-bottom: 4px;
+    //     // border-top: 7px solid rgba(236, 117, 21, 0.63);
+    //     // border-bottom: 2px solid rgba(180, 24, 148, 0.73);
+    //     //  margin-bottom: 7px;
+    //     // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    //     // border-bottom: 2px solid rgba(236, 117, 21, 0.63);
+    //     box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+    //     margin-bottom: 7px;
+    //     border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // }
+    // .margin_bottom {
+    //     margin-bottom: 5px;
+    //     ion-item-sliding {
+    //         ion-item {
+    //             padding: 0px 9px;
+    //             div {
+    //                 padding-right: 0px!important;
+    //             }
+    //         }
+    //     }
+    // }
+    // .detailsBtn {
+    //     background-color: #2E64C3;
+    // }
+    // .member_input {
+    //     border-bottom: 1px solid #c8c7cc;
+    // }
+    // .memeber_list {
+    //     border-top: 1px solid #c8c7cc;
+    // }
+    // //   }
+    // .btn_clr {
+    //     margin-top: 25px !important;
+    //     color: $dashoboard-icon-color;
+    // }
+    // .coach_detials_row {
+    //     text-align: center;
+    //     ion-col {
+    //         border: 1px solid #c8c7cc;
+    //     }
+    // }
+    // table,
+    // th,
+    // td {
+    //     border: 1px solid #95939c;
+    //     border-collapse: collapse;
+    // }
+    ion-card-header {
+        border-bottom: .05em solid gray;
+        padding: 8px 9px 8px 15px !important; // background: #06326f;
+        //background: rgba(96, 104, 197, 0.95);
+        background-color: $themecolor; //background: rgba(63, 74, 204, 0.95);
+        color: white !important;
+        font-size: 15px !important;
+        font-weight: 500;
+    }
+
+    ion-list {
+        ion-item {
+            margin-left: 0px;
+            padding-left: 0px !important;
+        }
+    }
+
+    ion-list {
+        margin: 0px 0 0px !important;
+    }
+
+    .cust_margin {
+        margin: 3px;
+    }
+
+    .fabicon {
+        //margin: -7px !important;
+        background-color: #2b92bb;
+    }
+
+    .sessionName {
+        color: #042133;
+        font-size: 15px;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+
+    .border-left {
+        border-left: .02em solid #d5d7dd;
+        padding: 0px 0px 0px 3px;
+    }
+
+    .coachname {
+        color: #2a5168;
+        font-weight: 500;
+        margin: 0px;
+    }
+
+    .img1 {
+        width: 50px;
+        height: 50px;
+        border-radius: 30px;
+        margin-left: 9px; // border: 1px solid #4babdf;
+        border: 1px solid #d5d7dd;
+    }
+
+    .themeheaderfont {
+        color: #021c2e;
+        font-size: 13px;
+        margin: -3px 5px 11px 1px;
+        font-weight: 500;
+    }
+
+    .session {
+        font-size: 20px; // color: #375e6d;
+        color: #114a70;
+        margin: 0px;
+        font-weight: bold;
+    }
+
+    .trash_icon {
+        margin: 0px 0px 5px 6px !important;
+        background-color: #2b92bb;
+        // position: fixed;
+        // z-index: 999;
+        // margin: 0px 0px 20px 17px;
+    }
+
+    .block {
+        background-color: #F2F5FA;
+        padding: 12px;
+        border-bottom: 2px solid #faae4e !important;
+    }
+
+    .statistics_row {
+        background: rgba(128, 128, 128, 0.0392156862745098);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+        .progress_txt {
+            margin: 5px;
+        }
+    }
+
+    .circleProgress {
+        border: 8px solid #e4e4e4;
+        border-radius: 50%;
+        width: 85px;
+        height: 85px;
+        padding: 5px;
+        margin: auto;
+        position: relative;
+        border-bottom-color: transparent;
+
+        p {
+            font-size: 18px;
+            color: #00000099;
+            text-align: center;
+            margin: 10px 0 0 0;
+            font-weight: 600;
+        }
+
+        img {
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            //background: rgba(255, 255, 255, 1);
+            bottom: 0px;
+            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+    }
+
+    // .block_height {
+    //     height: 100%;
+    // }
+    // // ion-scroll{
+    // //     .scroll-content{
+    // //         height: 363px;
+    // //         padding: 0px;
+    // //         margin-top: 5px;
+    // //     }
+    // // }
+    // .search_add {
+    //     padding: 0px !important;
+    //     .item-inner {
+    //         padding-right: 0px!important;
+    //     }
+    //     ion-searchbar {
+    //         padding: 2px;
+    //     }
+    // }
+    // .member_btn_sm {
+    //     padding: 0px;
+    // }
+    // .ion_cl {
+    //     padding: 0px;
+    // }
+    // .btn-clr {
+    //     margin: 0px !important;
+    //     color: $dashoboard-icon-color;
+    // }
+    // .ion_card_content {
+    //     padding-bottom: 5px;
+    // }
+    // .span_member_details1 {
+    //     //text-decoration: underline;
+    //     color: rgba(0, 0, 255, 0.81);
+    //     font-weight: bold;
+    // }
+    // .table_prop {
+    //     width: 100%;
+    // }
+    // .center_align {
+    //     text-align: center;
+    // }
+    // .checkmark_color {
+    //     color: #3ebad1;
+    // }
+    // .danger_color {
+    //     color: red;
+    // }
+    // .danger_color1 {
+    //     color: red;
+    //     text-align: center;
+    // }
+    // .middle_section {
+    //     margin-top: 15px;
+    // }
+    // .padding_class {
+    //     padding-top: 20px;
+    //     //font-size: 15px;
+    // }
+    // .search_add {
+    //     background-color: transparent;
+    //     padding-left: 6px;
+    // }
+    // .danger_color2 {
+    //     color: red;
+    //     text-align: center;
+    //     font-size: 16px;
+    // }
+    // .danger_color3 {
+    //     color: red;
+    //     font-size: 16px;
+    // }
+    // .member12 {
+    //     padding-left: 0px;
+    // }
+    // .nowrap {
+    //     white-space: pre-line !important;
+    //     margin-top: -35px;
+    // }
+    // .session_style {
+    //     background-color: white;
+    //     border: 0.1em ridge rgba(0, 0, 0, 0.22);
+    // }
+    .header {
+        background: #1b2b3b;
+        color: rgb(230, 217, 217);
+    }
+
+    .containers {
+        // margin-left: 4%;
+        // margin-right: 4%;
+        // background: rgba(231, 222, 222, 0.973);
+        // border-radius: 9px;
+        // transform: translate(0px, -20px); // padding: 3px;
+        // padding: 4px 8px 4px 8px;
+        margin-left: 2%;
+        margin-right: 2%;
+        background: rgba(231, 222, 222, 0.55);
+        border-radius: 9px;
+
+        padding: 2px 7px 2px 8px;
+    }
+
+    #circle {
+        padding: 60px;
+        max-width: 60px;
+        max-height: 60px;
+        border-radius: 50%; // transform: translate(-75%, 10%);
+        transform: translate(-43%, 9%);
+        border-right: 4px solid rgb(27, 211, 125);
+        border-bottom: 4px solid rgb(27, 211, 125);
+        border-top: 2px solid gray;
+        border-left: 2px solid gray;
+    }
+
+    #circle2 {
+        padding: 7px;
+        max-width: 6px;
+        max-height: 6px;
+        border-radius: 50%;
+        background-color: rgb(1, 212, 131);
+        transform: translate(-400%, 200%);
+        box-shadow: -1px -1px 15px rgb(188, 241, 221);
+    }
+
+    .card {
+        border-radius: 5px;
+    }
+
+    .arrow {
+        transform: translate(0%, 80%);
+    }
+
+    .foot {
+        float: right;
+        transform: translate(0%, -130%)
+    }
+
+    .body {
+        transform: translate(20%, -50%);
+    }
+
+    .head {
+        transform: translate(0%, 50%);
+    }
+
+    #icon2 {
+        float: right;
+        transform: translate(0%, 60%);
+    }
+
+    .text_div {
+        transform: translate(7%, -50%);
+        border-left: 2px solid silver;
+    }
+
+    .text {
+        transform: translate(5%, 0%);
+    }
+
+    .content {
+        margin-bottom: -9%;
+    }
+
+    .name {
+        font-size: 18px;
+    }
+
+    #book {
+        float: right;
+        font-size: 30px;
+        margin-right: 16px;
+        margin-top: -10px;
+    }
+
+    .circlesvg {
+        margin-left: -10px; // margin-left: -12%;
+    }
+
+    #icon1_col {
+        border-right: 2px solid #b7b5b5;
+        line-height: 61px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .cust_icon {
+        font-size: 31px !important;
+        color: #7a7878 !important;
+    }
+
+    .chevron_right {
+        margin-top: 11px;
+        color: #7a7878 !important;
+    }
+
+    .session_name {
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #505050 !important;
+        font-family: 'Oswald', sans-serif !important;
+    }
+
+    .pStyle {
+        font-family: 'Roboto Slab', serif !important;
+    }
+
+    .headerp {
+        margin: 5px !important;
+    }
+
+    .leftp {
+        line-height: 20px;
+        font-weight: bold;
+        color: #FF9800; // color:#8e65b7;
+        font-size: 16px; // font-family: 'Patua One', cursive;
+        font-family: 'Bree Serif', serif;
+    }
+
+    .leftp1 {
+        margin-top: 13px;
+    }
+
+    .dangerRed {
+        color: red !important;
+    }
+
+    .btn_cust {
+        // margin: 0px !important;
+        // border: 1px solid white !important;
+        // padding: 5px 2px 5px 2px !important;
+        // border-radius: 4px !important;
+        // text-align: center !important;
+        margin: 0px !important;
+        border: 1px solid #1b2c3b !important;
+        padding: 5px 2px 5px 2px !important;
+        border-radius: 4px !important;
+        text-align: center !important;
+        font-weight: 500;
+        background-color: #2b92bb;
+    }
+
+    .btn_cust:active {
+        // outline: none;
+        // background: white;
+        // color: #1b2c3b;
+        // font-weight: bold;
+        outline: none;
+        background: 3ca6b9;
+        color: white;
+        font-weight: bold;
+        background-color: #3ebbd1;
+    }
+
+
+
+    ion-fab-list button[data-desc] {
+        position: relative;
+    }
+
+    ion-fab-list button[data-desc]::after {
+        position: absolute;
+        content: attr(data-desc);
+        z-index: 1;
+        right: 50px;
+        bottom: 4px;
+        background-color: #2b92bb !important;
+        color: #ffffff;
+        padding: 9px;
+        border-radius: 10px;
+        //box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+}

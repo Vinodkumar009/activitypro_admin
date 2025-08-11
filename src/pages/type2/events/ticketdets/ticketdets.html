@@ -1,0 +1,138 @@
+<!--
+  Generated template for the TicketdetsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="booking_dets && booking_dets.data">{{event_name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div *ngIf="booking_dets">
+    <div class="event_section">
+      <ion-row>
+        <ion-col col-8>
+          <h5 class="para_overflow">{{event_name}}</h5>
+          <p class="para_overflow" style="font-weight: 500;font-size: 18px">For {{user_name}}</p>
+          <p class="para_overflow">{{booking_dets.data.event_booking.event.transformed_start_date}}</p>
+          <p class="para_overflow">{{booking_dets.data.event_booking.event.start_time}} - {{booking_dets.data.event_booking.event.end_time}}</p>
+          <p class="para_overflow">{{booking_dets.data.event_booking.event.club.ClubName}}</p>
+        </ion-col>
+        <ion-col col-4>
+          <div *ngIf="booking_dets.data.transaction" text-center>
+            <p>Total Tickets</p>
+            <!-- <p>{{booking_dets.data.transaction.tickets_bought}}</p> -->
+            <h4 style="margin: 5px;">{{booking_dets.data.transaction.tickets_bought}}</h4>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="ticket_section tkt_row">
+      <p class="section_header ticket_type">Tickets</p>
+      <ion-row style="margin: 0px 10px 0px 10px;">
+        <ion-col col-5><p style="margin: 0;">Category</p></ion-col>
+        <ion-col col-4><p style="margin: 0;">Price+fee</p></ion-col>
+        <ion-col col-3><p style="margin: 0;">Total</p></ion-col>
+      </ion-row>
+      <ion-card no-padding *ngFor="let booking of booking_dets.data.tickets;let i=index">
+        <ion-card-header>
+          <p class="ticket_type elipses">{{booking.ticket_type}}</p>
+        </ion-card-header>
+        <ion-card-content no-padding>
+          <ion-row *ngFor="let tkt_type of booking.tickets" class="left-right-5">
+            <ion-col col-4 style="padding-left:10px;">
+              <p class="margin-3-3 tkt_headers">{{tkt_type.ticket_category}}</p>
+            </ion-col>
+            <ion-col col-5>
+              <div style="width: 100%;">
+                <span class="margin-3-3">{{tkt_type.per_ticket_price | currency:currencycode}}</span>
+                <span style="font-size: 10px !important;">(+{{tkt_type.admin_fees}})</span>&nbsp;
+                <span class="margin-3-3">x</span>
+                <span class="margin-3-3">{{tkt_type.ticket_quantity}}</span>
+            </div>
+            </ion-col>
+            <ion-col col-3 style="padding-left:4px">
+              <!-- <p class="margin-3-3 tkt_headers">{{tkt_type.TicketCost | currency:currencycode}}</p> -->
+              <p class="tkt_price">{{tkt_type.total_amount | currency:currencycode}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    
+    <div class="addons_section tkt_row" *ngIf="booking_dets.data.event_booking.add_ons.length > 0">
+      <p class="section_header ticket_type">AddOns</p>
+      <ion-card no-padding *ngFor="let addon of booking_dets.data.event_booking.add_ons;let i=index"  class="">
+        <ion-card-content no-padding>
+          <ion-row class="left-right-5">
+            <ion-col col-5 style="padding-left:10px;">
+              <p class="margin-3-3 tkt_headers">{{addon.add_on_name}}</p>
+            </ion-col>
+            <ion-col col-4>
+              <p class="margin-3-3 ">{{addon.quantity}}&nbsp;<span>x</span>
+                <span>{{addon.per_unit_price | currency:currencycode}}</span></p>
+            </ion-col>
+            <ion-col col-3 style="padding-left:4px">
+              <!-- <p class="margin-3-3 tkt_headers">{{tkt_type.TicketCost | currency:currencycode}}</p> -->
+              <p class="tkt_price">{{addon.amount_fee | currency:currencycode}}</p>
+            </ion-col>
+          </ion-row>      
+        </ion-card-content>
+      </ion-card>
+    </div>
+    
+    <div class="discount_section tkt_row" *ngIf="booking_dets.data.discounts.length > 0">
+      <p class="section_header ticket_type">Discount</p>
+      <ion-card no-padding *ngFor="let discount of booking_dets.data.discounts;let i=index">
+        <ion-card-content no-padding>
+          <ion-row class="left-right-5">
+            <ion-col col-9 style="padding-left:10px;">
+              <p class="margin-3-3 tkt_headers">{{discount.name}}</p>
+            </ion-col>
+            <ion-col col-3 style="padding-left:4px">
+              <p class="tkt_price">{{discount.amount_applied | currency:currencycode}}</p>
+            </ion-col>
+          </ion-row>      
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="tkt_row">
+      <p class="ticket_type">Payment Details</p>
+      <ion-row class="left-right-5">
+        <ion-col col-6>
+            <p class="tkt_headers padding-left-20">Total Amount:</p>
+            <p class="tkt_headers padding-left-20">Amount Paid:</p>
+            <p class="tkt_headers padding-left-20">Discount:</p>
+            <p class="tkt_headers padding-left-20">Txn ID:</p>
+            <p class="tkt_headers padding-left-20">Txn Date:</p>
+            <p class="tkt_headers padding-left-20">Mode:</p>
+        </ion-col>
+        <ion-col col-6> 
+          <p class="txn para_overflow">{{booking_dets.data.transaction.total_fee | currency:currencycode}}</p>
+          <p class="txn para_overflow">{{booking_dets.data.transaction.amount_paid | currency:currencycode}}</p> 
+          <p class="txn para_overflow">{{booking_dets.data.transaction.discount_amount | currency:currencycode}}</p>
+          <p class="txn para_overflow">{{booking_dets.data.transaction.transaction_no}}</p>
+          <!-- order_id -->
+          <p class="txn para_overflow">{{booking_dets.data.transaction.formatted_payment_date}}</p>
+          <p class="txn para_overflow">{{booking_dets.data.transaction.paidby_text}}</p>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="tkt_row" *ngIf="booking_dets.data.transaction.user_comments">
+      <p class="ticket_type">Comments By User</p>
+      <p style="margin-left: 14px">{{booking_dets.data.transaction.user_comments}}</p>
+    </div>
+
+    <!-- <ion-row>
+      <ion-col col-12 text-center>
+        <button ion-button class="cost_btn" >{{MemDets.Tot_tkts_cost | currency:currencycode}}</button>
+      </ion-col>
+    </ion-row> -->
+</div>
+</ion-content>

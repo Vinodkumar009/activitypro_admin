@@ -1,0 +1,458 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="!TournamentKey"
+      >{{LangObj.create_tournmet_title}}</ion-title
+    >
+    <ion-title *ngIf="TournamentKey">Update Tournament</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <!-- Tournamrent basic info -->
+  <ion-list class="custom_ionlist">
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_tournment}}</ion-label>
+      <ion-input
+        type="text"
+        [(ngModel)]="Tournament.TournamentName"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="!tournamentDataExists">
+      <ion-label>{{LangObj.create_tournmet_activity}}</ion-label>
+      <ion-select
+        [(ngModel)]="selectedActivityType"
+        (ionChange)="onChangeActivity()"
+        multiple="false"
+      >
+        <ion-option *ngFor="let type of types" value="{{type.Key}}"
+          >{{type.ActivityName}}</ion-option
+        >
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="tournamentDataExists">
+      <ion-label>{{LangObj.create_tournmet_activity}}</ion-label>
+      <ion-select [(ngModel)]="selectedActivityType" disabled="true">
+        <ion-option *ngFor="let type of types" value="{{type.Key}}"
+          >{{type.ActivityName}}</ion-option
+        >
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_organiseby}}</ion-label>
+      <ion-select [(ngModel)]="selectedClub">
+        <ion-option *ngFor="let club of clubs" value="{{club.ClubKey}}"
+          >{{club.ClubName}}</ion-option
+        >
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_loc}}</ion-label>
+      <!-- <p class="allign-right" [(ngModel)]="LocationName" (click)="onChangeLocation()"></p> -->
+      <ion-input
+        class="allign-right"
+        [(ngModel)]="LocationName"
+        (click)="onChangeLocation()"
+        disabled="true"
+      >
+        <!-- <ion-icon ios="ios-arrow-down" md="md-arrow-down"></ion-icon> -->
+      </ion-input>
+    </ion-item>
+    <ion-item class="activity_select">
+      <ion-label>Status</ion-label>
+      <ion-select
+        [(ngModel)]="Tournament.TournmentStatus"
+        class="venuedropdown"
+        style="padding-left: 15px"
+      >
+        <ion-option value="1">Public</ion-option>
+        <ion-option value="0">Hide</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <!-- Tournamrent basic info ends -->
+
+  <!-- Configuration of tournament -->
+  <ion-list class="custom_ionlist">
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_season}}</ion-label>
+      <ion-input type="text" [(ngModel)]="Tournament.Season"></ion-input>
+    </ion-item>
+
+    <!-- <ion-item class="custom_ionitem">
+            <ion-label>Multiday</ion-label>
+            <ion-toggle [(ngModel)]="Tournament.IsMultiday"></ion-toggle>
+        </ion-item> -->
+    <!-- <ion-grid style="background:white">
+            <ion-row>
+                <ion-col col-8>
+                    <ion-label class="toogle-label" style="padding-left: 8px">{{LangObj.create_tournmet_multiday}}</ion-label>
+
+                </ion-col>
+                <ion-col col-4 style="margin-top: 10px;">
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="Tournament.IsMultiday">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-grid> -->
+    <ion-item>
+      <ion-row>
+        <ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">{{LangObj.create_tournmet_multiday}}</p>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="Tournament.IsMultiday" />
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_startdate}}</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        pickerFormat="DD MM YYYY"
+        min="{{today}}"
+        [(ngModel)]="Tournament.StartDate"
+        (ionChange)="updateLastDates(Tournament.StartDate)"
+        [max]="maxDate"
+      >
+      </ion-datetime>
+    </ion-item>
+
+    <ion-item *ngIf="Tournament.IsMultiday">
+      <ion-label>{{LangObj.create_tournmet_endate}}</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        pickerFormat="DD MM YYYY"
+        min="{{today}}"
+        [(ngModel)]="Tournament.EndDate"
+        [max]="maxDate"
+      ></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_lastdatenrol}}</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        pickerFormat="DD MM YYYY"
+        min="{{today}}"
+        [(ngModel)]="Tournament.LastEnrolmentDate"
+        [max]="maxDate"
+      >
+      </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_lastdatewithdraw}}</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        pickerFormat="DD MM YYYY"
+        min="{{today}}"
+        [(ngModel)]="Tournament.LastWithdrawalDate"
+        [max]="maxDate"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_startime}}</ion-label>
+      <ion-datetime
+        displayFormat="hh mm A"
+        pickerFormat="hh mm A"
+        minuteValues="0,15,30,45"
+        [(ngModel)]="Tournament.StartTime"
+        (ionChange)="updateEarlyArival(Tournament.StartTime)"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_endtime}}</ion-label>
+      <ion-datetime
+        displayFormat="hh mm A"
+        pickerFormat="hh mm A"
+        minuteValues="0,15,30,45"
+        [(ngModel)]="Tournament.EndTime"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_earlyarrival}}</ion-label>
+      <ion-datetime
+        displayFormat="hh mm A"
+        pickerFormat="hh mm A"
+        minuteValues="0,15,30,45"
+        [(ngModel)]="Tournament.EarlyArrival"
+      ></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{LangObj.create_tournmet_matchtypes}}</ion-label>
+      <ion-select [(ngModel)]="Tournament.MatchType">
+        <!-- <ion-option *ngFor="let location of locations" value={{location.$key}}>{{location.Name}}</ion-option> -->
+        <ion-option value="Singles"
+          >{{LangObj.create_tournmet_singles}}</ion-option
+        >
+        <ion-option value="Doubles"
+          >{{LangObj.create_tournmet_doubles}}</ion-option
+        >
+        <ion-option value="Mixed Doubles">
+          {{LangObj.create_tournmet_mixedoubles}}</ion-option
+        >
+        <ion-option value="Team">{{LangObj.create_tournmet_team}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_ageGps}}</ion-label>
+      <ion-input type="text" [(ngModel)]="Tournament.AgeGroup"></ion-input>
+      <button
+        ion-button
+        clear
+        item-right
+        class="help_btn"
+        (click)="ageGroupHint()"
+      >
+        <ion-icon name="ios-help-circle-outline" class="secondary"></ion-icon>
+      </button>
+    </ion-item>
+
+    <ion-item class="custom_ionitem">
+      <ion-label floating>Capacity</ion-label>
+      <ion-input type="number" [(ngModel)]="Tournament.Capacity"></ion-input>
+    </ion-item>
+
+    <!-- <ion-item class="custom_ionitem">
+            <ion-label floating>Grade</ion-label>
+            <ion-input type="text" placeholder="6" [(ngModel)]="Tournament.Grade"></ion-input>
+        </ion-item> -->
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_grade}}</ion-label>
+      <ion-input type="text" [(ngModel)]="Tournament.Grade"></ion-input>
+    </ion-item>
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_ratingGp}}</ion-label>
+      <ion-input type="text" [(ngModel)]="Tournament.RatingGroup"></ion-input>
+    </ion-item>
+
+    <div style="padding-left: 16px">
+      <h3>{{LangObj.create_tournmet_type}}</h3>
+      <ion-segment [(ngModel)]="Tournament.TournamentType">
+        <ion-segment-button value="Knockout">
+          {{LangObj.create_tournmet_knockout}}</ion-segment-button
+        >
+        <ion-segment-button value="Round Robin">
+          {{LangObj.create_tournmet_roundrobin}}
+        </ion-segment-button>
+        <ion-segment-button value="Others">
+          {{LangObj.create_tournmet_others}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div style="padding-left: 16px">
+      <h3>{{LangObj.create_tournmet_umpire}}</h3>
+      <ion-segment [(ngModel)]="Tournament.UmpireType">
+        <ion-segment-button value="coach">
+          {{LangObj.create_tournmet_coach}}
+        </ion-segment-button>
+        <ion-segment-button value="member">
+          {{LangObj.create_tournmet_member}}
+        </ion-segment-button>
+        <ion-segment-button value="others">
+          {{LangObj.create_tournmet_others}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <div [ngSwitch]="Tournament.UmpireType">
+      <ion-item class="custom_ionitem" *ngSwitchCase="'coach'">
+        <ion-label> {{LangObj.create_tournmet_coach}}</ion-label>
+        <ion-select [(ngModel)]="UmpireKey" (ionChange)="SelectUmpire()">
+          <ion-option
+            *ngFor="let coach of backupAssistantCoachs"
+            value="{{coach.CoachKey}}"
+            >{{coach.FirstName+" "+coach.LastName }}</ion-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item class="custom_ionitem" *ngSwitchCase="'member'">
+        <ion-label floating>{{LangObj.create_tournmet_member}}</ion-label>
+        <ion-input type="text" [(ngModel)]="MemberUmpire"></ion-input>
+        <!-- <ion-searchbar></ion-searchbar> -->
+        <!-- <ion-select [(ngModel)]="Tournament.Umpire">
+                    <ion-option *ngFor="let coach of coachs" value={{coach}}>{{coach.FirstName+" "+coach.LastName }}</ion-option>
+                </ion-select> -->
+      </ion-item>
+      <ion-item class="custom_ionitem" *ngSwitchCase="'others'">
+        <ion-label floating>{{LangObj.create_tournmet_others}}</ion-label>
+        <ion-input type="text" [(ngModel)]="Tournament.UmpireName"></ion-input>
+
+        <!-- <ion-select [(ngModel)]="Tournament.Umpire">
+                    <ion-option *ngFor="let coach of coachs" value={{coach}}>{{coach.FirstName+" "+coach.LastName }}</ion-option>
+                </ion-select> -->
+      </ion-item>
+    </div>
+
+    <div style="padding-left: 16px">
+      <h3>{{LangObj.create_tournmet_assumpire}}</h3>
+      <ion-segment [(ngModel)]="Tournament.AssistantUmpireType">
+        <ion-segment-button value="coach">
+          {{LangObj.create_tournmet_coach}}</ion-segment-button
+        >
+        <ion-segment-button value="member">
+          {{LangObj.create_tournmet_member}}
+        </ion-segment-button>
+        <ion-segment-button value="others">
+          {{LangObj.create_tournmet_others}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <div [ngSwitch]="Tournament.AssistantUmpireType">
+      <ion-item class="custom_ionitem" *ngSwitchCase="'coach'">
+        <ion-label> {{LangObj.create_tournmet_coach}}</ion-label>
+        <ion-select
+          [(ngModel)]="AssistantUmpireKey"
+          (ionChange)="SelectAssistantUmpire()"
+        >
+          <ion-option
+            *ngFor="let coach of backupCoachs"
+            value="{{coach.CoachKey}}"
+            >{{coach.FirstName+" "+coach.LastName }}</ion-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item class="custom_ionitem" *ngSwitchCase="'member'">
+        <ion-label floating> {{LangObj.create_tournmet_member}}</ion-label>
+        <ion-input type="text" [(ngModel)]="AssistantMemberUmpire"></ion-input>
+        <!-- <ion-select [(ngModel)]="Tournament.Umpire">
+                        <ion-option *ngFor="let coach of coachs" value={{coach}}>{{coach.FirstName+" "+coach.LastName }}</ion-option>
+                    </ion-select> -->
+      </ion-item>
+      <ion-item class="custom_ionitem" *ngSwitchCase="'others'">
+        <ion-label floating> {{LangObj.create_tournmet_others}}</ion-label>
+        <ion-input
+          type="email"
+          [(ngModel)]="Tournament.AssistantUmpireName"
+        ></ion-input>
+
+        <!-- <ion-select [(ngModel)]="Tournament.Umpire">
+                        <ion-option *ngFor="let coach of coachs" value={{coach}}>{{coach.FirstName+" "+coach.LastName }}</ion-option>
+                    </ion-select> -->
+      </ion-item>
+    </div>
+  </ion-list>
+  <!-- Configuration of tournament ends -->
+
+  <ion-list class="custom_ionlist">
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_contmail}}</ion-label>
+      <ion-input type="email" [(ngModel)]="Tournament.PrimaryEmail"></ion-input>
+    </ion-item>
+
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_contno}}</ion-label>
+      <ion-input type="number" [(ngModel)]="primaryContact"></ion-input>
+    </ion-item>
+
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_sec_contmail}}</ion-label>
+      <ion-input
+        type="email"
+        [(ngModel)]="Tournament.SecondaryEmail"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="custom_ionitem">
+      <ion-label floating>{{LangObj.create_tournmet_sec_contno}}</ion-label>
+      <ion-input type="number" [(ngModel)]="secondaryContact"></ion-input>
+    </ion-item>
+    <ion-grid style="background: white">
+      <ion-row>
+        <ion-col col-8>
+          <ion-label class="toogle-label"
+            >{{LangObj.create_tournmet_ispaid}}</ion-label
+          >
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px">
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="Tournament.IsPaid" />
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item class="custom_ionitem" *ngIf="Tournament.IsPaid">
+      <ion-label floating>{{LangObj.create_tournmet_feemem}}</ion-label>
+      <ion-input
+        type="number"
+        [(ngModel)]="Tournament.FullAmountForMember"
+      ></ion-input>
+    </ion-item>
+    <ion-item class="custom_ionitem" *ngIf="Tournament.IsPaid">
+      <ion-label floating>{{LangObj.create_tournmet_feenonmems}}</ion-label>
+      <ion-input
+        type="number"
+        [(ngModel)]="Tournament.FullAmountForNonMember"
+      ></ion-input>
+    </ion-item>
+    <ion-item class="custom_ionitem" *ngIf="Tournament.IsPaid">
+      <ion-label floating>{{LangObj.create_tournmet_desc}}</ion-label>
+      <ion-input type="text" [(ngModel)]="Tournament.Description"></ion-input>
+    </ion-item>
+
+    <ion-grid style="background: white" *ngIf="Tournament.IsPaid">
+      <ion-row>
+        <ion-col col-8>
+          <ion-label class="toogle-label"
+            >{{LangObj.create_tournmet_allowpaylater}}</ion-label
+          >
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px">
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="Tournament.PayLater" />
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
+  <!-- <ion-grid>
+        <ion-row>
+            <ion-col col-12 *ngIf="!tournamentDataExists">
+                <button ion-button block class="timekare-primary-btn"
+                    (click)="createTournament()">{{LangObj.create_tournmet_create}}</button>
+            </ion-col>
+            <ion-col col-12 *ngIf="tournamentDataExists">
+                <button ion-button block class="timekare-primary-btn"
+                    (click)="createTournament()">{{LangObj.create_tournmet_update}}</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid> -->
+</ion-content>
+
+<ion-footer>
+  <ion-grid class="fixed-button">
+    <ion-row>
+      <ion-col col-12 *ngIf="!tournamentDataExists">
+        <button
+          ion-button
+          block
+          class="timekare-primary-btn"
+          (click)="createTournament()"
+        >
+          {{LangObj.create_tournmet_create}}
+        </button>
+      </ion-col>
+      <ion-col col-12 *ngIf="tournamentDataExists">
+        <button
+          ion-button
+          block
+          class="timekare-primary-btn"
+          (click)="createTournament()"
+        >
+          {{LangObj.create_tournmet_update}}
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -1,0 +1,20 @@
+page-teamchat {
+
+  .group-icon {
+    font-size: 30px;
+  }
+  .latest_message {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .read_count {
+    min-height: 20px;
+    color: #2b92bb;
+    font-weight: bold;
+    text-align: center;
+  }
+  .message_date {
+    text-align: center;
+  }
+}

@@ -1,0 +1,98 @@
+addmembershipemailsetup-page{
+    .image-div{
+            border: 1px solid gray;
+    padding: 0px 2px 1px 0px;
+    }
+    .ion_list{
+            margin-bottom: 3px;
+    }
+   .block_height {
+        height: 73%;
+    }
+    .right{
+        float: right;
+    }
+    .marginleftright{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .card_list{
+        margin-top: 12px;
+    }
+    .right_pad{
+        padding-right: 5px;
+    }
+     .left_pad{
+        padding-left: 0px;
+    }
+    ion-select{
+        padding:0px !important;
+        max-width: 100%;
+        .select-icon{
+            width: 17px !important;
+        }
+    }
+    .dropdown{
+        padding-left: 2px !important;
+    }
+    .margin_bottom{
+        margin-top: 6px !important;
+        min-height:3.3rem !important;
+        .item-inner{
+            padding-left: 5px !important;
+            border: 1px solid #eb464f !important;
+        }
+    }
+    .textcenter{
+        text-align: center;
+    }
+    .card_list {
+        margin: 1px !important;
+        width:100% !important;
+    }
+    .card_content{
+        padding: 2px !important;
+    }
+    .pmargin{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .scroll-content{
+        padding: 16px 9px !important;
+    }
+    .nopadding{
+        padding:0px;
+    }
+    .clubdiv{
+        background-color: white;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .clubp{
+        font-size: 14px;
+        padding-left: 12px;
+        font-weight: bold;
+    }
+    .activitydiv{
+        background-color: white;
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    .list-modifier{
+        font-size: 1.8rem;
+        background-color: #d6d6d6;
+        color: #030303;
+    }
+    .list{
+        margin:0px;
+    }
+    .list-header-md {
+        margin-bottom: 0px; 
+   
+        margin-top: 3px;
+    }
+    .list > .list-header-md {
+        margin-top: 0px;
+    }
+}

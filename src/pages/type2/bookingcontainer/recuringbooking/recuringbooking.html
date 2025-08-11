@@ -1,0 +1,114 @@
+<!--
+  Generated template for the RecuringbookingPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Recurring Booking</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <div class="header-container">
+            <ion-row style="margin-top: -5px;" class="rows-allign">
+                    <ion-col col-7 >
+                        <ion-item style="background-color: #efefefd9;" class="headitem">
+                            <ion-select [selectOptions]="{title:'Select Club',mode:'ios'}" [(ngModel)]="selectedClubKey" interface="action-sheet">
+                                <ion-option *ngFor="let club of clubs" value={{club.$key}} (ionSelect)="onClubChange($event)">{{club.ClubName}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-5>
+                        <ion-item style="background-color: #efefefd9;" class="headitem">
+                            <ion-select [selectOptions]="{title:'Select Activity',mode:'ios'}" [(ngModel)]="selectedActivity" interface="action-sheet">
+                                <ion-option *ngFor="let Activity of ActivityList" value={{Activity.$key}} (ionSelect)="onActivityChange($event)">{{Activity.ActivityName}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col> 
+                </ion-row>
+                <ion-row class="rows-allign">
+                    <ion-col col-12 class="border-bottom-style-color">
+                        <ion-item style="background-color: #efefefd9;" class="headitem">
+                            <ion-label>Select Courts</ion-label> 
+                            <ion-select [selectOptions]="{title:'Select Court',mode:'ios'}" [(ngModel)]="selectedCourt" interface="action-sheet">
+                                <ion-option *ngFor="let court of courts" value={{court.$key}} (ionSelect)="onCourtChange($event)">{{court.CourtName}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+    </div>
+
+    <!-- <ion-card *ngFor="let court of recuringBookDetails">
+        <ion-card-content>
+            {{court.CourtName}}
+            {{court.ActivityName}}
+            {{court.StartTime}} - {{court.EndTime}}
+            {{court.Startdate}} - {{court.EndDate}}
+        </ion-card-content>
+    </ion-card> -->
+    <ion-row *ngFor="let court of recuringBookDetails" style="margin-top: -12px;" class="rows-allign" (click)="presentActionSheet(court)" >
+        <ion-col col-1>
+            <div class="all border-left-style"></div>
+        </ion-col>
+       
+        <ion-col col-11 class="allignment-col">
+            <ion-card  >
+                <ion-card-header>
+                    <ion-row>
+                        <ion-col col-10 style="text-align:left">
+                                <span class="name">{{court.name}}</span>
+                        </ion-col>
+                        <ion-col col-2>
+                            <span class="family" > {{court.starttime}}</span>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-header>
+                <ion-card-content style="color: #c5b495">
+                    <ion-row>
+                        <!-- <ion-col col-2>
+                            <img src="assets/imgs/timer.svg" class="icon-img">
+                        </ion-col> -->
+                        <ion-col col-7>
+                         {{court.startdate}} To {{court.enddate}}
+                        </ion-col>
+                        <ion-col col-5 style="text-align: right">
+                            <p class="mrgin-0" class="clr">{{court.starttime}} - {{court.endtime}}</p>
+                            <p class="mrgin-0">
+                                <button *ngFor="let day of daysDetails;let i = index" class="day-btn" [ngClass]="{'selected2':court.bookingdays.has(day)}">{{getFirst(day)}}</button>
+                            </p>
+
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <!-- <ion-col col-2>
+                            <img src="assets/imgs/court.svg" class="icon-img">
+                        </ion-col> -->
+                        <ion-col col-5 class="top-botton-no-pad" style="text-align:left">
+                            {{court.activityname}}
+                        </ion-col>
+                        <ion-col col-7 style="text-align: right" class="top-botton-no-pad">
+                            {{court.bookingfor}}
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+
+            </ion-card>
+        </ion-col>
+    </ion-row>
+
+    <ion-card *ngIf="recuringBookDetails.length == 0" class="nonmembercard">
+        <ion-card-content style="text-align: center;color: #bc2a26;">
+          <p class="danger_color2"> No Recurring Bookings</p>
+        </ion-card-content>
+    </ion-card>
+    
+      
+</ion-content>
+<ion-fab right bottom>
+    <button ion-fab mini style="background-color: #2b92bb;" (click)="addRecuringBooking()" style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+</ion-fab>

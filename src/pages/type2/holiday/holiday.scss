@@ -1,0 +1,27 @@
+holiday-page{
+    .scroll-content {
+        background-image: none !important;
+        background-size: 100% 100%;
+        padding: 10px!important;
+    }
+    .slider_list_margin {
+        //margin: -1px 0 8px 0;
+        border-left: 3px solid $themecardleftbordercolor;
+        // margin: 6px 10px;
+        border-radius: 2px;
+        width: calc(100%);
+        font-size: 1.4rem;
+        background: #fff;
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        margin: -1px 0 5px !important;
+    }
+
+    
+     .div-box-margin{
+        margin-top: 10px;
+    }
+    .text-color{
+        color: red;
+    }
+}

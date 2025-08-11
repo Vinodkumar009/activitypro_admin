@@ -1,0 +1,48 @@
+<!--
+  Generated template for the HolidaycampaymentsdetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Holiday Camp Payment</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+  <ion-card>
+    <ion-card-header>
+      {{memberInfo.FirstName}} {{memberInfo.LastName}} <br>
+     ({{memberInfo.AmountPayStatus}})
+    </ion-card-header>
+    <ion-card-content>
+        <p>{{memberInfo.CampName}}</p>
+      <ion-row>
+        <ion-col col-6>
+            <p>
+                Paid -  {{memberInfo.AmountPaid}} <span *ngIf="memberInfo.Discount > 0">({{memberInfo.Discount}})</span>
+              </p>
+        </ion-col>
+        <ion-col col-6 style="text-align:-webkit-right;">
+          <p>{{paymentDate}}</p>
+        </ion-col>
+      </ion-row>
+    
+    </ion-card-content>
+  </ion-card>
+  <h5 style="text-align:center">Details</h5>
+  <div *ngFor="let trans of tranactionDetailsArray">
+      <p>Mode : {{trans["tranactionDetails"]["PaymentMode"]}}</p>
+      <p>Paid-amount :{{trans["tranactionDetails"]["TotalAmount"]}}</p>
+      <div *ngFor="let discount of trans.discounts" >
+          <div *ngIf="discount.DiscountApplied > 0">
+              <p>{{discount.DiscountName}} ({{discount.DiscountApplied}}) </p>
+          </div>
+            
+        </div>
+    </div>
+</ion-content>

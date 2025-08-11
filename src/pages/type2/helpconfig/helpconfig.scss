@@ -1,0 +1,31 @@
+helpconfig-page {
+    .scroll-content {
+        padding: 16px 0px !important;
+        background-color: rgb(234, 243, 248) !important;
+    }
+    .message {
+        padding: 1px 16px 1px 15px;
+    }
+    .p_clubName {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+    .elipsesdot {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 73px;
+        display: block;
+        overflow: hidden;
+    }
+    ion-item {
+        padding-top: 7px !important;
+        padding-bottom: 7px !important;
+        div {
+            border-bottom: 0px !important;
+            padding-right: 0px!important;
+            div {
+                border-right: 0.001em ridge #CBD9DC;
+            }
+        }
+    }
+}

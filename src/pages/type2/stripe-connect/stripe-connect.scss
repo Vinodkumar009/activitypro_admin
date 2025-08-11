@@ -1,0 +1,62 @@
+page-stripe-connect {
+    // ion-row {
+    //     ion-label {
+    //         color: #b5b2ae !important;
+    //         margin-top: -1px !important;
+    //     }
+    //     .act {
+    //         margin-top: 15px !important;
+    //     }
+    //     border-bottom: 1px solid #f1c98d !important;
+    //     box-shadow: inset 0 -1px 0 0 #dedede!important;
+    //     .colbox{
+    //         box-shadow: -2px 1px 7px 0px #bdbbc1;
+    // margin: 0px 0px 4px 7px;
+    // max-width: 23%;
+    // padding: 2px !important;
+    // background-color: rgba(29, 12, 12, 0.101961);
+    // border-radius: 6px;
+            
+    //     }
+    //     span{
+    //         margin: 2px !important;
+    //         color: rgba(16, 3, 3, 0.27);
+    //     }
+        
+    // }
+    .marginauto{
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    .venueList{
+        color: rgba(0, 0, 0, 0.5294117647058824);
+    }
+    .selecteachvenue{
+        background-color: #FFC107 !important;
+        span{
+            color:white;
+        }
+       
+    }
+    .cardpending {
+        margin-bottom: 10px;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0px 2px 8px -1px #b4b3b7;
+        ion-card-content{
+            height:120px;
+            img{
+                width:65px;
+                height:65px;
+            }
+        }
+        ion-icon{
+            color: #7a7878 !important;
+            font-size: 31px !important;
+        }
+    }
+     .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}

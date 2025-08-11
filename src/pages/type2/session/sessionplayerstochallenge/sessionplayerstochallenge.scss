@@ -1,0 +1,174 @@
+sessionplayerstochallenge-page{
+    .social-cards ion-col {
+        padding: 0;
+     }
+     .btn-clr{
+         color: $dashoboard-icon-color;
+     }
+     .margin{
+         padding: 8px;
+     }
+
+     .cross {
+         background-color: white;
+     }
+     .search_add{
+         background-color: transparent;
+         padding-left: 6px;
+     }
+     .right{
+         float: right;
+     }
+     .coachname{
+        color: #2a5168 !important;
+        font-weight: 500 !important;
+        margin: 0px;
+      }
+      .dotted{
+        width : 100%;
+        overflow:hidden;
+        display:inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        //color: white;
+        font-size: 16px !important;
+        color: #2a5168 !important;
+        font-weight: 500 !important;
+        margin: 0px;
+    }
+     .img1 {
+        width: 50px;
+        height: 50px;
+        border-radius: 30px;
+        margin: auto;
+        border: 1px solid #d5d7dd;
+      }
+     .dotted1{
+        width : 100%;
+        display:inline-block;
+        overflow:hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px !important;
+        //color: white;
+        color: #114a70 !important;
+        margin: 0px;
+        font-weight: bold !important;
+    }
+     .hadder-card{
+        //text-align: -webkit-center;
+        //background: #6fb754;
+        background:#F2F5FA;
+        box-shadow: 0px -1px 31px 4px #8db07c;
+      }
+      ion-card{
+        margin:0px;
+      }
+      
+      .choose-row{
+        background: white;
+        margin-bottom: 2px;
+      }
+      .select-type{
+        ///background-color: rgb(234, 234, 234) !important ;
+        text-transform: capitalize;
+        background-color:transparent !important;
+        width: 102%;
+        margin: 0px !important;
+        //color: #fab754 !important;
+        color:rgba(0,0,0,0.85) !important;
+        border-radius: 0px !important;
+        box-shadow: none;
+    }
+      .selected{
+        //background: #fab754 !important;
+        background-color:transparent !important;
+        border-bottom: 1.5px solid #fab754;
+        color: #fab754 !important;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .listing{
+        margin: 5px 0;
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 16px;
+    }
+    .eachrow{
+        box-shadow: 0px 2px 8px -1px #b4b3b7;
+        border-radius: 5px;
+        background: #fff;
+        margin-top: 10px;
+        .firstcol{
+            padding: 5px 5px 0px 10px;
+            border-bottom: 1px solid rgba(180, 179, 183, 0.48);
+        }
+        .othercol{
+            padding: 0;
+            ion-item{
+                padding-left: 10px;
+            }
+        
+        }
+    }
+     .card_list{
+        margin: 3px !important;
+        width: 98%;
+        border-bottom: 2px solid #faa928d3;
+        box-shadow: none !important;
+    }
+     ion-item{
+        border-bottom-color: white !important;
+        box-shadow: none !important;
+        border-bottom: 0px !important;
+        ion-label{
+            color:rgba(0,0,0,0.85)
+        }
+        .item-inner{
+            border-bottom: 0px !important;
+            border-bottom-color: white !important;
+            box-shadow: none !important;
+            ion-icon{
+                margin-top: 18px;    
+            }
+            
+        }
+     }
+     .rowclass{
+        border-bottom-color: rgba($color: #000000, $alpha: 0.3) !important;
+        border-bottom:0.5px solid;
+        padding: 10px 0px;
+        background: white;
+        color: rgba(0,0,0,0.85);
+        .pclass{
+            background-color: white;      
+        } 
+        ion-input{
+            input{
+                text-align: right;
+            }
+        }  
+     }
+
+     .session_header ,ion-list{
+         margin-bottom: 0px!important;
+     }  
+     .block_height {
+        height: 80%;
+    }
+    .pstyle{
+        color: rgba(0,0,0,0.85);
+        font-size: 16px;
+    }
+    .card-md p {
+        margin: 0 0 0px;
+        font-size: 1.3rem;
+        font-weight: normal;
+        //line-height: 1.4;
+        color: #222;
+    }
+    .apro{
+        color: rgba(0,0,0,0.5);
+        font-size: 14px;
+    }
+
+}

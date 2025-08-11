@@ -1,0 +1,320 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Membership Setup</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="Membership">
+        <!-- <ion-item style="background: #FFF3E3;">
+            <ion-select [(ngModel)]="selectedClubKey" (ionChange)="selectVenue($event)" class="width100">
+                <ion-option *ngFor="let club of Venues" value={{club.$key}}>{{club.ClubName}}</ion-option>
+            </ion-select>
+        </ion-item> -->
+        <ion-row class="border-bottom-2px">
+            <ion-item class="venueionitem">
+                <ion-select class="venuedropdown" [(ngModel)]="selectedClubKey" (ionChange)="onVenueChange()" [disabled]="Membership=='secondpage'">
+                    <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-row>
+
+        <div *ngSwitchCase="'firstpage'" >
+            <ion-list class="custom-list" *ngIf="membership_tiers">
+                <div class="ctg_wrapper">
+                    <p class="group-header">Category (<span class="headertext">Selected</span>:{{selectedCtg}})</p>
+                    <ion-slides class="group-slides" [slidesPerView]="3.2">
+                        <ion-slide *ngFor="let category of membership_tiers.categories;let i=index">
+                            <ion-card class="facilityCard" [class.selected]="category.is_selected"
+                                (click)="selectAge(i)" *ngIf="category.label && category.label!=''">
+                                <ion-card-content>
+                                    <p class="facilities-text">{{category.label}}</p>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-slide>
+                    </ion-slides>
+                    <ion-fab right class="margin_top_session_fab">
+                        <button ion-fab mini style="background-color:#FFF3E3 !important; color: white !important"
+                            (click)="addOption(1)">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </ion-fab>
+                </div>
+
+                <div class="ctg_wrapper">
+                    <p class="group-header">Subcategory (<span class="headertext">Selected</span>:{{selectedSubCtg}})</p>
+                    <ion-slides class="group-slides" [slidesPerView]="3.2">
+                        <ion-slide *ngFor="let sub_category of membership_tiers.subcategories;let i=index">
+                            <ion-card class="facilityCard" [class.selected]="sub_category.is_selected" *ngIf="sub_category.label && sub_category.label!=''"
+                                (click)="selectGroup(i)">
+                                <ion-card-content>
+                                    <p class="facilities-text"> {{sub_category.label}}</p>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-slide>
+                    </ion-slides>
+                    <ion-fab right class="margin_top_session_fab">
+                        <button ion-fab mini style="background-color:#FFF3E3 !important; color: white !important"
+                            (click)="addOption(2)">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </ion-fab>
+                </div>
+
+                <div class="ctg_wrapper" *ngIf="Activities.length > 0">
+                    <p class="group-header">Activity (<span class="headertext">Selected</span>:{{selectedActivity}})</p>
+                    <ion-slides class="group-slides" [slidesPerView]="3.2">
+                        <ion-slide *ngFor="let activity of Activities;let i=index">
+                            <ion-card class="facilityCard" [class.selected]="activity.is_selected"
+                                (click)="selectActivity(i)" *ngIf="activity.activity_name && activity.activity_name!=''">
+                                <ion-card-content>
+                                    <p class="facilities-text">{{activity.activity_name}}</p>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-slide>
+                    </ion-slides>
+                    <ion-fab right class="margin_top_session_fab">
+                        <button ion-fab mini style="background-color:#FFF3E3 !important; color: white !important"
+                            (click)="addOption(3)">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </ion-fab>
+                </div>
+                <div class="ctg_wrapper">
+                    <p class="group-header">Time (<span class="headertext">Selected</span>:{{selectedTime}})</p>
+                    <ion-slides class="group-slides" [slidesPerView]="3.2">
+                        <ion-slide *ngFor="let time of membership_tiers.times;let i=index">
+                            <ion-card class="facilityCard" [class.selected]="time.is_selected"
+                                (click)="selectTime(i)" *ngIf="time.label && time.label!=''">
+                                <ion-card-content>
+                                    <p class="facilities-text"> {{time.label}}</p>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-slide>
+                    </ion-slides>
+                    <ion-fab right class="margin_top_session_fab">
+                        <button ion-fab mini style="background-color:#FFF3E3 !important; color: white !important"
+                            (click)="addOption(4)">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </ion-fab>
+                </div>
+            </ion-list>
+        </div>
+
+        <div *ngSwitchCase="'secondpage'">
+            <ion-list class="custom-list">
+                <ion-item class="custom_ionitem mem_name" style="border-bottom: 1px solid #d2c6b7">
+                    <ion-label stacked>Membership Name</ion-label>
+                    <ion-input type="text" class="setupname" placeholder="Name Of Membership" [(ngModel)]="MembershipObj.membership_name">
+                    </ion-input>
+                </ion-item>
+                <ion-row>
+                    <ion-col col-12>
+                        <p class="mem_allowed_para">Number of member allowed</p>
+                    </ion-col>
+                    <ion-col col-12 class="border" style="padding: 0 1px 0 0 !important;" text-center>
+                        <ion-item class="custom_ionitem" style="border-bottom: 1px solid #d2c6b7">
+                            <ion-label fixed>Minimum</ion-label>
+                            <ion-input type="number" class="setupname rightalign" placeholder="Min no. of members"
+                                [(ngModel)]="MembershipObj.min_member"></ion-input>
+                            <button ion-button clear item-right class="help_btn"
+                                (click)="showHintToast('Minimum number of members must be added')">
+                                <img style="width: 50%;" src="assets/images/info.svg">
+                            </button>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-12 class="border" style="padding: 0 1px 0 0 !important;" text-center>
+                        <ion-item class="custom_ionitem" style="border-bottom: 1px solid #d2c6b7">
+                            <ion-label fixed>Maximum</ion-label>
+                            <ion-input type="number" class="setupname rightalign" placeholder="Max no. of members"
+                                [(ngModel)]="MembershipObj.max_member"></ion-input>
+                            <button ion-button clear item-right class="help_btn"
+                                (click)="showHintToast('Maximum number of members allowed')">
+                                <img style="width: 50%;" src="assets/images/info.svg">
+                            </button>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+
+                <ion-card class="card-view">
+                    <ion-card-content>
+                        <ion-row class="spacebtwrows">
+                            <ion-col col-12 class="colpaddingrem">
+                                <ion-item>
+                                    <ion-label class="orange">Monthly</ion-label>
+                                    <ion-checkbox [(ngModel)]="MembershipObj.monthly"></ion-checkbox>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row class="border">
+                            <ion-col col-6 class="">
+                                <p class="pstyle">Price<span>({{currencyDetails.CurrencySymbol}})</span></p>
+                            </ion-col>
+                            <ion-col col-6>
+                                <ion-item no-lines>
+                                    <ion-input type="number" class="rightalign"
+                                        [(ngModel)]="MembershipObj.monthly_price"
+                                        [disabled]="!MembershipObj.monthly">
+                                    </ion-input>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card class="card-view">
+                    <ion-card-content>
+                        <ion-row class="spacebtwrows">
+                            <ion-col col-12 class="colpaddingrem">
+                                <ion-item>
+                                    <ion-label class="orange">Yearly</ion-label>
+                                    <ion-checkbox [(ngModel)]="MembershipObj.yearly"></ion-checkbox>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row class="border">
+                            <ion-col col-6 class="">
+                                <p class="pstyle">Price<span>({{currencyDetails.CurrencySymbol}})</span></p>
+                            </ion-col>
+                            <ion-col col-6>
+                                <ion-item>
+                                    <ion-input type="number" [(ngModel)]="MembershipObj.yearly_price"
+                                        class="rightalign" [disabled]="!MembershipObj.yearly">
+                                    </ion-input>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row class="discountalign">
+                            <ion-col col-12 no-padding>
+                                <ion-row class="border">
+                                    <ion-col col-6>
+                                        <p class="pstyle">Discount(%)</p>
+                                    </ion-col>
+                                    <ion-col col-6>
+                                        <ion-item no-lines>
+                                            <ion-input type="number" class="rightalign"
+                                                [(ngModel)]="MembershipObj.yearly_discount_percentage"
+                                                [disabled]="!MembershipObj.yearly">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row class="border">
+                                    <ion-col col-6>
+                                        <p class="pstyle">Discount(<span>{{currencyDetails.CurrencySymbol}}</span>)</p>
+                                    </ion-col>
+                                    <ion-col col-6>
+                                        <ion-item no-lines>
+                                            <ion-input type="number" class="rightalign"
+                                                [(ngModel)]="MembershipObj.yearly_discount_absolute"
+                                                [disabled]="!MembershipObj.yearly">
+                                            </ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card class="card-view">
+                    <ion-card-content>
+                        <ion-row class="spacebtwrows">
+                            <ion-col col-12 class="colpaddingrem">
+                                <ion-item>
+                                    <ion-label *ngIf="master_templates.length == 0" class="orange">Create Membership description</ion-label>
+                                    <ion-label *ngIf="master_templates.length > 0" class="orange">Add Membership description</ion-label>
+                                    <ion-checkbox [(ngModel)]="description" (ionChange)="openDescriptionModal($event)"></ion-checkbox>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card *ngIf="templateEditOpen" class="card-view">
+                    <ion-card-content>
+                        <ion-row *ngFor="let desc of this.master_templates" class="spacebtwrows">
+                                <ion-col col-10 class="colpaddingrem">
+                                    <ion-item style="padding-left: 5px; color:rgba(0,0,0,0.85);font-weight: 500">
+                                        <ion-input type="text" [(ngModel)]="desc.header"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col (click)="desc.is_selected = !desc.is_selected" col-2>
+                                    <ion-icon name="ios-arrow-down" style="padding: 0px 12px 0px 0px;
+                                    float: right;"></ion-icon>
+                                </ion-col>    
+                                <ion-col *ngIf="desc.is_selected" col-12>
+                                    <ion-item style="padding-left: 6px;
+                                    font-size: 14px;
+                                    color:rgba(0,0,0,0.85);
+                                    border-top: 1px solid rgba(128, 128, 128, 0.07);">
+                                        <ion-textarea  rows="3" type="text" [(ngModel)]="desc.description"></ion-textarea>
+                                    </ion-item>
+                                </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+                
+
+                <div id="myModal5" *ngIf="modal && templateData" 
+                    class="modal2 animate-zoom mid-text">
+                    <ion-row style="margin: 5px 0;">
+                        <ion-col col-12 style="line-height: 2; padding: 6px;border-bottom: 1px solid rgba(0, 0, 0, 0.06);" text-center>
+                            <p class="exploretext">
+                                Template
+                            </p>
+                        </ion-col>
+                    </ion-row>
+                    <div style="position: absolute; height:65vh; overflow: scroll; width:100%">
+                        <ion-row style="font-size: 1.8rem !important;    margin: 0 0 14px 0;color: #4e4d4d !important;"
+                        *ngFor="let temp of templateData" >
+                        <ion-col (click)="temp.IsSelect = !temp.IsSelect" style="padding: 2px 11px;
+                        color: rgba(0, 0, 0, 0.85)!important;
+                        font-weight: 500;margin-top: auto;
+                        margin-bottom: auto;" col-10 text-wrap>
+                            {{temp.header}}
+                        </ion-col>
+                        <ion-col (click)="temp.IsSelect = !temp.IsSelect" col-2 style="margin:auto">
+                            <ion-icon name="ios-arrow-down" style="padding: 0px 12px 0px 0px;
+                            float: right;"></ion-icon>
+                        </ion-col>
+                        <ion-col *ngIf="temp.IsSelect" col-12>
+                            <p style="  margin: 0 6px;
+                            color: rgba(0, 0, 0, 0.65)!important;
+                            font-size: 15px;" class="white-space">{{temp.desc}}</p>
+                        </ion-col>
+                    </ion-row>
+                    </div>
+                    <ion-row class="rowbtn">
+                        <ion-col col-6>
+                            <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="closeModal()" >Cancel</button>
+                        </ion-col>
+                        <ion-col col-6>
+                            <button ion-button block class="timekare-primary-btn" (click)="copy()" >Save</button>
+                        </ion-col>
+                    </ion-row>
+                </div>
+            </ion-list>
+        </div>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-row class="" *ngIf="Membership=='firstpage'">
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" [disabled]="!isPaymentgatewayAvail" type="submit" (click)="next()">Next</button>
+        </ion-col>
+    </ion-row>
+    <ion-row class="" *ngIf="Membership=='secondpage'">
+        <ion-col col-6>
+            <button ion-button block class="timekare-primary-btn" (click)="this.Membership = 'firstpage'">Back</button>
+        </ion-col>
+        <ion-col col-6>
+            <button ion-button block class="timekare-primary-btn" (click)="createMembershipConfirmation()">Save</button>
+        </ion-col>
+        <!-- <ion-col col-6 *ngIf="selectedSetupKey">
+            <button ion-button block class="timekare-primary-btn" (click)="saveSetup()">Update</button>
+        </ion-col> -->
+    </ion-row>
+</ion-footer>

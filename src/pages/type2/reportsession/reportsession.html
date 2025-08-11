@@ -1,0 +1,158 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{LangObj.mem_report_title}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="session">
+            <ion-segment-button value="Present">
+                {{LangObj.report_ses_current}}
+            </ion-segment-button>
+            <ion-segment-button value="Past">
+                {{LangObj.report_ses_past}}
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.report_ses_title}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="session">
+            <ion-segment-button value="Present">
+                {{LangObj.report_ses_current}}
+            </ion-segment-button>
+            <ion-segment-button value="Past">
+                {{LangObj.report_ses_past}}
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+    <!--Tab1-->
+    <div [ngSwitch]="session">
+        <ion-list *ngSwitchCase="'Present'">
+
+            <ion-card>
+
+                <ion-card-content style="padding:0px;">
+                    <ion-item *ngIf="activityList.length >1">
+                        <ion-label>{{LangObj.report_ses_activity}}</ion-label>
+                        <ion-select [(ngModel)]="selectedActivity" (ionChange)="onChangeActivity()">
+                            <!--<ion-option value="All">All</ion-option>-->
+                            <ion-option *ngFor="let activity of activityList" value={{activity.Key}}>{{activity.ActivityName}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{LangObj.report_ses_venue}}</ion-label>
+                        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+                            <ion-option value="All">All</ion-option>
+                            <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="selectedClub != 'All'">
+                        <ion-label>{{LangObj.report_ses_coach}}</ion-label>
+                        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+                            <ion-option value="All">{{LangObj.report_ses_all}}</ion-option>
+                            <ion-option *ngFor="let coach of coachList" value={{coach.Key}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
+
+
+            <ion-card class="card_body">
+                <ion-card-content style="padding: 3px 0px 8px 0px;">
+                    <p class="heading_venue">{{LangObj.report_ses_overall}}</p>
+                    <p class="heading_Session"><span class="icon_style"><ion-icon name="filing"></ion-icon></span><span class="session">{{this.sessionList.length}} Sessions</span></p>
+                </ion-card-content>
+                <ion-row style="border-top: 1px solid rgba(0, 0, 0, 0.16);">
+                    <ion-col class="ion_col">
+                        <button ion-button icon-left clear small>
+                            <ion-icon class="color_white" name="clock"></ion-icon>
+                            <div  class="color_white" style="text-transform: lowercase;">{{overAllDuration}} {{LangObj.hrs}}{{LangObj.mem_report_title}}</div>
+                        </button>
+                    </ion-col>
+                    <ion-col class="ion_col">
+                        <button ion-button icon-left clear small>
+                            <ion-icon class="color_white" name="people"></ion-icon>
+                            <div class="color_white">{{overAllMember}} {{LangObj.report_ses_mems}}</div>
+                        </button>
+                    </ion-col>
+
+                </ion-row>
+            </ion-card>
+
+
+
+            <!--Club wise sesion report-->
+
+
+            <ion-card class="card_body" *ngFor="let clubs of sessionAllClubs" [ngClass]="{'card_body1': clubs.ColorIndex == 1, 'card_body2 ': clubs.ColorIndex == 2, 'card_body3 ': clubs.ColorIndex == 3,
+'card_body4': clubs.ColorIndex == 4, 'card_body5 ': clubs.ColorIndex == 5, 'card_body6 ': clubs.ColorIndex == 6, 
+'card_body7 ': clubs.ColorIndex == 7, 'card_body8 ': clubs.ColorIndex == 8,  'card_body9 ': clubs.ColorIndex == 9,  'card_body10 ': clubs.ColorIndex == 10}">
+                <ion-card-content style="padding: 3px 0px 8px 0px;">
+                    <p class="heading_venue">{{clubs.ClubName}}</p>
+                    <!-- <p class="heading_Session"><span class="icon_style"><ion-icon name="filing"></ion-icon></span><span class="session">{{clubs.Sessions.length}} Sessions {{LangObj.mem_report_title}}</span></p> -->
+                    <p class="heading_Session"><span class="icon_style"><ion-icon name="filing"></ion-icon></span><span class="session">{{clubs.Sessions.length}} Sessions</span></p>
+                </ion-card-content>
+                <ion-row  style="border-top: 1px solid rgba(0, 0, 0, 0.16);">
+                    <ion-col class="ion_col">
+                        <button ion-button icon-left clear small>
+                            <ion-icon class="color_white" name="clock"></ion-icon>
+                            <div  class="color_white" style="text-transform: lowercase;">{{clubs.TotalHours}} {{LangObj.hrs}}{{LangObj.mem_report_title}}</div>
+                        </button>
+                    </ion-col>
+                    <ion-col class="ion_col">
+                        <button ion-button icon-left clear small>
+                            <ion-icon class="color_white" name="people"></ion-icon>
+                            <div class="color_white">{{clubs.MemberCount}} {{LangObj.report_ses_mem}}</div>
+                        </button>
+                    </ion-col>
+
+                </ion-row>
+            </ion-card>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </ion-list>
+        <ion-list *ngSwitchCase="'Past'">
+
+
+        </ion-list>
+    </div>
+</ion-content>

@@ -1,0 +1,19 @@
+page-commentforemptiness{
+    .nonmembercard{
+       // margin-top: 30px !important;
+        margin:30px 0px 0px 0px !important;
+        width:100% !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid #f6ae4d !important; 
+        
+      ion-card-content{
+        padding: 0px !important;
+    }
+    }
+    .nonlocationcard  {
+        padding: 14px 0;
+    }
+   
+    
+}

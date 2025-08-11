@@ -1,0 +1,64 @@
+addfamilymember-page{
+    .social-cards ion-col {
+        padding: 0;
+     }
+     .btn-clr{
+         color: $dashoboard-icon-color;
+     }
+     .margin{
+         padding: 8px;
+     }
+     ion-item h2{
+        // color: $dashoboard-icon-color !important;
+     }
+     .cross {
+         background-color: white;
+     }
+     .search_add{
+         background-color: transparent;
+         padding-left: 6px;
+     }
+     .right{
+         float: right;
+     }
+     .search_add{
+         .item-inner{
+             border-bottom: 0px !important;
+             ion-icon{
+                 margin-top: 18px;
+             }
+             div{
+                 ion-label{
+                     //margin-top: 0px;
+                     margin-bottom: 0px;
+                 }
+             }
+         }
+
+     }
+     .session_header ,ion-list{
+         margin-bottom: 0px!important;
+     }  
+     .block_height {
+        height: 80%;
+    }
+    .card-md p {
+        margin: 0 0 0px;
+        font-size: 1.3rem;
+        font-weight: normal;
+        line-height: 1.4;
+        color: #222;
+    }
+    .ion-item-lable{
+        div{
+            ion-icon{
+                margin:0px 0px 9px 0px !important;
+            }
+            div{
+                ion-label{
+                    margin: 0px 0px 0px 0px;
+                }
+            }
+        }
+    }
+}

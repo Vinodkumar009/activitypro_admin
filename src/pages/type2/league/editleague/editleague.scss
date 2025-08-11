@@ -1,0 +1,531 @@
+page-editleague {
+
+  .scroll-content {
+    padding: 3px !important;
+    //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    background: #f7f7f7;
+  }
+
+  .margin_top {
+    margin-top: 10px;
+  }
+
+  .padding_class {
+    padding-top: 20px; //font-size: 15px;
+  }
+
+  .days {
+    ion-col {
+      text-align: center;
+
+      p {
+        border: 1px solid #76747d;
+        ;
+      }
+    }
+  }
+
+  .help_btn {
+    padding: 0px !important;
+    font-size: 24px !important;
+    margin: 0px !important;
+    height: 42px !important;
+    width: 42px;
+  }
+
+  .discount_div p {
+    line-height: 16px !important;
+  }
+
+  .text_white {
+    color: white;
+  }
+
+  .card_header {
+    padding: 3px 0px 5px 19px;
+    text-align: left;
+  }
+
+  .rounded {
+    width: 38px;
+    height: 38px;
+    border-radius: 19px;
+    padding-top: 8px;
+  }
+
+  .card {
+    margin: 6px 0px 0px 0px;
+    width: 100%
+  }
+
+  ion-card-content {
+    padding: 0px !important;
+  }
+
+  .left_margin {
+    padding-left: 5px;
+
+    ion-checkbox {
+      margin: 9px 14px 9px 4px !important;
+    }
+
+    ion-label {
+      white-space: pre-wrap !important;
+    }
+  }
+
+  .nopadding {
+    padding: 0px;
+  }
+
+  .padding-0 {
+    padding: 0px !important;
+  }
+
+  .margon-0 {
+    margin: 0px !important;
+  }
+
+  .margin-right-5 {
+    margin-right: 5px;
+  }
+
+  // .swiper-wrapper{
+  //     height: 65px !important;
+  // }
+  .school-con {
+    height: 50px !important;
+
+    //background-image: linear-gradient(to bottom right, #5eb1ca,#6ed0ec) !important;
+    background-color: #7bc6e5;
+
+    p {
+      color: white !important;
+    }
+  }
+
+  .schoolBackground {
+    background-image: linear-gradient(to right, #fbc46d, #f9b457) !important;
+  }
+
+  .textareastyle {
+    input {
+      text-align: right;
+    }
+
+    .text-input {
+      margin-left: 0px;
+    }
+  }
+
+  ion-item {
+    ion-label {
+      overflow: visible !important;
+    }
+
+    .label-ios {
+      color: #999;
+    }
+  }
+
+  .section_header {
+    background: #f7f7f7;
+    font-weight: 500;
+    font-size: 18px;
+    border-bottom: 1px solid #faae4e !important;
+  }
+
+  .border_bottom {
+    //margin-bottom: 4px;
+    //border-bottom: 1px solid #faae4e !important;
+    border-bottom: 1px solid #dedede;
+  }
+
+  ion-slide {
+    // background-color: #32db64;
+    width: 100%;
+    height: auto;
+    margin-bottom: 100px;
+    //swiper-slide
+  }
+
+  .swiper-slide {
+    -webkit-align-items: unset !important;
+    -ms-flex-align: unset !important;
+    align-items: unset !important;
+    -webkit-box-pack: unset !important;
+
+    h1 {
+      font-size: 15px;
+    }
+  }
+
+  .venueionitem {
+    padding-left: 4px;
+  }
+
+  .venuedropdown {
+    padding: 13px 8px 13px 0px;
+  }
+
+  ion-select {
+    display: -webkit-box;
+    max-width: 100%;
+    width: 100%;
+    text-align: right;
+    // float: right;
+  }
+
+
+
+  //Discounts & prices css
+
+  .installmentblock {
+    margin: 6px 0px;
+  }
+
+  .installmentName {
+    div {
+      border-bottom-color: #81c7ff;
+    }
+
+    input {
+      text-align: center;
+    }
+  }
+
+  .installmentnamearea {
+    background-color: #bec6cc;
+  }
+
+  .sessionFeesBlock {
+    background-color: #81c7ff;
+    text-align: center;
+    padding: 8px;
+    font-size: 16px;
+    margin-top: 5px;
+  }
+
+  .discountlabel {
+    background-color: #130c80b8;
+    text-align: center;
+    padding: 8px;
+    font-size: 16px;
+    margin-top: 5px;
+    color: white;
+  }
+
+  .textarea-input {
+    border: 1px solid #dedede;
+    border-radius: 2px;
+    width: 100%;
+  }
+
+  .textarea-input::placeholder {
+    color: rgba(0, 0, 0, 0.30);
+    padding-left: 5px;
+  }
+
+  .freeses_item {
+    font-style: italic;
+    font-size: 13px;
+    color: #faae4e !important;
+
+    .ion-label {
+      margin: 5px 5px !important;
+    }
+
+    margin: 2px;
+  }
+
+
+
+  //toggle button related classes
+
+  .toggle {
+    overflow: hidden;
+    display: inline-block;
+    width: 4.9em;
+    //background: #2f2a2a;
+    background-color: #ebf7fc;
+    //padding: 0.135em;
+    cursor: pointer;
+    font-size: 17px;
+    margin-left: 8px;
+    border-radius: 50px;
+    height: 30px;
+    float: right;
+  }
+
+  .toggle input {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .toggle ion-input {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .toggle span {
+    position: relative;
+    left: 0%;
+    display: block;
+    text-align: center;
+    -webkit-transition: left 200ms ease-out;
+    -moz-transition: left 200ms ease-out;
+    -o-transition: left 200ms ease-out;
+    transition: left 200ms ease-out;
+  }
+
+  .toggle :checked+span {
+    left: 50%;
+  }
+
+  .toggle input[type="checkbox"] {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Default unchecked state */
+  .toggle span:before {
+    content: attr(data-unchecked);
+    display: block;
+    width: 50%;
+    background-color: #f44336;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px -8px #c5d6d6;
+    //box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 25px;
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  /* Checked state */
+  .toggle :checked+span:before {
+    content: attr(data-checked);
+    background-color: #03A9F4;
+    color: white;
+    border-radius: 50px;
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  .Active {
+    background-image: linear-gradient(to right, #fbc46d, #f9b457) !important;
+  }
+
+  .InActive {
+    background-color: #7bc6e5;
+  }
+
+  .flex_col {
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      line-height: 30px;
+    }
+  }
+
+  .cancel-btn {
+    background-color: #2b92bb !important;
+    color: white !important;
+  }
+
+  .adv_ses .label {
+    margin: 13px 15px 13px 0 !important;
+  }
+
+  .input_item {
+    padding-left: 5px !important;
+
+    ion-label {
+      color: #999 !important;
+      font-size: 1.4rem !important;
+    }
+
+    ion-select {
+      max-width: 100% !important;
+    }
+  }
+
+  .selected {
+    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+    border: 1.5px solid #2b92bb;
+    color: #2b92bb !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 10px;
+  }
+
+  .select-type {
+    text-transform: capitalize;
+    background-color: transparent;
+    width: 102%;
+    margin: 0px !important;
+    color: #707070;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .margin23 {
+    margin-left: 23px !important;
+  }
+
+  .nav_slides_div {
+    width: 100%;
+    position: absolute;
+    bottom: 5px;
+    // padding: 5px 50px;
+    // background: #80808045;
+  }
+
+  .toggle_para {
+    font-size: 16px;
+    color: #999 !important;
+  }
+
+  .disc_label {
+    margin-left: 22px;
+  }
+
+  .nav_btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    ion-icon {
+      font-size: 1.4em !important;
+    }
+  }
+
+  .submit_btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    text-transform: capitalize !important;
+  }
+
+  .margin_auto {
+    margin: auto;
+  }
+
+  .toggle_header {
+    background: rgba(0, 0, 0, 0.01);
+
+    p {
+      text-align: center;
+      font-size: 15px;
+    }
+
+    p::before,
+    p::after {
+      display: inline-block;
+      content: "";
+      border-top: 0.1rem solid #00000096;
+      width: 4rem;
+      margin: -6px 1rem;
+      -webkit-transform: translateY(-1rem);
+    }
+  }
+
+
+  .right-align-input {
+    .text-input{
+      text-align: right !important;
+    }
+  }
+  
+
+
+
+
+  //To remove item highlight border bottom colors
+  .item-md.item-input.input-has-focus .item-inner {
+    border-bottom-color: #dedede !important;
+    box-shadow: none !important;
+  }
+
+  .list-md .item-input.input-has-focus:last-child {
+    border-bottom-color: #dedede !important;
+    box-shadow: none !important;
+  }
+
+  .list-md .item-input.input-has-focus:last-child .item-inner {
+    box-shadow: none;
+  }
+
+  .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+    border-bottom-color: #dedede !important;
+    box-shadow: none !important;
+  }
+
+  .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child {
+    border-bottom-color: #dedede !important;
+    box-shadow: none !important;
+  }
+
+  .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child .item-inner {
+    box-shadow: none;
+  }
+
+  .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner {
+    border-bottom-color: #dedede !important;
+    box-shadow: none !important;
+  }
+
+  .list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):last-child {
+    border-bottom-color: #dedede !important;
+    box-shadow: none !important;
+  }
+
+
+    // .scroll-content {
+    //     background-color: #f7f7f7;
+    //   }
+    //   .details {
+    //     color: #2b92bb;
+    //   }
+    //   .ionlist{
+    //     margin:-1px 0px 7px;
+    //   }
+    //   .foo {
+    //     padding: none;
+    //   }
+    //   .help_btn {
+    //     padding: 0px !important;
+    //     font-size: 24px !important;
+    //     margin: 0px !important;
+    //     height: 42px !important;
+    //     width: 42px;
+    //   }
+    //   .createbutton {
+    //     background-color: #5be283;
+    //     height: 3.6rem;
+    //     font-size: 1.4rem;
+    //    }
+    //   .cancelbutton {
+    //     background-color: #2b92bb;
+    //    }
+    //   .selected {
+    //     background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+    //     border: 1.5px solid #2b92bb;
+    //     color: #2b92bb !important;
+    //     -webkit-box-shadow: none;
+    //     box-shadow: none;
+    //     border-radius: 10px;
+    //    }
+    //    .select-type {
+    //     text-transform: capitalize;
+    //     background-color: transparent;
+    //     width: 102%;
+    //     margin: 0px !important;
+    //     color: #707070;
+    //     border-radius: 10px;
+    //     box-shadow: none;
+    //   }
+}

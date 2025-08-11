@@ -1,0 +1,39 @@
+<!--
+  Generated template for the TeamchatPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Team Chat</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item (click)="gotoadminchat()" *ngFor="let group of groups">
+    <ion-row>
+      <ion-col col-3>
+        <ion-icon class="group-icon" name="ios-chatbubbles-outline"></ion-icon>
+      </ion-col>
+      <ion-col col-6>
+        <h2>{{group.SessionName}}</h2>
+        <p class="latest_message" >
+          <!-- <span 
+            >{{group.LatastMessage}}</span
+          > -->
+          <span >Me</span>
+          <span>: {{group.LatastMessage}}</span>
+        </p>
+      </ion-col>
+      <ion-col col-3>
+        <p class="read_count">
+          <span > </span>
+        </p>
+        <p class="message_date" >
+          {{group.CreatedAt}}
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+</ion-content>

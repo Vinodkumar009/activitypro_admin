@@ -1,0 +1,59 @@
+assigndiscountlistclub-page{
+  
+    .scroll-content {
+        margin-top: 44px !important; 
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+    .topdown{
+        margin-top: auto;
+    margin-bottom: auto;
+    }
+    .nonmembercard {
+        margin-top: 30px !important;
+
+    }
+    .nonlocationcard {
+        padding: 14px 0;
+        color:#aba5a5 !important;
+    }
+
+    // ion-item {
+    //     ion-label {
+    //         color: #b5b2ae !important;
+    //         margin-top: -1px !important;
+    //     }
+    //     .act {
+    //         margin-top: 15px !important;
+    //     }
+    //     border-bottom: 1px solid #f1c98d !important;
+    //     box-shadow: inset 0 -1px 0 0 #dedede!important;
+    // }
+     .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+     .slidingcards {
+    // margin-bottom: 5px;
+    // border-top: 6px solid rgba(94, 199, 130, 0.79);
+    // margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // margin-bottom: 4px;
+    // border-top: 7px solid rgba(236, 117, 21, 0.63);
+    // border-bottom: 2px solid rgba(180, 24, 148, 0.73);
+    //  margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // border-bottom: 2px solid rgba(236, 117, 21, 0.63);
+    //box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+    //margin-bottom: 7px;
+    //border-top: 5px solid rgba(25, 92, 170, 0.79);
+  }
+  
+  .card-view{
+        margin-top: 7px;
+        box-shadow: none !important;
+        border-bottom: none !important;
+        border-bottom: 2px solid #f6ae4d;
+    }
+}

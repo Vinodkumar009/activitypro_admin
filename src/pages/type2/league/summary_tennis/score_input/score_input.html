@@ -1,0 +1,49 @@
+<!--
+  Generated template for the TennisScoreInputPage page.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>Set Scores - {{teamObj?.parentclubteam?.teamName}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div class="score-input-container">
+        <h3>Enter Set Scores</h3>
+        <p>Sets Won: {{setsWon}}</p>
+
+        <div *ngFor="let set of setScores; let i = index" class="set-input">
+            <h4>Set {{set.setNumber}}</h4>
+            <ion-row>
+                <ion-col col-5>
+                    <ion-item>
+                        <ion-label>{{ishome ? teamObj?.parentclubteam?.teamName : 'Opponent'}} Games</ion-label>
+                        <ion-input type="number" [(ngModel)]="set.homeGames" placeholder="0"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-2 text-center>
+                    <p style="margin-top: 20px;">-</p>
+                </ion-col>
+                <ion-col col-5>
+                    <ion-item>
+                        <ion-label>{{!ishome ? teamObj?.parentclubteam?.teamName : 'Opponent'}} Games</ion-label>
+                        <ion-input type="number" [(ngModel)]="set.awayGames" placeholder="0"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </div>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button full color="light" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button full color="primary" (click)="saveSetScores()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>

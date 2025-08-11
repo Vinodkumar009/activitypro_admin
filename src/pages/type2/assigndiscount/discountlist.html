@@ -1,0 +1,287 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Discount & Charge Setup</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="discountChargesTab">
+            <ion-segment-button value="discount">
+                Discount
+            </ion-segment-button>
+            <ion-segment-button value="charges">
+                Charges
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle>
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Discount & Charge Setup
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="discountChargesTab">
+            <ion-segment-button value="discount">
+                Discount
+            </ion-segment-button>
+            <ion-segment-button value="charges">
+                Charges
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+    <div [ngSwitch]="discountChargesTab">
+        <ion-list *ngSwitchCase="'discount'">
+
+            <ion-item class="borderbottom">
+                <ion-label class="venue-text">Venue</ion-label>
+                <ion-select style="max-width: none !important;" [(ngModel)]="selectedClubKey"
+                    (ionChange)="onClubChange()">
+                    <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+
+
+            </ion-item>
+
+            <!--<ion-item class="top-distance">
+
+        <h2><span>Club Name :</span><span> {{selectedClubname}}</span></h2>
+
+      </ion-item>-->
+
+
+          
+
+        
+            <ion-list class="top-distance">
+
+                <h4><span class="fontheading">Venue Level Discount</span></h4>
+                <ion-item (click)="clublevelEdit(discountList)">
+                        <p class="no-discount-text" *ngIf="discountList.length == 0">Click here to enable discount</p>        
+
+                    <!-- <ion-col col-12>
+                            <span class="font-color"> {{selectedClubname}}</span>
+                        </ion-col> -->
+
+                    <!--<ion-col width-100 *ngFor="let item of discountList">
+              <span class="font-color"> {{item.DiscountName}}</span>
+            </ion-col>-->
+
+                    <!--<div *ngIf='discountList.length > 0'>
+              <div *ngFor="let item of discountList" class="box">
+
+                <h2 class="card-h2-style">Discount Name:{{item.DiscountName}}</h2>
+                <h2 class="card-h2-style">Discount Code:{{item.DiscountCode}}</h2>
+
+              </div>
+            </div>-->
+           
+                    <div *ngIf='discountList.length > 0'>
+                            <div class="box" *ngFor="let item of discountList">
+                                    <!--<h2>Discount Name:{{item.DiscountName}}</h2>
+                    <h2>Discount Code:{{item.DiscountCode}}</h2>
+                    <h2>Absolute Value:{{item.AbsoluteValue}}</h2>
+                    <h2>Percentage Value:{{item.PercentageValue}}</h2>-->
+
+
+                                    <span style="font-size: 16px;color:black;">{{item.DiscountName}}:</span>&nbsp;
+                                    <span style="font-size: 16px;color:#4CAF50;">{{item.PercentageValue}}% </span>
+                                    <span style="font-size: 16px;color:#4CAF50;"><span
+                                            *ngIf="item.AbsoluteValue">or <span
+                                                *ngIf="currencyDetails.CurrencySymbol!= undefined">{{currencyDetails.CurrencySymbol}}</span></span>{{item.AbsoluteValue}}</span>
+
+
+                                </div>
+                    </div>
+
+
+
+
+
+                </ion-item>
+                <!-- <ion-item-options side="right">
+                        <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="gotoClubAssignDiscountPage(discountList)">
+                    <ion-icon name="create"></ion-icon>
+                    Edit
+                </button>
+                    </ion-item-options> -->
+
+
+            </ion-list>
+
+
+
+
+
+
+            <div *ngIf="activity.length > 0" style="margin-top: 12px;">
+                <h4><span class="fontheading">Activity Level Discount</span></h4>
+                <ion-list>
+
+                    <ion-row  *ngFor="let activity of activity" class="margin_activity ion_item_1"
+                        (click)="activitylevelEdit(activity)">
+                        <ion-col col-12 style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+                            <span class="font-color"> {{activity.ActivityName}}</span>
+                        </ion-col>
+                        <ion-col col-12 *ngIf="activity.DiscountArr.length == 0">
+                            <p class="no-discount-text" >Click here to enable discount</p>    
+                        </ion-col>
+                        <div *ngIf='activity.Discount != undefined'>
+                            <p *ngFor="let discount of activity.DiscountArr">
+
+                                <ng-template [ngIf]="discount.IsActive">
+                                    <div class="box">
+                                        <!--<h2>Discount Name:{{discount.DiscountName}}</h2>
+              <h2>Discount Code:{{discount.DiscountCode}}</h2>
+              <h2>Absolute Value:{{discount.AbsoluteValue}}</h2>
+              <h2>Percentage Value:{{discount.PercentageValue}}</h2>-->
+
+
+                                        <span
+                                            style="font-size: 16px;color:black;">{{discount.DiscountName}}:</span>&nbsp;
+                                        <span style="font-size: 16px;color:#4CAF50;">{{discount.PercentageValue}}%
+                                        </span>
+                                        <span style="font-size: 16px;color:#4CAF50;"><span
+                                                *ngIf="discount.AbsoluteValue">or <span
+                                                    *ngIf="currencyDetails.CurrencySymbol!= undefined">{{currencyDetails.CurrencySymbol}}</span>{{discount.AbsoluteValue}}</span></span>
+                                    </div>
+                                </ng-template>
+                              
+                            </p>
+
+                            <!--<template *ngFor="let discount of activity.DiscountArr">
+          <div [ngIf]="discount.IsActive" class="box">
+            <h2 class="card-h2-style">Discount Name:{{discount.DiscountName}}</h2>
+            <h2 class="card-h2-style">Discount Code:{{discount.DiscountCode}}</h2>
+          </div>
+        </template>-->
+                        </div>
+
+                    </ion-row>
+                    <!-- <ion-item-options side="right">
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="gotoActivityAssignDiscountPage(activity)">
+                    <ion-icon name="create"></ion-icon>
+                    Edit
+                </button>
+                        </ion-item-options> -->
+
+
+
+                </ion-list>
+
+            </div>
+
+          
+            <ion-card *ngIf="activity.length == 0" class="nonmembercard">
+                <ion-card-content style="text-align: center; padding:0px !important ;">
+                    <p class="danger_color2 nonlocationcard">It seemes there are no activity present </p>
+                </ion-card-content>
+            </ion-card>
+            <!--<ion-list *ngFor="let discount of allDiscount" class="slider_list_margin">
+        <ion-item-sliding>
+          <ion-item>
+
+            <h2 class="card-h2-style">{{discount.DiscountName}}</h2>
+            <p><span>Level Type :</span><span> {{discount.LevelType}}</span></p>
+            <p><span>Discount Code :</span><span> {{discount.DiscountCode}}</span></p>
+          </ion-item>
+
+
+          <ion-item-options side="right">
+            <button ion-button color="secondary" (click)="editHoliday(holiday)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Edit
+                    </button>
+            <button ion-button style="background-color:#2b92bb !important; color: white !important">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Delete
+                    </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>-->
+
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'charges'">
+
+            <ion-item>
+                <ion-label>Venue</ion-label>
+                <ion-select style="max-width: none !important;" [(ngModel)]="selectedClubKey"
+                    (ionChange)="onClubChange()">
+                    <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+           
+
+            <ion-list class="top-distance">
+                <h4><span class="fontheading">Venue Level Discount</span></h4>
+                <ion-item >
+                    <!-- <ion-col col-12>
+                            <span class="font-color"> {{selectedClubname}}</span>
+                        </ion-col> -->
+
+
+                    <div *ngIf='chargeList.length > 0'>
+                        <p *ngFor="let item of chargeList">
+
+                            <ng-template [ngIf]="item.IsActive">
+                                <div class="box" (click)="clublevelEdit(chargeList)">
+                                    <!--<h2>Charge Name:{{item.ChargeName}}</h2>
+                <h2>Charge Code:{{item.ChargeCode}}</h2>
+                <h2>Absolute Value:{{item.AbsoluteValue}}</h2>
+                <h2>Percentage Value:{{item.PercentageValue}}</h2>-->
+
+
+                                    <span style="font-size: 16px;color:black;">{{item.ChargeName}},</span>&nbsp;
+                                    <span style="font-size: 16px;color:#4CAF50;">{{item.PercentageValue}}% </span>
+                                    <span style="font-size: 16px;color:#4CAF50;">or <span
+                                            *ngIf="currencyDetails.CurrencySymbol!= undefined">{{currencyDetails.CurrencySymbol}}</span>{{item.AbsoluteValue}}</span>
+
+                                </div>
+                            </ng-template>
+                        </p>
+                    </div>
+                </ion-item>
+                <!-- <ion-item-options side="right">
+                        <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="gotoClubAssignChargePage(chargeList)">
+                    <ion-icon name="create"></ion-icon>
+                    Edit
+                </button>
+                    </ion-item-options> -->
+
+
+            </ion-list>
+
+
+
+        </ion-list>
+
+
+
+        <!--<ion-fab right bottom>
+  <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="gotoDiscountOrChargesPage()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+</ion-fab>-->
+    </div>
+</ion-content>

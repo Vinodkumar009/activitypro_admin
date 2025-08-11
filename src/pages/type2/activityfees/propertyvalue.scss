@@ -1,0 +1,34 @@
+propertyvalue-page{
+    .scroll-content{
+        padding: 16px 9px !important;
+    }
+    .no-margin{
+        margin:0px;
+        width:100%;
+        //background-color: rgba(255, 255, 255, 0);
+        background-color: rgba(255, 255, 255, 0);
+        margin-top: 6px;
+
+    }
+    .sss{
+        width:100%;
+        padding: 11px 0px 11px 6px;
+        background-color: rgba(11, 18, 29, 0.53);
+        //font-color: white;
+        color: white;
+        font-size: 16px;
+        border-bottom: 5px solid rgba(25, 92, 170, 0.79);
+    }
+    .margin_bottom_session_fab {
+        margin-top: -15px;
+        right: -8px;
+    }
+    .session_margintop1 {
+        margin-top: 6px;
+        border: 1px solid gray;
+    }
+    .gradient{
+            background: linear-gradient(rgba(84, 199, 199, 0.7), rgba(163, 189, 58, 0.65));
+            font-weight: bold;
+    }
+}

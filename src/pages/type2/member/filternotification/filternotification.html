@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Notification</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="sendEmail()">
+                <ion-icon name="ios-send-outline" class="ico"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-row class="filter_row">
+      <ion-col col-7>
+          <ion-item>
+              <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub(club)" class="club-select"
+                  style=" width: 100%;max-width:100%;">
+                  <ion-option *ngFor="let club of clubs" value={{club.Id}}>{{club.ClubName}}</ion-option>
+              </ion-select>
+          </ion-item>
+      </ion-col>
+      <ion-col col-5>
+          <ion-item>
+              <ion-select [(ngModel)]="selectedEmailCategory" (ionChange)="onChangeEmailFilter()"
+                  class="activity-select" style=" width: 100% !important;max-width:100% !important;">
+                  <ion-option *ngFor="let type of EmailFilterCategory" value={{type.CategoryVal}}>
+                      {{type.CategoryText}}</ion-option>
+              </ion-select>
+          </ion-item>
+      </ion-col>
+  </ion-row>
+  
+  <ion-item style="  padding-right: 16px;">
+      <ion-textarea style="margin-top: 5px;white-space:pre-wrap;" type="text" rows="10" [(ngModel)]="notification_input.message" (focusout)="focusOutMessage()"
+          placeholder="Type a message here..."></ion-textarea>
+  </ion-item>
+
+
+
+  <ion-grid>
+      <ion-row>
+          <ion-col col-12>
+              <button ion-button block style="background-color: #2b92bb " (click)="sendNotification()">Notify ({{numberOfPeopleToSend}})</button>
+          </ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-content>

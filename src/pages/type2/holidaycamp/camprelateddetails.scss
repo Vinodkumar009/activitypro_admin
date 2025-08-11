@@ -1,0 +1,356 @@
+page-camprelateddetails {
+  .scroll-content {
+    // margin-top: 43px !important;
+    background-image: none !important;
+  }
+  .header {
+    background: #1b2b3b;
+    color: rgb(230, 217, 217);
+  }
+  .width-100{
+    width:100%;
+  } 
+  .grp_size_div{
+    display: flex;
+    position: relative;
+    button{
+      top: -10px;
+      right:10px;
+      ion-icon{
+        font-size: 2.2em;
+        color: #fff;
+      }
+    }
+  }
+  .extra_info_div{
+    padding: 20px 10px;
+    border-radius: 10px;
+    border: 0.5px solid grey;
+    .ticket_card{
+      transition: max-height 0.4s ease-in-out;
+      margin:2px !important;
+      ion-card-header{
+        border-bottom: 0.5px solid grey;
+      }
+      .card_content{
+        padding: 10px 10px !important;
+        //height: 100px;
+        margin: auto;
+        div {
+          padding-top: 5px;
+          //display: flex;
+          p{
+            font-size: 16px;
+            margin-right: 5px;
+            padding: 5px 5px;
+            border-radius: 18px;
+            //background: #35adff;
+            color: rgba(0, 0, 0, 0.85);
+            //width: 170px;
+            text-align: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          } 
+        }
+        
+      }
+    }
+  }
+
+  .para_overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .discount_hint{
+    position: absolute;
+    color: red !important;
+    bottom: -14px;
+    padding-bottom: 5px;
+  }
+ 
+  .card_action_icon{
+    margin: auto;
+    //float: right;
+    color: rgba(0,0,0,0.50);
+    font-size: 1.4em;
+  }
+  .users_count{
+    color: rgba(0,0,0,0.50);
+    font-size: 1.2em;
+  }
+  .card_head{
+    padding: 12px !important;
+  }
+  .containers {
+    margin-left: 2%;
+    margin-right: 2%;
+    background: rgba(231, 222, 222, 0.55);
+    border-radius: 9px;
+    -webkit-transform: translate(0px, -36px);
+    transform: translate(0px, -27px);
+    padding: 2px 7px 28px 8px;
+  }
+  .medical_img{
+    height:20px;
+    width: 20px;
+  }
+  #circle {
+    padding: 60px;
+    max-width: 60px;
+    max-height: 60px;
+    border-radius: 50%; // transform: translate(-75%, 10%);
+    transform: translate(-43%, 9%);
+    border-right: 4px solid rgb(27, 211, 125);
+    border-bottom: 4px solid rgb(27, 211, 125);
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+  }
+  #circle2 {
+    padding: 7px;
+    max-width: 6px;
+    max-height: 6px;
+    border-radius: 50%;
+    background-color: rgb(1, 212, 131);
+    transform: translate(-400%, 200%);
+    box-shadow: -1px -1px 15px rgb(188, 241, 221);
+  }
+  .card {
+    border-radius: 5px;
+  }
+  .arrow {
+    transform: translate(0%, 80%);
+  }
+  .foot {
+    float: right;
+    transform: translate(0%, -130%);
+  }
+  .body {
+    transform: translate(20%, -50%);
+  }
+  .head {
+    transform: translate(0%, 50%);
+  }
+  #icon2 {
+    float: right;
+    transform: translate(0%, 60%);
+  }
+  .text_div {
+    transform: translate(7%, -50%);
+    border-left: 2px solid silver;
+  }
+  .text {
+    transform: translate(5%, 0%);
+  }
+  .content {
+    margin-bottom: -9%;
+  }
+  .name {
+    font-size: 25px;
+  }
+  #book {
+    float: right;
+    font-size: 30px;
+    margin-right: 16px;
+    margin-top: -10px;
+  }
+  .circlesvg {
+    //margin-left: -13px;
+    margin-left: -12%;
+  }
+  #icon1_col {
+    border-right: 2px solid #b7b5b5;
+    line-height: 61px;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .cust_icon {
+    font-size: 31px !important;
+    color: #7a7878 !important;
+  }
+  .chevron_right {
+    margin-top: 11px;
+    color: #7a7878 !important;
+  }
+  .session_name {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #505050 !important;
+    font-family: "Oswald", sans-serif !important;
+    margin: 4px;
+  }
+  .person_name {
+    padding-top: 10px;
+    font-size: 14px !important;
+    color: #505050 !important;
+    font-family: "Oswald", sans-serif !important;
+    // margin: 4px;
+    font-weight: bold;
+  }
+
+  .pStyle {
+    font-family: "Roboto Slab", serif !important;
+  }
+  .headerp {
+    margin: 5px 5px 5px 0px !important;
+    font-size: 15px;
+  }
+  .leftp {
+    line-height: 20px;
+    font-weight: bold;
+    color: #72b70c; // color:#8e65b7;
+    font-size: 16px; // font-family: 'Patua One', cursive;
+    font-family: "Bree Serif", serif;
+  }
+  .leftp1 {
+    margin-top: 13px;
+  }
+  .dangerRed {
+    color: red !important;
+  }
+  .due {
+    color: red;
+    font-size: 25px;
+    margin-top: 4px;
+  }
+  .pv {
+    font-size: 25px;
+    color: #128fa5;
+    margin-top: 4px;
+  }
+  .paid {
+    font-size: 25px;
+    color: green;
+    margin-top: 4px;
+  }
+  .innerblock {
+    margin: 3px 3px 6px 17px;
+  }
+  .membersessioncard {
+    margin: 7px 0px 0px 0px;
+    width: 100%; // background: linear-gradient(to right, #3ebbd1, white);
+    background: linear-gradient(to right, #3ebbd1, #c5e0e7);
+    color: white;
+  }
+  .membercard {
+    border-left: 3px solid $themecardleftbordercolor;
+    ion-card-content {
+      padding: 0px 0px;
+      width: 100%;
+      height: 100%;
+    }
+    background: white;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  .centerfab {
+    text-align: center;
+  }
+  .fabstyle {
+    position: relative !important;
+  }
+  .nomargin {
+    // margin: -16px 0px 0px 24px !important;
+    //    margin: -19% -19% -12% 23% !important;
+    margin: -19% -19% -12% 23% !important;
+    background-color: #128fa5;
+  }
+  .paymenttype {
+    color: #050a29;
+    font-weight: 500;
+  }
+  
+  .paidBlock {
+    padding: 1px 5px 0px 0px;
+  }
+  // .paid_div {
+  //   position: absolute;
+  //   right: 5px;
+  //   top: -10px;
+  // }
+  .moneypaid {
+    line-height: 15px;
+    /* float: right; */
+    text-align: right;
+    font-weight: bold;
+    color: green;
+  }
+  .transactiondate {
+    line-height: 14px;
+    font-size: 10px;
+    text-align: right;
+    color: #aaada8;
+    font-style: italic;
+    margin-left: -5px;
+  }
+  .transactiondate1 {
+    line-height: 14px;
+    font-size: 12px;
+    //text-align: right;
+    color: #fff;
+    font-style: italic;
+    margin-left: -5px;
+  }
+  .dueimage {
+    height: 43px;
+    margin-top: -6px;
+    width: 38px;
+    float: right;
+  }
+  .pending {
+    line-height: 25px;
+    font-size: 13px;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgba(255, 0, 0, 0.85);
+    font-style: italic;
+  }
+  .fabTop {
+    margin-bottom: 13px;
+  }
+  .fabAttendanceText {
+    //margin-left: -130px;
+    background-color: #2b92bb !important ;
+    margin-top: -47px;
+    padding: 6px 12px 6px 11px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    border-radius: 3px;
+    margin-right: 36px;
+  }
+  .fabEmailText {
+    //margin-left: -115px;
+    background-color: #2b92bb !important ;
+    margin-top: -47px;
+    padding: 6px 12px 6px 11px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    border-radius: 3px;
+    margin-right: 36px;
+    -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14),
+      0 4px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+  }
+  .check-button {
+    margin: 3% 3%;
+    border: 1px solid #2b92bb;
+    background-color: transparent;
+    height: 3.6rem;
+    font-size: 1.3rem;
+    border-radius: 5px;
+    text-transform: capitalize;
+    color: #ffff !important;
+    ion-icon{
+      margin-left: 5px;
+      margin-top: 1px;
+    }
+  }
+  .passode{
+    line-height: 10px;
+    font-size: 14px;
+    color: #343434a8;
+    font-style: italic;
+  }
+}

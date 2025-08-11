@@ -1,0 +1,238 @@
+<!--
+  Generated template for the MonthlysessionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.create_mothgrp_ses_title}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-label>{{LangObj.create_mothgrp_grpname}}</ion-label>
+        <ion-input type="text" [(ngModel)]="monthlySessionObj.session_name" plcaeholder="Type session name..."></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.create_mothgrp_venue}}</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+            <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-grid style="padding:0px;">
+        <ion-row style="padding:0px;">
+            <ion-col col-6 style="padding:0px;">
+                <ion-item class="venueionitem activity_select">
+                    <ion-select [(ngModel)]="selectedActivityType" (ionChange)="onChangeActivity()" class="venuedropdown"
+                        style="text-align:left;padding-left: 15px;">
+                        <ion-option *ngFor="let type of club_activities" value={{type.ActivityKey}}>{{type.ActivityName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col col-6 style="padding:0px;">
+                <ion-item class="venueionitem">
+                    <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+                        <ion-option *ngFor="let coach of coachs" value={{coach.CoachId}}>{{coach.FirstName}} {{coach.LastName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <div>
+        <ion-item>
+            <ion-label>{{LangObj.create_mothgrp_category}}</ion-label>
+            <ion-select [(ngModel)]="selectActivityCategory" (ionChange)="onChangeActivityCategory()">
+                <ion-option *ngFor="let ac of activityCategoryList" value={{ac.ActivityCategoryId}}>{{ac.ActivityCategoryName}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{LangObj.create_mothgrp_subcategory}}</ion-label>
+            <ion-select [(ngModel)]="selectActivitySubCategory">
+                <ion-option *ngFor="let acs of activitySubCategoryList" value={{acs.ActivitySubCategoryId}}>{{acs.ActivitySubCategoryName}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <!-- <ion-label floating>Group Size</ion-label> -->
+            <ion-label fixed>{{LangObj.create_mothgrp_grpsize}}</ion-label>
+            <ion-input type="number" [(ngModel)]="monthlySessionObj.groupsize" min="1" class="textareastyle"></ion-input>
+        </ion-item>
+        <ion-item class="activity_select">
+            <ion-label>Status</ion-label>
+            <ion-select [(ngModel)]="monthlySessionObj.group_status" class="venuedropdown"
+                style="padding-left: 15px;">
+                <ion-option *ngFor="let status of Status" value={{status.StatusCode}}>{{status.StatusText}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </div>
+    <div style="margin: 6px 0px 6px 0px;">
+        <ion-card class="card">
+            <ion-card-header class="card_header">
+                {{LangObj.create_mothgrp_days}}
+            </ion-card-header>
+            <ion-card-content>
+
+                <ion-row class="days">
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Mon',1)" [ngClass]="{'timekare-primary-btn': isSelectMon,'text_white': isSelectMon,'un_selected': !isSelectMon}">M</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Tue',2)" [ngClass]="{'timekare-primary-btn': isSelectTue,'text_white': isSelectTue,'un_selected': !isSelectTue}">T</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Wed',3)" [ngClass]="{'timekare-primary-btn': isSelectWed,'text_white': isSelectWed,'un_selected': !isSelectWed}">W</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Thu',4)" [ngClass]="{'timekare-primary-btn': isSelectThu,'text_white': isSelectThu,'un_selected': !isSelectThu}">T</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Fri',5)" [ngClass]="{'timekare-primary-btn': isSelectFri,'text_white': isSelectFri,'un_selected': !isSelectFri}">F</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Sat',6)" [ngClass]="{'timekare-primary-btn': isSelectSat,'text_white': isSelectSat,'un_selected': !isSelectSat}">S</p>
+                    </ion-col>
+                    <ion-col>
+                        <p class="rounded" (click)="selectDays('Sun',7)" [ngClass]="{'timekare-primary-btn': isSelectSun,'text_white': isSelectSun,'un_selected': !isSelectSun}">S</p>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+        </ion-card>
+        <ion-item>
+            <ion-label>{{LangObj.create_mothgrp_startime}}</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="monthlySessionObj.start_time"
+                class="textareastyle" [minuteValues]="minuteValues"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-label fixed>{{LangObj.create_mothgrp_duration}}(mins)</ion-label>
+            <ion-input type="number" [(ngModel)]="monthlySessionObj.duration" max="60" min="1" class="textareastyle"></ion-input>
+        </ion-item>
+    </div>
+
+
+
+
+
+    <ion-item>
+        <ion-label>{{LangObj.create_mothgrp_startdate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="monthlySessionObj.start_date"  max={{maxDate}}
+            (ionChange)="dateChanged()"></ion-datetime>
+    </ion-item> 
+    <ion-item>
+        <ion-label>{{LangObj.create_mothgrp_endate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="monthlySessionObj.end_date" min={{minDate}} max={{maxDate}}
+            (ionChange)="dateChanged()"></ion-datetime>
+    </ion-item>
+
+    <ion-item (click)="payByDate()">
+        <!-- <p style="font-size: 16px;color: #999 !important;">
+            <span style="float:left;">{{LangObj.create_mothgrp_paybydate}}({{LangObj.create_mothgrp_day}})</span>
+            <span style="float:right;">{{monthlySessionObj.PayByDate}}</span>
+        </p>  -->
+        <ion-label fixed>{{LangObj.create_mothgrp_paybydate}}({{LangObj.create_mothgrp_day}})</ion-label>
+            <ion-input type="number" [(ngModel)]="monthlySessionObj.PayByDate" min="1" class="textareastyle"></ion-input>
+    </ion-item> 
+
+    <!-- <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="monthlySessionObj.StartDate" max={{maxDate}}
+            (ionChange)="dateChanged()"></ion-datetime>
+    </ion-item>-->
+
+
+    <!-- <ion-item>
+        <ion-label>Pay By Date(Day)</ion-label>
+        <ion-datetime displayFormat="DD" pickerFormat="DD" [(ngModel)]="monthlySessionObj.PayByDate" (ionChange)="selectedPayByDate($event)"></ion-datetime>
+    </ion-item> -->
+
+
+    
+
+
+
+
+    <ion-item>
+        <ion-label fixed>{{LangObj.create_mothgrp_noof_weeks}} </ion-label>
+        <ion-input type="number" [(ngModel)]="monthlySessionObj.no_of_weeks"  class="textareastyle"></ion-input>
+    </ion-item>
+
+
+    <!-- Monthly payment option  -->
+
+    <!-- <ion-item (tap)="selectFreeSessions()">
+        <p style="font-size: 16px;">
+            <span style="float:left;">{{LangObj.create_mothgrp_freeses}}(s)</span>
+            <span style="float:right;">{{freeSessionInTermsOfMonth}}</span>
+        </p>
+    </ion-item>
+
+    <ion-item (tap)="numberOfMonthMustPay()">
+        <p style="font-size: 16px;">
+            <span style="float:left;">{{LangObj.create_mothgrp_payinadv}}</span>
+            <span style="float:right;">{{payInAdvance}}</span>
+        </p>
+    </ion-item> disabled as we implementing subscription -->
+
+    
+    <!-- ends here   -->
+
+
+    <ion-item class="comments">
+        <ion-textarea type="text" class="textareastyle" [(ngModel)]="monthlySessionObj.comments" placeholder="Description"></ion-textarea>
+    </ion-item>
+    <!-- <ion-grid class="nopadding">
+        <ion-row class="nopadding">
+            <ion-col col-12 class="nopadding">
+                <ion-item class="left_margin">
+                    <ion-label>{{LangObj.create_mothgrp_allowmem_edit}}</ion-label>
+                    <ion-checkbox [(ngModel)]="monthlySessionObj.IsAllMembertoEditAmendsFees"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid> -->
+    <!-- <ion-grid class="nopadding">
+        <ion-row class="nopadding">
+            <ion-col col-12 class="nopadding">
+                <ion-item class="left_margin">
+                    <ion-label>Automatic subscription</ion-label>
+                    <ion-checkbox [(ngModel)]="monthlySessionObj.IsAllowAutoAubscriptions"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid> -->
+
+
+
+    <ion-grid style="margin-bottom:60%">
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelSessionCreation()">{{LangObj.create_mothgrp_cancel}}</button>
+            </ion-col>
+
+            <!-- Monthly continue button -->
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="continue()">{{LangObj.create_mothgrp_continue}}</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>

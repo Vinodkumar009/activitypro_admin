@@ -1,0 +1,136 @@
+<!--<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Add Venue</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+                <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Add Venue
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>-->
+
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Add Venue</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Add Venue
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+        
+    <ion-item class="padding-5">
+        <ion-label floating>Venue Name</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.ClubName" required></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>Venue Short Name</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.ClubShortName"></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>Description</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.ClubDescription"></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>Contact Name</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.ClubContactName"></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>Contact Phone</ion-label>
+        <ion-input type="number" [(ngModel)]="clubObj.ContactPhone"></ion-input>
+    </ion-item>
+    <p></p>
+    <ion-item class="padding-5">
+        <ion-label floating>First Line Address</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.FirstLineAddress" required></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>Second Line Address</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.SecondLineAddress" required></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>City</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.City" required></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>State/County</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.State" required></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label>Country</ion-label>
+        <ion-select [(ngModel)]="clubObj.Country" (ionChange)="countryAssign()">
+            <ion-option *ngFor="let eachcountry of country" value={{eachcountry.CountryCode}}>{{eachcountry.CountryName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>Post Code</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.PostCode" (keyup)="clubObj.PostCode = clubObj.PostCode.toUpperCase()"></ion-textarea>
+    </ion-item>
+    <p></p>
+    <ion-item class="padding-5">
+        <ion-label floating>Google Map URL</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.Location"></ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label floating>Website URL</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="clubObj.WebsiteUrl"></ion-textarea>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelVenue()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="save()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

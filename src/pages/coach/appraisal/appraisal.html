@@ -1,0 +1,46 @@
+<!--
+  Generated template for the AppraisalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Appraisal</ion-title>
+  </ion-navbar>
+        
+</ion-header>
+
+
+<ion-content >
+ <div *ngIf="HistoryDetails.length > 0">
+    <ion-card *ngFor="let data of HistoryDetails" (click)="presentActionSheet(data)">
+        <ion-card-content [ngClass]="{'color-theme-ret': data.Status == 2}">
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6 class="cols"><span class="name"> {{data.MemberName}}</span></ion-col>
+              <ion-col col-4 class="cols">
+                  <rating  [(ngModel)]="data.AveragePerformance" 
+                  readOnly="true" 
+                  max="5" 
+                  emptyStarIconName="star-outline" 
+                  halfStarIconName="star-half" 
+                  starIconName="star" 
+                  nullable="false" ></rating>
+              </ion-col>
+              <ion-col col-2>
+                <div class="spa"><ion-icon name="md-arrow-down" *ngIf="!data.ReferedTemplateKey ==''" class="ico"></ion-icon></div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+         
+        </ion-card-content>
+      </ion-card>
+ </div>
+  <ion-card *ngIf="HistoryDetails.length == 0" class="card2">
+      <ion-card-content>
+        <span class="none">no past appraisal</span>
+      </ion-card-content>
+    </ion-card>
+</ion-content>

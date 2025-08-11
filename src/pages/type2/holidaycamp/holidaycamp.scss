@@ -1,0 +1,361 @@
+holidaycamp-page {
+  .scroll-content {
+    // background-image: url("../assets/images/background/innerbg.png");
+    background-size: 100% 100%;
+    padding: 6px;
+    background-image: none !important;
+    //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    background: #f7f7f7;
+  }
+  .slider_list_margin {
+    margin: -1px 0 8px 0;
+  }
+  .duration {
+    ion-col {
+      padding: 0px;
+    }
+  }
+  .nonmembercard {
+    margin-top: 30px !important;
+    margin: 0px !important;
+    width: 100% !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #f6ae4d !important;
+    .nonlocationcard {
+      padding: 14px 0;
+    }
+    ion-card-content {
+      padding: 0px !important;
+    }
+  }
+  .nonlocationcard {
+    padding: 14px 0;
+  }
+
+  .all {
+    // border-left: 3px solid #35adff;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-image: -webkit-gradient(
+        linear,
+        0 0,
+        0 100%,
+        from(#35adff),
+        to(#7dbce6)
+      )
+      1 100%;
+    -webkit-border-image: -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+    -moz-border-image: -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+    -o-border-image: -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+    border-image: linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+  }
+  .border-left-style {
+    height: 51px;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+  }
+  .fee {
+    text-decoration: underline;
+  }
+  .btm_margin {
+    margin-bottom: 5px;
+  }
+  .div-box-margin {
+    margin-top: 10px;
+  }
+  .text-color {
+    color: red;
+  }
+  .update_btn {
+    background-color: rgba(109, 45, 45, 0.69);
+  }
+  .discount_btn {
+    background-color: #53a25d;
+  }
+  .discount_btn {
+    background-color: #53a25d !important;
+  } // .discount_btn{
+  //     .activated{
+  //         background-color: #36793f !important;
+  //     }
+  // }
+  .btn-width {
+    width: 40px;
+  }
+  $alert-md-title-font-size: 13px;
+  $alert-ios-title-font-size: $alert-md-title-font-size;
+  $alert-ios-head-text-align: center;
+  $alert-md-head-text-align: $alert-ios-head-text-align;
+  .round_size {
+    // float: right;
+    // border: 1px solid green;
+    // width: 24px;
+    // height: 25px;
+    // border-radius: 24px;
+    // line-height: 22px;
+    // padding: 2px;
+    // color: green;
+    // font-weight: bold;
+    float: right;
+    border: 1px solid green;
+    width: 30px;
+    height: 25px;
+    border-radius: 24px;
+    line-height: 16px;
+    padding: 5px;
+    color: green;
+    font-weight: bold;
+  }
+  .nopad {
+    padding: 0px;
+  }
+  .ion_card {
+    margin: 6px 0px;
+    width: 100%;
+  }
+  .right_box {
+    line-height: 69px;
+    text-align: center;
+  }
+  .people_icon {
+    font-size: 2em !important;
+    color: #3ebbd1;
+    float: right;
+    margin-top: -16px;
+  }
+  .people_size {
+    // // margin-top: -24px;
+    // margin-top: -97%;
+    // font-size: 17px;
+    // font-weight: bold;
+    // color: #736c6c;
+    margin-top: -47%;
+    font-size: 17px;
+    font-weight: bold;
+    color: #736c6c;
+    text-align: center;
+  }
+  .campname {
+    color: #726f6f;
+    font-family: "PT Sans", sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 9px;
+  }
+  .holidaycampcard_p {
+    font-family: "PT Sans", sans-serif;
+    color: #746c6c;
+    font-size: 13px;
+  }
+  .elipsesdot {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 85%;
+    display: block;
+    overflow: hidden;
+  }
+  .borderleft {
+    border-bottom: 1px solid #f5ba63;
+    //border-left: 2px solid #35adff !important;
+  }
+
+  .toggle {
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    background: #dcd7d7;
+    padding: 0.135em;
+    cursor: pointer;
+    margin-top: -10px;
+    height: 33px;
+  }
+  .toggle input {
+    position: absolute;
+    visibility: hidden;
+  }
+  .toggle span {
+    position: relative;
+    left: 0%;
+    display: block;
+    text-align: center;
+    /**
+   * Holo doesn't have any transition, but
+   * it's added here for demo purposes
+   */
+    -webkit-transition: left 200ms ease-out;
+    -moz-transition: left 200ms ease-out;
+    -o-transition: left 200ms ease-out;
+    transition: left 200ms ease-out;
+  }
+  .toggle :checked + span {
+    left: 50%;
+  }
+  /* Default unchecked state */
+  .toggle span:before {
+    content: attr(data-unchecked);
+    display: block;
+    width: 50%;
+    height: 30px;
+    background-color: #f6ba63;
+    box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    padding-top: 5px;
+  }
+  /* Checked state */
+  .toggle :checked + span:before {
+    content: attr(data-checked);
+    background-color: #f6ba63;
+    color: white;
+    font-size: 18px;
+  }
+  /* Base styles */
+  // html {
+  //     font: 100%/1.5 'Roboto', sans-serif;
+  //     padding-top: 3em;
+  //     background-color: #0e1012;
+  //     color: #b3b3b3;
+  //     text-align: center;
+  // }
+  ion-card {
+    box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+    //box-shadow: none !important;
+  }
+  .top-row {
+    width: 98% !important;
+    margin-left: 1%;
+    margin-right: 1%;
+    //margin-left: -4% !important;
+    margin-top: 10px !important;
+  }
+  ion-select {
+    padding: 0px 0px 0px 0px !important;
+  }
+  .club-select {
+    .select-text {
+      padding-top: 5px !important;
+      color: #faae4e !important;
+      margin-right: 10px !important;
+    }
+    .select-icon {
+      position: relative !important;
+      width: 20px !important;
+      height: 20px !important;
+      background: #faae4e !important;
+      border-radius: 50% !important;
+      color: white !important;
+      left: -2px !important;
+      top: 1px !important;
+      .select-icon-inner {
+        left: 5px !important;
+        margin-top: -1px !important;
+        width: 9px !important;
+        color: white !important;
+      }
+    }
+  }
+  .item-inner {
+    border-bottom: 1px solid #faae4e !important;
+    ion-label {
+      padding: 0px !important;
+    }
+  }
+  ion-card {
+    width: 94% !important;
+    margin: 6px 3px 6px 0px !important;
+    margin-left: 3% !important;
+  }
+  .mid-col {
+    padding-left: 13px !important;
+  }
+  
+  .select-type {
+    ///background-color: rgb(234, 234, 234) !important ;
+    text-transform: capitalize !important;
+    font-weight: 400;
+    background-color: transparent !important;
+    width: 102%;
+    margin: 0px !important;
+    //color: #fab754 !important;
+    color: rgba(0, 0, 0, 0.85) !important;
+    border-radius: 0px !important;
+    box-shadow: none;
+  }
+  .selected {
+    //background: #fab754 !important;
+    background-color: transparent !important;
+    border-bottom: 1.5px solid #fab754;
+    color: #fab754 !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  .choose-row {
+    width: 106%;
+    //margin-left: -3%;
+
+    ion-col {
+      padding: 0 !important;
+    }
+  }
+
+  .sub-container {
+    // border: 1px solid #34343442;
+    // border-radius: 5px;
+    // margin:5px 15px;
+
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    height: 50px;
+    background: #FFFFFF;
+
+    margin-top: 18px;
+    margin-right: 10px;
+    margin-bottom: 14px;
+    margin-left: 10px;
+
+
+    ion-icon {
+      width: 90%;
+      background: transparent !important;
+      border-radius: 5px;
+      //color: white;
+      color: rgba(0, 0, 0, 0.64);
+      //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+    }
+
+    .search-bar {
+      padding: 0px 5px;
+    }
+
+    .searchbar {
+      border: none !important;
+      background: #ffffff !important;
+      padding: 2px !important;
+    }
+
+    .searchbar-input {
+      //padding-left: 4px !important;
+      padding: 1px 4px !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      // margin-left: 20px;
+      margin-top: 5px;
+      // color:black;
+    }
+
+    .searchbar-search-icon {
+      display: none !important;
+    }
+
+    ion-icon {
+      font-size: 26px;
+      padding-left: 5px;
+    }
+  }
+  .search-bar {
+    padding: 0px 5px;
+  }
+}

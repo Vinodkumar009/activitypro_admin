@@ -1,0 +1,27 @@
+page-priceband {
+    ion-card{
+      
+    }
+    .time{
+      bottom: 2px;
+      right: 9px;
+      position: absolute;
+      color: #bc2219;
+      font-weight: 500;
+      ion-icon{
+          font-weight: bold;
+          font-size: 25px;
+      }
+    }
+    .name{
+      text-transform: capitalize;
+      font-weight: 500;
+      color: rgba(0,0,0,0.85) !important;
+      font-size: 18px;
+    }
+    .type{
+      color: #484444;
+      font-weight: 500;
+    }
+ 
+}

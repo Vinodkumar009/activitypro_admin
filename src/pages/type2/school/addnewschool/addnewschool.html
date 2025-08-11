@@ -1,0 +1,65 @@
+<ion-header *ngIf="themeType == 1">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Add School </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-header>
+  <ion-navbar *ngIf="themeType == 2">
+    <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+    <ion-title>Add School </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+      <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="cards-bg social-cards"  >
+  <ion-item>
+    <ion-label floating>School Name</ion-label>
+    <ion-input type="text" [(ngModel)]="schoolSetupObj.SchoolName"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label floating>School EmailID</ion-label>
+    <ion-input type="text" [(ngModel)]="schoolSetupObj.SchoolEmailID"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label floating>First Line Address</ion-label>
+    <ion-input type="text" [(ngModel)]="schoolSetupObj.FirstLineAddress"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label floating>Second Line Address</ion-label>
+    <ion-input type="text" [(ngModel)]="schoolSetupObj.SecondLineAddress"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label floating>City</ion-label>
+    <ion-input type="text" [(ngModel)]="schoolSetupObj.City"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label floating>Post Code</ion-label>
+    <ion-input type="text" [(ngModel)]="schoolSetupObj.PostCode"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label floating>School Contact Number</ion-label>
+    <ion-input type="text" [(ngModel)]="schoolSetupObj.SchoolContactNumber"></ion-input>
+</ion-item>
+
+
+</ion-content>
+<ion-footer>
+  <button style="width: 100%;" ion-button class="ion-text-capitalize" (click)="saveSchoolSetup()">Save</button>
+</ion-footer>

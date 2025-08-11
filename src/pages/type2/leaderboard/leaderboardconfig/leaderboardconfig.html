@@ -1,0 +1,65 @@
+<!--
+  Generated template for the LeaderboardconfigPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Leaderboard Configuration</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row>
+    <ion-col col-12>
+      <ion-list>
+        <!-- <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
+          *ngFor="let config of LeaderboardConfigs;let i=index">
+          <ion-card-content >
+            <ion-item>
+              <ion-row>
+                <ion-col col-9 no-padding class="flex_col" style="margin:auto">
+                  <p class="custom_toggle_para">{{config.SessionName}}</p>
+                </ion-col>
+                <ion-col col-3>
+                  <label class="custom_toggle">
+                    <input type="checkbox" [(ngModel)]="config.Status">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                  </label>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-card-content>
+        </ion-card> -->
+        <ion-item *ngFor="let config of LeaderboardConfigs;let i=index">
+          <ion-row>
+            <ion-col col-9 no-padding class="flex_col" style="margin:auto">
+              <p class="custom_toggle_para">{{config.SessionName}}</p>
+            </ion-col>
+            <ion-col col-3>
+              <label class="custom_toggle">
+                <input type="checkbox" [(ngModel)]="config.Status">
+                <span data-unchecked="No" data-checked="Yes"></span>
+              </label>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="LeaderboardConfigs.length == 0" class="not_found">
+    <ion-col col-12 text-center>
+      <p>No Data Found</p>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+      <ion-col col-12 text-center class="margin_auto">
+          <button ion-button block class="timekare-primary-btn" (click)="updateConfig()">Update</button>
+      </ion-col>
+  </ion-row>
+</ion-footer>

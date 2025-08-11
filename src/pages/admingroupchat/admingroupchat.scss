@@ -1,0 +1,32 @@
+page-admingroupchat {
+  // .ion-avatar {
+  //   img {
+  //     border-radius: 50%;
+  //   }
+  // }
+
+  .group-icon {
+    font-size: 30px;
+  }
+  .latest_message {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ses_dets{
+    font-size:12px;
+    margin:5px 0px;
+    ion-icon{
+      font-size:1em;
+    }
+  }
+  .read_count {
+    min-height: 20px;
+    color: #2b92bb;
+    font-weight: bold;
+    text-align: center;
+  }
+  .message_date {
+    text-align: center;
+  }
+}

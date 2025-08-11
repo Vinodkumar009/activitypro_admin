@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>Result</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()" style="color:#fff">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-select [(ngModel)]="selectedResultStatus" (ionChange)="onStatusClick(selectedResultStatus)"
+        placeholder="Select Status">
+        <ion-option *ngFor="let status of resultStatusList" [value]="status">{{ status.status }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="selectedResultStatus?.status?.toUpperCase() === 'WIN'">
+      <ion-label>Winner</ion-label>
+      <ion-select [(ngModel)]="selectedWinnerTeamId" (ionChange)="onWinnerTeamChange()"
+        placeholder="Select Winner Team">
+        <ion-option *ngFor="let team of TEAMS" [value]="team?.parentclubteam?.id">{{team?.parentclubteam?.teamName}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+
+
+  <ion-card class="maincard"
+    *ngIf="selectedResultStatus?.status?.toUpperCase() === 'DRAW' || selectedResultStatus?.status?.toUpperCase() === 'WIN'">
+    <ion-card-header class="cardHeader">
+      <ion-card-title style="font-weight: 600; font-size: 20px; color: #154766; text-align: center;">
+        Enter Goal(s)
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="padding-right: 2px; padding-left: 5px; padding-top: 5px;">
+      <ion-list>
+        <ion-item>
+          <ion-label fixed style="flex: 1;">{{homeTeamObj?.parentclubteam?.teamName}}</ion-label>
+          <ion-input style="flex: 1;" type="number" [(ngModel)]="homeTeamGoals" min="0" max="150"
+            placeholder="0"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed style="flex: 1;">{{awayTeamObj?.parentclubteam?.teamName}}</ion-label>
+          <ion-input style="flex: 1;" type="number" [(ngModel)]="awayTeamGoals" min="0" max="150"
+            placeholder="0"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Result Description Section - Always Visible -->
+  <ion-card class="descriptionCard">
+    <!-- <ion-card-header class="cardHeader">
+      <ion-card-title style="font-weight: 600; font-size: 18px; color: #154766; text-align: center;">
+        Description
+      </ion-card-title>
+    </ion-card-header> -->
+    <ion-card-content style="padding: 10px;">
+      <ion-item no-lines>
+        <ion-textarea [(ngModel)]="resultDescription" placeholder="Enter result description..." rows="3"
+          autosize="true">
+        </ion-textarea>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button class="foobtn" ion-button block (click)="saveGoal()">Save</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -1,0 +1,437 @@
+<!--
+  Generated template for the FilterbookingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{nextClicked ? 'Loyalty Setup' : 'Wallet'}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <div *ngIf="!nextClicked">
+    <ion-card class="cardpending" *ngFor="let item of walletList" (click)="gotoPage(item)">
+       
+      <ion-card-content>
+          <ion-row style="height: 100%">
+            <ion-col col-3 class="marginauto">
+              <img style="width: 100%;" [src]="item.ImageUrl">
+            </ion-col>
+            <ion-col col-8 class="marginauto">
+                <p style="font-size: 20px;
+                font-weight: 400;">{{item.DisplayName}}</p>
+                <p *ngIf="item.SetupName == 'CashTopupWallet'" class="venueList">Setup Your Cash Wallet</p>
+                <p *ngIf="item.SetupName == 'LoyaltyPoint'" class="venueList">Setup Your Loyalty</p>
+            </ion-col>
+            <ion-col class="marginauto" col-1>
+                <ion-icon name="ios-arrow-forward"></ion-icon>
+            </ion-col>
+            <!-- <ion-col *ngIf="item.VenueList" col-8>
+                  <p>Group Session</p>
+                  <p>School Session</p>
+                  <p>Tournament</p>
+                  <p>Holiday Camp</p>
+                </ion-col>
+                <ion-col *ngIf="!item.VenueList" col-8>
+                    <p>Setup Your Stripe Payemnt Setting</p>
+                 
+                </ion-col> -->
+          </ion-row>
+      </ion-card-content>
+  </ion-card>
+  </div>
+  <div *ngIf="nextClicked">
+    <div class="header-container">
+      <ion-row style="margin-top: -13px;border-bottom: 1px solid #FBC27A;" class="rows-allign">
+  
+        <ion-col col-7>
+          <ion-item style="background-color: #efefefd9;" class="headitem">
+            <ion-select class="ionselect" [(ngModel)]="selectedClubKey" (ionChange)="getAllActivity()">
+              <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col col-5>
+          <ion-item style="background-color: #efefefd9;" class="headitem">
+            <ion-select class="ionselect" [(ngModel)]="selectedActivity">
+              <ion-option *ngFor="let Activity of ActivityList" value={{Activity.$key}}>{{Activity.ActivityName}}
+              </ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </div>
+  
+      <div style="margin-top: 8px;">
+        <ion-row>
+          <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+            <span class="para" style="color: rgba(0, 0, 0, 0.85);"> Enable Loyalty</span>
+  
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="venueActivityLevel.IsEnable">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+  
+  
+          </ion-col>
+        </ion-row>
+      </div>
+  
+      <div>
+        <ion-item>
+          <ion-label>
+            Loyalty Points Name
+          </ion-label>
+          <ion-input type='text' [(ngModel)]="LoyaltyPointName" maxlength="4"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Show on Member Loyalty Card
+          </ion-label>
+          <ion-select [(ngModel)]="DisplayPointsonLoyaltyCard" (ionChange)="print($event)">
+            <ion-option *ngFor="let item of DisplayPointsLoyaltyCard; let i=index" value={{i}}>{{item}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Show on Member Dashboard
+          </ion-label>
+          <ion-select [(ngModel)]="ShowMemberDashboard" (ionChange)="print($event)">
+            <ion-option *ngFor="let item of showonMemberDashboardKeys(); let i=index" value={{i}}>{{item}}</ion-option>
+          </ion-select>
+        </ion-item>
+  
+      </div>
+  
+      <!-- <ion-row style="margin: 10px 0;">
+      <ion-col col-12 no-padding>
+        <ion-segment [(ngModel)]="status">
+          <ion-segment-button value="Reward" (click)="status='Reward'">
+            Reward
+          </ion-segment-button>
+          <ion-segment-button value="Redeem" (click)="status='Redeem'">
+            Redeem
+          </ion-segment-button>  
+        </ion-segment>
+      </ion-col>
+    </ion-row> -->
+  
+  
+  
+      <div *ngIf="venueActivityLevel.IsEnable">
+        <p style="color: rgba(0,0,0,0.65);">Value of loyalty point</p>
+        <ion-item>
+          <ion-label *ngIf="currencyDetails">
+            {{currencyDetails.CurrencySymbol}}1 = 
+          </ion-label>
+          <ion-input type='number' placeholder="points" [(ngModel)]="PointConversionFactor"></ion-input>
+          <span item-right>Points</span>
+        </ion-item>
+      </div>
+  
+      <div *ngIf="venueActivityLevel.IsEnable">
+        <p class="rewardheader">Setup Reward</p>
+      </div>
+  
+      <div *ngIf="venueActivityLevel.IsEnable">
+        <ion-row>
+          
+  
+          <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+            <span class="para" style="color: rgba(0, 0, 0, 0.85);"> Bonus Points</span>
+  
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="venueActivityLevel.IsBonusEnable" (ionChange)="calBonusDate()">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+  
+          <!-- <ion-item>
+            <ion-label>
+              Allow payment option for Reward
+            </ion-label>
+            <ion-select [(ngModel)]="RewardPaymentOption" (ionChange)="print($event)">
+              <ion-option *ngFor="let item of keys(); let i=index" value={{i}}>{{item}}</ion-option>
+            </ion-select>
+          </ion-item> -->
+  
+          <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+            <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow Cash for Reward</span>
+  
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="AllowRewardCash">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+  
+          <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+            <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow Bacs for Reward</span>
+  
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="AllowRewardBacs">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+          <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+            <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow Card for Reward</span>
+  
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="AllowRewardCard">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+          <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+            <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow Voucher for Reward</span>
+  
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="AllowRewardVoucher">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+  
+          <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+            <span class="para" style="color: rgba(0, 0, 0, 0.85);">Reward Non Member</span>
+  
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="RewardNonMember">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+          <ion-col col-12 style="padding:0" *ngIf="RewardNonMember">
+            <ion-item>
+              <ion-label>
+                Non Member Reward
+              </ion-label>
+              <ion-input type='number' placeholder="points" [(ngModel)]="RewardNonMemberPercent"></ion-input>
+              <span item-right>%</span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-col col-12>
+          <ion-item>
+            <ion-label>
+             Apply to all
+            </ion-label>
+            <ion-checkbox checked="true" [(ngModel)]="venueActivityLevel.IsBonusAppliedtoAll"></ion-checkbox>
+          </ion-item>
+        </ion-col> -->
+        <div *ngIf="venueActivityLevel.IsBonusEnable && !isUpdate">
+          <ion-item>
+            <ion-label>
+              Bonus Start Date
+            </ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY"
+              (ionChange)="calculateStart(venueActivityLevel.BonusStartDate)"
+              [(ngModel)]="venueActivityLevel.BonusStartDate" [min]="mindate" max="2028-12-31"></ion-datetime>
+  
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Bonus End Date
+            </ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY"
+              (ionChange)="calculateEnd(venueActivityLevel.BonusEndDate)" [min]="mindate" [(ngModel)]="venueActivityLevel.BonusEndDate"
+              max="2028-12-31"></ion-datetime>
+          </ion-item>
+        </div>
+  
+  
+  
+        <div *ngFor="let item of setupArr">
+          <p style="color: rgba(0,0,0,0.65);">{{item.Type}}</p>
+          <ion-row>
+            <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+              <span class="para" style="color: rgba(0, 0, 0, 0.85);">Enable</span>
+  
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="item.IsEnable">
+                <span data-unchecked="No" data-checked="Yes"></span>
+              </label>
+  
+  
+            </ion-col>
+          </ion-row>
+  
+         <div *ngIf="item.IsEnable">
+          <ion-item>
+            <ion-label *ngIf="currencyDetails">
+              Standard Point (<span style="font-size: 14px;">per</span>{{currencyDetails.CurrencySymbol}})
+            </ion-label>
+            <ion-input type='number' placeholder="Type equivalent points" [(ngModel)]="item.StandardPoint"></ion-input>
+            <span item-right>Points</span>
+          </ion-item>
+          <div *ngIf="venueActivityLevel.IsBonusEnable">
+            <ion-item>
+              <ion-label *ngIf="currencyDetails">
+                Bonus Point (<span style="font-size: 14px;">per</span>{{currencyDetails.CurrencySymbol}})
+              </ion-label>
+              <ion-input type='number' placeholder="Type equivalent points" [(ngModel)]="item.BonusPoint"></ion-input>
+              <span item-right>Points</span>
+            </ion-item>
+            <ion-item>
+              <ion-label *ngIf="currencyDetails">
+                Fixed Bonus Point
+              </ion-label>
+              <ion-input type='number' placeholder="Type equivalent points" [(ngModel)]="item.FixedBonusPoint">
+              </ion-input>
+              <span item-right>Points</span>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                Bonus Start Date
+              </ion-label>
+              <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="item.BonusStartDate"
+                (ionChange)="calBonusDate(item.BonusStartDate)"[min]="mindate"  max="2028-12-31"></ion-datetime>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                Bonus End Date
+              </ion-label>
+              <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="item.BonusEndDate"
+              [min]="mindate" max="2028-12-31"></ion-datetime>
+            </ion-item>
+          </div>
+         </div>
+  
+  
+        </div>
+        <div>
+          <p style="color: rgba(0,0,0,0.65);">Membership (venue level)</p>
+          <ion-row>
+            <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+              <span class="para" style="color: rgba(0, 0, 0, 0.85);">Enable</span>
+  
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="membership.IsEnable">
+                <span data-unchecked="No" data-checked="Yes"></span>
+              </label>
+  
+  
+            </ion-col>
+          </ion-row>
+          <div  *ngIf="membership.IsEnable">
+            <ion-item>
+              <ion-label *ngIf="currencyDetails">
+                Standard Point (<span style="font-size: 14px;">per</span>{{currencyDetails.CurrencySymbol}})
+              </ion-label>
+              <ion-input type='number' placeholder="Type equivalent points" [(ngModel)]="membership.StandardPoint">
+              </ion-input>
+              <span item-right>Points</span>
+            </ion-item>
+            <div *ngIf="venueActivityLevel.IsBonusEnable">
+              <ion-item>
+                <ion-label *ngIf="currencyDetails">
+                  Bonus Point (<span style="font-size: 14px;">per</span>{{currencyDetails.CurrencySymbol}})
+                </ion-label>
+                <ion-input type='number' placeholder="Type equivalent points" [(ngModel)]="membership.BonusPoint">
+                </ion-input>
+                <span item-right>Points</span>
+              </ion-item>
+              <ion-item>
+                <ion-label *ngIf="currencyDetails">
+                  Fixed Bonus Point
+                </ion-label>
+                <ion-input type='number' placeholder="Type equivalent points" [(ngModel)]="membership.FixedBonusPoint">
+                </ion-input>
+                <span item-right>Points</span>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  Bonus Start Date
+                </ion-label>
+                <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="membership.BonusStartDate"
+                  max="2028-12-31"></ion-datetime>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  Bonus End Date
+                </ion-label>
+                <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="membership.BonusEndDate"
+                  (ionChange)="calBonusDate(membership.BonusStartDate)" max="2028-12-31"></ion-datetime>
+              </ion-item>
+            </div>
+          </div>
+  
+        </div>
+  
+  
+      </div>
+  
+      <div *ngIf="venueActivityLevel.IsEnable">
+        <p class="rewardheader">Setup Redeem</p>
+      </div>
+      <div *ngIf="venueActivityLevel.IsEnable">
+        <ion-item>
+          <ion-label>
+            Minimum balance
+          </ion-label>
+          <ion-input type='number' [(ngModel)]="redeem.miniPointsRedeemable" [minlength]="7"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Maximum redemption
+          </ion-label>
+          <ion-input type='number' [(ngModel)]="redeem.maxPointsRedeemable" [minlength]="7" [pattern]="PASSWORD_REGEX"></ion-input>
+  
+        </ion-item>
+  <!-- 
+        <ion-item>
+          <ion-label>
+            Allowed payment option for Redeem
+          </ion-label>
+          <ion-select [(ngModel)]="RedeemPaymentOption" (ionChange)="print($event)">
+  
+            <ion-option *ngFor="let item of keys(); let i=index" value={{i}}>{{item}}</ion-option>
+          </ion-select>
+        </ion-item> -->
+        <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+          <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow Card</span>
+  
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="AllowRedeemCard">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+        <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+          <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow Cash</span>
+  
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="AllowRedeemCash">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+  
+        <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+          <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow BACS</span>
+  
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="AllowRedeemBacs">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+       
+        <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+          <span class="para" style="color: rgba(0, 0, 0, 0.85);">Allow Voucher</span>
+  
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="AllowRedeemVoucher">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </div>
+  
+  
+  
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12>
+          <button ion-button block class="timekare-primary-btn"
+            (click)="isUpdate ? updateSetup() : saveSetup()">{{isUpdate ? 'Update' : 'Save'}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

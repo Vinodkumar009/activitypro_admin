@@ -1,0 +1,178 @@
+assignactivity-page{
+    .list{
+    margin:0px;
+}
+.list-header-md {
+     margin-bottom: 0px; 
+   
+    margin-top: 3px;
+}
+.sub-container {
+    button {
+        width: 90%;
+        height: 86%;
+        margin-top: 4px;
+        background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+        border-radius: 5px;
+        color: white;
+        box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+    }
+
+    .searchbar {
+        border: none !important;
+        background: #ffffff !important;
+        border-radius: 5px !important;
+        height: 86% !important;
+        margin-top: 4px !important;
+        padding: 2px 0px
+    }
+
+    .searchbar-input {
+        padding-left: 15px !important;
+        box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+
+    }
+
+    .searchbar-search-icon {
+        display: none !important;
+    }
+
+    ion-icon {
+        font-size: 20px;
+    }
+
+    .searchbar-clear-icon {
+        margin: 0;
+        box-shadow:none
+    }
+}
+.iconStyle{
+    width: 100%;
+    height: 50px;
+}
+.modal2{
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 44px;
+    top: 112px;
+    /* background: white; */
+    width: 77%;
+    border-radius: 12px;
+    height: 39%;
+    box-shadow: none;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    overflow: hidden;
+    box-shadow: 0 1px 9px rgba(0, 0, 0, 0.3);
+    background-color: black;
+    background-color: rgb(238, 237, 237);
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+    .p1{
+        border-bottom: 1px solid #80808066;
+        text-align: center;
+    color: #000000d1;
+    font-size: 18px;
+    /* margin: 9px 11px 11px 19px; */
+    margin-left: auto;
+    margin-right: auto;
+
+    }
+    .p2{
+        margin: 3px 4px 5px 8px;
+        font-size: 15px;
+    }
+    .rowbtn{
+        position: absolute;
+        /* bottom: 0; */
+        bottom: 0;
+        width: 100%;
+        
+    }
+}
+.marginauto {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.cardpending {
+    // box-shadow: 0px 5px 15px -3px #adacac;
+     padding: 2px;
+     margin: 2px 0px 5px 0px !important;
+     width: calc(100% - 0px) !important;
+   //  margin-bottom: 10px;
+    // border-radius: 12px;
+     background: #ffffff;
+   //  box-shadow: 0px 2px 8px -1px #b4b3b7;
+     .col1 {
+         margin-top: auto;
+         margin-bottom: auto;
+         text-align: left;
+     }
+     .count {
+         font-size: 24px;
+         color: #17445b;
+     }
+ }
+
+ion-item {
+    ion-label {
+        color: #b5b2ae !important;
+        margin-top: -1px !important;
+    }
+    .act {
+        margin-top: 15px !important;
+    }
+    border-bottom: 1px solid #f1c98d !important;
+    box-shadow: inset 0 -1px 0 0 #dedede!important;
+}
+ .item-inner {
+    border: none !important;
+    box-shadow: none !important;
+}
+.select-icon {
+    position: relative !important;
+    width: 25px !important;
+    height: 25px !important;
+    background: #faae4e !important;
+    border-radius: 50% !important;
+    color: white !important;
+   // left: 3px !important;
+}
+
+.select-text {
+    padding-top: 2px !important;
+    color: #faae4e !important;
+   // text-align: right;
+    padding-right: 5px;
+}
+
+.select-icon .select-icon-inner {
+    left: 7px !important;
+    top: 49%;
+    color: white !important;
+}
+
+.search_add {
+    background-color: transparent;
+    padding-left: 6px;
+}
+.scroll-content {
+    overflow: hidden;
+    margin-top: 44px !important; 
+    //padding: 6px !important;
+    background-image: none !important; // background: white !important;
+    background: #f7f7f7 !important;
+}
+.list > .list-header-md {
+    margin-top: 0px;
+}
+.list-modifier{
+
+    font-size: 1.8rem;
+    background-color: #d6d6d6;
+    color: #030303;
+}
+}

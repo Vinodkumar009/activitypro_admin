@@ -1,0 +1,122 @@
+page-createpriceband {
+    .label{
+        transform: translate3d(0, 0px, 0) !important;
+       //color:#488aff !important;
+    }
+    .allign{
+        font-size: 14px !important;
+    } 
+    .scroll-content {
+        background-image:none !important;
+        background-color: #ffffff !important;
+        padding: 5px !important; 
+    }
+    .days {
+        ion-col {
+            text-align: center;
+            padding: 0 !important;
+            p {
+                border: 1px solid #76747d;
+                ;
+            }
+        }
+    }
+    .card_header {
+        padding: 3px 0px 5px 19px;
+    }
+    .rounded {
+        width: 38px;
+        height: 38px;
+        border-radius: 19px;
+        padding-top: 8px;
+    }
+    .text_white {
+        color: white;
+    }
+    ion-card-content {
+        padding: 0px !important;
+    }
+     .card_header {
+        padding: 3px 0px 5px 19px;
+    }
+    ion-card{
+        margin: 0px 0px !important; 
+        width:100% !important;
+    }
+    .bottom-grid{
+        padding: 0px !important;
+    }
+    .padding-0{
+        padding: 0px !important;
+    }
+    .allign-row{
+        border-bottom: 0.55px solid #c8c7cc;
+        background-color: #ffffff;
+    }
+    ion-label{
+        font-size: 16px; 
+       // margin: 0px !important;
+        
+    }
+    .labs{
+        //margin-top: 5% !important;
+       
+    }
+    ion-item{
+        padding: 0px !important;
+    }
+    .labs2{
+        margin: 0 !important;
+         margin-top: 10px !important;
+    }
+    .type{
+        width: 93%;
+        margin-top: 2px;
+    height: 36px;
+    background: #ffffff;
+    color: #488aff; 
+    font-size: 15px;
+    font-weight: bold;
+    ion-icon{
+        display: inline-block;
+    font-size: 1.2em;
+    font-weight: 700;
+    right: 25px;
+    position: absolute;
+    }
+    }
+  
+    .selected{
+        background: #488aff;
+        color: white;
+        border-radius: 8px;
+    }
+    .clr-white{
+        background-color: #ffffff !important;
+    }
+    ion-select{
+        padding: 0px !important;
+        max-width: 94% !important;           
+    }
+    .select > .select-icon >.select-icon-inner{
+        left:0px !important
+    }
+    .padding-8{
+        padding:0 7px !important;
+    }
+    .pad-right {
+        position: absolute !important;
+        right: 8px !important;
+    }
+    .not-found{
+        color: #666;
+        font-size: 17px;
+        font-weight: bold;
+        text-align: -webkit-center;
+    }
+    ion-input{
+        input{
+            text-align: right;
+        }
+    }
+}

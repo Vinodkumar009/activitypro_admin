@@ -1,0 +1,136 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.scl_ssn}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.scl_ssn}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+    <div class="search_div">
+        <ion-row class="sub-container rows-allign2">
+            <ion-col col-1 style="text-align:center;margin-top:12px;padding:0px">
+                <ion-icon name="ios-search"></ion-icon>
+            </ion-col>
+            <ion-col col-11 class="search-bar">
+                <ion-searchbar placeholder="Search sessions of {{session_count}}" id="customsearchbar" [(ngModel)]="searchInput"
+                    (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+            </ion-col>
+            <!-- <ion-col col-1 class="margin-auto" style="text-align:center;margin-top:12px;padding:0px">
+                <button style="padding:0px;width:100%" ion-button clear (tap)="clearCache()">
+                    <ion-icon name="md-sync"></ion-icon>
+                </button>
+            </ion-col> -->
+        </ion-row>
+    </div>
+
+    <ion-row>
+        <ion-col col-12 style="padding:5px 10px !important">
+            <ion-item class="margin_bottom school" style="border-bottom: 1px solid #34343442;">
+                <ion-select [(ngModel)]="selectedSchool" (ionChange)="onChangeOfSchool()">
+                    <ion-option *ngFor="let school of schools" value={{school.id}}>{{school.school_name}}</ion-option>
+                    <ion-option value='all'>{{LangObj.scl_ssn_all}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+
+    <div *ngIf="filter_scl_sessions && filter_scl_sessions.length > 0" style="margin-top: 5px;">
+        <ion-list class="">
+            <ion-card *ngFor="let session of filter_scl_sessions;let i=index;">
+                <ion-card-content no-padding>
+                    <ion-row>
+                        <ion-col col-12 style="padding:5px 10px !important">
+                            <div class="slidingcards">
+                                <div (click)="gotoEachSessionDetails(session)">
+                                    <ion-row style="border-bottom: 1px solid #34343442;">
+                                        <ion-col col-12 class="coach-col" no-padding>
+                                            <p class="session-days para_overflow">{{session.days}} - {{session.start_time}} -
+                                                {{session.duration}} min </p>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col col-10 class="no-padd">
+                                            <p class="session-name elipsesdot" style="font-size: 20px !important;">{{session.school_session_name}}</p>
+                                            <p class="session-name elipsesdot">{{session.coach_names}}</p>
+                                            <p class="school-name elipsesdot">{{session.ParentClubSchool.school.school_name}}</p>
+                                            <p class="end-date">{{LangObj.scl_ssn_EndsOn}}:{{session.end_date}}</p>
+                                        </ion-col>
+                                       
+                                         <ion-col col-2 style="text-align: right;margin: auto;">
+                                            <button ion-button icon-left clear small class="member_btn_sm">
+                                                <!-- <ion-icon name="people"></ion-icon> -->
+                                                <div style="font-size: 20px;font-weight: 500;">{{session.enrolled_count}}</div>
+                                            </button>
+                                        </ion-col>
+                                    </ion-row>
+                                </div>                                                
+                                <!-- <ion-row>
+                                    <ion-col class="ion_cl">
+                                        <button ion-button icon-left clear small class="member_btn_sm"
+                                            (click)="memberDetailsForGroup(i,session)">
+                                            <ion-icon name="people"></ion-icon>
+                                            <div>{{session.enrolled_count}}</div>
+                                        </button>
+                                    </ion-col>
+                                </ion-row>                         -->
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+            </ion-card>            
+        </ion-list>
+    </div>
+
+    
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Please wait...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+
+
+</ion-content>
+<!-- <page-paymentgatewaysetup *ngIf="this.isShowPaymentModal" InstructTxt="Please connect to payment gateway for sessions"
+    (skip)="skip()" (navigate)="GotoPaymentSetup()"></page-paymentgatewaysetup> -->
+<ion-fab right bottom *ngIf="loggedin_type!=4">
+    <button ion-fab mini style="background-color: #2b92bb;" (click)="gotoCreateSchoolSession()"
+        style="background-color:#2b92bb !important; color: white !important">
+        <ion-icon name="add"></ion-icon>
+    </button>
+</ion-fab>
+
+
+<ion-fab left bottom>
+    <button ion-fab mini style="background-color: #2b92bb;" (click)="swithActivePast()"
+        style="background-color:#2b92bb !important; color: white !important">
+        <ion-icon name="ios-timer"></ion-icon>
+    </button>
+</ion-fab>

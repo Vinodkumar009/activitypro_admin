@@ -1,0 +1,110 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Copy Group Session</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Copy Group Session
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" padding>
+
+    <ion-item>
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+            <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Term</ion-label>
+        <ion-select [(ngModel)]="selectedTerm" (ionChange)="onChangeOfTerm()">
+            <ion-option *ngFor="let term of terms" value={{term.term_id}}>{{term.term_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Coach</ion-label>
+        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+            <ion-option value="">Select</ion-option>
+            <ion-option *ngFor="let coach of coachs" value={{coach.coach_firebase_id}}>{{coach.first_name}} {{coach.last_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-grid class="right_pad card_top">
+        <ion-row class="right_pad">
+            <ion-col col-6 class="right_pad pad_bottom">
+                <ion-item class="ion_item_md left_margin">
+                    <ion-label>All</ion-label>
+                    <ion-checkbox [(ngModel)]="isSelectAll" (click)="selectAllToggole()"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+            <ion-col col-6 class="left_pad pad_bottom">
+                <ion-item class="ion_item_md left_margin">
+                    <ion-label>None</ion-label>
+                    <ion-checkbox [(ngModel)]="isUnselectAll" (click)="selectNoneToggole()"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <!-- [class.selected]="time.Value" -->
+    <ion-card *ngFor="let session of sessionList">
+        <ion-card-content [ngClass]="{Active:session.IsSelect}">
+            <ion-item class="ion_item_card left_margin">
+                <ion-label style="color: rgba(0, 0, 0,0.85);font-size: 18px;">{{session.session_name}}</ion-label>
+                <ion-checkbox color="primary" [(ngModel)]="session.IsSelect" (click)="selectSession(session)"></ion-checkbox>
+            </ion-item>
+            <ion-grid class="no_top_bottom_padding">
+                <ion-row class="no_top_bottom_padding">
+                    <ion-col col-12 class="danger_clr no_top_bottom_padding">{{session.days}} - {{session.start_time}} - {{session.duration}}mins</ion-col>
+                </ion-row>
+            </ion-grid>
+            <ion-item class="ion_item_card left_margin">
+                <ion-label>Copy existing members</ion-label>
+                <ion-checkbox style="background-color:#2b92bb !important; color: white !important" [(ngModel)]="session.IsSelectMembers"></ion-checkbox>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="ion_card" *ngIf="sessionList.length ==0">
+        <ion-card-content>
+            <p class="danger_color2">No Sessions</p>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col width-50>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col width-50>
+                <button ion-button block class="timekare-primary-btn" (click)="continue()">Continue</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

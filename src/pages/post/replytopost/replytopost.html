@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{recChatObj.Subject}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid style="margin-bottom:150px;" *ngIf="recChatObj.Request.length > 0">
+    <ion-row *ngFor="let message of recChatObj.Request;let i=index">
+      <ion-col col-9 *ngIf="message.ReqMsg!='' && message.IsActive" class="message other-message" no-padding>
+        <p class="margin-top-bottom-5" style="font-style:italic;">
+          <span>{{user}}</span>
+          <span style="float: right;margin: 0px 4px 0px 0px;"><ion-icon name="more" (click)="message.showPop = !message.showPop;" class="pop-over"></ion-icon></span>
+        </p>
+        <div *ngIf="message.showPop" class="delete_div" (click)="DeleteReqMsg(i)">
+          <p>Delete</p>
+        </div>
+        <span class="msg">{{ message.ReqMsg }}</span>
+        <div class="time" text-right><br>{{ message.CreatedAt | date:'short' }}</div>
+      </ion-col>
+      <ion-col col-9 *ngIf="message.ReqMsg!='' && !message.IsActive" class="message deleted-message" no-padding>
+        <p>This message was deleted</p>
+      </ion-col>
+      <ion-col offset-3 col-9 *ngIf="message.Response && message.Response.length > 0">
+        <ion-row>
+          <ion-col col-12 *ngFor="let response of message.Response;let j=index" no-padding class="message my-message">
+            <p class="margin-top-bottom-5" style="font-style:italic;">{{response.Username}}
+              <span style="float: right;margin: 0px 4px 0px 0px;"><ion-icon name="more" (click)="response.showPop = !response.showPop;" class="pop-over"></ion-icon></span></p>
+              <!-- <div *ngIf="response.showPop" class="delete_div" (click)="DeleteRespMsg(i,j)">
+                <p>Delete</p>
+              </div> -->
+            <span class="msg">{{ response.ansmsg }}</span>
+            <div class="time" text-right><br>{{ response.repliedAt | date:'short' }}</div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isStopConversation">
+      <ion-col col-12>
+        <p class="margin-0" text-center>This conversation has been closed.</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer *ngIf="!isStopConversation">
+  <div style="background-color:white" style="position:absolute;bottom:0;width:100%">
+    <ion-row no-padding align-items-center>
+      <ion-col col-10 style="height:100px;">
+        <textarea class="message-input" maxRows="6" [(ngModel)]="newMsg"></textarea>
+      </ion-col>
+      <ion-col col-2>
+        <button ion-button expand="block" clear color="primary" [disabled]="newMsg === ''" class="msg-btn"
+          (click)="sendMessage()">
+          <ion-icon name="ios-send" slot="icon-only"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-footer>
+<ion-fab class="close_fab" *ngIf="!isStopConversation" right middle  (click)="closeConversation()">
+  <button ion-fab mini style="background-color: #2b92bb;" 
+    style="background-color:#2b92bb !important; color: white !important">
+    <ion-icon name="lock"slot="icon-only"></ion-icon>
+  </button>
+</ion-fab>

@@ -1,0 +1,46 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Membership</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content >
+   
+  <div [ngStyle]="{'margin-top.px': this.platformType=='ios' ? 30 : 0 }" style="margin-bottom: 60px;" *ngIf='SessionMonths && SessionMonths.length > 0'>
+    <ion-row>
+      <ion-col col-12 style="padding:0px !important">
+        <ion-list>
+          <ion-grid>
+            <ion-row class="innercard_style row" 
+              *ngFor="let month of SessionMonths">
+              <ion-col col-8 text-left class="mem_col margin-auto border-left">
+                <p class="member_name">{{month.MonthKey}}</p>
+                <!-- <p class="paymentOption">
+                  <span>{{member.StartsFrom}}</span>&nbsp;
+                  <span>To</span>&nbsp;
+                  <span>{{member.EndsOn}}</span>
+                </p> -->
+              </ion-col>
+              <ion-col col-4 text-center class="margin-auto">
+                <p class="amt" *ngIf="month.AmountPayStatus == Due">
+                  <span
+                    *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+                    <span>{{month.AmountDue}}</span>
+                </p
+                ><p class="amt" *ngIf="month.AmountPayStatus!= Due">
+                  <span
+                    *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span><span>{{month.AmountPaid}}</span>
+                </p>
+                <p *ngIf="month.AmountPayStatus == Due" style="font-size:12px;margin: 0;color:red; font-weight: 200; ">Due</p>
+                <p *ngIf="month.AmountPayStatus!= Due" style="font-size:12px;margin: 0; color:green; font-weight: 200; ">Paid</p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>

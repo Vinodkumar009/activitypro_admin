@@ -1,0 +1,106 @@
+<!--
+  Generated template for the LeaguepaymentPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Payment Details</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  <ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Payment Details
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content class="cards-bg social-cards" padding>
+   
+    <ion-card class="card">
+      <ion-card-content>
+          <p class="mem_name">{{selectedMemberDetails.participant_details.first_name}} {{selectedMemberDetails.participant_details.last_name}}</p>
+          <p  style="font-size: 18px !important;">{{selectedLeagueDetails.league_name}}</p>
+          <div>
+              <p *ngIf="selectedMemberDetails.amount_pay_status==0">
+                  <span class="due">{{userData.Currency}}{{selectedMemberDetails.amount_due | number: '1.2-2'}}</span>
+                  <span class="due">{{selectedMemberDetails.amount_pay_status_text}}</span>
+                  <!-- <span *ngIf="selectedMemberDetails.amount_pay_status =='Paid'" class="paid">{{selectedMemberDetails.amount_pay_status}}</span> -->
+              </p>
+              <p *ngIf="selectedMemberDetails.amount_pay_status!=0">
+                  <span class="paid">{{userData.Currency}}{{selectedMemberDetails.paid_amount | number: '1.2-2'}}</span>
+                  <span class="paid">{{selectedMemberDetails.amount_pay_status_text}}</span>
+              </p>
+              <!-- <p *ngIf="selectedMemberDetails.amount_pay_status!=0">Payment Mode: <span [ngClass]="(selectedMemberDetails.amount_pay_status=='0') ? 'due' : 'paid'">{{selectedMemberDetails.paidby_text}}</span></p> -->
+          </div>
+      </ion-card-content>
+  </ion-card>
+  
+  
+  <ion-item>
+      <ion-label floating>Payment Amount</ion-label>
+      <ion-input type="number" (keyup)="validateAmount($event)" [(ngModel)]="payment_update_input.user_payment.amount" [disabled]="(selectedMemberDetails.amount_pay_status=='1')"></ion-input>
+  </ion-item>
+  
+  <ion-item>
+      <ion-label>Payment Mode</ion-label>
+      <ion-select [(ngModel)]="payment_update_input.user_payment.payment_mode" [disabled]="selectedMemberDetails.amount_pay_status!='0'">
+          <ion-option *ngFor="let pay of paymentMode" [value]="pay.value">{{pay.key}}</ion-option>
+          <!--<ion-option value="">Select Payment Mode</ion-option>-->
+          <!-- <ion-option value="0">Cash</ion-option>
+          <ion-option value="2">BACS</ion-option>
+          <ion-option value="3">Childcare Voucher</ion-option>
+          <ion-option value='4'>Wallet</ion-option>
+          <ion-option value="5">Cheque</ion-option> -->
+      </ion-select>
+  </ion-item>
+  
+  <ion-item>
+      <ion-label>Payment Status</ion-label>
+          <ion-select [(ngModel)]="payment_update_input.user_payment.payment_status" [disabled]="(selectedMemberDetails.amount_pay_status =='1')">
+          <!--<ion-option value="">Select Payment Status</ion-option>-->
+          <ion-option value="3">Pending Verification</ion-option>
+          <ion-option value="1">Paid</ion-option>
+          <!--<ion-option value="Due">Due</ion-option>-->
+      </ion-select>
+  </ion-item>
+  <ion-item>
+      <ion-label floating>Comments</ion-label>
+      <ion-input type="text" [(ngModel)]="payment_update_input.user_payment.comments" [disabled]="selectedMemberDetails.amount_pay_status =='1'"></ion-input>
+  </ion-item>
+  
+  <ion-grid>
+      <ion-row>
+          <ion-col col-6>
+              <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+          </ion-col>
+          <ion-col col-6>
+              <button ion-button block class="timekare-primary-btn" (click)="confirmationPaymentAlert()" [disabled]="selectedMemberDetails.amount_pay_status =='1'">Update</button>
+          </ion-col>
+      </ion-row>
+  </ion-grid>
+  </ion-content>
+  
+  
+  <!--Update payment details for-->

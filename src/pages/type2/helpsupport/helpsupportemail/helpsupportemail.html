@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>FAQ Email</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="card-background-page">
+    <ion-item>
+                   
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub(club)" class="club-select" style=" width: 100%;max-width:100%;">
+            <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+        <ion-item style="border-bottom:1px solid gray;">
+            <ion-label>Subject</ion-label>
+            <ion-input type="text" [(ngModel)]="emailObj.Subject"></ion-input>
+        </ion-item>
+    
+    
+        <ion-item style="  padding-right: 16px;">
+          
+            <ion-textarea style="margin-top: 5px;white-space:pre-wrap;padding-left: 8px" type="text" rows="10" [(ngModel)]="emailObj.Message" placeholder="Type a message here..."></ion-textarea>
+        </ion-item>
+    
+        <ion-grid>
+            <ion-row>
+    
+                <ion-col col-12>
+                    <button ion-button block style="background-color:#007A90" (click)="sendEmail()">
+                        <ion-icon name="ios-send-outline" style="font-size:30px;margin-right:10px;"></ion-icon>Send Email</button>
+                </ion-col>
+    
+            </ion-row>
+        </ion-grid>
+    
+</ion-content>

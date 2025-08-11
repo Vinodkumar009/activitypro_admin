@@ -1,0 +1,99 @@
+<ion-header >
+    <ion-navbar>
+        <ion-title>{{Templates ? 'Template' :  'Players'}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg social-cards">
+
+    <!--<ion-item class="search_add">
+        <ion-searchbar></ion-searchbar>
+        <ion-icon item-right ios="ios-add-circle" md="md-add-circle" class="btn-clr"></ion-icon>
+
+    </ion-item>-->
+    <ion-row class="choose-row top-row">
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeType(true)"
+            [class.selected]="selectedType">Challenges</button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeType(false)"
+            [class.selected]="!selectedType">Templates</button>
+        </ion-col>
+      </ion-row>
+        <!-- <ion-card-content style="padding:0px !important">
+            <p class="dotted1">{{SessionDetials.Days}}</p>
+            <p class="dotted1" style="margin-top:-7px">{{SessionDetials.StartTime}} -
+                {{addmin(SessionDetials.StartTime,SessionDetials.Duration)}}</p>
+            <ion-row>
+                <ion-col col-md-4 col-sm-4 col-4 style="text-align:center;padding:0px;margin:auto;">
+                    <img class="img1" *ngIf="coachInfo" [src]="coachInfo.ProfileImageUrl">
+                    <p class="coachname">{{SessionDetials.CoachName}}</p>
+                </ion-col>
+                <ion-col col-md-8 col-sm-8 col-8 class="border-left">
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{SessionDetials.SessionName}}</span></p>
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{clubName}}</span></p>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>  -->
+    <ion-list class="list" *ngIf="!templatesFetched && nextClicked == ''">
+        <ion-row class="rowclass" style="padding: 0 !important;" *ngFor="let member of Member">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label>{{member.FirstName}} {{member.LastName}}</ion-label>
+                    <ion-checkbox style="margin: 9px 12px 9px 0px;" [(ngModel)]="member.IsSelect"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-list>
+    <ion-list *ngIf="templatesFetched && nextClicked != 'next'">
+        <ion-row class="rowclass" style="padding: 0 !important;" *ngFor="let template of Templates">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label>{{template.TemplateName}}</ion-label>
+                    <ion-checkbox style="margin: 9px 12px 9px 0px;" [(ngModel)]="template.IsSelect"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+            
+        </ion-row>
+    </ion-list>
+    <div style="padding: 14px 8px 8px 8px" *ngIf="templatesFetched && nextClicked == 'next'">
+        <p style="color: rgba(0,0,0,0.65);
+        font-size: 14px;
+        margin: 2px 0px 0px 0px;">Selected players</p>
+        <ion-row>
+          <ion-col>
+            <p class="listing" *ngFor="let player of SelectedMember">{{player.FirstName}} {{player.LastName}}</p>
+          </ion-col>
+        </ion-row>
+        <p style="color: rgba(0,0,0,0.65); font-size: 14px; margin: 10px 0px 15px 0px;">Selected challenges</p>
+        <ion-row class="eachrow" *ngFor="let template of selectedTeplates">
+          <ion-col class="firstcol" col-12>
+            <p class="listing">{{template.TemplateName}}</p>
+          </ion-col>
+          <ion-col col-12 *ngFor="let challenge of template.Challenge">
+            <p style="margin:6px 12px; color:rgba(0,0,0,0.85)"><span style="    display: inline-block;
+                width: 84%;">{{challenge.ChallengeName}}</span><span style="color:rgba(0,0,0,0.65); float:right ;font-size:12px">Levels: {{challenge.Levels.length}}</span></p>
+            
+        </ion-col>  
+        </ion-row>
+      </div>
+
+
+</ion-content>
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="this.navCtrl.pop()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="gotoChallenge()">Next</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-footer>

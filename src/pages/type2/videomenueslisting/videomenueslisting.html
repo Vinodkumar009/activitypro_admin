@@ -1,0 +1,103 @@
+<!--
+  Generated template for the VideomenueslistingPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title class="icontitle">Videos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="(!HeaderInfo?.video_url) && VideoMenuList.length === 0">
+    <ion-card-content>
+      <p style="color:red; font-size:15px; text-align:center; margin-top:20px;">No Videos Found</p>
+    </ion-card-content>
+  </ion-card>
+
+
+  
+  <ion-card *ngIf="HeaderInfo && headerUrl">
+    <ion-card-content>
+      <iframe width="100%" height="100%" [src]="headerUrl" frameborder="0" allow="autoplay" data-autoplay="true"
+        allowfullscreen></iframe>
+    </ion-card-content>
+  </ion-card>
+ 
+
+  <div class="header_text" *ngIf="HeaderInfo"  (click)="showActionSheet(HeaderInfo,-1)">
+    <h4 style="margin-top: 25px;">{{ HeaderInfo.video_title }}</h4>
+    <p>
+      <span class="leftspan">{{HeaderInfo.created_at}} ago</span> |
+      <span class="rightspan">{{ HeaderInfo.associated_activity }}</span>
+    </p>
+  </div>
+  <!-- [src]="video.thumbnail" -->
+  <ion-card *ngFor="let video of VideoMenuList,let i = index" (click)="showActionSheet(video ,i)">
+    <ion-card-content [ngClass]="{'borderRight':video.is_enable == false}">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-5 class="custom_col1">
+             <img *ngIf="video.video_url" [src]="video.thumbnail" style="height: 100%; object-fit: cover;"> 
+            <!-- <img  [src]="video.thumbnail"  style="height: 100%; object-fit: cover;"> -->
+          </ion-col>
+          <ion-col col-7 class="custom_col2">
+            <div style="margin-left: 8px;">
+              <p class="titleText para_overflow">{{ video.video_title }}</p>
+              <p class="rest">
+                <span class="leftspan">{{ video.created_at }} ago</span> |
+                <span class="rightspan">{{ video.associated_activity }}</span>
+              </p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+ 
+
+  <div id="myModal2" class="modal" (click)="closeModal()">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+
+      <ion-grid>
+        <ion-row>
+          <ion-col col-9>
+            <h3>Share</h3>
+          </ion-col>
+          <ion-col col-3> <ion-icon name="add" class="backbtn" (click)="close()"></ion-icon></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12 (click)="shareViaWhatsApp()">
+            <ion-icon name="logo-whatsapp" class="images" style="color: #3caf3c"> </ion-icon><span
+              class="name">WhatsApp</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaFacebook()">
+            <ion-icon name="logo-facebook" class="images" style="color: #1c71b9"> </ion-icon><span
+              class="name">Facebook</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaTwitter()">
+            <ion-icon name="logo-twitter" class="images" style="color: #2cc1e2"></ion-icon><span
+              class="name">Twitter</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaInstagram()">
+            <img src="https://www.designpieces.com/wp-content/uploads/2016/05/Instagram-v051916-150x150.png"
+              class="insta"><span class="name">Instagram</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaEmail()">
+            <ion-icon name="mail" class="images" style="color: #9e1d1d;font-size: 31px;"></ion-icon><span
+              class="name">Email</span>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </div>
+  </div>
+  <ion-fab mini right bottom #fab>
+    <button ion-fab mini style="background-color: #2b92bb; color:white !important" (click)="goTocreatepage()"><ion-icon
+        name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

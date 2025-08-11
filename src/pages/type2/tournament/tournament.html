@@ -1,0 +1,244 @@
+<ion-header>
+  <ion-navbar>
+    <!-- <ion-title>{{LangObj.tournment_title}}</ion-title> -->
+    <ion-title>{{Title}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row style="margin-bottom: 15px" *ngIf="selectedFooterIndex == 0">
+    <ion-segment [(ngModel)]="IsActiveTournament">
+      <ion-segment-button value="Active">
+        {{LangObj.tournment_active}}
+      </ion-segment-button>
+      <ion-segment-button value="Past">
+        {{LangObj.tournment_past}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-row>
+  <ion-row *ngIf="selectedFooterIndex == 0">
+    <ion-list class="margin_bottom" style="width: 100%">
+      <div [ngSwitch]="IsActiveTournament">
+        <div ng-if *ngSwitchCase="'Active'">
+          <ion-row *ngIf="activeTournament.length > 0">
+            <ion-col col-12 style="padding-left: 10px" *ngFor="let tournament of activeTournament">
+              <div class="all border-left-style"></div>
+              <ion-card class="ion-card" (click)="goToDetails(tournament.$key)">
+                <ion-card-header class="Location-head">
+                  <ion-row>
+                    <p class="name">
+                      {{tournament.TournamentName}}
+                      <span *ngIf="currencyDetails" style="color: green; float: right"
+                        class="amount">{{currencyDetails.CurrencySymbol}}{{tournament.AmountRecived}}
+                        /
+
+                        <span style="color: red" class="amount">{{tournament.TotalAmount}}
+                        </span></span>
+                    </p>
+                    <p *ngIf="tournament && tournament.TournmentStatus == 0" style="
+                        color: red;
+                        font-size: 12px;
+                        font-style: italic;
+                        font-weight: 400;
+                      ">
+                      Private
+                    </p>
+                  </ion-row>
+                </ion-card-header>
+                <ion-card-content style="color: #c5b495">
+                  <ion-row>
+                    <ion-col col-6>
+                      <p class="card-text">
+                        <span>{{tournament.StartDate}}</span>
+                      </p>
+
+                      <p class="card-text">
+                        <span>{{tournament.ActivityName}}/
+                          {{LangObj.tournment_grade}} :{{tournament.Grade}}
+                          <br />
+                          {{tournament.AgeGroup}}</span>
+                      </p>
+                    </ion-col>
+                    <ion-col col-6>
+                      <p class="card-text">
+                        <span>{{tournament.MatchType}}</span>
+                      </p>
+
+                      <p class="card-text">
+                        {{LangObj.tournment_noofplayers}}:
+                        <span>{{tournament.TotalMembers}}</span>
+                      </p>
+
+                      <p class="card-text">
+                        {{LangObj.tournment_venue}}:
+                        <span>{{tournament.Location.LocationName}}</span>
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-card *ngIf="activeTournament.length == 0" class="nonmembercard">
+              <ion-card-content style="text-align: center; color: #bc2a26">
+                <p class="danger_color2 nonlocationcard">
+                  {{LangObj.tournment_noactive_tournment}}
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </ion-row>
+        </div>
+        <div ng-if *ngSwitchCase="'Past'">
+          <ion-row *ngIf="pastTournaments.length > 0">
+            <ion-col col-12 style="padding-left: 10px" *ngFor="let tournament of pastTournaments">
+              <div class="all border-left-style"></div>
+
+              <ion-card (click)="goToDetails(tournament.$key)">
+                <ion-card-header class="Location-head">
+                  <ion-row>
+                    <p class="name">
+                      {{tournament.TournamentName}}
+                      <span *ngIf="currencyDetails" style="color: green; float: right"
+                        class="amount">{{currencyDetails.CurrencySymbol}}{{tournament.AmountRecived}}
+                        /
+
+                        <span style="color: red" class="amount">{{tournament.TotalAmount}}
+                        </span></span>
+                    </p>
+                  </ion-row>
+                </ion-card-header>
+                <ion-card-content style="color: #c5b495">
+                  <ion-row>
+                    <ion-col col-6>
+                      <p class="card-text">
+                        {{LangObj.tournment_date}}:
+                        <span>{{tournament.StartDate}}</span>
+                      </p>
+
+                      <p class="card-text">
+                        <span>{{tournament.ActivityName}}/
+                          {{LangObj.tournment_grade}} :{{tournament.Grade}}
+                          <br />
+                          {{tournament.AgeGroup}}</span>
+                      </p>
+                    </ion-col>
+                    <ion-col col-6>
+                      <p class="card-text">
+                        <span>{{tournament.MatchType}}</span>
+                      </p>
+                      <p class="card-text">
+                        {{LangObj.tournment_noofplayers}}:
+                        <span>{{tournament.TotalMembers}}</span>
+                      </p>
+
+                      <p class="card-text" *ngIf="tournament.Location">
+                        {{LangObj.tournment_venue}}:
+                        <span>{{tournament.Location.LocationName}}</span>
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-card *ngIf="pastTournaments.length == 0" class="nonmembercard">
+              <ion-card-content style="text-align: center; color: #bc2a26">
+                <p class="danger_color2 nonlocationcard">
+                  {{LangObj.tournment_noprev_tournment}}
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </ion-row>
+        </div>
+      </div>
+    </ion-list>
+  </ion-row>
+  <ion-row *ngIf="selectedFooterIndex == 1">
+    <ion-col col-12><page-match></page-match></ion-col>
+  </ion-row>
+  <ion-row *ngIf="selectedFooterIndex == 2">
+    <ion-col col-12><page-matchladder></page-matchladder></ion-col>
+  </ion-row>
+  <ion-row *ngIf="selectedFooterIndex == 3">
+    <ion-col col-12>
+      <page-matchhistory></page-matchhistory>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="selectedFooterIndex == 4">
+    <ion-col col-12>
+      <page-leagueteamlisting #leagueTeamListingRef></page-leagueteamlisting>
+      <!-- <page-leagueteamlisting></page-leagueteamlisting> -->
+    </ion-col>
+  </ion-row>
+  <ion-fab right bottom style="padding-bottom: 50px" *ngIf="selectedFooterIndex == 0">
+    <button ion-fab mini style="background-color: #2b92bb !important; color: white !important"
+      (click)="createTournament()" style="background-color: #2b92bb !important; color: white !important">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>
+
+<!-- <ion-footer>
+  <ion-icon slot="start" name="add"></ion-icon>
+</ion-footer> -->
+<!-- <ion-fab right bottom>
+  <button
+    ion-fab
+    mini
+    style="background-color: #2b92bb"
+    (click)="gotoCreateMatch()"
+    style="background-color: #2b92bb !important; color: white !important"
+  >
+    <ion-icon name="add"></ion-icon>
+  </button>
+</ion-fab> -->
+<button class="fabs fab_btn" *ngIf="selectedFooterIndex == 4" ion-fab mini style="background-color: #2b92bb"
+  (click)="gotoDifferentTab()" style="background-color: #2b92bb !important; color: white !important">
+  <ion-icon name="add"></ion-icon>
+</button>
+<button class="fabs fab_btn " *ngIf="selectedFooterIndex == 1" ion-fab mini style="background-color: #2b92bb;"
+  (click)="gotoCreateMatch()" style="background-color:#2b92bb !important; color: white !important">
+  <ion-icon name="add"></ion-icon>
+</button>
+<div class="footer_div">
+  <ion-row>
+    <ion-col [class.selected]="selectedFooterIndex==4" (click)="selectedTab(4)">
+      <ion-icon name="trophy"></ion-icon>
+      <p>Competition</p>
+    </ion-col>
+    <!-- <ion-col [class.selected]="selectedFooterIndex==0" (click)="selectedTab(0)">
+      <ion-icon name="trophy"></ion-icon>
+      <p>Tournament</p>
+    </ion-col> -->
+    <ion-col [class.selected]="selectedFooterIndex==1" (click)="selectedTab(1)">
+      <img style="padding-top: 10px" src="assets/icon/match.svg" class="home_btn" />
+      <p>Match</p>
+    </ion-col>
+    <ion-col [class.selected]="selectedFooterIndex==2" (click)="selectedTab(2)">
+      <ion-icon name="stats"></ion-icon>
+      <p>Ladder</p>
+    </ion-col>
+    <ion-col [class.selected]="selectedFooterIndex==3" (click)="selectedTab(3)">
+      <ion-icon name="timer"></ion-icon>
+      <p>History</p>
+    </ion-col>
+  </ion-row>
+  <!-- <ion-row>
+    <ion-col *ngFor="let menu of Tabmenu;let i=index;">
+      <ion-icon
+        *ngIf="menu.Icon!=''"
+        [name]="menu.Icon"
+        [class.selected]="menu.IsSelect"
+      ></ion-icon>
+      <p [class.colorselected]="menu.IsSelect">{{menu.DisplayName}}</p>
+    </ion-col>
+  </ion-row> -->
+</div>

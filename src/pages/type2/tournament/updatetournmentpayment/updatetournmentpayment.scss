@@ -1,0 +1,21 @@
+page-updatetournmentpayment {
+    .scroll-content {
+        padding: 0px !important;
+    }
+    .due{
+        color:red;
+    }
+    .paid{
+        color:green;
+    }
+    // .item-inner{
+    //     border-bottom: none !important;
+    //     box-shadow: none !important;
+    // }
+    .card{
+        margin: 6px 0px 6px 0px;
+        width: 100%;
+        box-shadow: none !important;
+        border-bottom: 1px solid #FF9800;
+    }
+}

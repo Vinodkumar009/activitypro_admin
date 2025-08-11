@@ -1,0 +1,80 @@
+addschool-page{
+    .padding-left-item{
+        padding:0px;
+    }
+    .scroll-content{
+        background-image: none !important;
+        background-color: #f4efef !important;
+        padding: 6px !important;
+    }
+    .schoolcard{
+        box-shadow: 1px 1px 9px #ada8a1;
+        border-bottom: 1px solid orange;
+    }
+    .sub-container {
+        button {
+            width: 90%;
+            height: 86%;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+    
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 86% !important;
+            margin-top: 4px !important;
+            padding: 2px 0px
+        }
+    
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+    
+        }
+    
+        .searchbar-search-icon {
+            display: none !important;
+        }
+    
+        ion-icon {
+            font-size: 20px;
+        }
+    
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow:none
+        }
+    }
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+       // left: 3px !important;
+    }
+    
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+       // text-align: right;
+        padding-right: 5px;
+    }
+    
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+    
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+}

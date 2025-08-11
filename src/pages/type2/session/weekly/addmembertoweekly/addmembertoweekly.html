@@ -1,0 +1,76 @@
+
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>Add Weekly Member</ion-title>
+  </ion-navbar>
+</ion-header> -->
+<ion-header *ngIf="themeType == 1">
+  <ion-navbar>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Add Member To Weekly</ion-title>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="presentPopover($event)">
+              <ion-icon name="more"></ion-icon>
+          </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+  <ion-navbar>
+      <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+          <ion-icon name="apps"></ion-icon>
+      </button>
+      <ion-title>Add Member To Weekly</ion-title>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="goToDashboardMenuPage()">
+              <img src="assets/images/home.svg" class="home_btn">
+          </button>
+          <button ion-button icon-only (click)="presentPopover($event)">
+              <ion-icon name="more"></ion-icon>
+          </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg social-cards">
+  <!-- <ion-item class="search_add">
+    <ion-searchbar [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItems($event)" autocorrect="off"
+        placeholder="Search by name"></ion-searchbar>
+</ion-item> -->
+ 
+<ion-item class="search_add">
+  <ion-searchbar class="search" placeholder="Search by name" autocorrect="off"
+    (ionInput)="getFilterItems($event)" showCanelButton="shouldShowCancel" animated>
+  </ion-searchbar>
+</ion-item>
+  
+  <ion-list class="ion_list">
+    <ion-list-header class="session_header">
+      Member Lists
+    </ion-list-header>
+  </ion-list>
+
+  <ion-list>
+    <ion-item *ngFor="let member of filteredMembers;let i = index;">
+      <ion-label>{{member.FirstName}} {{member.LastName}} ({{this.commonService.calculateAgeFromDOB(member.DOB)}})</ion-label>
+      <ion-checkbox  [(ngModel)]="member.isSelected" [disabled]="member.isAlreadyExisted" (ionChange)="onMemberSelectionChange(member,$event)"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="search_term==''">
+    <ion-infinite-scroll-content loadingSpinner="crescent"
+      loadingText="Loading more data...">></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button block class="timekare-primary-btn" (click)="submitMembers()"
+          >Add Members ({{this.selectedMembers.length}})</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

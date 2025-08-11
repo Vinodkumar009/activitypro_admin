@@ -1,0 +1,169 @@
+page-editmatch {
+    .scroll-content {
+        background-color: #f7f7f7;
+      }
+      .details {
+        color: #2b92bb;
+      }
+      .foo {
+        padding: none;
+      }
+      .ionlist{
+        margin:-1px 0px 7px;
+      }
+      .foo {
+        padding: none;
+      }
+      .createbutton {
+        background-color: #5be283;
+        height: 3.6rem;
+        font-size: 1.4rem;
+       }
+       .cancelbutton {
+        background-color: #2b92bb;
+       }
+     
+       .selected {
+        background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+        border: 1.5px solid #2b92bb;
+        color: #2b92bb !important;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 10px;
+       }
+    
+       .match-acess{
+        font-size: 16px;
+        color: rgba(0,0,0,0.85);
+        margin-left: -3px;
+      }
+    
+      .select-type {
+        text-transform: capitalize;
+        background-color: transparent;
+        width: 102%;
+        margin: 0px !important;
+        color: #707070;
+        border-radius: 10px;
+        box-shadow: none;
+      }
+    
+      .help_btn {
+        padding: 0px !important;
+        font-size: 24px !important;
+        margin: 0px !important;
+        height: 42px !important;
+        width: 42px;
+      }
+      
+     
+      
+       .select-type {
+        text-transform: capitalize;
+        background-color: transparent;
+        width: 102%;
+        margin: 0px !important;
+        color: #707070;
+        border-radius: 10px;
+        box-shadow: none;
+      }
+    
+      ion-card {
+        ion-item {
+          .item-inner {
+            padding-right: 8px !important;
+            border-bottom: 1px solid #dedede !important;
+          }
+        }
+      }
+      ion-label{
+        color: rgba(0,0,0,0.8);
+      }
+      .padding0{
+        padding: 0px;
+      }
+    
+      .allign-right .text-input {
+        text-align: right;
+    }
+    
+    
+    .flex_col{
+      display: flex;
+      justify-content: space-between;
+      p{
+          line-height: 30px;
+      }
+    }
+    .toggle_para{
+      font-size: 16px;
+      color: #000 !important;
+    }
+    
+    /**toggle button**/
+    
+    .toggle {
+      overflow: hidden;
+      display: inline-block;
+      width: 4.5em;
+      //background: #2f2a2a;
+      background-color: #ebf7fc;
+      //padding: 0.135em;
+      cursor: pointer;
+      font-size: 17px;
+      margin-left: 8px;
+      border-radius: 50px;
+      height: 30px;
+    }
+    .toggle input {
+      position: absolute;
+      visibility: hidden;
+    }
+    .toggle ion-input{
+      position: absolute;
+      visibility: hidden;
+    }
+    .toggle input[type="checkbox"]{
+      width:100%;
+      height: 100%;
+    }
+    .toggle span {
+      position: relative;
+      left: 0%;
+      display: block;
+      text-align: center;
+      -webkit-transition: left 100ms ease-out;
+      -moz-transition: left 100ms ease-out;
+      -o-transition: left 100ms ease-out;
+      transition: left 100ms ease-out;
+    }
+    .toggle :checked+span {
+      left: 50%;
+    }
+    
+      /* Default unchecked state */
+      .toggle span:before {
+        content: attr(data-unchecked);
+        display: block;
+        width: 50%;
+        background-color: #f44336;
+        border-radius: 50px;
+        box-shadow: 0 10px 20px -8px #c5d6d6;
+        //box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+        color: white;
+        border-radius: 25px;
+        font-size: 12px;
+        height: 30px;
+        line-height: 30px;
+    }
+    /* Checked state */
+    .toggle :checked+span:before {
+        content: attr(data-checked);
+        background-color: #03A9F4;
+        color: white;
+        border-radius: 50px;
+        font-size: 12px;
+        height: 30px;
+        line-height: 30px;
+    }
+}

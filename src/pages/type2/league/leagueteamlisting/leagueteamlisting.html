@@ -1,0 +1,371 @@
+<!--
+  Generated template for the MatchPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>Match Dashboard</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon (click)="gotoDashboard()" name="home"></ion-icon>
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header> -->
+
+
+
+<div>
+  <ion-card style="width: 100%; margin: 0px">
+    <ion-card-content style="padding: 0px">
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeType(0)" [class.selected]="activeIndex==0">
+            Competitions
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeType(1)" [class.selected]="activeIndex==1">
+            Teams
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div *ngIf="activeIndex==0">
+  <div style="width: 100%; height: 100%">
+    <ion-card class="headercard">
+      <ion-card-content>
+        <ion-row>
+          <ion-col col-12>
+            <div>
+              <ion-row class="sub-container rows-allign2">
+                <ion-col col-1 style="text-align: center; margin-top: 12px; padding: 0px">
+                  <!-- <button>
+                    <ion-icon name="ios-search"></ion-icon>
+                </button> -->
+                  <ion-icon name="ios-search"></ion-icon>
+                </ion-col>
+                <ion-col col-11 class="search-bar">
+                  <ion-searchbar class="search" placeholder="Search by Competition, Activity, Venue..."
+                    [(ngModel)]="searchInput" (ionInput)="getLeagueSearch($event)" autocorrect="off"
+                    showCanelButton="focus"></ion-searchbar>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-row *ngIf="filteredleagues.length>0">
+      <ion-col col-12 style="padding-left: 10px" *ngFor="let league of filteredleagues">
+        <div class=" border-left-style"></div>
+
+        <ion-card (click)="gotoLeaguedetailsPage(league)">
+          <ion-card-header class="Location-head">
+            <ion-row>
+              <p class="name">{{league.league_name | titlecase}}</p>
+            </ion-row>
+          </ion-card-header>
+          <ion-card-content style="color: #c5b495">
+            <ion-row>
+              <ion-col col-6 style="margin-bottom: -15px;">
+                <p class="datetext">
+                  <span>{{league.start_date}}</span>
+                  <span></span>
+                </p>
+              </ion-col>
+
+              <ion-col col-6 style="margin-bottom: -15px;" class="align-right">
+                <p class="card-text">
+                  <span>{{league.league_type_text}}</span>
+                  <span></span>
+                </p>
+              </ion-col>
+            </ion-row>
+            <ion-row style="margin-bottom: -12px">
+              <ion-col col-7>
+                <p class="card-text">
+                  <span>{{league.activity.ActivityName}}</span>
+                </p>
+                <!-- <p class="card-text">
+                  <ion-icon style="font-size: 18px; color: #2b92bb" name="pin"></ion-icon>
+                  <span>{{league.club.ClubName}}</span>
+                </p> -->
+              </ion-col>
+              <ion-col col-5 class="align-right">
+                <p class="card-text">
+                  <span>
+                    {{league.league_category_text}}<span
+                      *ngIf="league. league_age_group">/{{league.league_age_group}}</span>
+                  </span>
+                </p>
+                <!-- <div class="flex-style" style="text-align: right;">
+                  <div>
+                    <span>{{league.league_visibility==0?"Public":"Private"}} </span>
+                  </div>
+                </div> -->
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-8>
+                <p class="card-text">
+                  <ion-icon style="font-size: 18px; color: #2b92bb" name="pin"></ion-icon>
+                  <span>{{league.club.ClubName}}</span>
+                </p>
+              </ion-col>
+              <ion-col col-4 class="align-right">
+                <p class="card-text">
+                  <span class="card-text" style="color:  #c5b495;">{{league.league_visibility==0?"Public":"Private"}}
+                  </span>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+</div>
+
+<div *ngIf="activeIndex==1">
+  <div style="width: 100%; height: 100%">
+    <ion-card class="headercard">
+      <ion-card-content>
+        <ion-row>
+          <ion-col col-12>
+            <div>
+              <ion-row class="sub-container rows-allign2">
+                <ion-col col-1 style="text-align: center; margin-top: 12px; padding: 0px">
+                  <!-- <button>
+                      <ion-icon name="ios-search"></ion-icon>
+                  </button> -->
+                  <ion-icon name="ios-search"></ion-icon>
+                </ion-col>
+                <ion-col col-11 class="search-bar">
+                  <ion-searchbar placeholder="Search by Team, Activity" id="customsearchbar" autocorrect="off"
+                    (ionInput)="getTeamItems($event)" showCanelButton="focus"></ion-searchbar>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-row *ngIf="filteredteams.length > 0">
+      <ion-col col-12 style="padding-left: 10px" *ngFor="let team of filteredteams">
+        <div class="all border-left-style"></div>
+
+        <ion-card (click)="gotoTeamdetailsPage(team)">
+          <ion-card-header class="Location-head">
+            <ion-row>
+              <ion-col col-auto *ngIf="team.logo_url"> <!-- ✅ col-auto for image, only show if logo_url exists -->
+                <img [src]="team.logo_url" alt="{{team.teamName}} Logo" class="team-logo"> <!-- ✅ Team logo image -->
+              </ion-col> <!-- ✅ Remaining space for name -->
+              <ion-col>
+                <ion-row>
+                  <ion-col col-11>
+                    <p class="name">{{team.teamName | titlecase}}</p>
+                  </ion-col>
+                  <ion-col col-1 style="text-align: right; padding-top: 8px;">
+                    <ion-icon *ngIf="team.teamVisibility == 1" style="font-size: 18px; color: #2b92bb"
+                      name="lock"></ion-icon>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <ion-card-content style="color: #c5b495">
+            <ion-row>
+              <ion-col col-6>
+                <p class="card-text">
+                  <span>{{team.ageGroup}}</span>
+                </p>
+                <p class="card-text">
+                  <span>{{team.club.ClubName}} </span>
+                </p>
+                <p class="card-text">
+                  <span>{{team.teamDescription}}</span>
+                </p>
+              </ion-col>
+              <ion-col col-6>
+                <p class="card-text">
+                  <span>{{team.activity.ActivityName}}</span>
+                </p>
+
+
+                <div class="flex-style">
+                  <div>
+                    <!-- <ion-icon style="font-size: 18px; color: #2b92bb"
+                      [name]="team.teamVisibility==0?'ios-globe':'lock'"></ion-icon> -->
+                  </div>
+
+                  <span style="margin-top: 4px"> </span>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </div>
+</div>
+
+<div *ngIf="activeIndex==2">
+  <div style="width: 100%; height: 100%">
+    <ion-card class="headercard">
+      <ion-card-content>
+        <ion-row>
+          <ion-col col-12>
+            <div>
+              <ion-row class="sub-container rows-allign2">
+                <ion-col col-1 style="text-align: center; margin-top: 12px; padding: 0px">
+
+                  <ion-icon name="ios-search"></ion-icon>
+                </ion-col>
+                <ion-col col-11 class="search-bar">
+                  <ion-searchbar placeholder="Search by Host,Title, Activity" id="customsearchbar" autocorrect="off"
+                    (ionInput)="getFilterItems($event)" showCanelButton="focus"></ion-searchbar>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-row *ngIf="filteredMatches.length > 0">
+      <ion-col col-12 style="padding-left: 10px" *ngFor="let match of filteredMatches">
+
+        <ion-card class="maincard">
+          <ion-card-header class="Location-head " style="padding: 2px 0px 5px 0px;">
+
+            <ion-card-title style="font-weight: 600;font-size: 20px; color: #154766;text-align: center;">
+              {{MatchStartDate(match.MatchStartDate)}}
+            </ion-card-title>
+          </ion-card-header>
+
+
+          <ion-card-content style="padding-right: 2px; padding-left: 5px;padding-top: 5px;">
+            <ion-row style="margin-top: -5px;">
+              <ion-col>
+                <p class="leftStyle">
+                  <span *ngIf="match.Activity && match.Activity.ActivityName">{{match.Activity.ActivityName}}</span> -
+                  <span>{{match.MatchType==0?"Singles":"Doubles"}}
+                  </span>
+
+                </p>
+              </ion-col>
+              <ion-col class="align-right" *ngFor="let host of match.Hosts">
+                <p class="roundStyle"> <span>{{host.Name}}</span></p>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="isPublish" style="margin-top: -5px;">
+              <ion-col col-6>
+
+                <ion-row>
+                  <div>
+                    <p class="username">TBD</p>
+                  </div>
+                </ion-row>
+
+                <ion-row style="margin-top: 5px; margin-bottom: 4px;">
+                  <div style="width: 100%; height: 1px; background-color: #ded8d8; margin-right:  0;margin-left:0">
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div>
+                    <p class="username">TBD
+                      <!-- <span style="padding-right: 2px;"> <ion-icon name="trophy"
+                        class="golden-trophy"></ion-icon></span> -->
+                    </p>
+                  </div>
+                </ion-row>
+              </ion-col>
+
+              <ion-col col-6 *ngIf="!isPending">
+
+                <ion-row>
+                  <ion-col style="padding-top: 2px;">
+                    <span class="gapBetween">30</span>
+                    <span class="gapBetween"><strong>20</strong></span>
+                    <span class="gapBetween"><strong>70</strong></span>
+                    <span class="gapBetween">38</span>
+                    <span class="gapBetween">50</span>
+                  </ion-col>
+                </ion-row>
+                <ion-row style="font-size: 12px; margin-top: -10px;opacity: 0.60;">
+                  <ion-col>
+                    Pts
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col style="padding-top: 0px">
+                    <span class="gapBetween"><strong>22</strong></span>
+                    <span class="gapBetween">56</span>
+                    <span class="gapBetween">30</span>
+                    <span class="gapBetween"><strong>80</strong></span>
+                    <span class="gapBetween"><strong>16</strong></span>
+                  </ion-col>
+                </ion-row>
+
+
+              </ion-col>
+
+              <ion-col col-6 *ngIf="isPending">
+                <div class="pendingStyle">Decision Pending...</div>
+
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row class="username-row" *ngIf="!isPublish">
+              <ion-col class="username-col">
+                <div class="username-container">
+                  <p class="username">TBD</p>
+                </div>
+              </ion-col>
+              <ion-col class="vs-col">
+                <div class="vs-container">
+                  <span class="vs-circle">Vs</span>
+                </div>
+              </ion-col>
+              <ion-col class="username-col">
+                <div class="username-container">
+                  <p class="username">
+                    TBD
+                  </p>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row style="margin-top: -10px;margin-bottom: -8px;">
+              <ion-col style="text-align: left;">
+                <p class="public-text">{{match.VenueName}}</p>
+              </ion-col>
+              <ion-col style="text-align: right;">
+                <p class="public-text">{{match.MatchVisibility==0?"Public":"Private"}} </p>
+              </ion-col>
+            </ion-row>
+
+            < </ion-card-content>
+
+
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </div>
+</div>

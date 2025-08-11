@@ -1,0 +1,86 @@
+<!--
+  Generated template for the CopycoachratingfromhistoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header *ngIf="themeType == 1" no-border >
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Copy Performance </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header no-border>
+    <ion-navbar *ngIf="themeType == 2">
+        <!--<button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>-->
+        <ion-title>
+            Copy Performance
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+     <ion-col col-6><ion-item>
+       <ion-label>Start date</ion-label>
+        <ion-datetime displayFormat="MM/YYYY" [(ngModel)]="coachTemplate.StartDate"></ion-datetime>
+      </ion-item></ion-col> 
+     <ion-col col-6><ion-item> 
+        <ion-label>End date</ion-label>
+       <ion-datetime displayFormat="MM/YYYY" [(ngModel)]="coachTemplate.EndDate"></ion-datetime>
+      </ion-item></ion-col> 
+    </ion-row>
+    <ion-row *ngFor="let items of templateInfo.EvaluationCriteria;let i = index">
+      <ion-col col-12><span class="activity">{{items.DisplayText}}</span></ion-col>
+      <ion-col col-6>
+          <rating  [(ngModel)]="rate[i]" 
+          readOnly="false" 
+          max="5" 
+          emptyStarIconName="star-outline" 
+          halfStarIconName="star-half" 
+          starIconName="star" 
+          nullable="false" 
+          (ngModelChange)="rate[i] = $event"></rating>
+       </ion-col>
+       <ion-col col-6><ion-textarea rows="4" placeholder="Comments" [(ngModel)]="comments[i]" class="area animate-zoom"></ion-textarea></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+          <ion-item>
+              <ion-label>Overall Rating</ion-label>
+              <ion-input type="number" [(ngModel)]="coachTemplate.AveragePerformance"></ion-input>
+            </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer class="foot">
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-1></ion-col>
+        <ion-col col-10>   <button ion-button block class="timekare-primary-btn animate-bottom" (click)="show()">copy</button></ion-col>
+        <ion-col col-1></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-footer>

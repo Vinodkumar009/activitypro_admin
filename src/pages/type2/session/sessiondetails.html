@@ -1,0 +1,196 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <!-- <ion-title>{{LangObj.Sesdets_Group_Dets}}</ion-title> -->
+        <ion-title>Session Attendance</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.GrpSesDets_session_dets}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+
+<ion-content class="padding_content">
+    <div class="monthly" *ngIf="this.session_type == '101' && monthly_ses_dets">
+        <ion-card class="card_list hadder-card" >
+            <ion-card-content style="padding:0px !important">
+                <p class="dotted1" style="">{{monthly_ses_dets.days}}</p>
+                <p class="dotted1" style="margin-top:-7px">{{monthly_ses_dets.start_time}} -
+                    {{monthly_ses_dets.end_time}}</p>
+                <ion-row>
+                    <ion-col col-md-4 col-sm-4 col-4 style="text-align:center;padding:0px;margin:auto;">
+                        <img class="img1" [src]="monthly_ses_dets.coach_image ? monthly_ses_dets.coach_image:'assets/images/dummyCoach.jpg'">
+                        <p class="coachname">{{monthly_ses_dets.coach_names}}</p>
+                    </ion-col>
+                    <ion-col col-md-8 col-sm-8 col-8 class="border-left">
+                        <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                            <span>{{monthly_ses_dets.session_name}}</span></p>
+                        <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                            <span>{{monthly_ses_dets.ClubDetails.ClubName}}</span></p>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+        </ion-card>
+    
+        <ion-row>
+            <ion-col col-4>
+                <div class="left_1">
+                    <div class="doneBox">&nbsp;</div>
+                    <div class="contentwrapper">{{LangObj.addMem_Done}}</div>
+                </div>
+            </ion-col>
+            <ion-col col-4 class="textcenter">
+                <div class="margintop">
+                    <div class="pendingBox">&nbsp;</div>
+                    <div class="contentwrapper">{{LangObj.Sesdets_Pending}}</div>
+                </div>
+            </ion-col>
+            <ion-col col-4>
+                <div class="margintop right_align">
+                    <div class="cancelBox">&nbsp;</div>
+                    <div class="contentwrapper">{{LangObj.Sesdets_Cancelled}}</div>
+                </div>
+            </ion-col>
+        </ion-row>
+    
+        <!-- //below shows only session is monthly -->
+        <div class="row_class" *ngIf="this.session_type == '101'">
+            <ion-item >
+                <ion-label>Choose Date</ion-label>
+                <ion-datetime displayFormat="MMM YYYY" pickerFormat="MMM YYYY"
+                    [(ngModel)]="startDate" min={{minDate}} max={{maxDate}}
+                    (ionChange)="getMonthlySessionDates()"></ion-datetime>
+            </ion-item> 
+            <ion-row wrap *ngIf="attendance_dates.length > 0">
+                <ion-col col-4 *ngFor="let date of attendance_dates">
+                    <div class="attandance_div" style="position: relative;width: 100%;padding:5px;" (click)="showActionSheet(date)">
+                        <img src="assets/imgs/done.svg" *ngIf="date.attendance_status == '1'">
+                        <img src="assets/imgs/cancelled.svg" *ngIf="date.attendance_status == '2'">
+                        <img src="assets/imgs/pending.svg" *ngIf="date.attendance_status == '0' && !date.is_future_day">
+                        <img src="assets/imgs/futureses.svg" *ngIf="date.attendance_status == '0' && date.is_future_day">
+                        <p class="month_block">{{getFormattedDate(date.day.day)}}</p>
+                        <!-- <p class="month_block">{{getFormattedDate(date.SessionOn)}} - {{date.SessionMonth}}</p> -->
+                        <!-- <p class="attendance_para com_para" *ngIf="date.attendance_status!='0' && date.is_future_day"></p> -->
+                        <p class="attendance_para com_para">
+                            <span>{{date.present_count}}</span>
+                            <span>/</span>
+                            <span>{{date.total_count}}</span>
+                        </p>
+                        <p class="cancle_para" *ngIf="date.attendance_status == '1'">Attended</p>
+                        <p class="cancle_para" *ngIf="date.attendance_status == '2'">Cancelled</p>
+                        <p class="cancle_para" *ngIf="date.attendance_status == '0' && !date.is_future_day">Pending</p>
+                        <p class="cancle_para" *ngIf="date.attendance_status == '0' && date.is_future_day">Upcoming</p>
+                        <!-- <p class="cancle_para" *ngIf="date.attendance_status == '2' && date.is_future_day">Cancelled</p> -->
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="attendance_dates.length == 0">
+                <ion-col col-12 text-center>
+                    <p>No dates found</p>
+                </ion-col>
+            </ion-row>
+        </div>
+    </div>
+    
+    
+<!-- //below shows only session not monthly -->
+    <div class="row_class" *ngIf="(this.session_type == '100' || this.session_type == '100') && this.term_session">
+        <div class="session_info">
+            <ion-card class="card_list hadder-card" >
+                <ion-card-content style="padding:0px !important">
+                    <p class="dotted1" style="">{{term_session.days}}</p>
+                    <p class="dotted1" style="margin-top:-7px">{{term_session.start_time}} -
+                        {{term_session.end_time}}</p>
+                    <ion-row>
+                        <ion-col col-md-4 col-sm-4 col-4 style="text-align:center;padding:0px;margin:auto;">
+                            <img class="img1" [src]="term_session.CoachDetails[0].profile_image && term_session.CoachDetails[0].profile_image!='' ? term_session.CoachDetails[0].profile_image : 'assets/images/dummyCoach.jpg'">
+                            <p class="coachname">{{term_session.coach_names}}</p>
+                        </ion-col>
+                        <ion-col col-md-8 col-sm-8 col-8 class="border-left">
+                            <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                                <span>{{term_session.session_name}}</span></p>
+                            <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                                <span>{{term_session.ClubDetails.ClubName}}</span></p>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <div class="attendance_status_style">
+            <ion-row>
+                <ion-col col-4>
+                    <div class="left_1">
+                        <div class="doneBox">&nbsp;</div>
+                        <div class="contentwrapper">{{LangObj.addMem_Done}}</div>
+                    </div>
+                </ion-col>
+                <ion-col col-4 class="textcenter">
+                    <div class="margintop">
+                        <div class="pendingBox">&nbsp;</div>
+                        <div class="contentwrapper">{{LangObj.Sesdets_Pending}}</div>
+                    </div>
+                </ion-col>
+                <ion-col col-4>
+                    <div class="margintop right_align">
+                        <div class="cancelBox">&nbsp;</div>
+                        <div class="contentwrapper">{{LangObj.Sesdets_Cancelled}}</div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </div>
+        
+        <div class="dates_div" *ngIf="attendance_info && attendance_info.attendance_dates.length > 0">
+            <!-- <div><p text-center style="color:red">*Attendance can be done on the session date</p></div> -->
+            <ion-row wrap>
+                <ion-col col-4 *ngFor="let day of attendance_info.attendance_dates">
+                    <div class="attandance_div" style="position: relative;width: 100%;padding:5px;" (click)="showTermActionSheet(day)">
+                        <img src="assets/imgs/done.svg" *ngIf="!day.is_future_day && day.present_count > '0'">
+                        <img src="assets/imgs/cancelled.svg" *ngIf="!day.is_future_day && day.cancelled_count > '0'">
+                        <img src="assets/imgs/pending.svg" *ngIf="!day.is_future_day && day.present_count == '0' && day.cancelled_count==0">
+                        <img src="assets/imgs/futureses.svg" *ngIf="day.is_future_day">
+                        <p class="month_block">{{this.commonService.getDateIn_DD_MMM_Format(day.attendance_date)}}</p>
+                        <p class="attendance_para com_para">
+                            <span>{{day.present_count}}</span>
+                            <span>/</span>
+                            <span>{{attendance_info.active_member_count}}</span>
+                        </p>
+                        <p class="cancle_para" *ngIf="!day.is_future_day && day.present_count > '0'">Attended</p>
+                        <p class="cancle_para" *ngIf="!day.is_future_day && day.cancelled_count > '0' && day.cancelled_count=='0'">Cancelled</p>
+                        <p class="cancle_para" *ngIf="!day.is_future_day && day.present_count == '0'">Pending</p>
+                        <p class="cancle_para" *ngIf="day.is_future_day">Upcoming</p>
+                    </div>
+                </ion-col>
+            </ion-row>
+        
+            <ion-row *ngIf="attendance_info && attendance_info.attendance_dates.length == 0">
+                <ion-col col-12>
+                    <p text-center>No records found</p>
+                </ion-col>
+            </ion-row>
+        </div>  
+    </div>
+    
+</ion-content>

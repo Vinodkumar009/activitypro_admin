@@ -1,0 +1,135 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Add Memebr</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Add Member
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<!--
+
+<ion-content class="cards-bg social-cards">
+    <ion-list class="ion_list">
+        <ion-list-header class="session_header">
+            Member Lists
+        </ion-list-header>
+    </ion-list>
+    <ion-scroll scrollY="true" class="block_height">
+
+        <ion-list class="margin">
+            <ion-item *ngFor="let member of members">
+                <ion-label>{{member.FirstName}} {{member.MiddleName}} {{member.LastName}} ({{member.Age}})</ion-label>
+                <ion-checkbox [(ngModel)]="member.isSelect"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+    </ion-scroll>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <button ion-button block class="timekare-primary-btn" (click)="addMember()">Add Member</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-content>-->
+
+
+
+<ion-content class="cards-bg social-cards">
+    <ion-item class="search_add">
+        <ion-searchbar [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItems($event)" autocorrect="off" placeholder="Search by name"></ion-searchbar>
+    </ion-item>
+
+    <ion-list class="ion_list">
+        <ion-list-header class="session_header">
+            Member Lists
+        </ion-list-header>
+    </ion-list>
+
+
+    <!-- <ion-scroll scrollY="true" class="block_height1"> -->
+        <!-- <ion-list class="margin">
+            <ion-item *ngFor="let member of members;let i = index">
+                <ion-label>{{member.DisplayName}} ({{member.Age}})</ion-label>
+                <ion-checkbox [(ngModel)]="member.isSelect " [checked]="member.isSelect" [disabled]="member.isAlreadySelected" (ionChange)="selecteMembers(member)"></ion-checkbox>
+            </ion-item>
+        </ion-list> -->
+
+        <ion-list class="margin">
+            <ion-item *ngFor="let member of filteredMembers;let i = index">
+                <ion-label>{{member.FirstName}} {{member.LastName}} ({{this.commonService.calculateAgeFromDOB(member.DOB)}})</ion-label>
+                <ion-checkbox [(ngModel)]="member.isSelected" [disabled]="member.isAlreadExisted" (ionChange)="toggleMember(member,$event)"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+    <!-- </ion-scroll> -->
+
+  
+    <!-- [(ngModel)]="member.isSelect"
+    [disabled]="member.isAlreadExisted"
+    (ionChange)="selectMembers(member,$event)" -->
+
+    <!-- <ion-list class="ion_list1">
+        <ion-list-header class="session_header">
+            Already Added Members List
+        </ion-list-header>
+    </ion-list>
+
+
+    <ion-scroll scrollY="true" class="block_height2 align">
+
+        <ion-list>
+            <ion-item-sliding #item *ngFor="let mlist of this.selectedMembersForTheSession">
+                <ion-item *ngIf="mlist.IsActive">
+                    {{mlist.FirstName}} {{mlist.MiddleName}} {{mlist.LastName}} ({{mlist.Age}})
+                </ion-item>
+                <ion-item-options side="left" *ngIf="mlist.IsActive">
+                    <button ion-button class="timekare-primary-btn" (click)="remove(mlist)" [disabled]="mlist.AmountPayStatus == 'Paid' || mlist.AmountPayStatus == 'Pending Verification' ">Remove</button>
+                </ion-item-options>
+                <ion-item-options side="right" *ngIf="mlist.IsActive">
+                    <button ion-button class="timekare-primary-btn" (click)="update(mlist)">Update</button>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
+
+
+
+    </ion-scroll> -->
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="venus_user_input.search_term==''">
+        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data...">></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <button ion-button block class="timekare-primary-btn" (click)="updateMemberList()" [disabled]="schoolSesEnrolDets.enrol_users.length == 0">Add Members ({{schoolSesEnrolDets.enrol_users.length}})</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

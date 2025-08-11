@@ -1,0 +1,70 @@
+.color-theme-5 {
+$toolbar-background-color5:#96AA39;
+$toolbar-button-text-color5:#ffffff;
+$toolbar-title-color5:#ffffff;
+$color5-inner-background-image: '../assets/images/background/color5bg.png';
+$color5-login-background-image: '../assets/images/background/loginbg.png';
+
+$segment-ios-button-clr-color5:#879933;
+$segment-md-button-act-border-clr-color5:#879933;
+$segment-wp-button-text-clr-color5:#ffffff;
+
+$button-save-bg-clr-color5:#879933;
+
+  .toolbar-title {
+    color: $toolbar-title-color5;
+  }
+  .toolbar-background {
+    background-color: $toolbar-background-color5;
+  }
+  .bar-button {
+    color:$toolbar-button-text-color5;
+  }
+  .scroll-content {
+    //margin-top: 44px !important; 
+    padding: 0px ;
+    background-image: none !important; // background: white !important;
+    background: #f7f7f7 !important;
+}
+.segment-ios .segment-button{
+      border-color: $segment-ios-button-clr-color5;
+
+    color: $segment-ios-button-clr-color5;
+
+
+    }
+    .segment-ios .segment-button.segment-activated {
+    color: white;
+    background-color: $segment-ios-button-clr-color5;
+
+}
+.segment-md .segment-button.activated, .segment-md .segment-button.segment-activated {
+    border-color: $segment-md-button-act-border-clr-color5;
+
+}
+.segment-wp .segment-button {
+
+    color: $segment-wp-button-text-clr-color5;
+
+}
+.timekare-primary-btn{
+      background-color: $button-save-bg-clr-color5;
+}
+.prifile-card{
+  background-color: $toolbar-background-color5 !important;
+}
+.dashboard_col_item_name {
+    color: $segment-ios-button-clr-color5;
+
+}
+.dashboard_user {
+
+    color: $segment-ios-button-clr-color5;
+}
+.ion-item-lable{
+  color: $toolbar-background-color5 !important;
+}
+     .card-h2-style{
+         color: $toolbar-background-color5 !important;
+     }
+}

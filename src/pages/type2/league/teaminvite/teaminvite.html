@@ -1,0 +1,137 @@
+<!--
+  Generated template for the TeaminvitePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Squad</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-row class="choose-row top-row">
+    <ion-col col-6>
+      <button ion-button class="squad-type" (click)="squadSelect(true)" [class.squad]="teamOne">
+        TeamOne
+      </button>
+    </ion-col>
+    <ion-col col-6>
+      <button ion-button class="squad-type" (click)="squadSelect(false)" [class.squad]="!teamOne">
+        TeamTwo
+      </button>
+    </ion-col>
+  </ion-row> 
+  <ion-item class="search_add">
+    <ion-searchbar class="search" 
+    placeholder="Search Players by name" 
+    autocorrect="off"
+    (ionInput)="getFilterItems($event)" 
+    showCanelButton="shouldShowCancel" animated>
+    </ion-searchbar>
+  </ion-item>
+
+  <ion-list class="ion_list">
+    <ion-list-header class="session_header" style="font-size: 18px">
+      Select Player To Invite
+    </ion-list-header>
+  </ion-list>
+
+  <!-- <ion-list >
+    <ion-item >
+      <ion-label>All
+        </ion-label>
+      <ion-checkbox 
+     
+      [(ngModel)]="isSelectAll"
+       [disabled]="isAlreadExisted" 
+       (click)="selectAllToggole()"></ion-checkbox>
+    </ion-item>
+  </ion-list> -->
+
+  <!-- <ion-grid style="padding:0px">
+    <ion-row>
+              <ion-col col-12 >
+                <ion-item  >
+                <ion-label>All</ion-label>
+                <ion-checkbox 
+                [disabled]="isAlreadExisted"
+                [checked]="isselectAll"
+                    (click)="selectAll()"></ion-checkbox>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+</ion-grid> -->
+
+<ion-grid style="padding:0px">
+  <ion-row>
+            <ion-col col-12 >
+              <ion-item  >
+              <ion-label>All</ion-label>
+              <ion-checkbox 
+              [(ngModel)]="isSelectAll"
+                  (ionChange)="selectAll()"></ion-checkbox>
+          </ion-item>
+      </ion-col>
+  </ion-row>
+</ion-grid>
+
+
+ <!-- <ion-grid>
+    <ion-row>
+       
+        <ion-col col-12 class="right_pad">
+            <ion-item  class="member-item">
+                <ion-label>All</ion-label>
+                <ion-checkbox 
+                [disabled]="isAlreadExisted"
+                [(ngModel)]="isSelectAll"
+                    (click)="selectAll()"></ion-checkbox>
+            </ion-item>
+        </ion-col>
+       
+    </ion-row>
+</ion-grid> -->
+
+
+  <div *ngIf="teamOne">
+  <ion-list *ngIf="Members.length > 0">
+    <ion-item *ngFor="let member of Members;let i = index">
+      <ion-label>{{member.Name}}  <p style="display:inline;color:black" 
+        >(Batsman)</p>
+        </ion-label>
+      <ion-checkbox 
+      [(ngModel)]="member.isSelect"
+       [disabled]="member.isAlreadExisted" 
+       (ionChange)="selectMembers(member,$event)"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</div>
+
+<div *ngIf="!teamOne">
+  <ion-list *ngIf="Members.length > 0">
+    <ion-item *ngFor="let member of Members;let i = index">
+      <ion-label>{{member.Name}} 
+        </ion-label>
+      <ion-checkbox 
+      [(ngModel)]="member.isSelect"
+       [disabled]="member.isAlreadExisted" 
+       (ionChange)="selectMembers(member,$event)"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</div>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button (click)="inviteUsers()" ion-button block class="timekare-primary-btn">
+          Invite
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -1,0 +1,80 @@
+page-filtermember {
+    .scroll-content{
+        background-image: none !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1,#efefef) !important;
+        padding: 0px !important;
+    }
+    .toolbar-background {
+        background-color: #2b92bb !important;
+    }
+    .toolbar-title {
+        color: #ffffff;
+        font-weight: 400;
+    }
+    .pop-over{
+        ion-icon{
+            color:#ffffff;
+        }
+    }
+    .parentimg {
+        width: 30%;
+        margin-top: 2%;
+    }
+    ion-list{
+        ion-item{
+            padding-left: 5px !important;
+        }
+        ion-icon{
+            font-size: 2.3rem !important;
+            color: rgba(128, 128, 128, 0.8);
+            margin-left: 0;
+            margin-top: 10px !important;
+            margin-bottom: 4px !important;
+        }
+    }
+    .sub-container {
+        border-bottom: 1px solid orange;
+        padding-bottom: 13px;
+        margin-top: 10px;
+        button {
+            width: 90%;
+            height: 86%;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 86% !important;
+            margin-top: 4px !important;
+            padding: 2px 0px
+        }
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+        .searchbar-ios .searchbar-input{
+            padding: 0 28px;
+            border-radius: 5px;
+            height: 4rem;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #000;
+            background-color: #fff;
+        }
+        .searchbar-search-icon {
+            display: none !important;
+        }
+        ion-icon {
+            font-size: 20px;
+        }
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow: none
+        }
+    }
+}

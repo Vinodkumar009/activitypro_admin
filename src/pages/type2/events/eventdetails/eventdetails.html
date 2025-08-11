@@ -1,0 +1,825 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{eventDetails?.event_name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding *ngIf="eventDetails">
+  <ion-row style="width:100%;height:300px"> 
+    <ion-col col-12 no-padding class="heder_tit_col">
+      <ion-slides loop autoplay="2000" zoom>
+        <ion-slide *ngFor="let img of eventDetails.images_info;let i=index;" >
+          <div class="swiper-zoom-container">
+            <img [src]="img.img_url" class=""/>
+          </div>
+        </ion-slide>
+      </ion-slides>
+      <div class="event_info">
+        <ion-row style="width: 100%;height: 100%;">
+          <ion-col col-12 style="margin: auto;">
+            <!-- <p class="header_txt"><span>{{month}}</span></p> -->
+            <p class="header_txt" style="font-size:large">{{eventDetails.event_date}} </p>
+            <p class="header_txt" style="font-size:small">
+              <span>{{eventDetails.start_time}}</span>&nbsp;
+              <span>-</span>&nbsp;
+              <span>{{eventDetails.end_time}}</span>
+            </p>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="choose-row top-row" style="margin:-42px 0px 10px 0px;">
+    <ion-col col-6>
+      <button ion-button class="select-type" (click)="changeTab(true)" [class.selected]="selectedType">
+        Event Info
+      </button>
+    </ion-col>
+    <ion-col col-6>
+      <button ion-button class="select-type" (click)="changeTab(false)" [class.selected]="!selectedType">
+        Booking Info
+      </button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="statistics_row">
+    <ion-col col-12 style="padding: 0px !important">
+      <ion-row>
+        <ion-col col-6 text-center (click)="changeTab(false)">
+          <div class="circleProgress">
+            <p *ngIf="event_stats"><span>{{event_stats.total_bookings}}/</span><span
+                style="font-size:12px;">{{event_stats.total_event_capacity}}</span></p>
+            <img src="assets/images/check-mark.svg">
+          </div>
+          <div>
+            <p class="progress_txt">Bookings</p>
+          </div>
+        </ion-col>
+        <ion-col col-6 text-center (click)="changeTab(false)">
+          <div class="circleProgress">
+            <p *ngIf="event_stats">
+              <span *ngIf="currencyDetails!=undefined"
+                style="margin-right: -4px">{{currencyDetails.CurrencySymbol}}</span>
+              <span>{{event_stats.total_amount}}</span>
+            </p>
+            <img src="assets/images/check-mark.svg">
+          </div>
+          <div>
+            <p class="progress_txt">Amount</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="section_row && eventDetails">
+    <ion-col col-12 no-padding>
+      <ion-row>
+        <ion-col col-1 (click)="this.isActive = !this.isActive">
+          <ion-icon  name="md-create" class="mini_edit_icon" style="padding-right: 10px;"></ion-icon>
+        </ion-col>
+        <ion-col col-8 no-padding style="margin: auto;">
+          <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;" (click)="editEventName('eventName', eventDetails.event_name)">
+            <h3 style="margin:0" [class.disabled]="!isActive" [class.active]="isActive">{{eventDetails.event_name}}</h3>
+          </div>
+        </ion-col>
+        <ion-col col-3 class="flex_col" no-padding style="margin: auto;">
+          <!-- <p class="para">{{ event_status ? "Public":"Draft"}}</p> -->
+          <label class="toggle" style="margin-left: 0px !important;width:5em !important">
+            <input type="checkbox" [(ngModel)]="event_status"  (click)="handleStatusChange()">
+            <span data-unchecked="Draft" data-checked="Live"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col col-12 style="padding-left: 28px;">
+      <p class="sponsors_para" (click)="presentVenueAlert()" [class.disabled]="!isActive" [class.active]="isActive">
+        <span style="font-size: 15px !important;">by</span>
+        <span class="sponsors_para">{{eventDetails.club.ClubName}}</span>
+        <!-- <ion-icon name="md-create" class="mini_edit_icon" (click)="presentVenueAlert()"></ion-icon> -->
+      </p>
+      <p class="sponsors_para" *ngIf="eventDetails.event_type_global" (click)="eventTypeAlert()" [class.disabled]="!isActive" [class.active]="isActive">
+        <span>{{eventDetails.event_type_global.name}}</span>&nbsp;
+        <!-- <ion-icon name="md-create" class="mini_edit_icon" (click)="eventTypeAlert()"></ion-icon> -->
+      </p>
+    </ion-col>
+    <ion-col col-12 no-padding>
+      <ion-row>
+        <ion-col col-12 no-padding>
+          <ion-row>
+            <ion-col col-2 text-center style="margin:auto" no-padding>
+              <ion-icon name="ios-calendar" class="dets_icon"></ion-icon>
+            </ion-col>
+            <ion-col col-10 style="margin:auto" no-padding>
+              <div style="display: flex;">
+                <p class="date_para" (click)="editEventDates()" [class.disabled]="!isActive" [class.active]="isActive">
+                  {{eventDetails.transformed_start_date}} - {{eventDetails.transformed_end_date}}
+                  <!-- <ion-icon name="md-create" class="mini_edit_icon" (click)="editEventDates()"></ion-icon> -->
+                </p>
+              </div>
+              <div>
+                <p class="time_para" (click)="editEventTime()" [class.disabled]="!isActive" [class.active]="isActive">
+                  <span>{{eventDetails.start_time}}</span>&nbsp;
+                  <span>-</span>&nbsp;
+                  <span>{{eventDetails.end_time}}</span>
+                  <!-- <ion-icon name="md-create" class="mini_edit_icon" (click)="editEventTime()"> </ion-icon> -->
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col col-12 no-padding>
+          <ion-row (click)="presentLocationAlert()">
+            <ion-col col-2 text-center style="margin:auto" no-padding>
+              <ion-icon name="ios-pin" class="dets_icon"></ion-icon>
+            </ion-col>
+            <ion-col col-10 style="margin:auto" no-padding >
+              <p class="margin_5_3" [class.disabled]="!isActive" [class.active]="isActive">{{eventDetails.event_location}}</p>
+            </ion-col>
+            <!-- <ion-col col-2 text-center style="margin:auto">
+              <ion-icon name="md-create" class="mini_edit_icon" (click)="presentLocationAlert()">
+              </ion-icon>
+            </ion-col> -->
+          </ion-row>
+        </ion-col>
+        <ion-col col-12 style="padding: 5px !important;">
+          <ion-row>
+            <ion-col col-2 text-center style="margin:auto">
+              <img src="assets/images/ticket.svg" style="width:16px;height:16px;margin-left: -5px;">
+            </ion-col>
+            <ion-col col-10 style="margin:auto;" no-padding>
+              <p class="margin_5_3" *ngIf="eventDetails.is_paid">
+                <span>{{currencycode}}</span>
+                <span>{{eventDetails.min_max_amount}}</span>
+              </p>
+              <p class="margin_5_3" *ngIf="!eventDetails.is_paid">
+                <span>Free</span>&nbsp;
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <!-- the below is event info section tab -->
+  <div style="margin-bottom: 60px;" *ngIf="selectedType && eventDetails">
+    <!-- Event Info Section -->
+    <ion-row style="background-color: #fff !important; border-bottom: 1px solid #ded8d8;">
+      <ion-col col-12>
+        <ion-card class="header_card">
+          <ion-card-header>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;"
+              (click)="showEventInfo = !showEventInfo">
+              <h2 style="margin-top: 5px;">Event Info</h2>
+              <button ion-button clear item-right class="help_btn">
+                <ion-icon [name]="showEventInfo ? 'remove' : 'add'"></ion-icon>
+              </button>
+            </div>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col style="padding: 0;" col-12 *ngIf="showEventInfo">
+        <!-- Summary section -->
+        <ion-row class="section_row">
+          <ion-col col-12 no-padding>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+              <h4 style="margin-top:5px">Summary</h4>
+              <button ion-button clear item-right class="help_btn" (click)="modifyDescription(1)">
+                <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+              </button>
+            </div>
+            <p class="inner_para" [innerHTML]="EventSummary"></p>
+          </ion-col>
+        </ion-row>
+
+        <!-- About section -->
+        <ion-row class="section_row">
+          <ion-col col-12 no-padding>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+              <h4 style="margin-top:5px">Details</h4>
+              <button ion-button clear item-right class="help_btn" (click)="modifyDescription(2)">
+                <ion-icon name="md-create" style="font-size:2.5rem"></ion-icon>
+              </button>
+            </div>
+            <p class="inner_para" [innerHTML]="EventDescription"></p>
+          </ion-col>
+        </ion-row>
+        <!-- Location Section -->
+        <ion-row class="section_row">
+          <ion-col col-12>
+            <h2>Location</h2>
+            <p class="date_para">
+              <span>{{eventDetails.event_location}}</span>
+              <span *ngIf="eventDetails.address!=undefined && eventDetails.address!=''">,{{eventDetails.address}}</span>
+            </p>
+            <div (click)="getDirection()">
+              <div class="map-container" id="map"> </div>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <!--- Title Image -->
+        <ion-item class="event_title_img">
+          <ion-row>
+            <ion-col col-10 style="margin:auto">
+              <p class="para">Title Image</p>
+              <!-- <img *ngIf="eventsDto.title_img_url" [src]="eventsDto.title_img_url"> -->
+            </ion-col>
+            <ion-col col-2 style="margin:auto">
+              <button ion-button icon-only clear (click)="selectProfImg('event_img')">
+                <img [src]="eventDetails.title_img_url && eventDetails.title_img_url!='' ? eventDetails.title_img_url:'assets/images/upload.svg'" class="add_icon">
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+
+        <!--- Speaker/Trainer -->
+        <ion-row>
+          <ion-col col-12 no-padding class="flex_col">
+            <p style="color:#999;font-size: 16px;padding-left: 10px">Speaker/Trainer</p>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="eventDetails.is_speaker_trainer_avail" (click)="handleSpeakerStatus()">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+        </ion-row>
+        
+        <ion-item class="input_item" *ngIf="eventDetails.is_speaker_trainer_avail">
+          <ion-label stacked>Speaker/Trainer Name</ion-label>
+          <ion-input type="text" [readonly]="true" [(ngModel)]="eventDetails.speaker_trainer_name"></ion-input>
+          <button ion-button clear item-right class="help_btn"
+            (click)="toggleEdit('speakerName',eventDetails.speaker_trainer_name)">
+            <ion-icon name="md-create">
+            </ion-icon>
+          </button>
+        </ion-item>
+
+        <ion-item class="event_title_img" *ngIf="eventDetails.is_speaker_trainer_avail">
+          <ion-row>
+            <ion-col col-10 style="padding-left: 0px !important;margin:auto">
+              <p class="para">Speaker/Trainee Image</p>
+            </ion-col>
+            <ion-col col-2 style="margin:auto">
+              <button ion-button icon-only clear (click)="selectProfImg('speaker_img')">
+                <!-- <img src="assets/images/upload.svg" class="add_icon"> -->
+                <img [src]="eventDetails.speaker_trainer_imgurl && eventDetails.speaker_trainer_imgurl!='' ? eventDetails.speaker_trainer_imgurl:'assets/images/upload.svg'" class="add_icon" >
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+
+
+        <!-- FollowUs Section -->
+        <!-- <ion-row class="section_row">
+          <ion-col col-12 class="connect-col">
+            <h2>Follow Us</h2>
+            <div>
+              <img src="assets/images/shareimage/facebook.png" *ngIf="eventDetails.facebook_url" [class.disabled]="!eventDetails?.facebook_url"
+                (click)="OpenSocialLinks(eventDetails?.facebook_url)">
+
+              <img src="assets/images/shareimage/instagram.svg" *ngIf="eventDetails.instagram" [class.disabled]="!eventDetails?.instagram"
+                (click)="OpenSocialLinks(eventDetails?.instagram)">
+
+              <img src="assets/images/shareimage/twitter.png" *ngIf="eventDetails.twitter_url" [class.disabled]="!eventDetails?.twitter_url"
+                (click)="OpenSocialLinks(eventDetails?.twitter_url)">
+
+              <img src="assets/images/shareimage/website.png" *ngIf="eventDetails.website_url" [class.disabled]="!eventDetails?.website_url"
+                (click)="OpenSocialLinks(eventDetails?.website_url)">
+            </div>
+          </ion-col>
+        </ion-row> -->
+
+      </ion-col>
+    </ion-row>
+
+    <!-- Tickets Section -->
+    <ion-row style="background-color: #fff !important; border-bottom: 1px solid #ded8d8;">
+      <ion-col col-12>
+        <ion-card class="header_card">
+          <ion-card-header>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;"
+              (click)="toggleTicketContent()">
+              <h2 style="margin-top: 5px;">Ticket Info</h2>
+              <!-- <button ion-button mini class="button_style" item-right
+                (click)="toggleTicketContent()"><ion-icon [name]="showTicketContent ? 'remove' : 'add'"></ion-icon>
+              </button> -->
+              <button ion-button clear item-right class="help_btn">
+                <ion-icon [name]="showTicketContent ? 'remove' : 'add'"></ion-icon>
+              </button>
+            </div>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col style="padding: 0;" col-12 *ngIf="showTicketContent">
+        <ion-item class="input_item" (click)="updateEventAlert(4,booking_until)">
+          <ion-label>Booking Until</ion-label>
+          <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" max="{{eventDetails.end_date}}"
+            [(ngModel)]="booking_until">
+          </ion-datetime>
+          <!-- <button ion-button clear item-right class="help_btn edit_icon">
+            <ion-icon name="md-create"></ion-icon>
+          </button> -->
+        </ion-item>
+        <ion-item class="input_item" (click)="updateEventAlert(5,eventDetails.capacity)">
+          <ion-label>Capacity</ion-label>
+          <ion-input type="number" [readonly]="true" class="textright" [(ngModel)]="eventDetails.capacity"></ion-input>
+          <button ion-button clear item-right class="help_btn edit_icon">
+            <ion-icon name="md-create"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-item class="input_item" (click)="updateEventAlert(6,eventDetails.minimum_booking)">
+          <ion-label>Minimum Booking Quantity</ion-label>
+          <ion-input type="number" class="textright" [readonly]="true"
+            [(ngModel)]="eventDetails.minimum_booking"></ion-input>
+          <button ion-button clear item-right class="help_btn edit_icon">
+            <ion-icon name="md-create"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-row>
+          <ion-col col-12 no-padding class="flex_col">
+            <p style="color: rgba(0, 0, 0, 0.80);font-size: 16px;padding-left: 10px">Paid</p>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="eventDetails.is_paid" (click)="checkIsPaid()">
+              <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12 *ngIf="eventDetails.is_paid && event_stripes.length > 0" no-padding>
+            <!-- <p text-left style="margin: 0px 0px 3px 8px">Choose Payment Account</p> -->
+            <!-- <ion-slides slidesPerView="2" style="height: auto !important;">
+              <ion-slide *ngFor="let stripe of event_stripes;let i=index">
+                <ion-card no-padding (click)="selectEventStripe(stripe)" 
+                [ngClass]="{'Active':selectedAccounts.includes(stripe.payment_method_id),'InActive':!selectedAccounts.includes(stripe.payment_method_id)}">
+                  <ion-card-content>
+                    <p style="color:#FFF" text-wrap text-center>{{stripe.account_name}}</p>
+                  </ion-card-content>
+                </ion-card>
+              </ion-slide>
+            </ion-slides> -->
+            <ion-item class="input_item">
+              <ion-label>Choose Payment Account</ion-label>
+              <ion-select [(ngModel)]="selectedAccount" (ionChange)="selectEventStripe()">
+                <ion-option *ngFor="let stripe of event_stripes"
+                  [value]="stripe.payment_method_id">{{stripe.account_name}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+          <ion-col col-12 *ngIf="eventDetails.is_paid && event_stripes.length === 0" style="margin: auto;" text-center>
+            <h5 style="margin: 0;">No stripes found</h5>
+            <button ion-button clear (click)="navigateToStripeSetUp()" class="add_btn">
+              <span>Attach Stripe</span>
+              <span style="padding-left: 5px;"><ion-icon name="add"></ion-icon></span>
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-card class="width-100 ticket_card" *ngFor="let ticketType of ticketInfo; let i = index" no-padding>
+          <ion-card-header class="ticket_header" (click)="expandCard(ticketType)">
+            <ion-row>
+              <ion-col col-10 no-padding>
+                <div class="header-content">
+                  <p>{{ ticketType.ticket_type.name }}</p>
+                  <ion-checkbox class="ticket_check" id="tkt_check"
+                    [(ngModel)]="ticketType.is_available"></ion-checkbox>
+                </div>
+              </ion-col>
+              <ion-col col-2 no-padding>
+                <ion-icon name="md-create" id="tkttype_edit" class="tkttype_edit"
+                  (click)="ChangeTicketLabel($event, i);">
+                </ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <ion-card-content no-padding *ngIf="ticketType.is_selected">
+            <ion-row>
+              <ion-col col-5>
+                <p>Category</p>
+              </ion-col>
+              <ion-col col-1>
+                <p></p>
+              </ion-col>
+              <ion-col col-2 text-center>
+                <p>Fee</p>
+              </ion-col>
+              <ion-col col-3 text-center>
+                <p>Capacity</p>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let category of ticketType.categories; let j = index" (click)="showPopup(i,j)">
+              <ion-col col-5 no-padding >
+                <ion-item class="input_item duration_cls">
+                  <ion-label class="para_overflow">
+                    {{ category.name }}
+                  </ion-label>
+                  <ion-input type="number" class="textright" placeholder="{{ currecncy }} 0.00" [readonly]="true"
+                    [(ngModel)]="category.price">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col col-3 no-padding >
+                <ion-item class="input_item duration_cls">
+                  <ion-input type="number" class="textright" placeholder="Fee {{ currecncy }} 0.00" [readonly]="true"
+                    [(ngModel)]="category.fee">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col col-2 no-padding >
+                <ion-item class="input_item duration_cls">
+                  <ion-input type="number" class="textright" placeholder="Capacity" [(ngModel)]="category.capacity"
+                    [readonly]="true">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col col-2 style="padding-left: 15px !important;" >
+                <button ion-button clear item-right class="help_btn">
+                  <ion-icon name="md-create"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- AddOns Section -->
+    <ion-row style="background-color: #fff !important; border-bottom: 1px solid #ded8d8;">
+      <ion-col col-12>
+        <ion-card class="header_card">
+          <ion-card-header>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;"
+              (click)="toggleAddOnContent()">
+              <h2 style="margin-top: 5px;">Add Ons</h2>
+              <button ion-button clear item-right class="help_btn">
+                <ion-icon [name]="showAddOns ? 'remove' : 'add'"></ion-icon>
+              </button>
+            </div>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 *ngIf="showAddOns" class="addons_row">
+        <ion-card *ngFor="let addon of addons; let i = index"
+          style="margin: 0px 0px 6px 0px !important; width:auto !important;" class="card_cls">
+          <ion-card-header class="addon_header" (click)="showAddOnPopup(i)">
+            <ion-row>
+              <ion-col col-10 no-padding style="margin:auto">
+                <p class="danger_color2">{{ addon.add_on_config.name }}</p>
+              </ion-col>
+              <ion-col col-2 no-padding text-center (click)="showAddOnPopup(i)" style="margin:auto">
+                <button ion-button clear item-right class="help_btn">
+                  <ion-icon name="md-create"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Discounts Section -->
+    <ion-row class="discount_row">
+      <ion-col col-12>
+        <ion-card class="header_card">
+          <ion-card-header>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;"
+              (click)="showDiscountSection=!showDiscountSection">
+              <h2 style="margin-top: 5px;">Discount Details</h2>
+              <button ion-button clear item-right class="help_btn">
+                <ion-icon [name]="showDiscountSection ? 'remove' : 'add'"></ion-icon>
+              </button>
+            </div>
+          </ion-card-header>
+          <ion-card-content *ngIf="showDiscountSection" style="padding: 0px !important;">
+            <ion-card no-padding class="card_section" style="padding:10px 5px !important">
+              <ion-row style="">
+                <ion-col col-12 no-padding class="flex_col" style="" (click)="is_discounts_avail=!is_discounts_avail">
+                  <h2 style="">Discount Availability</h2>
+                  <!-- <label class="toggle" (click)="updateEventDiscountStatus()">
+                    <input type="checkbox" [disabled]="!eventDetails.is_paid" [(ngModel)]="is_discounts_avail">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                  </label> -->
+                  <button ion-button clear item-right class="help_btn" >
+                    <ion-icon [name]="is_discounts_avail ? 'remove' : 'add'"></ion-icon>
+                  </button>
+                </ion-col>
+                <ion-col col-12 *ngIf="discounts.length > 0 && is_discounts_avail" no-padding>
+                  <ion-card *ngFor="let discount of discounts; let i = index"
+                    style="margin: 0px 0px 6px 0px !important; width:auto !important;" class="card_cls">
+                    <ion-card-header class="addon_header" (click)="showDiscountPopup(i)">
+                      <ion-row>
+                        <ion-col col-10 no-padding style="margin:auto">
+                          <p class="danger_color2">{{ discount.name }}</p>
+                        </ion-col>
+                        <ion-col col-2 no-padding text-center style="margin:auto">
+                          <button ion-button clear item-right class="help_btn">
+                            <ion-icon name="md-create"></ion-icon>
+                          </button>
+                        </ion-col>
+                      </ion-row>
+                    </ion-card-header>
+                  </ion-card>
+                </ion-col>
+                <ion-col col-12 no-padding *ngIf="discounts.length == 0 && is_discounts_avail && eventDetails.is_paid"
+                  text-center>
+                  <button ion-button clear (click)="prepareDiscount()" class="add_btn">
+                    <span>Add Discount</span>
+                    <span><ion-icon name="add"></ion-icon></span>
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-card>
+
+            <ion-card no-padding class="card_section" style="padding:10px 5px !important">
+              <ion-row>
+                <ion-col col-12 no-padding class="flex_col" (click)="is_coupon_discounts_avail=!is_coupon_discounts_avail">
+                  <h2>Coupon Code</h2>
+                  <!-- <label class="toggle" (click)="updateEventCouponStatus()">
+                    <input type="checkbox" [disabled]="!eventDetails.is_paid" [(ngModel)]="is_coupon_discounts_avail">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                  </label> -->
+                  <button ion-button clear item-right class="help_btn" >
+                    <ion-icon [name]="is_coupon_discounts_avail ? 'remove' : 'add'"></ion-icon>
+                  </button>
+                </ion-col>
+                <ion-col col-12 *ngIf="coupon_discounts.length > 0 && is_coupon_discounts_avail" no-padding>
+                  <ion-card *ngFor="let discount of coupon_discounts; let i = index"
+                    style="margin: 0px 0px 6px 0px !important; width:auto !important;" class="card_cls">
+                    <ion-card-header class="addon_header" (click)="showDiscountCouponPopup(i)">
+                      <ion-row>
+                        <ion-col col-10 no-padding style="margin:auto">
+                          <p class="danger_color2">{{ discount.name }}</p>
+                        </ion-col>
+                        <ion-col col-2 no-padding style="text-align: center !important;">
+                          <button ion-button clear item-right class="help_btn">
+                            <ion-icon name="md-create"></ion-icon>
+                          </button>
+                        </ion-col>
+                      </ion-row>
+                    </ion-card-header>
+                  </ion-card>
+                </ion-col>
+                <!-- <button ion-fab mini (click)="prepareCoupon()" >
+                  <ion-icon name="add" style="background-color:#2b92bb !important; color: white !important"></ion-icon>
+                </button> -->
+                <ion-col col-12 no-padding text-center *ngIf="eventDetails.is_paid && is_coupon_discounts_avail">
+                  <button ion-button clear item-right (click)="prepareCoupon()" class="add_btn">
+                    <span>Add Coupon</span>
+                    <span><ion-icon name="add" style=""></ion-icon></span>
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-card>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Documents Section -->
+    <!-- <ion-row class="section_row" >
+      <ion-col col-12>
+        <h2>Additional Documents</h2>
+        <p class="date_para" *ngIf="this.eventDetails.doc_title!='' && this.eventDetails.doc_title!=undefined">
+          <span>{{this.eventDetails.doc_title}}</span>
+        </p>
+        <p class="date_para"
+          *ngIf="this.eventDetails.doc_description!='' && this.eventDetails.doc_description!=undefined">
+          <span>{{this.eventDetails.doc_description}}</span>
+        </p>
+        <div style="width:100%;height:100px;display: flex;" *ngIf="Policies.PolicyDocs.length > 0 ">
+          <div style="width:100px;height:100%;padding:5px;" *ngFor="let doc of this.Policies.PolicyDocs;let i=index;">
+            <img src="assets/images/pdf.svg" style="position: relative" *ngIf="doc.FileType=='pdf'" (click)="viewDocument(i)">
+            <img src="assets/images/image.svg" style="position: relative" *ngIf="doc.FileType=='jpg' || doc.FileType=='jpeg'" (click)="viewDocument(i)">
+          </div>
+        </div>
+      </ion-col>
+    </ion-row> -->
+
+    <!-- Sponsors Section -->
+    <!-- <ion-row class="section_row" *ngIf="eventDetails && eventDetails.event_sponsors && eventDetails.event_sponsors.length > 0">
+      <ion-col col-12>
+        <h2>Sponsors</h2>
+        <div style="width:100%;display:flex">
+          <div *ngFor="let sponsor of eventDetails.event_sponsors" style="margin: 0px 10px 0px 0px;">
+            <p>{{sponsor.name}}</p>
+            <img [src]="sponsor.sponsor_img_url" style="width:90px;height:90px;border-radius: 5px;">
+          </div>
+        </div>
+      </ion-col>
+    </ion-row> -->
+  </div>
+
+  <!-- the below is booking info sections tab -->
+  <div style="margin-bottom: 60px;"
+    *ngIf="!selectedType && user_bookings && user_bookings.data && user_bookings.data.length > 0">
+    <ion-row>
+      <ion-col col-12 style="padding:0px !important">
+        <ion-list>
+          <ion-grid>
+            <ion-row class="innercard_style row" (click)="ShowBookingDets(booking)"
+              *ngFor="let booking of user_bookings.data">
+              <ion-col col-3 class="margin-auto" text-center>
+                <p class="amt">
+                  <span *ngIf="currencyDetails!=undefined"
+                    style="margin-right: -4px">{{currencyDetails.CurrencySymbol}}</span>
+                  <span>{{booking.total_amount}}</span>
+                </p>
+                <p class="transactiondate">
+                  <span>{{booking.formatted_payment_date}}</span>
+                </p>
+              </ion-col>
+              <ion-col col-8 text-left class="mem_col margin-auto border-left">
+                <p class="member_name">{{booking.user.first_name}} {{booking.user.last_name}}</p>
+                <p style="margin: 0px 0px 3px 0px;" *ngIf="booking.booked_for!=undefined && booking.booked_for!=''">
+                  <span>Booked for </span><span class="member_name">{{booking.booked_for}}</span>
+                </p>
+                <div style="display: flex">
+                  <img src="assets/images/ticket.svg" style="width:16px;height:16px;margin: 0px 5px 0px 0px;">
+                  <p>Total : {{booking.no_of_tickets_booked}}</p>
+                </div>
+              </ion-col>
+              <ion-col col-1 text-center class="margin-auto">
+                <ion-icon style="font-size: 1.7em;color: rgba(34, 34, 34, 0.65);" name="ios-arrow-forward"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>
+
+
+<ion-fab mini right bottom #fab (click)="showEventActions()">
+  <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" id="fav-ico">
+    <ion-icon name="add"></ion-icon>
+  </button>
+</ion-fab>
+
+<!-- Custom popup for ticket edit -->
+<div class="custom-popup" *ngIf="isPopupVisible">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>Edit Ticket</h3>
+      <button class="close-button" (click)="isPopupVisible=false">×</button>
+    </div>
+    <ion-item class="input_item duration_cls">
+      <ion-label>Name</ion-label>
+      <ion-input type="text" class="textright" placeholder="name" [(ngModel)]="category.name">
+      </ion-input>
+    </ion-item>
+    <ion-item class="input_item duration_cls" *ngIf="eventDetails.is_paid">
+      <ion-label>Price({{currencyDetails.CurrencySymbol}})</ion-label>
+      <ion-input type="number" class="textright" placeholder="{{ currecncy }} 0.00" (keyup)="validateAmount($event)"
+        [(ngModel)]="category.price">
+      </ion-input>
+    </ion-item>
+    <ion-item class="input_item duration_cls" *ngIf="eventDetails.is_paid">
+      <ion-label>Fee({{currencyDetails.CurrencySymbol}})</ion-label>
+      <ion-input type="number" class="textright" placeholder="Fee {{ currecncy }} 0.00" (keyup)="validateAmount($event)"
+        [(ngModel)]="category.fee">
+      </ion-input>
+    </ion-item>
+    <ion-item class="input_item duration_cls">
+      <ion-label>Capacity/Quantity</ion-label>
+      <ion-input type="number" class="textright" placeholder="Capacity" [(ngModel)]="category.capacity">
+      </ion-input>
+    </ion-item>
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateTicketsInfo()">Update</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Custom popup for addon edit -->
+<div class="custom-popup" *ngIf="isAddonPopupVisible">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>{{selected_addon.add_on_config.name}}</h3>
+      <button class="close-button" (click)="isAddonPopupVisible=false">×</button>
+    </div>
+    <ion-item class="input_item">
+      <ion-row>
+        <ion-col col-12 no-padding class="flex_col">
+          <p class="para">Availability</p>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="selected_addon.status">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item *ngIf="selected_addon.status" class="input_item">
+      <ion-label>Free/Paid</ion-label>
+      <ion-select #mySelect [(ngModel)]="selected_addon.is_paid" (ionChange)="onPaidSelectionChange($event)">
+        <ion-option [value]="true">Paid</ion-option>
+        <ion-option [value]="false">Free</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="selected_addon.status" class="input_item">
+      <ion-label>Capacity/Quantity</ion-label>
+      <ion-input type="number" class="textright" [(ngModel)]="selected_addon.quantity"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selected_addon.is_paid" class="input_item">
+      <ion-label>Price({{currencyDetails.CurrencySymbol}})</ion-label>
+      <ion-input type="number" class="textright" [(ngModel)]="selected_addon.pricing"></ion-input>
+    </ion-item>
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isAddonPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateAddOnInfo()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom popup for discount edit -->
+<div class="custom-popup" *ngIf="isDiscountPopupVisible">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>{{discount_type == 1 ? "Create Discount":"Update Discount"}}</h3>
+      <button class="close-button" (click)="isDiscountPopupVisible=false">×</button>
+    </div>
+    <ion-item class="input_item">
+      <ion-label>Discount Name</ion-label>
+      <ion-input type="text" class="textright" [(ngModel)]="selected_discount.name"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selected_discount.discount_amount!=null" class="input_item">
+      <ion-label>Discount Amount({{currencyDetails.CurrencySymbol}})</ion-label>
+      <ion-input type="number" class="textright" style="text-align:right"
+        [(ngModel)]="selected_discount.discount_amount"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selected_discount.discount_percent!=null" class="input_item">
+      <ion-label>Discount Percent(%)</ion-label>
+      <ion-input type="number" class="textright" [(ngModel)]="selected_discount.discount_percent"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selected_discount.valid_from" class="input_item">
+      <ion-label>Valid From</ion-label>
+      <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" max={{maxDate}} [(ngModel)]="selected_discount.valid_from">
+      </ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="selected_discount.valid_til" class="input_item">
+      <ion-label>Valid Until</ion-label>
+      <!-- <ion-datetime displayFormat="DD/MM/YY" min="{{min}}" max="{{max}}" pickerFormat="DD MM YYYY" -->
+      <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" max={{maxDate}} [(ngModel)]="selected_discount.valid_til">
+      </ion-datetime>
+    </ion-item>
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isDiscountPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateDiscount()">{{discount_type == 1 ?
+        "Save":"Update"}}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom popup for coupon discount edit -->
+<div class="custom-popup" *ngIf="isCouponDiscountPopupVisible">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>{{discount_coupon_type == 1 ? "Create Coupon":"Update Coupon"}}</h3>
+      <button class="close-button" (click)="isCouponDiscountPopupVisible=false">×</button>
+    </div>
+    <ion-item class="input_item">
+      <ion-label>Coupon Name</ion-label>
+      <ion-input type="text" class="textright" [(ngModel)]="selected_discount_coupon.name"></ion-input>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label>Coupon Code</ion-label>
+      <ion-input type="text" class="textright" [disabled]="true"
+        [(ngModel)]="selected_discount_coupon.code"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selected_discount_coupon.discount_amount!=null" class="input_item">
+      <ion-label>Discount Amount({{currencyDetails.CurrencySymbol}})</ion-label>
+      <ion-input type="number" class="textright" style="text-align:right"
+        [(ngModel)]="selected_discount_coupon.discount_amount"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selected_discount_coupon.discount_percent!=null" class="input_item">
+      <ion-label>Discount Percent(%)</ion-label>
+      <ion-input type="number" class="textright" [(ngModel)]="selected_discount_coupon.discount_percent"></ion-input>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label>Max Coupons Allowed</ion-label>
+      <ion-input type="number" class="textright" [(ngModel)]="selected_discount_coupon.quota"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selected_discount_coupon.valid_from" class="input_item">
+      <ion-label>Valid From</ion-label>
+      <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY"
+        max={{maxDate}} [(ngModel)]="selected_discount_coupon.valid_from">
+      </ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="selected_discount_coupon.valid_til" class="input_item">
+      <ion-label>Valid Until</ion-label>
+      <!-- <ion-datetime displayFormat="DD/MM/YY" min="{{min}}" max="{{max}}" pickerFormat="DD MM YYYY" -->
+      <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" max={{maxDate}} [(ngModel)]="selected_discount_coupon.valid_til">
+      </ion-datetime>
+    </ion-item>
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isCouponDiscountPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateCouponDiscount()">{{discount_coupon_type == 1 ?
+        "Save":"Update"}}</button>
+    </div>
+  </div>
+</div>

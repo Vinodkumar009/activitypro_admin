@@ -1,0 +1,64 @@
+page-paymentgatewaysetup {
+
+    .half_circle{
+        //position: sticky;
+        //display: flex;
+        z-index: 9999;
+        position: fixed;
+        right: -154px;
+       // margin-left: 171px;
+        bottom: 28px;
+        width: 385px;
+        height: 200px;
+        border: 124px solid #2b92bb;
+        border-top-left-radius: 300px;
+        border-top-right-radius: 300px;
+        border-bottom: 0;
+        .instrct_txt{
+            margin-top: -34px !important;
+            margin-bottom: 0px !important;
+            margin-left: -85px !important; 
+            color: #fff !important;
+            width: 203px !important;
+        }
+        .skip_txt{
+            margin: 27px 0px 0px -70px !important;
+            color: rgba(224, 224, 224,0.65);
+            font-style: italic;
+            /* width: 40px; */
+            position: absolute;
+            border-bottom: 1px solid #fff;
+        }
+        .doit_txt{
+            margin: -90px 0px 0px 28px !important;
+            color: #fff;
+            font-style: italic;
+            position: absolute;
+            border-bottom: 1px solid #fff;
+        }
+        .fab_div{
+            // text-align: center;
+            // border-top-left-radius: 75px;
+            // border-top-right-radius: 75px;
+            // padding: 10px;
+            // border: 34px solid rgba(43, 146, 187, 0.65);
+            // border-bottom: 0;
+            // height: 101%;
+            text-align: center;
+            border-top-left-radius: 75px;
+            border-top-right-radius: 75px;
+            padding: 10px;
+            border: 34px solid rgba(43, 146, 187, 0.65);
+            border-bottom: 0;
+            height: 100%;
+            width: 100%;
+            /* margin-top: 16px; */
+            top: -0.1px !important;
+            position: absolute;
+            ion-fab{
+                left: 44px;
+                top: 39px;
+            }
+        }
+    }
+}

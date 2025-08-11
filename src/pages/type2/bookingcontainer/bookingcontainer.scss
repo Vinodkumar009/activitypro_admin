@@ -1,0 +1,100 @@
+page-bookingcontainer{
+    .slide-zoom{
+        height:100% !important ;
+    }
+    .scroll-content {
+        background-image: none !important;
+    }
+    .fabTop {
+        margin-bottom: 3px;
+    }
+    .choose-row {
+        // width: 106%;
+        margin-bottom: 5px;
+        padding:0px 5px;
+        button{
+            text-transform: capitalize !important;
+            font-size: 17px;
+        }
+        ion-col {
+            padding: 0 !important
+        }
+    }
+    .tab_header{
+       // color:rgba(0,0,0,0.85) !important;
+    }
+    .select-type{
+        ///background-color: rgb(234, 234, 234) !important ;
+        background-color:transparent !important;
+        width: 102%;
+        margin: 0px !important;
+        //color: #fab754 !important;
+        color:rgba(0, 0, 0, 0.85) !important;
+        border-radius: 0px !important;
+        box-shadow: none;
+    }
+
+    .venuerow{
+        padding: 5px;
+        background: white;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.32);
+        img{
+            width: 30px;
+            margin-top: 2px;
+        }
+        ion-col{
+            color: rgba(0, 0, 0, 0.85);
+        }
+        .select-icon{
+            display:none;
+        }
+        p{
+           
+            width: max-content;
+            padding: 5px 5px 7px 5px;
+             color: rgba(0, 0, 0, 0.85);
+        }
+        ion-select{
+            padding: 5px 5px 7px 5px;
+            max-width: 98%;
+        }
+    }
+    .selects{
+        //background: #fab754 !important;
+        background-color:transparent !important;
+        border-bottom: 1.5px solid #fab754;
+        color:#fab754 !important;
+        box-shadow: none;
+    }
+
+    .fabEmailText {
+        margin-left: -172px;
+        background-color: #2b92bb;
+        margin-top: -34px;
+        padding: 6px 12px 6px 12px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        border-radius: 3px;
+        margin-right: 36px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        /* margin-bottom: 2px; */
+        -webkit-transform: translate(0px, -20px);
+        transform: translate(0px, -4px);
+    }
+    .foogter-tool{
+        .fab-style{
+            border-radius: 50%;
+            background-color: rgb(43, 146, 187) !important;
+            color: white !important;
+            height: 40px;
+            width: 40px;
+            float: right;
+        }
+        .toolbar-background{
+            border-style: none !important;
+            background-color: transparent !important;
+        }
+    }
+}
+

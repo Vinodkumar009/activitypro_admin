@@ -33,7 +33,11 @@
 <body>
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
+  <ion-app>
+    <div id="custom-splash">
+      <img src="assets/imgs/bgi2.png" alt="Custom Splash" />
+  </div>
+  </ion-app>
 
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>
@@ -44,6 +48,9 @@
 
   <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
+
+  <!-- googleapis -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpcFMCrpkNA_WXypfOPcBqEgqAr6_DRbE" async defer></script>
 
 </body>
 </html>

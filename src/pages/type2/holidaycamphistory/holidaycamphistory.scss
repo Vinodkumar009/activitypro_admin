@@ -1,0 +1,116 @@
+page-holidaycamphistory {
+    .scroll-content {
+        // background-image: url("../assets/images/background/innerbg.png");
+        background-size: 100% 100%;
+        padding: 6px;
+        background-image: none !important;
+    }
+    .slider_list_margin {
+        margin: -1px 0 8px 0;
+    }
+    .duration {
+        ion-col {
+            padding: 0px;
+        }
+    }
+    .fee {
+        text-decoration: underline;
+    }
+    .btm_margin {
+        margin-bottom: 5px;
+    }
+    .div-box-margin {
+        margin-top: 10px;
+    }
+    .text-color {
+        color: red;
+    }
+    .update_btn {
+        background-color: rgba(109, 45, 45, 0.69);
+    }
+    .discount_btn {
+        background-color: #53a25d;
+    }
+    .discount_btn {
+        background-color: #53a25d !important;
+    } // .discount_btn{
+    //     .activated{
+    //         background-color: #36793f !important;
+    //     }
+    // }
+    .btn-width {
+        width: 40px;
+    }
+    $alert-md-title-font-size:13px;
+    $alert-ios-title-font-size:$alert-md-title-font-size;
+    $alert-ios-head-text-align:center;
+    $alert-md-head-text-align:$alert-ios-head-text-align;
+    .round_size {
+        // float: right;
+        // border: 1px solid green;
+        // width: 24px;
+        // height: 25px;
+        // border-radius: 24px;
+        // line-height: 22px;
+        // padding: 2px;
+        // color: green;
+        // font-weight: bold;
+        float: right;
+        border: 1px solid green;
+        width: 30px;
+        height: 25px;
+        border-radius: 24px;
+        line-height: 16px;
+        padding: 5px;
+        color: green;
+        font-weight: bold;
+    }
+    .nopad {
+        padding: 0px;
+    }
+    .ion_card {
+        margin: 6px 0px;
+        width: 100%;
+    }
+    .right_box {
+        line-height: 69px;
+        text-align: center;
+    }
+    .people_icon {
+        font-size: 2em !important;
+        color: #3ebbd1;
+        float: right;
+        margin-top: -16px;
+    }
+    .people_size {
+        // // margin-top: -24px;
+        // margin-top: -97%;
+        // font-size: 17px;
+        // font-weight: bold;
+        // color: #736c6c;
+        margin-top: -47%;
+        font-size: 17px;
+        font-weight: bold;
+        color: #736c6c;
+        text-align: center;
+    }
+    .campname {
+        color: #726f6f;
+        font-family: 'PT Sans', sans-serif;
+        font-size: 1.0em;
+        font-weight: 600;
+        margin-top: 9px;
+    }
+    .holidaycampcard_p {
+        font-family: 'PT Sans', sans-serif;
+        color: #746c6c;
+        font-size: 13px;
+    }
+    .elipsesdot {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 85%;
+        display: block;
+        overflow: hidden;
+    }
+}

@@ -1,0 +1,79 @@
+page-locationsetup {
+
+    ion-card{
+        margin:0px !important;
+        width:100% !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid #f6ae4d !important; .nonlocationcard  {
+          padding: 14px 0;
+      }
+    }
+    ion-card-content{
+        padding: 0px !important;
+    }
+    .Location-head{
+        font-size: 1.6rem;
+    color: #222;
+    padding: 10px;
+    border-bottom: 1px solid #ded8d8 !important;
+    }
+    .nonmembercard{
+        margin-top: 30px !important;
+
+    }
+    .nonlocationcard  {
+        padding: 14px 0;
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important;
+        // background: white !important;
+        background:  #f4efef !important;   
+    }
+    .location-cards > p{
+        line-height: 1.1;
+        color: #8c8c8c;
+    }
+    .location-cards > h3{
+        font-size: 15px;
+        color: blue;
+        font-weight: 600;
+    }
+ .location-cards{
+     padding: 10px 10px;
+border-bottom: yellow;
+ }
+ .all{
+    // border-left: 3px solid #35adff;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-image: 
+      -webkit-gradient(linear, 0 0, 0 100%, from(#35adff), to(#7dbce6)) 1 100%;
+    -webkit-border-image: 
+      -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+    -moz-border-image:
+      -moz-linear-gradient(#35adff, #7dbce6) 1 100%;    
+    -o-border-image:
+      -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+    border-image:
+      linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+ }
+ .border-left-style{
+    height: 70px;
+    position: absolute;
+    top: 33px;
+    left: 7px;
+}
+  .name{
+    color: #5ea68d;
+    font-size: 18px !important;
+  }
+.card-text {
+    color: #c5b495;
+    width: 100%;
+}
+ .card-text > span {
+    color: gray;
+}
+}

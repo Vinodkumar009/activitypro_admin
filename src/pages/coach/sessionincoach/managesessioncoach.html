@@ -1,0 +1,188 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{LangObj.manageSes_manageGp}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.manageSes_manageGp}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+    <!--Tab1-->
+
+
+    <ion-grid class="nopad">
+        <ion-row class="border-bottom-2px ">
+            <ion-col col-12 class="nopad">
+                <ion-item class="venueionitem">
+                    <!-- <ion-label>Venue</ion-label> -->
+                    <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()" class="venuedropdown">
+                        <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row class="top-row">
+            <ion-col col-12 class="padding-0 allign-center">
+                <label class="toggle">
+                    <input type="checkbox"  [(ngModel)]="sessionType" (ngModelChange)="getSessionLists()" >
+                    <span data-unchecked="Active   : :" data-checked=" : :   Past" ></span>
+                  </label>
+            </ion-col>
+          </ion-row>
+    </ion-grid>
+    <!-- <ion-row class="choose-row top-row">
+        <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(true)"
+                [class.selected]="selectedType">{{LangObj.hldycamp_active}}</button>
+        </ion-col>
+        <ion-col col-6>
+            <button ion-button class="select-type" (click)="changeType(false)"
+                [class.selected]="!selectedType">{{LangObj.hldycamp_past}}</button>
+        </ion-col>
+    </ion-row> -->
+
+
+
+   
+
+
+
+    <div>
+        <div *ngFor="let session of  sessionObj; let i=index" class="mar-top-10">
+            <ion-list class="card_style">
+                <!-- innercard_style -->
+                <ion-grid>
+                    <ion-row class="margin-style-left">
+                            <ion-col col-1>
+                                    <div  class="all border-left-style"></div>
+                                </ion-col>
+                        <!-- (click)="presentActionSheet(session)" -->
+                        <ion-col col-3 class="leftbox border-style-bottom" (click)="goToSessionDetailsPage(session)" style="font-family: 'Lato', sans-serif;">
+                            <p class="p1" style="font-size: 11px;font-weight: 400;color: green;">{{session.Days}}</p>
+                            <p class="p1" style="font-size: 12px;margin-top: 4px;border-bottom: .1px solid #bebcbc;padding-bottom: 3px;">
+                                <span style=" color: green;font-weight: bold;"> {{session.StartTime}},</span>
+                                <span style="font-weight: 100;">{{session.Duration}}min</span>
+                            </p>
+    
+                            <p class="p1" *ngIf="((iscoach_see_revenue) && (session.PaymentOption==undefined || session.PaymentOption==100|| session.PaymentOption=='100'))" style="color: #111164;margin-top: 4px;">
+                                <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.SessionFee}}</p>
+                            <p class="p1" *ngIf="session.PaymentOption==104 || session.PaymentOption=='104'" style="color:#111164;margin-top: 4px;">
+                                <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.FullInstallmentAmountForMember}}</p>
+                            <p class="p1" *ngIf="((iscoach_see_revenue) && (session.PaymentOption==undefined || session.PaymentOption==101|| session.PaymentOption=='101'))" style="color: #111164;margin-top: 4px;">
+                                <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.AmountForOneDayPerWeekForMember}}</p>
+                            <p class="p1" *ngIf="((iscoach_see_revenue) && (session.PaymentOption==undefined || session.PaymentOption==102|| session.PaymentOption=='102'))" style="color: #111164;margin-top: 4px;">
+                                <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.FeesPerDayForMember}}</p>
+    
+                        </ion-col>
+                        <ion-col  col-6 class="border-left border-style-bottom" (click)="goToSessionDetailsPage(session)">
+                            <p class="sessiondetails cust_margin themeheaderfont elipses">
+                                {{session.CoachName}}
+                            </p>
+    
+                            <p class="sessionName cust_margin"> {{session.SessionName}}</p>
+    
+                            <p class="activity cust_margin elipses" style="color: #444242;">{{session.ActivitieDetails}}</p>
+                        </ion-col>
+    
+                        <ion-col  col-2 style="text-align:center;" (click)="memberDetailsForGroup(i)" class="border-style-bottom">
+                            <p class="paidmembercount">{{paidMemberLength[i]}}/<span class="totalcount">{{sessionMemberLength[i]}}</span></p>
+                        </ion-col>
+    
+                    </ion-row>
+    
+                </ion-grid>
+            </ion-list>
+            <div *ngIf="myIndex==i">
+                <ion-card *ngFor="let memberDetials of  sessionMemberDetails" class="membercard">
+                    <ion-card-content>
+                        <ion-grid style="max-height: 40px;">
+                            <ion-row>
+                                <!-- col-sm-10 col-md-10 col-lg-10 col-xl-10 -->
+                               
+                                <ion-col col-8>
+                                    {{memberDetials.FirstName}} {{memberDetials.MiddleName}} {{memberDetials.LastName}}
+                                </ion-col>
+                                <ion-col col-2 style="padding: 5px 0px 0px 0px;">
+                                    {{memberDetials.Age}}Yrs
+                                </ion-col>
+                                <ion-col col-2>
+                                    <ion-icon name="checkmark" class="checkmark_color" *ngIf="memberDetials.AmountPayStatus =='Paid'"></ion-icon>
+                                    <!-- <ion-icon name="ios-close-circle-outline" class="danger_color" *ngIf="memberDetials.AmountPayStatus=='Due'"></ion-icon> -->
+                                    <img src="assets/images/paymentdue.png" *ngIf="memberDetials.AmountPayStatus=='Due'" class="dueimage">
+                                    <img src="assets/images/acknowledgment.png" *ngIf="memberDetials.AmountPayStatus=='Pending Verification'" class="ack-image">
+    
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+    
+                    </ion-card-content>
+    
+                </ion-card>
+            </div>
+        </div>
+    </div>
+   
+
+
+    <ion-card class="ion_card" *ngIf="isShowMessage4 && coaches.length ==0">
+        <ion-card-content>
+            <p class="danger_color2">No coach/instructor assigned to this venue...</p>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="ion_card" *ngIf="isShowMessage1 && sessionObj.length ==0">
+        <ion-card-content>
+            <p class="danger_color2">No Active Session...</p>
+        </ion-card-content>
+    </ion-card>
+
+
+    <!-- <ion-fab right bottom>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="gotoSession()" style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab> -->
+     <!-- Real floating action button, fixed. It will not scroll with the content -->
+
+
+  <!-- <ion-fab  right bottom>
+    <button ion-fab mini><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="gotoSession()" ><ion-icon name="logo-facebook"></ion-icon></button>
+      <button ion-fab (click)="goToMonthlySession()"><ion-icon name="logo-twitter"  ></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab> -->
+
+
+
+  
+
+
+
+
+</ion-content>

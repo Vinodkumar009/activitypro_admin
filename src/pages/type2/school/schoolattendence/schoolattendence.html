@@ -1,0 +1,105 @@
+<!--
+  Generated template for the SchoolattendencePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>School Attendance</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg social-cards">
+    <ion-card class="card_list hadder-card" *ngIf="sessionInfo">
+        <ion-card-content style="padding:0px !important">
+            <p class="dotted1" style="">{{sessionInfo.days}}</p>
+            <p class="dotted1" style="margin-top:-7px">{{sessionInfo.start_time}} -
+                {{sessionInfo.end_time}}</p>
+            <ion-row>
+                <ion-col col-md-4 col-sm-4 col-4 style="text-align:center;padding:0px;margin:auto;">
+                    <img class="img1" [src]="sessionInfo.CoachDetails[0].profile_image">
+                    <p class="coachname">{{sessionInfo.coach_names}}</p>
+                </ion-col>
+                <ion-col col-md-8 col-sm-8 col-8 class="border-left">
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{sessionInfo.school_session_name}}</span>
+                    </p>
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{sessionInfo.ClubDetails.ClubName}}</span>
+                    </p>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="card_list">
+        <ion-card-content class="card_content">
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-12 class="right_pad">
+                        <ion-item class="member-item">
+                            <ion-label>All</ion-label>
+                            <ion-checkbox [(ngModel)]="isSelectAll" (click)="selectAllToggole()" [disabled]="action_type==2 || attendance_status == 2">
+                            </ion-checkbox>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+    <!-- </ion-card-content>
+    </ion-card> -->
+    <div class="block_height" *ngIf="attendance_users && attendance_users.length > 0">
+        <ion-list class="margin marginleftright">
+            <div *ngFor="let attendance_user of attendance_users;let i=index" class="margin-bottom-2 pmargin member-item">
+                <ion-row>
+                    <ion-col col-8>
+                        <ion-item style="background: transparent !important;">
+                            <ion-label>{{attendance_user.first_name}} {{attendance_user.last_name}} 
+                                <span style="font-size: 14px;">({{this.commonService.getAge(attendance_user.dob)}}Yrs)</span>
+                                </ion-label>
+                            <ion-checkbox [(ngModel)]="attendance_user.isSelected"
+                                [disabled]='attendance_user.isCancelled' (click)="changeMembers()"></ion-checkbox>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-1 class="margin_auto" *ngIf="attendance_status!=2">
+                        <ion-icon name="md-trophy" class="trophy_icon" (click)="findOutStarIfSession(i)" [ngClass]="attendance_user.star_of_the_week ? 'active' : 'inactive'"></ion-icon>
+                    </ion-col>
+                    <ion-col col-2 class="margin_auto" text-center *ngIf="attendance_status!=2">
+                        <ion-input class="points" [disabled]='attendance_user.isCancelled' type="number" [(ngModel)]="attendance_user.leaderboard_points"></ion-input>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ion-list>
+    </div>
+
+    <!-- <ion-fab bottom right class="edit" (click)="editMode()" *ngIf="attendance_status==1">
+      <button ion-fab ><ion-icon name="md-create" ></ion-icon></button>
+    </ion-fab> -->
+</ion-content>
+<ion-footer>
+    <ion-row *ngIf="attendance_status==2 || action_type == 2">
+        <ion-col col-8>
+            <ion-item class="border">
+                <ion-label>Cancel</ion-label>
+                <ion-select [(ngModel)]="cancelReason" disabled="{{attendance_status == 2}}">
+                    <ion-option value="">Reason</ion-option>
+                    <ion-option value="Rainy Day">Rainy Day</ion-option>
+                    <ion-option value="Snow in the Court">Snow in the Court</ion-option>
+                    <ion-option value="Half Term">Half Term</ion-option>
+                    <ion-option value="Slippery Court"> Slippery Court</ion-option>
+                    <ion-option value="Others">Others</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-col>
+        <ion-col col-4>
+            <button ion-button block [disabled]="attendance_status == 2" class="timekare-primary-btn" (click)="saveAttendanceDetails()">Save</button>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="attendance_status!=2 && action_type!=2">
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" (click)="saveAttendanceDetails()">Update Attendance</button>
+        </ion-col>
+    </ion-row>
+</ion-footer>

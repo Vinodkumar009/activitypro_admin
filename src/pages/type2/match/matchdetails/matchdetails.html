@@ -1,0 +1,192 @@
+<!--
+  Generated template for the MatchdetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Match Details</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div style="background-color: #f2f5fa">
+    <ion-row class="cardrow">
+      <ion-col col-12>
+        <!-- details -->
+
+        <p class="largetext">
+          <span>{{match.MatchTitle}}</span>
+          <span>{{match.ActivityName}}</span>,
+          <span>{{match.MatchType==0?"Singles":"Doubles"}}</span>
+        </p>
+
+        <p class="largetext" *ngIf="match.homeUserName || match.awayUserName">
+          <span>Hosted by:</span>
+          <span class="largetext">{{match.homeUserName}} {{match.awayUserName}}</span>
+        </p>
+        <!-- <p class="largetext">{{host.Name}}</p> -->
+        <p style="margin: 5px 0px;display: flex;align-items: center">
+          <span><ion-icon class="smalltext" name="md-calendar"></ion-icon></span>
+          <span class="largetext" style="font-weight: 600;">{{formatMatchStartDate(match.MatchStartDate)}}</span>
+        </p>
+
+        <p style="margin: 5px 0px;display: flex;align-items: center">
+          <span><ion-icon class="smalltext" name="pin"></ion-icon></span>
+          <span class="smalltext">{{match.VenueName}}</span>
+        </p>
+        <p style="position: absolute;top:0px;right:3px;display:flex;align-items: center;">
+          <!-- Note: AllMatchData doesn't have MatchVisibility, using a default icon -->
+          <span><ion-icon style="padding:0px 10px 0px 10px;" name="ios-globe"></ion-icon></span>
+        </p>
+
+        <button class="deletebtn" ion-button (click)="deleteConfirm()" clear *ngIf="match">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+
+        <!-- <div>
+              <ion-fab left bottom>
+                <button ion-fab mini style="background-color: #2b92bb" style="
+                    background-color: #2b92bb !important;
+                    color: white !important;
+                  ">
+                  <ion-icon name="mail"></ion-icon>
+                </button>
+              </ion-fab>
+              <ion-fab right bottom>
+                <button ion-fab mini style="background-color: #2b92bb" style="
+                    background-color: #2b92bb !important;
+                    color: white !important;
+                  " (click)="gotoMatchInvitePlayers()">
+                  <ion-icon name="chatbubbles"></ion-icon>
+                </button>
+              </ion-fab>
+            </div> -->
+      </ion-col>
+    </ion-row>
+  </div>
+  <!-- middle toggle button -->
+  <div>
+    <div style="padding-bottom: 10px">
+      <ion-card style="width: 100%; margin: 0px">
+        <ion-card-content style="padding: 0px">
+          <ion-row>
+            <ion-col col-6>
+              <button ion-button class="select-type" (click)="changeType(true)" [class.selected]="activeType">
+                Active
+              </button>
+            </ion-col>
+            <ion-col col-6>
+              <button ion-button class="select-type" (click)="changeType(false)" [class.selected]="!activeType">
+                Invited ({{participants.length}})
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <!-- lower half screen -->
+    <div class="" *ngIf="activeType" class="teams_dev">
+      <!-- the below is to show when result not yet published -->
+      <ion-row *ngIf="(teams && teams.length > 0)" class="teams_row">
+        <ion-col *ngFor="let team of teams;let i=index;" col-12>
+          <div class="participant_div" *ngIf="team.Participants.length > 0">
+            <ion-item *ngFor="let participant of team.Participants;let j=index;">
+              <p *ngIf="participant.User.isUserAvailable" item-left [style.color]="getColor(i)">
+                {{participant.User.FirstName}} {{participant.User.LastName}}</p>
+              <p *ngIf="!participant.User.isUserAvailable" item-left [style.color]="getColor(i)">Add participant</p>
+              <button ion-button block [disabled]="!this.isCanEditTeams" (click)="manipulateUser(participant.User,i,j)"
+                [ngStyle]="{'background-color':participant.User.isUserAvailable ? 'red' : 'green' }" item-right>
+                <ion-icon name='add' size="large" *ngIf="!participant.User.isUserAvailable"></ion-icon>
+                <ion-icon name='remove' size="large" *ngIf="participant.User.isUserAvailable"></ion-icon>
+              </button>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- the below is to show when result published already - commented out since AllMatchData doesn't have Result -->
+      <!-- <ion-row class="teams_row"
+        *ngIf="(teams && teams.length > 0) && ((match) && (match.Result && match.Result.ResultStatus==1))">
+        <ion-col *ngFor="let team of teams;let i=index;" col-12>
+          <div class="participant_div" *ngIf="team.Participants.length > 0">
+            <ion-row class="user_sets_row">
+              <ion-col col-12 class="margin_auto">
+                <div style="width:100%;display: flex;align-items: center;justify-content: center">
+                  <span *ngFor="let set of team.Sets_Points;let k=index">
+                    <ion-input type="number" [readonly]="true" [style.color]="i==0 ? '1px solid blue' : '1px solid red'"
+                      [style.border]="i==0 ? '1px solid blue' : '1px solid red'"
+                      [(ngModel)]="team.Sets_Points[k]"></ion-input>
+                  </span>
+                </div>
+                <div>
+                  <p class="result_para">
+                    <span *ngIf="team.IsWinner" style="margin-right: 5px;"><ion-icon name="md-trophy"></ion-icon></span>
+                    <span style="font-size: 20px; " *ngFor="let participant of team.Participants;let j=index;"
+                      [style.color]="getColor(i)">{{participant.User?.FirstName}} {{participant.User?.LastName}}<span
+                        *ngIf="j!=team.Participants.length-1">,</span></span>
+                  </p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+          <div *ngIf="i==0" class="vs_div">
+            <p>VS</p>
+          </div>
+        </ion-col>
+        <ion-col col-12>
+          <p style="font-size: 18px;margin: 5px 0px">
+            <span>Notes/Comments</span>
+            <span float-right>{{getFormattedDate(winner_team.comments_date)}}</span>
+          </p>
+          <hr style="background-color: rgba(0, 0, 0, 0.30);">
+          <ion-item>
+            <!-- <ion-label floating style="padding-left: 10px">Match Description</ion-label> -->
+      <p>{{winner_team.comments}}</p>
+      </ion-item>
+      </ion-col>
+      </ion-row>
+      <ion-row *ngIf="teams && teams.length == 0">
+        <ion-col col-12 text-center>
+          <p>No active teams found</p>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row style="margin-top: 15px;" *ngIf="(teams && teams.length > 0) && (match.Result === null)">
+            <ion-col col-12 *ngIf="isTeamParticipantsAvail && !this.isCanEditTeams">
+              <button ion-button block class="btn_BG" (click)="goto_publishresult()">Publish Result</button>
+            </ion-col>
+          </ion-row> -->
+    </div>
+
+    <div *ngIf="!activeType">
+      <ion-row *ngIf="participants && participants.length > 0" class="invitedlist_row">
+        <ion-col col-12>
+          <ion-item *ngFor="let part of participants" (click)="presentActionSheet(part)">
+            <p item-left>{{part.User?.FirstName}} {{part.User?.LastName}}</p>
+            <p item-right class="status_para"
+              [style.color]="part.InviteStatus==0?'#2b92bb':part.InviteStatus==1?'green':'red'">
+              {{part.InviteStatus==0?"Pending":part.InviteStatus==1?"Accepted":"Rejected"}}
+            </p>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="(isTeamParticipantsAvail) && (teams && teams.length > 0) && (match.Result === null) && (activeType)">
+  <ion-row>
+    <ion-col col-12 no-padding>
+      <button ion-button block class="btn_BG" (click)="goto_publishresult()">Publish Result</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+
+<ion-fab right bottom *ngIf="(!activeType) && (match) && (!match.Result || !match.Result.CreatedAt)">
+  <button ion-fab mini (click)="gotoMatchInvitePlayers()"
+    style="background-color: #2b92bb !important; color: white !important">
+    <ion-icon name="add"></ion-icon>
+  </button>
+</ion-fab>

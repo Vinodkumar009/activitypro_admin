@@ -1,0 +1,45 @@
+<!--
+  Generated template for the AgecategoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Age Category</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-content padding>
+    <ion-row>
+      <ion-col col-12>
+        <ion-list>
+          <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
+            *ngFor="let category of ageCategories;let i=index">
+            <ion-card-content (click)="showAcionSheet(category)">
+              <ion-row>
+                <ion-col col-8>
+                  <p class="p1">{{category.CategoryName}} </p>
+                </ion-col>
+                <ion-col col-4 class="catg_age_col">
+                  <p class="p2"><span>{{category.AgeFrom}}</span><span>-</span><span>{{category.AgeTo}} Years</span></p>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isNoCatgs" class="not_found">
+      <ion-col col-12 text-center>
+        <p>No Age Categories Found</p>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+</ion-content>
+
+<ion-fab right bottom  (tap)="createCategory()" class="trash_icon">
+  <button ion-fab mini><ion-icon name="add"></ion-icon></button>
+</ion-fab>

@@ -1,0 +1,30 @@
+page-tennis-score-input {
+    .score-input-container {
+        padding: 20px;
+
+        h3 {
+            color: #154766;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .set-input {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 8px;
+
+            h4 {
+                color: #2b92bb;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+            ion-item {
+                background: white;
+                margin-bottom: 5px;
+                border-radius: 4px;
+            }
+        }
+    }
+}

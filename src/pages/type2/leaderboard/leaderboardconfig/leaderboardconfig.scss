@@ -1,0 +1,32 @@
+page-leaderboardconfig {
+    .scroll-content {
+        background-size: 100% 100%;
+        margin-top: 57px;
+        padding: 14px 5px 8px 5px !important;
+        //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    }
+    ion-item{
+        padding-left: 9px !important;
+    }
+    .item-inner {
+        //border-bottom: none !important;
+        padding-right: 0px !important;
+        ion-label{
+            margin: 8px 8px 8px 0 !important;
+        }
+    }
+    ion-card-content{
+        padding: 2px 5px !important;
+    }
+    .flex_col{
+        display: flex;
+        justify-content: space-between;
+        p{
+            line-height: 30px;
+            font-size: 16px;
+            font-weight: 400;
+            color:#222;
+        }
+    }
+
+}

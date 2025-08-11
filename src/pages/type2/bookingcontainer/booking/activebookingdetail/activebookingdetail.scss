@@ -1,0 +1,50 @@
+page-activebookingdetail {
+    .scroll-content {
+      //  padding: 16px 9px !important;
+        background-image: none !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    }
+    .canceltext{
+        float: right;
+        margin-right: 7px;
+        margin-top: -2px;
+        color: blue;
+    }
+   
+    .rowofeach{
+        border-bottom: 1px solid rgba(0,0,0,0.23);
+        padding-left: 8px;
+        .heading_p{
+            margin: 8px 0 -4px 0;
+    font-size: 14px;
+    color: rgba(0,0,0,0.30);
+
+        }
+        .heading_name{
+            margin: 8px 0 -4px 0;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.85);
+   // font-weight: 500;
+    text-transform: capitalize;
+        }
+        .call{
+            margin: 5px 0 0px 0;
+        }
+        .p1{
+            color: rgba(0,0,0,0.85);
+            font-size: 16px;
+           // font-weight: 500;
+        }
+        .p2{
+            font-size: 16px;
+           // font-weight: 200;
+            color: rgba(0,0,0,0.65);
+        }
+    }
+
+    .btn{
+        color: rgba(0, 0, 0 , 0.5);
+        background-color: rgba(128, 128, 128, 0.35);
+        float: right;
+    }
+} 

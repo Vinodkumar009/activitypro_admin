@@ -1,0 +1,54 @@
+{
+    "LEAGUE_FIXTURE_ID": "TNS_2024_001",
+    "POTM": [
+        {
+            "PLAYER_ID": "12345",
+            "PLAYER": "Brian Lee",
+            "TEAM": "HOME",
+            "TEAM_ID": "HT001"
+        }
+    ],
+    "HOME_TEAM": {
+        "IS_WINNER": true,
+        "NAME": "Home Team",
+        "TEAM_ID": "HT001",
+        "SETS_WON": 3,
+        "GAMES_WON": 19,
+        "ACES": 12,
+        "DOUBLE_FAULTS": 2,
+        "FIRST_SERVE_PERCENTAGE": "68%",
+        "WINNERS": 35,
+        "UNFORCED_ERRORS": 18,
+        "BREAK_POINTS_WON": 4
+    },
+    "AWAY_TEAM": {
+        "IS_WINNER": false,
+        "NAME": "Away Team",
+        "TEAM_ID": "AT001",
+        "SETS_WON": 0,
+        "GAMES_WON": 12,
+        "ACES": 8,
+        "DOUBLE_FAULTS": 4,
+        "FIRST_SERVE_PERCENTAGE": "62%",
+        "WINNERS": 28,
+        "UNFORCED_ERRORS": 25,
+        "BREAK_POINTS_WON": 2
+    },
+    "SET_SCORES": [
+        {
+            "SET_NUMBER": 1,
+            "SCORE": "6-4",
+            "WINNER": "HOME"
+        },
+        {
+            "SET_NUMBER": 2,
+            "SCORE": "7-5",
+            "WINNER": "HOME"
+        },
+        {
+            "SET_NUMBER": 3,
+            "SCORE": "6-3",
+            "WINNER": "HOME"
+        }
+    ]
+}

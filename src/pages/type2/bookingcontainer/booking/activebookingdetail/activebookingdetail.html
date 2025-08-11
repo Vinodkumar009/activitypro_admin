@@ -1,0 +1,96 @@
+<!--
+  Generated template for the BookingPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Active Booking Details</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <ion-row class="rowofeach">
+        <ion-col col-6>
+            <p *ngIf="slotInfo.name" class="heading_name">{{slotInfo.name}}</p>
+        </ion-col>
+        <ion-col col-1  text-right>
+            <ion-icon *ngIf="slotInfo.phone_number && slotInfo.phone_number != ''" (click)="callToMember()" name="ios-call-outline"></ion-icon>
+        </ion-col>
+        <ion-col col-5 text-left>
+            <p *ngIf="slotInfo.phone_number && slotInfo.phone_number != ''" class="heading_p">{{slotInfo.phone_number}}</p>
+        </ion-col>
+      
+        <ion-col col-4>
+            <p class="p1">{{slotInfo.courtname}}:</p>
+            <p *ngIf="slotInfo.purpose" class="p1">Purpose:</p>
+        </ion-col>
+        <ion-col col-8>
+            <p *ngIf="slotInfo.table_capacity" class="p2"><span *ngIf="slotInfo.floor">{{slotInfo.floor}}, </span><span>{{slotInfo.table_capacity}}</span></p>
+            <p *ngIf="slotInfo.table_capacity == undefined ||slotInfo.table_capacity == '' " class="p2"> <span *ngIf="slotInfo.surface">{{slotInfo.surface}}, </span><span>{{slotInfo.court_type}}</span></p>
+            <p *ngIf="slotInfo.purpose" class="p2">{{slotInfo.purpose}}</p>
+        </ion-col>
+    </ion-row>
+    <ion-row class="rowofeach">
+        <ion-col col-12>
+            <p class="heading_p">Booking Details</p>
+        </ion-col>
+        <ion-col col-4>
+            <p class="p1">Duration:</p>
+            <p class="p1">Start:</p>
+            <p class="p1">End:</p>
+        </ion-col>
+        <ion-col col-8>
+           <p class="p2">{{Duration}} mins</p>
+           <p class="p2">{{getTime(slotInfo.booking_date)}} {{slotInfo.slot_start_time}}</p>
+           <p class="p2">{{getTime(slotInfo.booking_date)}} {{slotInfo.slot_end_time}}</p>
+        </ion-col>
+    </ion-row> 
+    <ion-row class="rowofeach">
+        <ion-col col-12>
+            <p class="heading_p">Payment Details</p>
+        </ion-col>
+        <ion-col col-4>
+            <p class="p1">Amount:</p>
+            <p *ngIf="slotInfo.order_id" class="p1">Txn ID:</p>
+         
+        </ion-col>
+        <ion-col col-8>
+           <p *ngIf="currencyDetails" class="p2">{{currencyDetails.CurrencySymbol}} {{slotInfo.price}}</p>
+           <p style="margin-bottom: 0;" *ngIf="currencyDetails" class="p2"><span *ngIf="slotInfo.order_id">{{slotInfo.order_id}} </span></p>
+           <!-- <p style="margin: 0;"><span style="font-size: 14px;
+            color: rgba(0,0,0,0.5);">{{slotInfo.Member[0].TransactionId}}</span></p> -->
+          
+        </ion-col>
+        <ion-col col-4>
+                       
+            <p style="margin: 0 0 15px 0;" class="p1">Txn Date:</p>
+        </ion-col>
+        <ion-col col-8>
+           <p style="margin: 0 0 15px 0;" *ngIf="currencyDetails" class="p2">{{slotInfo.booking_transaction_time}}</p>
+        </ion-col>
+        
+    </ion-row>
+
+    <ion-row *ngIf="slotInfo.Comments" class="rowofeach">
+        <ion-col col-12>
+            <p class="heading_p">Comments</p>
+        </ion-col>
+      
+        <ion-col col-12>
+           <p class="p2">{{slotInfo.Comments}}</p>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!fromDashboard">
+        <ion-col col-12>
+            <button ion-button (click)="showConfirm()" class="btn">Cancel Booking</button>
+        </ion-col>   
+        <ion-col (click)="gotoBulkCancel()" col-12>
+            <p class="canceltext">Cancel Bulk Booking</p>
+        </ion-col> 
+    </ion-row>
+</ion-content>
+

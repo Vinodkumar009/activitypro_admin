@@ -1,0 +1,48 @@
+page-activitymodal {
+
+        width: 85% !important;
+        margin-top: 35% !important;
+        margin-left: 7% !important;
+        opacity: 0.9;
+        height: 65% !important;
+        border: 2px solid #cec9c9;
+    .scroll-content {
+        //padding: 6px !important;
+        background-image: none !important;
+        background:white !important;
+    }
+    ion-col{
+        //border-top: 1px solid gray;
+        border-bottom:1px solid rgb(223, 219, 219);
+       padding: 8px !important;
+        ion-label{
+            font-size: 15px !important;
+        }
+    }
+    .bord{
+        border-left: 1px solid rgb(223, 219, 219);
+    }
+    .btn{
+        height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: gray;
+    transform: translate(9px,-8px);
+    }
+    .ico{
+        color: white;
+        font-size: 25px !important;
+    }
+    .act_icons{
+        color: #3068C7;
+        font-size: 25px !important;
+
+    }
+    .act_name, .act_icons{
+        font-size: 16px;
+    }
+    .act_name{
+        margin-left: 2px;
+    }
+    
+}

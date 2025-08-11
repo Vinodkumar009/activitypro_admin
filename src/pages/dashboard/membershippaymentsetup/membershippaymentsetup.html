@@ -1,0 +1,115 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Membership Payment Setup</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-slides class="group-slides" [slidesPerView]="2.2">
+        <ion-slide *ngFor="let club of Venues">
+            <ion-card class="facilityCard" [class.selected]="club.IsSelect" (click)="selectVenue(club)">
+                <ion-card-content style="padding: 0 !important;">
+
+                    <p class="facilities-text"> {{club.ClubName}}</p>
+
+                </ion-card-content>
+            </ion-card>
+        </ion-slide>
+        <!-- <ion-slide>
+            <ion-card class="facilityCard" (click)="allVenue()">
+                <ion-card-content style="padding: 10px 3px 5px 3px !important;" >
+                    <p class="facilities-text">All</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-slide> -->
+        <ion-slide>
+            <ion-card></ion-card>
+        </ion-slide>
+
+    </ion-slides>
+    <h6 class="h6">Select Payment Method</h6>
+    <ion-row wrap style="margin:15px 0" class="allpayment">
+        <ion-col col-4 ngDefaultControl (click)="selectPayment('Stripe')"
+            [ngClass]="{'PaymentAssigned': IsAnyPaymentMethodDB == 'Stripe'}" [class.selected]="PaymentMethod.Stripe"
+            class="dashboard_col_item_block">
+            <img class="iconpayment" src="assets/images/stripe2.png">
+            <p class="paymentname">Stripe</p>
+        </ion-col>
+        <ion-col col-4 ngDefaultControl (click)="selectPayment('PayTm')"
+            [ngClass]="{'PaymentAssigned': IsAnyPaymentMethodDB == 'PayTm'}" [class.selected]="PaymentMethod.PayTm"
+            class="dashboard_col_item_block">
+            <img class="iconpayment" src="assets/images/paytm.svg">
+            <p class="paymentname">Paytm</p>
+        </ion-col>
+        <ion-col col-4 ngDefaultControl (click)="selectPayment('PayPal')"
+            [ngClass]="{'PaymentAssigned': IsAnyPaymentMethodDB == 'PayPal'}" [class.selected]="PaymentMethod.PayPal"
+            class="dashboard_col_item_block">
+            <img style="height: 62%; width: 100%;" src="assets/images/paypal.svg">
+            <p style="margin: -4px !important;">PayPal</p>
+        </ion-col>
+        <ion-col col-4 ngDefaultControl (click)="selectPayment('BACS')"
+            [ngClass]="{'PaymentAssigned': IsAnyPaymentMethodDB == 'BACS'}" [class.selected]="PaymentMethod.BACS"
+            class="dashboard_col_item_block">
+            <img style="height: 38%;padding: 4px;" src="assets/images/BACS1.png">
+            <p style="margin: 16px !important;">Bacs</p>
+        </ion-col>
+        <ion-col col-4 ngDefaultControl (click)="selectPayment('Cash')"
+            [ngClass]="{'PaymentAssigned': IsAnyPaymentMethodDB == 'Cash'}" [class.selected]="PaymentMethod.Cash"
+            class="dashboard_col_item_block">
+            <img style="height: 50%;width: 71%;padding: 7px;" src="assets/images/cash.png">
+            <p style="margin: 6px !important;">Cash</p>
+        </ion-col>
+    </ion-row>
+    <div *ngIf="IsPaymentSelected">
+      
+        <div *ngIf="PaymentMethod.Stripe">
+            <h6 class="h6">Enter Details</h6>
+            <ion-item class="padding-5">
+                <ion-label floating>Currency</ion-label>
+                <ion-textarea type="text" rows="1" class="greycolor" [(ngModel)]="Stripe.Currency" disabled="true">
+                </ion-textarea>
+            </ion-item>
+            <ion-item class="padding-5">
+                <ion-label floating>Merchant ID</ion-label>
+                <ion-textarea type="text" rows="1" class="greycolor" [(ngModel)]="Stripe.MerchantID" required>
+                </ion-textarea>
+            </ion-item>
+            <ion-item class="padding-5">
+                <ion-label floating>Shared Secret</ion-label>
+                <ion-textarea type="text" rows="1" class="greycolor" [(ngModel)]="Stripe.SharedSecret" required>
+                </ion-textarea>
+            </ion-item>
+            <ion-item class="padding-5 forinputwrapper">
+                <ion-label floating>Is Enable</ion-label>
+                <ion-checkbox style="margin: 1px 16px -5px 0px;" class="greycolor" [(ngModel)]="IsEnable">
+                </ion-checkbox>
+            </ion-item>
+
+            <ion-row class="allign-assist">
+                <ion-col col-6 *ngIf='!IsUpdated'>
+                    <button ion-button block class="timekare-primary-btn" type="submit" (click)="save()">Save</button>
+                </ion-col>
+                <ion-col col-6 *ngIf='IsUpdated'>
+                    <button ion-button block class="timekare-primary-btn" type="submit"
+                        (click)="update()">Update</button>
+                </ion-col>
+                <ion-col col-6>
+                    <button ion-button block class="button-md-danger" type="submit" (click)="cancel()">Cancel</button>
+                </ion-col>
+            </ion-row>
+        </div>
+        <div *ngIf="!PaymentMethod.Stripe">
+            <ion-row class='comingrow'>
+                <ion-col class="comingcol">
+                    Comming Soon...
+                </ion-col>
+            </ion-row>
+        </div>
+
+
+    </div>
+    <div *ngIf="!IsPaymentSelected" style="position: absolute; bottom: 1px;margin-left: 23%;">
+        <span class="tag">select any payment method</span>
+    </div>
+
+</ion-content>

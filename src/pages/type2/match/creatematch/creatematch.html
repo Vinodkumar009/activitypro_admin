@@ -1,0 +1,130 @@
+<!--
+  Generated template for the CreatematchPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Create Match</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToDashboardMenuPage()">
+        <img src="assets/images/home.svg" class="home_btn" />
+      </button>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Activity</ion-label>
+      <ion-select [(ngModel)]="activityId">
+        <ion-option *ngFor="let type of activities" value="{{type.id}}">{{type.activity_name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Match Type</ion-label>
+      <ion-select [(ngModel)]="createMatchInput.MatchType">
+        <ion-option value="0">Singles</ion-option>
+        <ion-option value="1">Doubles</ion-option>
+        <ion-option value="2">Team</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Round/Stage/Type</ion-label>
+      <ion-select [(ngModel)]="createMatchInput.Round">
+        <ion-option *ngFor="let roundType of roundTypes" [value]="roundType.id">{{roundType.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="startDate"
+        [max]="maxDate"></ion-datetime>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label>Time</ion-label>
+      <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
+        [(ngModel)]="startTime"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Venue</ion-label>
+      <ion-select (ionChange)="onChangeOfClub()" [(ngModel)]="selectedClub">
+        <ion-option *ngFor="let club of clubs" value="{{club.Id}}">{{club.ClubName}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+
+
+
+    <ion-item>
+      <ion-label>Category</ion-label>
+      <ion-select [(ngModel)]="createMatchInput.GameType">
+        <ion-option value="0">Gentleman</ion-option>
+        <ion-option value="1">Ladies</ion-option>
+        <ion-option value="2">Boys</ion-option>
+        <ion-option value="3">Girls</ion-option>
+        <!-- <ion-option value="hawaii">Ladies</ion-option> -->
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Match Title</ion-label>
+      <ion-input type="text" [(ngModel)]="createMatchInput.MatchTitle"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-row>
+        <ion-col col-6 style="margin: auto;" no-padding>
+          <p class="toggle_para">Match Access</p>
+        </ion-col>
+        <ion-col col-3>
+          <button ion-button class="select-type" (click)="changeType('public')" [class.selected]="publicType">
+            <ion-icon style="padding-right: 10px" name="globe"></ion-icon>
+            Public
+          </button>
+        </ion-col>
+        <ion-col col-3>
+          <button ion-button class="select-type" (click)="changeType('private')" [class.selected]="!publicType">
+            <ion-icon style="padding-right: 10px" name="ios-lock-outline"></ion-icon>
+            Private
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+
+
+
+
+
+  <ion-item>
+    <!-- <ion-label floating style="padding-left: 10px">Match Description</ion-label> -->
+    <ion-textarea type="text" rows="5" class="textareastyle" [(ngModel)]="createMatchInput.MatchDetails"
+      placeholder="Description"></ion-textarea>
+  </ion-item>
+
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button large block class="createbutton" (click)="saveMatchDetails()">
+          Create
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -1,0 +1,483 @@
+<!--
+  Generated template for the PublishresultPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Summary</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="match-info">
+    <p class="largetext">{{matchObj?.match_title}}</p>
+    <ion-row>
+      <p style="margin: 0; display: flex; align-items: center">
+        <span><ion-icon class="smalltext" name="md-calendar" style="color: #2b92bb"></ion-icon></span>
+        <span class="smalltext" style="font-weight: 600;">{{matchObj?.start_date}}</span>
+      </p>
+    </ion-row>
+    <div style="display: flex; align-items: center;">
+      <ion-icon class="smalltext" name="pin" style="color: #2b92bb"></ion-icon>
+      <p class="smalltext">{{matchObj?.location_name}}</p>
+    </div>
+    <div style="display: flex;">
+      <ion-col col-3 (click)="gotoScoreInputPage(true)">
+        <img class="teamLogo" [src]="homeTeamObj?.parentclubteam?.logo_url || 'assets/imgs/default-team-logo.png'">
+        <div *ngIf="scorerObjectsHome && scorerObjectsHome.length > 0">
+          <p class="scorerInfo" *ngFor="let scorer of scorerObjectsHome">
+            {{scorer?.PLAYER}}<span *ngIf="scorer?.TIME">({{scorer?.TIME}}')</span>
+          </p>
+        </div>
+        <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 12px;"></ion-icon>
+      </ion-col>
+      <ion-row text-center (click)="gotoResultInputPage()">
+        <ion-col style="padding: 0px;display: ruby;">
+          <ion-row style="color: green;font-size: 30px;">{{homeScore}}</ion-row>
+          <ion-row style="font-size: 12px;">{{homeTeamObj?.parentclubteam?.teamName}}</ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 12px;"></ion-icon>
+          <p style="margin: 0;">-</p>
+        </ion-col>
+        <ion-col style="padding: 0px;display: ruby;">
+          <ion-row style="color: red; font-size: 30px;">{{awayScore}}</ion-row>
+          <ion-row style="font-size: 12px;">{{awayTeamObj?.parentclubteam?.teamName}}</ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-col col-3 (click)="gotoScoreInputPage(false)">
+        <img class="teamLogo" [src]="awayTeamObj?.parentclubteam?.logo_url || 'assets/imgs/default-team-logo.png'">
+        <div *ngIf="scorerObjectsAway && scorerObjectsAway.length > 0">
+          <p class="scorerInfo" *ngFor="let scorer of scorerObjectsAway">
+            {{scorer?.PLAYER}}<span *ngIf="scorer?.TIME">({{scorer?.TIME}}')</span>
+          </p>
+        </div>
+        <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 12px;"></ion-icon>
+      </ion-col>
+    </div>
+    <ion-card (click)="gotoPotmPage()"
+      style="width: 100%; margin-left: 0px; padding: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <ion-row style="align-items: center;">
+        <ion-col col-3>
+          <p style="margin: 0; font-weight: 600; color: #333; font-size: 14px;">POTM</p>
+        </ion-col>
+        <ion-col col-9 *ngIf="potmDisplayNames && potmDisplayNames.length > 0">
+          <ion-row style="margin: 0; padding: 0; align-items: center;">
+            <p style="padding-right: 8px; color: #2b92bb; margin: 0; font-weight: 500;"
+              *ngFor="let potm of potmDisplayNames; let last = last">
+              {{potm.PLAYER}}<span *ngIf="!last">, </span>
+            </p>
+          </ion-row>
+        </ion-col>
+        <ion-col col-9 *ngIf="!potmDisplayNames || potmDisplayNames.length === 0">
+          <ion-row style="margin: 0; padding: 0; align-items: center;">
+            <p style="padding-right: 8px; color: #999; margin: 0; font-style: italic;">Select POTM</p>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+
+  <div class="stats-section">
+    <div style="text-align: center;margin: 5px;">
+      <h3 style="color: #f6ae4d;">Match Stats</h3>
+    </div>
+    <p style="text-align: center;color: #f6ae4d;margin: 0px;">Possession</p>
+
+    <div class="chartDiv">
+      <ion-col style="margin: 0; padding: 0" (click)="isAwayStatsPopupVisible = true">
+        <span style="color: red; font-size: 20px;">{{awayPoss}}%</span>
+        <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 16px;"></ion-icon>
+      </ion-col>
+      <canvas #doughnutCanvas width="200" height="200"></canvas>
+      <ion-col style="margin: 0; padding: 0" (click)="isHomeStatsPopupVisible = true">
+        <span style="color: green; font-size: 20px;">{{homePoss}}%</span>
+        <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 16px; padding-right:20px;"></ion-icon>
+      </ion-col>
+    </div>
+
+    <div class="stat-row" *ngIf="result_json">
+      <!-- Shots On Goal Section -->
+      <div class="stat-section">
+        <p class="stat-title">Shots On Goal</p>
+        <ion-row>
+          <ion-col>
+            <!-- Team 1 Bar -->
+            <ion-row (click)="isHomeStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill rma"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.SHOTS_ON_GOAL, result_json.AWAY_TEAM.SHOTS_ON_GOAL, 'HOME_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: green;">{{result_json.HOME_TEAM.SHOTS_ON_GOAL}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- Team 2 Bar -->
+            <ion-row (click)="isAwayStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill atm"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.SHOTS_ON_GOAL, result_json.AWAY_TEAM.SHOTS_ON_GOAL, 'AWAY_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: red;">{{result_json.AWAY_TEAM.SHOTS_ON_GOAL}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+
+      <!-- Total Shots Section -->
+      <div class="stat-section" *ngIf="result_json">
+        <p class="stat-title">Total Shots</p>
+        <ion-row>
+          <ion-col>
+            <!-- Team 1 Bar -->
+            <ion-row (click)="isHomeStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill rma"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.SHOTS, result_json.AWAY_TEAM.SHOTS, 'HOME_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: green;">{{result_json.HOME_TEAM.SHOTS}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- Team 2 Bar -->
+            <ion-row (click)="isAwayStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill atm"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.SHOTS, result_json.AWAY_TEAM.SHOTS, 'AWAY_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: red;">{{result_json.AWAY_TEAM.SHOTS}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Corners Section -->
+      <div class="stat-section" *ngIf="result_json">
+        <p class="stat-title">Corners</p>
+        <ion-row>
+          <ion-col>
+            <!-- Team 1 Bar -->
+            <ion-row (click)="isHomeStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill rma"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.CORNERS, result_json.AWAY_TEAM.CORNERS, 'HOME_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: green;">{{result_json.HOME_TEAM.CORNERS}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- Team 2 Bar -->
+            <ion-row (click)="isAwayStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill atm"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.CORNERS, result_json.AWAY_TEAM.CORNERS, 'AWAY_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: red;">{{result_json.AWAY_TEAM.CORNERS}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Fouls Section -->
+      <div class="stat-section" *ngIf="result_json">
+        <p class="stat-title">Fouls Committed</p>
+        <ion-row>
+          <ion-col>
+            <!-- Team 1 Bar -->
+            <ion-row (click)="isHomeStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill rma"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.FOULS_COMMITTED, result_json.AWAY_TEAM.FOULS_COMMITTED, 'HOME_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: green;">{{result_json.HOME_TEAM.FOULS_COMMITTED}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- Team 2 Bar -->
+            <ion-row (click)="isAwayStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill atm"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.FOULS_COMMITTED, result_json.AWAY_TEAM.FOULS_COMMITTED, 'AWAY_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: red;">{{result_json.AWAY_TEAM.FOULS_COMMITTED}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Yellow Cards Section -->
+      <div class="stat-section" *ngIf="result_json">
+        <p class="stat-title">Yellow Cards</p>
+        <ion-row>
+          <ion-col>
+            <!-- Team 1 Bar -->
+            <ion-row (click)="isHomeStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill rma"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.YELLOW_CARD, result_json.AWAY_TEAM.YELLOW_CARD, 'HOME_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: green;">{{result_json.HOME_TEAM.YELLOW_CARD}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- Team 2 Bar -->
+            <ion-row (click)="isAwayStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill atm"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.YELLOW_CARD, result_json.AWAY_TEAM.YELLOW_CARD, 'AWAY_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: red;">{{result_json.AWAY_TEAM.YELLOW_CARD}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Red Cards Section -->
+      <div class="stat-section" *ngIf="result_json">
+        <p class="stat-title">Red Cards</p>
+        <ion-row>
+          <ion-col>
+            <!-- Team 1 Bar -->
+            <ion-row (click)="isHomeStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill rma"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.RED_CARD, result_json.AWAY_TEAM.RED_CARD, 'HOME_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: green;">{{result_json.HOME_TEAM.RED_CARD}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- Team 2 Bar -->
+            <ion-row (click)="isAwayStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill atm"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.RED_CARD, result_json.AWAY_TEAM.RED_CARD, 'AWAY_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: red;">{{result_json.AWAY_TEAM.RED_CARD}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Offsides Section -->
+      <div class="stat-section" *ngIf="result_json">
+        <p class="stat-title">Offsides</p>
+        <ion-row>
+          <ion-col>
+            <!-- Team 1 Bar -->
+            <ion-row (click)="isHomeStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill rma"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.OFFSIDES, result_json.AWAY_TEAM.OFFSIDES, 'HOME_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: green;">{{result_json.HOME_TEAM.OFFSIDES}}</span>
+              </ion-col>
+            </ion-row>
+            <!-- Team 2 Bar -->
+            <ion-row (click)="isAwayStatsPopupVisible = true">
+              <ion-col col-10 style="padding: 0; margin: 0;">
+                <div class="barDiv">
+                  <div class="bar-fill atm"
+                    [style.width.%]="getPercentage(result_json.HOME_TEAM.OFFSIDES, result_json.AWAY_TEAM.OFFSIDES, 'AWAY_TEAM')">
+                  </div>
+                </div>
+              </ion-col>
+              <ion-col col-2 style="padding: 0; margin: 0;" text-center>
+                <span style="color: red;">{{result_json.AWAY_TEAM.OFFSIDES}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+
+  </div>
+</ion-content>
+
+
+
+
+<!-- Custom popup for home team stats update -->
+<div class="custom-popup" *ngIf="isHomeStatsPopupVisible && result_json">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>Update {{homeTeamObj.parentclubteam.teamName}} Stats</h3>
+      <button class="close-button" (click)="isHomeStatsPopupVisible=false">×</button>
+    </div>
+
+    <div class="popup-content">
+      <ion-item class="input_item">
+        <ion-label>Possession</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="homePoss"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Shots on Goal</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.SHOTS_ON_GOAL"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Shot Attempts</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.SHOTS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Corners</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.CORNERS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Fouls Committed</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.FOULS_COMMITTED"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Offsides</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.OFFSIDES"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Yellow Cards</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.YELLOW_CARD"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Red Cards</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.RED_CARD"></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isHomeStatsPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateHomeTeamStats()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom popup for away team stats update -->
+<div class="custom-popup" *ngIf="isAwayStatsPopupVisible && result_json">
+  <div class="popup-container">
+    <div class="popup-header">
+      <p>
+        <span>Update</span>
+        <span style="font-weight: bold; font-size: 20px;">
+          {{awayTeamObj.parentclubteam.teamName}}
+        </span>
+      </p>
+      <button class="close-button" (click)="isAwayStatsPopupVisible=false">×</button>
+    </div>
+
+    <div class="popup-content">
+      <ion-item class="input_item">
+        <ion-label>Possession</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="awayPoss"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Shots on Goal</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.SHOTS_ON_GOAL"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Shot Attempts</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.SHOTS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Corners</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.CORNERS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Fouls Committed</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.FOULS_COMMITTED"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Offsides</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.OFFSIDES"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Yellow Cards</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.YELLOW_CARD"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Red Cards</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.RED_CARD"></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isAwayStatsPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateAwayTeamStats()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- <ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button class="foobtn" ion-button block (click)="publishResult()">Publish Result</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer> -->

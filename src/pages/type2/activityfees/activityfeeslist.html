@@ -1,0 +1,82 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar hideBackButton>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Activity Fees List</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar hideBackButton>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Activity Fees List
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+
+
+
+<ion-content padding class="cards-bg social-cards">
+
+
+    <ion-item class="margin">
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivity" (ionChange)="onChangeActivity()">
+            <ion-option *ngFor="let activity of activityList" value={{activity.Key}}>{{activity.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item class="margin">
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="getActivityFeesList()">
+            <ion-option value="All">All</ion-option>
+            <ion-option *ngFor="let club of orgClubArr" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-list *ngFor="let item of specificActivityFeesdata" class="slidingcards">
+        <ion-item-sliding>
+            <ion-item class="gradient">
+                <p class="fontshow"><span>Name: </span><span>{{item.RecordFeesName}}</span></p>
+                <p class="fontshow"><span>Venue: </span><span>{{item.ClubName}}</span></p>
+                <p class="fontshow"><span>Activity: </span><span>{{item.ActivityName}}</span></p>
+            </ion-item>
+        </ion-item-sliding>
+    </ion-list>
+
+    <ion-card *ngIf="specificActivityFeesdata.length == 0" class="card-view1">
+        <ion-card-content class="slidingcards">
+            <p class="text-color">It seems there are no activity fees present under this selected activity and club.</p>
+        </ion-card-content>
+    </ion-card>
+
+
+
+
+
+    <ion-fab right bottom>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="goToAddActivityFees()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+
+    </ion-fab>
+
+
+
+</ion-content>

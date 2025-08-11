@@ -1,0 +1,54 @@
+<!--
+  Generated template for the AddroleforplayernstaffPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Update Role</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- <div class="block_height" >
+    <ion-list class="margin marginleftright">
+    
+        <div *ngFor="let player of roles" class="margin-bottom-2 pmargin member-item">
+            <ion-row >
+                <ion-col col-12>
+                    <ion-item style="background: transparent !important;" >
+                        <ion-label>{{player.teamRoles.role_name}}</ion-label>
+                        <ion-checkbox 
+                          ></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+               
+            </ion-row>
+        </div>
+      
+      
+      
+    </ion-list>    
+</div> -->
+
+  <ion-list radio-group [(ngModel)]="role">
+    <ion-item *ngFor="let role of roles;let i = index">
+      <ion-label>
+        {{role.role_name}}</ion-label>
+      <ion-radio (ionSelect)="selectRoleToUpdate(role)"></ion-radio>
+      <!-- <ion-radio value="friends" checked></ion-radio> -->
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button class="foobtn" ion-button block (click)="savePlayers()">Update</button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-footer>

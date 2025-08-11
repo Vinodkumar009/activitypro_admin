@@ -1,0 +1,81 @@
+createcopysession-page {
+    // .margin_top {
+    //     margin-top: 10px;
+    // }
+    // .padding_class {
+    //     padding-top: 20px;
+    //     //font-size: 15px;
+    // }
+    // .days {
+    //     ion-col {
+    //         text-align: center;
+    //         p {
+    //             border: 1px solid #76747d;
+    //             ;
+    //         }
+    //     }
+    // }
+    // .text_white {
+    //     color: white;
+    // }
+    // // .card_header {
+    // //     padding: 3px 0px 5px 19px;
+    // // }
+    // .rounded {
+    //     width: 38px;
+    //     height: 38px;
+    //     border-radius: 19px;
+    //     padding-top: 8px;
+    // }
+    .card {
+        margin: 6px 0px 6px 0px;
+        width: 100%
+    }
+    .ion_card {
+        margin: 6px 0px;
+        width: 100%;
+    }
+    // .danger_color2 {
+    //     color: red;
+    //     text-align: center;
+    //     font-size: 16px;
+    // }
+    // .right_pad {
+    //     padding-right: 0px;
+    //     padding-left: 0px;
+    // }
+    // .left_pad {
+    //     padding-right: 0px;
+    //     padding-left: 0px;
+    // }
+    // .card_top {
+    //     padding: 0px;
+    // }
+    ion-card-content {
+        padding: 0px 0px 0px 5px !important;
+    }
+    .ion_col {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+    .edit_style {
+        color: red;
+        text-decoration: underline;
+        font-size: 1.2em;
+    }
+    .card_header {
+        padding: 6px 5px 1px 9px;
+        font-size: 1.2em;
+        font-weight: 500;
+    }
+    .member_btn_sm {
+        float: right
+    }
+    .middle_content {
+        margin-top: 2px;
+    }
+    .icon_people {
+        font-size: 19px;
+        color: #0b9eb9;
+    }
+}

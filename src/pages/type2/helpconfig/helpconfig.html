@@ -1,0 +1,87 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title text-center>Help Configuration</ion-title>
+        <ion-buttons end>
+
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="enableReorder()">
+                
+               {{navText}}
+            </button>
+
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="card-background-page">
+
+    <ion-grid style="margin-top:3px;" *ngIf="parentClubDetails.length>0">
+        <ion-row>
+            <ion-col col-2> <img src={{parentClubDetails[0].ParentClubAppIconURL}}></ion-col>
+            <ion-col col-10>
+                <p class="p_clubName">{{parentClubDetails[0].ParentClubName}}</p>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+
+
+    <ion-item style="margin-top:3px;" *ngIf="!reOrderToggle">
+        <ion-label *ngIf="!toggleAll">Off</ion-label>
+        <ion-label *ngIf="toggleAll">On </ion-label>
+        <ion-toggle checked="{{toggleAll}}" [(ngModel)]="toggleAll" (tap)="helpConfigToggleAll()"></ion-toggle>
+    </ion-item>
+
+    <p style="margin-top:-11px;"></p>
+    <!--
+    <ion-item *ngFor="let notificationItem of notificationList;let i=index" style="border-bottom: .01em solid #ccd3d4;">
+        <ion-label (click)="saveText(notificationItem)">
+            {{notificationItem.Label}}
+            <p>{{notificationItem.NotificationText}}</p>
+        </ion-label>
+        <ion-toggle [(ngModel)]="notificationItem.IsAllowNotification" checked="{{notificationItem.IsAllowNotification}}" (tap)="changeNotificationToggle(notificationItem,i)"></ion-toggle>
+    </ion-item>
+-->
+
+
+
+
+
+    <!--<ion-list reorder="false" *ngIf="tabs.length>0" reorder="true" (ionItemReorder)="reorderItems($event)">
+        <ion-item *ngFor="let item of tabs;let i=index" style="border-bottom: .01em solid #ccd3d4;">
+            <ion-label (click)="saveText(IsVisible)">
+                {{item.DisplayName}}
+                <p>{{item.DefaultName}}</p>
+            </ion-label>
+            <ion-toggle *ngIf="item.IsApplicableVisibleFlag" [(ngModel)]="item.IsVisible" checked="{{item.IsVisible}}" (tap)="changeNotificationToggle(item,i)"></ion-toggle>
+        </ion-item>
+    </ion-list>-->
+
+
+
+
+    <ion-list>
+        <ion-item-group *ngIf="helps.length>0" [reorder]=reOrderToggle (ionItemReorder)="reorderItems($event)">
+            <ion-item *ngFor="let item of helps;let i=index" style="border-bottom: .01em solid #ccd3d4;">
+                <ion-label (click)="saveText(item)">
+                    {{item.Header}}
+                    <p>{{item.Description}}</p>
+                </ion-label>
+                <ion-toggle *ngIf="!reOrderToggle" [(ngModel)]="item.IsShow" checked="{{item.IsShow}}" (tap)="helpConfigToggle(item,i)"></ion-toggle>
+            </ion-item>
+        </ion-item-group>
+    </ion-list>
+
+    <p style="margin-bottom:50px;"></p>
+
+
+
+
+
+
+</ion-content>

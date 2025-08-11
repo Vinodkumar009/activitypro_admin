@@ -1,0 +1,404 @@
+page-membershipsetup {
+    ion-card-content {
+        padding: 0px !important;
+    }
+    
+    .sublabel{
+        font-size: 10%
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+    .all {
+        // border-left: 3px solid #35adff;
+        border-width: 1px;
+        border-style: solid;
+        -webkit-border-image: -webkit-gradient(linear, 0 0, 0 100%, from(#35adff), to(#7dbce6)) 1 100%;
+        -webkit-border-image: -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -moz-border-image: -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -o-border-image: -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+        border-image: linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+    }
+    .border-left-style {
+        height: 70px;
+        position: absolute;
+        top: 33px;
+        left: 7px;
+    }
+    .selected {
+        border: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+        // border-bottom: 3px solid gray !important; // margin-left: -3px !important;
+        // margin-right: -3px !important;
+        // margin-bottom: -3px  !important;
+        transition: 80ms;
+        background-color: #faae4e !important;
+
+    }
+    .selected .facilities-text {
+        color: #ffffff
+    }
+    
+    .rightalign{
+        input{
+            text-align: end;
+        }
+      
+    }
+    .group-slides {
+        margin: 0 5px;
+        height: 3.5em;
+        ion-slide{
+            width: 120.563px !important;
+        }
+    }
+    .modal2 {
+        p {
+            color: #525050;
+        }
+        width: 97%;
+        height: 95%;
+        top: 44%;
+        /* left: 5px; */
+        box-shadow: 0 3px 15px rgba(0,0,0,0.10), 0 4px 6px rgba(0,0,0,0.0);
+        z-index: 999999 !important;
+        display: block;
+        /* Hidden by default */
+        position: fixed;
+    
+        overflow: hidden;
+        /* Enable scroll if needed */
+        //background-color: rgb(0,0,0); /* Fallback color */
+        background-color:white;
+        -webkit-animation-name: fadeIn;
+        /* Fade in the background */
+        -webkit-animation-duration: 0.4s;
+        animation-name: fadeIn;
+        animation-duration: 0.4s;
+        position: absolute;
+       
+        left: 1.2%;
+        border-bottom-left-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+        border-radius: 20px;
+        animation:animatezoom 1s;
+        .exploretext {
+            margin: 7px;
+            font-family: Quicksand-regular;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 20px;
+           // line-height: 35px;
+            color: #000000;
+        }
+        .rowbtn{
+            position: absolute;
+            /* bottom: 0; */
+            bottom: 0;
+            width: 100%;
+            
+        }
+    }
+    ion-fab{
+        margin-top: -2%;
+        margin-right: -2%;
+        .fab[mini] {
+            margin: 8px !important;
+            width: 35px !important;
+            height: 35px !important;
+            line-height: 35px !important;
+        }
+    }
+    .foursideborder{
+        border-top: 1px solid #f6ae4d !important;
+        border-left: 1px solid #f6ae4d !important;
+        border-right: 1px solid #f6ae4d !important;
+    }
+    ion-slides{
+        width:98% !important;
+    }
+    .mem_name{
+        ion-labe{
+            font-size:20px !important;
+        }
+    }
+    .mem_allowed_para{
+        color: #999;
+        margin: 5px 0px 0px 10px;
+        font-size: 18px;
+    }
+    .help_btn {
+        padding: 0px !important;
+        font-size: 24px !important;
+        margin: 0px !important;
+        height: 42px !important;
+        width: 42px;
+    }
+    .group-slides>ion-slide {
+        margin: 0 5px
+    }
+    ion-slide{
+        padding: 0 5px;
+    }
+    // p {
+    //     color: #918e8e;
+    // }
+    .facilities-text{
+        color: #a196a5;
+        padding: 3px 0
+    }
+    .facilityCard {
+        padding: 5px 0;
+        width:calc(100% - 10%) !important;
+        /* color: #918e8e; */
+        background: #eaeaea;
+        border-radius: 2px;
+        //box-shadow: 4px 5px 12px -4px #b8b4b4;
+    }
+    .plus-color{
+        color: #faae4e;
+        font-size: 140%
+    }
+    
+    // .fixed-button {
+    //     position: sticky;
+    //     //bottom: -5rem;
+    //     z-index: 11111;
+    //     width: 100%;
+    //     padding: 5px !important;
+    //     border-top: 1px solid #8080804d;
+    //     margin-top: 25px;
+    //     ion-row {
+    //         height: 2em !important;
+
+    //     }
+    // }
+    .orange{
+        color: #faae4e !important;
+    }
+    .foricon{
+        margin-top: 13px !important;
+        margin-bottom: 8px !important;
+        font-size: large;
+        color: #999;
+    }
+    .percent{
+        width: 23% !important;
+    }
+    .group-header {
+        text-align: left;
+        margin: 15px 0 3px 0;
+        font-size: 15px;
+        padding-left: 17px;
+        padding-top: 10px;
+        font-weight: 200;
+        p{
+            color: #a196a5;
+        }
+    }
+    .allign-assist {
+        position: fixed;
+        width: 97%;
+        bottom: 5px;
+      }
+    .discount_input{
+        width: 30%;
+        margin-left: 16px;
+      }
+   
+    .width100{
+        max-width: 100% !important;
+        margin-left: 65px;
+    }
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+       // left: 3px !important;
+    }
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+       // text-align: right;
+        padding-right: 5px;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    .custom-list{
+        //background-color: white;
+        margin-bottom: 20%
+    }
+
+    .ctg_wrapper{
+        width: 100%;
+        height: 100px;
+        background: #fff;
+        border-radius: 5px;
+        margin-bottom:18px;
+        margin-top:10px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.10), 0 4px 6px rgba(0,0,0,0.0);
+        p{
+            color:#a196a5;
+            font-weight:400;
+            .headertext{
+                color: #a196a591 !important;
+            }
+        }
+    }
+    
+    .margin_top_session_fab{
+        ion-icon{
+            color: #faaf49 !important;
+            font-size: 2.2rem;
+        }
+    }
+    .disabled {
+        pointer-events:none; 
+        opacity:0.6;     
+    }
+    .item-ios.item-block .item-inner {
+    
+        border-bottom: 1px solid rgb(245, 231, 219); 
+    }
+    .fabTop {
+        margin-bottom: 13px;
+    }
+  
+    .fabEmailText {
+        touch-action: pan-y;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    margin-left: -115px;
+    background-color: #2b92bb !important;
+    margin-top: -47px;
+    padding: 5px 12px 5px 11px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    border-radius: 3px;
+    margin-right: 36px;
+    -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+    .setupname{
+        color: #5ea68d;
+        font-size: 15px;
+    }
+    .pstyle{
+        font-size: initial !important;
+        margin-left: 8px;
+        color: #999;
+        font-weight: 400;
+        padding: 9px 0px;
+    }
+    .item-inner{
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .label-md[stacked] {
+        font-size: 1.4rem;
+    }
+    .colpaddingrem{
+        padding: 0;
+    }
+    .discountalign{
+        //margin-left: 13%;
+        background: white
+    }
+   
+    .pricecolor{
+        color:#999;
+    }
+    .priceinputmargin{
+        margin-left: 43px !important;
+    }
+    
+    .spacebtwrows{
+        //border-bottom: 1px solid #e8d1a5;
+        // margin: 14px 0;
+        // border-bottom: 1px solid #e0c7ae;
+        border-bottom: 0.5px solid #8080809e;
+       
+    }
+    .ionitembordernone{
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .card-view{
+        margin: 0px 0px 5px 0px !important;
+        width: 100% !important;
+        // -webkit-box-shadow: none !important;
+        // box-shadow: none !important;
+        border-bottom: 1.5px solid #f6ae4d;
+        //To remove item highlight border bottom colors
+    
+    }
+
+
+    .venuedropdown {
+        padding: 0px 3px 3px 0px;
+        max-width: none;
+        font-size: 18px;
+        //margin: auto;
+        width: -webkit-fill-available;
+    }
+    .border-bottom-2px {
+        border-bottom: 1px solid #faae4e !important;
+        margin-bottom: 5px;
+    }
+    .border{
+        border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+    }
+    .item-md.item-input.input-has-focus .item-inner {
+        border-bottom-color: #dedede !important;
+        box-shadow: none !important;
+      }
+      .list-md .item-input:last-child{
+        border-bottom:none !important;
+      }
+      
+      .list-md .item-input.input-has-focus:last-child {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+      
+      .list-md .item-input.input-has-focus:last-child .item-inner {
+        box-shadow: none;
+      }
+      
+      .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+      
+      .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+      
+      .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child .item-inner {
+        box-shadow: none;
+      }
+      
+      .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+      
+      .list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):last-child {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+    
+    
+}

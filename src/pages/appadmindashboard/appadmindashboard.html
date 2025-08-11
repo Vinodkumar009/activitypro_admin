@@ -1,0 +1,78 @@
+<!--
+  Generated template for the AppadmindashboardPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="logo_center">
+      DashBoard
+    </ion-title>
+    <!-- <ion-buttons end>
+          <button ion-button icon-only (click)="presentPopover($event)" class="pop-over">
+              <ion-icon name="more"></ion-icon>
+          </button>
+      </ion-buttons> -->
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- <ion-row>
+    <ion-col col-12 text-center>
+      <img src="assets/images/logo.png" class="parentimg">
+    </ion-col>  
+  </ion-row> -->
+  <ion-row *ngIf="showDash" class="dash_row">
+    <ion-col item-center>
+      <p (click)="gotoDashBoard()">DashBoard</p>
+    </ion-col>
+  </ion-row>  
+  
+  <ion-row class="dash_row">
+    <ion-col col-12 item-center>
+      <p (click)="gotoPromotion()">Promotion</p>
+    </ion-col>
+ 
+  </ion-row>
+  <ion-row class="sub-container">
+      <ion-col col-2 style="text-align: -webkit-right;">
+        <button class="search_btn">
+          <ion-icon name="ios-search"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-9 class="search-bar" style="margin-left: -8px;">
+        <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getFilterItems($event)" autocorrect="off">
+        </ion-searchbar>
+      </ion-col>
+      <ion-col col-1 class="margin-auto"  style="text-align:center;padding:0px">
+        <button ion-button clear (tap)="refreshList()" class="refresh_btn">
+            <ion-icon name="md-sync"></ion-icon>
+        </button>
+    </ion-col>
+    </ion-row>
+  <ion-row>
+    <ion-col col-12 no-padding>
+      <ion-list>
+        <ion-row style="background:#fff;" *ngFor="let parent of TempParentClubs;let i=index;" (click)="GetParentClubInfo(parent)">
+          <ion-col col-2 style="margin:auto">
+            <img [src]="parent.Logo" class="avatar">
+          </ion-col>
+          <ion-col col-10>
+            <ion-item >
+              <p style="font-size:16px;color: rgba(0,0,0,0.85);">{{parent.ParentClubName}}</p>
+              <p style="font-size:14px;">{{parent.Key}}</p>
+              <ion-icon name="ios-arrow-forward" item-right></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-col>
+    <ion-col col-10>
+      
+    </ion-col>
+  </ion-row>
+</ion-content>

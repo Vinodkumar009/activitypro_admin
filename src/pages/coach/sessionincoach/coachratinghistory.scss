@@ -1,0 +1,168 @@
+page-coachratinghistory {
+    .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+    .animate-top{position:relative;animation:animatetop 0.4s}@keyframes animatetop{from{top:-300px;opacity:0} to{top:0;opacity:1}}
+    .animate-left{position:relative;animation:animateleft 0.4s}@keyframes animateleft{from{left:-300px;opacity:0} to{left:0;opacity:1}}
+    .animate-right{position:relative;animation:animateright 0.4s}@keyframes animateright{from{right:-300px;opacity:0} to{right:0;opacity:1}}
+    .icons{
+    color:rgb(224, 211, 26);
+}
+// .card{
+//     max-height: 95px;
+//     background: linear-gradient(to bottom right, rgb(81, 163, 144), rgb(14, 94, 74));
+//     box-shadow: 1px 1px 1px 1px #eceaea;
+//     width:102%;
+//     margin-left: -1%;
+// }
+// .card:hover{
+//     padding: 2px;
+// }
+// .grid{
+//     margin-top: -10px;
+// }
+// ul {
+//     padding: 0px;
+//    transform: translate(50px,0px);
+//     &.rating li {
+//       padding: 0px 1px !important;
+//       background: none;
+//       color: #ffb400;
+   
+//       ion-icon {
+//         font-size: 14px;
+
+//       }
+//     }
+//   }
+//   .mode{
+//       margin-left: 5px;
+//       transform: translate(50px,0px);
+//       color:rgb(209, 201, 201);
+//       font-size: 15px;
+//   }
+//   .text{
+//     color:white;
+//     font-size: 15px;
+//   }
+//   .scroll-content {
+//    // background-image: none !important;
+// }
+// .content{
+   
+// }
+.headerCon{
+    background-color: #3fbcd3;
+    height: 130px;
+    text-align: center;
+}
+.cards{
+   height:65px;
+   border-radius: 3px;
+   margin-top: 10px;
+}
+.scroll-content {
+    background-image: none !important;
+    padding: 6px !important;
+    background-color: #f7f7f7;
+}
+ .body_con{
+     margin-top: -10%;
+ }
+ .header{
+    border:none !important;
+ }
+ .grid{
+        margin-top: -10px;
+}
+.text{
+        font-size: 15px;
+        margin-top: -4px;
+    }
+    ul {
+            padding: 0px;
+           transform: translate(50px,0px);
+           margin-top: -4px;
+            &.rating li {
+              padding: 0px 1px !important;
+              background: none;
+              color: #ffb400;
+           
+              ion-icon {
+                font-size: 14px;
+        
+              }
+            }
+          }
+          .mode{
+               
+       
+                }
+
+
+.right_col{
+   // text-align: right;
+}
+.img{
+    height: 40px;
+    widows: 4px;
+    border-radius: 50%;
+    margin-top: 17px;
+}
+.name{
+    color:white;
+    font-size: 18px;
+}
+.cards:hover{
+    padding: 1px;
+}
+.text{
+  
+    font-size: 14px;
+}
+.color-theme-1{
+    color:rgb(252, 84, 84);
+    transform: translate(50px,0px);
+    
+    font-size: 15px;
+}
+.color-theme-2{
+    color:rgb(223, 169, 22);
+   
+    transform: translate(50px,0px);
+    font-size: 15px;
+    }
+.color-theme-3{
+    color:green;
+   
+    transform: translate(50px,0px);
+    font-size: 15px;
+    }
+    .color-theme-11{
+        border-left: 2px solid rgb(252, 84, 84); 
+    }
+    .color-theme-22{
+        border-left: 2px solid rgb(223, 169, 22);
+        }
+    .color-theme-33{
+        border-left: 2px solid green;
+        }
+   .TemplateName{
+    font-size: 15px;
+    color: #848282;
+   }
+   .activityName{
+    color:#488aff;
+    font-size: 13px;
+   }
+   .div2{
+       color:red;
+       text-transform: capitalize;
+       text-align:center;
+       margin-top: 50%;
+   }
+   .text2{
+       font-size: 20px;
+   }
+   .color-theme-ret{
+       border-left: 2px solid rgb(203, 206, 25);
+   }
+}

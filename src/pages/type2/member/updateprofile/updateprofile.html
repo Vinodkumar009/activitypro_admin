@@ -1,0 +1,149 @@
+<!--
+  Generated template for the UpdateprofilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+        <ion-navbar>
+                <ion-title>Update Profile</ion-title>
+        </ion-navbar>
+</ion-header>
+
+<ion-content class="con" padding>
+        <!--<form>-->
+        <div class="con">
+                <ion-grid class="grid">
+                        <ion-row class="rows" *ngIf="divType=='Member'">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label stacked class="lab" color="primary">Venue</ion-label>
+                                                <ion-select [(ngModel)]="selectedClubKey" class="textfield"
+                                                        class="text">
+                                                        <ion-option *ngFor="let club of clubs" value={{club.$key}}
+                                                                class="text">{{club.ClubName}}</ion-option>
+                                                </ion-select>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+                        <ion-row class="rows">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label stacked class="lab" color="primary">Email</ion-label>
+                                                <ion-input type="email" [(ngModel)]="memberObj.email" class="text">
+                                                </ion-input>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+
+                        <ion-row class="rows">
+                                <ion-col col-6>
+
+                                        <ion-item class="items">
+                                                <ion-label stacked class="lab" color="primary">First Name</ion-label>
+                                                <ion-input type="text" [(ngModel)]="memberObj.parent_firstname" class="text">
+                                                </ion-input>
+                                        </ion-item>
+                                </ion-col>
+                                <ion-col col-6>
+                                        <ion-item class="items">
+                                                <ion-label class="lab" stacked color="primary">Last Name</ion-label>
+                                                <ion-input type="text" [(ngModel)]="memberObj.parent_lastname" class="text">
+                                                </ion-input>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+                        <ion-row class="rows">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label stacked color="primary" class="lab">DOB</ion-label>
+                                                <ion-datetime displayFormat="MMMM/YYYY" pickerFormat="MMMM YYYY"
+                                                        [(ngModel)]="memberObj.DOB" class="text" id="dob">
+                                                </ion-datetime>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+                        <ion-row class="rows">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label stacked color="primary" class="lab input-text">Gender
+                                                </ion-label>
+                                                <ion-select [(ngModel)]="memberObj.Gender" class="text">
+                                                        <ion-option value="male" class="text">Male</ion-option>
+                                                        <ion-option value="female" class="text">Female</ion-option>
+                                                </ion-select>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+                        <ion-row class="rows">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label class="lab input-text" stacked color="primary">Medical
+                                                        Condition</ion-label>
+                                                        <ion-textarea  rows="2" [(ngModel)]="memberObj.medical_condition"
+                                                        class="text"></ion-textarea>
+                                                <!-- <ion-input type="text-area"  [(ngModel)]="memberObj.MedicalCondition"
+                                                        class="text"></ion-input> -->
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+                        <ion-row class="rows">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label stacked color="primary">Phone</ion-label>
+                                                <ion-input type="number" [(ngModel)]="memberObj.phone_number"
+                                                        class="text"></ion-input>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+
+                        <ion-row class="rows">
+                                <ion-col>
+                                     <ion-item class="items">
+                                                <ion-label  stacked color="primary">Vehicle RegNo1</ion-label>
+                                            <ion-input type="text" [(ngModel)]="memberObj.vehicleRegNo1"  class="text"></ion-input>
+                                     </ion-item>
+                                </ion-col>
+                        </ion-row>
+
+                        <ion-row class="rows">
+                                <ion-col>
+                                     <ion-item class="items">
+                                                <ion-label  stacked color="primary">Vehicle RegNo2</ion-label>
+                                            <ion-input type="text" [(ngModel)]="memberObj.vehicleRegNo2"  class="text"></ion-input>
+                                     </ion-item>
+                                </ion-col>
+                        </ion-row>
+
+                        <ion-row class="rows">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label stacked color="primary">Membership ID</ion-label>
+                                                <ion-input type="text" [(ngModel)]="memberObj.membership_Id"
+                                                        class="text"></ion-input>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+                        <ion-row class="rows">
+                                <ion-col>
+                                        <ion-item class="items">
+                                                <ion-label stacked color="primary">Handicap(Golf)</ion-label>
+                                                <ion-input type="number" [(ngModel)]="memberObj.handicap"
+                                                        class="text"></ion-input>
+                                        </ion-item>
+                                </ion-col>
+                        </ion-row>
+
+                        <ion-row>
+                                <ion-col col-6>
+                                        <button ion-button block class="timekare-primary-btn" (click)="cancel()"
+                                                style="background-color:#f53d3d;">Cancel</button>
+                                </ion-col>
+                                <ion-col class="btn-container" col-6>
+                                        <button ion-button block class="timekare-primary-btn"
+                                                (click)="updateMember()">Update</button>
+                                </ion-col>
+                        </ion-row>
+                </ion-grid>
+        </div>
+</ion-content>

@@ -1,0 +1,98 @@
+<ion-header *ngIf="themeType == 1">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{LangObj.bkg_court_title}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+    <ion-title>
+      {{LangObj.bkg_court_title}}
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label>{{LangObj.bkg_court_venue}}</ion-label>
+    <ion-select [(ngModel)]="selectedClubKey" (ionChange)="onClubChange()">
+      <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item class="margin">
+    <ion-label>{{LangObj.bkg_court_activity}}</ion-label>
+    <ion-select [(ngModel)]="selectedActivity" (ionChange)="getAllCourtSetup()">
+      <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-card *ngFor="let fm of allCourtSetup" style="border-left: 2px solid #31a3ef;" (click)="presentActionSheet(fm)">
+    <ion-card-content>
+      <ion-row>
+        <ion-col col-12>
+          <p class="name"> {{fm.CourtName}}</p>
+          <p class="type">{{fm.CourtType}}</p>
+          <p *ngIf="!IsTable" class="surface">{{fm.Surface}}</p>
+          <p *ngIf="IsTable" class="surface">{{fm.Floor}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card *ngIf="allCourtSetup.length == 0" class="card-view1">
+    <ion-card-content class="slidingcards">
+      <p class="text-color">{{LangObj.bkg_court_nocourts}}</p>
+    </ion-card-content>
+  </ion-card>
+
+
+
+</ion-content>
+
+
+
+<ion-fab mini right bottom #fab>
+  <button ion-fab mini style="background-color:#2b92bb !important; color: white !important"
+    style="background-color:#2b92bb !important; color: white !important">
+    <ion-icon name="add"></ion-icon>
+  </button>
+  <ion-fab-list side="top">  
+
+    <p class="fabEmailText" style="margin-left:-110px !important" (click)="gotoCourtSetupPage(fab)">Add New</p>
+    <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="gotoCourtSetupPage(fab)">
+      <ion-icon name="ios-create-outline"></ion-icon>
+    </button>
+    <p class="fabEmailText" style="margin-left:-130px !important" (click)="gotoBooking(fab)">Booking Setup</p>
+    <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="gotoBooking(fab)">
+      <ion-icon name="ios-create-outline"></ion-icon>
+    </button>
+    <p class="fabEmailText" style="margin-left:-110px !important" (click)="gotoPriceBand(fab)">Price Band</p>
+    <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="gotoPriceBand(fab)">
+      <ion-icon name="ios-create-outline"></ion-icon>
+    </button>
+    <p class="fabEmailText" *ngIf="!IsTable" style="margin-left:-110px !important" (click)="this.navCtrl.push('FloodLightListPage')">Flood Light</p>
+    <button *ngIf="!IsTable" style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="this.navCtrl.push('FloodLightListPage')">
+      <ion-icon name="ios-create-outline"></ion-icon>
+    </button>
+  </ion-fab-list>
+</ion-fab>
+<!-- below component is displayed when there is no paymentgateway connected for the courtsetup -->
+<page-paymentgatewaysetup *ngIf="isShowPaymentModal" InstructTxt="Please connect to payment gateway for Court Setup"
+  (skip)="skip()" (navigate)="GotoPaymentSetup()"></page-paymentgatewaysetup>

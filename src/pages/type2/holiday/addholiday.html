@@ -1,0 +1,141 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Add holiday</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Add Holiday
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+    <!--<ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select [(ngModel)]="selectedType" (ionChange)="getParentClub()">
+            <ion-option value="Type1">Type 1</ion-option>
+            <ion-option value="Type2">Type 2</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Parent Club</ion-label>
+        <ion-select [(ngModel)]="selectedParentClubKey" (ionChange)="getClubList()">
+            <ion-option *ngFor="let parentClub of allParentClubDataArr" value={{parentClub.$key}}>{{parentClub.ParentClubName}}</ion-option>
+        </ion-select>
+    </ion-item>-->
+
+    <ion-item>
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeClub()">
+            <ion-option  value="All">All</ion-option>
+            <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+
+
+    <!--<form>-->
+
+    <ion-item>
+        <ion-label>Holiday Name</ion-label>
+        <ion-input type="text" [(ngModel)]="holidayObj.HolidayName"></ion-input>
+    </ion-item>
+
+
+    <!--<ion-item>
+            <ion-label>DOB</ion-label>
+            <ion-input type="text" ></ion-input>
+        </ion-item>-->
+    <ion-item>
+        <ion-label>Start Date</ion-label>
+        <!--<ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>-->
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="holidayObj.HolidayStartDate" max="2028-10-31"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>End Date</ion-label>
+        <!--<ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>-->
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="holidayObj.HolidayEndDate" max="2028-10-31"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Comments</ion-label>
+        <ion-textarea [(ngModel)]="holidayObj.HolidayComments"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label>All Activity</ion-label>
+        <ion-checkbox color="dark" checked="true" [(ngModel)]="holidayObj.IsForAllActivity" (ionChange)="toggolSelectionActivity()"></ion-checkbox>
+    </ion-item>
+
+
+    <div *ngIf="!holidayObj.IsForAllActivity">
+            <ion-card *ngFor="let item of desiredActivity">
+            <ion-card-content>
+
+                <ion-item>
+                    <ion-label>{{item.ActivityName}}</ion-label>
+                    <ion-checkbox color="blue" checked="item.IsSelected" [(ngModel)]="item.IsSelected"></ion-checkbox>
+                </ion-item>
+           </ion-card-content>
+
+
+
+        </ion-card>
+
+        <ion-card *ngIf="activity.length == 0">
+            <ion-card-content>
+                <p class="text-color">It seems there are no activities under this club</p>
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+
+
+
+
+
+
+    <ion-grid>
+        <ion-row>
+
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelHoliday()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="saveHoliday()">Create</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+    <!--
+    <button ion-button block>Add Todo</button>-->
+    <!--</form>-->
+
+
+
+
+</ion-content>

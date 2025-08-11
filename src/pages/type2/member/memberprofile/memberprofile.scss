@@ -1,0 +1,335 @@
+page-memberprofile {
+    .profile-pic {
+        text-align: -webkit-center;
+        img {
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+        }
+        .create-icon {
+            color: white;
+            font-size: 25px;
+            right: 14px;
+            position: fixed;
+        }
+    }
+    .member_name{
+        height: 100%;
+    display: flex;
+    align-items: center;
+        p{
+            width: 100%;
+        }
+    }
+    .headingsty{
+        color: #686464 !important;
+        margin: 0px 12px;
+    }
+
+    // .toggle {
+    //     overflow: hidden;
+    //     display: inline-block;
+    //     width: 4em;
+    //     //background: #2f2a2a;
+    //     background-color: #ebf7fc;
+    //     //padding: 0.135em;
+    //     cursor: pointer;
+    //     font-size: 16px;
+    //     margin-left: 8px;
+    //     border-radius: 50px;
+    //     height: 30px;
+    // }
+    // .toggle input {
+    //     position: absolute;
+    //     visibility: hidden;
+    // }
+    // .toggle span {
+    //     position: relative;
+    //     left: 0%;
+    //     display: block;
+    //     text-align: center;
+    //     -webkit-transition: left 200ms ease-out;
+    //     -moz-transition: left 200ms ease-out;
+    //     -o-transition: left 200ms ease-out;
+    //     transition: left 200ms ease-out;
+    // }
+    // .toggle :checked+span {
+    //     left: 50%;
+    // }
+    //  /* Default unchecked state */
+    //  .toggle span:before {
+    //     content: attr(data-unchecked);
+    //     display: block;
+    //     width: 50%;
+    //     background-color: #f44336;
+    //     border-radius: 50px;
+    //     box-shadow: 0 10px 20px -8px #c5d6d6;
+    //     //box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+    //     color: white;
+    //     border-radius: 25px;
+    //     font-size: 16px;
+    //     height: 30px;
+    //     line-height: 30px;
+    // }
+    // /* Checked state */
+    // .toggle :checked+span:before {
+    //     content: attr(data-checked);
+    //     background-color: #03A9F4;
+    //     color: white;
+    //     border-radius: 50px;
+    //     font-size: 16px;
+    //     height: 30px;
+    //     line-height: 30px;
+    // }
+    .group-slides {
+            margin: 3px 5px;
+           height: 5em;
+           position: relative;
+           top: 5px;
+    }
+    .selected .facilities-text {
+        color: #ffffff
+    }
+    ion-slides{
+        ion-slide{
+            width: 140px !important;
+            .slide-zoom{
+                width: 85%;
+                margin-left: -46px;
+                height: 101%;
+            }
+        }
+    }
+    .facilityCard {
+        padding: 0px;
+        color: #918e8e;
+        width: 105%;
+        height: 83%;
+        border-radius: 5px;
+        box-shadow: 3px 3px 11px 0px #faae4e;
+        background-color: #f5f2f2;
+        border: 1px solid #faae4e;
+        ion-card-content{
+            padding: 0 !important;
+        }
+      
+    }
+    .bot-mar {
+        margin-left: 15px !important;
+    }
+    .mar-0 {
+        font-weight: 200;
+        margin: 0;
+    }
+    .profile-header-row {
+        ion-col {
+            background-color: #2b92bb !important;
+            color: white;
+        }
+    }
+    .line {
+        margin-top: 35px;
+        height: 2.55px;
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+    .icon-col {
+        button {
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            background-color: #da6b1a;
+            color: white;
+            margin-left: 10px;
+            ion-icon {
+                font-size: 30px;
+            }
+        }
+    }
+    .scroll-content {
+        // background: linear-gradient(to bottom right, #65617f, #565863,#383a48) !important;
+        background-color: white !important;
+        background-image: none !important;
+    }
+    .color-white {
+        color: rgb(104, 100, 100) !important;
+    }
+    .body-icon {
+        font-size: 31px;
+        margin-left: 12px;
+        margin-top: 11px;
+        color: #4c8fb4 !important
+    }
+    ion-label {
+        margin: 0 !important;
+        transform: translate(3px, 9px) !important;
+    }
+    .border-bottom {
+        border-bottom: .1px solid #e9e9e9 !important;
+    }
+    .name {
+        font-size: 18px;
+    }
+    .value {
+        color: white;
+        font-size: 30px;
+        margin-top: 5px;
+        .add-btn {
+            height: 24px;
+            width: 27px;
+            border-radius: 50%;
+            background: #dc6d0f;
+            color: white;
+            text-align: -webkit-center;
+        }
+        ion-icon {
+            font-size: 22px;
+        }
+    }
+    .mar-8 {
+        margin: 8px;
+        color: white;
+    }
+    .toggle {
+        overflow: hidden;
+        display: inline-block;
+        width: 5em;
+        background: #2f2a2a;
+        padding: 0.135em;
+        cursor: pointer;
+        font-size: 17px;
+        margin-left: 25px;
+    }
+    .toggle input {
+        position: absolute;
+        visibility: hidden;
+    }
+    .toggle span {
+        position: relative;
+        left: 0%;
+        display: block;
+        text-align: center;
+        /**
+       * Holo doesn't have any transition, but
+       * it's added here for demo purposes
+       */
+        -webkit-transition: left 200ms ease-out;
+        -moz-transition: left 200ms ease-out;
+        -o-transition: left 200ms ease-out;
+        transition: left 200ms ease-out;
+    }
+    .toggle :checked+span {
+        left: 50%;
+    }
+    /* Default unchecked state */
+    .toggle span:before {
+        content: attr(data-unchecked);
+        display: block;
+        width: 50%;
+        background-color: #912121;
+        border-radius: 0.15em;
+        box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+    /* Checked state */
+    .toggle :checked+span:before {
+        content: attr(data-checked);
+        background-color: #08a1f4;
+        color: white;
+    }
+    /* Base styles */
+    html {
+        font: 100%/1.5 'Roboto', sans-serif;
+        padding-top: 3em;
+        background-color: #0e1012;
+        color: #b3b3b3;
+        text-align: center;
+    }
+    h1 {
+        font-weight: 100;
+    }
+    .badges {
+        transform: translateY(70%);
+        //margin-top: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        right: 6px;
+        position: absolute;
+        color: #fff;
+        background-color: #c12f2f;
+    }
+    .family-badges {
+        background-color: #00a1f6;
+        font-size: 25px;
+    }
+    .family-member {
+        color: rgb(139, 134, 134);
+    }
+    .borderbottomblock {
+        border-bottom: 1px solid #08a1f4
+    }
+    .becomemember-img{
+        height: 47px;
+        margin-top: -14px;
+        margin-left: 41px;
+    }
+
+
+
+
+
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 20px;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 5px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    ion-select {
+        display: -webkit-box;
+        max-width: 100%;
+        width: 100%;
+    }
+    .venuedropdown{
+        padding: 13px 8px 13px 0px;
+    }
+    .venueionitem{
+        padding-left: 4px;
+    }
+
+}

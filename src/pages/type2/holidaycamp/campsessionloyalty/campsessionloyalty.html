@@ -1,0 +1,101 @@
+<ion-header >
+    <ion-navbar>
+        <ion-title>{{isReview ? 'Review' : 'Loyalty Point'}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg social-cards">
+
+        <div *ngIf="SessionDetials" class="header">
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-9>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-12>
+                                    <span class="name">{{SessionDetials.SessionName}}</span>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row style="margin-bottom: 25px;">
+                                <ion-col col-12>
+                                    <p class="headerp">{{SessionDate}}, {{SessionDetials.Day}}</p>
+                                    <p class="headerp">{{SessionDetials.StartTime}}, {{SessionDetials.Duration}}hrs </p>
+                                    <p class="headerp">Member fee:
+                                        <span
+                                            *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{SessionDetials.AmountForMember}}
+                                    </p>
+                                    <p class="headerp">Non-Member fee:
+                                        <span
+                                            *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{SessionDetials.AmountForNonMember}}
+                                    </p>
+                                    <p class="headerp">Members: {{SessionDetials.Members.length}}</p>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-col>
+                    <ion-col col-3>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </div>
+    <ion-list *ngIf="!isReview && SessionDetials && SessionDetials.Members.length > 0">
+        <ion-row class="rowclass" style="padding: 0 !important;" *ngFor="let member of SessionDetials.Members">
+            <ion-col col-6>
+                <ion-item>
+                    <ion-label>{{member.UserName}} </ion-label>
+                    <ion-checkbox style="margin: 9px 12px 9px 0px;" [(ngModel)]="member.IsSelect"></ion-checkbox>
+                </ion-item>
+
+            </ion-col>
+            <ion-col *ngIf="member.AmountPaid" class="pclass" col-2 text-center>
+                <p style="margin: 4px 0 0 0;;"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{member.AmountPaid}}</p>
+              
+                <p style="margin: 0;">paid</p>
+            </ion-col>
+            <ion-col *ngIf="!member.AmountPaid" class="pclass" col-2 text-center>
+            </ion-col>
+            <ion-col col-4 text-right>
+                <ion-item>
+                    <ion-input [(ngModel)]="member.Loyaltyrefund">
+                    </ion-input>
+                    <span *ngIf="loyaltySetup" class="apro" item-right>{{loyaltySetup.LoyaltyPointName}}</span>
+                </ion-item>
+                
+            </ion-col>
+        </ion-row>
+        
+    </ion-list>
+
+    <ion-list *ngIf="isReview">
+        <ion-row class="rowclass" *ngFor="let member of selectedMember">
+            <ion-col col-8>
+                <ion-item >
+                    <p class="pstyle">{{member.UserName}}</p>
+                    <p class="pstyle" style="margin: 4px 0 0 0;color:rgba(0,0,0,0.65)"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{member.AmountPaid}}</p>
+                    <!-- <p style="margin: 0;">paid</p> -->
+                </ion-item>
+
+            </ion-col>
+
+            <ion-col col-4 text-center>
+                <p class="pstyle"> {{member.Loyaltyrefund}} <span *ngIf="loyaltySetup" class="apro" item-right>{{loyaltySetup.LoyaltyPointName}}</span></p>
+                
+            </ion-col>
+        </ion-row>
+    </ion-list>
+
+
+</ion-content>
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="this.navCtrl.pop()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="isReview ? callRewardPointApi() : updateReview()">{{isReview ? 'Confirm' : 'Next'}}</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-footer>

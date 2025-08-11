@@ -1,0 +1,143 @@
+<!--
+  Generated template for the BookingPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Active Booking</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-refresher slot="fixed" style="background: #f7f7f7 !important;" pullFactor="0.5"
+    (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-row style="margin-top: -4%;" class="choose-row top-row">
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeTab(0)" [class.selects]="selectedTabInd==0">
+            <span class="tab_header">Today</span>&nbsp;
+           
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeTab(1)" [class.selects]="selectedTabInd==1">
+              <span class="tab_header">All days</span>&nbsp;
+            
+          </button>
+        </ion-col>
+    </ion-row>
+    <div class="header-container">
+    
+   
+      
+        <ion-row style="margin-top: -13px;" class="rows-allign">
+
+            <ion-col col-7>
+                <ion-item style="background-color: #efefefd9;" class="headitem">
+                    <ion-select [(ngModel)]="selectedClubKey" (ionChange)="getAllActivity()">
+                        <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col col-5>
+                <ion-item style="background-color: #efefefd9;" class="headitem">
+                    <ion-select [(ngModel)]="selectedActivity" (ionChange)="getAllCourts()">
+                        <ion-option *ngFor="let Activity of ActivityList" value={{Activity.$key}}>
+                            {{Activity.ActivityName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row class="rows-allign">
+            <ion-col col-12 class="border-bottom-default-color">    
+                <ion-item style="background-color: #efefefd9;" class="headitem">
+                    <ion-select [(ngModel)]="selectedCourt" (ionChange)="callbothfunction()">
+                        <ion-option *ngFor="let court of courts" value={{court.$key}}>{{court.CourtName}}</ion-option>
+                        <ion-option value="all">All</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </div>
+
+    <ion-row *ngIf="slotListing.length == 0">
+        <ion-card
+            style=" margin:30px 0px 0px 0px !important; width:100% !important; -webkit-box-shadow: none !important; box-shadow: none !important; border-bottom: 1px solid #f6ae4d !important;">
+            <ion-card-content style="text-align: center; ">
+                <p class="danger_color2  padding: 0; ">{{NoActiveBooking}}</p>
+            </ion-card-content>
+        </ion-card>
+    </ion-row>
+    <!-- <page-commentforemptiness *ngIf="upCommingSlots.length == 0" [customTitle]="NoActiveBooking"></page-commentforemptiness> -->
+
+    <ion-row *ngFor="let slot of slotListing;let i = index" style="margin-top: -12px;" class="rows-allign">
+        <ion-col col-1>
+            <div class="all border-left-style"></div>
+        </ion-col>
+
+        <ion-col col-11 class="allignment-col border-bottom-default">
+            <ion-card (click)="gotoDetails(slot)">
+                <ion-card-header>
+                    <ion-row>
+                        <ion-col col-10 class="align-text-left">
+                            <span class="name">{{slot.name}}</span>
+                        </ion-col>
+                        <ion-col col-2 style="text-align: right">
+                            <span class="family">{{slot.slot_start_time}}</span>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-header>
+                <ion-card-content style="color: #c5b495">
+                    <ion-row>
+                        <ion-col col-7 class="align-text-left">
+                            {{slot.slot_start_time}} - {{slot.slot_end_time}}
+                        </ion-col>
+                        <ion-col col-5 style="text-align: right">
+                            {{getTime(slot.booking_date)}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-6 class="align-text-left">
+                            {{slot.courtname}}
+                        </ion-col>
+                        <ion-col *ngIf="currencyDetails!=undefined" col-6 text-right>
+                            {{currencyDetails.CurrencySymbol}}{{slot.price}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row style="border-top: 1px solid rgba(0, 0, 0, 0.04);" *ngIf="slot.partnerAddedText">
+                        <ion-col style="
+                            color: rgba(0,0,0,0.65);" col-12 class="align-text-left">
+                            <span>{{slot.partnerAddedText}}</span>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+
+            </ion-card>
+        </ion-col>
+    </ion-row>
+    <ion-fab mini (click)="goTofilterpage()" class="favs" left bottom #fab>
+        <button >
+            <img src="assets/imgs/history-icon.svg" class="history-icon">
+        </button>
+    </ion-fab>
+    <ion-fab mini right bottom #fab>
+    
+        <button ion-fab mini
+            style='background-color: rgba(246, 174, 77, 0.65);float: right;margin: 3px 0px 0px 0px !important;' id="fab"
+            (click)="openSearch()">
+            <ion-icon ios="ios-search" md="md-search"></ion-icon>
+        </button>
+        <ion-row id="row" class="searchrow" style="display: none;">
+            <ion-col col-10>
+                <ion-searchbar placeholder="Search bookings" id="customsearchbar"
+                    (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+            </ion-col>
+        </ion-row>
+    </ion-fab>
+</ion-content>

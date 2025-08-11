@@ -1,0 +1,184 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title class="logo_center">
+            <!--Dashboard-->
+            Payment Report
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <!-- <ion-grid>
+        <ion-row wrap>
+            <ion-col col-6 class="dashboard_col_item_block">
+                <div class="dashboard_col_item" (click)="gotoSessionPayment($event)">
+                    
+                    <img src="assets/images/menu/Session.png" class="icon-img">
+                    <p class="dashboard_col_item_name"> Session </p>
+                </div>
+            </ion-col>
+            <ion-col col-6 class="dashboard_col_item_block" (click)="goToSchoolsessionPaymentDetails()">
+                <div class="dashboard_col_item">
+                    
+                    <img src="assets/images/menu/school.svg" class="icon-img">
+                    <p class="dashboard_col_item_name"> School Session </p>
+                </div>
+            </ion-col>
+            <ion-col col-6 class="dashboard_col_item_block">
+                <div class="dashboard_col_item" (click)="gotoHolidayCampPayment($event)">
+                    
+                    <img src="assets/images/menu/holidaycamp.png" class="icon-img">
+                    <p class="dashboard_col_item_name"> HolidayCamp </p>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid> -->
+
+    <ion-card class="cardpending" (click)="gotoSessionPayment()">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <img [src]="sessionImgurl" class="icon-img">
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;">Session</p>
+                    <!-- <p class="venueList">Checkout Term,Weekly,Monthly Sessions Payment Report</p> -->
+                    <p class="venueList">Checkout Term Sessions Payment Report</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="cardpending" (click)="this.navCtrl.push('MonthlySessionReport');">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <img [src]="sessionImgurl" class="icon-img">
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;">Monthly Session</p>
+                    <!-- <p class="venueList">Checkout Term,Weekly,Monthly Sessions Payment Report</p> -->
+                    <p class="venueList">Checkout Monthly Sessions Payment Report</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="cardpending" (click)="goToSchoolsessionPaymentDetails()">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <!-- <img [src]="sessionImgurl" class="icon-img"> -->
+                    <ion-icon name="school" class="header_icon"></ion-icon>
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;"> School Session </p>
+                    <p  class="venueList">Checkout School Session Payment Report</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="cardpending" (click)="gotoHolidayCampPayment()">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <!-- <img src="assets/images/menu/holidaycamp.png" class="icon-img"> -->
+                    <ion-icon name="tennisball" class="header_icon"></ion-icon>
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;"> Holiday Camp </p>
+                    <p class="venueList">Checkout Holiday Camp Payment Report</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="cardpending" (click)="gotoCourtBookingPayment()">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <img src="assets/images/tennis-court.svg" class="icon-img">
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;"> Facility Booking </p>
+                    <p class="venueList">Court Booking, Table Booking, Room Booking Payment Report</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="cardpending" (click)="gotoMembershipPayment()">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <img [src]="membershipImgurl" class="icon-img">
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;"> Membership </p>
+                    <p class="venueList">Checkout Membership Payment Report</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="cardpending" (click)="gotokidssubscriptions()">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <img src="assets/images/subscribe.svg" class="icon-img">
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;">AP Play Subscriptions</p>
+                    <p class="venueList">All ap play subscriptions</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="cardpending" (click)="gotoWalletPayment()">
+        <ion-card-content>
+            <ion-row>
+                <ion-col col-3 class="marginauto" text-center>
+                    <img src="assets/imgs/CashTopup1.png" class="icon-img">
+                </ion-col>
+                <ion-col col-8 class="marginauto">
+                    <p style="font-size: 20px;
+                    font-weight: 400;"> Cash Wallet</p>
+                    <p class="venueList">Checkout Cash Wallet Payment Report</p>
+                </ion-col>
+                <ion-col col-1 class="marginauto">
+                    <ion-icon class="forward_icon" name="ios-arrow-forward"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

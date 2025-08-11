@@ -1,0 +1,276 @@
+addmembertournament-page {
+    .social-cards ion-col {
+        padding: 0;
+    }
+
+    .btn-clr {
+        color: $dashoboard-icon-color;
+    }
+
+    .align {
+        margin-top: 5px;
+        margin-left: 9px;
+        margin-right: 9px;
+    }
+
+    // ion-item h2 {
+    //      color: $dashoboard-icon-color !important;
+    // }
+
+    .cross {
+        background-color: white;
+    }
+
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .search_add {
+        .item-inner {
+            border-bottom: 0px !important;
+
+            ion-icon {
+                margin-top: 18px;
+            }
+
+            div {
+                ion-label {
+                    //margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+            }
+        }
+
+    }
+
+    .session_header,
+    ion-list {
+        margin-bottom: 0px !important;
+    }
+
+    .block_height {
+        height: 80%;
+    }
+
+    .block_height1 {
+        margin-top: 5px;
+        height: 70%;
+
+        .margin {
+            padding: 0px 11px 0px 11px;
+        }
+    }
+
+    .block_height2 {
+        height: 32%;
+    }
+
+    .card-md p {
+        margin: 0 0 0px;
+        font-size: 1.3rem;
+        font-weight: normal;
+        line-height: 1.4;
+        color: #222;
+    }
+
+    .ion_list1 {
+        margin-top: 10px;
+    }
+
+    .p_selected {
+        ion-card-content {
+            //  border-bottom: 1px solid rgb(209, 209, 213);
+            //      padding: 5px 0px 5px 13px;
+            //     color: black;
+            //     font-size: 17px;
+
+            border-bottom: 1px solid #d1d1d5;
+            padding: 5px 0px 5px 13px;
+            color: rgba(0, 0, 0, 0.89);
+            font-size: 17px;
+
+
+        }
+    }
+
+    .ion-item-lable {
+        div {
+            ion-icon {
+                margin: 0px 0px 9px 0px !important;
+            }
+
+            div {
+                ion-label {
+                    margin: 0px 0px 0px 0px;
+                }
+            }
+        }
+    }
+
+
+
+
+
+    .modal-header-color {
+        background-color: #3fadf8;
+        color: white;
+        text-align: -webkit-center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+
+
+    /* Modal Content */
+
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+        -webkit-animation-name: fadeIn;
+        /* Fade in the background */
+        -webkit-animation-duration: 0.4s;
+        animation-name: fadeIn;
+        animation-duration: 0.4s
+    }
+
+
+    .modal-content {
+        // height: 190px;
+        width: 77% !important;
+        margin-top: 33% !important;
+        margin-left: 10%;
+        background-color: #fefefe;
+        -webkit-animation-name: slideIn;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideIn;
+        animation-duration: 0.4s;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .modal-body {
+        padding: 2px 16px;
+    }
+
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .btn_style {
+        background-color: #53bffe; // background-color: white;
+        color: white;
+        border-color: #53bffe;
+        font-size: 19px;
+        font-weight: bold;
+        margin: 0px 0px 10px 0px;
+    }
+
+    .month-slide {
+        background-color: #53bffe;
+        border-radius: 10px;
+        color: #f8f8f8;
+        margin-left: 4px;
+        padding: 7px;
+
+        p {
+            margin: 0px;
+            font-size: 13px;
+        }
+    }
+
+    .checkmark_style {
+        transform: translate(0px, -5px);
+        color: #f8f8f8;
+        font-weight: bold;
+        font-size: 16px;
+        float: right;
+    }
+
+    .selected_checkmark_style {
+        background-color: #2c96d4;
+    }
+
+    .unselected_checkmark_style {
+        background-color: #53bffe;
+    }
+
+    .day-slide {
+        height: 37px;
+        width: 38px;
+        padding: 8px;
+        border-radius: 30px;
+        color: #f8f8f8;
+        margin-left: 4px;
+        padding: 8px 7px 7px 7px;
+
+        p {
+            margin: 0px;
+        }
+    }
+
+    .header_title {
+        font-size: 16px;
+        color: #7F7F7F;
+        margin: 8px 6px 9px 8px;
+        font-weight: bold;
+    }
+
+    .selected_day_checkmark_style {
+        background-color: #2c96d4;
+    }
+
+    // .fixed-button {
+    //     position: absolute;
+    //     bottom: 1em;
+    //     z-index: 11111;
+
+    //     ion-row {
+    //         height: 2em !important;
+
+    //     }
+    // }
+}

@@ -1,0 +1,135 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Print Tournament Member</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div class="container">
+
+
+        <div class="topblock">
+            <p class="paragraph_color" (click)="editVenueName()">
+                <span class="venuename">{{Tournament.TournamentName}}</span>
+                <br />
+                <span>- Member Sheet </span>
+            </p>
+            <ion-icon class="custom_icon" name="ios-create-outline" (click)="showHide()"></ion-icon>
+            <ion-item class="textbox_item" *ngIf="blockShowToggle">
+                <ion-label floating class="customlabel">Subject</ion-label>
+                <ion-input type="text" class="inputtext" [(ngModel)]="membersheetSubject"></ion-input>
+            </ion-item>
+
+        </div>
+
+
+
+        <ion-grid>
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox disabled="true" color="primary" class="chk" [(ngModel)]="actionSheet.FirstName"
+                            id="fn"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary" for="fn">First Name</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox disabled="true" color="primary" class="chk" [(ngModel)]="actionSheet.LastName"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary">Last Name</ion-label>
+                </ion-col>
+            </ion-row>
+
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox disabled="false" color="primary" class="chk" [(ngModel)]="actionSheet.MedicalCondition"
+                            (click)="add('MedicalCondition')"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary">Medical Condition</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox color="primary" class="chk" [(ngModel)]="actionSheet.Age" id="age" (click)="add('Age')"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary" (click)="actionSheet.Age = add(actionSheet.Age)">Age</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox color="primary" class="chk" [(ngModel)]="actionSheet.Gender" (click)="add('Gender')"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary" (click)="actionSheet.Gender = add(actionSheet.Gender)">Gender</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox color="primary" class="chk" [(ngModel)]="actionSheet.PaymentStatus" (click)="add('PaymentStatus')"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary" (click)="actionSheet.PaymentStatus = add(actionSheet.PaymentStatus)">Payment
+                        Status</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox color="primary" class="chk" [(ngModel)]="actionSheet.Phone" (click)="add('PhoneNumber')"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary" (click)="actionSheet.Phone = add(actionSheet.Phone)">Phone</ion-label>
+                </ion-col>
+            </ion-row>
+            <ion-row class="rows">
+                <ion-col col-2>
+                    <ion-item class="items">
+                        <ion-checkbox color="primary" class="chk" [(ngModel)]="actionSheet.EmailID" (click)="add('EmailID')"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-label class="lab" color="primary" (click)="actionSheet.EmailID = add(actionSheet.EmailID)">EmailId</ion-label>
+                </ion-col>
+            </ion-row>
+
+
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-6>
+                        <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+                    </ion-col>
+                    <ion-col col-6>
+                        <button ion-button block class="timekare-primary-btn" (click)="proceed()">Print</button>
+                    </ion-col>
+
+                </ion-row>
+            </ion-grid>
+
+
+
+
+        </ion-grid>
+    </div>
+</ion-content>

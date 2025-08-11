@@ -1,0 +1,169 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Holiday</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="holidayFYTab">
+            <ion-segment-button value="current">
+                FY {{financialYear1 && financialYear1.StartMonth}} {{financialYear1 && financialYear1.StartYear}} - {{financialYear1 && financialYear1.EndMonth}}
+                {{financialYear1 && financialYear1.EndYear}}
+            </ion-segment-button>
+            <ion-segment-button value="next">
+                FY {{financialYear2 && financialYear2.StartMonth}} {{financialYear2 && financialYear2.StartYear}} - {{financialYear2 && financialYear2.EndMonth}}
+                {{financialYear2 && financialYear2.EndYear}}
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Holiday
+        </ion-title>
+        <ion-buttons end>
+            
+        <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="holidayFYTab">
+            <ion-segment-button value="current">
+                FY {{financialYear1 && financialYear1.StartMonth}} {{financialYear1 && financialYear1.StartYear}} - {{financialYear1 && financialYear1.EndMonth}}
+                {{financialYear1 && financialYear1.EndYear}}
+            </ion-segment-button>
+            <ion-segment-button value="next">
+                FY {{financialYear2 && financialYear2.StartMonth}} {{financialYear2 && financialYear2.StartYear}} - {{financialYear2 && financialYear2.EndMonth}}
+                {{financialYear2 && financialYear2.EndYear}}
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+
+    <ion-item>
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClubKey" (ionChange)="onClubChange()">
+            <ion-option *ngFor="let club of allClubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <div [ngSwitch]="holidayFYTab" class="div-box-margin">
+        <ion-list *ngSwitchCase="'current'">
+
+            <!--<ion-card>
+                <ion-item>
+                    <h2>{{currentFinacialYearHolidayList.HolidayName}}</h2>
+                    <ion-icon item-right name="create" class="btn-edit" (click)="editHoliday()"></ion-icon>
+                    <ion-icon item-right name="close-circle" class="btn-clr"></ion-icon>
+                </ion-item>
+                <ion-card-content>
+                    <p>Jan - Mar</p>
+                </ion-card-content>
+            </ion-card>-->
+            <!--<ion-card>
+                <ion-item>
+                    <h2>Holiday2</h2>
+                    <ion-icon item-right name="create" class="btn-edit" (click)="editHoliday()"></ion-icon>
+                    <ion-icon item-right name="close-circle" class="btn-clr"></ion-icon>
+                </ion-item>
+                <ion-card-content>
+                    <p>Apr - July</p>
+                </ion-card-content>
+            </ion-card>-->
+
+            <ion-list *ngFor="let holiday of currentFinacialYearHolidayList" class="slider_list_margin">
+                <ion-item-sliding>
+                    <ion-item>
+
+                        <h2 class="card-h2-style">{{holiday.HolidayName}}</h2>
+                        <p><span>Start Date :</span><span> {{holiday.HolidayStartDate}}</span></p>
+                        <p><span>End Date: </span><span>{{holiday.HolidayEndDate}}</span></p>
+                    </ion-item>
+
+
+                    <ion-item-options side="right">
+                        <button ion-button color="secondary" (click)="editHoliday(holiday)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Edit
+                    </button>
+           
+                    
+                    </ion-item-options>
+                </ion-item-sliding>
+
+
+            </ion-list>
+
+            <ion-card *ngIf="currentFinacialYearHolidayList.length == 0">
+                <ion-card-content>
+                    <p class="text-color">It seems there are no holidays under this club</p>
+                </ion-card-content>
+            </ion-card>
+
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'next'">
+            <ion-list *ngFor="let holiday of nexttFinacialYearHolidayList" class="slider_list_margin">
+                <ion-item-sliding>
+                    <ion-item>
+
+                        <h2 class="card-h2-style">{{holiday.HolidayName}}</h2>
+                        <p><span>Start Date :</span><span> {{holiday.HolidayStartDate}}</span></p>
+                        <p><span>End Date: </span><span>{{holiday.HolidayEndDate}}</span></p>
+                    </ion-item>
+
+
+                    <ion-item-options side="right">
+                        <button ion-button color="secondary" (click)="editHoliday(holiday)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Edit
+                    </button>
+                        <!--<button ion-button style="background-color:#2b92bb !important; color: white !important">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Delete
+                    </button>-->
+                    </ion-item-options>
+                </ion-item-sliding>
+
+
+            </ion-list>
+
+            <ion-card *ngIf="nexttFinacialYearHolidayList.length == 0">
+                <ion-card-content>
+                    <p class="text-color">It seems there are no holidays under this club</p>
+                </ion-card-content>
+            </ion-card>
+
+        </ion-list>
+
+
+
+
+
+
+    </div>
+    <ion-fab right bottom>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="gotoAddHoliday()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+</ion-content>

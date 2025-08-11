@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title text-center>Create Notification</ion-title>
+        <ion-buttons end>
+
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button icon-only>
+               <ion-icon name="md-notifications"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+          <ion-icon name="md-more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="card-background-page">
+
+
+    <ion-list>
+
+        <ion-item>
+            <ion-label fixed>Message Label</ion-label>
+            <ion-input type="text" [(ngModel)]="notificationCategoryObj.Label"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Notification text</ion-label>
+            <ion-input type="text" [(ngModel)]="notificationCategoryObj.NotificationText"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Allow Notification</ion-label>
+            <ion-checkbox [(ngModel)]="notificationCategoryObj.IsAllowNotification "></ion-checkbox>
+        </ion-item>
+
+
+    </ion-list>
+
+
+</ion-content>

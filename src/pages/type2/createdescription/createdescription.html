@@ -1,0 +1,62 @@
+<ion-header>
+
+  <ion-navbar>
+    <!-- <ion-title>{{templateType}}</ion-title> -->
+    <ion-title>Templates</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div style="width:100%">
+    <div id="div">
+      <div style="background-color:#fff !important;border-bottom: 1px solid #ded8d8;margin: 0 0px 7px 0;" *ngFor="let description of descriptions; let i = index">
+        <ion-item style="color: rgba(0, 0, 0, 0.88);font-size: 18px;font-weight: bold;"  class="headerInput">
+          <ion-label *ngIf="description.header==''">Title #{{i+1}}: eg. </ion-label>
+          <ion-input type="text" [(ngModel)]="description.header"></ion-input>
+          <button ion-button clear (click)="poping(description)" item-right>
+            <ion-icon name="ios-close-circle-outline" style="font-size:2.3em;"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-item class="input_item">
+          <ion-textarea rows="2" type="text" style="padding-left: 5px;" placeholder="Enter description" [(ngModel)]="description.description"></ion-textarea>
+        </ion-item>
+      </div>        
+  </div>
+      
+      <!-- <div id="div" *ngIf="trailingDescription.length > 0" >
+        <div style="background-color:#fff !important;border-bottom: 1px solid #ded8d8;margin: 0 0px 7px 0;" [ngStyle]="{'border-bottom': desc.isActive ? '1px solid #ded8d8' : '3px solid red' }" *ngFor="let desc of trailingDescription; let i = index">
+          <ion-icon class="close" (tap)="poping(desc)" name="md-close"></ion-icon>
+        <ion-item  style="color: rgba(0, 0, 0, 0.88);
+          font-size: 18px;
+          font-weight: bold;"  class="headerInput">
+            <ion-label>Title #{{i+3}}: eg. </ion-label>
+            <ion-input type="text" [(ngModel)]="desc.header"></ion-input>
+          </ion-item>
+          <ion-item class="input_item">
+            <ion-textarea rows="2" type="text" style="padding-left: 10px;" placeholder="Enter {{desc.header}}" [(ngModel)]="desc.desc"></ion-textarea>
+          </ion-item>
+        </div>
+      </div> -->
+      <!-- <ion-fab right if="fab" class="fab-right">
+        <button ion-fab mini (click)="addSection()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab> -->
+      
+    </div>
+
+    <ion-fab right bottom (tap)="addSection()" class="trash_btn" if="fab">
+      <button ion-fab mini>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-fab>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn" (click)="createTemplate()">{{this.is_existed ? 'Update' : 'Create'}}</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

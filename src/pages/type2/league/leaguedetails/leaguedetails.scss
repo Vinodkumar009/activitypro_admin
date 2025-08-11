@@ -1,0 +1,732 @@
+page-leaguedetails {
+  .teamName {
+    color: #154766;
+    font-size: 18px;
+  }
+
+  .tbd-text {
+    color: orange !important;
+  }
+
+  .card-title {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .card-header {
+    padding: 5px;
+  }
+
+  .scroll-content {
+    background-color: #f7f7f7;
+  }
+
+  .circle {
+    background: #FFEBEB;
+    width: 44px;
+    border-radius: 50%;
+    padding: 10px 2px 9px;
+    text-align: center;
+    height: 44px;
+    color: #000000ad;
+    font-size: 19px;
+    font-weight: 500;
+  }
+
+  .cardrow {
+    div {
+      display: flex;
+      align-items: baseline;
+      width: 100%;
+    }
+
+    ion-icon {
+      font-size: 1.5em !important;
+      color: #2b92bb !important;
+    }
+  }
+
+  .largetext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 20px;
+    color: #154766;
+  }
+
+  .deletebtn {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    position: absolute;
+    right: 0px;
+    bottom: 10px;
+    background: none;
+    background-color: none !important;
+    color: white !important;
+  }
+
+  .smalltext {
+    // margin: 5px 0px;
+    // padding: 0 0 0 5px;
+    font-size: 16px;
+    color: #154766;
+  }
+
+  //   .cardrow {
+  //     margin: 0 0px;
+  //     padding: 0 0px;
+  //   }
+  .selected {
+    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+    // border: 1.5px solid #2b92bb;
+    color: #2b92bb !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 10px;
+  }
+
+
+  .select-type {
+    text-transform: capitalize;
+    background-color: transparent;
+    width: 95%;
+    margin: 0px !important;
+    color: #707070;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .invitedlist_row {
+    ion-item {
+      //display: flex;
+      border-bottom: 1px solid #dedede;
+      padding-left: 5px !important;
+
+      .item-inner {
+        border-bottom: none !important;
+      }
+
+      p {
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .teams_dev {
+    .teams_row {
+      .user_sets_row {
+        ion-input {
+          width: 50px;
+          border-radius: 5px;
+          margin: auto;
+          border: 1px solid grey;
+          margin: 0px 5px;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 600;
+
+          .text-input {
+            text-align: center !important;
+          }
+
+          .text-input-ios {
+            text-align: center;
+            margin: 11px 2px 11px 2px !important;
+          }
+        }
+
+        .result_para {
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          ion-icon {
+            font-size: 2em !important;
+            color: gold !important;
+          }
+        }
+      }
+
+      .participant_div {
+        margin: 10px 0px 10px 0px;
+        padding: 5px;
+      }
+
+      ion-col:nth-child(odd) .participant_div {
+        border: 1px solid #2b92bb;
+        border-radius: 5px;
+      }
+
+      ion-col:nth-child(even) .participant_div {
+        border: 1px solid red;
+        border-radius: 5px;
+      }
+
+      ion-item {
+        //display: flex;
+        border-bottom: 1px solid #dedede;
+        padding-left: 5px !important;
+
+        .item-inner {
+          border-bottom: none !important;
+        }
+
+        p {
+          font-weight: 600;
+          font-size: 15px;
+        }
+      }
+
+      button {
+        padding: 0 0.6em;
+        height: 35px;
+        width: 35px;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        //background-color: #2b92bb;
+        color: white !important;
+
+        ion-icon {
+          font-size: 20px;
+        }
+      }
+
+      .vs_div {
+        width: 100%;
+
+        p {
+          border: 1px solid grey;
+          border-radius: 50%;
+          padding: 14px 10px;
+          width: 50px;
+          text-align: center;
+          margin: auto;
+          background: #2b92bb;
+          color: #fff;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // .img {
+  //   height: 60px;
+  //   width: 60px;
+  //   box-shadow: none !important;
+  // }
+
+  .ioncard {
+    border-radius: 10px;
+    margin: -1px 0px 7px;
+  }
+
+  .scroll-content {
+    background-color: #f7f7f7;
+  }
+
+  .scroll-content {
+    background-color: #f7f7f7;
+  }
+
+  .details {
+    color: #2b92bb;
+  }
+
+  .foo {
+    padding: none;
+  }
+
+  // .selected {
+  //   background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+  //   border: 1.5px solid #2b92bb;
+  //   color: #2b92bb !important;
+  //   -webkit-box-shadow: none;
+  //   box-shadow: none;
+  //   border-radius: 10px;
+  // }
+
+  .ionlist {
+    margin: -1px 0px 7px;
+  }
+
+  .name {
+    color: #5ea68d;
+    font-size: 18px !important;
+    width: 100%;
+  }
+
+  .Location-head {
+    font-size: 1.6rem;
+    color: #222;
+    // padding: 10px;
+    border-bottom: 1px solid #ded8d8 !important;
+  }
+
+  .card-text {
+    color: #14110c;
+    width: 100%;
+    font-weight: bold;
+  }
+
+  .smalltext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 16px;
+    color: #154766;
+  }
+
+  .toggle_header {
+    background: rgba(0, 0, 0, 0.01);
+
+    p {
+      text-align: center;
+      font-size: 15px;
+    }
+
+    p::before,
+    p::after {
+      display: inline-block;
+      content: "";
+      border-top: 0.1rem solid #00000096;
+      width: 4rem;
+      margin: -6px 1rem;
+      -webkit-transform: translateY(-1rem);
+    }
+  }
+
+  //this css for team 
+  .paidmembercount {
+    //margin: 0px 0px 2px 0px;
+    color: green;
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 3px;
+  }
+
+  .p1 {
+    // border-bottom: .1px solid #d0cece;
+    // padding-top: 12px;
+    // padding-bottom: 9px;
+    // font-weight: bold;
+  }
+
+  .p2 {
+    color: green;
+    /* border-top: .1px solid; */
+    /* border-bottom: .1px solid #d0cece; */
+    font-weight: bold;
+    padding-top: 7px;
+    padding-bottom: 5px;
+    font-size: 12px;
+  }
+
+  .facilityCard {
+    border-radius: 0px !important;
+    box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+    margin: 6px 12px;
+    padding: 5px 5px 5px 5px;
+    //height: 20vh;
+    border-bottom: 1px solid #fab754;
+
+    p {
+      line-height: 1.2 !important;
+    }
+
+    ion-card-content {
+      //height: 18vh;
+      padding: 0px 5px !important;
+    }
+
+
+  }
+
+  .event_date {
+    color: #343434db;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .mar0 {
+    margin: 0 !important;
+  }
+
+  .eventname {
+    // color: #373737;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #5ea68d;
+    font-size: 18px !important;
+  }
+
+  .event_more {
+    margin: 8px 0px 0px 0px;
+    color: #373737;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: capitalize;
+    width: 150px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    //display: flex;
+    padding: 5px 0px 4px 10px;
+    border: 0.5px solid rgba(128, 128, 128, 0.43);
+  }
+
+  .event_more img {
+    width: 17px;
+    height: 17px;
+    margin: 0px 5px 0px 0px;
+  }
+
+  .fabTop {
+    margin-bottom: 13px;
+  }
+
+  .fabEmailText {
+    margin-left: -115px;
+    background-color: #2b92bb;
+    margin-top: -47px;
+    padding: 5px 12px 5px 11px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    border-radius: 3px;
+    margin-right: 36px;
+    -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+  }
+
+
+
+  // body {
+  //   font-family: 'Lato', Arial, sans-serif;
+
+  // }
+
+  // .wrapper {
+  //   line-height: 1.5em;
+  //   margin: 0 auto;
+
+  //   width: 90%;
+  //   max-width: 2000px;
+  //   overflow: hidden;
+  //   overflow-y: scroll;
+  //   padding-right: 0%;
+
+  // }
+
+  .tableFixHead {
+    overflow-y: auto;
+    height: 500px;
+  }
+
+  table {
+    // border-collapse: collapse;
+    width: 100%;
+    background: #FFFFFF;
+    // border-radius: 0px 0px 4px 4px;
+  }
+
+
+  .tableFixHead thead th {
+    position: sticky;
+    top: 0;
+  }
+
+
+
+  th {
+    // background-color: #d0d6d5;
+    background-color: #2b92bb !important;
+    // color: #081f2c;
+    color: #d7e0e4 !important;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 14px;
+    // line-height: 16px;
+    height: 46px;
+  }
+
+  td,
+  th {
+    padding: 1em 1.5em;
+    // padding: 8px 16px;
+    text-align: left;
+    // border: 2px solid #ccc;
+  }
+
+  thead {
+    height: 46px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  tbody {
+    height: 54px;
+  }
+
+  .design {
+    // background:#081f2c;
+    // color:white
+    // color: #081f2c;
+  }
+
+  .otherclumn {
+    color: #707070;
+  }
+
+  .firstcol {
+    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+    // color: #081f2c;
+    color: #2b92bb !important;
+  }
+
+  td.rank {
+    text-transform: capitalize;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    color: #000000;
+    padding-left: 5px;
+  }
+
+  td.up-down {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 14px;
+    color: #000000;
+  }
+
+  td.team {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+    color: #000000;
+  }
+
+  td.point {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    color: #000000;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .child {
+    display: inline-block;
+  }
+
+  .c {
+    display: inline;
+    font-weight: 600;
+  }
+
+  .d {
+    display: inline;
+  }
+
+  //**here styling of match card started
+  .maincard {
+    background: #FFFFFF;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.14);
+    border-radius: 6px;
+    margin-top: 15px;
+    margin-right: 10px;
+    margin-bottom: 9px;
+    margin-left: 10px;
+    padding: 0 0px;
+  }
+
+  .rowStyle {
+    color: #2B92BB;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 12px;
+  }
+
+  //   .ion_row {
+  //     padding: 7px 0px 9px 0px;
+  // }
+
+  .rightbox {
+    // text-align: RIGHT;
+    border-left: 1px solid #707070;
+    // padding: 0px 11px 0px 0px;
+  }
+
+  .logoSize {
+    width: 19px;
+    height: 11px;
+  }
+
+  .styleLogo {
+    height: 20px;
+    width: 20px;
+  }
+
+  .textStyle {
+    margin-left: -10px;
+    color: #2B92BB;
+    font-size: 14px;
+    font-weight: 500;
+
+  }
+
+  .scoreStyle {
+    text-align: right;
+    color: #2B92BB;
+    font-size: 14px;
+    font-weight: 500;
+
+  }
+
+  .textFormat {
+    color: #2b92bb !important;
+    // color: #7D7D7D;
+    font-size: 12px;
+    line-height: 14px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .stylerow {
+    color: black;
+    font-weight: 500;
+  }
+
+  .score {
+    text-align: -webkit-right;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    //font-family: 'Raleway';
+    // font-style: normal;
+    color: #000000;
+  }
+
+  .event_date {
+    // color: #343434db;
+    font-size: 15px;
+    //  font-weight: 500;
+    // background-color: #2b92bb !important;
+    // color: white !important;
+
+  }
+
+
+
+
+  /**Here Starts Match Part**/
+
+  .membercard {
+    border-left: 3px solid $themecardleftbordercolor;
+    //height: 70px;
+
+    ion-card-content {
+      padding: 0px 0px;
+    }
+
+    ion-col img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .margin_0 {
+    margin: 0px;
+  }
+
+  .margin_auto {
+    margin: auto;
+  }
+
+  .margin_lr_auto {
+    //padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .para_overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+  }
+
+  .member_status {
+    line-height: 14px;
+    font-size: 12px;
+    color: #aaada8;
+    font-style: italic;
+  }
+
+  .paidBlock {
+    padding: 1px 0px 0px 0px;
+  }
+
+  .moneypaid {
+    line-height: 14px;
+    text-align: right;
+    /* float: right; */
+    //font-weight: bold;
+    color: green;
+  }
+
+  .transactiondate {
+    line-height: 14px;
+    padding-right: 0px;
+    font-size: 12px;
+    text-align: right;
+    color: #aaada8;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pending {
+    line-height: 27px;
+    font-size: 14px;
+    text-align: right;
+    color: rgba(255, 0, 0, 0.65);
+    //font-style: italic;
+  }
+
+  .participant_status_text {
+    font-size: 1.2rem;
+    color: #aaada8;
+    /* Example styling */
+    margin: 0;
+  }
+
+  .nowrap-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Optional: Adds ellipsis (...) if the text overflows */
+  }
+
+  .margin_0 {
+    margin: 0px;
+  }
+
+  .withdrawled {
+    margin-top: 2px;
+    line-height: 14px;
+    font-size: 12px;
+    color: #ff0000;
+    //font-weight: 500;
+    //font-style: italic;
+  }
+
+
+}

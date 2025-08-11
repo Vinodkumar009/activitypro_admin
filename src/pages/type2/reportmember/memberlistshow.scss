@@ -1,0 +1,101 @@
+memberlistshow-page{
+    .scroll-content{
+        padding: 16px 9px !important;
+    }
+    .no-margin{
+        margin:0px;
+        width:100%;
+        background-color: rgba(255, 255, 255, 0);
+    }
+    .sss{
+      //  width:100%;
+       // padding: 11px 0px 11px 6px;
+       // background-color: rgba(11, 18, 29, 0.53);
+        //font-color: white;
+      //  color: white;
+      //  font-size: 16px;
+      //  border-bottom: 5px solid rgba(25, 92, 170, 0.79);
+      width: 100%;
+      padding: 11px 0px 11px 6px;
+      background-color: rgb(222, 222, 222);
+      color: black;
+      font-size: 16px;
+      border-bottom: 0px solid red;
+      margin-bottom: 0px;
+    }
+    .margin{
+        margin-top: 7px;
+    }
+    .margin_btm{
+        margin-bottom: 75px;
+    }
+    .marg_top{
+        margin-top: 0rem;
+    }
+
+     .blue{
+
+
+    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  background: #06326f;
+   border-radius: 2.6em;
+  -moz-border-radius: 2.6em;
+  -webkit-border-radius: 2.6em;
+    color: #ffffff;
+    display: inline-block;
+ 
+line-height: 4em;
+    margin-right: 15px;
+    text-align: center;
+    width: 4em;
+    height: 4em;
+
+    //  //   box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    // //background: #06326f;
+    // //border-radius: 2.6em;
+    // //-moz-border-radius: 2.6em;
+    // //-webkit-border-radius: 2.6em;
+    // color: #ffffff;
+    // display: inline-block;
+    // line-height: 4em;
+    // margin-right: 15px;
+    // text-align: center;
+    // width: 4em;
+    // height: 4em;
+    font-size: 19px;
+  }
+
+  .red{
+    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+  background: #F44336;;
+   border-radius: 2.6em;
+  -moz-border-radius: 2.6em;
+  -webkit-border-radius: 2.6em;
+    color: #ffffff;
+    display: inline-block;
+  
+// line-height: 3em;
+//     margin-right: 15px;
+//     text-align: center;
+//     width: 3em;
+//     height: 3em;
+
+
+
+line-height: 4em;
+    margin-right: 15px;
+    text-align: center;
+    width: 4em;
+    height: 4em;
+
+    font-size: 19px;
+
+
+
+  }
+ 
+}

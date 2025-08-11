@@ -1,0 +1,98 @@
+<!--
+  Generated template for the MemberprofilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Membership</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+
+  <ion-card class="ioncard">
+    <ion-card-content>
+      <p class="notpureblack"
+        style="color: #5ea68d !important;font-size: 18px !important;">{{memberShipData?.membership_tier?.name}}</p>
+        <p class="para_overflow notpureblack">
+          <span>Category: </span>
+          <span class="card-text">{{memberShipData?.membership_tier?.name}}</span>
+        </p>
+    </ion-card-content>
+  </ion-card>
+
+  <h6 class="h6">Select Payment Option</h6>
+  <ion-row radio-group [(ngModel)]="Duration" class="ionrow">
+    <ion-col class="ioncol">
+      <ion-item *ngIf="monthly" style="border-bottom: 1px solid rgba(0, 0, 0, 0.25)">
+        <ion-label>Monthly - <span *ngIf="currencyDetails!=undefined"
+            style="color:green">{{currencyDetails.CurrencySymbol}}</span> 
+            <span style="margin-left: -2px;">{{memberShipData.monthly_price}}</span>&nbsp;
+        </ion-label>
+        <ion-radio [value]="'monthly'"></ion-radio>
+      </ion-item>
+      <ion-item *ngIf="yearly">
+        <ion-label>Yearly -
+          <span *ngIf="currencyDetails!=undefined" style="color:green;">{{currencyDetails.CurrencySymbol}}</span>
+          <span style="margin-left: -2px;">{{memberShipData.yearly_price}} ,</span>
+          <span *ngIf="memberShipData.yearly_discount_absolute != 0 || memberShipData.yearly_discount_percentage != 0">
+            Discount-
+            <span *ngIf="currencyDetails!=undefined" style="color:green">{{currencyDetails.CurrencySymbol}}</span>
+            <span
+              *ngIf="memberShipData.yearly_discount_absolute != 0" style="margin-left: -2px;">{{memberShipData.yearly_discount_absolute}}</span>
+            <span
+              *ngIf="memberShipData.yearly_discount_absolute != 0 && memberShipData.yearly_discount_percentage != 0"> or
+            </span>
+            <span
+              *ngIf="memberShipData.yearly_discount_percentage != 0">{{memberShipData.yearly_discount_percentage}}%</span>
+          </span>
+        </ion-label>
+        <ion-radio [value]="'yearly'"></ion-radio>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+
+
+  <h6 class="h6">Select Members</h6>
+  <!-- Display Available Family Members if No Enrolled Members -->
+  <ion-scroll scrollY="true" class="block_height1" *ngIf="familyMemberInfo.length > 0">
+    <ion-list class="margin">
+      <ion-item *ngFor="let member of familyMemberInfo">
+        <ion-label>{{member.FirstName}} {{member.LastName}}</ion-label>
+        <ion-checkbox [(ngModel)]="member.IsSelect" (ionChange)="selectMember(member)"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </ion-scroll>
+
+  <ion-row class="noMemberleft" *ngIf="is_no_members">
+    <ion-col col-12>
+      <p>No member(s) left</p>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="date" style="margin-top: 20px;" *ngIf="!is_no_members">
+      <ion-item class="membership_date">
+        <ion-label>Select Start Date</ion-label>
+        <ion-datetime  displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="startDate"
+          min={{minDate}} max={{maxDate}}></ion-datetime>
+      </ion-item>
+  </ion-row>
+</ion-content>
+
+<ion-footer>
+    <ion-row *ngIf="!isAssigned">
+      <ion-col col-12 style="padding-left:5px;">
+        <button ion-button block class="timekare-primary-btn"  (click)="assignmember()" [disabled]="!isFormValid">Confirm</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isAssigned">
+      <ion-col col-6>
+        <button ion-button block class="timekare-primary-btn" (click)="update()">Update</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button block style="background-color: red" (click)="remove()">Remove Membership</button>
+      </ion-col>
+    </ion-row>
+</ion-footer>

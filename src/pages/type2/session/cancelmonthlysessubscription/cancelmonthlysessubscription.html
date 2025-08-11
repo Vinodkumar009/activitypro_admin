@@ -1,0 +1,74 @@
+<!--
+  Generated template for the FilterbookingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Subscription Cancellation</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div style="margin-bottom: 60px;" [ngStyle]="{'margin-top.px': this.platformType=='ios' ? 30 : 0 }">
+    <ion-row>
+      <ion-col col-12 style="padding:0px !important">
+        <ion-grid>
+          <ion-row *ngIf="session_dets!=undefined && user_subscription!=undefined">
+            <ion-col col-8>
+              <p style="font-size:20px; margin: 5px 0;color:rgba(0,0,0,0.85)">{{session_dets.session_name}} </p>
+            </ion-col>
+            <ion-col col-4>
+              <p style="font-size: 16px;margin: 5px 0px;float: right;">{{user_subscription.end_date}}</p>
+              <p class="expires">(Expires)</p>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="user_subscription!=undefined && user_subscription.payment_date">
+
+            <ion-col style="padding: 5px 0px;" col-8></ion-col>
+            <ion-col style="padding: 5px 0px;" col-4>
+              <p style=" margin: 5px 0px; color:rgba(0,0,0,0.85);float: right;
+               
+                font-size: 15px;">{{user_subscription.latest_payment_date}}</p>
+              <p class="expires">(Last paid)</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col style="padding: 0 7px;" col-12>
+              <p style="margin: 3px 0 7px;
+                color: rgba(0,0,0,0.65);">{{user_subscription.user.FirstName}} {{user_subscription.user.LastName}}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row style="margin-top: 10px;">
+            <ion-col col-12>
+              <ion-input type="text" placeholder="Type 'CANCEL' here..." [(ngModel)]="cancelText"></ion-input>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <!-- <ion-grid class="btngrid">
+          <ion-row>
+            <ion-col col-12>
+              <button ion-button block class="timekare-primary-btn" (click)="cancel()">Cancel Membership</button>
+            </ion-col>
+            <ion-col col-12>
+              <button ion-button block style="color: rgba(0, 0, 0, 0.65);background-color: rgba(128, 128, 128, 0.15);"
+                (click)="this.navCtrl.pop()">Go Back</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid> -->
+
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>
+  
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn" (click)="cancel()">Cancel Subscription</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

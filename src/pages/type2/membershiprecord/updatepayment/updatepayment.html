@@ -1,0 +1,83 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Membership</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content  *ngIf="member">
+  <ion-card class="card">
+    <ion-card-content>
+        <p  style="font-size: 18px !important;color:rgba(0,0,0,0.85)">{{member.DisplayName}}</p>
+        <p>{{member.MembershipName}}</p>
+        <!-- <div *ngIf="member.Amount">
+            <span *ngIf="currencyDetails!=undefined" style ="color:#4CAF50">{{currencyDetails.CurrencySymbol}}{{member.Amount}} + {{currencyDetails.CurrencySymbol}}{{member.AdminFees}} admin fees
+            </span>
+            <span *ngIf="!member.IsPaid" class="due">Due</span>
+        </div> -->
+        <p  style="border-top: 1px solid rgba(0,0,0,0.2);" class="mar">Membership fees <span *ngIf="currencyDetails!=undefined" style ="float: right;">{{currencyDetails.CurrencySymbol}}{{member.Amount}}</span>
+        </p>
+        <p  class="mar">Admin fees <span *ngIf="currencyDetails!=undefined" style ="float: right;">{{currencyDetails.CurrencySymbol}}{{member.AdminFees}}</span>
+        </p>
+        <p  class="mar" style="border-top: 1px solid rgba(0,0,0,0.2);">Total <span *ngIf="currencyDetails!=undefined" style ="float: right;">{{currencyDetails.CurrencySymbol}}{{totalAmount}} </span>
+        </p>
+        <div style="color: rgba(0,0,0,0.85);">
+            <span *ngIf="currencyDetails!=undefined">Applicable Discount ({{currencyDetails.CurrencySymbol}})</span><ion-input class="inputdis" type="number" [(ngModel)]="paymentDetails.Discount" (ngModelChange)="calAmount()"></ion-input>
+        </div>
+        <p class="mar" style="border-top: 1px solid rgba(0,0,0,0.2); color:rgba(0,0,0,0.95)">Amount payable<span *ngIf="!member.IsPaid" class="due"> (Due)</span> <span *ngIf="currencyDetails!=undefined" style ="float: right;font-size: 18px;">{{currencyDetails.CurrencySymbol}}{{this.paymentDetails.PaymentAmount}} </span>
+        </p>
+    
+
+
+    </ion-card-content>
+</ion-card>
+
+
+
+    
+<!-- <ion-item>
+    <ion-label floating>Paid Amount</ion-label>
+    <ion-input type="number" (keyup)="validateAmount($event)"   [(ngModel)]="paymentDetails.PaymentAmount" [disabled]="member.IsPaid"></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label floating>Payment Discount</ion-label>
+  <ion-input type="number"  [(ngModel)]="paymentDetails.Discount" [disabled]="member.IsPaid"></ion-input>
+</ion-item> -->
+<ion-item>
+    <ion-label>Payment Mode</ion-label>
+    <ion-select [(ngModel)]="paymentDetails.PaymentMode" [disabled]="member.IsPaid">
+        
+        <ion-option value="Cash">Cash</ion-option>
+        <ion-option value="BACS">BACS</ion-option>
+        <ion-option value="Cheque">Cheque</ion-option>
+        <ion-option value="Childcare Voucher">Childcare Voucher</ion-option>
+    </ion-select>
+</ion-item>
+
+<ion-item>
+    <ion-label>Payment Status</ion-label>
+    <ion-select [(ngModel)]="paymentDetails.PaymentStatus" [disabled]="member.IsPaid">
+      
+        <ion-option value="Pending">Pending</ion-option>
+        <ion-option value="Paid">Paid</ion-option>
+       
+    </ion-select>
+</ion-item>
+<ion-item>
+    <ion-label floating>Comments</ion-label>
+    <ion-textarea type="text" rows="4" [(ngModel)]="paymentDetails.Comments" [disabled]="member.IsPaid"></ion-textarea>
+</ion-item>
+ 
+<ion-grid>
+    <ion-row>
+        <ion-col col-6>
+            <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+        </ion-col>
+        <ion-col col-6>
+            <button ion-button block class="timekare-primary-btn" (click)="updatePaymentInfo()" [disabled]="member.IsPaid || !isDicountfetch">Update</button>
+        </ion-col>
+
+    </ion-row>
+</ion-grid>
+</ion-content>

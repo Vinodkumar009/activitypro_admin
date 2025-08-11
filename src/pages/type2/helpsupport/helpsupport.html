@@ -1,0 +1,64 @@
+<ion-header>
+  <!-- <ion-navbar [hideBackButton]="true">
+      <ion-buttons left>
+          <button ion-button icon-only (click)="pop()">
+              <ion-icon name="arrow-back"></ion-icon><span *ngIf="IsShowBackText">Back</span>
+          </button>
+      </ion-buttons>
+      <ion-title>FAQ</ion-title>
+  </ion-navbar> -->
+  <ion-navbar [hideBackButton]="true">
+    <ion-buttons left [ngStyle]="{'margin-top.px': this.IsShowBackText ? 25 : 0 }">
+        <button ion-button icon-only (click)="pop()" style="margin:0px 6px !important">
+            <ion-icon name="arrow-back"></ion-icon><span *ngIf="IsShowBackText">Back</span>
+        </button>
+    </ion-buttons>
+    <ion-title>FAQ</ion-title>
+</ion-navbar>
+</ion-header>
+
+
+<ion-content class="card-background-page">
+  <ion-row class="sub-container ">
+    <ion-col col-2 style="text-align: -webkit-right;">
+      <button>
+        <ion-icon name="ios-search"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+      <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getFilterItems($event)" autocorrect="off">
+      </ion-searchbar>
+    </ion-col>
+  </ion-row>
+
+  <ion-card *ngFor="let faq of SetupDisplay" >
+    <ion-card-header style="padding: 0px 15px !important;">
+      <ion-card-title >
+        <ion-row style="font-size: 1.8rem !important;color: #4e4d4d !important;" (click)="select(faq)">
+          <ion-col col-10 text-wrap>
+            {{faq.HelpHeader}}
+          </ion-col>
+          <ion-col col-2 style="margin:auto">
+            <ion-icon name="ios-arrow-down" style="float: right;" ></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="faq.IsSelect">
+      <p class="white-space">{{faq.HelpDetails}}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-fab right bottom (click)="gotoInbox()">
+  <button ion-fab mini style="background-color: #2b92bb;" 
+    style="background-color:#2b92bb !important; color: white !important">
+    <ion-icon name="chatbubbles"></ion-icon>
+  </button>
+</ion-fab>
+<!-- <ion-fab right bottom>
+  <button ion-fab mini style="background-color: #2b92bb;" (click)="gotoHelpsupportEmail()"
+    style="background-color:#2b92bb !important; color: white !important">
+    <ion-icon name="mail"></ion-icon>
+  </button>
+</ion-fab> -->

@@ -1,0 +1,103 @@
+<!--
+  Generated template for the MonthlysessionMembershipMoveConfirmationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Membership Move</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content> 
+  <ion-item>
+    <ion-label>Venue</ion-label>
+    <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+      <ion-option *ngFor="let club of clubs" value={{club.Id}}>{{club.ClubName}}</ion-option>
+      <ion-option value="All">All</ion-option>
+    </ion-select>
+  </ion-item>
+
+
+
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search sessions"
+    (ionInput)="searchSession($event)"></ion-searchbar>
+
+
+  <ion-list style="margin:10px 0px;" *ngIf="filter_monthly_sessions.length > 0">
+  <div class="card_style" *ngFor="let session of filter_monthly_sessions; let i=index"  (click)="canMoveToSession(i)">
+    <ion-grid style="padding:0px 5px 5px 5px !important">
+      <ion-row class="innercard_style">
+        <ion-col col-md-10 col-sm-10 col-10 class="margin-auto" >
+          <p style="" class="themeheader para_overflow">
+            {{session.coach_names}}
+          </p>
+          <p class="para_overflow themeheader"  style=""> {{session.session_name}}</p>
+          <p class="para_overflow" style="">
+           <span>{{session.ClubDetails.ClubName}}</span>
+          </p>
+          <p class="para_overflow" style="">
+            <span>{{session.activity_category_name}}/{{session.activity_subcategory_name}}</span>
+          </p>
+          <p class="para_overflow">
+            <span class="transaction_date">{{session.start_date}} -> {{session.end_date}}</span>
+          </p>
+          <p style="">
+            <span class="transaction_date">{{session.days}} </span>
+            <span class="transaction_date"> {{session.start_time}}hrs</span>
+          </p>
+        </ion-col>
+        <ion-col col-md-2 col-sm-2 col-2 class="paid_right_col">
+          <!-- <p class="sessiondetails themeheaderfont payment_details">
+            <span
+              *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{formatAmount(member.amountPaid)}}
+          </p>
+          <p class="coachname"
+            *ngIf="member.totalDiscount != 0 && member.totalDiscount!= undefined && member.totalDiscount!= '0.00'">
+            <span
+              *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{member.totalDiscount}}
+          </p> -->
+          <ion-icon name="ios-arrow-forward"></ion-icon>
+         
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  </ion-list>
+</ion-content>
+
+ <!-- 
+  <ion-list style="margin:10px 0px;">
+    <div class="card_style">
+      <ion-grid style="padding:0px 5px 5px 5px !important">
+        <ion-row class="innercard_style">
+          <ion-col col-md-1 col-sm-1 col-1 class="col_center"></ion-col>
+          <ion-col col-md-8 col-sm-8 col-8 class="margin-auto" style="padding:0px 0px 0px 3px;">
+            <p style="margin:0px 2px" class="sessiondetails themeheaderfont para_overflow">
+              {{data.user.FirstName}} {{data.user.LastName}}
+            </p>
+            <p class="activity cust_margin para_overflow"> Session-Abc</p>
+            <p style="margin: 0px 0px 0px 2px;">
+                  <span class="transaction_date">{{data.days}} - </span>
+                  <span class="transaction_date"> {{data.start_time}}hrs</span>
+                </p>
+                <p class="cust_margin para_overflow">
+                  <span>{{data.coach_name}}</span>
+                  <span>@</span>
+                  <span>{{data.ClubName}}</span>
+                </p>
+          </ion-col>
+          <ion-col col-md-3 col-sm-3 col-3 class="right_col">
+            <p class="sessiondetails cust_margin themeheaderfont payment_details">
+              <span
+                *ngIf="currencyDetails != undefined && dueMember.amount_paid!= 'NaN' ">{{currencyDetails.CurrencySymbol}}</span>{{data.amount_paid}}
+            </p>
+            <p class="ses_type" *ngIf="dueMember.PaymentOption==100">{{dueMember.TermName}}</p>
+                <p class="ses_type" *ngIf="dueMember.PaymentOption==101">Monthly</p>
+                <p class="ses_type" *ngIf="dueMember.PaymentOption==102">Weekly</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-list> -->

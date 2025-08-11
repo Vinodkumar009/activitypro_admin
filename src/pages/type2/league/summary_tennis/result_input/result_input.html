@@ -1,0 +1,55 @@
+<!--
+  Generated template for the TennisResultInputPage page.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>Tennis Match Result</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div class="result-input-container">
+        <h3>Enter Match Result</h3>
+
+        <div class="team-section">
+            <h4>{{homeTeamObj?.parentclubteam?.teamName}} (Home)</h4>
+            <ion-item>
+                <ion-label>Sets Won</ion-label>
+                <ion-input type="number" [(ngModel)]="homeSetsWon" placeholder="0"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Total Games Won</ion-label>
+                <ion-input type="number" [(ngModel)]="homeGamesWon" placeholder="0"></ion-input>
+            </ion-item>
+        </div>
+
+        <div class="vs-divider">
+            <p>VS</p>
+        </div>
+
+        <div class="team-section">
+            <h4>{{awayTeamObj?.parentclubteam?.teamName}} (Away)</h4>
+            <ion-item>
+                <ion-label>Sets Won</ion-label>
+                <ion-input type="number" [(ngModel)]="awaySetsWon" placeholder="0"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Total Games Won</ion-label>
+                <ion-input type="number" [(ngModel)]="awayGamesWon" placeholder="0"></ion-input>
+            </ion-item>
+        </div>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button full color="light" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button full color="primary" (click)="saveResult()">Save Result</button>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>

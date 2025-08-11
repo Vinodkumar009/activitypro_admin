@@ -1,0 +1,265 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Create Session For Family</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Create Session For Family
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" padding>
+
+    <ion-item>
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+            <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivityType" (ionChange)="onChangeActivity()">
+            <ion-option *ngFor="let type of types" value={{type.$key}}>{{type.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Coach</ion-label>
+        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+            <ion-option *ngFor="let coach of coachs" value={{coach.CoachKey}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <div class="margin_top">
+    </div>
+    <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="selectActivityCategory" (ionChange)="onChangeActivityCategory()">
+            <ion-option *ngFor="let ac of activityCategoryList" value={{ac.Key}}>{{ac.ActivityCategoryName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <div class="middle_section">
+
+        <!--
+        <ion-grid>
+            <ion-row>
+                <ion-col width-25 class="padding_class">Age Group</ion-col>
+                <ion-col width-75>
+                    <ion-slides [options]="ageGroup" class="member_slider">
+                        <ion-slide>
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        12U
+                                    </ion-col>
+                                    <ion-col>
+                                        14U
+                                    </ion-col>
+                                    <ion-col>
+                                        16U
+                                    </ion-col>
+                                    <ion-col>
+                                        18U
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-slide>
+                    </ion-slides>
+
+
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+-->
+
+
+        <ion-item>
+            <ion-label floating>Session Name</ion-label>
+            <ion-input type="text" [(ngModel)]="sessionDetails.SessionName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="sessionDetails.StartDate"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Time</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="sessionDetails.StartTime"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Duration</ion-label>
+            <ion-input type="text" [(ngModel)]="sessionDetails.Duration"></ion-input>
+        </ion-item>
+        <!--<ion-item>
+            <ion-label>Repeat</ion-label>
+            <ion-select [(ngModel)]="repeatForPrivateSession">
+                <ion-option value="r1">Repeat1</ion-option>
+                <ion-option value="r2">Repeat2</ion-option>
+            </ion-select>
+        </ion-item>-->
+        <ion-item>
+            <ion-label floating>Session Fees</ion-label>
+            <ion-input type="text" [(ngModel)]="sessionDetails.SessionFee"></ion-input>
+        </ion-item>
+
+    </div>
+    <ion-item class="comments">
+        <ion-label floating>Notes</ion-label>
+        <ion-textarea type="text" [(ngModel)]="sessionDetails.Notes"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Reffered By</ion-label>
+        <ion-textarea type="text" [(ngModel)]="sessionDetails.RefferdBy"></ion-textarea>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelSessionCreation()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="createSession()">Create</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+<!--
+
+<ion-content class="cards-bg social-cards" padding>
+    <ion-item>
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="selectedClub">
+            <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivityType" (ionChange)="onChangeActivity()">
+            <ion-option *ngFor="let type of types" value={{type.$key}}>{{type.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Coach</ion-label>
+        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChange()">
+            <ion-option *ngFor="let coach of coachs" value={{coach.$key}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <div class="middle_section">
+      
+
+        <ion-grid>
+            <ion-row>
+                <ion-col width-25 class="padding_class">Age Group</ion-col>
+                <ion-col width-75>
+                    <ion-slides [options]="ageGroup" class="member_slider">
+                        <ion-slide>
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        12U
+                                    </ion-col>
+                                    <ion-col>
+                                        14U
+                                    </ion-col>
+                                    <ion-col>
+                                        16U
+                                    </ion-col>
+                                    <ion-col>
+                                        18U
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-slide>
+                    </ion-slides>
+
+
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+
+
+        <ion-item>
+            <ion-label floating>Session Name</ion-label>
+            <ion-input type="text" [(ngModel)]="sessionDetails.SessionName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="sessionDetails.StartDate"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Time</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="sessionDetails.StartTime"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Duration</ion-label>
+            <ion-input type="text" [(ngModel)]="sessionDetails.Duration"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Repeat</ion-label>
+            <ion-select [(ngModel)]="repeatForPrivateSession">
+                <ion-option value="r1">Repeat1</ion-option>
+                <ion-option value="r2">Repeat2</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Session Fees</ion-label>
+            <ion-input type="text" [(ngModel)]="sessionDetails.SessionFee"></ion-input>
+        </ion-item>
+       
+    </div>
+    <ion-item class="comments">
+        <ion-label floating>Notes</ion-label>
+        <ion-textarea type="text" [(ngModel)]="sessionDetails.Notes"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Reffered By</ion-label>
+        <ion-textarea type="text" [(ngModel)]="sessionDetails.RefferdBy"></ion-textarea>
+    </ion-item>
+    <ion-grid>
+        <ion-row>
+            <ion-col width-50>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important">Cancel</button>
+            </ion-col>
+            <ion-col width-50>
+                <button ion-button block class="timekare-primary-btn" (click)="createSession()">Create</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>-->

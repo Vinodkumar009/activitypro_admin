@@ -1,0 +1,182 @@
+page-membershipyear{
+    .button-md {
+        background-color: #f6f8fa;
+    }
+
+    .card-md {
+        margin: 26px 0px;
+    }
+
+    ion-card {
+        margin-left: 0px;
+        width: 329px !important;
+        // -webkit-box-shadow: none !important;
+        // box-shadow: none !important;
+        width: auto !important;
+    }
+
+    .close {
+        background-color: rgba(245, 245, 245, 0) !important;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+    .subOption{
+        color: #ce9187; 
+        font-size: 1.1em;
+        text-transform: capitalize;
+    }
+
+    .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .maxwidthionselect {
+        max-width: none;
+        padding: 11px 8px 11px 1px !important;
+        width: -webkit-fill-available;
+    }
+
+    .body {
+        background-image: none !important;
+    }
+
+    .distinctpercent {
+        border-bottom: 1px solid #c695da !important;
+    }
+
+    .discountalign {
+        margin-left: 13%;
+    }
+
+    .foricon {
+        margin-top: 13px !important;
+        margin-bottom: 8px !important;
+        font-size: large;
+        color: #999;
+    }
+
+    .discount_input {
+
+        margin-left: 15px;
+        border-bottom: 1px solid orange;
+    }
+    .h6 {
+        font-size: 16px;
+        margin-left: 1rem;
+        color: rgba(0, 0, 0, 0.85);
+        margin-right: 1rem;
+        padding-bottom: 3px;
+        margin-top: 15px;
+        border-bottom: 2px solid #faae4e;
+    }
+    .scroll-content {
+        
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+    .nonlocationcard {
+        padding: 14px 0;
+    }
+    .percent {
+        width: 23% !important;
+    }
+
+    .allign-assist {
+        position: fixed;
+        bottom: 11px;
+        width: 97%;
+
+    }
+
+    // .row {
+    //     margin-bottom: 25px;
+    // }
+
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+        left: 3px !important;
+    }
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        
+        font-size: 18px;
+        float: left;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    .alert-head {
+        text-align: center;
+        padding: 8px 0 0 0;
+    }
+
+    .location-cards>h3 {
+        font-size: 15px;
+        color: blue;
+        font-weight: 600;
+    }
+
+    .location-cards {
+        padding: 10px 10px;
+        border-bottom: yellow;
+    }
+
+    .all {
+        // border-left: 3px solid #35adff;
+        border-width: 1px;
+        border-style: solid;
+        -webkit-border-image:
+            -webkit-gradient(linear, 0 0, 0 100%, from(#35adff), to(#7dbce6)) 1 100%;
+        -webkit-border-image:
+            -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -moz-border-image:
+            -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -o-border-image:
+            -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+        border-image:
+            linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+    }
+
+    .border-left-style {
+        height: 70px;
+        position: absolute;
+        top: 33px;
+        left: 7px;
+    }
+
+    .name {
+        color: #5ea68d;
+        font-size: 18px !important;
+    }
+
+    .card-text {
+        color: #c5b495;
+        width: 100%;
+    }
+
+    .card-text>span {
+        color: gray;
+    }
+
+    .Location-head {
+        padding: 3px 0 0px 11px;
+    }
+
+    .nonmembercard {
+        width: 100% !important;
+        margin-top: 23px;
+    }
+}

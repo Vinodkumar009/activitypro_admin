@@ -1,0 +1,25 @@
+page-leaderboard {
+    .scroll-content {
+        padding: 5px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+        //margin-top:60px !important;
+    }
+    .cardpending {
+        margin-bottom: 10px !important;
+        border-radius: 12px !important;
+        background: #ffffff !important;
+        -webkit-box-shadow: 0px 2px 8px -1px #b4b3b7 !important;
+        box-shadow: 0px 2px 8px -1px #b4b3b7 !important;
+        //height: 120px;
+    }
+    .p1{
+        font-size: 18px !important;
+    }
+    .marginauto{
+        margin:auto;
+        .forward_icon{
+            color: #7a7878 !important;
+            font-size: 25px !important;
+        }
+    }
+}

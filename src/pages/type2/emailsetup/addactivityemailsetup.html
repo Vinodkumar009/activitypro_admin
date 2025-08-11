@@ -1,0 +1,109 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Activity Email Setup</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Activity Email Setup
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-list no-border *ngFor="let item of clubs">
+
+        <ion-list-header class="list-modifier">
+            <ion-label>{{item.ClubName}}</ion-label>
+            <ion-checkbox [(ngModel)]="item.IsSelected" [checked]="item.IsSelected" [disabled]=setup></ion-checkbox>
+        </ion-list-header>
+
+        <ion-item *ngFor="let inneritem of item.Activities">
+            <ion-label>{{inneritem.ActivityName}}</ion-label>
+            <ion-checkbox [(ngModel)]="inneritem.IsSelected" [disabled]=setup></ion-checkbox>
+        </ion-item>
+
+    </ion-list>
+    <ion-item>
+        <ion-label floating>Email Setup Name</ion-label>
+        <ion-input type="text" [(ngModel)]="emailSetupObj.EmailSetupName"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Session Online Payment</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.SessionOnlinePayment"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Court Booking</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.CourtBooking"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Room Booking</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.RoomBooking"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Member to Coach</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.MembertoCoach"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Member For Session Query</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.MemberForSessionQuery"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Holiday Camp Booking Payment</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.HolidaycampBookingPayment"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>School Session Booking Payment</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.SchoolSessionBookingPayment"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Holiday Camp Query</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.HolidaycampQuery"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>School Session Query</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.SchoolSessionQuery"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Member Session Enrollment</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.MemberSessionEnrollment"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Cash Payment</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.CashPayment"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>BACS Payment</ion-label>
+        <ion-input type="email" [(ngModel)]="emailSetupObj.BACSPayment"></ion-input>
+    </ion-item>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelEmailSetup()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="setup != undefined ? gototUpdate() : saveEmailSetup()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

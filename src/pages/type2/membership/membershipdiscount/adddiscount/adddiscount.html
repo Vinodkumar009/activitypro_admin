@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Membership Discount</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list class="custom_ionlist">
+        <ion-item class="custom_ionitem">
+            <ion-label fixed>Name</ion-label>
+            <ion-input type="email" class="text_align_right" [(ngModel)]="discountObj.DiscountName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label >Types</ion-label>
+            <ion-select [(ngModel)]="discountObj.Type">
+                <ion-option *ngFor="let discount_type of discount_types" value={{discount_type.discount_value}}>{{discount_type.discount_type}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item class="custom_ionitem">
+            <ion-label fixed>Amount</ion-label>
+            <ion-input type="email" class="text_align_right" [(ngModel)]="discountObj.Discount"></ion-input>
+        </ion-item>
+
+        <ion-item class="custom_ionitem">
+            <ion-label fixed>Percentage</ion-label>
+            <ion-input type="number" class="text_align_right" max="100" [(ngModel)]="discountObj.DiscountPercent"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Start Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min={{today}} [(ngModel)]="discountObj.StartDate"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>End Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min={{today}} [(ngModel)]="discountObj.EndDate"></ion-datetime>
+        </ion-item>
+    </ion-list>
+   
+</ion-content>
+
+<ion-footer>
+    <ion-row class="allign-assist">
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" type="submit" (click)="getUpdateConfirmation()">{{dataexists ? "Update" : "Create"}}</button>
+        </ion-col>
+    </ion-row>
+</ion-footer>

@@ -1,0 +1,90 @@
+<!--
+  Generated template for the MemberprofilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Membership</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+  <ion-card class="ioncard">
+    <ion-card-content>
+      <span style="color: #5ea68d !important;font-size: 18px !important;">{{Setup.SetupName}}</span>
+      <ion-label class="notpureblack">Category: </ion-label><span class="card-text">{{Setup.SetupName}}</span>
+      <ion-label class="notpureblack">Price: </ion-label>
+      <p class="pricestyle" *ngFor="let item of Setup.TimePayments">{{item.Label}}-
+        <span *ngIf="currencyDetails!=undefined"
+          style="color:green">{{currencyDetails.CurrencySymbol}}</span>{{item.Value}}&nbsp;
+        <span *ngIf="item.absDiscount != 0 || item.percentDiscount != 0">Discount- <span
+            *ngIf="currencyDetails!=undefined" style="color:green">{{currencyDetails.CurrencySymbol}}</span><span
+            *ngIf="item.absDiscount != 0">{{item.absDiscount}}</span><span
+            *ngIf="item.percentDiscount != 0">/{{item.percentDiscount}}%</span></span>
+      </p>
+    </ion-card-content>
+  </ion-card>
+ <h6 class="h6">Select Payment Option</h6>
+  <ion-row radio-group [(ngModel)]="Duration" *ngFor="let item of Setup.TimePayments" class="ionrow">
+    <ion-col class="ioncol">
+      <ion-item>
+        <ion-label>{{item.Label}}- <span *ngIf="currencyDetails!=undefined"
+          style="color:green">{{currencyDetails.CurrencySymbol}}</span>{{item.Value}}&nbsp;
+        <span *ngIf="item.absDiscount != 0 || item.percentDiscount != 0">Discount- <span
+            *ngIf="currencyDetails!=undefined" style="color:green">{{currencyDetails.CurrencySymbol}}</span><span
+            *ngIf="item.absDiscount != 0">{{item.absDiscount}}</span><span
+            *ngIf="item.percentDiscount != 0">/{{item.percentDiscount}}%</span></span></ion-label>
+        <ion-radio value={{item.Label}} ></ion-radio>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  
+<h6 class="h6">Select Members</h6>
+ <!-- <ion-list class="ion_list">
+    <ion-list-header class="session_header">
+      Who can enroll selected membership
+    </ion-list-header>
+  </ion-list>-->
+  <!-- <div *ngIf="Setup.SetupName.includes('Single')|| Setup.SetupName.includes('VIP') || Setup.SetupName.includes('Adult Student')">
+    <ion-item>
+      <ion-select [(ngModel)]="selectedClubMember" (ionChange)="selectMember(selectedClubMember)" class="maxwidthionselect">
+        <ion-option *ngFor="let member of selectedMember" value={{member.key}}>{{member.FullName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </div>-->
+  <!--*ngIf="Setup.SetupName.includes('Couple') || Setup.SetupName.includes('Family with Jr.')"-->
+  <ion-scroll scrollY="true" class="block_height1" *ngIf="selectedMember.length > 0">
+    <ion-list class="margin">
+      <ion-item *ngFor="let member of selectedMember">
+        <ion-label>{{member.DisplayName}}</ion-label>
+        <ion-checkbox [(ngModel)]="member.IsSelect" [checked]="member.IsSelect" (tap)="selectMember(member)">
+        </ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </ion-scroll>
+  <ion-row class="noMemberleft" *ngIf="selectedMember.length == 0">
+    <p>No Member Left</p> 
+  </ion-row>
+
+
+  <ion-grid class="fixed-button">
+    <ion-row *ngIf = "!isAssigned">
+      <ion-col col-12 style="padding-left:5px;">
+        <button ion-button block class="timekare-primary-btn" (click)="assignmember()">Confirm</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf = "isAssigned">
+      <ion-col col-6 >
+        <button ion-button block class="timekare-primary-btn" (click)="update()">Update</button>
+      </ion-col>
+     
+        <ion-col col-6 >
+          <button ion-button block style="background-color: red" (click)="remove()">Remove Membership</button>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+  
+</ion-content>

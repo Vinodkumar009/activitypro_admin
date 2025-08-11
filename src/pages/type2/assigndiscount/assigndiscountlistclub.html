@@ -1,0 +1,136 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            Assign Discount To Club</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Assign Discount To Club
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+    <!--<ion-item>
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="getAllActivity()">
+            <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivity" (ionChange)="getAllDiscount()">
+            <ion-option *ngFor="let item of activity" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>-->
+
+    <!--<div>
+        <ion-grid *ngFor="let item of allDiscount">
+            <ion-row>
+                <ion-col width-15>
+                    <ion-item>
+                        <ion-checkbox color="blue" checked="item.isSelect" [(ngModel)]="item.isSelect" (ionChange)="toggolSelectionDiscount(item)"></ion-checkbox>
+                    </ion-item>
+                </ion-col>
+
+                <ion-col width-33>
+                    <ion-item>
+                        <p class="card-h2-style">{{item.LevelName}}</p>
+                     </ion-item>
+                </ion-col>
+
+                <ion-col width-25>
+                    <ion-item class="margin">
+                        <ion-label floating>Enter Percentage Value</ion-label>
+                        <ion-input type="text" [(ngModel)]="item.PercentageValue"></ion-input>
+                    </ion-item>
+                </ion-col>
+
+                <ion-col width-25>
+                    <ion-item class="margin">
+                        <ion-label floating>Enter Absolute Value</ion-label>
+                        <ion-input type="text" [(ngModel)]="item.AbsoluteValue"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>-->
+
+
+
+
+    <ion-card *ngFor="let item of allActivityDiscount" class="card-view">
+        <ion-card-content class="slidingcards">
+
+            <ion-item style="padding:0 !important;">
+                <ion-label>{{item.DiscountName}}</ion-label>
+                <ion-checkbox color="blue" checked="item.isSelect" [(ngModel)]="item.isSelect"
+                    (ionChange)="toggolSelectionDiscount(item)"></ion-checkbox>
+            </ion-item>
+            <ion-row style="border-bottom: 1px solid rgba(128, 128, 128, 0.4);">
+                <ion-col col-6  class="topdown">
+                    <p>Discount (%)</p>
+                </ion-col>
+                <ion-col col-6>
+                    <ion-input type="number" [(ngModel)]="item.PercentageValue"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row style="border-bottom: 1px solid rgba(128, 128, 128, 0.4);">
+                <ion-col col-6 class="topdown">
+                        <p>Amount <span *ngIf="currencyDetails.CurrencySymbol">({{currencyDetails.CurrencySymbol}})</span></p>
+                </ion-col>
+                <ion-col col-6>
+                    <ion-input type="number" [(ngModel)]="item.AbsoluteValue"></ion-input>
+                </ion-col>
+            </ion-row>
+
+            <!-- <ion-item class="margin">
+                <ion-label floating>Enter % Value</ion-label>
+                <ion-input type="number" [(ngModel)]="item.PercentageValue"></ion-input>
+            </ion-item>
+            <ion-item class="margin">
+                <ion-label floating>Enter Value</ion-label>
+                <ion-input type="number" [(ngModel)]="item.AbsoluteValue"></ion-input>
+            </ion-item> -->
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="allActivityDiscount.length == 0" class="card-view">
+        <ion-card-content class="slidingcards">
+            <p class="text-color">It seems there are no club type discount present</p>
+        </ion-card-content>
+    </ion-card>
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelAssignDiscounttoClub()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="saveAssignDiscount()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

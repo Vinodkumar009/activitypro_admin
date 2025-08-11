@@ -1,0 +1,125 @@
+page-pending-term-sessions {
+    .scroll-content {
+        // background-image: url("../assets/images/background/innerbg.png");
+        background-size: 100% 100%;
+        padding: 0px !important;
+        background-image: none !important;
+        //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+        background: #f7f7f7;
+      }
+      .slider_list_margin {
+        margin: -1px 0 8px 0;
+      }
+
+      // .sub-container .searchbar {
+      //   border: none !important;
+      //   background: #ffffff !important;
+      //   padding: 2px !important;
+      // }
+      // .sub-container .search-bar {
+      //   padding: 0px 5px;
+      // }
+      // .searchbar-md .searchbar-search-icon, .searchbar-md .searchbar-md-cancel {
+      //   position: absolute;
+      //   background-repeat: no-repeat;
+      //   background-size: 20px;
+      // }
+    
+      // .sub-container .searchbar-search-icon {
+      //   display: none !important;
+      // }
+      .sub-container {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 8px;
+        height: 50px;
+        background: #FFFFFF;
+        margin-top: 18px;
+        margin-right: 10px;
+        margin-bottom: 14px;
+        margin-left: 10px;
+    
+    
+        ion-icon {
+          width: 90%;
+          background: transparent !important;
+          border-radius: 5px;
+          //color: white;
+          color: rgba(0, 0, 0, 0.64);
+          //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+        }
+    
+        .search-bar {
+          padding: 0px 5px;
+        }
+    
+        .searchbar {
+          border: none !important;
+          background: #ffffff !important;
+          padding: 2px !important;
+        }
+    
+        .searchbar-input {
+          //padding-left: 4px !important;
+          padding: 1px 4px !important;
+          box-shadow: none !important;
+          -webkit-box-shadow: none !important;
+          // margin-left: 20px;
+          margin-top: 5px;
+          // color:black;
+        }
+    
+        .searchbar-search-icon {
+          display: none !important;
+        }
+    
+        ion-icon {
+          font-size: 26px;
+          padding-left: 5px;
+        }
+      }
+      .search-bar {
+        padding: 0px 5px;
+      }
+    ion-card {
+        width: 94% !important;
+        //margin: 6px 3px 6px 0px !important;
+        margin: 3% !important;
+      }
+      .mid-col {
+        padding-left: 13px !important;
+      }
+    .ion_card {
+        margin: 6px 0px;
+        width: 100%;
+      }
+    
+    .nopad {
+        padding: 0px;
+      }
+    
+    .borderleft {
+        border-bottom: 1px solid #f5ba63;
+        //border-left: 2px solid #35adff !important;
+      }
+    
+    .campname {
+        color: #726f6f;
+        font-family: "PT Sans", sans-serif;
+        font-size: 1em;
+        font-weight: 600;
+        margin-top: 9px;
+      }
+      .holidaycampcard_p {
+        font-family: "PT Sans", sans-serif;
+        color: #746c6c;
+        font-size: 13px;
+      }
+      .elipsesdot {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 85%;
+        display: block;
+        overflow: hidden;
+      }
+    
+}

@@ -1,0 +1,451 @@
+<!--
+  Generated template for the CreatesetupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Booking Setup</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-row class="allign-row">
+        <ion-col col-6 class="padding-0">
+            <ion-item>
+                <ion-select [disabled]="true" [(ngModel)]="selectedClubKey">
+                    <ion-option  *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-col>
+        <ion-col col-6 class="padding-0">
+            <ion-item>
+                <ion-select [disabled]="true" [(ngModel)]="selectedActivity" (ionChange)="onActChange()" class="pad-right">
+                    <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}
+                    </ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <!-- <ion-item>
+        <ion-label>Vanue</ion-label>
+        <ion-select [(ngModel)]="selectedClubKey">
+          <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item class="margin">
+            <ion-label>Activity</ion-label>
+            <ion-select [(ngModel)]="selectedActivity" >
+                <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+            </ion-select>
+        </ion-item>
+ -->
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Booking Duration (min)</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.CourtDuration"></ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                mins
+            </ion-label>
+        </ion-col>
+    </ion-row>
+   
+
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Coach Advance Booking</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.AdvanceBookingCoach">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                days
+            </ion-label>
+        </ion-col>
+    </ion-row>
+
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Gold Advance Booking</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.AdvanceBookingGold">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                days
+            </ion-label>
+        </ion-col>
+    </ion-row>
+
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs"> Default Calendar Date</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.DefaultCalenderDate">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                days
+            </ion-label>
+        </ion-col>
+    </ion-row>
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs"> Max Booking in a Day</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.MaxBookinginaDay"></ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                hrs
+            </ion-label>
+        </ion-col>
+    </ion-row>
+
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Max Active Booking</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.MaximumNumberofHoursInAdvance">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                hrs
+            </ion-label>
+        </ion-col>
+    </ion-row>
+
+
+    <!-- <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Member free hrs/day</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.MemberFreeHoursInDay"></ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                hrs
+            </ion-label>
+        </ion-col>
+    </ion-row>
+
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Nonmember free hrs/day</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.NonmemberFreeHoursInDay">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                hrs
+            </ion-label>
+        </ion-col>
+    </ion-row> -->
+
+    <hr>
+
+    <!-- <ion-row *ngIf="!IsTable" class="allign-row">
+        <ion-col col-12 class="padding-0">
+            <ion-item>
+                <ion-label>Flood Light Payment Option</ion-label>
+                <ion-select [(ngModel)]="BookingSetup.PaymentOptionForFloodLight">
+                    <ion-option value="Online">Online</ion-option>
+                    <ion-option value="Offline">Offline</ion-option>
+                    <ion-option value="Both">Both</ion-option>
+                </ion-select>
+            </ion-item>  
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!IsTable" class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Flood Light Non-member Fees</ion-label>
+        </ion-col>
+
+        <ion-col col-4 class="padding-0 ">
+            <ion-input type="number"  [(ngModel)]="BookingSetup.FloodLightNonMemberFees"></ion-input>
+        </ion-col>
+    </ion-row>
+
+   
+    <ion-row *ngIf="!IsTable" class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Flood Light Member Fees</ion-label>
+        </ion-col>
+
+        <ion-col col-4 class="padding-0 ">
+            <ion-input type="number" [(ngModel)]="BookingSetup.FloodLightMemberFees"></ion-input>
+        </ion-col>
+    </ion-row> -->
+
+    
+    <hr>
+    <ion-row *ngIf="!IsTable" class="allign-row" style="margin-top: -10px;">
+        <ion-col col-8>
+            <ion-label style="font-size: 16px;color: white; " class="bot-mar color-white"
+                (click)="BookingSetup.AllowSplit != BookingSetup.AllowSplit">Allow Split</ion-label>
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px;text-align: right;">
+            <!-- <ion-toggle  checked="false" [(ngModel)]="memberInfo.IsActive" (ionChange)="saveActiveStatetoDB()"></ion-toggle> -->
+            <label class="toggle">
+                <input type="checkbox" [(ngModel)]="BookingSetup.AllowSplit">
+                <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!IsTable" class="allign-row" style="margin-top: -10px;">
+        <ion-col col-8>
+            <ion-label style="font-size: 16px;color: white; " class="bot-mar color-white">
+            Allow Guest</ion-label>
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px;text-align: right;">
+            <!-- <ion-toggle  checked="false" [(ngModel)]="memberInfo.IsActive" (ionChange)="saveActiveStatetoDB()"></ion-toggle> -->
+            <label class="toggle">
+                <input type="checkbox" [(ngModel)]="BookingSetup.IsAllowGuest">
+                <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+        </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!IsTable" class="allign-row" style="margin-top: -10px;">
+        <ion-col col-8>
+            <ion-label style="font-size: 16px;color: white; " class="bot-mar color-white" (click)="changeActiveState()">
+            Non-member Booking</ion-label>
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px;text-align: right;">
+            <!-- <ion-toggle  checked="false" [(ngModel)]="memberInfo.IsActive" (ionChange)="saveActiveStatetoDB()"></ion-toggle> -->
+            <label class="toggle">
+                <input type="checkbox" [(ngModel)]="BookingSetup.IsAllowNonMember">
+                <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+        </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!IsTable" class="allign-row" style="margin-top: -10px;">
+        <ion-col col-8>
+            <ion-label style="font-size: 16px;color: white; " class="bot-mar color-white">
+            Show Member Search</ion-label>
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px;text-align: right;">
+            <!-- <ion-toggle  checked="false" [(ngModel)]="memberInfo.IsActive" (ionChange)="saveActiveStatetoDB()"></ion-toggle> -->
+            <label class="toggle">
+                <input type="checkbox" [(ngModel)]="BookingSetup.ShowMemberSearch">
+                <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+        </ion-col>
+    </ion-row>
+
+
+    <ion-row *ngIf="!IsTable" class="allign-row" style="margin-top: -10px;">
+        <ion-col col-8>
+            <ion-label style="font-size: 16px;color: white; " class="bot-mar color-white" (click)="changeCashState()">
+                Cash Payment</ion-label>
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px;text-align: right;">
+            <!-- <ion-toggle  checked="false" [(ngModel)]="memberInfo.IsActive" (ionChange)="saveActiveStatetoDB()"></ion-toggle> -->
+            <label class="toggle">
+                <input type="checkbox" [(ngModel)]="BookingSetup.AllowCashPayment">
+                <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+        </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!IsTable" class="allign-row" style="margin-top: -10px;">
+        <ion-col col-8>
+            <ion-label style="font-size: 16px;color: white; " class="bot-mar color-white" (click)="changeBacsState()">
+                BACS Payment</ion-label>
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px;text-align: right;">
+            <!-- <ion-toggle  checked="false" [(ngModel)]="memberInfo.IsActive" (ionChange)="saveActiveStatetoDB()"></ion-toggle> -->
+            <label class="toggle">
+                <input type="checkbox" [(ngModel)]="BookingSetup.AllowBacsPayment">
+                <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+        </ion-col>
+    </ion-row>
+
+    <hr>
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Free display text</ion-label>
+        </ion-col>
+
+        <ion-col col-4 class="padding-0 ">
+            <ion-input type="text"  [(ngModel)]="BookingSetup.FreeCourtText"></ion-input>
+        </ion-col>
+    </ion-row>
+    <ion-row class="allign-row" class="mar-top">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Manager Advance Booking</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.CoachAdvanceBookingInDays">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                days
+            </ion-label>
+        </ion-col>
+    </ion-row>
+    <ion-row class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs"> Advance Booking</ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.AdvanceBookingAllowed">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                days
+            </ion-label>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!IsTable" class="allign-row">
+        <ion-col col-8 class="padding-0">
+            <ion-label class="labs">Court booking cancellation upto </ion-label>
+        </ion-col>
+
+        <ion-col col-2 class="padding-0 ">
+            <ion-input type="number" placeholder="Duration" [(ngModel)]="BookingSetup.MemberCancellationAllowedHours">
+            </ion-input>
+        </ion-col>
+        <ion-col col-2 class="padding-0">
+            <ion-label class="labs2">
+                hours
+            </ion-label>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!IsTable" class="allign-row" style="margin-top: -10px;">
+        <ion-col col-8>
+            <ion-label style="font-size: 16px;;color: white; " class="bot-mar color-white">
+                Gate code</ion-label>
+        </ion-col>
+        <ion-col col-4 style="margin-top: 10px;text-align: right;">
+            <!-- <ion-toggle  checked="false" [(ngModel)]="memberInfo.IsActive" (ionChange)="saveActiveStatetoDB()"></ion-toggle> -->
+            <label class="toggle">
+                <input type="checkbox" (click)="showtoaster()" [(ngModel)]="BookingSetup.GateCode">
+                <span data-unchecked="No" data-checked="Yes"></span>
+            </label>
+        </ion-col>
+    </ion-row>
+    <!-- 
+
+     -->
+    <div *ngIf="BookingSetup.GateCode">
+        <ion-row class="allign-row" *ngFor="let item of codeList; let i=index">
+            <ion-col col-8>
+                <ion-item>
+                    <ion-label style="margin-top: 3px !important;">Starting</ion-label>
+                    <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="item.date"
+                        max="2038-12-31"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col col-3>
+
+                <ion-input type="number" class="codestyle" placeholder="code" [(ngModel)]="item.code">
+                </ion-input>
+            </ion-col>
+            <ion-col class="close_code" *ngIf="i != 0" col-1 >
+                <ion-icon (click)="popCode(item, i)" name="md-close"></ion-icon>
+            </ion-col>
+        </ion-row>
+        <ion-fab right class="margin_top_session_fab">
+            <button ion-fab mini style="background-color:#FFF3E3 !important; color: white !important"
+                (click)="addGateCode()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-fab>
+    </div>
+
+    <ion-row class="allign-row">
+        <ion-col col-12 class="padding-0">
+            <ion-label class="labs">Payment Disclaimer</ion-label>
+        </ion-col>
+        <ion-col col-12 class="padding-0 ">
+            <ion-input style="font-size: 16px;" type="text" placeholder="Header" [(ngModel)]="disclaimer.Header"></ion-input>
+        </ion-col>
+        <ion-col col-12 class="padding-0 ">
+            <ion-item>
+            <ion-textarea style="font-size: 16px;" type="text" rows="5" placeholder="Disclaimer" [(ngModel)]="disclaimer.Description"></ion-textarea>
+            </ion-item>
+        </ion-col>
+      
+    </ion-row>
+
+    <!-- 
+          <ion-item>
+              <ion-label floating class="allign">
+                Advance booking in days 
+              </ion-label >
+              <ion-input type="number" placeholder="Days"  [(ngModel)]="BookingSetup.MemberAdvanceBookingindays"></ion-input>
+          </ion-item> -->
+    <!-- <ion-item>
+              <ion-label floating class="allign">
+                  Maximum number of hours in advance
+              </ion-label >
+              <ion-input type="number" placeholder="Days"   [(ngModel)]="BookingSetup.MaximumNumberofHoursInAdvance"></ion-input>
+            </ion-item> -->
+    <!-- <ion-item>
+                <ion-label floating class="allign">
+                    Maximum Number of Hours  in a day
+                </ion-label >
+                <ion-input type="number" placeholder="hours" [(ngModel)]="BookingSetup.MaximumNumberOfHoursInDay"></ion-input>
+              </ion-item> -->
+    <!-- <ion-item>
+                  <ion-label floating class="allign">
+                      Member free hours in a day
+                  </ion-label >
+                  <ion-input type="number" placeholder="Days" [(ngModel)]="BookingSetup.MemberFreeHoursInDay"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating class="allign">
+                        Coach Advance booking in days
+                    </ion-label >
+                    <ion-input type="number" placeholder="Days" [(ngModel)]="BookingSetup.CoachAdvanceBookingInDays"></ion-input>
+                  </ion-item> -->
+
+
+    <ion-grid class="bottom-grid">
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+                    (click)="cancelCourtSetup()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="saveCaurt()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

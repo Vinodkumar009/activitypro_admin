@@ -1,0 +1,78 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title text-center>Tab Configuration</ion-title>
+        <ion-buttons end>
+
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="enableReorder()">
+                <!--<ion-icon name="md-notifications"></ion-icon>-->
+                {{navText}}
+            </button>
+            <!--<button ion-button icon-only (click)="presentPopover($event)">
+          <ion-icon name="md-more"></ion-icon>
+      </button>-->
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="card-background-page">
+
+    <ion-grid style="margin-top:3px;" *ngIf="parentClubDetails.length>0">
+        <ion-row>
+            <ion-col col-12 style="text-align: center;">
+                <img src={{parentClubDetails[0].ParentClubAppIconURL}} class="parentimg">
+            </ion-col>
+            <!-- <ion-col col-10>
+                <p class="p_clubName">{{parentClubDetails[0].ParentClubName}}</p>
+            </ion-col> -->
+
+        </ion-row>
+    </ion-grid>
+
+
+
+    <ion-item style="margin-top:3px;" *ngIf="!reOrderToggle">
+        <ion-label *ngIf="!toggleAll">Off</ion-label>
+        <ion-label *ngIf="toggleAll">On </ion-label>
+        <ion-toggle checked="{{toggleAll}}" [(ngModel)]="toggleAll" (tap)="changeNotificationToggleAll()"></ion-toggle>
+    </ion-item>
+
+   
+    <p style="margin-top:-11px;"></p>
+
+    <ion-list>
+        <ion-item-group *ngIf="tabs.length>0" [reorder]=reOrderToggle (ionItemReorder)="reorderItems($event)">
+            <div *ngFor="let item of tabs;let i=index">
+                <ion-item *ngIf="item.Role != -1" style="border-bottom: .01em solid #ccd3d4;">
+                    <ion-label (click)="saveText(item)">
+                        {{item.DisplayText}}
+                        <p>{{item.DefaultText}}</p>
+
+                    </ion-label>
+                    <ion-toggle *ngIf="item.IsApplicableVisibleFlag && !reOrderToggle" [(ngModel)]="item.IsVisible" checked="{{item.IsVisible}}"
+                        (tap)="changeNotificationToggle(item,i)"></ion-toggle>
+                </ion-item>
+            </div>
+        </ion-item-group>
+    </ion-list>
+
+    
+
+    <p style="margin-bottom:50px;"></p>
+
+    <p style="margin-top:-11px;"></p>
+    <!-- <ion-item style="margin-top:3px;" *ngIf="!reOrderToggle">
+        <ion-label>Show Tab View {{showTabView}}</ion-label>
+        <ion-toggle checked="{{showTabView}}" [(ngModel)]="showTabView" (tap)="changeMemberTheme()"></ion-toggle>
+    </ion-item> -->
+
+
+    <!-- <ion-fab mini right bottom #fab>
+        <button ion-fab mini  style="background-color: #2b92bb; color:white !important" (click)="goTocreatepage()"><ion-icon name="add" ></ion-icon></button>
+      </ion-fab> -->
+
+</ion-content>

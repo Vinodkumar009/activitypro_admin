@@ -1,0 +1,129 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Add Member To Camp</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>Add Member To Camp</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content class="cards-bg social-cards">
+    <ion-item class="search_add">
+        <ion-searchbar [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItems($event)" autocorrect="off"
+            placeholder="Search by name"></ion-searchbar>
+    </ion-item>
+
+    <ion-list class="ion_list">
+        <ion-list-header class="session_header">
+            Member Lists
+        </ion-list-header>
+    </ion-list>
+    <ion-list>
+        <div *ngFor="let member of filteredMembers;let i = index">
+            <button class="custom_btn" ion-item (click)="selectMembers(member,i)"
+                [disabled]="member.isAlreadExisted">
+                {{member.FirstName}} {{member.LastName}} ({{this.comonService.calculateAgeFromDOB(member.DOB)}} Yrs)
+                <ion-icon name="add-circle" item-right *ngIf="!member.isSelected"></ion-icon>
+                <ion-icon *ngIf="member.isSelected" name="md-checkmark-circle-outline" item-right
+                    style="background-color: white;"></ion-icon>
+            </button>
+        </div>
+    </ion-list>
+
+    <!-- <ion-list class="margin">
+            <ion-item *ngFor="let member of filteredMembers;let i = index">
+                <ion-label>{{member.FirstName}} {{member.LastName}} ({{this.comonService.calculateAgeFromDOB(member.DOB)}} Yrs)</ion-label>
+                <ion-checkbox [(ngModel)]="member.isSelected" [disabled]="member.isAlreadExisted" (ionChange)="selectMembers(member,i)"></ion-checkbox>
+            </ion-item>
+    </ion-list> -->
+
+
+    <!-- <ion-list class="ion_list">
+        <ion-list-header class="session_header">
+            Member Lists
+        </ion-list-header>
+        <ion-item *ngFor="let member of filteredMembers; let i = index">
+            <button class="custom_btn" ion-item (click)="selectMember(member,i)" [disabled]="member.isDisabled">
+                {{member.DisplayName}} ({{member.Age}})
+                <ion-icon name="add-circle" item-right *ngIf="!member.isSelect"></ion-icon>
+                <ion-icon *ngIf="member.isSelect" name="md-checkmark-circle-outline" item-right
+                    style="background-color: white;"></ion-icon>
+            </button>
+        </ion-item>
+    </ion-list> -->
+
+
+    <!-- <ion-list>
+        <div *ngFor="let member of filteredMembers;let i = index">
+            <button class="custom_btn" ion-item (click)="selectMember(member,i)" [disabled]="member.isDisabled">
+                {{member.DisplayName}} ({{member.Age}})
+                <ion-icon name="add-circle" item-right *ngIf="!member.isSelect"></ion-icon>
+                <ion-icon *ngIf="member.isSelect" name="md-checkmark-circle-outline" item-right
+                    style="background-color: white;"></ion-icon>
+            </button>
+        </div>
+    </ion-list> -->
+    <!-- </ion-card> -->
+    <!-- <ion-card>
+            <ion-list>
+                <div *ngFor="let member of holidayCampMember;let holidaycampIndex = index">
+                    <button class="custom_btn" ion-item (click)="selectMember(member,holidaycampIndex)"
+                        [disabled]="member.isDisabled">
+                        {{member.DisplayName}} ({{member.Age}})
+                        <ion-icon name="add-circle" item-right *ngIf="!member.isSelect"></ion-icon>
+                        <ion-icon *ngIf="member.isSelect" name="md-checkmark-circle-outline" item-right
+                            style="background-color: white;"></ion-icon>
+                    </button>
+                </div>
+            </ion-list>
+        </ion-card>
+        <ion-card>
+            <ion-list>
+                <div *ngFor="let member of schoolMember;let schoolMemberIndex = index">
+                    <button class="custom_btn" ion-item (click)="selectMember(member,schoolMemberIndex)"
+                        [disabled]="member.isDisabled">
+                        {{member.DisplayName}} ({{member.Age}})
+                        <ion-icon name="add-circle" item-right *ngIf="!member.isSelect"></ion-icon>
+                        <ion-icon *ngIf="member.isSelect" name="md-checkmark-circle-outline" item-right
+                            style="background-color: white;"></ion-icon>
+                    </button>
+                </div>
+            </ion-list>
+        </ion-card> -->
+    <!-- </ion-scroll> -->
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="search_term==''">
+        <ion-infinite-scroll-content loadingSpinner="crescent"
+            loadingText="Loading more data..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
+
+<ion-footer>
+    <ion-row>
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn"
+                [disabled]="userEnrolStatusDTO.camp_postgre_fields.enrol_dets.length ==0"
+                (click)="updateMemberList()">Update Member
+                Lists&nbsp;({{userEnrolStatusDTO.camp_postgre_fields.enrol_dets.length}})</button>
+        </ion-col>
+    </ion-row>
+</ion-footer>

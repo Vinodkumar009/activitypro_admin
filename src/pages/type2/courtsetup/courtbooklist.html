@@ -1,0 +1,171 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Court Booking</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="courtBookTab">
+            <ion-segment-button value="recurring">
+                Recurring
+            </ion-segment-button>
+            <ion-segment-button value="oneoff">
+                One-Off
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Court Booking
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="courtBookTab">
+            <ion-segment-button value="recurring">
+                Recurring
+            </ion-segment-button>
+            <ion-segment-button value="oneoff">
+                One-Off
+            </ion-segment-button>
+
+
+
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+
+
+
+
+<ion-content padding class="cards-bg social-cards">
+
+
+    <ion-item class="margin">
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onClubChange()">
+            <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item class="margin">
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivity" (ionChange)="getAllCourt()">
+            <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item class="margin">
+        <ion-label>Court</ion-label>
+        <ion-select [(ngModel)]="selectedCoat" (ionChange)="getBookedCourt()">
+            <ion-option *ngFor="let item of allCourtArr" value={{item.$key}}>{{item.CourtName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <div [ngSwitch]="courtBookTab" class="div-box-margin">
+        <ion-list *ngSwitchCase="'recurring'" class="card-view">
+
+            <ion-list *ngFor="let ca of allBookedCourtArr" class="slidingcards">
+                <ion-item-sliding>
+                    <ion-item>
+                        <p><span>Days: </span><span>{{ca.Days}}</span></p>
+                        <p><span>Start Date: </span><span>{{setDate(ca.CourtStartDate)}}</span></p>
+                        <p><span>End Date: </span><span>{{setDate(ca.CourtEndDate)}}</span></p>
+                        <p><span>Start Time :</span><span> {{ca.StartTime}}</span></p>
+                        <p><span>End Time :</span><span> {{ca.EndTime}}</span></p>
+
+                    </ion-item>
+
+
+                    <ion-item-options side="right">
+                        <button ion-button color="secondary" (click)="detailCourtBooking(ca)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Detail
+                    </button>
+                    </ion-item-options>
+
+                    <ion-item-options side="left">
+                        <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="editCourtBooking(ca)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Edit
+                    </button>
+                    <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="cancelCourtBooking(ca)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Cancel
+                    </button>
+                    </ion-item-options>
+                     
+                </ion-item-sliding>
+            </ion-list>
+
+            <ion-card *ngIf="allBookedCourtArr.length == 0" class="card-view1">
+                <ion-card-content class="slidingcards">
+                    <p class="text-color">It seems there are no new membership config under this activity.</p>
+                </ion-card-content>
+            </ion-card>
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'oneoff'" class="card-view">
+            <!--<ion-list *ngFor="let rm of allRenewalMenber" class="slidingcards">
+                <ion-item-sliding>
+                    <ion-item>
+                        <p><span>Due Date:</span><span> {{rm.DueDate}}</span></p>
+                        <p><span>Message: </span><span>{{rm.Message}}</span></p>
+                        <p><span>Renewal Payment Inst. Days: </span><span>{{rm.RenewalPaymentInstructionDays}}</span></p>
+                    </ion-item>
+
+
+                    <ion-item-options side="right">
+                        <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="editRenewalMember(rm)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Edit
+                    </button>
+                       
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ion-list>
+
+            <ion-card *ngIf="allRenewalMenber.length == 0" class="card-view1">
+                <ion-card-content class="slidingcards">
+                    <p class="text-color">It seems there are no renewal membership config under this activity.</p>
+                </ion-card-content>
+            </ion-card>-->
+
+        </ion-list>
+
+
+
+
+
+
+
+    </div>
+
+
+    <ion-fab right bottom>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="gotoCourtSetupHome()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+
+    </ion-fab>
+
+
+
+</ion-content>

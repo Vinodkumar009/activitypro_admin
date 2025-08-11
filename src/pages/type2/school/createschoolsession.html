@@ -1,0 +1,251 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{LangObj.create_sclssn_create}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.create_sclssn_create}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" padding>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_scl}}</ion-label>
+        <ion-select [(ngModel)]="selectedSchool" (ionChange)="onChangeOfSchool()">
+            <ion-option *ngFor="let school of schools" value={{school.id}}>{{school.school_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_venue}}</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+            <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_term}}</ion-label>
+        <ion-select [(ngModel)]="selectedTerm" (ionChange)="onChangeOfTerm()">
+            <ion-option *ngFor="let term of terms" value={{term.term_id}}>{{term.term_name}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_activity}}</ion-label>
+        <ion-select [(ngModel)]="selectedActivityType" (ionChange)="onChangeActivity()">
+            <ion-option *ngFor="let type of club_activities" value={{type.ActivityKey}}>{{type.ActivityName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_coach}}</ion-label>
+        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+            <ion-option *ngFor="let coach of coachs" value={{coach.CoachId}}>{{coach.FirstName}} {{coach.LastName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <div class="margin_top">
+    </div>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_category}}</ion-label>
+        <ion-select [(ngModel)]="selectActivityCategory" (ionChange)="onChangeActivityCategory()">
+            <ion-option *ngFor="let ac of activityCategoryList" value={{ac.ActivityCategoryId}}>{{ac.ActivityCategoryName}}
+            </ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_subcat}}</ion-label>
+        <ion-select [(ngModel)]="selectActivitySubCategory" (ionChange)="onChangeActivitySubCategory()">
+            <ion-option *ngFor="let acs of activitySubCategoryList" value={{acs.ActivitySubCategoryId}}>{{acs.ActivitySubCategoryName}}
+            </ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-card class="card">
+        <ion-card-header class="card_header">
+            {{LangObj.create_sclssn_days}}
+        </ion-card-header>
+        <ion-card-content>
+            <ion-row class="days">
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Mon',1)"
+                        [ngClass]="{'timekare-primary-btn': isSelectMon,'text_white': isSelectMon,'un_selected': !isSelectMon}">
+                        M</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Tue',2)"
+                        [ngClass]="{'timekare-primary-btn': isSelectTue,'text_white': isSelectTue,'un_selected': !isSelectTue}">
+                        T</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Wed',3)"
+                        [ngClass]="{'timekare-primary-btn': isSelectWed,'text_white': isSelectWed,'un_selected': !isSelectWed}">
+                        W</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Thu',4)"
+                        [ngClass]="{'timekare-primary-btn': isSelectThu,'text_white': isSelectThu,'un_selected': !isSelectThu}">
+                        T</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Fri',5)"
+                        [ngClass]="{'timekare-primary-btn': isSelectFri,'text_white': isSelectFri,'un_selected': !isSelectFri}">
+                        F</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Sat',6)"
+                        [ngClass]="{'timekare-primary-btn': isSelectSat,'text_white': isSelectSat,'un_selected': !isSelectSat}">
+                        S</p>
+                </ion-col>
+                <ion-col>
+                    <p class="rounded" (click)="selectDays('Sun',7)"
+                        [ngClass]="{'timekare-primary-btn': isSelectSun,'text_white': isSelectSun,'un_selected': !isSelectSun}">
+                        S</p>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_sesname}}</ion-label>
+        <ion-input type="text" [(ngModel)]="schoolSession.SessionName" placeholder="Type session name..."></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_startdate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="schoolSession.StartDate"
+            max={{maxDate}} (ionChange)="dateChanged()"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_endate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="schoolSession.EndDate"
+            max={{maxDate}} (ionChange)="dateChanged()"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_paybydate}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="schoolSession.PayByDate" max={{maxDate}}>
+        </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>{{LangObj.create_sclssn_noofweeks}}</ion-label>
+        <ion-input type="number" [(ngModel)]="schoolSession.NumberOfWeeks"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+        <ion-label>{{LangObj.create_sclssn_startime}}(hh:mm)</ion-label>
+        <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="schoolSession.StartTime"
+            [minuteValues]="minuteValues"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>{{LangObj.create_sclssn_duration}}({{LangObj.create_sclssn_mins}})</ion-label>
+        <ion-input type="number" [(ngModel)]="schoolSession.Duration" max="60" min="1"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>{{LangObj.create_sclssn_grpsize}}</ion-label>
+        <ion-input type="number" [(ngModel)]="schoolSession.GroupSize" min="1"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>{{LangObj.create_sclssn_fees}}({{userData.Currency}})</ion-label>
+        <ion-input type="number" [(ngModel)]="schoolSession.SessionFee" min="1.00"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+        <ion-label>{{LangObj.create_sclssn_paymentype}}</ion-label>
+        <ion-select [(ngModel)]="selectpaymenttype" (ionChange)="onChangePaymentType()">
+            <ion-option value="">{{LangObj.create_sclssn_select}}</ion-option>
+            <ion-option *ngFor="let paymenttype of paymentTypes" value={{paymenttype.value}}>{{paymenttype.value}}
+            </ion-option>
+        </ion-select>
+    </ion-item> commented as per shubhankar said by vinod-->
+
+    <ion-item class="comments">
+        <ion-label floating>{{LangObj.create_sclssn_comments}}</ion-label>
+        <ion-textarea type="text" [(ngModel)]="schoolSession.Comments"></ion-textarea>
+    </ion-item>
+
+
+    <!-- <ion-item>
+        <ion-row>
+            <ion-col col-12 no-padding class="flex_col">
+                <p class="toggle_para">{{LangObj.create_sclssn_autoenrol}}</p>
+                <label class="toggle">
+                    <input type="checkbox" [(ngModel)]="schoolSession.AutoEnrolment">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+            </ion-col>
+        </ion-row>
+    </ion-item> -->
+
+    <ion-item>
+        <ion-row>
+            <ion-col col-12 no-padding class="flex_col">
+                <p class="toggle_para">Allow Childcare Voucher</p>
+                <label class="toggle">
+                    <input type="checkbox" [(ngModel)]="schoolSession.AllowChildCare">
+                    <span data-unchecked="No" data-checked="Yes"></span>
+                </label>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>{{LangObj.create_sclssn_btntext_book}} </ion-label>
+        <ion-input type="text" [(ngModel)]="schoolSession.BookingButtonText"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>{{LangObj.create_sclssn_btntext_res}}</ion-label>
+        <ion-input type="text" [(ngModel)]="schoolSession.ReserveButtonText"></ion-input>
+    </ion-item>
+
+
+
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+                    (click)="cancelSessionCreation()">{{LangObj.create_sclssn_cancel}}</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn"
+                    (click)="createSession()">{{LangObj.create_sclssn_create}}</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+
+</ion-content>
+
+<!-- <page-paymentgatewaysetup *ngIf="isTermsEmpty" InstructTxt="Please add  term for the venue" (skip)="skip()"
+(navigate)="GotoPaymentSetup()"></page-paymentgatewaysetup> -->
+<ion-fab right bottom *ngIf="isTermsEmpty">
+<button ion-fab mini style="background-color:#2b92bb !important; color: white !important"
+    (tap)="GotoPaymentSetup()" style="background-color:#2b92bb !important; color: white !important">
+    <ion-icon name="add"></ion-icon>
+</button>
+</ion-fab>

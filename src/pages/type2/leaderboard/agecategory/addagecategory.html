@@ -1,0 +1,52 @@
+<!--
+  Generated template for the AddagecategoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add AgeCategory</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row>
+    <ion-col col-12>
+      <ion-item>
+        <ion-label floating>Category Name</ion-label>
+        <ion-input type="text" [(ngModel)]="AgeCategory.CategoryName">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Start Age</ion-label>
+        <ion-select [(ngModel)]="SelectedStartAge">
+          <ion-option *ngFor="let from of AgeStartsFrom" value={{from.ageKey}}>{{from.ageVal}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>End Age</ion-label>
+        <ion-select [(ngModel)]="SelectedEndAge">
+          <ion-option *ngFor="let to of AgeEndTo" value={{to.ageKey}}>{{to.ageVal}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label floating>Description</ion-label> -->
+        <ion-textarea rows="5" placeholder="Enter Description" [(ngModel)]="AgeCategory.Description">
+        </ion-textarea>
+      </ion-item>
+    </ion-col>
+    </ion-row>
+</ion-content>
+<ion-footer>
+  <ion-row>
+      <ion-col col-12 text-center class="margin_auto">
+          <button ion-button block class="timekare-primary-btn" (click)="saveAgeCategory()">Create</button>
+      </ion-col>
+  </ion-row>
+</ion-footer>

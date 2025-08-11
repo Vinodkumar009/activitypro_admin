@@ -1,0 +1,321 @@
+<!--
+  Generated template for the EditpricebandPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>editpriceband</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+      <ion-label>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="PriceBand.PriceBandName" placeholder="Name"></ion-input>
+  </ion-item>
+  <ion-row>
+          <ion-col col-6 class="padding-0">
+              <ion-item>
+               
+                  <ion-select [(ngModel)]="selectedClub" (ionChange)="checkAvailability()" >
+                      <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                  </ion-select>
+              </ion-item>
+          </ion-col>
+          <ion-col col-6 class="padding-0">
+              <ion-item>
+                 
+                  <ion-select [(ngModel)]="selectedActivity" class="pad-right" (ionChange)="checkAvailability()">
+                      <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+                  </ion-select>
+              </ion-item>
+          </ion-col>
+  </ion-row>  
+  <!-- <ion-item>
+      <ion-label>Vanue</ion-label>
+      <ion-select [(ngModel)]="selectedClub">
+          <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+      </ion-select>
+  </ion-item>
+  <ion-item>
+      <ion-label>Activity</ion-label>
+      <ion-select [(ngModel)]="selectedActivity">
+          <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+      </ion-select>
+  </ion-item> -->
+  <ion-row  class="clr-white" *ngIf=" this.PriceBand.ActivityDuration != ''">
+          <ion-col col-6 class="padding-0">
+             <button class="type" [class.selected]="PriceBand.CourtType === 'Indoor'" (click)="PriceBand.CourtType = 'Indoor'" >
+              Indoor
+              <ion-icon name="md-checkmark" *ngIf="PriceBand.CourtType == 'Indoor'" class="animate-zoom"></ion-icon>
+             </button>
+          </ion-col>
+          <ion-col col-6 class="padding-0">
+              <button class="type" [class.selected]="PriceBand.CourtType === 'Outdoor'" (click)="PriceBand.CourtType = 'Outdoor'" >
+                  Outdoor
+                  <ion-icon name="md-checkmark" *ngIf="PriceBand.CourtType == 'Outdoor'" class="animate-zoom"></ion-icon>
+              </button>
+          </ion-col>
+      </ion-row>
+     
+  
+      <div style="margin: 6px 0px 6px 0px;" *ngIf=" this.PriceBand.ActivityDuration != ''"> 
+          <ion-card class="card">
+              <ion-card-header class="card_header">
+                  Days
+              </ion-card-header>
+              <ion-card-content>
+  
+                  <ion-row class="days">
+                      <ion-col>
+                          <p class="rounded" (click)="selectDays('Mon',1)" [ngClass]="{'timekare-primary-btn': isSelectMon,'text_white': isSelectMon,'un_selected': !isSelectMon}">M</p>
+                      </ion-col>
+                      <ion-col>
+                          <p class="rounded" (click)="selectDays('Tue',2)" [ngClass]="{'timekare-primary-btn': isSelectTue,'text_white': isSelectTue,'un_selected': !isSelectTue}">T</p>
+                      </ion-col>
+                      <ion-col>
+                          <p class="rounded" (click)="selectDays('Wed',3)" [ngClass]="{'timekare-primary-btn': isSelectWed,'text_white': isSelectWed,'un_selected': !isSelectWed}">W</p>
+                      </ion-col>
+                      <ion-col>
+                          <p class="rounded" (click)="selectDays('Thu',4)" [ngClass]="{'timekare-primary-btn': isSelectThu,'text_white': isSelectThu,'un_selected': !isSelectThu}">T</p>
+                      </ion-col>
+                      <ion-col>
+                          <p class="rounded" (click)="selectDays('Fri',5)" [ngClass]="{'timekare-primary-btn': isSelectFri,'text_white': isSelectFri,'un_selected': !isSelectFri}">F</p>
+                      </ion-col>
+                      <ion-col>
+                          <p class="rounded" (click)="selectDays('Sat',6)" [ngClass]="{'timekare-primary-btn': isSelectSat,'text_white': isSelectSat,'un_selected': !isSelectSat}">S</p>
+                      </ion-col>
+                      <ion-col>
+                          <p class="rounded" (click)="selectDays('Sun',7)" [ngClass]="{'timekare-primary-btn': isSelectSun,'text_white': isSelectSun,'un_selected': !isSelectSun}">S</p>
+                      </ion-col>
+                  </ion-row>
+              </ion-card-content>
+          </ion-card>
+      </div>
+
+      <ion-row class="clr-white" *ngIf="showTime == true && this.PriceBand.ActivityDuration != '' ">
+          <ion-col col-8 class="padding-0">
+                      <ion-item>
+                          <ion-label>{{selday}}</ion-label>
+                          <ion-datetime displayFormat="HH:mm" [(ngModel)]="startTime[dayIndex]"></ion-datetime>
+                      </ion-item>
+          </ion-col>
+          <ion-col col-4 class="padding-0">
+                  <ion-item>
+                          <ion-label>-</ion-label>
+                          <ion-datetime displayFormat="HH:mm" [(ngModel)]="endTime[dayIndex]"></ion-datetime>
+                        </ion-item>
+          </ion-col>
+  </ion-row>
+  <!-- <ion-item>
+      <ion-label>Court Type</ion-label>
+      <ion-select [(ngModel)]="PriceBand.CourtType">
+          <ion-option value="Indoor">Indoor</ion-option>
+          <ion-option value="Outdoor">Outdoor</ion-option>
+      </ion-select>
+  </ion-item> -->
+
+
+  <!-- <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-select [(ngModel)]="PriceBand.Status">
+          <ion-option value="true">Available</ion-option>
+          <ion-option value="false">Not Available</ion-option>
+      </ion-select>
+  </ion-item> -->
+
+<!-- 
+  <ion-row class="clr-white">
+          <ion-col col-6 class="padding-0">
+                  <ion-item>
+                          <ion-label>Time</ion-label>
+                          <ion-datetime displayFormat="HH:mm" [(ngModel)]="PriceBand.StartTime"></ion-datetime>
+                        </ion-item>
+          </ion-col>
+          <ion-col col-6 class="padding-0">
+                  <ion-item>
+                          <ion-label>T0</ion-label>
+                          <ion-datetime displayFormat="HH:mm" [(ngModel)]="PriceBand.EndTime"></ion-datetime>
+                        </ion-item>
+          </ion-col>
+  </ion-row> -->
+
+  <!-- <ion-item>
+      <ion-label >Start Date</ion-label>
+      <ion-datetime displayFormat="HH/mm" [(ngModel)]="PriceBand.StartTime"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Start Date</ion-label>
+      <ion-datetime displayFormat="HH/mm" [(ngModel)]="PriceBand.EndTime"></ion-datetime>
+    </ion-item> -->
+    <!-- <ion-row class="allign-row">
+          <ion-col col-8 class="padding-0">
+              <ion-label class="labs" > Duration for Member</ion-label>
+          </ion-col>
+         
+          <ion-col col-3 class="padding-0 ">
+               <ion-input type="number"  placeholder="Duration"  [(ngModel)]="PriceBand.DurationForMember"></ion-input>
+          </ion-col>
+          <ion-col col-1 class="padding-0">
+                  <ion-label class="labs2">
+                          min
+                  </ion-label>
+              </ion-col>
+      </ion-row>  -->
+
+      <ion-row class="allign-row" *ngIf=" this.PriceBand.ActivityDuration != ''">
+              <ion-col col-8 class="padding-0">
+                  <ion-label class="labs" > Member(1st  {{PriceBand.ActivityDuration}} mins)</ion-label>
+              </ion-col>
+              
+              <ion-col col-3 class="padding-0 ">
+                   <ion-input type="number"  placeholder="0.00"  [(ngModel)]="PriceBand.CostForMemberBetweenDuration"></ion-input>
+              </ion-col>
+              <ion-col col-1 class="padding-0">
+                  <ion-label>
+                      {{currencyDetails.CurrencySymbol}}
+                  </ion-label>
+              </ion-col>
+          </ion-row> 
+
+          <ion-row class="allign-row" *ngIf=" this.PriceBand.ActivityDuration != ''">
+                  <ion-col col-8 class="padding-0">
+                      <ion-label class="labs" >Member(after  {{PriceBand.ActivityDuration}} mins)</ion-label>
+                  </ion-col>
+                 
+                  <ion-col col-3 class="padding-0 ">
+                       <ion-input type="number"  placeholder="0.00"  [(ngModel)]="PriceBand.CostForMemberAfterDuration"></ion-input>
+                  </ion-col>
+                  <ion-col col-1 class="padding-0">
+                      <ion-label>
+                          {{currencyDetails.CurrencySymbol}}
+                      </ion-label>
+                  </ion-col>
+              </ion-row> 
+      
+  
+              <ion-row class="allign-row" *ngIf=" this.PriceBand.ActivityDuration != ''">
+                      <ion-col col-8 class="padding-0">
+                          <ion-label class="labs" > NonMember(1st {{PriceBand.ActivityDuration}} mins)</ion-label>
+                      </ion-col>
+                     
+                      <ion-col col-3 class="padding-0 ">
+                           <ion-input type="number"  placeholder="0.00"  [(ngModel)]="PriceBand.CostForNonMemberBetweenDuration"></ion-input>
+                      </ion-col>
+                      <ion-col col-1 class="padding-0">
+                          <ion-label >
+                              {{currencyDetails.CurrencySymbol}}
+                          </ion-label>
+                      </ion-col>
+                  </ion-row> 
+
+                  <ion-row class="allign-row" *ngIf=" this.PriceBand.ActivityDuration != ''">
+                          <ion-col col-8 class="padding-0">
+                              <ion-label class="labs" > NonMember(after  {{PriceBand.ActivityDuration}} mins)</ion-label>
+                          </ion-col>
+                         
+                          <ion-col col-3 class="padding-0 ">
+                               <ion-input type="number"  placeholder="0.00"  [(ngModel)]="PriceBand.CostForNonMemberAfterDuration"></ion-input>
+                          </ion-col>
+                          <ion-col col-1 class="padding-0">
+                              <ion-label >
+                                  {{currencyDetails.CurrencySymbol}}
+                              </ion-label>
+                          </ion-col>
+                      </ion-row> 
+
+
+
+
+
+
+
+  <!-- <ion-item>
+    <ion-label floating class="allign">
+      Duration for Member(In min)
+    </ion-label>
+    <ion-input type="number" placeholder="Duration"  [(ngModel)]="PriceBand.DurationForMember"></ion-input>
+  </ion-item> -->
+
+
+
+
+
+
+  <!-- <ion-item>
+      <ion-label floating class="allign">
+        Cost(Between Duration) for Member
+      </ion-label >
+      <ion-input type="number" placeholder="Cost"  [(ngModel)]="PriceBand.CostForMemberBetweenDuration"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="allign">
+          Cost(After Duration) for Member
+        </ion-label >
+        <ion-input type="number" placeholder="Cost"  [(ngModel)]="PriceBand.CostForMemberAfterDuration"></ion-input>
+      </ion-item> -->
+
+
+
+      <!-- <ion-item>
+          <ion-label floating class="allign">
+            Duration for NonMember(In min)
+          </ion-label>
+          <ion-input type="number"placeholder="Duration"  [(ngModel)]="PriceBand.DurationForNonMember"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating class="allign">
+              Cost(Between Duration) for NonMember
+            </ion-label>
+            <ion-input type="number" placeholder="Cost"  [(ngModel)]="PriceBand.CostForNonMemberBetweenDuration"></ion-input>
+          </ion-item> -->
+
+
+          <!-- <ion-item>
+              <ion-label floating class="allign">
+                Cost(After Duration) for NonMember
+              </ion-label>
+              <ion-input type="number" placeholder="Cost"  [(ngModel)]="PriceBand.CostForNonMemberAfterDuration"></ion-input>
+            </ion-item> -->
+
+  
+
+  <ion-row  class="clr-white" *ngIf=" this.PriceBand.ActivityDuration != ''">
+          <ion-col col-6 class="padding-0">
+             <button class="type" [class.selected]="PriceBand.Status === true" (click)="PriceBand.Status = true" >
+              Available
+              <ion-icon name="md-checkmark" *ngIf="PriceBand.Status === true"  class="animate-zoom"></ion-icon>
+             </button>
+          </ion-col>
+          <ion-col col-6 class="padding-0">
+              <button class="type"[class.selected]="PriceBand.Status === false" (click)="PriceBand.Status = false" >
+                  Not Available
+                  <ion-icon name="md-checkmark" *ngIf="PriceBand.Status === false"  class="animate-zoom"></ion-icon>
+              </button>
+          </ion-col>
+  </ion-row>
+      <ion-item *ngIf=" this.PriceBand.ActivityDuration != ''">
+              <ion-label floating class="allign">Comments</ion-label>
+              <ion-input type="text" [(ngModel)]="PriceBand.Comments" placeholder="Comments"></ion-input>
+      </ion-item>
+
+
+
+
+  <ion-grid  class="bottom-grid" *ngIf=" this.PriceBand.ActivityDuration != ''">
+      <ion-row>
+          <ion-col col-6>
+              <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelCourtSetup()">Cancel</button>
+          </ion-col>
+          <ion-col col-6>
+              <button ion-button block class="timekare-primary-btn" (click)="savePriceBand()">Save</button>
+          </ion-col>
+      </ion-row>
+  </ion-grid>
+     <p  *ngIf=" this.PriceBand.ActivityDuration == ''" class="not-found">No Setup Found for this Activity</p>
+</ion-content>

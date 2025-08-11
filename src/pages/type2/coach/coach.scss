@@ -1,0 +1,91 @@
+coach-page{
+   .scroll-content{
+        background-image: url("../assets/images/background/innerbg.png");
+        background-size: 100% 100%;
+       padding:6px;
+    }
+    .dropdown{
+        padding: 5px 7px 0px 7px;
+        ion-col{
+            padding: 0px;
+        }
+    }
+    .social-cards ion-col {
+        padding: 0;
+     }
+     .coach-icons{
+         float: right;
+     }
+     .coach-img{
+        //  width: 100%;
+        //  height:100%;
+        //  width: 82px;
+        //  height: 84px;
+       // width: 82px;
+       // height: 93px;
+        width: 66px;
+        height:58px;
+     }
+     .edit{
+         color: $dashoboard-icon-color;
+     }
+     .close{
+         color: #f53d3d;
+     }
+     .edit ,.close{
+         font-size: 25px;
+          //color: white;
+     }
+     .coach-img-block{
+        width: 58px;
+     }
+
+     .coach_details{
+         padding:0px;
+         ion-item{
+             div{
+                 padding-right: 0px !important;
+                 div{
+                     ion-label{
+                         margin:0px ;
+                     }
+                 }
+             }
+         }
+         ion-card-content{
+            
+             p{
+                line-height: 13.6px;
+                font-size: 13px;
+             }
+         }
+         ion-item , ion-card-content{
+             padding: 0px;
+         }
+     }
+  .ion-toggle-left{
+      width: 39px;
+      margin-top: 9px;
+  }
+  .coach_name{
+      color: $dashoboard-icon-color;
+  }
+   .block_height {
+        height: 82%;
+    }
+    .ion_content_list{
+        p{
+            margin-bottom: 7px;
+        }
+    }
+    .slider_list_margin{
+            margin: -1px 0 8px 0;
+    }
+    .ion_item_custom{
+        padding: 3px 0px 0px 4px;
+        ion-label{
+            margin:0px;
+        }
+        
+    }
+}

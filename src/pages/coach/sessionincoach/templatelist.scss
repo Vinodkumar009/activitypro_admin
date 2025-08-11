@@ -1,0 +1,44 @@
+page-templatelist {
+    .animate-top{position:relative;animation:animatetop 0.4s}@keyframes animatetop{from{top:-300px;opacity:0} to{top:0;opacity:1}}
+   .animate-right{position:relative;animation:animateright 0.4s}@keyframes animateright{from{right:-300px;opacity:0} to{right:0;opacity:1}}
+    .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+   
+    .icons{
+        font-size: 30px;
+    }
+    .icons:hover{
+        font-size: 32px;
+    }
+    .cards{
+      //  max-height: 45px;
+        background-color:#3fbcd3;
+        width: 103.6%;
+        margin-left: -2%;
+        color:white;
+    }
+    .text{
+        font-size: 14px;
+        color:white;
+    }
+    .content{
+        margin-top: -15px;
+       
+    }
+    .cards:hover{
+        box-shadow: 1px 1px 4px 4px rgb(211, 198, 198);
+    }
+
+     .scroll-content {
+        background-image: none !important;
+        padding: 6px !important;
+        margin-top: 75px !important;
+        background-color: #f7f7f7;
+    }
+     .tname{
+         font-size: 17px;
+         text-transform: capitalize;
+     }
+     ion-card{
+        height: 65px !important;
+     }
+}

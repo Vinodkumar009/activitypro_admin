@@ -1,0 +1,79 @@
+<!--
+  Generated template for the MemberchattPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title> Test-Chat </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only >
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content  class="content">
+  <div
+   
+  class="back"
+>
+  <ion-grid>
+    <ion-row
+      *ngFor="let message of messages"
+      (click)="presentActionSheet(message)"
+    >
+      <ion-col
+        col-9
+       
+        class="message other-message"
+      >
+        <b>{{ message.FromName }}</b><br />
+        <span *ngIf="message.IsActive">{{message.Message}}</span>
+        <span *ngIf="!message.IsActive" class="deleted_text"
+          >The message has been deleted.</span
+        >
+        <div class="time" text-right>
+          <br />
+          <!-- {{ message.createdAt | date: 'short' }} -->
+          {{ message.CreatedAt}}
+        </div>
+      </ion-col>
+
+      <ion-col
+        offset-3
+        col-9
+        *ngIf="message.FromKey == 'admin'"
+        class="message my-message"
+      >
+        <!-- <b>{{ message.FromName }}</b><br> -->
+
+        <span *ngIf="message.IsActive">{{message.Message}}</span>
+        <span *ngIf="!message.IsActive" class="deleted_text"
+          >The message has been deleted.</span
+        >
+        <div class="time" text-right>
+          <br />
+          <!-- {{ message.createdAt | date: 'short' }} -->
+          {{ message.CreatedAt}}
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+</ion-content>
+
+<ion-footer>
+  <ion-item>
+    <ion-input
+      autoGrow="true"
+      [(ngModel)]="currentMessage"
+      placeholder="Type a message"
+    ></ion-input>
+    <button ion-button item-right icon-only clear (click)="sendMessage()">
+      <ion-icon name="send" color="secondary"></ion-icon>
+    </button>
+  </ion-item>
+</ion-footer>

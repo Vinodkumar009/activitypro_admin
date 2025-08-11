@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add Staff</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item class="search_add">
+
+<ion-searchbar
+  class="search"
+  placeholder="Search Staffs by Name"
+  (ionInput)="getFilterItems($event)"
+  autocorrect="off"
+  showCanelButton="shouldShowCancel"  
+  animated
+>
+</ion-searchbar>
+  </ion-item>
+
+  <ion-list class="ion_list">
+    <ion-list-header class="session_header" style="font-size: 18px">
+      Coaches List
+    </ion-list-header>
+  </ion-list>
+
+  <ion-list  *ngIf="filteredStaff.length > 0">
+     <ion-item *ngFor="let person of filteredStaff;let i=index">
+      <ion-label 
+      >{{person.name}} 
+        <p style="display:inline;color:black" 
+        *ngIf="person.role">({{person.role}})</p>
+      </ion-label>
+      <ion-checkbox
+      [(ngModel)]="person.isSelect"
+      [disabled]="person.isAlreadExisted"
+      (ionChange)="selectMembers(person,$event)"
+      ></ion-checkbox>
+     </ion-item>
+     
+  </ion-list>
+  
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button
+          (click)="saveStaff()"
+          ion-button
+          block
+         
+        >
+          Add Staff
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

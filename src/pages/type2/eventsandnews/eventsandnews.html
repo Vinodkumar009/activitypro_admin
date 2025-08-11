@@ -1,0 +1,145 @@
+<!--
+  Generated template for the EventsandnewsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title class="icontitle">News & Events</ion-title>
+    <!-- <ion-icon name="search" class="iconhead"></ion-icon> -->
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  
+  <p *ngIf="headerImage == undefined && imgList.length == 0" class="noEvents">Add News and Photos</p>
+  <div class="header_div">
+    <img *ngIf="headerImage?.image_url && headerImage?.image_url != null" [src]="headerImage.image_url" 
+      (click)="showActionSheet(headerImage)">
+  </div>
+  <div class="header_text" (click)="showActionSheet(headerImage)" *ngIf="headerImage">
+    <h3> {{headerImage.image_title}}</h3>
+    <p><span class="leftspan">{{headerImage.created_at}} ago</span> | <span class="rightspan">
+        {{headerImage.category_name}}</span></p> 
+  </div>
+  <div>
+    <ion-card class="list_card" *ngFor="let pic of imgList" (click)="showActionSheet(pic)">
+      <ion-card-content style="padding: 0px;" [ngClass]="{'borderRight':pic.is_enable == false}">
+        <ion-grid class="nopadding">
+          <ion-row style="min-height: 69px;">
+            <ion-col *ngIf="pic.image_url" col-4 class="nopadding" style="height:80px;">
+              <img src={{pic.image_url}} class="restImg animate-zoom">
+            </ion-col>
+            <ion-col col-8 class="nopadding pad-left">
+              <div>
+                <p class="title para_overflow">{{pic.image_title}}</p>
+                <p class="rest"><span class="leftspan">{{pic.created_at}} ago</span> | <span class="rightspan"> {{
+                    pic.category_name}}</span></p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+
+
+
+
+  <!-- Custom Modal controller -->
+
+  <!-- Trigger/Open The Modal -->
+  <!-- <button id="myBtn">Open Modal</button> -->
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal" (click)="closeModal()">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-9>
+            <h3>Share</h3>
+          </ion-col>
+          <ion-col col-3> <ion-icon name="add" class="backbtn" (click)="close()"></ion-icon></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12 (click)="shareViaWhatsApp()">
+            <ion-icon name="logo-whatsapp" class="images" style="color: #3caf3c"> </ion-icon><span
+              class="name">WhatsApp</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaFacebook()">
+            <ion-icon name="logo-facebook" class="images" style="color: #1c71b9"> </ion-icon><span
+              class="name">Facebook</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaTwitter()">
+            <ion-icon name="logo-twitter" class="images" style="color: #2cc1e2"></ion-icon><span
+              class="name">Twitter</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaInstagram()">
+            <!-- <img src="https://www.designpieces.com/wp-content/uploads/2016/05/Instagram-v051916-150x150.png"
+              class="insta"> -->
+              <ion-icon name="logo-instagram" class="images" style="color: #d72424"> </ion-icon>
+              <span class="name">Instagram</span>
+          </ion-col>
+          <ion-col col-12 (click)="shareViaEmail()">
+            <ion-icon name="mail" class="images" style="color: #9e1d1d"></ion-icon><span class="name">Email</span>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <ion-fab mini right bottom #fab>
+    <button ion-fab mini style="background-color:#2b92bb !important; color: white !important"
+      (click)="goTocreatepage()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+
+
+
+  <!-- 
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script> -->
+
+
+
+
+</ion-content>

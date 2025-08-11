@@ -1,0 +1,447 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Edit Holiday Camp</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Edit Holiday Camp
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content>
+
+
+    <ion-list class="custom_ionlist">
+
+        <ion-item class="custom_ionitem">
+            <ion-label stacked>Camp Name</ion-label>
+            <ion-input type="text" [(ngModel)]="selectedCampDetails.camp_name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{LangObj.createhldycamp_camp_venue}}</ion-label>
+            <ion-select [(ngModel)]="selectedSchoolVenue" disabled="true">
+                <ion-option *ngFor="let venue of schoolVenues"
+                    value={{venue.firebasekey}}>{{venue.school_name}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{LangObj.createhldycamp_Primary_Moderator}}</ion-label>
+            <ion-select [(ngModel)]="selectedCoach" disabled="true">
+                <ion-option *ngFor="let coach of coaches" value={{coach.CoachId}}>{{coach.FirstName}}
+                    {{coach.LastName}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item class="custom_ionitem">
+            <ion-input class="age_input" type="text" placeholder="Age Group"
+                [(ngModel)]="selectedCampDetails.age_group">
+            </ion-input>
+            <button ion-button clear item-right class="help_btn" (click)="ageGroupHint()">
+                <ion-icon name="ios-help-circle-outline" class="secondary"></ion-icon>
+            </button>
+        </ion-item>
+
+        <ion-item class="custom_ionitem" style="border-bottom: 1px solid #dedede !important;">
+            <ion-label stacked>Moderator</ion-label>
+            <ion-input type="text" [(ngModel)]="selectedCampDetails.moderator"></ion-input>
+        </ion-item>
+
+
+        <!--Single Day holiday camp field-->
+
+        <ion-list *ngIf="selectedCampDetails.camp_type == 501" style="margin-bottom:1px;">
+            <ion-item>
+                <ion-label>Date</ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"
+                    [(ngModel)]="selectedCampDetails.start_date" [disabled]="true"></ion-datetime>
+            </ion-item>
+
+        </ion-list>
+
+
+        <!--Multiple Day holiday camp field-->
+        <ion-list *ngIf="selectedCampDetails.camp_type == 502" style="margin-bottom:1px;">
+            <ion-item>
+                <ion-label>Start Date</ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"
+                    [(ngModel)]="selectedCampDetails.start_date" [disabled]="true"></ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label>End Date</ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"
+                    [(ngModel)]="selectedCampDetails.end_date" [disabled]="true"></ion-datetime>
+            </ion-item>
+        </ion-list>
+
+        <ion-item>
+            <ion-label>Pay By Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"
+                [(ngModel)]="selectedCampDetails.pay_by_date">
+            </ion-datetime>
+        </ion-item>
+        <!-- <ion-item style="border-bottom: 1px solid #dedede !important">
+            <ion-label floating>Total Duration Per Day</ion-label>
+            <ion-input type="number" max="60" min="1" [(ngModel)]="holidayCamp.DurationPerDay" [disabled]="true"></ion-input>
+        </ion-item> -->
+    </ion-list>
+
+
+
+
+
+    <!--
+
+    <div *ngFor="let session of perDaySessionList;let i=index" style="margin-bottom:5px;">
+        <ion-item>
+            <ion-input type="text" placeholder="Session Name" [(ngModel)]="session.SessionName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input type="number" max="60" min="1" placeholder="Duration" [(ngModel)]="session.Duration"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Time</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="session.StartTime"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Amount For Member</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="session.AmountForMember"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Amount For Non-Member</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="session.AmountForNonMember"></ion-input>
+        </ion-item>
+    </div>-->
+
+    <!-- Session Creation for multi sessions -->
+    <ion-list *ngIf="selectedCampDetails.camp_type == 502">
+        <div *ngIf="selectedCampDetails.camp_type == 502">
+            <div class="session_margintop1" *ngFor="let session of selectedCampDetails.session_configs;let i=index">
+                <ion-item>
+                    <ion-input type="text" placeholder="{{LangObj.createhldycamp_sessname}}"
+                        [(ngModel)]="session.session_name"></ion-input>
+                </ion-item>
+                <ion-item (click)="selectANumber(session)">
+                    <!-- <ion-input type="text" max="60" min="1" placeholder="Duration" [(ngModel)]="session.Duration" (ionFocus)="selectANumber()"></ion-input> -->
+                    <p style="font-size: 16px;">
+                        <span>{{LangObj.createhldycamp_duration}}(hh:mm)</span><span
+                            style="float:right;color:black;">{{session.duration}}</span>
+                    </p>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{LangObj.createhldycamp_startime}}</ion-label>
+                    <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="session.start_time"
+                        [minuteValues]="minuteValues"></ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>{{LangObj.createhldycamp_amtformem}}({{userData.Currency}})</ion-label>
+                    <ion-input type="number" min="0.00" [(ngModel)]="session.amount_for_member"
+                        (ionChange)="onChangeOfSessionMemberAmount()"></ion-input>
+                    <button ion-button clear item-right class="help_btn"
+                        (click)="showToast('Amount payable by a Member for the selected session of the day', 5000)">
+                        <img style="width: 50%;" src="assets/images/info.svg">
+                    </button>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>{{LangObj.createhldycamp_amtfornonmem}}({{userData.Currency}})</ion-label>
+                    <ion-input type="number" min="0.00" [(ngModel)]="session.amount_for_non_member"
+                        (ionChange)="onChangeOfSessionNonMemberAmount()"></ion-input>
+                    <button ion-button clear item-right class="help_btn"
+                        (click)="showToast('Amount payable by a Non-member for the selected session of the day', 5000)">
+                        <img style="width: 50%;" src="assets/images/info.svg">
+                    </button>
+                </ion-item>
+            </div>
+        </div>
+    </ion-list>
+
+    <!-- Session Creation for single day -->
+    <ion-list *ngIf="selectedCampDetails.camp_type == 501">
+        <div>
+            <div class="session_margintop1" *ngFor="let session of selectedCampDetails.session_configs;let i=index">
+
+                <ion-item>
+                    <ion-input type="text" placeholder="{{LangObj.createhldycamp_sessname}}"
+                        [(ngModel)]="session.session_name"></ion-input>
+                </ion-item>
+                <ion-item (tap)="selectANumber(session)">
+                    <!-- <ion-label>Duration</ion-label>
+                <ion-input type="number" placeholder="Duration" [(ngModel)]="session.Duration" ></ion-input> -->
+                    <p style="font-size: 16px;">
+                        <span>{{LangObj.createhldycamp_duration}}(hh:mm)</span><span
+                            style="float:right;color:black;">{{session.duration}}</span>
+                    </p>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{LangObj.createhldycamp_startime}}</ion-label>
+                    <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="session.start_time">
+                    </ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>{{LangObj.createhldycamp_sesamtmem}}({{userData.Currency}})</ion-label>
+                    <ion-input type="number" min="0.00" [(ngModel)]="session.amount_for_member"
+                        (ionChange)="onChangeOfSessionMemberAmount()"></ion-input>
+                </ion-item>
+                <ion-item class="modiborder">
+                    <ion-label floating>{{LangObj.createhldycamp_sesamt_nonmem}}({{userData.Currency}})</ion-label>
+                    <ion-input type="number" min="0.00" [(ngModel)]="session.amount_for_non_member"
+                        (ionChange)="onChangeOfSessionNonMemberAmount()"></ion-input>
+                </ion-item>
+            </div>
+
+        </div>
+    </ion-list>
+
+    <!-- ends here -->
+
+
+    <div *ngIf="selectedCampDetails.camp_type == 502" style="border-bottom: 1.5px solid #f5ba63;">
+        <ion-item>
+            <ion-label floating>Per Day Amount For Member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.per_day_amount_for_member"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+            <ion-label floating>Per Day Amount For Non-Member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00"
+                [(ngModel)]="selectedCampDetails.per_day_amount_for_non_member"></ion-input>
+        </ion-item>
+    </div>
+
+    <div style="margin:5px 0px;border-bottom: 1.5px solid #f5ba63;">
+        <ion-item>
+            <ion-label floating>Full Camp(all days) Amount For Member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.full_amount_for_member"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+            <ion-label floating>Full Camp(all days) Amount For Non-Member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00"
+                [(ngModel)]="selectedCampDetails.full_amount_for_non_member"></ion-input>
+        </ion-item>
+    </div>
+
+
+
+
+    <!-- <ion-item class="left_margin">
+        <ion-label>Provide Early Drop and Late Pick-up</ion-label>
+        <ion-checkbox color="dark" [(ngModel)]="holidayCamp.IsAllowEarlyDropAndLatePickUp"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Early Drop Fees</ion-label>
+        <ion-input type="number" min="0.00" [(ngModel)]="holidayCamp.EarlyDropFees"></ion-input>
+    </ion-item>
+    <ion-item style="border-bottom: 1px solid #dedede !important;">
+        <ion-label floating>Late PickUp Fees</ion-label>
+        <ion-input type="number" min="0.00" [(ngModel)]="holidayCamp.LatePickUpFees"></ion-input>
+    </ion-item> -->
+
+
+
+    <ion-list style="border-bottom: 1.5px solid #f5ba63;">
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Early drop-off</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="selectedCampDetails.is_early_drop_allowed" >
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="selectedCampDetails.is_early_drop_allowed">
+            <ion-label>Early drop-off time</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="selectedCampDetails.early_drop_time"
+                [minuteValues]="minuteValues"></ion-datetime>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_early_drop_allowed">
+            <ion-label floating>Early drop-off member fee({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.early_drop_fees_member"></ion-input>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_early_drop_allowed">
+            <ion-label floating>Early drop-off non-member fee({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.early_drop_fees_non_member"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Late pick-up</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="selectedCampDetails.is_late_pickup_allowed" >
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="selectedCampDetails.is_late_pickup_allowed">
+            <ion-label>Late pick-up time</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="selectedCampDetails.late_pick_up_time"
+                [minuteValues]="minuteValues"></ion-datetime>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_late_pickup_allowed">
+            <ion-label floating>Late pick-up member fee({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.late_pickup_fees_member"></ion-input>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_late_pickup_allowed">
+            <ion-label floating>Late pick-up non-member fee({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.late_pickup_fees_non_member"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Include lunch</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="selectedCampDetails.is_lunch_allowed" >
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_lunch_allowed">
+            <ion-label floating>Lunch info</ion-label>
+            <ion-input type="text" [(ngModel)]="selectedCampDetails.lunch_text"></ion-input>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_lunch_allowed">
+            <ion-label floating>Lunch fee member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.lunch_price"></ion-input>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_lunch_allowed">
+            <ion-label floating>Lunch fee non-member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.lunch_price_non_member"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Include snacks</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="selectedCampDetails.is_snacks_allowed" >
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_snacks_allowed">
+            <ion-label floating>Snacks fee member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.snack_price"></ion-input>
+        </ion-item>
+        <ion-item style="border-bottom: 1px solid #dedede !important;" *ngIf="selectedCampDetails.is_snacks_allowed">
+            <ion-label floating>Snacks fee non-member({{userData.Currency}})</ion-label>
+            <ion-input type="number" min="0.00" [(ngModel)]="selectedCampDetails.snack_price_non_member"></ion-input>
+        </ion-item>    
+
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Allow Cash Payment</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="selectedCampDetails.is_allow_cash_payment">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Allow Childcare Voucher</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="selectedCampDetails.is_child_care_voucher_accepted">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <!-- <ion-item class="custom_ionitem">
+            <ion-label floating>Squad Size</ion-label>
+            <ion-input type="number" [(ngModel)]="selectedCampDetails.capacity"></ion-input>
+        </ion-item> -->
+        <!-- <ion-item class="left_margin">
+            <ion-label> Apply squad size restriction</ion-label>
+            <ion-checkbox color="dark" [(ngModel)]="selectedCampDetails.IsrestrictedSquadSize"></ion-checkbox>
+        </ion-item> -->
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Apply squad size restriction</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="selectedCampDetails.is_restricted_squad_size">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Holiday Camp Description</ion-label>
+            <ion-textarea [(ngModel)]="selectedCampDetails.holidaycamp_information"></ion-textarea>
+        </ion-item>
+        <!-- <ion-item>
+            <ion-label floating>Instruction for Member</ion-label>
+            <ion-textarea [(ngModel)]="selectedCampDetails.Instruction"></ion-textarea>
+        </ion-item> -->
+
+        <!-- <ion-item>
+            <ion-label floating>Image Url</ion-label>
+            <ion-input type="text" [(ngModel)]="selectedCampDetails.ImageUrl"></ion-input>
+        </ion-item> -->
+
+        <!-- <ion-item class="left_margin">
+            <ion-label>Allow Member Enrolment</ion-label>
+            <ion-checkbox color="dark" [(ngModel)]="selectedCampDetails.IsAllowMemberEnrollment"></ion-checkbox>
+        </ion-item> -->
+        <!-- <ion-item>
+            <ion-label floating>Button Text</ion-label>
+            <ion-input type="text" [(ngModel)]="selectedCampDetails.MemberAllowmentText"></ion-input>
+        </ion-item> -->
+        <ion-item>
+            <ion-label floating>Min Session Book</ion-label>
+            <ion-input type="number" min="0" [(ngModel)]="selectedCampDetails.minimum_sessioncount"></ion-input>
+        </ion-item>
+
+        <!-- <ion-item class="left_margin">
+            <ion-label> Push this as a promotion in the member dashboard</ion-label>
+            <ion-checkbox color="dark" [(ngModel)]="selectedCampDetails.IsPromotionPushFlag"></ion-checkbox>
+        </ion-item> -->
+    </ion-list>
+
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+                    (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="updateHolidayCampConfirm()">Save</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

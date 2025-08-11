@@ -1,0 +1,66 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Member List</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Member List
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <!--<ion-row no-padding class="margin">
+        <ion-col (click)="goToSendEmailpage()">
+            <h1 text-center class="marg_top"><span class="blue"> Email</span></h1>
+        </ion-col>
+    </ion-row>-->
+    
+    <!-- <ion-card class="no-margin">
+        <div *ngIf="parentMembersArr != undefined">
+            <p *ngFor="let member of parentMembersArr" class="sss">{{member.FirstName}} {{member.LastName}}</p>
+        </div>
+
+        <div *ngIf="totalMembersArr != undefined">
+            <p *ngFor="let member of totalMembersArr" class="sss">{{member.FirstName}} {{member.LastName}}</p>
+        </div>
+    </ion-card> -->
+    <ion-list *ngIf="parentMembersArr != undefined">
+        <button ion-item *ngFor="let item of parentMembersArr" >
+            {{item.FirstName}} {{item.LastName}}
+        </button>  
+      </ion-list>
+      <ion-list *ngIf="totalMembersArr != undefined">
+        <button ion-item *ngFor="let item of totalMembersArr" >
+            {{item.FirstName}} {{item.LastName}}
+        </button>  
+      </ion-list>
+
+    <ion-fab right bottom>
+        <button ion-fab mini (click)="goToSendEmailpage()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="mail"></ion-icon></button>
+    </ion-fab>
+</ion-content>

@@ -1,0 +1,18 @@
+coachprofile-page{
+    .prifile-card{
+       color: #ffffff;
+       padding-left: 0px !important; 
+    }
+    .profile-img{
+        border-radius: 70px;
+    }
+    ion-grid {
+        padding: 1px;
+    }
+    .item{ 
+        padding-left: 0px !important; 
+        .item-inner{
+            border-bottom: 0.55px solid #c8c7cc !important;
+        }
+    }
+}

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Membership</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-row [ngStyle]="{'margin-top.px': this.platform=='ios' ? 30 : 0 }">
+    <ion-col col-12 no-padding>
+      <ion-item style="border-bottom: 1px solid #fbc686;">
+        <ion-select class="maxwidthionselect" [(ngModel)]="selectedClubKey" (ionChange)="getSetupByVenue()">
+          <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-row style="color: rgba(0, 0, 0, 0.65);background: white;border-bottom: 1px solid orange;" (click)="gotoDets(membership,1)">
+        <ion-col col-10 style="margin: auto;">
+          <p style="margin: 12px 10px;">Membership Renewals</p>
+        </ion-col>
+        <ion-col col-2 style="display: flex;align-items: center;justify-content: space-around">
+          <p style="font-size: 1.3em;font-weight: 400;color: rgba(0, 0, 0, 55)">{{renewal_count}}</p>
+          <ion-icon style="font-size: 1.5em;" name="ios-arrow-forward"></ion-icon>
+        </ion-col>
+      </ion-row>
+    
+      <ion-list *ngIf="SetupDisplay">
+        <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
+          *ngFor="let membership of SetupDisplay">
+          <ion-card-header style="padding: 0 !important;white-space: normal;">
+            <ion-row style="margin:0px 0px 5px 0px;">
+              <ion-col col-10 class="mar-auto-all pad-left-15" (click)="gotoDets(membership,2)">
+                <p class="mar0 eventname">{{membership.membership_name}}</p>
+              </ion-col>
+              <ion-col col-2>
+                <!-- <ion-icon (click)="gotoHistory(membership)" class="history" name="md-menu"></ion-icon> -->
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <ion-card-content (click)="gotoDets(membership,2)">
+            <ion-row>
+              <ion-col col-8 style="padding-top:0px;">
+                <p class="p1" style="font-size: 15px;color: rgba(0, 0, 0, 0.65);margin-top: 0px;">
+                 <span *ngIf="membership.monthly">{{membership.monthly_price}},</span>
+                 <span *ngIf="membership.yearly">{{membership.yearly_price}}</span>
+                </p>
+              </ion-col>
+              <ion-col col-4 style="padding-top:0px;">
+                <div class="circle" float-right>
+                  <p class="paidmembercount">{{membership.membership_member_count}}</p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-content>

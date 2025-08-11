@@ -1,0 +1,332 @@
+page-viewcourt {
+    .toolbar-title{
+        color:white !important;
+    }
+    .padding-0{
+        padding: 0px !important;
+    }
+    .admin_back{
+        background: rgba(43, 146, 187, 0.5) !important;
+        
+    }
+    .venuerow{
+        padding: 5px;
+        background: white;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.32);
+        img{
+            width: 30px;
+            margin-top: 2px;
+        }
+        ion-col{
+            color: rgba(0, 0, 0, 0.85);
+        }
+        .select-icon{
+            display:none;
+        }
+        p{
+           
+            width: max-content;
+            padding: 5px 5px 7px 5px;
+             color: rgba(0, 0, 0, 0.85);
+        }
+        ion-select{
+            padding: 5px 5px 7px 5px;
+            max-width: 98%;
+        }
+    }
+    ion-calendar{
+        ion-grid{
+            box-shadow: 0px 1px 4px -1px #c6c2c3;
+            border-radius: 5px;
+            ion-row:first-of-type{
+                color: rgba(0, 0, 0, 0.85);
+                font-weight: 500;
+                font-size: 20px;
+                //background: #46b592!important;
+                ion-col{
+                    ion-icon{
+                    
+                        margin-top: -1px;
+                    }
+                }
+            }
+
+            .calendar-header-col{
+                font-size: 18px;
+                color: rgba(0,0,0,0.85);
+                text-align: center;
+            }
+
+            .calendar-col{
+                text-align: center;
+            }
+            .select{
+                background: #2B92BB!important;
+            }
+            
+            .not-this-month{
+                color: rgba(0,0,0,0.65);
+            }
+           .this-month{
+            color: rgba(0,0,0,0.85);
+           }
+
+            
+        }
+    }
+    .head{
+        //position: absolute;
+   // background-color: #f8f8f8;
+    color: white;
+    width: 112px;
+    padding-bottom: 5px !important;
+    margin-top: -7px;
+    //color: rgba(0, 0, 0, 0.85);
+    font-weight: 600;
+    z-index: 3 !important;
+    display: block;
+    margin: auto;
+
+    }
+    //toggle style
+    .toggle {
+        overflow: hidden;
+        display: inline-block;
+        width:100%;
+        background: #dcd7d7;
+        padding: 0.135em;
+        cursor: pointer;
+        margin-top: -10px;
+        height: 33px;
+    }
+    .toggle input {
+        position: absolute;
+        visibility: hidden;
+    }
+    .toggle span {
+        position: relative;
+        left: 0%;
+        display: block;
+        text-align: center;
+        /**
+       * Holo doesn't have any transition, but
+       * it's added here for demo purposes
+       */
+        -webkit-transition: left 200ms ease-out;
+        -moz-transition: left 200ms ease-out;
+        -o-transition: left 200ms ease-out;
+        transition: left 200ms ease-out;
+    }
+    .toggle :checked+span {
+        left: 50%;
+    }
+    /* Default unchecked state */
+    .toggle span:before {
+        content: attr(data-unchecked);
+        display: block;
+        width: 50%;
+        height: 30px;
+        background-color:#f6ba63;     
+        box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+        color: white;
+        border-radius: 5px;
+        font-size: 18px;
+        padding-top: 5px;
+    }
+    /* Checked state */
+    .toggle :checked+span:before {
+        content: attr(data-checked);
+        background-color: #f6ba63;
+        color: white;
+        font-size: 18px;
+    }
+    /* Base styles */
+    html {
+        font: 100%/1.5 'Roboto', sans-serif;
+        padding-top: 3em;
+        background-color: #0e1012;
+        color: #b3b3b3;
+        text-align: center;
+    }
+    .type-text{
+        color: #868080 !important;
+        font-size: 18px;
+        margin: 2px 0px 0px 13px !important;
+    }
+    .top-row{
+        margin-top: 10px !important;
+        
+    }
+    .mar-top-5{
+        margin-top: 5px !important;
+    }
+    .courts-slider{
+        //width: 130px !important;
+        width: 90px !important;
+        height: 79px !important;
+        background-color: #f9f9f9 !important;
+        //border: 0.5px solid #faae4e !important;
+    }
+    .name{
+       // color: #faae4e;
+       color: #f7f7f6;
+       text-transform: capitalize;
+       font-size: 16px;
+    }
+    .court{
+        margin: 6px 2px;
+        border-radius: 2px;
+        width: 100%;
+        box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    }
+    .type{
+        color: #ece0e0;
+        font-size: 14px;
+    }
+    .court-slide{
+        ion-slide{
+          
+            background-size: cover !important;
+            margin-left: 5px !important;
+            margin-right: 5px !important;
+            border-radius: 39%!important;
+            .slide-zoom{
+                background-color: rgba(0, 0, 0, 0.37)  !important;
+                border-radius: 39% !important;
+            }
+        }
+    }
+    .selected{
+        border:5px solid #419147 !important;
+       box-shadow: 1px 1px 14px 0px rgba(250, 170, 40, 0.45) !important;
+    }
+    .scroll-en{
+        overflow: scroll !important;
+        height: 420px !important;
+    }
+    .slots{
+        height: 62px !important;
+        text-align: center;
+        color: #545454;
+        padding-top: 7px !important;
+       // border-bottom: 2px solid #f6ba63;
+    }
+    .not-available{
+        margin: 0;
+        margin-top: 75px;
+        color: #faae4e;
+        font-size: 17px;
+        margin-left: 0px;
+    }
+    .slot-slider{
+       // width: 116px !important;
+        margin-top: 10px;
+        // .slide-zoom{
+        //     overflow: scroll !important;
+        //     height: 420px !important;
+        // }
+    }
+    .mark{
+        height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    right: 21px;
+    margin-right: -69px;
+    background-color: #f6bb65;
+    }
+    .next-btn{
+        width: 99%;
+        font-weight: bold;
+        background-color: #419147 !important;
+        padding:0px !important;
+        margin: 0px !important;
+    }
+    .time{
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 14px;
+    }
+    .amount{
+        font-size: 14px;
+        //font-weight: bold;
+        color: rgba(0, 0, 0, 0.65);
+        
+    }
+    .swiper-wrapper{
+        transition-duration: 0ms !important;
+        transform: translate3d(5px, 0px, 0px);
+    //transform: translate3d(-1386px, 0px, 0px) !important;
+    }
+    .selected-court{
+        background-color: #3fadf8;
+        .time{
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .amount{
+            font-size: 14px;
+           // font-weight: bold;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+    }
+    .img-free{
+        height: 30px;
+       
+    margin-top: 9px;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    ion-footer{
+        text-align: center !important;
+        margin-bottom: 3px !important;
+    }
+    .booked-court{
+        background-color: #e9e7e7;
+        color: #1a094e;
+        font-weight: bold;
+        .book-span{
+            color: #1a094e;
+            font-weight: bold;
+        }
+    }
+    p{
+        margin: 0 0 2px;
+        font-size: 1.4rem;
+        color: #666;
+        display: inline-block;
+        width: 95%;
+        white-space: nowrap;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+    }
+    .allign-center{
+        text-align: center !important;
+    }
+    .padding-top-8{
+        padding-top: 8px !important;
+    }
+    .cm{
+        text-align: center;
+        color: #3fadf8;
+        font-size: 17px;
+
+    }
+    .padding-bottom-10{
+        padding-bottom: 10px !important;
+    }
+    .border-top-2{
+        border-top: 2px solid #f6ba63;
+    }
+    .scroll-content {
+        background-image: none !important;
+      }
+      ion-card{
+          //box-shadow: none !important;
+      }
+    .animate-top{position:relative;animation:animatetop 0.4s}@keyframes animatetop{from{top:-300px;opacity:0} to{top:0;opacity:1}}
+    .animate-left{position:relative;animation:animateleft 0.4s}@keyframes animateleft{from{left:-300px;opacity:0} to{left:0;opacity:1}}
+    .animate-right{position:relative;animation:animateright 0.4s}@keyframes animateright{from{right:-300px;opacity:0} to{right:0;opacity:1}}
+    .animate-bottom{position:relative;animation:animatebottom 0.4s}@keyframes animatebottom{from{bottom:-300px;opacity:0} to{bottom:0;opacity:1}}
+    .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+}

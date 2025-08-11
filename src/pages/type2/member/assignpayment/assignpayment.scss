@@ -1,0 +1,312 @@
+page-assignpayment {
+   
+    .card-text {
+        color: #c5b495 !important;
+        width: 100%;
+        font-size: 14px !important;
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+   
+    .recommend{
+        padding: 4px;
+        border-bottom: 1px solid #e4c297;
+        margin: 15px 0px;
+        font-size: 14px;
+        color: #333738 !important;
+        font-family: initial;
+    }
+    .maxwidthionselect{
+      max-width: none;
+      color: #796060;
+    }
+    .pricestyle{
+        font-size: 15px !important;
+        color: #92a7b5 !important;
+        margin-bottom: -4px !important;
+     
+    }
+    .select-icon {
+        position: relative !important;
+        width: 20px !important;
+        height: 20px !important;
+        border-radius: 50% !important;
+        color: white !important;
+        left: 3px !important;
+    }
+   
+    .notpureblack{
+        color: #798082;
+        margin: 6px 6px 0 0;
+    }
+    .name {
+        color: #5ea68d !important;
+        font-size: 14px !important;
+    }
+    .cardStyle {
+        border-left: 3px solid #35adff;
+        border-radius: 2px;
+        width: calc(100%);
+        font-size: 1.4rem;
+        background: #fff;
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        margin: -1px 0 5px !important;
+        ion-card-content {
+            padding: 1px 8px;
+        }
+    }
+    .noMemberleft{
+        margin-left: 10px;
+    padding-left: 15px !important;
+    margin-bottom: 25px;
+    color: red;
+    width: 95%;
+    box-shadow: -2px 1px 7px 0px #bdbbc1;
+    }
+    .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+        border-bottom: none;
+    }
+    .list-ios > .item-block:first-child {
+        border-top:none;
+    }
+   
+    .label-ios {
+        margin: 6px 6px 0px 0;
+    }
+
+    //pasted from addmembertournament
+    .social-cards ion-col {
+        padding: 0;
+    }
+
+    .btn-clr {
+        color: $dashoboard-icon-color;
+    }
+
+    .align {
+        margin-top: 5px;
+        margin-left: 9px;
+        margin-right: 9px;
+    }
+
+    // ion-item h2 {
+    //      color: $dashoboard-icon-color !important;
+    // }
+
+    .cross {
+        background-color: white;
+    }
+
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .search_add {
+        .item-inner {
+            border-bottom: 0px !important;
+
+            ion-icon {
+                margin-top: 18px;
+            }
+
+            div {
+                ion-label {
+                    //margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+            }
+        }
+
+    }
+
+    ion-row{
+
+        ion-col{
+            .item-inner{
+                border-bottom: none !important;
+                padding: none !important;
+            }
+            ion-label{
+                font-size: 14px;
+            }
+        }
+
+    }
+    .ioncard{
+        box-shadow: 0px 1px 7px 0px rgba(0, 0, 0, 0.3);
+    }
+    .h6 {
+        font-size: 14px;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        padding-bottom: 3px;
+        margin-top: 30px;
+        border-bottom: 2px solid #faae4e
+    }
+    .ionrow{
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0px 1px 7px 0px rgba(0, 0, 0, 0.3);
+    }
+    .ioncol{
+        padding: 0px !important;
+        border-bottom: 1px solid #e4cbaa;
+        
+    }
+    .session_header,
+    ion-list {
+        margin-bottom: 0px !important;
+    }
+    .eachmembership{
+            margin-bottom: 2px !important;
+    }
+    .block_height {
+        height: 80%;
+    }
+
+    .block_height1 {
+        margin-top: 5px;
+        height: 40%;
+
+        .margin {
+            padding: 0px 11px 0px 11px;
+            box-shadow: 0px 1px 7px 0px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .block_height2 {
+        height: 32%;
+    }
+
+    .card-md p {
+        margin: 0 0 0px;
+        font-size: 1.3rem;
+        font-weight: normal;
+        line-height: 1.4;
+        color: #222;
+    }
+
+    .ion_list1 {
+        margin-top: 10px;
+    }
+
+    .p_selected {
+        ion-card-content {
+            //  border-bottom: 1px solid rgb(209, 209, 213);
+            //      padding: 5px 0px 5px 13px;
+            //     color: black;
+            //     font-size: 17px;
+
+            border-bottom: 1px solid #d1d1d5;
+            padding: 5px 0px 5px 13px;
+            color: rgba(0, 0, 0, 0.89);
+            font-size: 17px;
+
+
+        }
+    }
+
+    .ion-item-lable {
+        div {
+            ion-icon {
+                margin: 0px 0px 9px 0px !important;
+            }
+
+            div {
+                ion-label {
+                    margin: 0px 0px 0px 0px;
+                }
+            }
+        }
+    }
+
+    .btn_style {
+        background-color: #53bffe; // background-color: white;
+        color: white;
+        border-color: #53bffe;
+        font-size: 19px;
+        font-weight: bold;
+        margin: 0px 0px 10px 0px;
+    }
+
+    .month-slide {
+        background-color: #53bffe;
+        border-radius: 10px;
+        color: #f8f8f8;
+        margin-left: 4px;
+        padding: 7px;
+
+        p {
+            margin: 0px;
+            font-size: 13px;
+        }
+    }
+
+    .checkmark_style {
+        transform: translate(0px, -5px);
+        color: #f8f8f8;
+        font-weight: bold;
+        font-size: 16px;
+        float: right;
+    }
+
+    .selected_checkmark_style {
+        background-color: #2c96d4;
+    }
+
+    .unselected_checkmark_style {
+        background-color: #53bffe;
+    }
+
+   
+    ion-scroll{
+        .scroll-content{background-image: none !important;}
+        
+    }
+    .header_title {
+        font-size: 16px;
+        color: #7F7F7F;
+        margin: 8px 6px 9px 8px;
+        font-weight: bold;
+    }
+    .allign-assist {
+        position: absolute;
+        width: 97%;
+        bottom: 5px;
+      }
+    .selected_day_checkmark_style {
+        background-color: #2c96d4;
+    }
+
+    .fixed-button {
+        position: relative;
+        bottom: 1em;
+        z-index: 11111;
+        width: 100%;
+
+        ion-row {
+            height: 2em !important;
+
+        }
+    }
+    .badges {
+        margin-top: 15px;
+        right: 4px;
+        position: absolute;
+        color: #fff;
+        background-color: #c12f2f;
+    }
+    .borderbottomblock {
+        border-bottom: 1px solid #08a1f4
+    }
+}

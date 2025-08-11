@@ -1,0 +1,105 @@
+<ion-header >
+    <ion-navbar>
+        <ion-title>{{isReview ? 'Review' : 'Loyalty Point'}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="cards-bg social-cards">
+
+    <div *ngIf="Session" class="block">
+        <p class="session">{{Session.Day}}, {{Session.StartTime}}, {{Session.Duration}}mins</p>
+        <p class="themeheaderfont">{{startDate}}
+            <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{endDate}}</p>
+        <ion-grid style="padding:0px;">
+            <ion-row style="padding:0px;">
+                <ion-col col-md-3 col-sm-3 col-3 style="text-align:center;padding:0px;">
+                    <img *ngIf="coachInfo" class="img1" [src]="coachInfo.CoachProfileUrl">
+                    <p class="coachname ">{{Session.CoachName}}</p>
+                </ion-col>
+                <ion-col col-md-9 col-sm-9 col-9 class="border-left">
+                    <p class="sessionName cust_margin">
+                        <span>{{Session.SessionName}}</span>
+                        <span>
+                            <ion-icon name="md-create" (click)="showEditPrompt()"></ion-icon>
+                        </span>
+                    </p>
+                    <p class="activity cust_margin">{{SessionDetials.ActivitieDetails}}</p>
+                    <p class="activity cust_margin">
+                        <ion-icon name="ios-pricetag-outline"></ion-icon>
+                        Member:
+                        <span
+                            *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{Session.AmountForMember}}
+                    </p>
+                    <p class="activity cust_margin">
+                        <ion-icon name="ios-pricetag-outline"></ion-icon>
+                        Non-Member:
+                        <span
+                            *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{Session.AmountForNonMember}}
+                    </p>
+                    <p class="activity cust_margin">
+                        <ion-icon name="ios-people-outline"></ion-icon>
+                        Members: {{Session.Members.length}}
+                    </p>
+                    
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+    <ion-list *ngIf="!isReview && Session">
+        <ion-row class="rowclass" style="padding: 0 !important;" *ngFor="let member of Session.Members">
+            <ion-col col-6>
+                <ion-item>
+                    <ion-label>{{member.UserName}}</ion-label>
+                    <ion-checkbox style="margin: 9px 12px 9px 0px;" [(ngModel)]="member.IsSelect"></ion-checkbox>
+                </ion-item>
+
+            </ion-col>
+            <ion-col *ngIf="member.AmountPaid" class="pclass" col-2 text-center>
+                <p style="margin: 4px 0 0 0;"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{member.AmountPaid}}</p>
+                <p style="margin: 0;">paid</p>
+            </ion-col>
+            <ion-col *ngIf="!member.AmountPaid" class="pclass" col-2 text-center>
+            </ion-col>
+            <ion-col col-4 text-right>
+                <ion-item>
+                    <ion-input type="number" [(ngModel)]="member.Loyaltyrefund">
+                    </ion-input>
+                    <span *ngIf="loyaltySetup" class="apro" item-right>{{loyaltySetup.LoyaltyPointName}}</span>
+                </ion-item>
+                
+            </ion-col>
+        </ion-row>
+    </ion-list>
+    <ion-list *ngIf="isReview">
+        <ion-row class="rowclass" *ngFor="let member of selectedMember">
+            <ion-col col-8>
+                <ion-item >
+                    <p class="pstyle">{{member.FirstName}} {{member.LastName}}</p>
+                    <p class="pstyle" style="margin: 4px 0 0 0;color:rgba(0,0,0,0.65)"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{member.AmountPaid}}</p>
+                    <!-- <p style="margin: 0;">paid</p> -->
+                </ion-item>
+
+            </ion-col>
+
+            <ion-col col-4 text-center>
+                <p class="pstyle"> {{member.Loyaltyrefund}} <span *ngIf="loyaltySetup" class="apro" item-right>{{loyaltySetup.LoyaltyPointName}}</span></p>
+                
+            </ion-col>
+        </ion-row>
+    </ion-list>
+
+
+</ion-content>
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="this.navCtrl.pop()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="isReview ? callRewardPointApi() : updateReview()">{{isReview ? 'Confirm' : 'Next'}}</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-footer>

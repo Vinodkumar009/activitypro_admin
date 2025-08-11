@@ -1,0 +1,397 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>{{LangObj.manageSes_manageGp}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{LangObj.manageSes_manageGp}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+    <div class="search_div">
+        <ion-row class="sub-container rows-allign2">
+            <ion-col col-1 style="text-align:center;margin-top:12px;padding:0px">
+                <!-- <button>
+                <ion-icon name="ios-search"></ion-icon>
+            </button> -->
+                <ion-icon name="ios-search"></ion-icon>
+            </ion-col>
+            <ion-col col-10 class="search-bar">
+                <ion-searchbar placeholder="Search sessions of {{session_count}}" id="customsearchbar" [(ngModel)]="searchInput"
+                    (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+            </ion-col>
+            <ion-col col-1 class="margin-auto" style="text-align:center;margin-top:12px;padding:0px">
+                <button style="padding:0px;width:100%" ion-button clear (tap)="clearCache()">
+                    <ion-icon name="md-sync"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+    </div>
+    <div class="filters_div">
+        <ion-grid class="nopad" *ngIf="loggedin_type!=4">
+            <ion-row class="border-bottom-2px ">
+                <ion-col col-7 class="nopad">
+                    <ion-item class="venueionitem">
+                        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()" class="venuedropdown">
+                            <ion-option *ngFor="let club of clubs" [value]="club.FirebaseId">{{club.ClubName}}</ion-option>
+                            <ion-option value="All">All</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-5 class="nopad">
+                    <ion-item class="margin_bottom venueionitem">
+                        <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeOfCoach()" class="venuedropdown">
+                            <ion-option *ngFor="let coach of coaches" value={{coach.coach_firebase_id}}>{{coach.first_name}}
+                                {{coach.last_name}}</ion-option>
+                            <ion-option value="All">All</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="loggedin_type == 4">
+            <ion-row class="border-bottom-2px ">
+                <ion-col col-12 class="nopad">
+                    <ion-item class="venueionitem1">
+                        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()" class="venuedropdown">
+                            <ion-option *ngFor="let club of clubs" [value]="club.FirebaseId">{{club.ClubName}}</ion-option>
+                            <ion-option value="All">All</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+                </ion-row>
+        </ion-grid>
+    </div>
+
+    <!-- the below code for term session_list -->
+    <!-- <div (click)="checkBottomDrawerStat($event)" [ngClass]="{'blur':drawerState==2}"> -->
+    <div *ngIf="filter_term_sessions.length > 0" [ngClass]="{'blur':drawerState==2}" class="session_div">
+        <ion-card *ngIf="this.switchfilterpage == 4" class="history_header">
+            <ion-card-header>
+                <ion-row>
+                    <ion-col col-9 style="font-weight: 500;margin: auto" (click)="canShowTerm=!canShowTerm">Term Sessions</ion-col>
+                    <ion-col col-1 style="margin: auto;"><span>{{filter_term_sessions.length}}</span></ion-col>
+                    <ion-col col-2>
+                        <button ion-button clear class="unenrol_btn" *ngIf="!canShowTerm" (click)="canShowTerm=!canShowTerm">
+                            <ion-icon name="ios-arrow-forward"></ion-icon>
+                        </button>
+                        <button ion-button clear class="unenrol_btn" *ngIf="canShowTerm" (click)="canShowTerm=!canShowTerm">
+                            <ion-icon name="ios-arrow-down"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+        </ion-card>
+            <div style="" *ngIf="canShowTerm">
+                <button ion-button clear class="unenrol_btn" style="float: right;padding-right: 0px;height: 3rem !important;" (click)="this.navCtrl.push('PendingTermSessionsPage')">
+                    <span style="text-decoration: underline;text-transform: capitalize">Pending Payments</span>
+                    <span style="padding-left: 5px;text-transform: capitalize"><ion-icon name="ios-arrow-forward"></ion-icon></span>
+                </button>
+                <div *ngFor="let session of filter_term_sessions; let i=index" class="mar-top-10 card_style">
+                    <!-- <ion-list class="card_style"> -->
+                        <!-- innercard_style -->
+                        <!-- <ion-grid> -->
+                            <ion-card>
+                                <ion-card-content no-padding>
+                                    <ion-row class="margin-style-left">
+                                        <!-- <ion-col col-1>
+                                            <div class="all border-left-style"></div>
+                                        </ion-col> -->
+                                        <!-- (click)="presentActionSheet(session)" -->
+                                        <ion-col col-4 class="leftbox border-style-bottom" (click)="goToSessionDetailsPage(session)"
+                                            style="font-family: 'Lato', sans-serif;">
+                                            <p class="p1" style="font-size: 17px;font-weight: 400;color: green;">{{session.days}}
+                                            </p>
+                                            <p class="p1" [ngClass]="{'border-bottom-style': 'can_coach_see_revenue'}"
+                                                style="font-size: 15px;margin-top: 4px;padding-bottom: 3px;">
+                                                <span style=" color: green;font-weight: bold;"> {{session.start_time}},</span>
+                                                <span style="font-weight: 100;">{{session.duration}}min</span>
+                                            </p>
+            
+                                            <p class="p1"
+                                                style="color: #111164;margin-top: 4px;" *ngIf="can_coach_see_revenue">
+                                                <span
+                                                    *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.session_fee | number: '1.2-2'}}
+                                            </p>
+                                        </ion-col>
+                                        <ion-col col-6 class="border-left border-style-bottom"
+                                            (click)="goToSessionDetailsPage(session)" style="margin: auto">
+                                            <p class="sessiondetails cust_margin themeheaderfont elipses" *ngIf="session.Coach">
+                                                {{session.Coach.first_name}} {{session.Coach.last_name}} 
+                                            </p>
+            
+                                            <p class="sessionName cust_margin"> {{session.session_name}}</p>
+            
+                                            <p class="activity cust_margin elipses" style="color: #444242;">
+                                                <span>{{session.ActivityDetails.ActivityName}}/{{session.activity_category_name}}</span>
+                                            </p>
+                                            <p class="session_schedule_para">
+                                                <span>{{session.start_date}}</span>
+                                                <span><ion-icon name="ios-arrow-round-forward-outline"></ion-icon></span> 
+                                                <span>{{session.end_date}}</span>    
+                                            </p>
+                                        </ion-col>
+                                        <ion-col col-2 style="text-align:center;margin:auto"  
+                                            class="border-style-bottom">
+                                            <p class="monthGp cust_margin elipses" style="color: #E3544F" *ngIf="session.group_status=='0'">Private</p>
+                                            <p class="paidmembercount">{{session.paid_count}}/<span
+                                                    class="totalcount">{{session.tot_enrol_count}}</span></p>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-card-content>
+                            </ion-card>
+                        <!-- </ion-grid> -->
+                    <!-- </ion-list> -->
+                </div>
+            </div>
+
+            <!-- <ion-card class="ion_card" *ngIf="isShowMessage4 && coaches.length ==0">
+                <ion-card-content>
+                    <p class="danger_color2">{{LangObj.manageSes_nocoach}}...</p>
+                </ion-card-content>
+            </ion-card>
+            <ion-card class="ion_card" *ngIf="isShowMessage1 && sessionObj.length ==0">
+                <ion-card-content>
+                    <p class="danger_color2">{{LangObj.manageSes_noactsesns}}...</p>
+                </ion-card-content>
+            </ion-card> -->
+    </div>
+
+
+    <!-- the below code for weekly session_list -->
+    <div *ngIf="filter_weekly_sessions.length > 0" [ngClass]="{'blur':drawerState==2}">
+        <ion-card *ngIf="this.switchfilterpage == 4" class="history_header">
+            <ion-card-header>
+                <ion-row>
+                    <ion-col col-9 style="font-weight: 500;margin: auto" (click)="canShowWeekly=!canShowWeekly">Weekly Sessions</ion-col>
+                    <ion-col col-1 style="margin: auto;"><span>{{filter_weekly_sessions.length}}</span></ion-col>
+                    <ion-col col-2>
+                        <button ion-button clear class="unenrol_btn" *ngIf="!canShowWeekly" (click)="canShowWeekly=!canShowWeekly">
+                            <ion-icon name="ios-arrow-forward"></ion-icon>
+                        </button>
+                        <button ion-button clear class="unenrol_btn" *ngIf="canShowWeekly" (click)="canShowWeekly=!canShowWeekly">
+                            <ion-icon name="ios-arrow-down"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+        </ion-card>
+        <div style="" *ngIf="canShowWeekly">
+            <div *ngFor="let session of filter_weekly_sessions; let i=index" class="mar-top-10 card_style">
+                <!-- <ion-list class="card_style"> -->
+                    <ion-card>
+                        <ion-card-content no-padding>
+                                <ion-grid>
+                                    <ion-row class="margin-style-left">
+                                        <!-- <ion-col col-1>
+                                            <div class="all border-left-style"></div>
+                                        </ion-col> -->
+                                        <ion-col col-4 class="leftbox border-style-bottom" (click)="goToWeeklySessionDetailsPage(session)"
+                                            style="font-family: 'Lato', sans-serif;">
+                                            <p class="p1" style="font-size: 17px;font-weight: 400;color: green;">{{session.days}}
+                                            </p>
+                                            <p class="p1" [ngClass]="{'border-bottom-style': 'can_coach_see_revenue'}"
+                                                style="font-size: 15px;margin-top: 4px;padding-bottom: 3px;">
+                                                <span style=" color: green;font-weight: bold;"> {{session.start_time}},</span>
+                                                <span style="font-weight: 100;">{{session.duration}}min</span>
+                                            </p>
+            
+                                            <p class="p1"
+                                                style="color: #111164;margin-top: 4px;" *ngIf="can_coach_see_revenue">
+                                                <span
+                                                    *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.fee_for_member | number: '1.2-2'}}
+                                            </p>
+                                        </ion-col>
+                                        <ion-col col-6 class="border-left border-style-bottom"
+                                            (click)="goToWeeklySessionDetailsPage(session)" style="margin: auto">
+                                            <p class="sessiondetails cust_margin themeheaderfont elipses">
+                                                {{session.coach_names}} 
+                                            </p>
+            
+                                            <p class="sessionName cust_margin"> {{session.session_name}}</p>
+            
+                                            <p class="activity cust_margin elipses" style="color: #444242;">
+                                                <span>{{session.ActivityDetails.ActivityName}}/{{session.category_name}}</span>
+                                            </p>
+                                            <p class="session_schedule_para">
+                                                <span>{{session.start_date}}</span>
+                                                <span><ion-icon name="ios-arrow-round-forward-outline"></ion-icon></span> 
+                                                <span>{{session.end_date}}</span>    
+                                            </p>
+                                        </ion-col>
+            
+                                        <ion-col col-2 style="text-align:center;margin:auto"
+                                            class="border-style-bottom" >
+                                            <p class="monthGp cust_margin elipses" style="color: #E3544F" *ngIf="session.private_status=='0'">Private</p>
+                                            <p class="paidmembercount">{{session.booking_count}}/<span
+                                                    class="totalcount">{{session.enrol_count}}</span></p>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                        </ion-card-content>
+                    </ion-card>
+                <!-- </ion-list> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- the below code for weekly session_list -->
+    <div *ngIf="filter_monthly_sessions.length > 0" [ngClass]="{'blur':drawerState==2}">
+        <ion-card *ngIf="this.switchfilterpage == 4" class="history_header">
+            <ion-card-header>
+                <ion-row>
+                    <ion-col col-9 style="font-weight: 500;margin: auto;" (click)="canShowMonthly=!canShowMonthly">Monthly Sessions</ion-col>
+                    <ion-col col-1 style="margin: auto;"><span>{{filter_monthly_sessions.length}}</span></ion-col>
+                    <ion-col col-2>
+                        <button ion-button clear class="unenrol_btn" *ngIf="!canShowMonthly" (click)="canShowMonthly=!canShowMonthly">
+                            <ion-icon name="ios-arrow-forward"></ion-icon>
+                        </button>
+                        <button ion-button clear class="unenrol_btn" *ngIf="canShowMonthly" (click)="canShowMonthly=!canShowMonthly">
+                            <ion-icon name="ios-arrow-down"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+        </ion-card>
+        <div style="" *ngIf="canShowMonthly">
+            <div *ngFor="let session of filter_monthly_sessions; let i=index" class="mar-top-10 card_style">
+                <!-- <ion-list class="card_style"> -->
+                    <ion-card>
+                        <ion-card-content no-padding>
+                                <ion-grid (click)="goToMonthlySessionDetailsPage(session)">
+                                    <ion-row class="margin-style-left">
+                                        <!-- <ion-col col-1>
+                                            <div class="all border-left-style"></div>
+                                        </ion-col> -->
+                                      
+                                        <ion-col col-4 class="leftbox border-style-bottom" 
+                                            style="font-family: 'Lato', sans-serif;">
+                                            <p class="p1" style="font-size: 17px;font-weight: 400;color: green;">{{session.days}}
+                                            </p>
+                                            <p class="p1" [ngClass]="{'border-bottom-style': 'can_coach_see_revenue'}"
+                                                style="font-size: 15px;margin-top: 4px;border-bottom: .1px solid #bebcbc;padding-bottom: 3px;">
+                                                <span style=" color: green;font-weight: bold;"> {{session.start_time}},</span>
+                                                <span style="font-weight: 100;">{{session.duration}}min</span>
+                                            </p>
+            
+                                            <p class="p1"
+                                                style="color: #111164;margin-top: 4px;" *ngIf="can_coach_see_revenue">
+                                                <span
+                                                    *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.one_day_price | number:'1.2-2'}}
+                                            </p>
+                                        </ion-col>
+                                        <ion-col col-6 class="border-left border-style-bottom" style="margin: auto">
+                                            <p class="sessiondetails cust_margin themeheaderfont elipses">
+                                                {{session.coach_names}} 
+                                            </p>
+            
+                                            <p class="sessionName cust_margin">{{session.session_name}}</p>
+            
+                                            <p class="activity cust_margin elipses" style="color: #444242;">
+                                                <span *ngIf="session.ActivityDetails && session.ActivityDetails.ActivityName">{{session.ActivityDetails.ActivityName}}/{{session.activity_category_name}}</span>
+                                            </p>
+                                            <p class="session_schedule_para">
+                                                <span>{{session.start_date}}</span>
+                                                <span><ion-icon name="ios-arrow-round-forward-outline"></ion-icon></span> 
+                                                <span>{{session.end_date}}</span>    
+                                            </p>
+                                        </ion-col>
+            
+                                        <ion-col col-2 style="text-align:center;margin:auto" 
+                                                class="border-style-bottom" >
+                                                <p class="monthGp cust_margin elipses" style="color: #E3544F"
+                                                    *ngIf="session.group_status=='0'">
+                                                    Private</p>
+                                                <p class="paidmembercount">{{session.session_stats.paid_count}}/<span
+                                                        class="totalcount">{{session.session_stats.enrolled_member_count}}</span></p>
+                                            </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                        </ion-card-content>
+                    </ion-card>
+                <!-- </ion-list> -->
+            </div>
+        </div>
+    </div>
+
+   
+</ion-content>
+
+
+<ion-fab style="bottom:60px;" mini right bottom #fab *ngIf="drawerState==1 && loggedin_type!=4">
+    <button ion-fab mini class="fav-ico" style="background-color: #2b92bb;" (click)="isShowPaymentModal=false">
+        <ion-icon name="add"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+        <p class="fabEmailText" style="margin-left: -158px;" (click)="gotoSession()">
+            {{LangObj.manageSes_createtermgp}}</p>
+        <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="gotoSession()">
+            <ion-icon name="ios-create-outline"></ion-icon>
+        </button>
+
+        <p class="fabEmailText" (click)="goToMonthlySession()">{{LangObj.manageSes_createmonthlygp}}</p>
+        <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="goToMonthlySession()">
+            <ion-icon name="ios-create-outline"></ion-icon>
+        </button>
+
+        <p class="fabEmailText" (click)="gotoWeeklySession('weekly')" style="margin-left: -170px;">
+            Create Weekly Group</p>
+        <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop"
+            (click)="gotoWeeklySession('weekly')">
+            <ion-icon name="ios-create-outline"></ion-icon>
+        </button>
+
+        <!-- <p class="fabEmailText" (click)="gotoWeeklySession('trial')" style="margin-left: -155px;">
+            Create Trial Group</p>
+        <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop"
+            (click)="gotoWeeklySession('trial')">
+            <ion-icon name="ios-create-outline"></ion-icon>
+        </button> -->
+        <p class="fabEmailText" (click)="gotoCopySession()" style="margin-left: -152px;">
+            Copy Term Group</p>
+        <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="gotoCopySession()">
+            <ion-icon name="copy"></ion-icon>
+        </button>
+    </ion-fab-list>
+</ion-fab>
+
+<ion-footer>
+    <div class="footer_div" [ngClass]="{'footer_bottom_pad':isIOS}" *ngIf="footermenu.length > 0">
+        <ion-row>
+            <ion-col *ngFor="let menu of Tempfootermenu;let i=index;" (click)="filterOutSession(menu, menu.Index)">
+                <img [src]="menu.img" class="footer_img" *ngIf="menu.img && menu.img!=''">
+                <ion-icon *ngIf="menu.Icon!=''" [name]="menu.Icon" [class.colorselected]="menu.IsSelect"
+                    (click)="filterOutSession(menu, menu.Index)"></ion-icon>
+                <p [class.colorselected]="menu.IsSelect" (click)="filterOutSession(menu, menu.Index)">
+                    {{menu.DisplayName}}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+</ion-footer>
+
+
+<page-paymentgatewaysetup *ngIf="this.isShowPaymentModal" InstructTxt="Please connect to payment gateway for sessions"
+    (skip)="skip()" (navigate)="GotoPaymentSetup()"></page-paymentgatewaysetup>

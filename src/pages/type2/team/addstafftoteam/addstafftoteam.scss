@@ -1,0 +1,187 @@
+// page-leagueinvitecoach
+page-addstafftoteam {
+  // .timekare-primary-btn {
+  //   background-color: #f6ae4d !important;
+  // }
+  // .container{
+  //   display:grid;
+  //   grid-template-columns: 100px 100px;
+  //   grid-template-rows:50px;
+  // }
+  // .scroll-content {
+  //   padding: 0px !important;
+  //   background-image: none !important;
+  //   // background: white !important;
+  //   background: #f4efef !important;
+  //   // margin-bottom: 60px;
+  // }
+  // .searchbar-input {
+  //   border-bottom: 1px solid #141414;
+  //   box-shadow: none !important;
+  // }
+  // .search_add {
+  //   background-color: transparent;
+  //   padding-left: 6px;
+  // }
+  // .search_add {
+  //   .item-inner {
+  //     border-bottom: 0px !important;
+  //     ion-icon {
+  //       margin-top: 18px;
+  //     }
+  //     div {
+  //       ion-label {
+  //         //margin-top: 0px;
+  //         margin-bottom: 0px;
+  //       }
+  //     }
+  //   }
+  // }
+  // .btn-clr {
+  //   color: $dashoboard-icon-color;
+  // }
+  // .button {
+  //   font-size: 2rem;
+  // }
+  // .align {
+  //   margin-top: 5px;
+  //   margin-left: 9px;
+  //   margin-right: 9px;
+  // }
+  // .label {
+  //   margin: 0px !important;
+  // }
+
+  // .session_header,
+  // ion-list {
+  //   margin-bottom: 0px !important;
+  //   border-bottom: 1px solid #f6ae4d;
+  // }
+  // .timekare-primary-btn {
+  //   background-color: #f6ae4d !important;
+  // }
+  // .block_height {
+  //   height: 80%;
+  // }
+  // .block_height1 {
+  //   margin-top: 5px;
+  //   height: 90%;
+  //   .margin {
+  //     padding: 0px 11px 0px 11px;
+  //   }
+  // }
+  // .block_height2 {
+  //   height: 32%;
+  // }
+  // .ion_list1 {
+  //   margin-top: 10px;
+  // }
+  // .p_selected {
+  //   ion-card-content {
+  //     border-bottom: 1px solid #d1d1d5;
+  //     padding: 5px 0px 5px 13px;
+  //     color: rgba(0, 0, 0, 0.89);
+  //     font-size: 17px;
+  //   }
+  // }
+  // .ion-item-lable {
+  //   div {
+  //     ion-icon {
+  //       margin: 0px 0px 9px 0px !important;
+  //     }
+  //     div {
+  //       ion-label {
+  //         margin: 0px 0px 0px 0px;
+  //       }
+  //     }
+  //   }
+  // }
+  .scroll-content {
+    padding: 0px !important;
+    background-image: none !important;
+    // background: white !important;
+    background: #f4efef !important;
+    // margin-bottom: 60px;
+  }
+  .searchbar-input {
+    border-bottom: 1px solid #141414;
+    box-shadow: none !important;
+  }
+  .search_add {
+    background-color: transparent;
+    padding-left: 6px;
+  }
+  .search_add {
+    .item-inner {
+      border-bottom: 0px !important;
+      ion-icon {
+        margin-top: 18px;
+      }
+      div {
+        ion-label {
+          //margin-top: 0px;
+          margin-bottom: 0px;
+        }
+      }
+    }
+  }
+  .btn-clr {
+    color: $dashoboard-icon-color;
+  }
+  .button {
+    font-size: 2rem;
+  }
+  .align {
+    margin-top: 5px;
+    margin-left: 9px;
+    margin-right: 9px;
+  }
+  .label {
+    margin: 0px !important;
+  }
+
+  .session_header,
+  ion-list {
+    margin-bottom: 0px !important;
+    border-bottom: 1px solid #f6ae4d;
+  }
+  .timekare-primary-btn {
+    background-color: #f6ae4d !important;
+  }
+  .block_height {
+    height: 80%;
+  }
+  .block_height1 {
+    margin-top: 5px;
+    height: 90%;
+    .margin {
+      padding: 0px 11px 0px 11px;
+    }
+  }
+  .block_height2 {
+    height: 32%;
+  }
+  .ion_list1 {
+    margin-top: 10px;
+  }
+  .p_selected {
+    ion-card-content {
+      border-bottom: 1px solid #d1d1d5;
+      padding: 5px 0px 5px 13px;
+      color: rgba(0, 0, 0, 0.89);
+      font-size: 17px;
+    }
+  }
+  .ion-item-lable {
+    div {
+      ion-icon {
+        margin: 0px 0px 9px 0px !important;
+      }
+      div {
+        ion-label {
+          margin: 0px 0px 0px 0px;
+        }
+      }
+    }
+  }
+}

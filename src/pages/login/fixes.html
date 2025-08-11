@@ -1,0 +1,16 @@
+<ion-content padding class="loginbg">
+    <!--<p *ngFor="let user of usersList">{{user.EmailID}}</p>-->
+    <button ion-button block (click)="getFix1Result()" class="login_btn">Fix1</button>
+
+    <button ion-button block (click)="getFix2Result()" class="login_btn">Fix2</button>
+
+
+
+
+output
+
+<p *ngFor="let member of memberlist"> 
+{{member.FirstName}} {{member.LastName}} ({{member.IsChild}}) ---{{member.$key}}
+</p>
+
+</ion-content>

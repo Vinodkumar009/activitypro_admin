@@ -1,0 +1,229 @@
+<!-- <ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Camp Details</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header> -->
+<!-- <ion-header *ngIf="themeType == 2"> -->
+<ion-header>
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>Camp Details</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div class="block" *ngIf="holidayCampDetails" [ngStyle]="{'margin-top.px': platform.is('ios') ? 10 : 0 }">
+        <p class="session">{{holidayCampDetails.camp_name}}</p>
+        <p class="session">{{holidayCampDetails.days}} ({{calculateTotalDuration()}}hrs) </p>
+
+        <p class="themeheaderfont">{{holidayCampDetails.start_date}}
+            <ion-icon name="ios-arrow-round-forward-outline"></ion-icon>
+            {{holidayCampDetails.end_date}}
+        </p>
+        <ion-grid style="padding:0px;">
+            <ion-row style="padding:0px;">
+                <!-- <ion-col col-md-3 col-sm-3 col-3 style="text-align:center;padding:0px;">
+                    <img class="img1" [src]="campDetails.ImageUrl">
+                    <p class="coachname ">{{campDetails.CampName}}</p>
+                </ion-col> -->
+                <ion-col col-md-8 col-sm-8 col-8>
+                    <p class="sessionName cust_margin">{{holidayCampDetails.venue_name}}</p>
+                    <p class="activity cust_margin"
+                        *ngIf="holidayCampDetails.Coach && holidayCampDetails.Coach.length>0">
+
+                        <span *ngFor="let c of holidayCampDetails.Coach">{{c.first_name}} {{c.last_name}}</span>
+                    </p>
+
+                    <!-- <ion-row>
+                        <ion-col col-7>
+
+                        </ion-col>
+                        <ion-col col-2>
+                            <button ion-fab mini class="fabicon" (tap)="emailtoCampmember(this.campDetails)">
+                                <ion-icon name="md-mail"></ion-icon>
+                            </button>
+
+                        </ion-col>
+                        <ion-col col-3 style="float:right;text-align:right;">
+
+                            <button ion-fab mini class="fabicon" (tap)="notificationToCampMember(campDetails)"
+                                style="float: right;">
+                                <ion-icon name="md-chatbubbles"></ion-icon>
+                            </button>
+
+                        </ion-col>
+                    </ion-row> -->
+                    <!-- <ion-row style="margin: 8px 0;" (tap)="showDetails({},'Member')">
+                        <p class="btn_cust">{{memberList.length}} members booked {{bookedSessionLength}} Sessions</p>
+                    </ion-row> -->
+                </ion-col>
+                <ion-col col-4 no-padding style="display: flex" class="border-left">
+                    <div>
+                        <button ion-fab mini class="fabicon" (tap)="sentAnEmailToMembers()">
+                            <ion-icon name="md-mail"></ion-icon>
+                        </button>
+                    </div>
+                    <div>
+                        <button ion-fab mini class="fabicon" (tap)="notificationToCampMembers()"
+                            style="float: right;">
+                            <ion-icon name="md-chatbubbles"></ion-icon>
+                        </button>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+
+    <div>
+        <ion-row class="statistics_row">
+            <ion-col col-12 style="padding: 0px !important">
+                <ion-row>
+                    <ion-col col-4 text-center (tap)=" showDetails({},'Member')">
+                        <div class="circleProgress">
+                            <p><span>{{bookedSessionCount}}</span>
+                            </p>
+                            <img src="assets/images/check-mark.svg">
+                        </div>
+                        <div>
+                            <p class="progress_txt">Sessions</p>
+                        </div>
+                    </ion-col>
+                    <ion-col col-4 text-center>
+                        <div class="circleProgress" (tap)="showDetails({},'Member')">
+                            <p><span>{{bookingCount}}</span><span style="font-size:12px;"></span></p>
+                            <img src="assets/images/check-mark.svg">
+                        </div>
+                        <div>
+                            <p class="progress_txt">Members</p>
+                        </div>
+                    </ion-col>
+                    <ion-col col-4 text-center>
+                        <div class="circleProgress" (tap)="showDetails({},'Member')">
+                            <p><span>{{totBookedUserCount}}</span><span style="font-size:12px;"></span></p>
+                            <img src="assets/images/check-mark.svg">
+                        </div>
+                        <div>
+                            <p class="progress_txt">Bookings</p>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </div>
+
+    <div *ngIf="holidayCampDetails" class="containers">
+        <div *ngIf="holidayCampDetails.sessions && holidayCampDetails.sessions.length>0">
+            <ion-card *ngFor="let session of holidayCampDetails.sessions" (tap)="showDetails(session, 'Session')">
+                <ion-card-content style="padding:0px;">
+                    <ion-row>
+                        <ion-col col-3 id="icon1_col">
+                            <p class="leftp leftp1">{{session.session_day}}</p>
+                            <p class="leftp">{{formatDateWithoutYear(session.session_date)}}</p>
+                        </ion-col>
+
+                        <ion-col col-8>
+                            <p class="session_name">{{session.session_name}}</p>
+                            <p class="pStyle">{{session.start_time}}, {{session.duration}} mins
+                            </p>
+                            <p class="pStyle" style="color:#243892">
+                                <span>Bookings: {{session.bookingCount}}</span>,&nbsp;
+                                <span>Available: {{session.capacity_left}}</span>
+                            </p>
+                            <p *ngIf='!session.is_active' class="pStyle deleted_ses" style="color:red">Deleted</p>
+                        </ion-col>
+                        <ion-col col-1>
+                            <ion-icon name="ios-arrow-forward-outline" class="cust_icon chevron_right"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+    </div>
+
+    <ion-fab mini left bottom>
+        <button ion-fab mini (tap)="removeCamp(this.campDetails)" class="trash_icon">
+            <ion-icon name="trash"></ion-icon>
+        </button>
+    </ion-fab>
+
+
+
+    <ion-fab mini right bottom #fab *ngIf="loggedin_type!=4">
+        <!-- <p *ngIf="isShowNewPost" class="newPost">New Post</p> -->
+        <button style="background-color:#2b92bb !important; color: white !important" ion-fab mini id="fav-ico">
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+            <!-- <p style="margin-left: -142px;" class="fabAttendanceText">Remove Member</p>
+            <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop">
+                <ion-icon name="trash"></ion-icon>
+            </button> -->
+            <p class="fabAttendanceText" style="margin-left: -142px;" (tap)="updateMemberDetails(campDetails)">Update
+                Payment</p>
+            <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop"
+                (tap)="updateMemberDetails(this.campDetails)">
+                <ion-icon name="md-create"></ion-icon>
+            </button>
+
+
+            <p class="fabAttendanceText" style=" margin-left: -131px;" (tap)="gotoMembersheet()">Member Sheet</p>
+            <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop"
+                (tap)="gotoMembersheet()">
+                <ion-icon name="md-clipboard"></ion-icon>
+            </button>
+
+            <p class="fabAttendanceText" (tap)="selectSessionsForAddingMember(holidayCampDetails)">Add Member</p>
+            <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop"
+                (tap)="selectSessionsForAddingMember(holidayCampDetails)">
+                <ion-icon name="md-person-add"></ion-icon>
+            </button>
+            <!-- <p class="fabAttendanceText" (tap)="notificationToCampMember(campDetails)">Notification</p>
+                <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop" (tap)="notificationToCampMember(campDetails)">
+                    <ion-icon name="notifications"></ion-icon>
+                </button> -->
+            <!-- <p class="fabAttendanceText" (tap)="removeCamp(this.campDetails)">Delete Camp</p>
+                <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop" (tap)="removeCamp(this.campDetails)">
+                    <ion-icon name="trash"></ion-icon>
+                </button> -->
+            <p class="fabEmailText" style="margin-left: -109px;" (tap)="editHolidayCampDetails(holidayCampDetails)">Edit
+                Camp</p>
+            <button style="background-color:#2b92bb !important;color: white !important " ion-fab class="fabTop"
+                (tap)="editHolidayCampDetails(holidayCampDetails)">
+                <ion-icon name="md-create"></ion-icon>
+            </button>
+            <p class="fabEmailText" style="margin-left: -109px;"
+                (tap)="copyHolidayCampDetails(this.holidayCampDetails)">Copy
+                Camp</p>
+            <button style="background-color:#2b92bb !important;color: white !important " ion-fab class="fabTop"
+                (tap)="copyHolidayCampDetails(this.holidayCampDetails)">
+                <ion-icon name="md-copy"></ion-icon>
+            </button>
+            <p class="fabEmailText" style="margin-left: -99px;" (tap)="applyDiscount(this.campDetails)">Discount</p>
+            <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop"
+                (tap)="applyDiscount(this.campDetails)">
+                <ion-icon style="font-size: 23px;">%</ion-icon>
+            </button>
+
+        </ion-fab-list>
+
+    </ion-fab>
+
+</ion-content>

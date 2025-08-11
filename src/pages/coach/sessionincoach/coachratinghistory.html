@@ -1,0 +1,118 @@
+<!--
+  Generated template for the CoachratinghistoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header *ngIf="themeType == 1" no-border >
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title> Performance History</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header no-border>
+    <ion-navbar *ngIf="themeType == 2">
+        <!--<button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>-->
+        <ion-title>
+          Performance History
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content class="con">
+ <!-- <div *ngIf="HistoryDetails.length > 0">
+    <ion-card *ngFor="let temp of HistoryDetails" class="card">
+        <ion-card-content (click)="presentActionSheet(temp)">
+          <ion-grid class="grid">
+            <ion-row>
+              <ion-col col-6>
+               <p class="text animate-zoom"> {{temp.TemplateName}}</p>
+                <p class="text animate-zoom">{{temp.ActivityName}}</p>
+                <p class="text animate-zoom">{{temp.StartDate}} to {{temp.EndDate}}</p>
+              </ion-col>
+              <ion-col col-4 class="animate-zoom">
+                <p class="mode">{{temp.Mode}}</p>
+        <rating  [(ngModel)]="temp.AveragePerformance" 
+        readOnly="true" 
+        max="5" 
+        emptyStarIconName="star-outline" 
+        halfStarIconName="star-half" 
+        starIconName="star" 
+        nullable="false" 
+        (ngModelChange)="onModelChange($event)"></rating>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+ </div>
+ <div *ngIf="HistoryDetails.length == 0">
+   <ion-card>
+     <ion-card-content>
+       <p style="color:red">no history found</p>
+     </ion-card-content>
+   </ion-card>
+ </div>
+ <ion-fab bottom right >
+  <button ion-fab (click)="goTotemplateListingPage()"><ion-icon name="add" ></ion-icon></button>
+</ion-fab> -->
+<div class="headerCon">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <img src="../././assets/images/user2.png" class="img animate-zoom">
+      </ion-col>
+    </ion-row>
+    <ion-row><ion-col><span class="name">{{memberDetails.FirstName}} {{memberDetails.LastName}}</span></ion-col></ion-row>
+  </ion-grid>
+</div>
+<div *ngIf="HistoryDetails.length > 0">
+    <div class="body_con">
+        <ion-card class="cards animate-right" *ngFor="let temp of HistoryDetails" (click)="presentActionSheet(temp)">
+          <ion-card-content [ngClass]="{'color-theme-11': temp.Mode == 1,'color-theme-22': temp.Mode == 2,'color-theme-33': temp.Mode == 3,'color-theme-ret': temp.Status == 2}">
+              <ion-grid class="grid">
+                  <ion-row>
+                    <ion-col col-6>
+                      <p class="text animate-zoom activityName">{{temp.ActivityName | uppercase}}</p>
+                      <p class="text animate-zoom">{{commonService.convertToDDMMYYY(temp.StartDate)}} To {{commonService.convertToDDMMYYY(temp.EndDate)}}</p>
+                    </ion-col>
+                    <ion-col col-6 class="animate-zoom right_col">
+                      <p [ngClass]="{'color-theme-1': temp.Mode == 1,'color-theme-2': temp.Mode == 2,'color-theme-3': temp.Mode == 3}">{{getMode(temp.Mode)}}</p>
+              <rating  [(ngModel)]="temp.AveragePerformance" 
+              readOnly="true" 
+              max="5" 
+              emptyStarIconName="star-outline" 
+              halfStarIconName="star-half" 
+              starIconName="star" 
+              nullable="false" 
+              (ngModelChange)="onModelChange($event)"></rating>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </div>
+</div>
+<div *ngIf="HistoryDetails.length == 0" class="div2">
+  <span class="text2">no history found</span>
+</div>
+<ion-fab bottom right >
+    <button ion-fab (click)="goTotemplateListingPage()" style="background-color:#3fbcd3"><ion-icon name="add" ></ion-icon></button>
+  </ion-fab>
+</ion-content>

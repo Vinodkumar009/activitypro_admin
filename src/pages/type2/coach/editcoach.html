@@ -1,0 +1,160 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Edit Coach</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Edit Coach
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <!--<form>-->
+    <!-- <ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select [(ngModel)]="type">
+            <ion-option value="cricket">Cricket</ion-option>
+            <ion-option value="tennis">Tennis</ion-option>
+            <ion-option value="rugby">Rugby</ion-option>
+            <ion-option value="football">Football</ion-option>
+        </ion-select>
+    </ion-item> -->
+    <ion-item>
+        <ion-label floating class="float-label">First Name</ion-label>
+        <ion-input type="text" [(ngModel)]="coachInfo.FirstName"></ion-input>
+    </ion-item>
+    <!--<ion-item>
+        <ion-label floating>Middle Name</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>-->
+    <ion-item>
+        <ion-label floating class="float-label">Last Name</ion-label>
+        <ion-input type="text" [(ngModel)]="coachInfo.LastName"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Gender</ion-label>
+        <ion-select [(ngModel)]="coachInfo.Gender">
+            <ion-option value="male">Male</ion-option>
+            <ion-option value="female">Female</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Email Id</ion-label>
+        <ion-input type="text" [(ngModel)]="coachInfo.EmailID" [disabled]="isDisableEmail"></ion-input>
+        <button ion-button clear item-right class="help_btn" (click)="EditEmailPopUp()">
+            <ion-icon name="md-create" style="font-size: 2rem"></ion-icon>
+        </button>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Phone Number</ion-label>
+        <ion-input type="number" [(ngModel)]="coachInfo.PhoneNumber"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>DOB</ion-label>
+        <ion-datetime displayFormat="MMMM/YYYY" pickerFormat="MMMM YYYY" [(ngModel)]="coachInfo.DOB"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Language</ion-label>
+        <ion-select [(ngModel)]="selectedLanguageCode">
+            <ion-option *ngFor="let item of language" value={{item.LanguageCode}}>{{item.LanguageName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Reg</ion-label>
+        <ion-input type="text" [(ngModel)]="coachInfo.RegistrationNumber"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Recognition</ion-label>
+        <ion-textarea  [(ngModel)]="coachInfo.Recognition"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Qualification</ion-label>
+        <ion-textarea type="text" [(ngModel)]="coachInfo.Qualification"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Title</ion-label>
+        <ion-textarea type="text" [(ngModel)]="coachInfo.Title"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Coaching Experience</ion-label>
+        <ion-textarea rows="5" type="text" [(ngModel)]="coachInfo.CoachingExperience"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Playing Experience</ion-label>
+        <ion-textarea rows="5" type="text" [(ngModel)]="coachInfo.PlayingExperience"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Strengths</ion-label>
+        <ion-textarea type="text" [(ngModel)]="coachInfo.Strengths"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label floating class="float-label">Favourite Shot/Move/Position</ion-label>
+        <ion-textarea rows="3" type="text" [(ngModel)]="coachInfo.FavouriteShots"></ion-textarea>
+    </ion-item>
+    <!-- <ion-item>
+        <ion-label floating class="float-label">Alias Name</ion-label>
+        <ion-textarea type="text" [(ngModel)]="coachInfo.AliasName"></ion-textarea>
+    </ion-item> -->
+    <!-- <ion-item> 
+        <ion-label floating class="float-label">Short Description</ion-label>
+        <ion-textarea [(ngModel)]="coachInfo.ShortDescription"></ion-textarea>
+    </ion-item> -->
+    <!-- <ion-item>
+        <ion-label floating class="float-label">Detail Description</ion-label>
+        <ion-textarea [(ngModel)]="coachInfo.DetailDescription"></ion-textarea>
+    </ion-item> -->
+    <ion-item>
+        <ion-label>Show Pending Revenue</ion-label>
+        <ion-toggle [(ngModel)]="coachInfo.IsShowRevenue"></ion-toggle>
+    </ion-item>
+    <ion-item>
+        <ion-label>Allow Loyalty</ion-label>
+        <ion-toggle [(ngModel)]="coachInfo.AllowLoyalty"></ion-toggle>
+    </ion-item>
+    <ion-item>
+        <ion-label>Available Online</ion-label>
+        <ion-toggle [(ngModel)]="coachInfo.IsAvailableOnline" ></ion-toggle>
+    </ion-item>
+    
+    <ion-grid>
+        <ion-row>
+
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelCoach()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="update()">Update</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <!--
+    <button ion-button block>Add Todo</button>-->
+    <!--</form>-->
+
+
+
+
+</ion-content>

@@ -1,0 +1,101 @@
+page-cashwalletreport{
+
+    .circleProgress{
+        border: 8px solid #e4e4e4;
+        border-radius: 50%;
+        width: 135px;
+        height: 135px;
+        padding: 5px;
+        margin: auto;
+        position: relative;
+        border-bottom-color: transparent;
+        p{
+            font-size: 18px;
+            color: #00000099;
+            text-align: center;
+            margin: 34px 0 0 0;
+            font-weight: 600;
+        }
+        img{
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            //background: rgba(255, 255, 255, 1);
+            bottom: 2px;
+            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+    }
+    .progress_txt{
+        font-size: 14px;
+        margin: 4px 0;
+        //color: #000000ad;
+    }
+    .facilityCard{
+        border-radius: 0px !important;
+        box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+        margin: 6px 12px;
+        padding: 5px 5px 5px 5px;
+        border-radius: 2px;
+        display: flex;
+        justify-content: space-between;
+        border-left:2px solid #35ADFF;
+        //height: 20vh;
+        //border-bottom: 1px solid #fab754;
+        p{
+            line-height: 1.2 !important;
+        }
+        ion-card-content{
+            //height: 18vh;
+            padding: 0px 5px !important;
+        }
+        .circle{
+            margin-top: -3px;
+            width: 60px;
+            float: right;
+            height: 60px;
+            border: 4px solid #e4e4e4;
+            border-radius: 50%;
+            padding: 17px 4px;
+            text-align: center;
+            // color: #000000;
+        }
+        .event_date {
+            color: #343434db;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .mar0 {
+            margin: 0 !important;
+        }
+        .eventname {
+            color: rgba(0, 0, 0, 0.85);
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 22px;
+        }
+        .event_more {
+            margin: 8px 0px 0px 0px;
+            color: #373737;
+            font-weight: 700;
+            font-size: 15px;
+            text-transform: capitalize;
+            width: 150px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            //display: flex;
+            padding: 5px 0px 4px 10px;
+            border: 0.5px solid rgba(128, 128, 128, 0.43);
+        }
+        
+        .event_more img {
+            width: 17px;
+            height: 17px;
+            margin: 0px 5px 0px 0px;
+        }
+                
+    }
+}

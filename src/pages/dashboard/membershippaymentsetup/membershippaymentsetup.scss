@@ -1,0 +1,149 @@
+membershippaymentsetup-page {
+    
+    .scroll-content {
+        background-image: none !important;
+        padding: 6px !important;
+        background-color: #f7f7f7;
+    }
+     $user-icon-size: 44px;
+     .group-slides .selected {
+        border: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+        // border-bottom: 3px solid gray !important; // margin-left: -3px !important;
+        // margin-right: -3px !important;
+        // margin-bottom: -3px  !important;
+        transition: 80ms;
+        background-color: #faae4e !important;
+
+    }
+    .comingrow{
+        border-bottom: 0.5px solid #ffa500d9;
+   
+    margin-top: 61px;
+    }
+    .comingcol{
+  
+    text-align: center;
+    color: #00000099;
+    font-size: 15px;
+    }
+    .selected .facilities-text {
+        color: #ffffff
+    }
+    .padding-5{
+        background: #f4efef;
+    }
+    .allpayment  .selected{
+        box-shadow: 3px 4px 9px -4px #61554c !important;
+        background-color: #faae4e  !important;
+        color: white !important;
+    }
+    .facilityCard {
+        color: #918e8e;
+        background: #f5f2ef;
+        border-radius: 17px;
+        height: 4.5em;  
+        border: 1px solid #faae4e;
+       
+       
+        box-shadow: 3px 2px 9px -4px #9e8879;
+    }
+    ion-item {
+        ion-label {
+            color: #b5b2ae !important;
+            margin-top: -1px !important;
+        }
+        .act {
+            margin-top: 15px !important;
+        }
+        border-bottom: 1px solid #f1c98d !important;
+        box-shadow: inset 0 -1px 0 0 #dedede!important;
+    }
+    .item-inner {
+        border-bottom: none !important;
+        box-shadow: none !important;
+    }
+    .allign-assist {
+        margin: 0 -10px !important;
+    }
+    .facilities-text{
+        color: #faae4e;
+        padding: 14px 0px;
+    }
+    .sectionborder{
+        border-bottom: 1px solid rgb(148, 142, 130);
+    }
+    .dashboard_col_item_block {
+        padding: 8px 8px 0px 8px;
+        text-align: center;
+        margin-bottom: 10px;
+        border-radius: 7px;
+      //  -webkit-box-shadow: 0px 1px 5px -1px #7b7a76;
+        box-shadow: 0px 2px 5px -1px #887f82 !important;
+        height: 11rem;
+        margin: 5px;
+        max-width: 30%;
+     }
+     .dashboard_col_item {
+         background-color: #fffefe;
+         //background-color: rgba(155, 147, 147, 0.34);
+         padding-bottom: 1px;
+         border-radius: 5px;
+     }
+     .iconpayment{
+        height: 60%;
+        width: max-content;
+     } 
+     .paymentname{
+        margin: 0 !important;
+        
+     }
+     
+    ion-slides{
+        padding: 0 5px;
+        .slide-zoom {
+            width: 100%;
+            margin-left: -46px;
+            height: 101%;
+        }
+        ion-slide {
+            width: 140px !important;
+        }
+    }
+    .tag{
+        background: rgba(212, 155, 84, 0.7098039215686275) !important;
+        color: white;
+        padding: 7px 11px;
+        border-radius: 4px;
+    
+    }
+    // .{
+    //     background: #e13838;
+    // }
+    .greycolor{
+        color: #49484c;
+    }
+    .PaymentAssigned{
+        background-color:#f7d7b0 !important;
+    }
+    .forinputwrapper{
+        .item-inner{
+            .input-wrapper{
+                padding-bottom: 37px;
+
+            }
+        }
+    }
+    .h6 {
+        font-size: 16px;
+        font-weight: 300;
+        margin-left: 0rem;
+        margin-right: 0rem;
+        padding-bottom: 3px;
+        margin-top: 1rem !important;
+        border-bottom: 1px solid #faae4e !important;
+    }
+    .group-slides {
+        margin: 15px 5px;
+        height: 6.5em;
+    }
+ }

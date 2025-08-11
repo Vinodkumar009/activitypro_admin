@@ -1,0 +1,112 @@
+<ion-header>
+    <ion-navbar style="background-color: #bc2219 !important; color:white !important;">
+        <ion-title>Membership Renewal</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content >
+    <ion-row class="border-bottom-2px ">
+        <ion-item class="venueionitem">
+            <ion-select class="venuedropdown" [(ngModel)]="selectedClubKey" (ionChange)="getRenewalInfo()">
+            <!-- <ion-select class="venuedropdown" [(ngModel)]="selectedClubKey"> -->
+                <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-row>
+
+    <h6 class="h6">Activate Renewal in Advance</h6>
+    <ion-item class="padding-5">
+        <ion-label >Number of Days</ion-label>
+        <ion-input type="number" class="input_right" [(ngModel)]="Renewal.NoOfDays" required #Renewal.NoOfDays = "ngModel"></ion-input>
+    </ion-item> 
+        <!-- <button ion-button block class="timekare-primary-btn" type="submit" (click)="addRenewalInfo()">text</button> -->
+
+    <h6 class="h6">Send Email Notification</h6>
+    <div class="reminder">
+        <ion-row>
+            <ion-col col-12 class="flex_col">
+              <p class="para">First Reminder</p>
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="Renewal.Email.firstReminder.is_avail">
+                <span data-unchecked="No" data-checked="Yes"></span>
+              </label>
+            </ion-col>
+        </ion-row>
+        <ion-item class="padding-5" *ngIf="Renewal.Email.firstReminder.is_avail">
+            <!-- <ion-label>First Reminder</ion-label> -->
+            <ion-input type="number" placeholder="Enter no of days" [(ngModel)]="Renewal.Email.firstReminder.no_of_days" required></ion-input>
+        </ion-item>
+    </div>
+    
+    <div class="reminder">
+        <ion-row>
+            <ion-col col-12 class="flex_col">
+              <p class="para">Second Reminder</p>
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="Renewal.Email.secondReminder.is_avail">
+                <span data-unchecked="No" data-checked="Yes"></span>
+              </label>
+            </ion-col>
+        </ion-row>
+        <ion-item class="padding-5" *ngIf="Renewal.Email.secondReminder.is_avail">
+            <!-- <ion-label>Second Reminder</ion-label> -->
+            <ion-input type="number"  placeholder="Enter no of days" [(ngModel)]="Renewal.Email.secondReminder.no_of_days" required></ion-input>
+        </ion-item>
+    </div>
+
+    <div class="reminder">
+        <ion-row>
+            <ion-col col-12 class="flex_col">
+              <p class="para">Third Reminder</p>
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="Renewal.Email.thirdReminder.is_avail">
+                <span data-unchecked="No" data-checked="Yes"></span>
+              </label>
+            </ion-col>
+        </ion-row>
+        <ion-item class="padding-5" *ngIf="Renewal.Email.thirdReminder.is_avail">
+            <!-- <ion-label>Third Reminder</ion-label> -->
+            <ion-input type="number" placeholder="Enter no of days" [(ngModel)]="Renewal.Email.thirdReminder.no_of_days" required></ion-input>
+        </ion-item>
+    </div>
+    
+    <div class="reminder">
+        <ion-row>
+            <ion-col col-12 class="flex_col">
+              <p class="para">Fourth Reminder</p>
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="Renewal.Email.fourthRemainder.is_avail">
+                <span data-unchecked="No" data-checked="Yes"></span>
+              </label>
+            </ion-col>
+        </ion-row>
+        <ion-item class="padding-5" *ngIf="Renewal.Email.fourthRemainder.is_avail">
+            <!-- <ion-label>Fourth Reminder</ion-label> -->
+            <ion-input type="number"  placeholder="Enter no of days" [(ngModel)]="Renewal.Email.fourthRemainder.no_of_days" required></ion-input>
+        </ion-item>
+    </div>
+    
+    <h6 class="h6">Notification</h6>
+    <ion-item class="padding-5">
+        <ion-label floating>Notification Text</ion-label>
+            <ion-textarea type="text" [(ngModel)]="Renewal.Notification.notificationText">
+        </ion-textarea>
+    </ion-item>
+    <ion-item class="padding-5">
+        <ion-label>Number of Days Before</ion-label>
+        <ion-input type="number" class="input_right" [(ngModel)]="Renewal.Notification.noOfDaysBefore" required></ion-input>
+    </ion-item>
+    <h6 class="h6">Popup</h6>
+    <ion-item class="">
+        <ion-label>Activate Popup for Renewal</ion-label>
+        <ion-checkbox [(ngModel)]="Renewal.Popup"></ion-checkbox>
+    </ion-item>    
+</ion-content>
+
+<ion-footer>
+   <ion-row> 
+       <ion-col col-12 style="padding: 5px !important;">
+           <button ion-button block class="timekare-primary-btn" type="submit" (click)="addRenewalInfo()">{{IsAlreadyAdded ? 'Update':'Create'}}</button>
+       </ion-col>          
+   </ion-row>        
+</ion-footer>

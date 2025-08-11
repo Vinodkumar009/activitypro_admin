@@ -1,0 +1,49 @@
+<ion-header *ngIf="themeType == 1" no-border >
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Template List </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header no-border>
+    <ion-navbar *ngIf="themeType == 2">
+        <!--<button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>-->
+        <ion-title>
+          Template List
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding >
+    <ion-card *ngFor="let list of tempLetList;let i = index" class="cards">
+      <ion-card-content class="content" (click)="goToTemplateratingpage(i)">
+          <ion-grid>
+            <ion-row>
+              <ion-col col-11>
+                  <p class="text tname animate-zoom">{{list.TemplateName}}</p>
+                  <p class="text animate-zoom"> {{list.ActivityName}}</p>
+              </ion-col>
+              <ion-col col-1>
+                  <ion-icon name="ios-arrow-forward" class="icons animate-zoom"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+      </ion-card-content>
+      
+    </ion-card>
+</ion-content>

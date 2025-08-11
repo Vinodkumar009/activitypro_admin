@@ -1,0 +1,105 @@
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title >Posts</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-header>
+  <ion-navbar [hideBackButton]="!isCompose">
+    <ion-buttons left *ngIf="!isCompose" class="close_btn" (click)="this.isCompose=true;">
+      <button ion-button icon-only>
+        <ion-icon name="ios-close" slot="icon-only"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Chat Board</ion-title>
+    <!-- <ion-buttons right *ngIf="!isCompose" (click)="sendMessage()">
+      <button ion-button icon-only [disabled]="newMsg === ''" class="msg-btn">
+        <ion-icon name="ios-send" slot="icon-only"></ion-icon>
+      </button>
+    </ion-buttons> -->
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher slot="fixed" pullFactor="0.5" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid style="margin-bottom:100px;">
+    <ion-row style="margin-bottom: 10px;">
+      <ion-col col-12 no-padding class="border-bottom-2px">
+        <ion-item style="padding-left:5px">
+          <!-- <ion-label>Venue</ion-label> -->
+          <ion-select class="venuedropdown" [(ngModel)]="ChatOtherInfo.VenueKey"
+            (ionChange)="changeVenue(this.ChatOtherInfo.VenueKey);">
+            <ion-option *ngFor="let club of clubs;let i = index" value={{club.$key}}>{{club.ClubName}}</ion-option>
+            <ion-option value="all">All</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="msg_row" *ngFor="let msg of messages;let i=index;" (click)="gotoFullDets(msg)">
+      <ion-col col-2 style="margin:auto !important;">
+        <img class="user_img_cls" src="assets/images/user2.png">
+      </ion-col>
+      <ion-col col-10 style="margin:auto !important;padding:10px 5px 8px 12px !important">
+        <p class="margin-top-bottom-5 para-list-header">{{msg.lastconveruser}}</p>
+        <p class="margin-top-bottom-5 msg_subject">{{msg.Subject}}</p>
+        <p class="margin-top-bottom-5 para-text-color para-msg" *ngIf="msg.lastmsg">{{msg.lastmsg}}</p>
+        <p class="margin-top-bottom-5 para-text-color msg_date" *ngIf="msg.lastconversion">
+          {{msg.lastconversion | date:'mediumDate'}}<br>
+          <span [ngClass]="{'chat_status':msg.Chat_Status=='active'}">{{msg.Chat_Status}}</span></p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-row *ngIf="isInboxempty" style="margin-top:40%;">
+    <ion-col col-12 text-center>
+      <ion-icon name="ios-chatbubbles" class="inbox_empty_icon"></ion-icon>
+      <p>No chat available</p>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<div class="chatmodal" *ngIf="!isCompose">
+  <div>
+    <ion-row no-padding align-items-center>
+      <ion-col col-12 no-padding class="border-bottom-2px">
+        <ion-item style="margin-top:10px;">
+          <!-- <ion-label>Venue</ion-label> -->
+          <ion-select class="venuedropdown" [(ngModel)]="selectedVenue">
+            <ion-option *ngFor="let club of clubs;let i = index" value={{club.$key}}>{{club.ClubName}}</ion-option>
+            <ion-option value="all">All</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col col-12>
+        <ion-item>
+          <ion-label stacked>Message Title</ion-label>
+          <ion-input type="text" [(ngModel)]="ChatOtherInfo.Subject" placeholder="Type title here"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col col-12>
+        <ion-item no-lines>
+          <textarea class="message-input" rows="8" [(ngModel)]="newMsg" placeholder="Type here"></textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button block class="timekare-primary-btn send_btn" [disabled]="newMsg === ''"
+          (click)="sendMessage()">Send</button>
+      </ion-col>
+      <ion-col col-12 text-center style="margin:30px 0px;">
+        <img [src]="chatImg" style="width:150px;height:150px;">
+      </ion-col>
+    </ion-row>
+  </div>
+</div>
+
+<ion-fab right bottom *ngIf="isCompose">
+  <button ion-fab mini style="background-color: #2b92bb;" (click)="isCompose=false"
+    style="background-color:#2b92bb !important; color: white !important">
+    <ion-icon name="ios-create"></ion-icon>
+  </button>
+</ion-fab>

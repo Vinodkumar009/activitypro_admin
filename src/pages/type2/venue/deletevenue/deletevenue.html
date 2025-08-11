@@ -1,0 +1,46 @@
+
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Delete Venue</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div>
+        <p class="clubname">{{venue.ClubName}}</p>
+        <ion-row class="dash_row">
+            <ion-col col-12 item-center>
+              <p style="color:rgba(0, 0, 0 ,0.85);margin: 12px 0px 4px 0;">Total Member</p>
+              <p style="margin: 4px 0px 12px 0;;">{{totalMember}}</p>
+            </ion-col>
+          
+        </ion-row>
+        <ion-row>
+            <ion-col col-12>
+                <p class="caution">Caution - Members from the deleted venues will NO longer be visible in this App. 
+                    Please speak to ActivityPro team if you would like to move (migrate) the members 
+                    from this venue to another venue before you delete.</p>
+            </ion-col>
+        </ion-row>
+
+        
+       
+      <ion-row style=" margin-top: 10px;">
+            <ion-col col-12>
+              <ion-input type="text" class="ion_input" placeholder="Type 'DELETE' here..." [(ngModel)]="deleteText"></ion-input>
+            </ion-col>
+        </ion-row>  
+
+    </div>
+    <ion-row style="
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+" f>
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" (click)="delete()">Delete</button>
+        </ion-col>
+    </ion-row>
+</ion-content>

@@ -1,0 +1,73 @@
+<!--
+  Generated template for the StripeconnectsetuplistPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Existing Accounts</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 *ngIf="connectSetupDetails.length > 0">
+        <ion-card *ngFor="let setup of connectSetupDetails" (click)="presentActionSheet(setup)"
+        [ngClass]="{'disabled':!setup.status}">
+          <ion-card-content>
+            <ion-row>
+              <ion-col>
+                <p>{{setup.setup_name}}</p>
+                <p class="activity" style="color: rgba(34, 34, 34, 0.6784313725490196);">{{setup.club_name}}</p>
+                <p class="activity" style="color: rgba(34, 34, 34, 0.6784313725490196);">{{setup.activity_name}}</p>
+                <p class="activity" style="color: rgba(0,0,0,0.45)">{{setup.formatted_acc_id}}</p>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <!-- <ion-col col-12 *ngIf="connectSetupDetails.length == 0">
+        <ion-card style="margin-top: 20%;">
+          <ion-card-content>
+              <p class="no-setup">Add </p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col> -->
+    </ion-row>
+    <ion-row *ngIf="connectSetupDetails.length == 0">
+      <ion-card style=" margin:30px 0px 0px 0px !important; width:100% !important; -webkit-box-shadow: none !important; box-shadow: none !important; border-bottom: 1px solid #f6ae4d !important;">
+          <ion-card-content style="text-align: center; ">
+              <p class="danger_color2  padding: 0; ">{{Addasetup}}</p>
+          </ion-card-content>
+      </ion-card>
+  </ion-row>
+    <!-- <page-commentforemptiness *ngIf="connectSetupDetails.length == 0" [customTitle]="Addasetup" (click)="goTocreatepage()"></page-commentforemptiness> -->
+  </ion-grid>
+  
+  <!-- <ion-fab mini right bottom #fab>
+      <button ion-fab mini  style="background-color: #2b92bb; color:white !important" (click)="goTocreatepage()"><ion-icon name="add" ></ion-icon></button>
+  </ion-fab> -->
+
+  <ion-fab mini right bottom #fab>
+    <button style="background-color:#2b92bb !important; color: white !important" ion-fab mini id="fav-ico">
+        <ion-icon name="add"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+        <p class="fabAttendanceText" style="margin-left: -100px;" (tap)="goTocreatepage(2)">Copy</p>
+        <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop"
+            (tap)="goTocreatepage(2)">
+            <ion-icon name="md-copy"></ion-icon>
+        </button>
+
+        <p class="fabAttendanceText" style=" margin-left: -100px;" (tap)="goTocreatepage(1)">Create</p>
+        <button style="background-color:#2b92bb !important ;color: white !important" ion-fab class="fabTop"
+            (tap)="goTocreatepage(1)">
+            <ion-icon name="md-create"></ion-icon>
+        </button>
+    </ion-fab-list>
+  </ion-fab>
+
+</ion-content>

@@ -1,0 +1,35 @@
+page-printmembership {
+    .scroll-content{
+        //padding: 16px 9px !important;
+        background-image: none !important;
+        padding: 0px !important; 
+        padding-top: 4px !important;
+    }
+    .checkbox-checked {
+        border-color: green !important;
+        background-color: green !important;
+         .checkbox-inner {
+            left: 7px !important;
+            top: 2px !important;
+            position: absolute !important;
+            width: 7px !important;
+            height: 14px !important;
+        }
+    }
+    .checkbox-icon {
+        border-radius: 50% !important;
+        width: 25px !important;
+        height: 25px !important;
+    }
+    .top{
+        height: 30px;
+        width: 115px;
+        margin: -3px;
+        color:white;
+        background-color: #26849a;
+    }
+    .top1{
+       // margin-left: 4px !important;
+       //bord
+    }
+}

@@ -1,0 +1,157 @@
+<!--
+  Generated template for the HolidaycamppaymentreportPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <!-- <ion-title>{{LangObj.hldycamp_payment_title}}</ion-title> -->
+    <ion-title>Holiday Camp Payment Report</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+    <ion-grid class="header-container padding-0">
+        <ion-row class="school-row">
+          <ion-col class="school-col padding-0">
+            <p class="school-name" style="text-align: center;">{{selectedClubName}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row class="cost-row">
+          <ion-col col-6 class="cost-row">
+            <p class="text" style="text-align:center;">{{LangObj.hldycamp_payment_totamt}}</p>
+            <p class="paid" style="text-align:center;">{{currencyDetails.CurrencySymbol}}{{getTotal(totalPaid)}}</p>
+          </ion-col>
+          <ion-col col-6 class="duration-col">
+              <p  class="text" style="text-align:center;">{{LangObj.hldycamp_payment_trns}}</p>
+            <p class="select-days" style="text-align:center;">{{totalPaidMemberLength}} </p>
+          </ion-col>
+          <ion-col col-12>
+              <ion-slides   [slidesPerView]="2.2">
+                <ion-slide >
+                    <ion-card class="padding-0 " (click)="changeClub('all','All Club')" style="border-radius: 5px;" >
+                        <ion-card-content  class="padding-0 school-con" [ngClass]="{'schoolBackground': 'all' == selectedClubKey}">
+                          <p>{{LangObj.hldycamp_payment_allvenues}}</p>
+                        </ion-card-content>
+                      </ion-card>
+                </ion-slide>
+                <ion-slide *ngFor="let club of allClubDetails">
+                  <ion-card class="padding-0" (click)="changeClub(club.$key,club.ClubName)" style="border-radius: 5px;">
+                    <ion-card-content  class="padding-0 school-con" [ngClass]="{'schoolBackground': club.$key == selectedClubKey}">
+                      <p>{{club.ClubName}}</p>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-slide>
+              </ion-slides>
+            </ion-col> 
+        </ion-row>
+        <ion-row>
+         
+        </ion-row>
+      </ion-grid>
+ 
+
+  <!-- <ion-col col-12>
+    <ion-slides   [slidesPerView]="2.2">
+      <ion-slide>
+          <ion-card class="padding-0 " style="border-radius: 5px;" >
+              <ion-card-content  class="padding-0 school-con" [ngClass]="{'schoolBackground': 'all' == selectedCampKey}">
+                <p>All Camp</p>
+              </ion-card-content>
+            </ion-card>
+      </ion-slide>
+     
+      <ion-slide *ngFor="let camp of allHolidaycamp">
+        <ion-card class="padding-0" style="border-radius: 5px;">
+          <ion-card-content  class="padding-0 school-con" [ngClass]="{'schoolBackground': camp.sessionKey == selectedCampKey}">
+            <p>{{camp.name}}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  </ion-col>  -->
+  <ion-col class="padding-0" col-12  >
+    <ion-slides  [slidesPerView]="2.5" style="border-bottom:1px solid #faae4e">
+      <ion-slide style="width: 80px!important;" (click)="chageDate('dates')">
+        <ion-card class="padding-0 " style="border-radius: 5px;">
+          <ion-card-content class="padding-0 days-slide" [class.selectedDays]="beforeDays === 'dates'">
+            <ion-icon name="md-calendar" style="color:#ffff;font-size:2em"></ion-icon>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+      <ion-slide *ngFor="let day of days"  >
+        <ion-card class="padding-0" (click)="chageDate(day)">
+          <ion-card-content  class="padding-0 days-slide" [class.selectedDays]="beforeDays === day">
+            <p class="day" >{{day}} {{LangObj.hldycamp_payment_days}}</p> 
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides> 
+  </ion-col>
+
+  <ion-grid *ngIf="this.beforeDays == 'dates'">
+    <ion-row >
+      <ion-col col-5 no-padding>
+        <ion-item class="filter_items" style="padding-left:3px">
+          <ion-label stacked>From</ion-label>
+          <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="startDate"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col col-5 no-padding>
+        <ion-item class="filter_items" style="padding-left:3px">
+          <ion-label stacked>To</ion-label>
+          <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="endDate" class="enddate">
+          </ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col col-2 text-center no-padding style="margin:auto">
+        <button ion-button class="timekare-primary-btn" (click)="Search()">Go</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+  <div class="member-grid"  *ngIf="totalPaidMemberLength > 0">
+      <div>
+          <ion-grid  style="padding: 2px;">
+              <ion-row  >
+                  <ion-col col-12  *ngFor="let mem of allPaidMember" (click)="goToDetailsPage(mem)">
+                      <ion-row class="devider">
+                          <ion-col col-6 class="padding-0" >
+                            <p class="member-name margon-0">{{mem.FirstName}} {{mem.LastName}} </p>
+                            <p class="school-name-bottom  margon-0">{{mem.CampName}}</p>
+                            <p class="school-name-bottom  margon-0">{{mem.ClubName}}</p>
+                          </ion-col> 
+                          <ion-col col-3 class="padding-0" >
+                            <p class="date  margon-0 allg">{{getDay(mem.TransactionDate)}}</p>
+                            <p class="date  margon-0 ">{{mem.PaidBy}}</p>
+                          </ion-col>
+                          <ion-col col-3 class="padding-0" >
+                            <p class="paid-amount  margon-0 " [ngClass]="{'alignment':mem.Discount == 0,'mar-top':mem.Discount != 0}">{{currencyDetails.CurrencySymbol}}{{mem.AmountPaid}}</p>
+                            <p class="school-name-bottom  margon-0  discount" *ngIf="mem.Discount != 0">({{mem.Discount}})</p>
+                          </ion-col>
+                        </ion-row>
+                  </ion-col>
+                </ion-row>
+          </ion-grid>
+      </div>
+  
+    </div>
+    <div  *ngIf="totalPaidMemberLength == 0">
+      <p class="align-center">{{LangObj.hldycamp_payment_norecfound}}</p>
+    </div> 
+</ion-content>
+
+
+<ion-fab right bottom>
+  <button ion-fab mini style="background-color: #2b92bb;" (click)="gotoPrint()"
+      style="background-color:#2b92bb !important; color: white !important">
+      <ion-icon name="ios-print-outline"></ion-icon>
+  </button>
+</ion-fab>
+

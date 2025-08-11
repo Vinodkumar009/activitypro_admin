@@ -1,0 +1,218 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>Auto Create Matches</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-card class="compact-card">
+      <ion-card-header class="compact-header">
+        Match Information
+      </ion-card-header>
+      <ion-card-content class="compact-content">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <div class="info-box">
+                <p class="number-label">{{numberofPlayers || 0}}</p>
+                <p color="medium">Players</p>
+                <!-- <ion-label>
+                  <ion-label class="number-label">{{numberofPlayers || 0}}</ion-label>
+                  <ion-label color="medium">Players</ion-label>
+                </ion-label> -->
+              </div>
+            </ion-col>
+            <ion-col col-6>
+              <div class="info-box">
+                <p class="number-label">{{numberofMatches || 0}}</p>
+                <p color="medium">Matches</p>
+                <!-- <ion-label>
+                  <ion-label class="number-label">{{numberofMatches || 0}}</ion-label>
+                  <ion-label color="medium">Matches</ion-label>
+                </ion-label> -->
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  
+    <ion-item>
+      <ion-label>Match Type</ion-label>
+      <ion-select [(ngModel)]="matchType" (ionChange)="onMatchTypeChange()">
+        <ion-option value="singles">Singles</ion-option>
+        <ion-option value="doubles">Doubles</ion-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+        <ion-label>Round/Stage/Type</ion-label>
+        <ion-select [(ngModel)]="selectedRound">
+          <ion-option *ngFor="let roundType of roundTypes" [value]="roundType.id">{{roundType.name}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col col-6 style="margin: auto;" no-padding>
+          <p class="toggle_para">Status</p>
+        </ion-col>
+        <ion-col col-3>
+          <button ion-button class="select-type" (click)="changeType('public')" [class.selected]="publicType">
+            <ion-icon style="padding-right: 10px" name="globe"></ion-icon>
+            Public
+          </button>
+        </ion-col>
+        <ion-col col-3>
+          <button ion-button class="select-type" (click)="changeType('private')" [class.selected]="!publicType">
+            <ion-icon style="padding-right: 10px" name="ios-lock-outline"></ion-icon>
+            Private
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Match Date</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="matchDate" [disabled]="isLoading"
+        [min]="min" [max]="max">
+      </ion-datetime>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Match Time</ion-label>
+      <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
+        [disabled]="isLoading" [(ngModel)]="matchTime">
+      </ion-datetime>
+    </ion-item>
+  
+    <ion-item>
+      <ion-row>
+        <ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">Paid</p>
+          <label class="toggle">
+            <input type="checkbox" 
+            [(ngModel)]="isChecked" 
+            (ngModelChange)="updateMatchPaymentType($event)"
+            >
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-item *ngIf="this.inputObj.match_payment_type==1" class="allign-right">
+      <ion-label fixed>Fee Member
+        <span *ngIf="currency != undefined">({{currency}})</span>
+      </ion-label>
+      <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
+        [(ngModel)]="inputObj.member_fees"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="this.inputObj.match_payment_type==1" class="allign-right">
+      <ion-label> Fee Non Member
+        <span *ngIf="currency != undefined">({{currency}})</span>
+      </ion-label>
+      <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
+        [(ngModel)]="inputObj.member_fees"></ion-input>
+    </ion-item>
+  
+    <!-- Singles Match Selection -->
+    <ion-card *ngIf="matchType === 'singles'">
+      <ion-card-header>
+        Tournament Players
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list *ngIf="players.length > 0">
+          <ion-item *ngFor="let player of players; let i=index">
+            <ion-label>{{player.participant_name}}</ion-label>
+            <ion-checkbox [(ngModel)]="player.isSelected" [disabled]="player.isAlreadyExisted || isLoading"
+              (ionChange)="selectPlayer(player, $event)">
+            </ion-checkbox>
+          </ion-item>
+        </ion-list>
+        <div *ngIf="players.length === 0" text-center>
+          <p>No players available</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Doubles Match Selection -->
+    <div *ngIf="matchType === 'doubles'">
+      <ion-row>
+        <ion-col col-6>
+          <ion-card>
+            <ion-card-header>
+              Team 1 ({{team1Players.length}}/2)
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list *ngIf="players.length > 0">
+                <ion-item *ngFor="let player of players">
+                  <ion-label>{{player.participant_name}}</ion-label>
+                  <ion-checkbox 
+                    [checked]="isPlayerInTeam1(player)"
+                    [disabled]="isPlayerDisabledForTeam1(player) || isLoading"
+                    (ionChange)="selectPlayerForTeam1(player, $event)">
+                  </ion-checkbox>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        
+        <ion-col col-6>
+          <ion-card>
+            <ion-card-header>
+              Team 2 ({{team2Players.length}}/2)
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list *ngIf="players.length > 0">
+                <ion-item *ngFor="let player of players">
+                  <ion-label>{{player.participant_name}}</ion-label>
+                  <ion-checkbox 
+                    [checked]="isPlayerInTeam2(player)"
+                    [disabled]="isPlayerDisabledForTeam2(player) || isLoading"
+                    (ionChange)="selectPlayerForTeam2(player, $event)">
+                  </ion-checkbox>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- Selected Teams Display -->
+      <ion-card *ngIf="team1Players.length > 0 || team2Players.length > 0">
+        <ion-card-header>
+          Selected Teams
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngIf="team1Players.length > 0">
+            <h4>Team 1:</h4>
+            <p *ngFor="let player of team1Players; let i = index">
+              Team 1 - Player {{i + 1}}: {{player.participant_name}}
+            </p>
+          </div>
+          <div *ngIf="team2Players.length > 0" style="margin-top: 10px;">
+            <h4>Team 2:</h4>
+            <p *ngFor="let player of team2Players; let i = index">
+              Team 2 - Player {{i + 1}}: {{player.participant_name}}
+            </p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-content>
+  
+  
+  <ion-footer>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+          (click)="resetMatch()">Cancel</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button block class="timekare-primary-btn"
+          (click)="createMatch()" [disabled]="!isValidToCreateMatch()">Create</button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>

@@ -1,0 +1,55 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Membership Year</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content >
+    <ion-item style="border-bottom: 1px solid #fbc686;">
+        <ion-select class="maxwidthionselect" [(ngModel)]="selectedClubKey" (ionChange)="selectVenue($event)">
+            <ion-option *ngFor="let club of Venues" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <!-- <ion-row *ngIf="endDateArr.length > 0">
+        <ion-col col-12 style="padding-left:10px" *ngFor="let endDate of endDateArr">
+               
+            <ion-card (click)="showOptions(endDate)" style="margin: 18px 1px !important;">
+                <ion-card-header class="Location-head">
+                        <ion-col col-12 style="padding: 0 !important; ">
+                               
+                                <span style="font-size: 1.2em; color: #1d8238;">{{endDate.OptionName}}</span>
+                            </ion-col>
+                </ion-card-header>
+                <ion-card-content style="color: #c5b495; padding: 3px 2px 6px 15px !important;">
+                    <ion-row>
+                        <ion-col col-12 style="padding: 0 !important; ">
+                                
+                            <span class="subOption" *ngIf = "endDate.subOption != undefined">{{endDate.subOption}}</span>
+                        </ion-col>
+                       
+                        <ion-col col-12 style="padding: 0 !important">
+                            <p class="card-text" *ngIf = "endDate.Date != undefined">{{endDate.Date}}</p>
+                            <p class="card-text" *ngIf = "endDate.Date == undefined">{{endDate.StartMonth}}-{{endDate.EndMonth}}</p>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+   
+    <ion-row *ngIf="endDateArr.length == 0"  (click)="addMembershipYear()">
+        <ion-card style=" margin:30px 0px 0px 0px !important; width:100% !important; -webkit-box-shadow: none !important; box-shadow: none !important; border-bottom: 1px solid #f6ae4d !important;">
+            <ion-card-content style="text-align: center; ">
+                <p class="danger_color2  padding: 0; ">Add Membership Year</p>
+            </ion-card-content>
+        </ion-card>
+    </ion-row>
+    <ion-row class="allign-assist" *ngIf = "!this.isAdded">
+        <button ion-button block class="timekare-primary-btn" type="submit" (click)="addMembershipYear()">Add</button>
+    </ion-row> -->
+
+    
+</ion-content>

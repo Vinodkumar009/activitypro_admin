@@ -1,0 +1,131 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Profile</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Profile
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <!--<form>-->
+    <ion-card style="width: 100%;margin: 0;">
+        <ion-item class="prifile-card">
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-4>&nbsp;</ion-col>
+                    <ion-col col-4><img class="profile-img" src="assets/images/user2.png"></ion-col>
+                    <ion-col col-4>&nbsp;</ion-col>
+                </ion-row>
+                <ion-row class="tk-center">
+                    <ion-col col-4>{{this.userDetailsObj.ParentClubName}}</ion-col>
+                </ion-row>
+                <ion-row class="tk-center">
+                    <ion-col col-4>{{this.userDetailsObj.ContactPhone}}</ion-col>
+                </ion-row>
+                <div>
+                    <ion-segment [(ngModel)]="profilesetting">
+                        <ion-segment-button value="Basic">
+                            Basic
+                        </ion-segment-button>
+                        <ion-segment-button value="Password">
+                            Password
+                        </ion-segment-button>
+                    </ion-segment>
+                </div>
+            </ion-grid>
+        </ion-item>
+        <div [ngSwitch]="profilesetting">
+            <div *ngSwitchCase="'Basic'">
+                <ion-card-content>
+                    <ion-item>
+                        <ion-label floating>Username</ion-label>
+                        <ion-input type="text" [(ngModel)]="this.userDetailsObj.ParentClubName"></ion-input>
+                    </ion-item>
+                    <!--<ion-item>
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" [(ngModel)]="this.userDetailsObj.ParentClubAdminPassword"></ion-input>
+          </ion-item>-->
+                    <ion-item>
+                        <ion-label floating>Email Id</ion-label>
+                        <ion-input type="email" [(ngModel)]="this.userDetailsObj.ParentClubAdminEmailID" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>Phone No</ion-label>
+                        <ion-input type="tel" [(ngModel)]="this.userDetailsObj.ContactPhone"></ion-input>
+                    </ion-item>
+                    <!--<ion-item>
+            <ion-label floating *ngIf="this.userDetailsObj.DOB">DOB</ion-label>
+            <ion-datetime displayFormat="MMMM/YYYY" pickerFormat="MMMM YYYY" [(ngModel)]="this.userDetailsObj.DOB"></ion-datetime>
+          </ion-item>-->
+                </ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col col-6>
+                            <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelProfile()">Cancel</button>
+                        </ion-col>
+                        <ion-col col-6>
+                            <button ion-button block class="timekare-primary-btn" (click)="updateProfile()">Update</button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
+            <div *ngSwitchCase="'Password'">
+                <ion-card-content>
+                    <ion-item>
+                        <ion-label floating>Old Password</ion-label>
+                        <ion-input type="password" [(ngModel)]="this.passwordObj.OldPassword"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>New Password</ion-label>
+                        <ion-input type="password" [(ngModel)]="this.passwordObj.Newpassword"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>Confirm Password</ion-label>
+                        <ion-input type="password" [(ngModel)]="this.passwordObj.ConfirmPassword"></ion-input>
+                    </ion-item>
+
+                </ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col col-6>
+                            <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelPassword()">Cancel</button>
+                        </ion-col>
+                        <ion-col col-6>
+                            <button ion-button block class="timekare-primary-btn" (click)="resetPassword()">Reset</button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </div>
+        </div>
+        <!--<P>{{userDetailsObj |json}}</P>-->
+        <hr style="margin-top: 10px;">
+        <ion-row class="delete" (click)="deleteAccount()">
+            <ion-col col-2 class="icon-col">
+            <ion-icon name="trash"></ion-icon>
+            </ion-col>
+            <ion-col col-10 style="margin:auto">
+            <p>Delete My Account</p>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+</ion-content>

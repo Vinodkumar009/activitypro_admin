@@ -1,0 +1,94 @@
+addmembertoschoolsession-page {
+    .social-cards ion-col {
+        padding: 0;
+    }
+    .btn-clr {
+        color: $dashoboard-icon-color;
+    }
+    .scroll-content {
+        background-image: none !important;
+    }
+    .align {
+        margin-top: 5px;
+        margin-left: 9px;
+        margin-right: 9px;
+    }
+    ion-item h2 {
+        // color: $dashoboard-icon-color !important;
+    }
+    .cross {
+        background-color: white;
+    }
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+    .right {
+        float: right;
+    }
+    .search_add {
+        .item-inner {
+            border-bottom: 0px !important;
+            ion-icon {
+                margin-top: 18px;
+            }
+            div {
+                ion-label {
+                    //margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+    .session_header,
+    ion-list {
+        margin-bottom: 0px!important;
+    }
+    .block_height {
+        height: 80%;
+    }
+    .block_height1 {
+        margin-top: 5px;
+        height: 87%;
+        .margin {
+            padding: 0px 11px 0px 11px;
+        }
+    }
+    .block_height2 {
+        height: 32%;
+    }
+    .card-md p {
+        margin: 0 0 0px;
+        font-size: 1.3rem;
+        font-weight: normal;
+        line-height: 1.4;
+        color: #222;
+    }
+    .ion_list1 {
+        margin-top: 10px;
+    }
+    .p_selected {
+        ion-card-content {
+            //  border-bottom: 1px solid rgb(209, 209, 213);
+            //      padding: 5px 0px 5px 13px;
+            //     color: black;
+            //     font-size: 17px;
+            border-bottom: 1px solid #d1d1d5;
+            padding: 5px 0px 5px 13px;
+            color: rgba(0, 0, 0, 0.89);
+            font-size: 17px;
+        }
+    }
+    .ion-item-lable {
+        div {
+            ion-icon {
+                margin: 0px 0px 9px 0px !important;
+            }
+            div {
+                ion-label {
+                    margin: 0px 0px 0px 0px;
+                }
+            }
+        }
+    }
+}

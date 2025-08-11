@@ -1,0 +1,382 @@
+page-addteamtoleague {
+    // .scroll-content {
+    //     padding: 0px !important;
+    //     background-image: none !important;
+    //     // background: white !important;
+    //     background: #f4efef !important;
+    //     // margin-bottom: 60px;
+    //   }
+    //   .searchbar-input {
+    //     border-bottom: 1px solid #141414;
+    //     box-shadow: none !important;
+    //   }
+    //   .search_add {
+    //     background-color: transparent;
+    //     padding-left: 6px;
+    //   }
+    //   .search_add {
+    //     .item-inner {
+    //       border-bottom: 0px !important;
+    //       ion-icon {
+    //         margin-top: 18px;
+    //       }
+    //       div {
+    //         ion-label {
+    //           //margin-top: 0px;
+    //           margin-bottom: 0px;
+    //         }
+    //       }
+    //     }
+    //   }
+    //   .btn-clr {
+    //     color: $dashoboard-icon-color;
+    //   }
+    //   .button {
+    //     font-size: 2rem;
+    //   }
+    //   .align {
+    //     margin-top: 5px;
+    //     margin-left: 9px;
+    //     margin-right: 9px;
+    //   }
+    //   .label {
+    //     margin: 0px !important;
+    //   }
+    
+    //   .session_header,
+    //   ion-list {
+    //     margin-bottom: 0px !important;
+    //     border-bottom: 1px solid #f6ae4d;
+    //   }
+    //   .timekare-primary-btn {
+    //     background-color: #f6ae4d !important;
+    //   }
+    //   .block_height {
+    //     height: 80%;
+    //   }
+    //   .block_height1 {
+    //     margin-top: 5px;
+    //     height: 90%;
+    //     .margin {
+    //       padding: 0px 11px 0px 11px;
+    //     }
+    //   }
+    //   .block_height2 {
+    //     height: 32%;
+    //   }
+    //   .ion_list1 {
+    //     margin-top: 10px;
+    //   }
+    //   .p_selected {
+    //     ion-card-content {
+    //       border-bottom: 1px solid #d1d1d5;
+    //       padding: 5px 0px 5px 13px;
+    //       color: rgba(0, 0, 0, 0.89);
+    //       font-size: 17px;
+    //     }
+    //   }
+    //   .ion-item-lable {
+    //     div {
+    //       ion-icon {
+    //         margin: 0px 0px 9px 0px !important;
+    //       }
+    //       div {
+    //         ion-label {
+    //           margin: 0px 0px 0px 0px;
+    //         }
+    //       }
+    //     }
+    //   }
+    // .paidmembercount {
+    //     //margin: 0px 0px 2px 0px;
+    //     color: green;
+    //     font-weight: bold;
+    //     font-size: 13px;
+    //     margin-top: 3px;
+    // }
+    
+    // .p1 {
+    //   // border-bottom: .1px solid #d0cece;
+    //    // padding-top: 12px;
+    //    // padding-bottom: 9px;
+    //    font-weight: bold;
+    // }
+    // .p2 {
+    //    color: green;
+    //    /* border-top: .1px solid; */
+    //    /* border-bottom: .1px solid #d0cece; */
+    //    font-weight: bold;
+    //    padding-top: 7px;
+    //    padding-bottom: 5px;
+    //    font-size: 12px;
+    // }
+
+   
+    //  .fcilityCard{
+    //     border-radius: 0px !important;
+    //     box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+    //     margin: 6px 12px;
+    //     padding: 5px 5px 5px 5px;
+    //     border-radius: 2px;
+    //     border-left:2px solid #35ADFF;
+    //     border-bottom: 2px solid #faae4e !important;
+    //     .catg_age_col{
+    //         margin: auto;
+    //         text-align: center;
+    //     }
+    //     p{
+    //         line-height: 1.2 !important;
+    //     }
+    //     .p4{
+    //         font-size: 20px;
+    //         font-weight: 400;
+    //         margin-bottom:3px;
+    //      }
+    //      .p5{
+    //         font-size: 14px;
+    //         font-weight: 500;
+    //         color: rgba(0, 0, 0, 0.529412);
+    //      }
+         
+    
+    //   .facilityCard{
+    //     border-radius: 0px !important;
+    //     box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+    //     margin: 6px 12px;
+    //     padding: 5px 5px 5px 5px;
+    //     //height: 20vh;
+    //     border-bottom: 1px solid #fab754;
+    //     p{
+    //         line-height: 1.2 !important;
+    //     }
+    //     ion-card-content{
+    //         //height: 18vh;
+    //         padding: 0px 5px !important;
+    //     }
+    //     .circle{
+    //         margin-top: -3px;
+    //         width: 65px;
+    //         float: right;
+    //         height: 65px;
+    //         border: 4px solid #e4e4e4;
+    //         border-radius: 50%;
+    //         padding: 17px 4px;
+    //         text-align: center;
+    //         // color: #000000;
+    //     }
+    //     .event_date {
+    //         color: #343434db;
+    //         font-size: 15px;
+    //         font-weight: 500;
+    //     }
+    //     .mar0 {
+    //         margin: 0 !important;
+    //     }
+    //     .eventname {
+    //         color: #373737;
+    //         font-weight: 700;
+    //         font-size: 18px;
+    //         line-height: 22px;
+    //     }
+    //     .event_more {
+    //         margin: 8px 0px 0px 0px;
+    //         color: #373737;
+    //         font-weight: 700;
+    //         font-size: 15px;
+    //         text-transform: capitalize;
+    //         width: 150px;
+    //         display: -webkit-box;
+    //         display: -webkit-flex;
+    //         display: -ms-flexbox;
+    //         //display: flex;
+    //         padding: 5px 0px 4px 10px;
+    //         border: 0.5px solid rgba(128, 128, 128, 0.43);
+    //     }
+        
+    //     .event_more img {
+    //         width: 17px;
+    //         height: 17px;
+    //         margin: 0px 5px 0px 0px;
+    //     }
+                
+    // }
+// }
+
+// .scroll-content {
+//   padding: 0px !important;
+//   background-image: none !important;
+//   // background: white !important;
+//   background: #f4efef !important;
+//   // margin-bottom: 60px;
+// }
+// .searchbar-input {
+//   border-bottom: 1px solid #141414;
+//   box-shadow: none !important;
+// }
+// .search_add {
+//   background-color: transparent;
+//   padding-left: 6px;
+// }
+// .search_add {
+//   .item-inner {
+//     border-bottom: 0px !important;
+//     ion-icon {
+//       margin-top: 18px;
+//     }
+//     div {
+//       ion-label {
+//         //margin-top: 0px;
+//         margin-bottom: 0px;
+//       }
+//     }
+//   }
+// }
+// .btn-clr {
+//   color: $dashoboard-icon-color;
+// }
+// .button {
+//   font-size: 2rem;
+// }
+// .align {
+//   margin-top: 5px;
+//   margin-left: 9px;
+//   margin-right: 9px;
+// }
+// .label {
+//   margin: 0px !important;
+// }
+
+// .session_header,
+// ion-list {
+//   margin-bottom: 0px !important;
+//   border-bottom: 1px solid #f6ae4d;
+// }
+// .timekare-primary-btn {
+//   background-color: #f6ae4d !important;
+// }
+// .block_height {
+//   height: 80%;
+// }
+// .block_height1 {
+//   margin-top: 5px;
+//   height: 90%;
+//   .margin {
+//     padding: 0px 11px 0px 11px;
+//   }
+// }
+// .block_height2 {
+//   height: 32%;
+// }
+// .ion_list1 {
+//   margin-top: 10px;
+// }
+// .p_selected {
+//   ion-card-content {
+//     border-bottom: 1px solid #d1d1d5;
+//     padding: 5px 0px 5px 13px;
+//     color: rgba(0, 0, 0, 0.89);
+//     font-size: 17px;
+//   }
+// }
+// .ion-item-lable {
+//   div {
+//     ion-icon {
+//       margin: 0px 0px 9px 0px !important;
+//     }
+//     div {
+//       ion-label {
+//         margin: 0px 0px 0px 0px;
+//       }
+//     }
+//   }
+// }
+
+.scroll-content {
+  padding: 0px !important;
+  background-image: none !important;
+  // background: white !important;
+  background: #f4efef !important;
+  // margin-bottom: 60px;
+}
+.searchbar-input {
+  border-bottom: 1px solid #141414;
+  box-shadow: none !important;
+}
+.search_add {
+  background-color: transparent;
+  padding-left: 6px;
+}
+.search_add {
+  .item-inner {
+    border-bottom: 0px !important;
+    ion-icon {
+      margin-top: 18px;
+    }
+    div {
+      ion-label {
+        //margin-top: 0px;
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+.btn-clr {
+  color: $dashoboard-icon-color;
+}
+.button {
+  font-size: 2rem;
+}
+.align {
+  margin-top: 5px;
+  margin-left: 9px;
+  margin-right: 9px;
+}
+.label {
+  margin: 0px !important;
+}
+
+.session_header,
+ion-list {
+  margin-bottom: 0px !important;
+  border-bottom: 1px solid #f6ae4d;
+}
+.timekare-primary-btn {
+  background-color: #f6ae4d !important;
+}
+.block_height {
+  height: 80%;
+}
+.block_height1 {
+  margin-top: 5px;
+  height: 90%;
+  .margin {
+    padding: 0px 11px 0px 11px;
+  }
+}
+.block_height2 {
+  height: 32%;
+}
+.ion_list1 {
+  margin-top: 10px;
+}
+.p_selected {
+  ion-card-content {
+    border-bottom: 1px solid #d1d1d5;
+    padding: 5px 0px 5px 13px;
+    color: rgba(0, 0, 0, 0.89);
+    font-size: 17px;
+  }
+}
+.ion-item-lable {
+  div {
+    ion-icon {
+      margin: 0px 0px 9px 0px !important;
+    }
+    div {
+      ion-label {
+        margin: 0px 0px 0px 0px;
+      }
+    }
+  }
+}
+}

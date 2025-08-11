@@ -1,0 +1,29 @@
+
+ <ion-header>
+
+  <ion-navbar>
+      <ion-title>About Us</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="card-background-page">
+      <div text-center *ngIf="parentClubInfo != undefined" style="width:25%;margin-top: 75px;    margin-left: auto;
+      margin-right: auto;">
+          <!-- <img [src]="parentClubInfo.ParentClubAppIconURL" class="parentimg"> -->
+        
+          <img src="assets/images/logo.svg" id="logo" class="parentimg" >
+
+      </div>
+      <div text-center style="transform: translate(-4px,25px);" >
+    
+        <p style=" font-size: 12px;
+        color: #a9a1a1;
+        font-weight: 300;">ActivityPro: 2.0.1</p>
+      </div>
+      <div text-center style="margin-top: 105%;
+      font-size: 17px;"><p style="color: #858585;" (click)="gotoPrivacypolicy()">Terms and Privacy</p></div>
+
+
+</ion-content>

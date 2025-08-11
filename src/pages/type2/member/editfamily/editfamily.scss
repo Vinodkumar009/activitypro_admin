@@ -1,0 +1,220 @@
+page-editfamily {
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important;
+    }
+        .condition{
+            margin-left: 6px;
+            margin-top: 4px;
+            font-size: 16px;
+            color: black;
+        }
+        .condition_block{
+            margin-top: 19px;
+        }
+      .left_margin{
+          padding-left: 5px;
+          ion-checkbox{
+              margin: 9px 14px 9px 4px !important;
+          }
+          ion-label{
+                  white-space: pre-wrap !important;
+          }
+      }
+      .line{
+          color:gray;
+          font-size: 20px;
+      }
+      .line1{
+          color:  #488aff;  
+      }
+      .btn{
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        background-color: gray;
+        color:white;
+    }
+    .btn1,.btn2{
+        background-color: #488aff;
+    }
+    .btn-container{
+        text-align: center;
+    }
+    .btn-next{
+        width:30%;
+        border-radius:5%;
+    }
+    .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+    .chk{
+        transform: translate(0%,50%);
+    }
+    .lab_dec{
+        font-size:15px;
+        color: rgb(10, 8, 8);
+    }
+    .lab_head{
+        font-size: 18px;
+        color: #488aff;
+    }
+    .rows{
+        margin-top: -10px;
+    }
+    
+    .con{
+       background: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 255, 255));
+    }
+    .items,.rows{
+       background: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 255, 255));
+   }
+   .lab{
+    font-size: 18px;
+    margin-bottom: -5px;
+    }       
+    // .text{
+    //     margin-bottom: -10px;
+    //     color: rgb(87, 86, 86);
+    // }
+    // .dob{
+    //    margin-bottom: -30px !important;
+    // }
+    // .fin{
+    //     font-size: 10px;
+    // }
+
+    // .toggle {
+    //     overflow: hidden;
+    // display: inline-block;
+    // width: 5em;
+    // background: #2f2a2a;
+    // padding: 0.135em;
+    // cursor: pointer;
+    // font-size: 17px;
+    // margin-top: 12px;
+    // margin-left: 20px;
+    //     }
+    //     .toggle input {
+    //       position: absolute;
+    //       visibility: hidden;
+    //       }
+    //     .toggle span {
+    //       position: relative;
+    //       left: 0%;
+    //       display: block;
+    //       text-align: center;
+    //       /**
+    //        * Holo doesn't have any transition, but
+    //        * it's added here for demo purposes
+    //        */
+    //       -webkit-transition: left 200ms ease-out;
+    //          -moz-transition: left 200ms ease-out;
+    //            -o-transition: left 200ms ease-out;
+    //               transition: left 200ms ease-out;
+    //       }
+    //       .toggle :checked + span {
+    //         left: 50%;
+    //         }
+      
+    //     /* Default unchecked state */
+    //     .toggle span:before {
+    //       content: attr(data-unchecked);
+    //       display: block;
+    //       width: 50%;
+    //       background-color: #912121;
+    //       border-radius: 0.15em;
+    //       box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+    //       color: white;
+    //       }
+      
+    //     /* Checked state */
+    //     .toggle :checked + span:before {
+    //       content: attr(data-checked);
+    //       background-color: #08a1f4;
+    //       color: rgb(151, 150, 150);
+    //       }
+      
+      
+      /* Base styles */
+      html {
+        font: 100%/1.5 'Roboto', sans-serif;
+        padding-top: 3em;
+        background-color: #0e1012;
+        color: #b3b3b3;
+        text-align: center;
+        }
+      
+      h1 {
+        font-weight: 100;
+        }
+
+
+        //toggle button related classes
+
+.toggle {
+    overflow: hidden;
+    display: inline-block;
+    width: 4em;
+    //background: #2f2a2a;
+    background-color: #ebf7fc;
+    //padding: 0.135em;
+    cursor: pointer;
+    font-size: 17px;
+    margin-left: 8px;
+    border-radius: 50px;
+    height: 30px;
+    float: right;
+}
+.toggle input {
+    position: absolute;
+    visibility: hidden;
+}
+.toggle ion-input{
+    position: absolute;
+    visibility: hidden;
+}
+.toggle span {
+    position: relative;
+    left: 0%;
+    display: block;
+    text-align: center;
+    -webkit-transition: left 200ms ease-out;
+    -moz-transition: left 200ms ease-out;
+    -o-transition: left 200ms ease-out;
+    transition: left 200ms ease-out;
+}
+.toggle :checked+span {
+    left: 50%;
+}
+ /* Default unchecked state */
+ .toggle span:before {
+    content: attr(data-unchecked);
+    display: block;
+    width: 50%;
+    background-color: #f44336;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px -8px #c5d6d6;
+    //box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 25px;
+    font-size: 14px;
+    height: 29px;
+    line-height: 29px;
+}
+/* Checked state */
+.toggle :checked+span:before {
+    content: attr(data-checked);
+    background-color: #03A9F4;
+    color: white;
+    border-radius: 50px;
+    font-size: 14px;
+    height: 29px;
+    line-height: 29px;
+}
+.toggle_para{
+    color: #488aff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+}
+       
+}

@@ -1,0 +1,141 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Manage Team</ion-title>   
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Manage Team
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <div *ngIf="allCoachList" class="border-bottom-color-style">
+        <ion-list  class="">
+            <!-- <ion-item-sliding> -->
+                <ion-item class="slider_list_margin ion_item_custom"  (click)="presentActionSheet(item)" *ngFor="let item of allCoachList">
+                    <ion-row>
+                        <ion-col col-3 style="margin:auto">
+                            <img [src]=item.ProfileImageUrl class="coach-img"> 
+                        </ion-col>
+                        <ion-col col-9>
+                            <h2 class="card-h2-style">{{item.FirstName}} {{item.LastName}}</h2>
+                            <div class="coach_clubs" *ngIf="item.Club && item.Club.length > 0">
+                                <p *ngFor="let club of item.Club">
+                                    <span>{{club.ClubName}} - </span>
+                                    <span *ngFor="let activity of club.Activity">
+                                          {{activity.ActivityName}} <span *ngIf="activity.length != index+1"></span>
+                                    </span>
+                                </p>
+                            </div>
+                            <div *ngIf="item.CoachingLevelArr && item.CoachingLevelArr.length > 0">
+                                <p *ngFor="let coachlevel of item.CoachingLevelArr">
+                                    <span *ngIf="coachlevel.IsActive">Coach Level - {{coachlevel.CoachingLevelName}}</span>
+                                </p> 
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+    
+    <!-- 
+                <ion-item-options side="right">
+                    <button ion-button color="secondary" (click)="selectLevel(item)">
+                            <ion-icon name="ion-create"></ion-icon>
+                            Level
+                        </button>
+                    <button ion-button color="secondary" (click)="goToEdit(item)">
+                            <ion-icon name="ion-create"></ion-icon>
+                            Edit
+                        </button>
+                    <button ion-button color="secondary" (click)="assignVenue(item)">
+                            <ion-icon name="ion-create"></ion-icon>
+                            Venue
+                        </button>
+    
+                    <button ion-button style="background-color:#2b92bb !important; color: white !important">
+                            <ion-icon name="ion-create"></ion-icon>
+                            Delete
+                        </button>
+                </ion-item-options> -->
+            <!-- </ion-item-sliding> -->
+        </ion-list>
+    
+    </div>
+   <button ion-button block *ngIf="subAdminList.length > 0" style="background-color: #f6ae4d;text-transform: capitalize">Support Team Members</button>
+   <div *ngFor="let item of subAdminList" class="border-bottom-color-style">
+    <ion-list   [class.deleted]="item.IsActive == false" class="slider_list_margin">
+        <ion-item-sliding>
+            <ion-item class="ion_item_custom"  (click)="presentActionSheetOtherUser(item)">
+                <ion-row>
+                    <ion-col col-3>
+                        <img src="assets/images/user2.png" class="coach-img"> 
+                    </ion-col>
+                    <ion-col col-9>
+                        <h2 class="cardh2">{{item.Name}}</h2>
+                        <p *ngFor="let club of item.Clubs">
+                            <span>{{club.ClubName}} </span>
+                        </p>
+
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+
+
+            <!-- <ion-item-options side="right">
+      
+                <button ion-button color="secondary" (click)="goToSubAdminEdit(item)">
+                        <ion-icon name="ion-create"></ion-icon>
+                        Edit
+                </button>
+        
+            </ion-item-options> -->
+        </ion-item-sliding>
+    </ion-list>
+
+   </div>
+    <ion-fab mini right bottom #fab>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+            <p class="fabEmailText"  style="background-color:#2b92bb !important; color: white !important;margin-left: -115px;" (click)="addCoach()">Add Coach</p>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (click)="addCoach()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+
+            <p class="fabEmailText" style="background-color:#2b92bb !important; color: white !important" (click)="addSubAdmin()">Add Team</p>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (click)="addSubAdmin()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+
+            <!-- <p class="fabAttendanceText">Attendance</p>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="goToAttendance()">
+                    <ion-icon name="md-clipboard"></ion-icon>
+                </button> -->
+
+        </ion-fab-list>
+
+    </ion-fab>
+</ion-content>

@@ -1,0 +1,113 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Edit Family Member</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Edit Family Member
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <!--<form>-->
+    <ion-item>
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="venue">
+            <ion-option value="cricket">South Croydon</ion-option>
+            <ion-option value="tennis">Lords</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Holiday Camp</ion-label>
+        <ion-select [(ngModel)]="camp">
+            <ion-option value="cricket">camp1</ion-option>
+            <ion-option value="tennis">camp2</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>First Name</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <!--<ion-item>
+        <ion-label floating>Middle Name</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>-->
+    <ion-item>
+        <ion-label floating>Last Name</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>DOB</ion-label>
+        <ion-datetime displayFormat="MMMM/YYYY" pickerFormat="MMMM YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Gender</ion-label>
+        <ion-select [(ngModel)]="gender">
+            <ion-option value="male">Male</ion-option>
+            <ion-option value="female">Female</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Phone Number</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Email Id</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Emergency Number</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Emergency Contact Name</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Medical Condition</ion-label>
+        <ion-input type="text"></ion-input>
+    </ion-item>
+    <div class="condition_block">
+        <ion-checkbox color="dark" checked="true"></ion-checkbox>
+        <span class="condition">You have taken the consent from the memeber</span>
+    </div>
+
+    <ion-grid>
+        <ion-row>
+
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="save()">Save</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

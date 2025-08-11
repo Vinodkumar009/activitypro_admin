@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Cash Wallet</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div [ngStyle]="{'margin-top.px': this.platformType=='ios' ? 30 : 0 }" style="margin-bottom: 60px;padding:0 5px;">
+    <ion-row (click)="gotoMainReport()">
+      <ion-col col-12 text-center>
+        <div class="circleProgress">
+          <p><span>{{getRound(totalParentClubBalance)}}</span></p>
+          <img src="assets/images/check-mark.svg">
+        </div>
+        <div>
+          <p class="progress_txt">Available Balance</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <div class="facilityCard " *ngFor="let wallet of totalParentClubData" (click)="navCtrl.push('MemberWalletReport', {memberKey:wallet.FirebaseKey})">
+      <p>{{wallet.FirstName}} {{wallet.LastName}}</p>
+      <p><span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{getRound(wallet.availableBalance)}}</p>
+    </div>
+  </div>
+ 
+</ion-content>

@@ -1,0 +1,124 @@
+<!--
+  Generated template for the FilterbookingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Cash Wallet Top-up</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div style="margin-top: 8px;">
+    <ion-row>
+      <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+        <span class="para" style="color: rgba(0, 0, 0, 0.85);"> Enable Cash Wallet</span>
+
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="cashWallet.IsEnable">
+          <span data-unchecked="No" data-checked="Yes"></span>
+        </label>
+      </ion-col>
+    </ion-row>
+  
+  </div>
+  <p style="color: rgba(0,0,0,0.65); font-size: 14px;">Venue - Activity</p>
+  <div *ngFor="let club of clubs">
+    <div *ngIf="club.Activity && club.Activity.length > 0" class="flex_div" (click)="club.IsSelect = !club.IsSelect">
+      <p class="club_name">{{club.ClubName}}</p>
+      <ion-icon name="ios-arrow-down"></ion-icon>
+    </div>
+    <div *ngIf="club.IsSelect && club.Activity">
+      <div *ngFor="let act of club.Activity">
+
+        <div *ngIf="act.ActivityName" class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+          <span class="para" style="color: rgba(0, 0, 0, 0.85);">{{act.ActivityName}}</span>
+  
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="act.IsSelect" (change)="changePaymentStatus(club.$key,act)">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p style="color: rgba(0,0,0,0.65); font-size: 14px;">Module</p>
+  <div *ngFor="let service of setupArr">
+    <ion-row *ngIf="service.IsActive">
+      <ion-col col-12 class="flex_col" style="border-bottom: 1px solid #d2cbcbb5;padding: 6px;">
+        <span class="para" style="color: rgba(0, 0, 0, 0.85);">{{service.Type}}</span>
+
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="service.IsEnable">
+          <span data-unchecked="No" data-checked="Yes"></span>
+        </label>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <p style="color: rgba(0,0,0,0.65); font-size: 14px;">Packages</p>
+  <div class="packagecss" *ngFor="let pack of Package">
+      <ion-row style="margin: 5px 0;" *ngIf="pack.IsActive"> 
+        <ion-col col-12 class="flex_col" style="border-bottom: 0.5px solid rgba(0, 0, 0, 0.25) !important;padding: 0px;padding-right:6px;justify-content:space-between">
+          <ion-item style="border-bottom: none !important;width:73%">
+            <ion-label>Name</ion-label>
+            <ion-input class="para" [(ngModel)]="pack.DisplayName" style="color: rgba(0, 0, 0, 0.85);"></ion-input>
+          </ion-item>
+          <ion-icon name="md-create" class="iocons"></ion-icon>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="pack.IsEnable">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+        <ion-col style="padding:0;" col-6>
+          <ion-item>
+            <ion-label *ngIf="currencyDetails">
+              Amount({{currencyDetails.CurrencySymbol}})
+            </ion-label>
+            <ion-input type="number" [(ngModel)]="pack.Amount"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col style="padding:0;" col-6>
+          <ion-item>
+            <ion-label>
+              Bonus(%)
+            </ion-label>
+            <ion-input type="number" [(ngModel)]="pack.BonusPercent" (blur)="calculateBonus(pack)"></ion-input>
+          </ion-item>
+        </ion-col>
+      
+        <ion-item>
+          <ion-label>Description</ion-label>
+          <ion-textarea rows="4" [(ngModel)]="pack.Description"></ion-textarea>
+        </ion-item>
+      </ion-row>
+
+  </div>
+  <div style="display: flex;justify-content: space-between;margin: 12px 0px;">
+    <span style="color: rgba(0,0,0,0.65); font-size: 14px;">Stripe Account</span> 
+    <img style="width: 6%;" (click)="showInfo()" src="assets/images/info.svg">
+  </div> 
+    <ion-list radio-group class="margin">
+      <ion-item class="custom-select" *ngFor="let stripe of stripeConnectArray">
+          <ion-label><span>{{stripe.Name}}</span>-{{stripe.ClubName}}</ion-label>
+          <span></span>
+          <ion-radio [checked]="stripe.IsSelect" (click)="selectStripe(stripe)" item-left></ion-radio>
+      </ion-item>
+    </ion-list>
+  <br>
+  <ion-item class="custom-select" *ngIf="!isUpdate && terms">
+    <ion-label>{{terms.CashTopUpTerms}}</ion-label>
+    <ion-checkbox [(ngModel)]="cashWallet.TermsNConditions" item-left></ion-checkbox>
+  </ion-item>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn"
+        (click)="isUpdate ? updateSetup() : saveSetup()">{{isUpdate ? 'Update' : 'Save'}}</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,192 @@
+editmembershipsessioncoach-page{
+   
+    .containers {
+        // margin-left: 4%;
+        // margin-right: 4%;
+        // background: rgba(231, 222, 222, 0.973);
+        // border-radius: 9px;
+        // transform: translate(0px, -20px); // padding: 3px;
+        // padding: 4px 8px 4px 8px;
+        margin-left: 2%;
+        margin-right: 2%;
+        background: rgba(231, 222, 222, 0.55);
+        border-radius: 9px;
+        -webkit-transform: translate(-7px, -10px);
+        padding: 2px 7px 2px 8px;
+        width:100%;
+    }
+    #circle {
+        padding: 60px;
+        max-width: 60px;
+        max-height: 60px;
+        border-radius: 50%; // transform: translate(-75%, 10%);
+        transform: translate(-43%, 9%);
+        border-right: 4px solid rgb(27, 211, 125);
+        border-bottom: 4px solid rgb(27, 211, 125);
+        border-top: 2px solid gray;
+        border-left: 2px solid gray;
+    }
+    #circle2 {
+        padding: 7px;
+        max-width: 6px;
+        max-height: 6px;
+        border-radius: 50%;
+        background-color: rgb(1, 212, 131);
+        transform: translate(-400%, 200%);
+        box-shadow: -1px -1px 15px rgb(188, 241, 221);
+    }
+    .card {
+       // border-radius: 5px;
+        text-align: center;
+        margin: 3px;
+        margin-left: 8px;
+        background-color: rgb(250, 249, 245);
+       
+    }
+    .arrow {
+        transform: translate(0%, 80%);
+    }
+    .foot {
+        float: right;
+        transform: translate(0%, -130%)
+    }
+    .body {
+        //transform: translate(20%, -50%);
+    }
+
+    #icon2 {
+        float: right;
+        transform: translate(0%, 60%);
+    }
+    .text_div {
+        transform: translate(7%, -50%);
+        border-left: 2px solid silver;
+    }
+    .text {
+        transform: translate(5%, 0%);
+    }
+    .content {
+        margin-bottom: -9%;
+    }
+    .name {
+        font-size: 18px;
+    }
+    #book {
+        float: right;
+        font-size: 30px;
+        margin-right: 16px;
+        margin-top: -10px;
+    }
+    .circlesvg {
+        margin-left: -10px; // margin-left: -12%;
+    }
+    #icon1_col {
+        border-right: 2px solid #b7b5b5;
+        line-height: 61px;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .cust_icon {
+        font-size: 31px !important;
+        color: #7a7878 !important;
+    }
+    .chevron_right {
+        margin-top: 11px;
+        color: #7a7878 !important;
+    }
+    .session_name {
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #505050 !important;
+        font-family: 'Oswald', sans-serif !important;
+    }
+    .pStyle {
+        //font-family: 'Roboto Slab', serif !important;
+    }
+    .headerp {
+        margin: 5px !important;
+    }
+    .leftp {
+        line-height: 20px;
+        color:#488aff;// color:#8e65b7;
+        font-size: 18px; // font-family: 'Patua One', cursive;
+        margin-top: -5px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+
+    }
+   
+    .dangerRed {
+        color: red !important;
+    }
+    .btn_cust {
+        // margin: 0px !important;
+        // border: 1px solid white !important;
+        // padding: 5px 2px 5px 2px !important;
+        // border-radius: 4px !important;
+        // text-align: center !important;
+        margin: 0px !important;
+      
+        padding: 5px 2px 5px 2px !important;
+        border-radius: 4px !important;
+        text-align: center !important;
+        font-weight: 500;
+        background-color: #3fbcd3;
+    }
+    .btn_cust:active {
+        // outline: none;
+        // background: white;
+        // color: #1b2c3b;
+        // font-weight: bold;
+        outline: none;
+        background: 3ca6b9;
+        color: white;
+        font-weight: bold;
+        background-color: #3fbcd3;
+    }
+    .header_container{
+        height:70px;
+        background-color: #3fbcd3;
+    }
+    .scroll-content {
+        background-image: none !important;
+        padding: 6px !important;
+        background-color: #f7f7f7;
+    }
+     .con{
+         transform: translate(0%,-40%);
+     }
+     
+     .text{
+         
+         font-size: 15px;
+         margin-top: -5px;
+         text-transform: capitalize;
+         font-weight:400px;
+        color:white;
+     }
+   ion-col{
+       height: 55px;
+       text-align: left;
+      // border-bottom: 2px solid
+   }
+     .sname{
+         font-size: 17px;
+         font-weight:bolder;
+     }
+     .ico{
+      transform: translate(0%,-30%);
+      color:#488aff;
+     }
+     .ico2{
+         color:gray;
+         margin-left: 20px;
+     }
+     ion-card{
+         height:53px;
+     }
+     .animate-top{position:relative;animation:animatetop 0.4s}@keyframes animatetop{from{top:-300px;opacity:0} to{top:0;opacity:1}}
+     .animate-right{position:relative;animation:animateright 0.4s}@keyframes animateright{from{right:-300px;opacity:0} to{right:0;opacity:1}}
+     .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+     .animate-bottom{position:relative;animation:animatebottom 0.4s}@keyframes animatebottom{from{bottom:-300px;opacity:0} to{bottom:0;opacity:1}}
+}

@@ -1,0 +1,75 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Add Player To Session</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Add Player To Session
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards">
+    <ion-list class="ion_list">
+        <ion-list-header class="session_header">
+            Member Lists
+        </ion-list-header>
+    </ion-list>
+    <!--<ion-item class="search_add">
+        <ion-searchbar></ion-searchbar>
+        <ion-icon item-right ios="ios-add-circle" md="md-add-circle" class="btn-clr"></ion-icon>
+
+    </ion-item>-->
+    <ion-scroll scrollY="true" class="block_height">
+
+        <ion-list class="margin">
+            <ion-item *ngFor="let member of members">
+                <ion-label>{{member.FirstName}} {{member.MiddleName}} {{member.LastName}}</ion-label>
+                <ion-checkbox [(ngModel)]="member.isSelect"></ion-checkbox>
+            </ion-item>
+            <!--
+            <ion-item>
+                <ion-label>Sausage</ion-label>
+                <ion-checkbox [(ngModel)]="sausage" disabled="true"></ion-checkbox>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Mushrooms</ion-label>
+                <ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>
+            </ion-item>-->
+
+        </ion-list>
+
+    </ion-scroll>
+
+    <ion-grid>
+        <ion-row>
+            <!--<ion-col width-50>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click) ="cancelAddMemberShip()">Cancel</button>
+            </ion-col>-->
+            <ion-col col-12>
+                <button ion-button block class="timekare-primary-btn" (click)="addMember()">Add Member</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-content>

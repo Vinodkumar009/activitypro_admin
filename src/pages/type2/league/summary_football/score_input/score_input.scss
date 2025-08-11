@@ -1,0 +1,273 @@
+page-score_input {
+  .scroll-content {
+    background-image: none !important;
+  }
+
+  ion-title {
+    background-color: #2b92bb !important;
+
+    div {
+      color: #fff !important;
+    }
+  }
+
+  .toolbar-background-md {
+    background-color: #2b92bb;
+  }
+
+  .scroll-content {
+    background: #ffffff;
+    padding: 0 !important;
+  }
+
+  // Loading State
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    color: #666;
+
+    ion-spinner {
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+
+  // No Goals State
+  .no-goals-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+
+    .no-goals-icon {
+      font-size: 64px;
+      color: #ccc;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      margin: 8px 0;
+      color: #333;
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+
+  // Goals Container
+  .goals-container {
+    padding: 12px;
+  }
+
+  .team-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+
+    ion-icon {
+      font-size: 20px;
+      color: #495057;
+      margin-right: 8px;
+    }
+
+    h4 {
+      margin: 0;
+      color: #495057;
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+
+  // Goal Cards
+  .goal-card {
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+    background: #ffffff;
+
+    &.completed {
+      border-color: #28a745;
+      background: #f8fff9;
+    }
+  }
+
+  .goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px 8px;
+    border-bottom: 1px solid #e9ecef;
+
+    .goal-number {
+      display: flex;
+      align-items: center;
+
+      ion-icon {
+        font-size: 16px;
+        color: #6c757d;
+        margin-right: 6px;
+
+        &.completed-icon {
+          color: #28a745;
+        }
+      }
+
+      span {
+        font-weight: 500;
+        color: #495057;
+        font-size: 14px;
+      }
+    }
+
+    ion-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+    }
+  }
+
+  .goal-content {
+    padding: 12px 16px 16px;
+  }
+
+  .input-group {
+    margin-bottom: 12px;
+
+    .item-md {
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid #ced4da;
+      background: #ffffff;
+
+      &.item-has-focus {
+        border-color: #495057;
+      }
+    }
+
+    ion-label[stacked] {
+      color: #495057;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    ion-select,
+    ion-input,
+    ion-datetime {
+      font-size: 14px;
+      color: #495057;
+    }
+
+    .select-placeholder {
+      color: #6c757d;
+    }
+
+    // DateTime Styles
+    .goal-datetime {
+      width: 100%;
+      text-align: center;
+
+      .datetime-text {
+        color: #495057;
+        font-size: 16px;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      .datetime-placeholder {
+        color: #6c757d;
+        font-size: 14px;
+      }
+
+      &[disabled] {
+        opacity: 0.5;
+        pointer-events: none;
+
+        .datetime-text,
+        .datetime-placeholder {
+          color: #adb5bd;
+        }
+      }
+    }
+
+    .time-input {
+      .item-inner {
+        justify-content: center;
+      }
+    }
+  }
+
+  .goal-summary {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #d4edda;
+    border-radius: 4px;
+    border-left: 3px solid #28a745;
+    margin-top: 8px;
+
+    ion-icon {
+      font-size: 16px;
+      margin-right: 6px;
+    }
+
+    span {
+      color: #155724;
+      font-size: 13px;
+      font-weight: 500;
+    }
+  }
+
+  // DateTime picker overlay styles
+  .picker-wrapper {
+    .picker-toolbar {
+      background: #495057;
+
+      .picker-toolbar-button {
+        color: #ffffff;
+      }
+    }
+
+    .picker-columns {
+      background: #ffffff;
+
+      .picker-col {
+        .picker-opt {
+          color: #495057;
+          font-size: 16px;
+        }
+
+        .picker-opt.picker-opt-selected {
+          color: #28a745;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // Footer button styles remain unchanged
+  .foobtn {
+    background-color: #5be283;
+    height: 3.6rem;
+    font-size: 1.4rem;
+    color: white;
+  }
+}

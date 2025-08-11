@@ -1,0 +1,90 @@
+courtsetuphome-page{
+    .scroll-content{
+        padding: 16px 9px !important;
+        background-image: none !important;
+
+    }
+    .padding-0{
+        padding: 0px !important; 
+        background: white !important;
+    }
+    .type{
+        width: 93%;
+   margin-top: 2px;
+    height: 35px;
+    background: #ffffff;
+    color: #488aff;
+    font-size: 15px;
+    font-weight: bold;
+    ion-icon{
+        display: inline-block;
+    font-size: 1.2em;
+    font-weight: 700;
+    right: 25px;
+    position: absolute;
+    }
+    }
+  
+    .selected{
+        background: #488aff;
+        color: white;
+        border-radius: 8px;
+    }
+    .allign-row{
+        border-bottom: 0.55px solid #c8c7cc; 
+    }
+    ion-label{
+        font-size: 16px;
+       // margin: 0px !important;
+       color:gray !important;
+        
+    }
+    .labs{
+       // margin-top: 5% !important;
+       
+    }
+    ion-item{
+       // padding: 0px !important;
+        padding: 5px !important;
+    }
+    ion-select{
+        padding: 0px !important;
+        max-width: 94% !important;
+       
+    }
+    .pad-right {
+        position: absolute !important;
+        right: 8px !important;
+    }
+    .select > .select-icon >.select-icon-inner{
+        left:0px !important
+    }
+    .rounded {
+        width: 38px;
+        height: 38px;
+        border-radius: 19px;
+        padding-top: 8px;
+        text-align: center;
+        border: 1px solid #76747d;
+    }
+    .text_white {
+        color: white;
+    }
+    ion-card-content {
+        padding: 0px !important;
+    }
+     .card_header {
+        padding: 3px 0px 5px 19px;
+    }
+    ion-card{
+        margin: 0px 0px !important; 
+        width:100% !important;
+    }
+    
+    .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+}
+
+
+
+
+

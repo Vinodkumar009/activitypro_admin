@@ -1,0 +1,102 @@
+<!--
+  Generated template for the ShoweventsandnewsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{headerName}}
+        <!-- <img src="assets/images/share.png" class="shareimg" (click)="showShare()"> -->
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+ <ion-slides (ionSlideDidChange)="slideChanged()">
+   <ion-slide>
+      <div class="header_div">
+          <img  src={{imgInfo.image_url}}> 
+      </div>
+      <div class="title_container">
+        <p class="title">{{imgInfo.image_caption}}</p>
+      
+      </div>
+      <h3>
+        {{imgInfo.image_title}}
+      </h3>
+      <p class="rest"><span class="leftspan">{{(imgInfo.created_at)}}</span> | <span class="rightspan"> {{ imgInfo.category_name}}</span></p>
+      <p class="description" style="margin-top: -23px;" >
+        {{imgInfo.image_description}}
+      </p>    
+
+      <div *ngIf="imgInfo.images && imgInfo.images.length > 0">
+        <div *ngFor="let pic of imgInfo.images">
+          <img [src]="pic.image_url" class="subimg animate-zoom">
+          <p class="caption">{{ pic.image_caption }}</p>
+          <p class="description">{{ pic.image_description }}</p>
+        </div>
+      </div>
+ 
+      
+   </ion-slide>
+   <!-- <ion-slide *ngFor="let img of imageMenuList;let i = index">
+    <img  src={{img.ImageURL}} > 
+    <div class="title_container">
+      <p class="title">{{img.ImageCaption}}</p>
+    
+    </div>
+    <h3>
+      {{img.ImageTitle}}
+    </h3>
+    <p class="rest"><span class="leftspan">{{getTime(img.Createddate)}}</span> | <span class="rightspan"> {{ img.CategoryName}}</span></p>
+    <p class="description" style="margin-top: -23px;" >
+      {{img.ImageDescription}}
+    </p>    
+    <div *ngIf=" !(img.OtherImages == undefined)">
+        <div  *ngFor="let pic of img.OtherImages">
+          <img src={{pic.ImageURL}} class="subimg animate-zoom">
+          <p class="caption">{{pic.ImageCaption}}</p>
+          <p class="description">{{pic.ImageDescription}}</p>
+        </div>
+      </div>
+</ion-slide> -->
+ </ion-slides>
+     
+    
+
+<div id="myModal1" class="modal" (click)="closeModal()">
+
+   
+    <div class="modal-content">
+      
+        <ion-grid>
+          <ion-row>
+            <ion-col col-9><h3>Share</h3></ion-col>
+            <ion-col col-3> <ion-icon name="add" class="backbtn" (click)="close()"></ion-icon></ion-col>
+          </ion-row>
+            <ion-row>
+              <ion-col col-12 (click)="shareViaWhatsApp()">
+                <ion-icon name="logo-whatsapp" class="images" style="color: #3caf3c"  > </ion-icon ><span class="name">WhatsApp</span>
+              </ion-col>
+              <ion-col col-12 (click)="shareViaFacebook()">
+                <ion-icon name="logo-facebook" class="images" style="color: #1c71b9" > </ion-icon><span class="name">Facebook</span>
+              </ion-col>
+              <ion-col col-12 (click)="shareViaTwitter()">
+                  <ion-icon name="logo-twitter" class="images" style="color: #2cc1e2" ></ion-icon><span class="name">Twitter</span>
+                </ion-col>
+                <ion-col col-12 (click)="shareViaInstagram()">
+                    <img src="https://www.designpieces.com/wp-content/uploads/2016/05/Instagram-v051916-150x150.png" class="insta"><span class="name">Instagram</span>
+                </ion-col>
+                <ion-col col-12 (click)="shareViaEmail()">
+                  <ion-icon name="mail" class="images" style="color: #9e1d1d;font-size: 31px;" ></ion-icon><span class="name">Email</span>
+                </ion-col>
+            </ion-row>
+           
+          </ion-grid>
+    </div>
+    </div>
+</ion-content>
+
+
+

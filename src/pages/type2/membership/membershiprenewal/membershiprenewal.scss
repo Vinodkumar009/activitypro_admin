@@ -1,0 +1,237 @@
+page-membershiprenewal{
+    .button-md {
+        background-color: #f6f8fa;
+    }
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        padding-right: 5px;
+    }
+    .venuedropdown {
+        padding: 0px 3px 3px 0px;
+        max-width: none;
+        font-size: 18px;
+        //margin: auto;
+        width: -webkit-fill-available;
+    }
+
+    .card-md {
+        margin: 26px 0px;
+    }
+    .para{
+        color: #b5b2ae;
+        padding-left: 10px !important;
+        font-size: 16px;
+    }
+    .input_right{
+        .text-input{
+            text-align: right !important;
+        }
+    }
+    ion-item {
+        padding: 5px !important;
+        margin-bottom: 0px !important;
+        ion-label {
+            //padding-top: 2px !important;
+            color: #b5b2ae !important;
+            //margin-top: -1px !important;
+        }
+        .act {
+            margin-top: 15px !important;
+        }
+        border-bottom: 1px solid #f1c98d !important;
+        box-shadow: inset 0 -1px 0 0 #dedede!important;
+    }
+    .item-inner {
+        border-bottom: none !important;
+        box-shadow: none !important;
+    }
+    
+
+    .close {
+        background-color: rgba(245, 245, 245, 0) !important;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+    .maxwidthionselect {
+        max-width: none;
+    }
+
+    .body {
+        background-image: none !important;
+    }
+
+    .distinctpercent {
+        border-bottom: 1px solid #c695da !important;
+    }
+
+    .discountalign {
+        margin-left: 13%;
+    }
+
+    .foricon {
+        margin-top: 13px !important;
+        margin-bottom: 8px !important;
+        font-size: large;
+        color: #999;
+    }
+
+    .discount_input {
+        margin-left: 15px;
+        border-bottom: 1px solid orange;
+    }
+    .h6 {
+        font-size: 16px;
+        margin-left: 0rem;
+        margin-right: 0rem;
+        padding-bottom: 3px;
+        margin-top: 10px !important;
+        border-bottom: 2px solid #faae4e;
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+    .nonlocationcard {
+        padding: 14px 0;
+    }
+    .percent {
+        width: 23% !important;
+    }
+
+    .flex_col{
+        border-bottom: 1px solid #f1c98d !important;
+        background: white;
+        align-items: center;
+        padding: 5px 0 5px 0;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    
+    .toggle {
+        overflow: hidden;
+        display: inline-block;
+        width: 4em;
+        //background: #2f2a2a;
+        background-color: #ebf7fc;
+        //padding: 0.135em;
+        cursor: pointer;
+        font-size: 17px;
+        margin-left: 8px;
+        border-radius: 50px;
+        height: 30px;
+    }
+    .toggle input {
+        position: absolute;
+        visibility: hidden;
+    }
+    .toggle span {
+        position: relative;
+        left: 0%;
+        display: block;
+        text-align: center;
+        -webkit-transition: left 200ms ease-out;
+        -moz-transition: left 200ms ease-out;
+        -o-transition: left 200ms ease-out;
+        transition: left 200ms ease-out;
+    }
+    .toggle :checked+span {
+        left: 50%;
+    }
+     /* Default unchecked state */
+     .toggle span:before {
+        content: attr(data-unchecked);
+        display: block;
+        width: 50%;
+        background-color: #f44336;
+        border-radius: 50px;
+        box-shadow: 0 10px 20px -8px #c5d6d6;
+        //box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+        color: white;
+        border-radius: 25px;
+        font-size: 14px;
+        height: 30px;
+        line-height: 30px;
+    }
+    /* Checked state */
+    .toggle :checked+span:before {
+        content: attr(data-checked);
+        background-color: #03A9F4;
+        color: white;
+        border-radius: 50px;
+        font-size: 14px;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+        left: 3px !important;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    .alert-head {
+        text-align: center;
+        padding: 8px 0 0 0;
+    }
+
+    .location-cards>h3 {
+        font-size: 15px;
+        color: blue;
+        font-weight: 600;
+    }
+
+    .location-cards {
+        padding: 10px 10px;
+        border-bottom: yellow;
+    }
+
+
+    .border-left-style {
+        height: 70px;
+        position: absolute;
+        top: 33px;
+        left: 7px;
+    }
+
+    .name {
+        color: #5ea68d;
+        font-size: 18px !important;
+    }
+
+    .card-text {
+        color: #c5b495;
+        width: 100%;
+    }
+
+    .card-text>span {
+        color: gray;
+    }
+
+    .Location-head {
+        padding: 3px 0 0px 11px;
+    }
+
+    .nonmembercard {
+        width: 100% !important;
+        margin-top: 23px;
+    }
+}

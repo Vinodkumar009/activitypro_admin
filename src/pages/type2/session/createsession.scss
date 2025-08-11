@@ -1,0 +1,88 @@
+createsession-page{
+  .ion_card{
+      margin: 6px 0px;
+      width: 100%;
+  }
+  .memeber_details_btn{
+      // height: 28px;
+    font-size: 15px;
+    margin-top: 0px;
+
+  }
+  .member_input{
+      border-bottom: 1px solid #c8c7cc;
+  }
+    .memeber_list {
+            border-top: 1px solid #c8c7cc;
+        }
+
+//   }
+.btn_clr{
+    margin-top: 25px !important;
+
+         color: $dashoboard-icon-color;
+     }
+  .coach_detials_row{
+      text-align: center;
+      ion-col{
+          border:1px solid #c8c7cc;
+      }
+  }
+  
+  table, th, td {
+        border: 1px solid #95939c;
+        border-collapse: collapse;
+    }
+    .block_height{
+        height: 100%;
+    }
+    // ion-scroll{
+    //     .scroll-content{
+    //         height: 363px;
+    //         padding: 0px;
+    //         margin-top: 5px;
+    //     }
+    // }
+    .search_add{
+        padding:0px !important;
+        .item-inner{
+            padding-right: 0px!important;
+        }
+        ion-searchbar{
+            padding: 2px;
+        }
+    }
+    .btn-clr{
+        margin:0px !important;
+        color:$dashoboard-icon-color;
+    }
+    .ion_card_content{
+        padding-bottom: 5px;
+    }
+    .span_member_details{
+        text-decoration: underline;
+    }
+    .table_prop{
+        width: 100%;
+    }
+    .center_align{
+        text-align:center;
+    }
+    .checkmark_color{
+        color:#3ebad1;
+    }
+    .danger_color{
+        color:red;
+    }
+    .middle_section{
+        margin-top: 15px;
+    }
+    .padding_class{
+        padding-top: 20px;
+        //font-size: 15px;
+    }
+    .search_add{
+         background-color: transparent;
+         padding-left: 6px;
+     }
+}

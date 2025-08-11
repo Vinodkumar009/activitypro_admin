@@ -1,0 +1,129 @@
+reportsession-page {
+    .scroll-content {
+        //  margin-top: 56px !important;
+        padding: 6px 0px !important;
+    }
+    .social-cards ion-col {
+        padding: 8px;
+    }
+    .right {
+        float: right;
+    }
+    .heading_venue {
+        // font-size: 24px;
+        // font-weight: bold;
+        // color: white;
+        // text-align: center;
+        font-size: 17px;
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.85);
+        text-align: center;
+    }
+    .card_body {
+        // background-color: rgba(86, 85, 85, 0.57);
+        // background-color: rgba(37, 37, 136, 0.75);
+        //background-color: rgba(100, 100, 128, 0.75);
+        // background: linear-gradient(rgba(121, 35, 8, 0.77), rgba(50, 132, 202, 0.89));
+       // background: linear-gradient(rgba(167, 93, 71, 0.73), rgba(65, 109, 146, 0.89));
+       background: white;
+    }
+    .session {
+        //color: rgb(49, 223, 255);
+        //color: white;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    .icon_style {
+        // padding: 8px;
+        // background-color: #3ebad1;
+        // border-radius: 37px;
+        // color: white;
+        // margin-right: 5px;
+        padding: 5px;
+        /* background-color: #3ebad1; */
+        border-radius: 30px;
+        color: rgba(0, 0, 0, 0.85);
+        margin-right: 3px;
+        border: 2px solid #3ebad1;
+        font-size: 11px !important;
+    }
+    .p_11 {
+        font-size: 16px;
+        font-weight: bold;
+        /* color: white; */
+        text-align: center;
+    }
+    .ion_col {
+        padding: 2px !important;
+        border: 0.1em solid white !important;
+        text-align: center;
+    }
+    .heading_Session {
+        // font-size: 18px;
+        // font-weight: bold;
+        // text-align: center;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .color_white {
+        color: rgba(0, 0, 0, 0.65);
+    }
+    .card_body1 {
+        //background-color: rgba(136, 37, 37, 0.88);
+        //background-color: rgba(136, 37, 37, 0.84);
+        //background: linear-gradient(#b76464, #9e9e37);
+        background: white;
+    }
+    .card_body2 {
+        //background-color: rgb(121, 136, 37);
+        // background: linear-gradient(#21afa8, #545444);
+        //background: linear-gradient(rgba(16, 125, 119, 0.71), #afaf6c);
+        background: white;
+        //background-color: rgba(121, 136, 37, 0.92);
+    }
+    .card_body3 {
+        //background-color: rgba(37, 63, 136, 0.84);
+        // background: linear-gradient(rgba(48, 68, 67, 0.65), #2d8253);
+        //background: linear-gradient(rgba(25, 78, 75, 0.55), rgba(157, 157, 165, 0.7));
+        background: white;
+    }
+    .card_body4 {
+        //background-color: rgba(19, 99, 40, 0.84);
+        // background: linear-gradient(rgba(156, 18, 63, 0.65), #34488f);
+       // background: linear-gradient(rgba(130, 36, 66, 0.58), rgba(52, 72, 143, 0.82));
+       background: white;
+    }
+    .card_body5 {
+        //background-color: rgba(105, 106, 109, 0.84);
+        // background: linear-gradient(rgba(197, 119, 42, 0.77), rgba(25, 157, 11, 0.85));
+        /// background: linear-gradient(rgba(193, 114, 36, 0.77), rgba(56, 132, 48, 0.79));
+        background: white;
+    }
+    .card_body6 {
+        // //  background-color: rgba(34, 34, 34, 0.78);
+        // background: linear-gradient(rgba(66, 64, 63, 0.77), rgba(114, 152, 22, 0.85));
+        // background: linear-gradient(rgba(103, 73, 105, 0.84), rgba(114, 152, 22, 0.63));
+        background: white;
+    }
+    .card_body7 {
+        // background: linear-gradient(rgba(156, 18, 63, 0.65), #34488f);
+        // background: linear-gradient(rgba(148, 122, 130, 0.65), rgba(52, 72, 143, 0.96));
+        //background: linear-gradient(rgba(74, 106, 154, 0.65), rgba(88, 85, 85, 0.96));
+        background: white;
+    }
+    .card_body8 {
+        // background: linear-gradient(rgba(123, 13, 150, 0.56), rgba(26, 131, 171, 0.56));
+        //background: linear-gradient(rgba(75, 21, 88, 0.66), rgba(36, 140, 179, 0.89));
+        background: white;
+    }
+    .card_body9 {
+        // background: linear-gradient(rgba(208, 112, 20, 0.72), rgba(12, 31, 167, 0.85));
+       // background: linear-gradient(rgba(232, 122, 16, 0.72), rgba(12, 31, 167, 0.63));
+       background: white;
+    }
+    .card_body10 {
+        // background: linear-gradient(rgba(255, 127, 0, 0.86), rgba(14, 93, 6, 0.95));
+        //background: linear-gradient(rgba(255, 127, 0, 0.62), rgba(21, 88, 14, 0.8));
+        background: white;
+    }
+}

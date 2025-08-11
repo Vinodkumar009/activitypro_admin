@@ -1,0 +1,522 @@
+<!--
+  Generated template for the CreateweeklysessionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--
+  Generated template for the MonthlysessionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            {{weeklyData.session_name}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-row>
+        <ion-col col-12>
+            <ion-slides pager="false" #myslider (ionSlideDidChange)="slideChanged()">
+                <ion-slide>
+                    <ion-item>
+                        <ion-label>Group Name</ion-label>
+                        <ion-input type="text" [(ngModel)]="editWeeklySession.session_name"
+                            plcaeholder="Type session name...">
+                        </ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>Venue</ion-label>
+                        <ion-select [disabled]="true" [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+                            <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-grid style="padding:0px;">
+                        <ion-row style="padding:0px;">
+                            <ion-col col-6 style="padding:0px;">
+                                <ion-item class="venueionitem activity_select">
+                                    <ion-select [disabled]="true" [(ngModel)]="selectedActivityType"
+                                        (ionChange)="onChangeActivity()" class="venuedropdown"
+                                        style="text-align:left;padding-left: 15px;">
+                                        <ion-option *ngFor="let type of club_activities" value={{type.ActivityKey}}>{{type.ActivityName}}
+                                        </ion-option>
+                                    </ion-select>
+                                </ion-item>
+                            </ion-col>
+
+                            <ion-col col-6 style="padding:0px;">
+                                <ion-item class="venueionitem">
+                                    <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+                                        <ion-option *ngFor="let coach of coachs" value={{coach.CoachId}}>
+                                            {{coach.FirstName}}
+                                            {{coach.LastName}}</ion-option>
+                                    </ion-select>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <ion-grid style="padding:0px;">
+                        <ion-row style="padding:0px;">
+                            <ion-col col-6 style="padding:0px;">
+                                <ion-item  class="venueionitem activity_select">
+                                 
+                                    <ion-select [(ngModel)]="selectActivityCategory" (ionChange)="onChangeActivityCategory()" style="text-align:left;padding-left: 15px;">
+                                        <ion-option *ngFor="let ac of activityCategoryList" value={{ac.ActivityCategoryId}}>
+                                            {{ac.ActivityCategoryName}}
+                                        </ion-option>
+                                    </ion-select>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col col-6 style="padding:0px;">
+                                <ion-item  class="venueionitem activity_select">
+                                    <ion-select [(ngModel)]="selectActivitySubCategory">
+                                        <ion-option *ngFor="let acs of activitySubCategoryList" value={{acs.ActivitySubCategoryId}}>
+                                            {{acs.ActivitySubCategoryName}}</ion-option>
+                                    </ion-select>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+
+                    <ion-item>
+                        <ion-label fixed>Age Group(Optional)</ion-label>
+                        <ion-input type="text" [(ngModel)]="editWeeklySession.age_group" min="1" class="textareastyle">
+                        </ion-input>
+                        <button ion-button clear item-right class="help_btn" (click)="ageGroupHint()">
+                            <img style="width: 50%;" src="assets/images/info.svg">
+                        </button>
+                    </ion-item>
+                    <ion-item class="activity_select">
+                        <ion-label>Status</ion-label>
+                        <ion-select [(ngModel)]="editWeeklySession.session_status" class="venuedropdown"
+                            style="padding-left: 15px;">
+                            <ion-option value="1">Public</ion-option>
+                            <ion-option value="0">Hide</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                    <ion-item class="comments">
+                        <ion-textarea type="text" rows="5" class="textareastyle"
+                            [(ngModel)]="editWeeklySession.description" placeholder="Description"></ion-textarea>
+                    </ion-item>
+                  
+
+                    <ion-item class="activity_select">
+                        <ion-label>Assisted by</ion-label>
+                        <ion-select [(ngModel)]="AssistedBy" (ionChange)="onChangeAssist()">
+                            <ion-option *ngFor="let coach of coachs" value={{coach.CoachId}}>
+                                {{coach.FirstName}}
+                                 {{coach.LastName}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>Contact Email</ion-label>
+                        <ion-input type="text" [(ngModel)]="editWeeklySession.contact_email" plcaeholder="Type email">
+                        </ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>Contact Phone</ion-label>
+                        <ion-input type="text" [(ngModel)]="editWeeklySession.contact_phone" plcaeholder=""></ion-input>
+                    </ion-item>
+                </ion-slide>
+                <ion-slide>
+                    <ion-row>
+                        <ion-col col-12 class="padding-0">
+                            <div style="margin: 6px 0px 6px 0px;">
+                                <ion-card class="card">
+                                    <ion-card-header class="card_header">
+                                        Days
+                                    </ion-card-header>
+                                    <ion-card-content>
+                                        <ion-row class="days">
+                                            <ion-col>
+                                                <p class="rounded" (click)="selectDays('Mon',1)"
+                                                    [ngClass]="{'timekare-primary-btn': isSelectMon,'text_white': isSelectMon,'un_selected': !isSelectMon}">
+                                                    M</p>
+                                            </ion-col>
+                                            <ion-col>
+                                                <p class="rounded" (click)="selectDays('Tue',2)"
+                                                    [ngClass]="{'timekare-primary-btn': isSelectTue,'text_white': isSelectTue,'un_selected': !isSelectTue}">
+                                                    T</p>
+                                            </ion-col>
+                                            <ion-col>
+                                                <p class="rounded" (click)="selectDays('Wed',3)"
+                                                    [ngClass]="{'timekare-primary-btn': isSelectWed,'text_white': isSelectWed,'un_selected': !isSelectWed}">
+                                                    W</p>
+                                            </ion-col>
+                                            <ion-col>
+                                                <p class="rounded" (click)="selectDays('Thu',4)"
+                                                    [ngClass]="{'timekare-primary-btn': isSelectThu,'text_white': isSelectThu,'un_selected': !isSelectThu}">
+                                                    T</p>
+                                            </ion-col>
+                                            <ion-col>
+                                                <p class="rounded" (click)="selectDays('Fri',5)"
+                                                    [ngClass]="{'timekare-primary-btn': isSelectFri,'text_white': isSelectFri,'un_selected': !isSelectFri}">
+                                                    F</p>
+                                            </ion-col>
+                                            <ion-col>
+                                                <p class="rounded" (click)="selectDays('Sat',6)"
+                                                    [ngClass]="{'timekare-primary-btn': isSelectSat,'text_white': isSelectSat,'un_selected': !isSelectSat}">
+                                                    S</p>
+                                            </ion-col>
+                                            <ion-col>
+                                                <p class="rounded" (click)="selectDays('Sun',7)"
+                                                    [ngClass]="{'timekare-primary-btn': isSelectSun,'text_white': isSelectSun,'un_selected': !isSelectSun}">
+                                                    S</p>
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-card-content>
+                                </ion-card>
+                                <ion-item>
+                                    <ion-label>Start Time</ion-label>
+                                    <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A"
+                                        [(ngModel)]="editWeeklySession.start_time" class="textareastyle"
+                                        [minuteValues]="minuteValues"></ion-datetime>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label fixed>Duration</ion-label>
+                                    <ion-input type="number" [(ngModel)]="editWeeklySession.duration" max="60" min="1"
+                                        class="textareastyle"></ion-input>
+                                </ion-item>
+                              
+                                <ion-item>
+                                    <ion-label>Start Date</ion-label>
+                                    <ion-datetime  [disabled]="isDatesReadonly" displayFormat="DD/MM/YY"
+                                        pickerFormat="DD MM YYYY" [(ngModel)]="editWeeklySession.start_date"
+                                        min={{editWeeklySession.start_date}} max={{maxDate}} (ionChange)="startdateChanged()"></ion-datetime>
+                                </ion-item>
+                                <!-- <ion-item>
+                                    <ion-label fixed>Number of Sessions</ion-label>
+                                    <ion-input [disabled]="isDatesReadonly" type="number"
+                                        [(ngModel)]="number_of_sessions" (ionChange)="CalcEndDate($event)"
+                                        (click)="eventfrom='sescount'" min="1" class="textareastyle">
+                                    </ion-input>
+                                </ion-item> -->
+                                <ion-item>
+                                    <ion-label>End Date</ion-label>
+                                    <ion-datetime [disabled]="isDatesReadonly" displayFormat="DD/MM/YY"
+                                        pickerFormat="DD MMM YYYY" [(ngModel)]="editWeeklySession.end_date" min={{minDate}} max={{maxDate}}
+                                        class="enddate" (ionChange)="enddateChanged($event)" (click)="eventfrom='date'">
+                                    </ion-datetime>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label fixed>Number of weeks</ion-label>
+                                    <ion-input type="number" [disabled]="isDatesReadonly"
+                                        [(ngModel)]="editWeeklySession.number_of_weeks" class="textareastyle"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-row>
+                                        <ion-col col-12 no-padding class="flex_col">
+                                            <p class="toggle_para">Apply Capacity Restriction</p>
+                                            <label class="toggle">
+                                                <input type="checkbox"
+                                                    [(ngModel)]="editWeeklySession.apply_capacity_restriction">
+                                                <span data-unchecked="No" data-checked="Yes"></span>
+                                            </label>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <ion-item *ngIf="editWeeklySession.apply_capacity_restriction">
+                                    <ion-label fixed>Capacity</ion-label>
+                                    <ion-input type="number" [(ngModel)]="editWeeklySession.capacity"
+                                        class="textareastyle"></ion-input>
+                                </ion-item>
+                                
+                                <!-- <ion-item (tap)="AllowAdvanceBooking()" class="adv_ses">
+                                    <p style="font-size: 16px;">
+                                        <span style="float:left;color:#999">Allow Advance Booking</span>
+                                        <span style="float:right;color: #000;">{{advSessions}}</span>
+                                    </p>
+                                </ion-item> -->
+                                <ion-item (tap)="VisibleAdvanceSessions()" class="adv_ses">
+                                    <p style="font-size: 16px;">
+                                        <span style="float:left;color:#999">Advance Visible Sessions</span>
+                                        <span style="float:right;color: #000;">{{vissibleSesAdv}}</span>
+                                    </p>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label fixed>Minimum Booking</ion-label>
+                                    <ion-input type="number" [(ngModel)]="editWeeklySession.minimum_booking_count"
+                                        class="textareastyle"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-row>
+                                        <ion-col col-12 no-padding class="flex_col">
+                                            <p class="toggle_para">Approve First Booking</p>
+                                            <label class="toggle">
+                                                <input type="checkbox"
+                                                    [(ngModel)]="editWeeklySession.approve_first_booking">
+                                                <span data-unchecked="No" data-checked="Yes"></span>
+                                            </label>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                                <ion-item *ngIf="editWeeklySession.approve_first_booking">
+                                    <textarea style="width:100%" class="message-input" rows="5"
+                                        [(ngModel)]="editWeeklySession.first_booking_message">
+                                    </textarea>
+                                </ion-item>
+                                <ion-item >
+                                    <ion-row>
+                                        <ion-col col-12 no-padding class="flex_col">
+                                            <p class="toggle_para">Paid</p>
+                                            <label class="toggle">
+                                                <input type="checkbox" (click)="CheckIsPaid()"
+                                                    [(ngModel)]="editWeeklySession.is_paid">
+                                                <span data-unchecked="No" data-checked="Yes"></span>
+                                            </label>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-item>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-slide>
+                <ion-slide *ngIf="editWeeklySession.is_paid">
+                    <div class="installmentblock">
+                        <ion-item text-center class="section_header" no-lines>
+                            <p>Cost Per Session</p>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label fixed>Member
+                                <span *ngIf="currency != undefined">({{currency}})</span>
+                            </ion-label>
+                            <ion-input type="number" class="textareastyle"
+                                [(ngModel)]="editWeeklySession.fee_for_member" min="1.00"
+                                (ionChange)="inputChanged()"></ion-input>
+                        </ion-item>
+
+                       
+                        <ion-item>
+                            <ion-label fixed>Non Member <span *ngIf="currency != undefined">({{currency}})</span>
+                            </ion-label>
+                            <ion-input type="number" class="textareastyle"
+                                [(ngModel)]="editWeeklySession.fee_for_nonmember" min="1.00"></ion-input>
+                        </ion-item>
+                    </div>
+
+                    <div class="installmentblock">
+                        <ion-item text-center class="toggle_header" no-lines>
+                            <p>Payment Setup</p>
+                        </ion-item>
+                        <ion-item>
+                            <ion-row>
+                                <ion-col col-12 no-padding class="flex_col">
+                                    <p class="toggle_para">Allow Cash Payment</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" [(ngModel)]="editWeeklySession.allow_cash_payment">
+                                        <span data-unchecked="No" data-checked="Yes"></span>
+                                    </label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-row>
+                                <ion-col col-12 no-padding class="flex_col">
+                                    <p class="toggle_para">Allow BACS Payment</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" [(ngModel)]="editWeeklySession.allow_bacs_payment">
+                                        <span data-unchecked="No" data-checked="Yes"></span>
+                                    </label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-item>
+                        <ion-item>
+                            <ion-row>
+                                <ion-col col-12 no-padding class="flex_col">
+                                    <p class="toggle_para">Allow Pay Later</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" [(ngModel)]="editWeeklySession.allow_pay_later">
+                                        <span data-unchecked="No" data-checked="Yes"></span>
+                                    </label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-item>
+                    </div>
+
+                    <div class="installmentblock">
+                        <ion-item text-center class="toggle_header" no-lines>
+                            <p>Loyalty Points Setup</p>
+                        </ion-item>
+                        <ion-item>
+                            <ion-row>
+                                <ion-col col-12 no-padding class="flex_col">
+                                    <p class="toggle_para">Reward Loyalty</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" [(ngModel)]="editWeeklySession.allow_reward_loyality">
+                                        <span data-unchecked="No" data-checked="Yes"></span>
+                                    </label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-item>
+                        <ion-item *ngIf="editWeeklySession.allow_reward_loyality">
+                            <ion-row>
+                                <ion-col col-12 no-padding class="flex_col">
+                                    <p class="toggle_para">Loyalty Mode</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" (click)="CheckLoyaltyType()" [(ngModel)]="editWeeklySession.is_fixed_loyalty_allowed">
+                                        <span data-unchecked="Manual" data-checked="Fixed"></span>
+                                    </label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-item>
+                        <ion-item class="" *ngIf="editWeeklySession.allow_reward_loyality">
+                            <ion-label fixed>Total Points</ion-label>
+                            <ion-input type="number" [disabled]="editWeeklySession.is_fixed_loyalty_allowed" [(ngModel)]="editWeeklySession.fixed_loyalty_points" class="textareastyle"></ion-input>
+                        </ion-item>
+                    </div>
+                    <div class="installmentblock">
+                         <ion-item text-center class="toggle_header" no-lines>
+                            <p>Discount Setup</p>
+                        </ion-item>
+                        <div class="border_bottom">
+                            <ion-item no-lines>
+                                <ion-row>
+                                    <ion-col col-12 no-padding class="flex_col">
+                                        <p class="toggle_para">{{weeklyDiscounts.all_session.discount_header}}</p>
+                                        <label class="toggle">
+                                            <input type="checkbox" [(ngModel)]="weeklyDiscounts.all_session.is_active">
+                                            <span data-unchecked="No" data-checked="Yes"></span>
+                                        </label>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-item>
+                            <ion-item *ngIf="weeklyDiscounts.all_session.is_active">
+                                <ion-label fixed>Discount Name</ion-label>
+                                <ion-input type="text" class="textareastyle"
+                                    [(ngModel)]="weeklyDiscounts.all_session.discount_name">
+                                </ion-input>
+                            </ion-item>
+                            <ion-item *ngIf="weeklyDiscounts.all_session.is_active" no-lines>
+                                <ion-label fixed>Discount Amount
+                                    <span *ngIf="currency != undefined">({{currency}})</span>
+                                </ion-label>
+                                <ion-input type="number" class="textareastyle"
+                                    [(ngModel)]="weeklyDiscounts.all_session.discount_amount" min="1.00"></ion-input>
+                            </ion-item>
+                        </div>
+                        <div class="border_bottom">
+                            <ion-item no-lines>
+                                <ion-row>
+                                    <ion-col col-12 no-padding class="flex_col">
+                                        <p class="toggle_para">{{weeklyDiscounts.advance_booking.discount_header}}</p>
+                                        <label class="toggle">
+                                            <input type="checkbox" [(ngModel)]="weeklyDiscounts.advance_booking.is_active">
+                                            <span data-unchecked="No" data-checked="Yes"></span>
+                                        </label>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-item>
+                            <ion-item *ngIf="weeklyDiscounts.advance_booking.is_active">
+                                <ion-label fixed>No of days in advance</ion-label>
+                                <ion-input type="number" class="textareastyle"
+                                    [(ngModel)]="weeklyDiscounts.advance_booking.no_of_days_advance">
+                                </ion-input>
+                            </ion-item>
+                            <ion-item *ngIf="weeklyDiscounts.advance_booking.is_active" no-lines>
+                                <ion-label fixed>Discount Amount per Session
+                                    <span *ngIf="currency != undefined">({{currency}})</span>
+                                </ion-label>
+                                <ion-input type="number" class="textareastyle"
+                                    [(ngModel)]="weeklyDiscounts.advance_booking.discount_amount" min="1.00"></ion-input>
+                            </ion-item>
+                        </div>
+                        <div class="border_bottom">
+                            <ion-item no-lines>
+                                <ion-row>
+                                    <ion-col col-12 no-padding class="flex_col">
+                                        <p class="toggle_para">{{weeklyDiscounts.free_sessions.discount_header}}</p>
+                                        <label class="toggle">
+                                            <input type="checkbox" [(ngModel)]="weeklyDiscounts.free_sessions.is_active">
+                                            <span data-unchecked="No" data-checked="Yes"></span>
+                                        </label>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-item>
+                            <ion-item *ngIf="weeklyDiscounts.free_sessions.is_active">
+                                <ion-label fixed>Multiple of</ion-label>
+                                <ion-input type="number" class="textareastyle" [(ngModel)]="weeklyDiscounts.free_sessions.multiple_of">
+                                </ion-input>
+                            </ion-item>
+                            <ion-item class="freeses_item"
+                                *ngIf="weeklyDiscounts.free_sessions.is_active && weeklyDiscounts.free_sessions.multiple_of > 1" no-lines>
+                                <img style="width: 17px;" src="assets/images/info.svg" item-left>
+                                <ion-label>e.g. for every
+                                    {{weeklyDiscounts.free_sessions.multiple_of}},{{weeklyDiscounts.free_sessions.multiple_of * 2}},{{weeklyDiscounts.free_sessions.multiple_of * 3}}
+                                </ion-label>
+                            </ion-item>
+                            <ion-item no-lines *ngIf="weeklyDiscounts.free_sessions.is_active">
+                                <ion-row>
+                                    <ion-col col-12 no-padding class="flex_col">
+                                        <p class="toggle_para">Include Advance booking discount</p>
+                                        <label class="toggle">
+                                            <input type="checkbox" [(ngModel)]="weeklyDiscounts.free_sessions.include_advance_booking_discount">
+                                            <span data-unchecked="No" data-checked="Yes"></span>
+                                        </label>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-item>
+                        </div>
+                        <ion-item 
+                            style="border-bottom: .01em solid #ccd3d4;">
+                            <ion-row>
+                                <ion-col col-9 no-padding class="">
+                                    <div class="discount_div" style="width:100%;">
+                                        <p class="toggle_para" (click)="showPrompt(weeklyDiscounts.no_of_sessions)">
+                                            {{weeklyDiscounts.no_of_sessions.discount_header}}</p>
+                                        <p (click)="showPrompt(weeklyDiscounts.no_of_sessions)" style="margin-top: 2px;">Amount:
+                                            <span style="color: #4CAF50">&pound;</span>{{weeklyDiscounts.no_of_sessions.discount_amount}}</p>
+                                    </div>
+                                </ion-col>
+                                <ion-col col-3 no-padding style="margin:auto">
+                                    <!-- <label class="toggle" style="margin-left:11px;" [ngClass]="{'margin23':isAndroid}" > -->
+                                    <label class="toggle" [ngClass]="{'margin23':isAndroid}">
+                                        <input type="checkbox" [(ngModel)]="weeklyDiscounts.no_of_sessions.is_active">
+                                        <span data-unchecked="No" data-checked="Yes"></span>
+                                    </label>
+                                </ion-col>
+                            </ion-row>
+                        </ion-item>
+                        <ion-item>
+                            <p class="toggle_para" style="margin-bottom:5px">PaymentTerms</p>
+                            <textarea placeholder="Enter Payment Terms..." [(ngModel)]="editWeeklySession.payment_instructions" class="textarea-input" rows="4"></textarea>
+                        </ion-item>
+                    </div>
+                </ion-slide>
+            </ion-slides>
+        </ion-col>
+    </ion-row> 
+</ion-content> 
+
+<ion-footer>
+    <ion-row>
+        <ion-col col-2 text-center class="margin_auto" *ngIf="!isBeginSlide">
+            <button ion-button (click)="GotoPrevious()" ion-button block class="timekare-primary-btn">
+                <ion-icon name="ios-arrow-back"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col col-10 text-center class="margin_auto">
+            <button *ngIf="!isEndSlide" ion-button block class="timekare-primary-btn"
+                (click)="GotoNext()">Continue</button>
+            <button *ngIf="isEndSlide" ion-button block class="timekare-primary-btn" (click)="Update()">Update</button>
+        </ion-col>
+    </ion-row>
+</ion-footer>

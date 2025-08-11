@@ -1,0 +1,112 @@
+<div>
+  <ion-card style="width: 100%; margin: 0px">
+    <ion-card-content style="padding: 0px">
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeType(0)" [class.selected]="activeIndex==0">
+            Competitions
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button class="select-type" (click)="changeType(1)" [class.selected]="activeIndex==1">
+            Match
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="sub-container rows-allign2">
+          <ion-col col-1 style="text-align: center; margin-top: 12px; padding: 0px">
+                  <ion-icon name="ios-search"></ion-icon>
+          </ion-col>
+          <ion-col col-11 class="search-bar">
+              <ion-searchbar class="search" placeholder="Search by Title, Activity etc"
+                    (ionInput)="getFilterItems($event)" autocorrect="off"
+                    showCanelButton="focus" animated>
+              </ion-searchbar>
+          </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</div>
+<ion-row style="width: 100%; height: 100%">
+  <div style="width: 100%; height: 100%">
+    <!-- <ion-searchbar
+      class="search"
+      placeholder="Search by Title, Activity etc"
+      autocorrect="off"
+      (ionInput)="getFilterItems($event)"
+      showCanelButton="focus"
+      animated
+    >
+    </ion-searchbar> -->
+    <ion-list *ngIf="filteredMatches.length>0">
+      <ion-card
+        (click)="gotoMatchdetailsPage(history)"
+        class="matchcard"
+        *ngFor="let history of filteredMatches"
+      >
+        <ion-card-content>
+          <ion-row style="margin-bottom: 10px; padding-top: 5px">
+            <ion-col col-12 no-padding>
+              <p class="dets_para">
+                <span float-left>{{history.MatchTitle}}</span>
+                <span float-right
+                  >{{formatMatchStartDate(history.MatchStartDate)}}</span
+                >
+                <!-- <span float-right><ion-icon style="padding-left: 20px;font-size: 18px;color: #2b92bb;"
+                      [name]="history.MatchVisibility==0?'ios-globe':'ios-lock-outline'"> 
+                    </ion-icon>{{history.VenueName}}
+                  </span>-->
+              </p>
+              <p
+                class="dets_para"
+                style="margin-top: 21px !important; font-size: 12px !important"
+              >
+                {{history.Activity.ActivityName}}
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            *ngFor="let team of history.Teams;let j=index;"
+            class="participant_row"
+          >
+            <ion-col
+              col-8
+              style="padding: 5px 5px 5px 0px !important"
+              [style.border-bottom]="j==0 ? '1px solid #b4b0b0' : 'none'"
+            >
+              <p class="users_para commman_para">
+                <span
+                  *ngFor="let participant of team.Participants;let k=index;"
+                  [style.color]="team.IsWinner ? 'green' : 'red'"
+                  >{{participant.User.FirstName}}
+                  <span *ngIf="k!=team.Participants.length-1">,</span>
+                </span>
+                <span *ngIf="team.IsWinner" style="margin-right: 5px">
+                  <ion-icon name="md-trophy"></ion-icon>
+                </span>
+              </p>
+            </ion-col>
+            <ion-col col-4 style="padding: 6px 5px 5px 10px !important">
+              <p class="sets_para commman_para" style="">
+                <span *ngFor="let set of team.Sets_Points;let l=index"
+                  >{{set}}</span
+                >
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row style="margin-top: 10px">
+            <ion-col col-12 no-padding>
+              <p class="dets_para" style="color: rgba(0, 0, 0, 0.3) !important">
+                <span float-left>{{history.VenueName}}</span>
+                <!-- <span *ngIf="(history) && (history.Result && history.Result.ResultStatus==1)" float-right
+                  class="margin_right_5">Published</span>
+                <span *ngIf="(history) && (!history.Result || history.Result.ResultStatus!=1)" float-right
+                  class="margin_right_5">Pending</span> -->
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
+</ion-row>

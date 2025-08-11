@@ -1,0 +1,102 @@
+addmember-page{
+    .scroll-content {
+     padding: 6px !important;
+     background-image: none !important;
+    }
+     .condition{
+         margin-left: 6px;
+         margin-top: 4px;
+         font-size: 16px;
+         color: black;
+     }
+     .condition_block{
+         margin-top: 19px;
+     }
+   .left_margin{
+       padding-left: 5px;
+       ion-checkbox{
+          // margin: 9px 14px 9px 4px !important;
+       }
+       ion-label{
+               white-space: pre-wrap !important;
+       }
+   }
+   .line{
+       color:gray;
+       font-size: 20px;
+   }
+   .line1{
+       //color:  #488aff;  
+   }
+   .btn{
+     height: 35px;
+     width: 35px;
+     border-radius: 50%;
+     background-color: gray;
+     color:white;
+   }
+    .btn1,.btn2{
+        background-color: #488aff;
+    }
+    .btn-container{
+        text-align: center;
+    }
+    .checkbox_item{
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        ion-label{
+            margin-top: 10px !important;
+        }
+        ion-checkbox{
+            margin: 9px 20px 9px 4px !important; 
+        }
+    }
+    .btn-next{
+        width:30%;
+        border-radius:5%;
+    }
+    .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
+    // .chk{
+    //     transform: translate(0%,50%);
+    // }
+    .lab_dec{
+        font-size:15px;
+        color: rgb(10, 8, 8);
+    }
+    .lab_head{
+        font-size: 18px;
+        color: #488aff;
+    }
+    .rows{
+        margin-top: -10px;
+    }
+    
+    .con{
+        background: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 255, 255));
+    }
+    .items,.rows{
+        background: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 255, 255));
+    }
+    .lab{
+        font-size: 18px;
+       // margin-bottom: -5px;
+    }    
+    .text{
+        margin-bottom: -5px;
+        color: rgb(87, 86, 86);
+    }
+    .dob{
+       // margin-bottom: -30px !important;
+    }
+    .fin{
+        font-size: 10px;
+    }
+    .select{
+        .select-text{
+            padding: 5px 0px;
+        }
+    }
+
+ }
+ 

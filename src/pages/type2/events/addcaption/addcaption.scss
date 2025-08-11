@@ -1,0 +1,59 @@
+page-addcaption {
+    $toolbar-background-color1: #2b92bb;
+    $toolbar-title-color1: #ffffff;
+    $toolbar-button-text-color1: #ffffff;
+    .toolbar-title-ios {
+        color: #f4f4f4 !important;
+    }
+    .bar-button {
+        color: $toolbar-button-text-color1 !important;
+    }
+    // .toolbar {
+    //     padding-top: 25px !important;
+    // }
+    .toolbar-title-ios {
+        //padding-top: 30px;
+    }
+    .bar-button-default-ios,
+    .bar-button-default.bar-button-ios-default,
+    .bar-button-clear-ios-default {
+        color: #f4f4f4 !important;
+    }
+    .toolbar-title {
+        color: $toolbar-title-color1;
+        //added after dashboard color change.
+        font-weight: 400;
+    }
+    .toolbar-background {
+        background-color: $toolbar-background-color1 !important;
+    }
+    .toolbar-background-ios {
+        background: #2b92bb !important;
+    }
+    .white-space {
+        white-space: pre-wrap;
+    }
+    .scroll-content {
+        margin-top: 60px !important;
+        padding: 3px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+    
+    .send_btn{
+        width:200px;
+        text-transform: capitalize;
+        margin: auto;
+    }
+    .heder_col{
+        margin-top: -110px;
+        img{
+            width: 94%;
+            margin: 0% 3%;
+            height: 83%;
+            border-radius: 5px;
+            //box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
+    }
+
+}

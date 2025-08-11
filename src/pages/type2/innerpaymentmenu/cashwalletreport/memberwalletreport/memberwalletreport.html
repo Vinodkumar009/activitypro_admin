@@ -1,0 +1,24 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Member Wallet Transaction</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div style="margin-top: 20px;" *ngIf="transactionCashHistory.length > 0">
+    <div class="transCashDiv" *ngFor="let trans of transactionCashHistory">
+        <div>
+            <p class="date" >{{getCashDate(trans.UpdatedAt)}}</p>
+            <p class="rewardtext" *ngIf="trans.transactionType == 2">Credited</p>
+            <p class="rewardtext" *ngIf="trans.transactionType == 1">Debited</p>
+        </div>
+        <div class="divpoints">
+            <p class="available font18"><span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{trans.availableBalance | number : '1.2-2'}}</p>
+            <p *ngIf="trans.transactionType == 2" style="color:#4cb050" class="pointbalance font13">+<span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{trans.amount | number : '1.2-2'}}</p>
+            <p *ngIf="trans.transactionType == 1" style="color:#fc3c39" class="pointbalance font13">-<span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{trans.amount | number : '1.2-2'}}</p>
+        </div>
+    </div>
+</div>
+</ion-content>

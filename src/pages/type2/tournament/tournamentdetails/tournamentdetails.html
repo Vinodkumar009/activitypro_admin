@@ -1,0 +1,232 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Tournament</ion-title>
+    </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+
+    <div class="block">
+        <p class="session">
+            {{Tournament.StartDate}} <span style="font-size:13px">{{Tournament.StartTime}} hrs</span>
+        <p class="themeheaderfont">
+            At: <span class="activity cust_margin">{{locationName}}</span>
+            <!-- <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> endDate</p> -->
+            <ion-grid style="padding:0px;">
+                <ion-row style="padding:0px;">
+                    <ion-col col-md-3 col-sm-3 col-3 style="text-align:center;padding:0px;">
+                        <img class="img1" [src]="">
+                        <p class="coachname ">{{Tournament.UmpireName}}</p>
+                        <!-- <p class="activity cust_margin venuename">At:  -->
+                        <!-- <span class="activity cust_margin">{{Tourna}}</span></p> -->
+
+                    </ion-col>
+                    <ion-col col-md-9 col-sm-9 col-9 class="border-left">
+                        <p class="sessionName cust_margin">{{Tournament.TournamentName}}</p>
+                        <p class="activity cust_margin">{{Tournament.ActivityName}} -<span
+                                *ngIf="currencyDetails!=undefined" style="color:green">
+                                {{currencyDetails.CurrencySymbol}}{{Tournament.FullAmountForMember}}
+                            </span>
+                        </p>
+                        <ion-row>
+                            <ion-col class="nopad">
+                                <p class="ellipse cust_margin venuename">Grade:
+                                    <span class="activity cust_margin">{{Tournament.Grade}}</span>
+                                    <!-- </p> 
+                                </ion-col>
+                                <ion-col col-6 class="nopad"> 
+                                    <p class="ellipse cust_margin venuename">Age Group:-->
+                                    <span class="activity cust_margin">/ {{Tournament.AgeGroup}}</span></p>
+                            </ion-col>
+                        </ion-row>
+                        <!-- <p class="activity cust_margin">{{Tournament.AgeGroup}}</p> -->
+                        <ion-row>
+                            <ion-col col-7 class="nopad">
+                                <p class="ellipse venuename cust_margin">
+                                    <!-- Managed by: <br>  -->
+                                    <span class="activity cust_margin">{{Tournament.MatchType}}</span>
+                                </p>
+                            </ion-col>
+                            <ion-col col-2 class="nopad">
+                                <button ion-fab mini class="fabicon" (tap)="sendMail()"
+                                    style="margin: 5px 0 0px 14px !important;">
+                                    <ion-icon name="md-mail"></ion-icon>
+                                </button>
+                            </ion-col>
+                            <ion-col col-3 style="float:right;text-align:right;">
+                                <button ion-fab mini class="fabicon" style=" float: right;" (tap)="sendNotification()">
+                                    <ion-icon name="md-chatbubbles"></ion-icon>
+                                </button>
+                            </ion-col>
+                        </ion-row>
+
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+    </div>
+    <ion-card class="cardstyle leftbox">
+        <ion-card-content class="nopad">
+            <ion-row class="ion_row">
+                <ion-col col-6 class="leftbox">
+                    <div>
+                        <p class="cust_label ">Enroled</p>
+                        <p class="value1 topboxvalue">{{noOfMembersPaid}}</p>
+                    </div>
+
+                    <div *ngIf="members.length>0">
+                        <p class="value1 bottomboxvalue">{{members.length}}</p>
+                        <p class="cust_label ">Members</p>
+                    </div>
+                </ion-col>
+                <ion-col col-6 class="rightbox">
+                    <div *ngIf="members.length>0">
+                        <p class="cust_label ">Paid</p>
+                        <p class="value1 topboxvalue" ><span style="letter-spacing: -3px;"
+                                *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+                            <span>{{amountRecived}}</span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <p class="value1 bottomboxvalue"><span style="letter-spacing: -3px;"
+                                *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+                                <span>{{totalAmount}}</span>
+                        </p>
+                        <p class="cust_label">Total</p>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+
+    <div style="margin-bottom: 60px;">
+        <ion-card class="membercard" *ngFor="let member of members">
+            <ion-card-content>
+                <ion-grid style="height:60px;">
+                    <ion-row >
+                        <ion-col col-7 (click)="showOptions(member)" style="padding: 15px 0px;">
+                            {{member.FirstName}} {{member.LastName}}
+                        </ion-col>
+                        <ion-col col-2 style="padding: 5px 0px 0px 0px;">
+                            <!-- 20Yrs -->
+                        </ion-col>
+                        <ion-col col-3 class="paidBlock" style="margin:auto">
+                            <!-- acknowledgment -->
+                            <div style="float: right;" *ngIf="member.AmountPayStatus=='Paid'">
+                                <p class="moneypaid">
+                                    <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span><span>{{member.AmountPaid}}</span>
+                                </p>
+                                <p class="transactiondate">Paid</p>
+                            </div>
+                            <div style="float: right;"
+                                *ngIf="member.AmountPayStatus!='Paid' && member.AmountPayStatus!='Due'">
+                                <!-- <p class="moneypending">
+                                    <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+                                    {{member.TotalFeesAmount}}
+                                </p> -->
+                                <img src="assets/images/acknowledgment.png" class="dueimage" style="margin-top: 3px;height: 13px;">
+                                <!-- <p class="transactiondate">Pending Verification</p> -->
+                            </div>
+                            <div style="float: right;" *ngIf=" member.AmountPayStatus=='Due'" >
+                                <p class="moneydue">
+                                    <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span><span>{{member.AmountDue}}</span>
+                                </p>
+                                <p class="pending">Pending</p>
+                            </div>
+                            <!-- <img src="assets/images/acknowledgment.png" class="dueimage" style="margin-top: 3px;height: 13px;">
+                            <img src="assets/images/paymentdue.png" class="dueimage"> -->
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card class="withdrawcard" *ngFor="let member of withDrawMembers">
+            <ion-card-content style="background: #ded7d7;">
+                <ion-grid style="height:60px;">
+                    <ion-row style>
+                        <ion-col col-6 class="withdraw-name" style="padding: 15px 0px;">
+                            {{member.FirstName}} {{member.LastName}}
+                        </ion-col>
+                        <ion-col col-3 style="padding: 5px 0px 0px 0px;margin:auto">
+                            withdrawn
+                        </ion-col>
+                        <ion-col col-3 class="paidBlock" style="margin:auto">
+                            <!-- acknowledgment -->
+                            <div style="float: right;">
+                                <p class="moneydue">
+                                    <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+                                    {{member.TotalAmount}}
+                                </p>
+
+                            </div>
+                            <!-- <img src="assets/images/acknowledgment.png" class="dueimage" style="margin-top: 3px;height: 13px;">
+                            <img src="assets/images/paymentdue.png" class="dueimage"> -->
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+    </div>
+    <ion-fab mini right bottom #fab>
+        <!-- <p *ngIf="isShowNewPost" class="newPost">New Post</p> -->
+        <button style="background-color:#2b92bb !important; color: white !important" ion-fab mini>
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+            <p *ngIf="members.length>0" class="fabEmailText" (tap)="printMemberSheet()" style="margin-right:46px">Print
+                Members</p>
+            <button *ngIf="members.length>0" style="background-color:#2b92bb !important; color: white !important"
+                ion-fab class="fabTop" (tap)="printMemberSheet()">
+                <ion-icon name="md-copy"></ion-icon>
+            </button>
+            <p class="fabEmailText" (tap)="addMemberToTournament()">Add Member</p>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop"
+                (tap)="addMemberToTournament()">
+                <ion-icon name="md-person-add"></ion-icon>
+            </button>
+
+            <p class="fabEmailText" (tap)="delete()" style="margin-right: -3px;" *ngIf="noOfMembersPaid == 0">Delete
+            </p>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop"
+                (tap)="delete()" *ngIf="noOfMembersPaid == 0">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+
+            <p class="fabEmailText" (tap)="editTournament()" style="margin-right: -17px;">Edit</p>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop"
+                (tap)="editTournament()">
+                <ion-icon name="md-create"></ion-icon>
+            </button>
+
+        </ion-fab-list>
+
+    </ion-fab>
+
+
+
+    <!-- The Modal -->
+    <!-- <div class="modal">
+              <div class="modal-content">
+            <ion-grid style="margin-bottom:60%">
+                <ion-row>
+                    <ion-col col-6>
+                        <button ion-button block style="background-color:#2b92bb !important; color: white !important">Cancel</button>
+                    </ion-col>
+
+                    <ion-col col-6>
+                        <button ion-button block class="timekare-primary-btn">Continue</button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </div>
+    </div> -->
+
+
+
+
+
+
+</ion-content>

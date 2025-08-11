@@ -1,0 +1,24 @@
+page-addagecategory {
+    .scroll-content {
+        padding: 0px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+        //margin-top:60px !important;
+    }
+    .item-inner {
+        border-bottom: 1px solid #faae4e !important;
+    }
+    ion-select{
+        max-width:100% !important;
+    }
+    .input_item{
+        padding-left: 5px !important;
+         ion-label{
+           color: #999 !important;
+           font-size:1.4rem !important;
+         }
+         
+    }
+    .text-input{
+        margin: 13px 0px !important;
+    }
+}

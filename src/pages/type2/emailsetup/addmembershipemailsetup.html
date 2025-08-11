@@ -1,0 +1,88 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Membership Email Setup</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Membership Email Setup
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-grid class="nopadding" *ngIf="allClub.length > 0">
+        <ion-row>
+            <ion-col col-6 class="right_pad">
+                <ion-item>
+                    <ion-label>All</ion-label>
+                    <ion-checkbox [(ngModel)]="isSelectAll" (click)="selectAllToggole()"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+            <ion-col col-6 class="left_pad">
+                <ion-item>
+                    <ion-label>None</ion-label>
+                    <ion-checkbox [(ngModel)]="isUnselectAll" (click)="selectNoneToggole()"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+
+        <ion-list class="margin marginleftright">
+            <p *ngFor="let club of allClub" class="pmargin">
+                <ion-item>
+                    <ion-label>{{club.ClubName}}</ion-label>
+                    <ion-checkbox [(ngModel)]="club.isSelect" (click)="changeMembers()"></ion-checkbox>
+                </ion-item>
+            </p>
+        </ion-list>
+    </ion-grid>
+    <ion-list class="nopadding">
+        <ion-card *ngIf="allClub.length == 0" class="card-view1">
+            <ion-card-content class="slidingcards">
+                <p class="text-color">It seems there are no club prent under this paren club.</p>
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
+    <ion-item>
+        <ion-label floating>Email Setup Name</ion-label>
+        <ion-input type="text" [(ngModel)]="membershipEmailSetupObj.EmailSetupName"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Member Registration</ion-label>
+        <ion-input type="email" [(ngModel)]="membershipEmailSetupObj.MemberRegistration"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Membership Payment</ion-label>
+        <ion-input type="email" [(ngModel)]="membershipEmailSetupObj.MembershipPayment"></ion-input>
+    </ion-item>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelMembershipEmailSetup()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="saveMembershipEmailSetup()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

@@ -1,0 +1,136 @@
+<!--
+  Generated template for the CreateteamPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Create Team</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="home"></ion-icon>
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-list class="ionlist">
+
+      <ion-item>
+        <ion-label>Name</ion-label>
+        <ion-input type="text" [(ngModel)]="parentClubTeamCreationInput.teamDetails.teamName"
+          (ngModelChange)="teamNameInputChange()"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="teamNameError">
+        <ion-label color="danger">{{teamNameErrorMessage}}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Short Name</ion-label>
+        <ion-input type="text" maxlength="3" style="text-transform:uppercase !important" autocapitalize="characters"
+          [(ngModel)]="parentClubTeamCreationInput.teamDetails.shortName"
+          (ngModelChange)="shortNameInputChange()"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="shortNameError">
+        <ion-label color="danger">{{shortNameErrorMessage}}</ion-label>
+      </ion-item>
+      <ion-item class="event_title_img">
+        <ion-row>
+          <ion-col col-10 style="margin:auto">
+            <p class="para">Team Logo</p>
+            <img *ngIf="parentClubTeamCreationInput.teamDetails.logoUrl"
+              [src]="parentClubTeamCreationInput.teamDetails.logoUrl">
+          </ion-col>
+          <ion-col col-2 style="margin:auto">
+            <button ion-button icon-only clear (click)="selectTeamLogo()">
+              <img src="assets/images/upload.svg" class="add_icon">
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()"
+          [(ngModel)]="parentClubTeamCreationInput.teamDetails.venueKey">
+          <ion-option *ngFor="let club of clubs" value="{{club.FirebaseId}}">
+            {{club.ClubName}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="parentClubTeamCreationInput.teamDetails.activityCode">
+          <ion-option *ngFor="let activity of club_activities"
+            value="{{activity.ActivityCode}}">{{activity.ActivityName}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Age Group</ion-label>
+        <ion-input type="text" [(ngModel)]="parentClubTeamCreationInput.teamDetails.ageGroup"></ion-input>
+        <button ion-button clear item-right class="help_btn" (click)="ageGroupHint()">
+          <ion-icon name="ios-help-circle-outline" class="secondary"></ion-icon>
+        </button>
+      </ion-item>
+
+      <ion-item>
+        <ion-row>
+          <ion-col col-6>
+            <p class="match-acess">Team Access</p>
+          </ion-col>
+          <ion-col col-3>
+            <button ion-button class="select-type" (click)="changeType('public')" [class.selected]="publicType">
+              <ion-icon style="padding-right: 10px" name="globe"></ion-icon>
+              Public
+            </button>
+          </ion-col>
+          <ion-col col-3>
+            <button ion-button class="select-type" (click)="changeType('private')" [class.selected]="!publicType">
+              <ion-icon style="padding-right: 10px" name="ios-lock-outline"></ion-icon>
+              Private
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div>
+    <ion-card style="padding: 10px 10px 10px 0px; width: 100%; margin: 0px">
+      <ion-item>
+        <ion-label class="details">Additional Details(optional)</ion-label>
+        <button ion-button item-right clear>
+          <ion-icon (click)="arrow = ! arrow" name="ios-arrow-down" style="float: right;"></ion-icon>
+        </button>
+      </ion-item>
+      <div *ngIf="arrow">
+        <ion-item>
+          <ion-label floating style="padding-left: 10px">Team Description</ion-label>
+          <ion-textarea style="
+            border: 0.5px solid #707070;
+            border-radius: 5px;
+            padding-left: 10px;
+          " type="text" rows="5" maxLength="500"
+            [(ngModel)]="parentClubTeamCreationInput.teamDetails.teamDescription"></ion-textarea>
+        </ion-item>
+      </div>
+
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer class="foo">
+  <ion-grid class="fixedbutton">
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button large block class="createbutton" (click)="createTeamConfirm()">Create</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

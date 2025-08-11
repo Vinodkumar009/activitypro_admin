@@ -1,0 +1,88 @@
+paymentcoach-page{
+    .social-cards ion-col {
+        padding: 8px;
+     }
+     .right{
+         float: right;
+     }
+
+    .red{
+        // -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        // -moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        // box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        // background: #F44336;
+        // border-radius: 2.6em;
+        // -moz-border-radius: 2.6em;
+        // -webkit-border-radius: 2.6em;
+        // color: #ffffff;
+        // display: inline-block;
+        // line-height: 4em;
+        // margin-right: 0px;
+        // text-align: center;
+        // width: 4em;
+        // height: 4em;
+        // font-size: 19px;
+
+
+        box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        background: #F44336;
+        border-radius: 2.6em;
+        -moz-border-radius: 2.6em;
+        -webkit-border-radius: 1.6em;
+        color: #ffffff;
+        display: inline-block;
+        line-height: 6em;
+        margin-right: 0px;
+        text-align: center;
+        width:7em;
+        height: 6em;
+        font-size: 16px;
+    }
+
+    .blue{
+        // -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        // -moz-box-shadow:    7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        // box-shadow:         7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        // background: #06326f;
+        // border-radius: 2.6em;
+        // -moz-border-radius: 2.6em;
+        // -webkit-border-radius: 2.6em;
+        // color: #ffffff;
+        // display: inline-block;
+        // line-height: 4em;
+        // margin-right: 0px;
+        // text-align: center;
+        // width: 4em;
+        // height: 4em;
+        // font-size: 19px;
+        box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+        background: #06326f;
+        border-radius: 2.6em;
+        -moz-border-radius: 2.6em;
+        -webkit-border-radius: 1.6em;
+        color: #ffffff;
+        display: inline-block;
+        line-height: 6em;
+        margin-right: 0px;
+        text-align: center;
+        width: 7em;
+        height: 6em;
+        font-size: 16px;
+    }
+    .text_t{
+    margin-bottom: 0.2rem;
+    }
+    .discount-title{
+        text-align: center;
+        font-size: 0.7em;
+        font-weight: 600;
+    }
+        .margin{
+        margin-top: -9px;
+    }
+    .marg_top{
+    margin-top: 0rem;
+    }
+
+
+}

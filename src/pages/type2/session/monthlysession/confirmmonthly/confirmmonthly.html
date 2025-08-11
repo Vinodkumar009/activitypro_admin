@@ -1,0 +1,121 @@
+<!--
+  Generated template for the ConfirmmonthlyPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Move Confirmation</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content style="padding:5px">
+  <ion-row>
+    <ion-col col-12 class="">
+      <h2 style="padding-left: 10px;color: rgba(0, 0, 0, 0.70)">{{user_subscription.user.FirstName}} {{user_subscription.user.LastName}}</h2>
+    </ion-col>
+  </ion-row>
+
+  
+
+  <ion-row>
+    <ion-col col-10 class="ses_card_col">
+      <ion-card class="session_card">
+        <ion-card-content>
+          <p class="para ses_name">{{old_session.session_name}}</p>
+          <p class="para">{{old_session.days}},{{old_session.duration}} mins,{{old_session.start_time}}</p>
+          <p class="para">{{old_session.ActivityDetails.ActivityName}}/{{old_session.activity_category_name}}/{{old_session.activity_subcategory_name}}</p>
+          <p class="para">{{old_session.coach_names}}</p>
+          <p class="para">{{old_session.ClubDetails.ClubName}}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <div>
+    <p class="creation">Moving To</p>
+  </div>
+  <ion-row>
+    <ion-col col-10 class="ses_card_col">
+      <ion-card class="session_card">
+        <ion-card-content>
+          <p class="para ses_name">{{new_session.session_name}}</p>
+          <p class="para">{{new_session.days}},{{new_session.duration}} mins,{{new_session.start_time}}</p>
+          <p class="para">{{new_session.ActivityDetails.ActivityName}}/{{new_session.activity_category_name}}/{{new_session.activity_subcategory_name}}</p>
+          <p class="para">{{new_session.coach_names}}</p>
+          <p class="para">{{new_session.ClubDetails.ClubName}}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  
+<div class="action_dev">
+  <ion-row style="margin-top:10px">
+    <ion-col col-12 style="margin:auto">
+      <!-- <ion-list radio-group [(ngModel)]="move_frequency">
+        <ion-item *ngIf="user_subscription && user_subscription.is_paid">
+          <ion-label>Immediate</ion-label>
+          <ion-radio value="1" checked></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Next Month</ion-label>
+          <ion-radio value="2"></ion-radio>
+        </ion-item>
+      </ion-list> -->
+      <div padding>
+        <h3>If Current Month is Already Paid</h3>
+        <ul>
+          <li>New subscription payment starts from next month</li>
+          <li>Keep the existing billing cycle/date</li>
+          <li>Existing subscription cancels at period end</li>
+        </ul>
+        <h3>If Current Month Not Paid (or Trial)</h3>
+        <ul>
+          <li>New subscription starts this month with full month charge</li>
+          <li>Keep the existing billing cycle/date</li>
+          <li>Existing subscription cancels immediately</li>
+        </ul>
+        <!-- <h3>Key Principle</h3>
+        <p>Maintaining payment continuity while ensuring users don't lose value from payments already made</p> -->
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col col-12 style="border: auto;text-align: center;">
+      <!-- <div  col-2 class="" style="padding: 6px;"></div> -->
+      <button ion-button color="light" (click)="toggleDay(dayObj.day)" [class.active]="selected_days.includes(dayObj.day)" *ngFor="let dayObj of new_session.Days">{{ dayObj.day }}</button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col col-12 class="price_col" style="">
+      <!-- <span class="para" style="font-size: 17px; font-weight: 600;">Price:</span> -->
+      <p class="para">
+        <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>
+        <span style="margin-left: -3px;">{{ memberPrice }}</span>
+      </p>
+    </ion-col>
+  </ion-row>
+</div>
+  
+
+<div class="confirm_dev">
+  <ion-row>
+    <ion-col col-11 style="margin: auto;">
+      <ion-input type="text" [(ngModel)]="confirmationText" placeholder="Type 'CONFIRM' here..." ></ion-input>
+    </ion-col>
+  </ion-row>
+</div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn" (click)="confirmMove()"
+        [disabled]="confirmationText !== 'CONFIRM'">Confirm Move</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+

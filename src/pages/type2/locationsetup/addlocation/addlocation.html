@@ -1,0 +1,85 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Add Location</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+
+    <ion-item class="padding-5">
+        <ion-label floating>Location Name</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="location.Name" required></ion-textarea>
+    </ion-item>
+
+    <ion-item class="padding-5">
+        <ion-label floating>Address Line 1</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="location.Address1" required></ion-textarea>
+    </ion-item>
+
+    <ion-item class="padding-5">
+        <ion-label floating>Line 2</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="location.Address2"></ion-textarea>
+    </ion-item>
+
+    <ion-grid>
+        <ion-row class="allign-assist">
+            <ion-col col-6>
+                <ion-item>
+                    <ion-label floating>City</ion-label>
+                    <ion-textarea type="text" rows="1" [(ngModel)]="location.City" required></ion-textarea>
+                </ion-item>
+            </ion-col>
+            <ion-col col-6>
+                <ion-item>
+                    <ion-label floating>Post Code</ion-label>
+                    <ion-textarea type="number" rows="1" [(ngModel)]="postCode" required></ion-textarea>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-item class="padding-5">
+        <ion-label floating>Location Map</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="location.MapURL"></ion-textarea>
+    </ion-item>
+
+    <ion-item class="padding-5">
+        <ion-label floating>Website</ion-label>
+        <ion-textarea type="text" rows="1" [(ngModel)]="location.WebsiteURL"></ion-textarea>
+    </ion-item>
+
+    <p class="facilities-header">Select Facilities Available </p>
+    <ion-slides [slidesPerView]="3.2">
+        <ion-slide *ngFor="let facilities of facilitiesArr">
+            <ion-card class="facilityCard" [class.selected]="facilities.Value"
+                (click)="selectFacility(facilities)">
+                <ion-card-content>
+                    <p class="facilities-text"> {{facilities.Label}}</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-slide>
+
+    </ion-slides>
+
+    <ion-item class="padding-5">
+        <ion-label floating>Notes</ion-label>
+        <ion-input type="text" [(ngModel)]="location.Note"></ion-input>
+    </ion-item>
+</ion-content>
+
+
+<ion-footer>
+    <ion-row class="allign-assist" *ngIf="!dataExists"> 
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" type="submit" (click)="addLocation()">Add</button>
+        </ion-col>          
+    </ion-row>
+    <ion-row class="allign-assist" *ngIf="dataExists"> 
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" type="submit" (click)="updateLocation()">Update</button>
+        </ion-col>            
+    </ion-row>
+</ion-footer>

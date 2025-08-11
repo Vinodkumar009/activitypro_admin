@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Wallet Report</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-row [ngClass]="{'applymargin':!isAndroid}">
+      <!-- <ion-col col-12 no-padding>
+        <ion-segment [(ngModel)]="reportType">
+          <ion-segment-button value="Paid" (click)="paymentTabClick('Paid')">
+            Paid
+          </ion-segment-button>
+          <ion-segment-button value="Due" (click)="paymentTabClick('Due')">
+            Pending
+          </ion-segment-button>  
+        </ion-segment>
+      </ion-col> -->
+    </ion-row>
+    <ion-row style="margin: 5px 0px 0px 0px;">
+      <ion-col col-12 no-padding>
+        <ion-slides [slidesPerView]="6" pager="false" #myslider (ionSlideDidChange)="slideChanged()">
+          <ion-slide *ngFor="let month of trnsMonths;let i=index;" (click)="SelectedMonth(i)"
+            [ngClass]="{'active':month.IsActive}">
+            <p class="month_headers" style="margin:5px 0px;">{{month.month}}</p>
+            <p class="month_headers" style="margin: 0px 0px 5px 0px!important">{{month.year}}</p>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row *ngIf="isDateRange" style="margin-top: 10px;">
+    <ion-col col-5 no-padding>
+      <ion-item style="padding-left:3px">
+        <ion-label stacked>From</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="startDate"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col col-5 no-padding>
+      <ion-item style="padding-left:3px">
+        <ion-label stacked>To</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="lastDate" class="enddate">
+        </ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col col-2 text-center no-padding>
+      <button ion-button class="timekare-primary-btn" (click)="Search()">Go</button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <!-- <ion-col col-6>
+      <div class="trns_card" style="line-height: 50px;">
+        <p class="para_header" *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}{{getRound(TotTrnsAmt)}}</p>
+      </div>
+    </ion-col> -->
+    <ion-col col-12>
+      <div class="trns_card">
+        <p>
+          <span class="para_header">{{paidMemberListtemp.length}}</span><br>
+          <span style="color: rgba(255, 255, 255, 0.65);font-size: 15px;">Transactions</span>
+        </p>
+      </div>
+    </ion-col>
+  </ion-row>
+
+    <div>
+      <ion-list *ngIf="paidMemberListtemp.length > 0" style="margin:10px 0px;">
+        <div class="card_style" *ngFor="let paidMember of paidMemberListtemp">
+          <ion-grid style="padding:0px 5px 5px 5px !important">   
+            <ion-row class="innercard_style">
+              <ion-col col-md-3 col-sm-3 col-3 class="col_center">
+                <p style="margin: 0px;"><span class="transaction_date"> {{paidMember.date}}</span></p>
+              </ion-col>
+              <ion-col col-md-6 col-sm-6 col-6 class="border-left">
+                <p style="margin:0px 2px;overflow: unset;
+                white-space: normal;" class="sessiondetails themeheaderfont para_overflow">
+                  {{paidMember.FirstName}} {{paidMember.LastName}}
+                </p>
+                <p class="activity cust_margin para_overflow">{{paidMember.transactionTypeText}}</p>
+              </ion-col>
+              <ion-col col-md-3 col-sm-3 col-3 class="paid_right_col">
+                <p class="sessiondetails cust_margin themeheaderfont payment_details">
+                  <span
+                    *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{paidMember.amount}}
+                </p>
+        
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-list>
+    </div>
+  
+
+  <ion-row *ngIf="paidMemberListtemp.length == 0 ">
+    <ion-col col-12 text-center>
+      <img src="assets/images/menu/payment.svg" class="paymentdue_Img">
+      <p>No payments found</p>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

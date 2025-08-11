@@ -1,0 +1,243 @@
+<!--
+  Generated template for the SessioninstallmentPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-label fixed>Name</ion-label> -->
+<ion-header>
+    <ion-navbar>
+        <ion-title>Session Monthly</ion-title>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <ion-item text-center class="section_header" no-lines>
+        <p>Price Setup</p>
+    </ion-item>
+    <div class="installmentblock" *ngIf="this.postgre_session_input.days.length >= 1">
+        <div class="sessionFeesBlock">
+            Amount monthly (1 day per week)
+        </div>
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForOneDayPerWeekForMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Non Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForOneDayPerWeekForNonMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+    </div>
+
+
+    <div class="installmentblock" *ngIf="this.postgre_session_input.days.length >= 2">
+        <div class="sessionFeesBlock">
+            Amount Monthly (2 days per week) 
+        </div>
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForTwoDayPerWeekForMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Non Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForTwoDayPerWeekForNonMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+    </div>
+
+    <div class="installmentblock" *ngIf="this.postgre_session_input.days.length >= 3">
+        <div class="sessionFeesBlock">
+            Amount Monthly (3 days per week)
+        </div>
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForThreeDayPerWeekForMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Non Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForThreeDayPerWeekForNonMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+    </div>
+
+
+    <div class="installmentblock" *ngIf="this.postgre_session_input.days.length >= 4">
+        <div class="sessionFeesBlock">
+            Amount Monthly (4 days per week)
+        </div>
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForFourDayPerWeekForMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Non Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForFourDayPerWeekForNonMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+    </div>
+
+    <div class="installmentblock" *ngIf="this.postgre_session_input.days.length >= 5">
+        <div class="sessionFeesBlock">
+            Amount Monthly (5 days per week)
+        </div>
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForFiveDayPerWeekForMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Non Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForFiveDayPerWeekForNonMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+    </div>
+
+    <div class="installmentblock" *ngIf="this.postgre_session_input.days.length >= 6">
+        <div class="sessionFeesBlock">
+            Amount Monthly (6 days per week)
+        </div>
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForSixDayPerWeekForMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Non Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForSixDayPerWeekForNonMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+    </div>
+
+    <div class="installmentblock" *ngIf="this.postgre_session_input.days.length >= 7">
+        <div class="sessionFeesBlock">
+            Amount Monthly (7 days per week)
+        </div>
+        <ion-item>
+            <ion-label fixed>Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForSevenDayPerWeekForMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label fixed>Non Member
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="feesObject.AmountForSevenDayPerWeekForNonMember"
+                min="1.00" (ionChange)="onChangeOfMemberAmount()"></ion-input>
+        </ion-item>
+    </div>
+
+    <div style="margin: 6px 0px 6px 0px;" class="border-btm-style">
+        <ion-item class="toggle_header">
+            <p>AP+ Setup</p>
+        </ion-item>
+        <ion-item>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Show In AP Play</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="sessionDetailsObject.ShowInAPKids">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="sessionDetailsObject.ShowInAPKids">
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">Allow Group Chat</p>
+                    <label class="toggle">
+                        <input type="checkbox" (click)="showChatTermsAlert()"
+                            [(ngModel)]="sessionDetailsObject.IsAllowGroupChat">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+    </div>
+
+
+
+
+    <!-- <div style="margin-top:5px;">
+        <ion-item text-center class="section_header" no-lines>
+            <p>Discount Setup</p>
+        </ion-item>
+    </div>
+    <div *ngFor="let discount of DiscountArray" class="installmentblock">
+        <ion-item class="toggle_item" no-lines>
+            <ion-row>
+                <ion-col col-12 no-padding class="flex_col">
+                    <p class="toggle_para">{{discount.DiscountName}}</p>
+                    <label class="toggle">
+                        <input type="checkbox" [(ngModel)]="discount.IsAvailable">
+                        <span data-unchecked="No" data-checked="Yes"></span>
+                    </label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+        <ion-item *ngIf="discount.IsAvailable">
+            <ion-label fixed>Absolute Value
+                <span *ngIf="currencyDetails != undefined">({{currencyDetails.CurrencySymbol}})</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="discount.AbsoluteValue" min="1.00"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="discount.IsAvailable">
+            <ion-label fixed> Percentage Value
+                <span>(%)</span>
+            </ion-label>
+            <ion-input type="number" class="textareastyle" [(ngModel)]="discount.PercentageValue" min="1.00">
+            </ion-input>
+        </ion-item>
+    </div> disabled as we implementing subscription -->
+
+
+
+
+
+
+
+    <ion-grid style="margin-bottom:60%">
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+                    (click)="cancelSessionCreation()">Back</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="createSession()">Create</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

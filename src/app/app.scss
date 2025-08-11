@@ -1,6 +1,4 @@
-// http://ionicframework.com/docs/theming/
-
-
+// http://ionicframework.com/docs/v2/theming/
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,3 +12,378 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+//dashboard icon and div color
+$dashoboard-icon-color:#3fbcd3;
+// take the red pill
+$red-background: #fff6f6;
+$red-light: #ffa99c;
+$red-dark: #74000e;
+$blue-light: #3fbcd3;
+$color1-login-background-image: '../assets/images/background/loginbg.png';
+.tk-center {
+    text-align: center;
+}
+
+
+
+.scroll-content {
+    background-image: url("../assets/images/background/backgroundimg1.png") !important;
+}
+
+// ion-header {
+//     margin-top: 20px!important;
+// }
+// ion-content{
+//     margin-top: 15px;
+// }
+
+// $alert-md-title-font-size:13px;
+// $alert-ios-title-font-size:$alert-md-title-font-size;
+// $alert-ios-head-text-align:center;
+// $alert-md-head-text-align:$alert-ios-head-text-align;
+
+.modal-wrapper{
+    opacity: 0.5;
+    background:rgba(15, 15,15, 0.685);
+}
+// $themecolor:#35adff;
+$themecardleftbordercolor:#35adff;
+$cardhightlighttextcolor:#111164;
+$themelistotheritemcolor1:#7F7F7F;
+$backgroundcolor: #f8f8f8;
+
+
+$cardhightlighttextcolor:#111164;
+$deepblueundistinguishablebluecolor:#01012c;
+// 0a0a61
+
+$text-input-placeholder-color:rgb(204, 194, 194);
+.home_btn{
+    width: 20px;
+}
+.popover-content{
+    top: 56px !important;
+    right: 0px !important;
+    left: auto !important;
+}
+
+//Toast color
+ion-toast.success .toast-wrapper {
+    background: #32db64;
+}
+ion-toast.error .toast-wrapper {
+    background: #f53d3d;
+}
+ion-toast.info .toast-wrapper {
+    background: #f76e04;
+}
+//.alert-button
+ .alert-wrapper .alert-button-group .HideButton{
+    display: none !important;
+    visibility: hidden !important;
+}
+
+
+// changing alert box width in add event page
+.event-alert .alert-wrapper {
+    max-width: 320px !important;
+}
+// changing alert box styles in add create holidaycamp page
+.camp_confirm_alert .alert-wrapper .alert-message .p1{
+    margin: 6px 0px !important;
+    font-size:16px;
+}
+.camp_confirm_alert .alert-wrapper .alert-message .p2{
+    margin: 10px 0px !important;
+    font-size:18px;
+}
+
+.camp_confirm_alert  .alert-wrapper {
+    max-width: 340px !important;
+}
+.camp_confirm_alert .alert-wrapper .alert-message .span1{
+    position: absolute;
+    bottom: 36%;
+    left: 26px
+}
+.camp_confirm_alert .alert-wrapper .alert-message .span2{
+    position: absolute;
+    bottom: 24%;
+    left: 26px
+}
+.camp_confirm_alert .alert-input-group{
+    width: 70% !important;
+    margin: -6% 0% 0% 35% !important;
+}
+
+.action-sheets-basic-page .border_bottom{  // this is for event details action sheet
+    border-bottom: 0.5px solid rgba(128, 128, 128, 0.55);
+}
+ 
+//this is for showing modal pages in full screen when device like tab or pad
+@media only screen and (min-height: 768px) and (min-width: 768px){
+    .modal-wrapper {
+        left: 0 !important;
+        top: 0 !important;
+        position: absolute;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+
+.para_overflow{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.level_alert{  //used in edit challenge
+    .alert-wrapper {
+        width: 300px !important;
+        max-width:300px !important;
+    }
+    .alert-input-group {
+        width: 100% !important; 
+        //margin: -6% 0% 0% 35% !important; 
+    }
+    .alert-ios .alert-input{
+        height: 40px !important;
+    }
+    
+}
+
+.margin_auto{
+  margin: auto;
+}
+
+.modal_wrapper{
+    width:100%;
+    height:100%;
+    position: absolute;
+    left: 0;
+    top:0;
+    background:rgba(0,0,0,0.6);
+    z-index:9999;
+    animation: popup 0.9s;
+    .modal_content{
+        position: relative;
+        width:90%;
+        //margin:5%;
+        left:50%;
+        top:50%;
+        width:90%;
+        height:auto;
+        padding:10px;
+        transform: translate(-50%,-50%);
+        background-color: #fff;
+    }
+}
+@keyframes popup {
+    0%{
+      transform: scale(1);
+    }
+    50%{
+      transform: scale(1.4);
+    }
+    60%{
+      transform: scale(1.1);
+    }
+    70%{
+      transform: scale(1.2);
+    }
+    80%{
+      transform: scale(1);
+    }
+    90%{
+      transform: scale(1.1);
+    }
+    100%{
+      transform: scale(1);
+    }
+  }
+.modal_footer{
+    width:100%;
+    text-align:center;
+    margin: 5px 0px;
+    button{
+        width:100px;
+    }
+}
+
+// ====== Zoom effect ======
+.mfp-zoom-in {
+  
+  /* start state */
+  .mfp-with-anim {
+    opacity: 0;
+    transition: all 0.2s ease-in-out; 
+    transform: scale(0.8); 
+  }
+  
+  &.mfp-bg {
+    opacity: 0;
+	  transition: all 0.3s ease-out;
+  }
+  
+  /* animate in */
+  &.mfp-ready {
+    .mfp-with-anim {
+      opacity: 1;
+      transform: scale(1); 
+    }
+    &.mfp-bg {
+      opacity: 0.8;
+    }
+  }
+  
+  /* animate out */
+  &.mfp-removing {
+    
+    .mfp-with-anim {
+      transform: scale(0.8); 
+      opacity: 0;
+    }
+    &.mfp-bg {
+      opacity: 0;
+    }
+    
+  }
+  
+}
+
+
+    //toggle button related classes
+    .custom_toggle {
+      overflow: hidden;
+      display: inline-block;
+      width: 4em;
+      //background: #2f2a2a;
+      background-color: #ebf7fc;
+      //padding: 0.135em;
+      cursor: pointer;
+      font-size: 17px;
+      margin-left: 8px;
+      border-radius: 50px;
+      height: 30px;
+      float: right;
+  }
+  .custom_toggle input {
+      position: absolute;
+      visibility: hidden;
+  }
+  .custom_toggle ion-input{
+      position: absolute;
+      visibility: hidden;
+  }
+  .custom_toggle span {
+      position: relative;
+      left: 0%;
+      display: block;
+      text-align: center;
+      -webkit-transition: left 200ms ease-out;
+      -moz-transition: left 200ms ease-out;
+      -o-transition: left 200ms ease-out;
+      transition: left 200ms ease-out;
+  }
+  .custom_toggle :checked+span {
+      left: 50%;
+  }
+   /* Default unchecked state */
+   .custom_toggle span:before {
+      content: attr(data-unchecked);
+      display: block;
+      width: 50%;
+      background-color: #f44336;
+      border-radius: 50px;
+      box-shadow: 0 10px 20px -8px #c5d6d6;
+      color: white;
+      border-radius: 25px;
+      font-size: 14px;
+      height: 30px;
+      line-height: 30px;
+  }
+  /* Checked state */
+  .custom_toggle :checked+span:before {
+      content: attr(data-checked);
+      background-color: #03A9F4;
+      color: white;
+      border-radius: 50px;
+      font-size: 14px;
+      height: 30px;
+      line-height: 30px;
+  }
+  .custom_toggle_para{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: pre-wrap;
+  }
+
+  .hide_update_payment{
+    display: none !important;
+  } 
+  .show_update_payment{
+    display: block !important;
+  }
+
+
+  ion-app.platform-ios12 ion-content { pointer-events: auto; /*fix scroll lock on ios12.2*/ }
+
+// .error .toast-container {
+//     background: Grey !important;
+// }
+// .success .toast-container {
+//     background: red !important;
+// }
+
+.spinner1 {
+  //margin: 100px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner1 > div {
+  width: 18px;
+  height: 18px;
+  background-color: #2b92bb;//#333;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner1 .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner1 .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+// ion-loading > .loading-wrapper{
+//   border-radius: 2px;
+//   max-width: 280px;
+//   max-height: 90%;
+//   color: rgba(0, 0, 0, 0.5);
+//   background: transparent !important;
+//   /* -webkit-box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4); */
+//  box-shadow: none !important;
+//   padding: 24px;
+// }

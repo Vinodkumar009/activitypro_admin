@@ -1,0 +1,52 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Location Setup</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+    <ion-list class="margin_bottom">
+        <ion-row *ngIf="LocationDetails.length > 0">
+            <ion-col col-12 style="padding-left:10px " *ngFor="let Location Of LocationDetails">
+                <div class="all border-left-style"></div>
+
+                    <ion-card (tap)="showOptions(Location.$key)">
+                        <ion-card-header class="Location-head" >
+                            <ion-row>
+                                <span class="name">{{Location.Name}}</span>
+
+                            </ion-row>
+                        </ion-card-header>
+                        <ion-card-content style="color: #c5b495">
+                            <ion-row>
+                                    <ion-col col-12>
+                                            <p class="card-text">Address: <span>{{Location.Address1}}</span></p>
+            
+                                            <p class="card-text">PostCode: <span>{{Location.PostCode}}</span></p>
+            
+                                        </ion-col>
+                               
+                            </ion-row>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+          
+        </ion-row>
+        <ion-row>
+            <ion-card *ngIf="LocationDetails.length == 0" class="nonmembercard">
+                <ion-card-content style="text-align: center;color: #bc2a26;">
+                    <p class="danger_color2 nonlocationcard"> No Locations Added</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+
+    </ion-list>
+    <ion-fab right bottom>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="gotoAddLocation()" style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

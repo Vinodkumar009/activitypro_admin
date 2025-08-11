@@ -1,0 +1,76 @@
+<!--
+  Generated template for the PendingTermSessionsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Pending Payments</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- the below code is for pending payment -->
+  <ion-row class="sub-container rows-allign2">
+    <ion-col col-1 style="text-align:center;margin:auto;">
+        <ion-icon name="ios-search"></ion-icon>
+    </ion-col>
+    <ion-col col-10 class="search-bar">
+        <ion-searchbar placeholder="Search by session and player name" id="customsearchbar"
+            (ionInput)="getFilteredPlayer($event)" showCanelButton="shouldShowCancel"
+            autocorrect="off"></ion-searchbar>
+    </ion-col>
+    <ion-col col-1 style="margin: auto;" no-padding><span>{{filtered_payments.length}}</span></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
+      <div *ngIf="filtered_payments.length > 0">
+        <ion-card *ngFor="let payments of filtered_payments;let i=index" class="ion_card " >
+            <ion-card-content class="nopad borderleft" (click)="showPendingActionSheet(i)">
+                <ion-grid class="nopad">
+                    <ion-row>
+                        <ion-col col-9 class="mid-col">
+                            <p class="campname elipsesdot" style="margin-top: -2px;font-size: 1.2em;">{{payments.user_first_name}} {{payments.user_last_name}}</p>
+                            <p  style="margin-top: -2px;font-weight: 400;">{{payments.session_name}}</p>
+                            <p class="holidaycampcard_p">
+                              <span>{{payments.activity_name}}/</span>
+                              <span>{{payments.activity_category_name}}/</span>
+                              <span>{{payments.activity_subcategory_name}}</span>
+                            </p>
+                            <div>
+                              <p class="holidaycampcard_p">
+                                  <ion-icon name="pin"></ion-icon> {{payments.club_name}}
+                              </p>
+                          </div>
+                        </ion-col>
+                        <ion-col col-3 style="margin: auto;" *ngIf="can_coach_see_revenue">
+                          <p style="font-weight:500;color:red">
+                            <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>
+                            <span style="margin-left: -3px;">{{payments.amount_due | number: '1.2-2'}}</span>
+                          </p>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+            <!-- <ion-card-content *ngIf="camp.is_selected" class="card_content">
+                <div style="margin:5px;text-align: center;">
+                  <p (click)="viewCampDetails(camp)">View Camp</p>
+                </div>
+                <div  style="margin:auto;text-align: center;">
+                  <p (click)="removePlayer(camp)">Remove Player</p>
+                </div>
+              </ion-card-content> -->
+        </ion-card>
+        <ion-row *ngIf="filtered_payments.length==0">
+            <ion-card  class="nonmembercard">
+                <ion-card-content style="text-align: center;color: #bc2a26;">
+                    <p class="danger_color2 nonlocationcard"> No Data Found</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+      </div>
+    </ion-col>
+  </ion-row>
+  
+</ion-content>

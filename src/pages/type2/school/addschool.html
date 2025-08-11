@@ -1,0 +1,102 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Add School</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Add School
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <!--<ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select [(ngModel)]="selectedType" (ionChange)="getParentClub()">
+            <ion-option value="Type1">Type 1</ion-option>
+            <ion-option value="Type2">Type 2</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Parent Club</ion-label>
+        <ion-select [(ngModel)]="selectedParentClubKey" (ionChange)="getClubList()">
+            <ion-option *ngFor="let parentClub of allParentClubDataArr" value={{parentClub.$key}}>{{parentClub.ParentClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-card>
+        <ion-card-content>
+            <ion-item *ngFor="let club of  allClub">
+                <ion-label>{{club.ClubName}}</ion-label>
+                <ion-checkbox color="blue" checked="club.isSelect" [(ngModel)]="club.isSelect"></ion-checkbox>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>-->
+    <ion-row class="sub-container ">
+        <ion-col col-2 style="text-align: -webkit-right;">
+            <button>
+                <ion-icon name="ios-search"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+            <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getItems($event)"
+                autocorrect="off"></ion-searchbar>
+        </ion-col>
+    </ion-row>
+
+
+    <ion-card *ngFor="let item of SetupDisplay" class="schoolcard">
+        <ion-card-content style="padding: 4px 9px 4px !important;">
+            <!-- Add card content here! -->
+
+
+            <!-- <p><span> {{item.SchoolName}}</span></p>
+            <p><span> {{item.SchoolAddress}}</span></p> -->
+            <!-- <p><span>EmailID: </span><span>{{item.SchoolEmailID}}</span></p> -->
+
+
+            <ion-item class="padding-left-item">
+                <ion-label> {{item.SchoolName}} <p *ngIf="item.FirstLineAddress">{{item.FirstLineAddress}}<span *ngIf="item.SecondLineAddress">, {{item.SecondLineAddress}}</span></p></ion-label>
+                <ion-checkbox color="blue" checked="item.isSelect" [(ngModel)]="item.isSelect" (ionChange)="toggolSelectionSchool(item)"></ion-checkbox>
+            </ion-item>
+        </ion-card-content>
+
+
+     
+    </ion-card>
+
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelSchoolAgainstParentKey()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="saveSchoolAgainstParentKey()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

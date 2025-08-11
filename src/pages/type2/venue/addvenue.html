@@ -1,0 +1,140 @@
+<!--<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Add Venue</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+                <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Add Venue
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>-->
+
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Add Venue</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Add Venue
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+
+
+
+
+
+
+
+
+
+<ion-content>
+    <ion-row class="sub-container " [ngStyle]="{'margin-top.px': this.platform=='ios' ? 35 : 12 }">
+        <ion-col col-2 style="text-align: -webkit-right;">
+            <button>
+                <ion-icon name="ios-search"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+            <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getItems($event)" autocorrect="off">
+            </ion-searchbar>
+        </ion-col>
+    </ion-row>
+    <!-- <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar> -->
+    <div style="height:90%;width: 100%; position: absolute; overflow-y: scroll;">
+        <ion-item *ngFor="let item of SetupDisplay">
+            <ion-label>{{item.ClubName}}</ion-label>
+
+            <ion-checkbox color="dark" [disabled]="item.disabled" [(ngModel)]="item.IsSelected"
+                [checked]="item.disabled"></ion-checkbox>
+        </ion-item>
+        <div *ngIf="SetupDisplay != undefined">
+            <page-commentforemptiness *ngIf="SetupDisplay.length == 0" (click)="this.navCtrl.push('AddNewVenue')"
+                [customTitle]=AddVenue></page-commentforemptiness>
+
+        </div>
+    </div>
+
+
+
+    <!--<ion-list no-border *ngFor="let item of parentclubs1">
+    <ion-list-header class="list-modifier">
+       <ion-label>{{item.ParentClubName}}</ion-label>
+    <ion-checkbox [(ngModel)]="item.IsSelected"></ion-checkbox>
+    </ion-list-header>
+
+    <ion-item *ngFor="let inneritem of item.clubs">
+      <ion-label>{{inneritem.ClubName}}</ion-label>
+    <ion-checkbox [(ngModel)]="inneritem.IsSelected"></ion-checkbox>
+    </ion-item>
+
+  </ion-list>-->
+
+
+    <ion-grid style="position: absolute;
+    bottom: 0;" *ngIf="SetupDisplay != undefined && SetupDisplay.length != 0">
+        <ion-row>
+
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+                    (click)="cancelVenue()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="addVenue()">Add</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-fab *ngIf="SetupDisplay != undefined && SetupDisplay.length == 0" right bottom>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important"
+            (tap)="this.navCtrl.push('AddNewVenue')"
+            style="background-color:#2b92bb !important; color: white !important">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

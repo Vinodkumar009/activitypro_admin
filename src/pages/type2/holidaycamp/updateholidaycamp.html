@@ -1,0 +1,248 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Edit Camp</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Edit Camp
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content>
+    <ion-list class="custom_ionlist">
+        <ion-item>
+            <ion-label>Venue</ion-label>
+            <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()" disabled="true">
+                <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Activity</ion-label>
+            <ion-select [(ngModel)]="selectedActivityType" (ionChange)="onChangeActivity()" disabled="true">
+                <ion-option *ngFor="let type of types" value={{type.Key}}>{{type.ActivityName}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="isActivityCategoryExist">
+            <ion-label>Category</ion-label>
+            <ion-select [(ngModel)]="selectActivityCategory" (ionChange)="onChangeActivityCategory()" disabled="true">
+                <ion-option value="">Select</ion-option>
+                <ion-option *ngFor="let ac of activityCategoryList" value={{ac.Key}}>{{ac.ActivityCategoryName}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="isExistActivitySubCategory && selectActivityCategory!= ''" disabled="true">
+            <ion-label>Sub Category</ion-label>
+            <ion-select [(ngModel)]="selectActivitySubCategory">
+                <ion-option value="">Select</ion-option>
+                <ion-option *ngFor="let acs of activitySubCategoryList" value={{acs.Key}}>{{acs.ActivitySubCategoryName}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Coach</ion-label>
+            <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+                <ion-option *ngFor="let coach of coachs" value={{coach.CoachKey}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item class="custom_ionitem">
+            <ion-input type="text" placeholder="Age Group" [(ngModel)]="holidayCamp.AgeGroup"></ion-input>
+            <button ion-button clear item-right class="help_btn" (click)="ageGroupHint()"> <ion-icon name="ios-help-circle-outline" class="secondary"></ion-icon></button>
+        </ion-item>
+
+        <ion-item class="custom_ionitem">
+            <ion-input type="text" placeholder="Moderator" [(ngModel)]="holidayCamp.Moderator"></ion-input>
+        </ion-item>
+        <ion-item class="custom_ionitem">
+            <ion-input type="text" placeholder="Holiday Camp Name" [(ngModel)]="holidayCamp.CampName"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Camp Type</ion-label>
+            <ion-select [(ngModel)]="campType" (ionChange)="onChangeOfCampType()" disabled="true">
+                <ion-option *ngFor="let camp of campList" value={{camp.Key}}>{{camp.Value}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+
+
+    <!--Single Day holiday camp field-->
+    <ion-list *ngIf="campType == 501">
+        <ion-item>
+            <ion-label>Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="holidayCamp.HolidayCampOn"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-input type="number" max="60" min="1" placeholder="Total Duration" [(ngModel)]="holidayCamp.TotalDuration"></ion-input>
+        </ion-item>
+
+        <div>
+
+            <div class="session_margintop1" *ngFor="let session of singleHolidayCampSessionList;let i=index">
+                <ion-fab right class="margin_top_session_fab">
+                    <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="removeSingleDaySession(i)" disabled="true"><ion-icon name="remove"></ion-icon></button>
+                </ion-fab>
+
+                <ion-item>
+                    <ion-input type="text" placeholder="Session Name" [(ngModel)]="session.SessionName"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-input type="number" max="60" min="1" placeholder="Duration" [(ngModel)]="session.Duration"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Start Time</ion-label>
+                    <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" [(ngModel)]="session.StartTime"></ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-input type="number" min="0.00" placeholder="Amount" [(ngModel)]="session.Amount"></ion-input>
+                </ion-item>
+            </div>
+            <ion-item class="session_margintop" *ngIf="singleHolidayCampSessionList.length >1">
+                <ion-input type="number" placeholder="Whole day amount" [(ngModel)]="holidayCamp.WholeAmount"></ion-input>
+            </ion-item>
+            <div>
+                <ion-fab right class="margin_bottom_session_fab">
+                    <button ion-fab mini color="primary" disabled="true" (click)="addSingleDayHolidayCampSession()"><ion-icon name="add"></ion-icon></button>
+                </ion-fab>
+            </div>
+        </div>
+    </ion-list>
+
+
+    <!--Multiple Day holiday camp field-->
+    <ion-list *ngIf="campType == 502">
+        <ion-item>
+            <ion-input type="number" max="60" min="1" placeholder="Total Duration"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>End Date</ion-label>
+            <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY"></ion-datetime>
+        </ion-item>
+
+
+        <ion-item class="session_margintop">
+            <ion-input type="text" placeholder="Session Name" value="Session1"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Time</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-input type="number" min="0.00" placeholder="Amount"></ion-input>
+        </ion-item>
+
+        <ion-item class="session_margintop">
+            <ion-input type="text" placeholder="Session Name" value="Session2"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Time</ion-label>
+            <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-input type="number" min="0.00" placeholder="Amount"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <ion-list class="list_margin_top">
+        <ion-item class="custom_ionitem">
+            <ion-input type="number" placeholder="Squad Size" [(ngModel)]="holidayCamp.SquadSize"></ion-input>
+        </ion-item>
+        <ion-item class="left_margin">
+            <ion-label> Apply squad size restriction</ion-label>
+            <ion-checkbox color="dark" [(ngModel)]="squadSizeRestrictionFlag"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-textarea placeholder="Description" [(ngModel)]="holidayCamp.Description"></ion-textarea>
+        </ion-item>
+        <ion-item class="left_margin">
+            <ion-label>AllowMemberEnrollment</ion-label>
+            <ion-checkbox color="dark" [(ngModel)]="allowMemberEnrollment" (ionChange)="onChangeAllowMemberEnrollment()"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Button Text</ion-label>
+            <ion-input type="text" [(ngModel)]="holidayCamp.MemberAllowmentText"></ion-input>
+        </ion-item>
+
+        <ion-item class="left_margin">
+            <ion-label> Push this as a promotion in the member dashboard</ion-label>
+            <ion-checkbox color="dark" [(ngModel)]="promotionPushFlag"></ion-checkbox>
+        </ion-item>
+    </ion-list>
+
+
+    <ion-list *ngIf="promotionPushFlag">
+        <ion-item>
+            <ion-input type="text" placeholder="Promotion Title"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Start Date</ion-label>
+            <ion-datetime pickerFormat="DD MM YYYY"></ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label>End Date</ion-label>
+            <ion-datetime pickerFormat="DD MM YYYY"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-input type="text" placeholder="Image Url"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <!--<ion-label floating>Description</ion-label>-->
+            <ion-input type="text" placeholder="Description"></ion-input>
+        </ion-item>
+        <ion-item>
+            <!--<ion-label floating>Sequence</ion-label>-->
+            <ion-input type="text" placeholder="Sequence"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Promotion Type</ion-label>
+            <ion-select [(ngModel)]="promoType">
+                <ion-option *ngFor="let promo of promoTypeList" value={{promo.Key}}>{{promo.Value}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item *ngIf="promoType==200">
+            <ion-input type="number" placeholder="Slide Show Speed"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="updateHolidayCamp()">Update</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

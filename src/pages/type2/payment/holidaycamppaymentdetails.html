@@ -1,0 +1,270 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Payment Details</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="paymentStatus">
+            <ion-segment-button value="Paid" (click)="paymentTabClick()">
+                Paid
+            </ion-segment-button>
+            <ion-segment-button value="Pending Verification" (click)="paymentTabClick()">
+                Pending Verification
+            </ion-segment-button>
+            <ion-segment-button value="Due" (click)="paymentTabClick()">
+                Due
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Payment Details
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="paymentStatus">
+            <ion-segment-button value="Paid" (click)="paymentTabClick()">
+                Paid
+            </ion-segment-button>
+            <ion-segment-button value="Pending Verification" (click)="paymentTabClick()">
+                Pending Verification
+            </ion-segment-button>
+            <ion-segment-button value="Due" (click)="paymentTabClick()">
+                Due
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+
+    <div [ngSwitch]="paymentStatus">
+        <ion-list *ngSwitchCase="'Paid'">
+            <ion-searchbar class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItemsPaid($event)" autocorrect="off"
+                placeholder="Search by name"></ion-searchbar>
+            <!-- <ion-item-sliding #item class="margin_bottom" *ngFor="let paidMember of paidMemberList">
+                <ion-item>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            {{paidMember.DisplayName}}
+                            <p class="paidbystatus">{{paidMember.PaidBy}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+
+                            <span style="font-weight: bold;    color: #2d64e6;">&pound; {{paidMember.AmountPaid}}</span> On {{paidMember.TransactionDate}}
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Session : {{paidMember.HolidayCampName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>@ {{paidMember.VenueName}}</ion-col>
+                    </ion-row>
+
+                </ion-item>
+            </ion-item-sliding> -->
+
+            <ion-list class="card_style" *ngFor="let paidMember of paidMemberList">
+                <!-- *ngFor="let paidMember of paidMemberList" -->
+                <ion-grid class="innercard_style">
+                    <ion-row>
+                        <!-- <ion-col col-md-3 col-sm-3 col-3 style="padding:0px;text-align:center;">
+                            <p class="sessiondetails cust_margin themeheaderfont payment_details">
+                                <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{paidMember.AmountPaid}}</p>
+                            <p class="coachname " *ngIf="paidMember.DiscountAmount != 0 && paidMember.DiscountAmount != undefined">{{paidMember.DiscountAmount}}
+                                <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{paidMember.DiscountAmount}}</p>
+                        </ion-col> -->
+
+
+                        <ion-col col-md-3 col-sm-3 col-3 style="padding:0px;text-align:center;">
+                            <p class="sessiondetails cust_margin themeheaderfont payment_details">
+                                <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{paidMember.AmountPaid}}</p>
+                            <p class="coachname " *ngIf="paidMember.DiscountAmountIncludingCharges != 0 && paidMember.DiscountAmountIncludingCharges != undefined && paidMember.DiscountAmountIncludingCharges != '0.00'">
+                                <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{paidMember.DiscountAmountIncludingCharges}}</p>
+                        </ion-col>
+
+
+
+                        <ion-col col-md-9 col-sm-9 col-9 class="border-left">
+                            <p class="sessiondetails cust_margin themeheaderfont">{{paidMember.DisplayName}}
+                                <span class="transaction_date"> {{paidMember.TransactionDate}}</span>
+                            </p>
+                            <!-- <p class="sessionName cust_margin">{{paidMember.SessionName}}  <span class="transaction_date"> {{paidMember.PaidBy}}</span> </p> -->
+                            <p class="activity cust_margin"> {{paidMember.HolidayCampName}}
+                                <span class="transaction_date1"> {{paidMember.PaidBy}}</span>
+                            </p>
+                            <p class="venuename cust_margin">@ {{paidMember.VenueName}}</p>
+                        </ion-col>
+                    </ion-row>
+
+                </ion-grid>
+            </ion-list>
+
+
+
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'Pending Verification'">
+
+
+
+            <ion-searchbar class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItemsPending($event)" autocorrect="off"
+                placeholder="Search by name"></ion-searchbar>
+
+            <!-- <ion-item-sliding #item class="margin_bottom" *ngFor="let pvMember of pendingVerificationMemberList;let i = index">
+                <ion-item>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            {{pvMember.DisplayName}}
+                            <p class="paidbystatus">{{pvMember.PaidBy}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            <span style="font-weight: bold;    color: #2d64e6;">&pound; {{pvMember.AmountPaid}}</span> On {{pvMember.TransactionDate}}
+                        </ion-col>
+                    </ion-row>
+
+
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Session : {{pvMember.HolidayCampName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>@ {{pvMember.VenueName}}</ion-col>
+                    </ion-row>
+
+                </ion-item>
+                <ion-item-options side="right">
+                    <button ion-button class="detailsBtn btn-width" (click)="update(pvMember,i)">
+                                <ion-icon name="ribbon"></ion-icon>
+                                Verify
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding> -->
+
+         
+            <ion-list class="card_style"  *ngFor="let pvMember of pendingVerificationMemberList;let i = index">
+                
+                <ion-grid class="innercard_style">
+                    <ion-row>
+                        <ion-col col-md-3 col-sm-3 col-3 style="padding:0px;text-align:center;">
+                            <p class="sessiondetails cust_margin themeheaderfont payment_details">
+                                <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{pvMember.AmountPaid}}</p>
+                            <!-- <p class="coachname " *ngIf="pvMember.DiscountAmount != 0">
+                                <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{pvMember.DiscountAmount}}</p> -->
+                        </ion-col>
+                        <ion-col col-md-9 col-sm-9 col-9 class="border-left">
+                            <p class="sessiondetails cust_margin themeheaderfont">{{pvMember.DisplayName}}
+                                <span class="transaction_date"> {{pvMember.TransactionDate}}</span>
+                            </p>
+                            <p class="activity cust_margin"> {{pvMember.HolidayCampName}}
+                                <span class="transaction_date1"> {{pvMember.PaidBy}}</span>
+                            </p>
+                            <p class="venuename cust_margin">@ {{pvMember.VenueName}}</p>
+                        </ion-col>
+                    </ion-row>
+
+                </ion-grid>
+            </ion-list>
+
+
+
+        </ion-list>
+
+
+        <ion-list *ngSwitchCase="'Due'">
+
+
+            <ion-searchbar class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItemsDue($event)" autocorrect="off"
+                placeholder="Search by name"></ion-searchbar>
+
+            <!-- <ion-item-sliding #item class="margin_bottom" *ngFor="let dMember of dueMemberList;let i = index">
+                <ion-item>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            {{dMember.DisplayName}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>
+                            &pound; {{dMember.AmountDue}}
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>Session : {{dMember.HolidayCampName}}</ion-col>
+                    </ion-row>
+                    <ion-row class="row">
+                        <ion-col class="col" col-12>@ {{dMember.VenueName}}</ion-col>
+                    </ion-row>
+
+                </ion-item>
+                <ion-item-options side="left">
+                    <button ion-button class="detailsBtn btn-width" (click)="notify(dMember)">
+                        <ion-icon name="md-notifications"></ion-icon>
+                        Notify
+                    </button>
+                </ion-item-options>
+
+            </ion-item-sliding> -->
+
+            <ion-list class="card_style" *ngFor="let dMember of dueMemberList;let i = index" >
+                    
+                    <ion-grid class="innercard_style">
+                        <ion-row>
+                            <ion-col col-md-3 col-sm-3 col-3 style="padding:0px;text-align:center;">
+                                <p class="sessiondetails cust_margin themeheaderfont payment_details"style="margin-top:20px;">
+                                    <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{dMember.AmountDue}}</p>
+                                <!-- <p class="coachname " *ngIf="pvMember.DiscountAmount != 0">
+                                    <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{pvMember.DiscountAmount}}</p> -->
+                            </ion-col>
+                            <ion-col col-md-9 col-sm-9 col-9 class="border-left">
+                                <p class="sessiondetails cust_margin themeheaderfont"> {{dMember.DisplayName}}
+                                    <!-- <span class="transaction_date"> {{pvMember.TransactionDate}}</span> -->
+                                </p>
+                                <!-- <p class="sessionName cust_margin">{{paidMember.SessionName}}  <span class="transaction_date"> {{paidMember.PaidBy}}</span> </p> -->
+                                <p class="activity cust_margin"> {{dMember.HolidayCampName}}
+                                    <!-- <span class="transaction_date1"> {{pvMember.PaidBy}}</span> -->
+                                </p>
+                                <p class="venuename cust_margin">@ {{dMember.VenueName}}</p>
+                            </ion-col>
+                        </ion-row>
+    
+                    </ion-grid>
+                </ion-list>
+    
+
+        </ion-list>
+    </div>
+
+    <ion-fab right bottom>
+        <button ion-fab mini color="primary" (click)="sendMail()">
+            <ion-icon name="mail"></ion-icon>
+        </button>
+    </ion-fab>
+
+</ion-content>

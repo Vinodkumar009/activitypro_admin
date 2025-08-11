@@ -1,0 +1,20 @@
+editmember-page{
+    .scroll-content{
+        background-image: url("../assets/images/background/innerbg.png");
+        background-size: 100% 100%;
+    }
+    .condition{
+        margin-left: 6px;
+        margin-top: 4px;
+        font-size: 16px;
+        color: black;
+    }
+    .condition_block{
+        margin-top: 19px;
+    }
+    .heading{
+        color:$dashoboard-icon-color;
+        text-decoration: underline;
+    }
+   
+}

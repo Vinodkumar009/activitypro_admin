@@ -1,0 +1,143 @@
+helpsupportemail-page {
+    $toolbar-background-color1: #2b92bb ;
+    $toolbar-title-color1: #ffffff;
+    $toolbar-button-text-color1: #ffffff;
+    .scroll-content {
+        padding: 16px 0px !important;
+        background-color: rgb(234, 243, 248) !important;
+    }
+    .toolbar-title-ios {
+        color: #f4f4f4 !important;
+    }
+   
+
+    .bar-button {
+        color: $toolbar-button-text-color1;
+    }
+    .toolbar {
+        padding-top: 25px !important;
+    }
+    .toolbar-title {
+        padding-top: 25px;
+    }
+    .bar-button-default-ios,
+    .bar-button-default.bar-button-ios-default,
+    .bar-button-clear-ios-default {
+        color: #f4f4f4 !important;
+    }
+    .toolbar-title {
+        color: $toolbar-title-color1;
+        //added after dashboard color change.
+        font-weight: 400;
+    }
+    .toolbar-background {
+        background-color: $toolbar-background-color1 !important;
+    }
+    .toolbar-background-ios {
+        background: #2b92bb !important;
+    }
+    .white-space{
+        white-space: pre-wrap;
+    }
+    .message {
+        padding: 1px 16px 1px 15px;
+    }
+    .p_clubName {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+    .elipsesdot {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 73px;
+        display: block;
+        overflow: hidden;
+    }
+    .sub-container {
+        border-bottom: 1px solid orange;
+        padding-bottom: 13px;
+        margin-top: 10px;
+        button {
+            width: 90%;
+            height: 86%;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 86% !important;
+            margin-top: 4px !important;
+            padding: 2px 0px
+        }
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+        .searchbar-search-icon {
+            display: none !important;
+        }
+        ion-icon {
+            font-size: 20px;
+        }
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow: none
+        }
+    }
+    ion-card {
+        color: grey;
+        ion-card-header {
+            color: grey;
+        }
+        border-bottom: 1px solid rgb(210, 203, 203)!important;
+        width: 100% !important;
+        margin: 1px !important;
+        box-shadow:none !important;
+    }
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+        left: 3px !important;
+    }
+    .scroll-content {
+        margin-top: 44px !important;
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        text-align: right;
+        padding-right: 5px;
+    }
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+    ion-item {
+        padding-top: 7px !important;
+        padding-bottom: 7px !important;
+        div {
+            border-bottom: 0px !important;
+            padding-right: 0px!important;
+            div {
+                border-right: 0.001em ridge #CBD9DC;
+            }
+        }
+    }
+}

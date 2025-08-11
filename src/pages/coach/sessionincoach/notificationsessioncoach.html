@@ -1,0 +1,58 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Session Notification</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Session Notification
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="cards-bg social-cards" padding>
+
+
+    <ion-item>
+        <ion-label stacked>Message</ion-label>
+        <ion-textarea type="text" [(ngModel)]="notificationObj.Message" placeholder="Type a message here..."></ion-textarea>
+    </ion-item>
+
+
+    <!--
+      <ion-item>
+        <ion-label floating>Compose Notification</ion-label>
+        <ion-textarea type="text" [(ngModel)]="notificationObj.Message"></ion-textarea>
+      </ion-item>-->
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancel()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="sendNotification()">Send</button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

@@ -1,0 +1,127 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Membership Year</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+  <ion-item style="border-bottom: 1px solid #fbc686;">
+    <ion-select class="maxwidthionselect" [(ngModel)]="selectedClubKey" (ionChange)="getYearlyEndDate()">
+      <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <h4 style="color:rgba(0,0,0,0.85)" class="h6">Membership Year</h4>
+  <ion-row radio-group [(ngModel)]="MembershipYear" class="ionrow">
+    <!-- <ion-col col-12 class="ioncol">
+      <p>
+        <ion-label>Yearly Fixed End Year</ion-label>
+      </p>
+    </ion-col> -->
+    <ion-col class="ioncol">
+      <ion-item style="padding: 10px 10px !important">
+        <!-- <ion-label style="color: #efb061;"> Financial Year<span *ngIf="MembershipYear == 'FinancialYear'"
+            class="date">{{this.YearlyFixedEndDate.FinancialYear.StartMonth}}-{{this.YearlyFixedEndDate.FinancialYear.EndMonth}}</span>
+        </ion-label> -->
+        <ion-label style="color: #efb061;"> Financial Year<span *ngIf="MembershipYear == 'FinancialYear'"
+          class="date">{{this.YearlyFixedEndDate.FinancialYear.StartMonth}}-{{this.YearlyFixedEndDate.FinancialYear.EndMonth}}</span>
+      </ion-label>
+        <ion-radio value="FinancialYear" (click)=selectEndDate() item-left></ion-radio>
+      </ion-item>
+    </ion-col>
+    <!-- <ion-col col-12 class="ioncol">
+     
+        <p>12 Month Rolling</p>
+     
+    </ion-col> -->
+    <!-- <ion-col class="ioncol">
+      <ion-item>
+        <ion-label style="color: #efb061;">Finish a Month Before<span
+            *ngIf="MembershipYear == 'TwelvemonthrollingMonthBefore'" class="date">{{MonthBefore}}</span></ion-label>
+        <ion-radio value="TwelvemonthrollingMonthBefore" (click)=selectEndDate() item-left>
+        </ion-radio>
+      </ion-item>
+    </ion-col> -->
+    <ion-col class="ioncol">
+      <ion-item style="padding: 10px 10px !important">
+        <ion-label style="color: #efb061;">365 Days<span
+            *ngIf="MembershipYear == 'TwelvemonthrollingAtThatMonth'" class="date">{{AtThatMonth}}</span></ion-label>
+        <ion-radio value="TwelvemonthrollingAtThatMonth" (click)=selectEndDate() item-left>
+        </ion-radio>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <h4 style="color:rgba(0,0,0,0.85)" class="h6">Admin Fees</h4>
+  <ion-row>
+    <ion-col style="padding:0;">
+      <ion-item class="padding-5">
+        <ion-label *ngIf="currencyDetails">Admin Fee ({{currencyDetails.CurrencySymbol}})</ion-label>
+        <ion-input type="number" class="text_align_right" [(ngModel)]="AdminFees"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-12 no-padding class="flex_col" >
+      <p class="para">Apply admin fees at renewal</p>
+      <label class="toggle">
+        <input type="checkbox" [(ngModel)]="isAdminFeesRenewal" (click)="updateMicroEvent(1,$event)">
+        <span data-unchecked="No" data-checked="Yes"></span>
+      </label>
+    </ion-col>
+  </ion-row>
+  <!-- <h4 style="color:rgba(0,0,0,0.85)" class="h6">Payment</h4>
+  <ion-row style="margin-top: 10px;">
+    <ion-col col-12 no-padding class="flex_col">
+      <p class="para">Allow Cash Payment</p>
+      <label class="toggle">
+        <input type="checkbox" [(ngModel)]="isAllowCash"  (click)="updateMicroEvent(2,$event)">
+        <span data-unchecked="No" data-checked="Yes"></span>
+      </label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12 class="flex_col" >
+      <p class="para">Allow BACS Payment</p>
+      <label class="toggle">
+        <input type="checkbox" [(ngModel)]="isAllowBacs" (click)="updateMicroEvent(3,$event)">
+        <span data-unchecked="No" data-checked="Yes"></span>
+      </label>
+    </ion-col>
+  </ion-row> -->
+  <ion-row>
+    <ion-col col-12 class="flex_col">
+      <p class="para">Charge Prorata(starting month)</p>
+      <label class="toggle">
+        <input type="checkbox" [(ngModel)]="charge_prorata" (click)="updateMicroEvent(4,$event)">
+        <span data-unchecked="No" data-checked="Yes" ></span>
+      </label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12 class="flex_col">
+      <p class="para">Auto Renewal</p>
+      <label class="toggle">
+        <input type="checkbox" [(ngModel)]="auto_renewal" (click)="updateMicroEvent(5,$event)">
+        <span data-unchecked="No" data-checked="Yes"></span>
+      </label>
+    </ion-col>
+  </ion-row>
+
+  <h4 style="color:rgba(0,0,0,0.85)" class="h6">Membership Payment Disclaimer</h4>
+  <ion-item style="display: flex;flex-direction: column;">
+    <ion-label style="margin: 2px !important;">Disclaimer</ion-label>
+    <ion-textarea type="text" rows="5" [(ngModel)]="disclaimer"></ion-textarea>
+  </ion-item>
+
+  <h4 style="color:rgba(0,0,0,0.85)" class="h6">Membership Template</h4>
+  <ion-item>
+    <ion-label>Edit Membership Template</ion-label>
+    <ion-checkbox [(ngModel)]="istemplateChecked" (ionChange)="gototemplate()"></ion-checkbox>
+  </ion-item> 
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn" type="submit" (click)="validateAndConfirm()">{{this.dataexists ? 'Update':'Create'}}</button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,32 @@
+<div
+  [ngClass]="{'color-theme-1': themeFlag == 1, 'color-theme-2 ': themeFlag == 2, 'color-theme-3 ': themeFlag == 3,
+'color-theme-4': themeFlag == 4, 'color-theme-5 ': themeFlag == 5, 'color-theme-6 ': themeFlag == 6, 
+'color-theme-7 ': themeFlag == 7}"
+>
+  <span *ngIf="themeType == 1">
+    <ion-menu [content]="content">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list>
+          <button
+            menuClose
+            ion-item
+            *ngFor="let p of pages"
+            (click)="openPage(p)"
+          >
+            {{p.title}}
+          </button>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+    <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
+  </span>
+  <ion-nav [root]="rootPage" *ngIf="themeType == 2"></ion-nav>
+</div>

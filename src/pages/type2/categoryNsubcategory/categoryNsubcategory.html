@@ -1,0 +1,79 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Activity Setup</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+
+  <ion-row *ngIf="activity.length" class="venuerow">
+    <ion-col *ngIf="activity.length > 1" col-1 text-center>
+      <img src="assets/imgs/activity.png">
+    </ion-col>
+    <ion-col col-11 *ngIf="activity.length > 1" text-left>
+      <ion-select [(ngModel)]="selectedActivity" (ionChange)="changeActivity($event)">
+        <ion-option *ngFor="let item of activity" value={{item.ActivityKey}}>{{item.ActivityName}}</ion-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+  <div class="rowclass" *ngIf="selectedactivityObj">
+    <ion-row class="flexrow">
+      <p class="headingpara">Category <span> {{selectedactivityObj.category.length}}</span></p>
+      <div class="plus"  style="float:right;" (click)="addcategory('Category')"> <ion-icon style="padding: 1px 0 0px 1px;" name="ios-add-outline"></ion-icon></div>
+    </ion-row>
+    <ion-row class="row row-head-cat" *ngFor="let cat of selectedactivityObj.category">
+      <!-- <ion-col (click)="delete(cat, 'category')" col-10> removed as shubhankar said-->
+      <ion-col col-10>
+        {{cat.ActivityCategoryName}}
+      </ion-col>
+      <ion-col col-2 text-right>
+        <ion-icon (click)="cat.IsShowSubCat = !cat.IsShowSubCat" name="ios-arrow-down"></ion-icon>
+      </ion-col>
+      <ion-col col-12 *ngIf="cat.IsShowSubCat">
+        <ion-row class="flexrow">
+          <p class="headingpara">Sub Category <span> {{cat.subCategory.length}}</span></p>
+          <div class="plus"  style="float:right;" (click)="addcategory('Sub Category', cat)"> <ion-icon style="padding: 1px 0 0px 1px;" name="ios-add-outline"></ion-icon></div>
+        </ion-row>
+        <ion-col class="row" *ngFor="let sub of cat.subCategory">
+          <!-- <ion-col (click)="delete(cat, 'subcategory',sub)" col-12> removed as shubhankar said-->
+          <ion-col  col-12> 
+            {{sub.ActivitySubCategoryName}}
+          </ion-col>
+        </ion-col>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div id="myModal2" class="modal2 animate-zoom mid-text" *ngIf="myModal2">
+    <button class="close-btn" (click)="closeModal()">
+        <ion-icon name="ios-close"></ion-icon>
+    </button>
+    <div class="modal-container ">
+        <ion-row style="margin-top:24px;">
+            <ion-col col-12 class="padd0 mid-text">
+                <p style="font-size: 18px;
+                margin: 3px;">Create {{catType}}</p>
+            </ion-col>
+        </ion-row> 
+        <ion-row style="width: 90%;">
+          <ion-col col-12 style="border-bottom: 1px solid rgba(128, 128, 128, 0.31);">
+            <ion-input type="text" [(ngModel)]="name" placeholder="{{catType}} Name"></ion-input>
+          </ion-col>
+          <!-- <ion-col col-12 style="border-bottom: 1px solid rgba(128, 128, 128, 0.31);">
+            <ion-input type="text" [(ngModel)]="code" placeholder="{{catType}} code"></ion-input>
+          </ion-col> -->
+        </ion-row>
+       
+        <ion-row style="    margin-top: 11px;">
+            <ion-col col-12 class="padd0 mid-text" >
+              <button style="background: rgba(43, 146, 187, 0.31);width: 50%;" ion-button block (click)="save()">
+                <img style="width: 30%;" src="assets/imgs/save.png" >
+              </button>
+                
+            </ion-col>
+        </ion-row>
+    </div>
+</div>
+
+</ion-content>

@@ -1,0 +1,65 @@
+page-createstripeconnectsetup {
+    .no-padd{
+        padding: 0 !important;
+    }
+    .group-slides .selected {
+        border: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+       
+        transition: 80ms;
+        background-color: #faae4e !important;
+
+    }
+    .group-slides .select{
+        background-color: rgba(250, 174, 78, 0.43137254901960786) !important;
+        border: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+       
+        transition: 80ms;
+    }
+    .acc_name_input{
+        border: 1px solid #80808069;
+        border-radius: 50px;
+        padding-left: 10px;
+    }
+
+    ion-item{
+        padding-left:0px !important;
+    }
+
+    .selected .facilities-text {
+        color: #ffffff
+    }
+    .select .facilities-text {
+        color: #ffffff
+    }
+    .facilities-text{
+        color: #faae4e;
+        //padding: 14px 0px;
+    }
+    .divactivity{
+        overflow-y: scroll; 
+        top: 82px;
+        left: 14px;
+        position: absolute;
+    }
+    .group-slides {
+        margin: 15px 5px;
+        height: 5.5em;
+    }
+    .facilityCard {
+        color: #918e8e;
+        background:#f7f7f7;
+        border-radius: 7px;
+        height: 4.5em;  
+        border: 1px solid #faae4e;
+       
+       
+        box-shadow: 3px 2px 9px -4px #9e8879;
+    }
+    .stripe-setup-name-row{
+        border-bottom: 1px solid #c7bdbd;
+        ion-col>ion-input{
+            font-size: 16px;
+        }
+    }
+    
+}

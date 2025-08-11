@@ -1,0 +1,51 @@
+<!--
+  Generated template for the DirectdebitchoosememberPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Choose Member</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+  <ion-row style="margin-top: -13px;" class="rows-allign">
+    <ion-col col-12 class="allignment-col ">
+        <ion-item style="background-color: #efefefd9;" class="headitem">
+            <ion-select [(ngModel)]="selectedClub" (ionChange)="getMemberDetails()">
+                <ion-option *ngFor="let club of clubList" value={{club.$key}}>{{club.ClubName}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-col>
+</ion-row> 
+<ion-row>
+  <ion-col col-12 class="search-bar" >
+    <ion-searchbar placeholder="Search Name" id="customsearchbar" (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+</ion-col>
+</ion-row>
+<div style="height: 40%;overflow-y: scroll;">
+  <ion-item *ngFor="let member of searchList" (click)="selectMember(member)">
+    <ion-label>{{member.FirstName}} {{member.LastName}}</ion-label>
+  </ion-item>
+</div>
+<ion-row>
+  <ion-col col-12>
+      <span class="name">{{selectedMember.FirstName}}  {{selectedMember.LastName}}</span>
+  </ion-col>
+  <ion-col col-12 style="margin-top: 10px;">
+    <button ion-button (click)="changeType('type1')"  [disabled]="!isVarified">Initiate DD Mandate</button>
+  </ion-col>
+  <ion-col col-12>
+      <button ion-button (click)="changeType(type2)"  [disabled]="!isVarified">One Off Payment</button>
+  </ion-col>
+  <ion-col col-12>
+      <button ion-button (click)="changeType(type3)"  [disabled]="!isVarified">Recurring Payment</button>
+  </ion-col>
+</ion-row>
+</ion-content>
+<ion-footer style="box-shadow: 0px -6px 41px 24px #dbd9d9;"></ion-footer>

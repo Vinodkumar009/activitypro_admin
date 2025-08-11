@@ -1,0 +1,47 @@
+<!--
+  Generated template for the AppadmindashboardPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title class="logo_center" text-center>
+      Select Members
+    </ion-title>
+    <ion-buttons end>
+          <button ion-button icon-only (click)="dismiss()" class="pop-over">
+              <ion-icon name="close"></ion-icon>
+          </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row class="sub-container">
+      <ion-col col-2 style="text-align: -webkit-right;">
+        <button>
+          <ion-icon name="ios-search"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+        <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getFilterItems($event)" autocorrect="off">
+        </ion-searchbar>
+      </ion-col>
+    </ion-row>
+  <ion-row>
+    <ion-col >
+      <ion-list>
+        <ion-item *ngFor="let member of members;let i = index">
+          <ion-label>{{member.FirstName}} {{member.LastName}} ({{(this.commonService.getAge(member.DOB))}})</ion-label>
+          <!-- <ion-checkbox [(ngModel)]="member.isSelect"
+              [disabled]="member.isAlreadySelected" (ionChange)="selecteMembers(member,i)"></ion-checkbox> -->
+              <ion-checkbox  (ionChange)="selecteMembers(i,$event)"></ion-checkbox>
+      </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <button ion-button block style="background-color:#007A90" (click)="dismiss()">Done</button>
+</ion-footer>

@@ -1,0 +1,78 @@
+<!--
+  Generated template for the ChallengesreportPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>User Challenges</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content >
+  <!-- <ion-row >
+    <ion-col col-12> -->
+
+      <ion-row class="sub-container rows-allign2">
+        <ion-col col-1 style="text-align:center;margin:auto;padding:0px">
+          <ion-icon name="ios-search"></ion-icon>
+        </ion-col>
+        <ion-col col-11 class="search-bar">
+          <ion-searchbar placeholder="Search Challenges" id="customsearchbar" (ionInput)="getFilterItems($event)"
+            autocorrect="off"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+      <ion-list style="overflow-y: scroll;">
+        <ion-card class="facilityCard seession-cards"  style="border-radius:0px !important;"
+          *ngFor="let challenge of backupList;let i=index"  (click)="showDetailInfo(challenge)">
+          <ion-card-header style="padding: 0 !important;white-space: normal;">
+            <ion-row style="margin:0px 0px 5px 0px;">
+              <ion-col col-8 class="mar-auto-all pad-left-15">
+                <p class="mar0 eventname">{{challenge.ChallengeName}}</p>
+                <p class="p1" 
+                  style="font-size: 15px;color: rgba(0, 0, 0, 0.65);margin-top: 0px;">
+                  Levels:<span>{{challenge.Levels?challenge.Levels.length : 0}}</span>
+                </p>
+              </ion-col>
+              <ion-col col-4 style="margin: auto;">
+                <div class="circle" float-right>
+                  <p class="paidmembercount" *ngIf="challenge.Users">{{challenge.Users ? challenge.Users.length:0}}</p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>
+          <!-- <ion-card-content >
+            <ion-row>
+              <ion-col col-8 style="padding-top:0px;">
+                <p class="p1" 
+                  style="font-size: 15px;color: rgba(0, 0, 0, 0.65);margin-top: 0px;">
+                  Levels:<span>{{challenge.Levels?challenge.Levels.length : 0}}</span>
+                </p>
+              </ion-col>
+              <ion-col col-4 style="padding-top:0px;">
+                <div class="circle" float-right>
+                  <p class="paidmembercount" *ngIf="challenge.Users">{{challenge.Users ? challenge.Users.length:0}}</p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-content> -->
+        </ion-card>
+      </ion-list>
+    <!-- </ion-col>
+  </ion-row> -->
+  <ion-fab mini right bottom>
+    <button (tap)="gotoAddMember()" ion-fab mini>
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-fab left bottom class="trash_icon" (tap)="refreshList()">
+    <button ion-fab mini><ion-icon name="md-sync" ></ion-icon></button>
+  </ion-fab>
+  <!-- <ion-fab mini left bottom>
+    <button (tap)="gotoperformance()" ion-fab mini>
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab> -->
+</ion-content>      

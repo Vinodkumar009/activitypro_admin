@@ -1,0 +1,53 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            {{LangObj.Setup_Setup}}
+            <img src="assets/images/logo.png" class="logo-img">
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            {{LangObj.Setup_Setup}}
+            <!--<img src="assets/images/logo.png" class="logo-img">-->
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+        <ion-row wrap>
+            <ion-col col-4 class="dashboard_col_item_block" (click)="goTo(m)" *ngFor="let m of menus">
+                <div class="dashboard_col_item">
+                    <ion-icon *ngIf="m.MobIcon != undefined && m.MobIcon !='' " [name]="m.MobIcon" class="dashboard_user"></ion-icon>
+                    <img *ngIf="m.MobLocalImage != undefined && m.MobLocalImage !='' " [src]="m.MobLocalImage"
+                                style="height: 42px;width:42px;margin-top: 10px;">
+                    <img *ngIf="m.MobCloudImage != undefined && m.MobCloudImage !='' " [src]="m.MobCloudImage"
+                                style="height: 42px;width:42px;margin-top: 10px;">
+                    <p class="dashboard_col_item_name"> {{getLabel('Setup_' +m.DisplayTitle)}} </p>
+                     <!-- {{m.title}} -->
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

@@ -1,0 +1,39 @@
+page-teamchatconversation {
+    .back {
+        background-image: url(../../assets/images/membergroupchatbackground.jpg) !important;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        width: 100%;
+        min-height: 100%;
+      }
+      .message {
+        background-color: #dcf8c6;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        // white-space: pre-wrap;
+      }
+    
+      .other-message {
+        background-color: #a0d7f3;
+        color: black;
+        border-bottom-left-radius: 0px !important;
+      }
+    
+      .my-message {
+        background-color: #e3eaf2;
+        color: black;
+        border-bottom-right-radius: 0px !important;
+      }
+    
+      .time {
+        color: black;
+        float: right;
+        margin-left: 10px;
+        font-size: small;
+      }
+      .deleted_text {
+        color: gray;
+        font-style: italic;
+      }
+}

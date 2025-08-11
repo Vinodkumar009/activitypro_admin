@@ -1,0 +1,211 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Member Check-In</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title *ngIf="statusFrom=='cancel'">
+            Cancel Session
+        </ion-title>
+        <ion-title *ngIf="statusFrom=='attendance'">
+            Member Attendance
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards">
+<div *ngIf="this.session_type == 100">
+    <ion-card class="card_list hadder-card gold_border_bottom" *ngIf="term_session">
+        <ion-card-content style="padding:0px !important">
+            <p class="dotted1" style="">{{term_session.days}}</p>
+            <p class="dotted1" style="margin-top:-7px">{{term_session.start_time}} -
+                {{term_session.end_time}}</p>
+            <ion-row>
+                <ion-col col-md-4 col-sm-4 col-4 style="text-align:center;padding:0px;margin:auto;">
+                    <img class="img1" [src]="term_session.CoachDetails[0].profile_image && term_session.CoachDetails[0].profile_image!='' ? term_session.CoachDetails[0].profile_image : 'assets/images/dummyCoach.jpg'">
+                    <p class="coachname">{{term_session.coach_names}}</p>
+                </ion-col>
+                <ion-col col-md-8 col-sm-8 col-8 class="border-left">
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{term_session.session_name}}</span></p>
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{term_session.ClubDetails.ClubName}}</span></p>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="card_list">
+        <ion-card-content class="card_content">
+             <ion-grid>
+                <ion-row>
+                    <ion-col col-12 *ngIf="statusFrom!='cancel'">
+                        <p style="font-size: 14px;font-style: italic;color: green;">*Tap the trophy to give star of this session</p>
+                    </ion-col>
+                    <ion-col col-12 class="right_pad">
+                        <ion-item class="member-item">
+                            <ion-label>All</ion-label>
+                            <ion-checkbox [disabled]="statusFrom=='cancel'" [(ngModel)]="isSelectAll"
+                                (click)="selectAllToggole()"></ion-checkbox>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+    <div class="block_height">
+        <ion-list class="margin marginleftright">
+            <div *ngFor="let attendance_user of term_attendance_users;let i=index" class="margin-bottom-2 pmargin member-item">
+                <ion-row>
+                    <ion-col col-9>
+                        <ion-item style="background: transparent !important;">
+                            <ion-label>{{attendance_user.first_name}} {{attendance_user.last_name}} 
+                                <!-- <span style="font-size: 14px;">({{getAge(attendance_user.user.DOB)}}Yrs)</span> -->
+                                <span style="font-size: 14px;">({{this.commonService.calculateAgeFromDOB(attendance_user.dob)}}Yrs)</span>
+                                </ion-label>
+                            <ion-checkbox [disabled]="statusFrom=='cancel'" [(ngModel)]="attendance_user.isSelect"
+                                (click)="changeMembers()"></ion-checkbox>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-1 class="margin_auto">
+                        <ion-icon *ngIf="statusFrom!='cancel'" name="md-trophy" class="trophy_icon" (click)="findOutStarIfSessionForTerm(i)" [ngClass]="attendance_user.star_of_the_week? 'active' : 'inactive'"></ion-icon>
+                    </ion-col>
+                    <ion-col col-2 class="margin_auto" text-center>
+                        <ion-input *ngIf="statusFrom!='cancel'" class="points" type="number" [disabled]="statusFrom == 'cancel'" [(ngModel)]="attendance_user.leaderboard_points" ></ion-input>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ion-list>    
+    </div>
+</div>
+
+<div *ngIf="this.session_type == 101">
+    <ion-card class="card_list hadder-card gold_border_bottom" *ngIf="sessionDetails">
+        <ion-card-content style="padding:0px !important">
+            <p class="dotted1" style="">{{sessionDetails.days}}</p>
+            <p class="dotted1" style="margin-top:-7px">{{sessionDetails.start_time}} -
+                {{sessionDetails.end_time}}</p>
+            <ion-row>
+                <ion-col col-md-4 col-sm-4 col-4 style="text-align:center;padding:0px;margin:auto;">
+                    <img class="img1" [src]="sessionDetails.coach_image ? sessionDetails.coach_image:'assets/images/dummyCoach.jpg'">
+                    <p class="coachname">{{sessionDetails.coach_names}}</p>
+                </ion-col>
+                <ion-col col-md-8 col-sm-8 col-8 class="border-left">
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{sessionDetails.session_name}}</span></p>
+                    <p class="dotted bottom-border-style" style="margin-top: -7px;">
+                        <span>{{sessionDetails.ClubDetails.ClubName}}</span></p>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="card_list">
+        <ion-card-content class="card_content">
+             <ion-grid>
+                <ion-row>
+                    <ion-col col-12 *ngIf="statusFrom!='cancel'">
+                        <p style="font-size: 14px;font-style: italic;color: green;">*Tap the trophy to give star of this session</p>
+                    </ion-col>
+                    <ion-col col-12 class="right_pad">
+                        <ion-item class="member-item">
+                            <ion-label>All</ion-label>
+                            <ion-checkbox [disabled]="statusFrom=='cancel'" [(ngModel)]="isSelectAll"
+                                (click)="selectAllToggole()"></ion-checkbox>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+    <div class="block_height">
+        <ion-list class="margin marginleftright">
+            <div *ngFor="let attendance_user of attendance_users;let i=index" class="margin-bottom-2 pmargin member-item">
+                <ion-row>
+                    <ion-col col-9>
+                        <ion-item style="background: transparent !important;">
+                            <ion-label>{{attendance_user.user.FirstName}} {{attendance_user.user.LastName}} 
+                                <!-- <span style="font-size: 14px;">({{getAge(attendance_user.user.DOB)}}Yrs)</span> -->
+                                <span style="font-size: 14px;">({{this.commonService.calculateAgeFromDOB(attendance_user.user.DOB)}}Yrs)</span>
+                                </ion-label>
+                            <ion-checkbox [disabled]="statusFrom=='cancel'" [(ngModel)]="attendance_user.isSelect"
+                                (click)="changeMembers()"></ion-checkbox>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-1 class="margin_auto">
+                        <ion-icon *ngIf="statusFrom!='cancel'" name="md-trophy" class="trophy_icon" (click)="findOutStarIfSession(i)" [ngClass]="attendance_user.star_of_the_week? 'active' : 'inactive'"></ion-icon>
+                    </ion-col>
+                    <ion-col col-2 class="margin_auto" text-center>
+                        <ion-input *ngIf="statusFrom!='cancel'" class="points" type="number" [disabled]="statusFrom == 'cancel'" [(ngModel)]="attendance_user.leaderboard_points" ></ion-input>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </ion-list>    
+    </div>
+</div>
+    
+</ion-content>
+
+
+<ion-footer>
+    <div *ngIf="statusFrom=='cancel'">
+        <!-- <ion-row>
+            <ion-col col-12 style="padding:5px 0px 0px 0px">
+                <ion-item class="comments_item">
+                    <ion-textarea type="text" rows="3" [(ngModel)]="comments" placeholder="Comments">
+                    </ion-textarea>
+                </ion-item>
+            </ion-col>
+        </ion-row> -->
+        <ion-row>
+            <ion-col col-8>
+                <ion-item class="border">
+                    <ion-label>Cancel</ion-label>
+                    <ion-select [(ngModel)]="cancelReason">
+                        <ion-option value="">Reason</ion-option>
+                        <ion-option value="Rainy Day">Rainy Day</ion-option>
+                        <ion-option value="Snow in the Court">Snow in the Court</ion-option>
+                        <ion-option value="Half Term">Half Term</ion-option>
+                        <ion-option value=" Slippery Court"> Slippery Court</ion-option>
+                        <ion-option value="Others">Others</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col col-4>
+                <button ion-button block class="timekare-primary-btn" (click)="CancelSession()"
+                    [disabled]="isDisabled">Save</button>
+            </ion-col>
+        </ion-row>
+    </div>
+    <div *ngIf="statusFrom=='attendance'">
+        <ion-row>
+            <ion-col col-12>
+                <button ion-button block class="timekare-primary-btn" (click)="saveAttendanceConfirmation()"
+                    [disabled]="isDisabled">Save</button>
+            </ion-col>
+        </ion-row>
+    </div>
+    
+</ion-footer>

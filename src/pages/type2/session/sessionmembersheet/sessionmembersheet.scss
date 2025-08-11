@@ -1,0 +1,66 @@
+page-sessionmembersheet {
+    .scroll-content {
+        background-image: none !important;
+    }
+    .btn_container {
+        text-align: center;
+    }
+    .footer {
+        border-top: 1px solid rgb(245, 238, 238);
+    }
+    .lab {
+        font-size: 16px;
+    }
+    .col {
+        margin-top: -10px;
+        background-image: none !important;
+    }
+    .lab2 {
+        margin-top: -2px !important;
+        transform: translate(0%, 25%) !important;
+    }
+    .btn {
+        width: 140px;
+        margin-left: 18px;
+        margin-top: 15px;
+    }
+    .chk2 {
+        margin-top: 28px !important;
+    }
+    .items2 {
+        margin-left: -18px !important;
+    }
+    .topblock {
+        background: #1b2c3b;
+        padding: 10px 10px 10px 12px;
+    }
+    .paragraph_color {
+        color: white;
+        font-size: 17px;
+        //line-height: 8px;
+    }
+    .venuename {
+        font-size: 23px;
+    }
+    .custom_icon {
+        color: white;
+        float: RIGHT;
+        margin-top: -57px;
+        font-size: 30px;
+    
+    }
+    .textbox_item {
+        background-color: #1b2d3b;
+        padding-left: 0px;
+        div {
+            border-bottom: 1px solid #ffffff;
+        }
+    }
+    .inputtext {
+        color: #fff !important;
+    }
+    .customlabel {
+        color: #87f4ef !important;
+        margin-top: 0px;
+    }
+}

@@ -1,0 +1,169 @@
+page-membershipdiscount {
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+    .button-md {
+        background-color: #f6f8fa;
+    }
+
+    // .card-md {
+    //     margin: 26px 0px;
+    // }
+    .discount_card{
+        margin: 0px 10px !important;
+        width: auto !important;
+        background: #fff;
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .close {
+        background-color: rgba(245, 245, 245, 0) !important;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+
+    ion-card-content{
+        padding: 11px 8px !important;
+    }
+    .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .maxwidthionselect {
+        max-width: none;
+        width: 100%;
+    }
+
+    .body {
+        background-image: none !important;
+    }
+
+    .distinctpercent {
+        border-bottom: 1px solid #c695da !important;
+    }
+
+    .discountalign {
+        margin-left: 13%;
+    }
+
+    .foricon {
+        margin-top: 13px !important;
+        margin-bottom: 8px !important;
+        font-size: large;
+        color: #999;
+    }
+
+    .discount_input {
+        margin-left: 15px;
+        border-bottom: 1px solid orange;
+    }
+
+    
+    .nonlocationcard {
+        padding: 14px 0;
+    }
+    .percent {
+        width: 23% !important;
+    }
+
+    .allign-assist {
+        position: fixed;
+        bottom: 11px;
+        width: 97%;
+
+    }
+
+    // .row {
+    //     margin-bottom: 25px;
+    // }
+
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+        left: 3px !important;
+    }
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        text-align: left;
+        padding-right: 5px;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    .alert-head {
+        text-align: center;
+        padding: 8px 0 0 0;
+    }
+
+    .location-cards>h3 {
+        font-size: 15px;
+        color: blue;
+        font-weight: 600;
+    }
+
+    .location-cards {
+        padding: 10px 10px;
+        border-bottom: yellow;
+    }
+
+    .all {
+        // border-left: 3px solid #35adff;
+        border-width: 1px;
+        border-style: solid;
+        -webkit-border-image:
+            -webkit-gradient(linear, 0 0, 0 100%, from(#35adff), to(#7dbce6)) 1 100%;
+        -webkit-border-image:
+            -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -moz-border-image:
+            -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -o-border-image:
+            -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+        border-image:
+            linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+    }
+
+    .border-left-style {
+        height: 70px;
+        position: absolute;
+        top: 33px;
+        left: 7px;
+    }
+
+    .name {
+        color: #5ea68d;
+        font-size: 18px !important;
+    }
+
+    .card-text {
+        color: #c5b495;
+        width: 100%;
+    }
+
+    .card-text>span {
+        color: gray;
+    }
+
+    .Location-head {
+        border-bottom: 0.5px solid #8080808f;
+        padding: 10px 10px 12px 10px;
+    }
+
+    .nonmembercard {
+        width: 100% !important;
+        margin-top: 23px;
+    }
+}
