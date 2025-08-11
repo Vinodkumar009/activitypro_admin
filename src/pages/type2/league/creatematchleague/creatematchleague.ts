@@ -6,7 +6,6 @@ import {
   NavController,
   NavParams,
   PopoverController,
-  
 } from 'ionic-angular';
 import {
   CommonService,
@@ -19,13 +18,13 @@ import { SharedServices } from '../../../services/sharedservice';
 import moment from "moment";
 import gql from 'graphql-tag';
 import { ClubVenue } from "../models/venue.model"
-import { LeagueParticipantModel, LeaguesForParentClubModel } from '../models/league.model';
+import { LeagueParticipantModel } from '../models/league.model';
 import { CreateLeagueMatchInput, LeagueGroup, LeagueGroupInput, UserDeviceMetadataField, UserPostgreMetadataField } from '../leaguemodels/creatematchforleague.dto';
 import { GraphqlService } from '../../../../services/graphql.service';
 import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
 import { AppType } from '../../../../shared/constants/module.constants';
-import { RoundTypesModel } from '../../../../shared/model/league.model';
+import { RoundTypeInput, RoundTypesModel } from '../../../../shared/model/league.model';
 
 
 /**
@@ -125,7 +124,7 @@ export class CreatematchleaguePage {
   primary_participant_id2: string;
   secondary_participant_id2: string;
   postgre_parentclub_id: string;
-
+  activityId: string;
   constructor(
     public alertCtrl: AlertController,
     public navCtrl: NavController,
@@ -148,6 +147,8 @@ export class CreatematchleaguePage {
     this.inputObj.location_type = this.location_type;
     this.leagueStartDate = this.navParams.get("leagueStartDate");
     this.leagueEndDate = this.navParams.get("leagueEndDate");
+    this.activityId = this.navParams.get("activityId");
+    console.log("activityId from navParams:", this.activityId);
     //console.log("league start date is:", this.leagueStartDate);
 
 
@@ -565,14 +566,3 @@ export class CreatematchleaguePage {
 
 }
 
-export class RoundTypeInput {
-  parentclubId: string;
-  clubId: string;
-  activityId: string;
-  memberId: string;
-  action_type: number;
-  device_type: number;
-  app_type: number;
-  device_id: string;
-  updated_by: string;
-}

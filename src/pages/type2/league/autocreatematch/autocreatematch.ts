@@ -8,7 +8,7 @@ import { LeagueParticipantModel } from '../models/league.model';
 import { CreateLeagueMatchInputV1, UserDeviceMetadataField, UserPostgreMetadataField } from '../leaguemodels/creatematchforleague.dto';
 import moment from 'moment';
 import { HttpService } from '../../../../services/http.service';
-import { RoundTypesModel } from '../../../../shared/model/league.model';
+import { RoundTypeInput, RoundTypesModel } from '../../../../shared/model/league.model';
 import { API } from '../../../../shared/constants/api_constants';
 import { AppType } from '../../../../shared/constants/module.constants';
 
@@ -432,14 +432,3 @@ interface GenerateMatchesInput {
 
 
 
-export class RoundTypeInput {
-  parentclubId: string;
-  clubId: string;
-  activityId: string;
-  memberId: string;
-  action_type: number;
-  device_type: number;
-  app_type: number;
-  device_id: string;
-  updated_by: string;
-}

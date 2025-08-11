@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular-link-http';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams, PopoverController, ToastController } from 'ionic-angular';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
 import { SharedServices } from '../../../services/sharedservice';
@@ -42,7 +40,6 @@ export class UpdateleaguematchPage {
 
   isChecked:boolean = false;
   match: string;
-
   data: LeagueMatch;
   start_date: string;
   start_time: string;

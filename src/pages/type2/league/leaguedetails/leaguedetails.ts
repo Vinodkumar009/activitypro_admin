@@ -288,9 +288,7 @@ export class LeaguedetailsPage {
   gotoMatchDetails(match: LeagueMatch) {
     // this.navCtrl.push("LeaguematchdetailsPage");
     //this.navCtrl.push("UpdateleaguematchPage", { leagueId: this.individualLeague.id });
-
     let actionSheet = this.actionSheetCtrl.create({
-
       buttons: [
         {
           text: "Manage Teams",
@@ -395,6 +393,7 @@ export class LeaguedetailsPage {
       league_type_text: this.individualLeague.league_type_text
     });
   }
+
   autoCreateMatch() {
     this.navCtrl.push("AutocreatematchPage", {
       leagueId: this.individualLeague.id,
@@ -405,6 +404,7 @@ export class LeaguedetailsPage {
       activityId: this.individualLeague.activity.Id,
     });
   }
+
   formatMatchStartDate(date) {
     return moment(+date).format("DD-MMM-YYYY");
   }
@@ -989,12 +989,16 @@ export class LeaguedetailsPage {
   }
 
   showMatchActionSheet(match: LeagueMatch) {
-    this.commonService.showMatchActionSheet(match, {
-        onViewDetails: () => this.gotoLeagueMatchInfoPage(match),
-        onEdit: () => this.gotoEditPage(match),
-        // onDelete: () => this.removeMatch(match),
-        // onUpdateResult: () => this.updateResult(match)
-    });
+    if( this.individualLeague.league_type === 3) {
+      this.commonService.showMatchActionSheet(match, {
+          onViewDetails: () => this.gotoLeagueMatchInfoPage(match),//this.gotoLeagueMatchInfoPage(match),
+          onEdit: () => this.navCtrl.push("UpdateleaguematchPage", { match }),
+          // onDelete: () => this.removeMatch(match),
+          // onUpdateResult: () => this.updateResult(match)
+      });
+    }else{
+      this.gotoMatchDetails(match);
+    }
   }
 
 

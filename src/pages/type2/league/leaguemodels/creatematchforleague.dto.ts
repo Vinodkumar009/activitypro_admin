@@ -19,8 +19,8 @@ export interface CreateLeagueMatchInput {
     location_type: number
     user_postgre_metadata: UserPostgreMetadataField
     user_device_metadata: UserDeviceMetadataField
-    Member_Fee: '0.00',
-    Non_Member_Fee: '0.00';
+    Member_Fee: string;
+    Non_Member_Fee: string;
 }
 
 export class CreateLeagueMatchInputV1 extends CommonRestApiDtoV1 {
