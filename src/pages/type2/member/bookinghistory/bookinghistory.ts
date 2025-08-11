@@ -40,11 +40,12 @@ export class BookinghistoryPage implements OnInit, OnDestroy {
     device_id: '',
     updated_by: ''
   }
-  termPendingPaymentsRes: TermPendingPaymentsModel = {
-    pending_sessions: [],
-    totalCount: '0',
-    totalDueAmountSum: '0'
-  };
+  // termPendingPaymentsRes: TermPendingPaymentsModel = {
+  //   pending_sessions: [],
+  //   totalCount: '0',
+  //   totalDueAmountSum: '0'
+  // };
+  termPendingPaymentsRes = [];
   getWeeklyPendingPaymentsInput: GetWeeklyPendingPaymentsInput = {
     parentclubId: '',
     clubId: '',
@@ -327,8 +328,8 @@ export class BookinghistoryPage implements OnInit, OnDestroy {
 
     switch (Number(this.selectedType)) {
       case 0: // Term Sessions
-        this.TotalDueAmount = this.termPendingPaymentsRes.totalDueAmountSum;
-
+        //this.TotalDueAmount = this.termPendingPaymentsRes.totalDueAmountSum;
+        this.TotalDueAmount = this.termPendingPaymentsRes.reduce((sum, item) => sum + parseFloat(item.amount_due), 0);
         break;
       case 1: // Weekly Sessions  
         this.TotalDueAmount = this.weeklyPendingPaymentsRes.totalDueAmountSum;
@@ -393,11 +394,12 @@ export class BookinghistoryPage implements OnInit, OnDestroy {
     this.courtbooking = [];
 
     // 🧹 Clear pending payments data
-    this.termPendingPaymentsRes = {
-      pending_sessions: [],
-      totalCount: '0',
-      totalDueAmountSum: '0'
-    };
+    // this.termPendingPaymentsRes = {
+    //   pending_sessions: [],
+    //   totalCount: '0',
+    //   totalDueAmountSum: '0'
+    // };
+    this.termPendingPaymentsRes = [];
     this.weeklyPendingPaymentsRes = {
       pending_sessions: [],
       totalCount: '0',
@@ -568,8 +570,14 @@ export class BookinghistoryPage implements OnInit, OnDestroy {
       if (res) {
         this.commonService.hideLoader();
         this.termPendingPaymentsRes = res.data
+        // this.commonService.toastMessage(
+        //   `${this.termPendingPaymentsRes.totalCount } Term Sessions Found`,
+        //   2500,
+        //   ToastMessageType.Success,
+        //   ToastPlacement.Bottom
+        // );
         this.commonService.toastMessage(
-          `${this.termPendingPaymentsRes.totalCount} Term Sessions Found`,
+          `${this.termPendingPaymentsRes.length } Term Sessions Found`,
           2500,
           ToastMessageType.Success,
           ToastPlacement.Bottom

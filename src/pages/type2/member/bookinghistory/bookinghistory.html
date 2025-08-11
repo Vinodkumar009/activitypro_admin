@@ -52,8 +52,8 @@
     <div *ngIf="isPendingPaymentsMode">
 
         <!-- ✅ Term Sessions -->
-        <div *ngIf="selectedType==0 && termPendingPaymentsRes.pending_sessions.length> 0">
-            <ion-card *ngFor="let data of termPendingPaymentsRes.pending_sessions" (click)="gotoDetails(data)">
+        <div *ngIf="selectedType==0 && termPendingPaymentsRes.length> 0">
+            <ion-card *ngFor="let data of termPendingPaymentsRes" (click)="gotoDetails(data)">
                 <ion-card-content style="padding: 1px 9px;">
                     <ion-row>
                         <ion-col col-8 class="session-col">
@@ -278,7 +278,7 @@
                     <ion-row>
                         <ion-col col-8 class="session-col">
                             <p style="margin:0">
-                                <span class="name">FirstName LastName</span>
+                                <span class="name">{{data.member.FirstName}} {{data.member.LastName}}</span>
                             </p>
                             <p style="margin:0" class="elipsesdot">
                                 <span class="name ">{{data.session.session_name}} </span>
