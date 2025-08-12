@@ -23,33 +23,27 @@
           [(ngModel)]="start_time"></ion-datetime>
       </ion-item>
   
-      <ion-item>
-        <ion-label>Participants 1</ion-label>
-        <ion-select placeholder=" <<Select>>" [(ngModel)]="inputObj.homeparticipant_id " (ionChange)="filterParticipants()">
-        <ion-option *ngFor="let participant of filteredPrimaryParticipants" 
-          value="{{participant.id}}">{{participant.participant_name}}</ion-option>
-      </ion-select>
-      </ion-item>
+      <div *ngIf="this.data.league_type!=3">
+        <ion-item>
+          <ion-label>Participants 1</ion-label>
+          <ion-select placeholder=" <<Select>>" [(ngModel)]="inputObj.homeparticipant_id " (ionChange)="filterParticipants()">
+          <ion-option *ngFor="let participant of filteredPrimaryParticipants" 
+            value="{{participant.id}}">{{participant.participant_name}}</ion-option>
+          </ion-select>
+        </ion-item>
   
-      <ion-item>
-        <ion-label>Participants 2</ion-label>
-        <ion-select placeholder=" <<Select>>" [(ngModel)]="inputObj.awayparticipant_id" (ionChange)="filterParticipants()">
-        <ion-option *ngFor="let participant of filteredSecondaryParticipants"
-          value="{{participant.id}}">{{participant.participant_name}}</ion-option>
-      </ion-select>
-      </ion-item>
-  
-      <!-- <ion-item>
-        <ion-label>Round/Stage</ion-label>
-        <ion-select [(ngModel)]="data.round">
-          <ion-option value="1">First Round</ion-option>
-          <ion-option value="2">Second Round</ion-option>
-        </ion-select>
-      </ion-item> -->
-
+        <ion-item>
+          <ion-label>Participants 2</ion-label>
+          <ion-select placeholder=" <<Select>>" [(ngModel)]="inputObj.awayparticipant_id" (ionChange)="filterParticipants()">
+          <ion-option *ngFor="let participant of filteredSecondaryParticipants"
+            value="{{participant.id}}">{{participant.participant_name}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+    
     <ion-item>
       <ion-label>Round/Stage/Type</ion-label>
-      <ion-select [(ngModel)]="inputObj.Round">
+      <ion-select [(ngModel)]="data.round">
         <ion-option *ngFor="let roundType of roundTypes" [value]="roundType.id">{{roundType.name}}</ion-option>
       </ion-select>
     </ion-item>

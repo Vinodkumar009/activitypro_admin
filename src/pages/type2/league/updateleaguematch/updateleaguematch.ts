@@ -126,6 +126,10 @@ export class UpdateleaguematchPage {
     console.log('ionViewDidLoad UpdateleaguematchPage');
   }
 
+  updateMatchPaymentType(isChecked: boolean): void {
+    this.inputObj.payment_type = isChecked ? 1 : 0;
+  }
+
   getRoundTypes() {
     //this.commonService.showLoader("Fetching info ...");
     this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe((res: any) => {
@@ -308,14 +312,14 @@ export class UpdateleaguematchPage {
     if (this.validateInput()) {
       this.inputObj.fixture_id = this.data.fixture_id;
       this.inputObj.match_id = this.data.match_id;
-
-      this.inputObj.location_id = this.data.location_id;
       this.inputObj.match_title = this.data.match_title;
       this.inputObj.round = Number(this.data.round);
+      this.inputObj.location_id = this.data.location_id;
       this.inputObj.payment_type = this.isChecked ? 1 : 0;
       this.inputObj.match_description = this.data.description;
       this.inputObj.member_fees = this.data.member_fees;
       this.inputObj.non_member_fees = this.data.non_member_fees;
+      this.inputObj.match_description = this.data.description;
 
       //this.inputObj.homeparticipant_id=this.inputObj.home_participant_id;
       //this.inputObj.awayparticipant_id=this.inputObj.away_participant_id;

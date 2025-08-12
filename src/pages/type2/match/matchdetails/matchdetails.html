@@ -108,7 +108,8 @@
       </ion-row>
 
       <!-- the below is to show when result published already - commented out since AllMatchData doesn't have Result -->
-      <!-- <ion-row class="teams_row"
+      <!-- 
+      <ion-row class="teams_row"
         *ngIf="(teams && teams.length > 0) && ((match) && (match.Result && match.Result.ResultStatus==1))">
         <ion-col *ngFor="let team of teams;let i=index;" col-12>
           <div class="participant_div" *ngIf="team.Participants.length > 0">
@@ -143,11 +144,12 @@
           </p>
           <hr style="background-color: rgba(0, 0, 0, 0.30);">
           <ion-item>
-            <!-- <ion-label floating style="padding-left: 10px">Match Description</ion-label> -->
-      <p>{{winner_team.comments}}</p>
-      </ion-item>
-      </ion-col>
+            <ion-label floating style="padding-left: 10px">Match Description</ion-label>
+            <p>{{winner_team.comments}}</p>
+          </ion-item>
+        </ion-col>
       </ion-row>
+      -->
       <ion-row *ngIf="teams && teams.length == 0">
         <ion-col col-12 text-center>
           <p>No active teams found</p>

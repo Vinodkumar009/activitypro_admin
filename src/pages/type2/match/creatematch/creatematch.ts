@@ -1,6 +1,4 @@
 import { Component } from "@angular/core";
-import { Apollo } from "apollo-angular";
-import { HttpLink } from "apollo-angular-link-http";
 import gql from "graphql-tag";
 import {
   IonicPage,
@@ -23,9 +21,8 @@ import { ClubVenue, SchoolVenue } from "../models/venue.model";
 import { GraphqlService } from "../../../../services/graphql.service";
 import { Activity, ClubActivityInput, IClubDetails } from "../../../../shared/model/club.model";
 import { HttpService } from "../../../../services/http.service";
-import { log } from "console";
 import { API } from "../../../../shared/constants/api_constants";
-import { RoundTypesModel } from "../../../../shared/model/league.model";
+import { RoundTypeInput, RoundTypesModel } from "../../../../shared/model/league.model";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { LeagueVenueType } from "../../../../shared/utility/enums";
 
@@ -70,7 +67,7 @@ export class CreatematchPage {
     MatchVenueKey: "",
     GameType: 0,
     MatchTitle: "",
-    CreatedBy: "-KuAlAXTl7UQ2hFp4ljQ",
+    CreatedBy: "",
     MatchCreator: 2,
     MatchStartDate: null,
     MatchEndDate: null,
@@ -81,7 +78,7 @@ export class CreatematchPage {
     MemberFees: 0,
     NonMemberFees: 0,
     Hosts: {
-      UserId: "476fd04d-4d42-42d4-865d-331c12a2a418",
+      UserId: "",
       RoleType: 2,
       UserType: 2
     },
@@ -127,7 +124,6 @@ export class CreatematchPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private apollo: Apollo,
     public commonService: CommonService,
     public loadingCtrl: LoadingController,
     public storage: Storage,
@@ -145,7 +141,8 @@ export class CreatematchPage {
     // let now = moment().add(10, 'year');
     // this.maxDate = moment(now).format("YYYY-MM-DD");
     // this.minDate = moment().format("YYYY-MM-DD");
-
+    this.createMatchInput.CreatedBy = this.sharedservice.getLoggedInId();
+    this.createMatchInput.Hosts.UserId = this.sharedservice.getLoggedInId();
     this.createMatchInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
     this.createMatchInput.user_device_metadata.UserActionType = 2
   }
@@ -216,7 +213,7 @@ export class CreatematchPage {
     const clubs_input = {
       parentclub_id: this.sharedservice.getPostgreParentClubId(),
       user_postgre_metadata: {
-        UserMemberId: this.sharedservice.getLoggedInId()
+        UserMemberId: this.sharedservice.getLoggedInUserId()
       },
       user_device_metadata: {
         UserAppType: 0,
@@ -237,12 +234,9 @@ export class CreatematchPage {
     this.graphqlService.query(clubs_query, { clubs_input: clubs_input }, 0)
       .subscribe((res: any) => {
         this.clubs = res.data.getVenuesByParentClub as IClubDetails[];
-        this.selectedClub = this.clubs[0].Id;
-
-
         if (this.clubs.length > 0) {
+          this.selectedClub = this.clubs[0].Id;
           //  this.selectedClub = this.clubs[0].FirebaseId; // Set default selected club
-
           //this.getActivityList(); // Fetch the activities for the default club
           this.getClubActivity();
         }
@@ -264,7 +258,7 @@ export class CreatematchPage {
   getClubActivity() {
     this.commonInput.parentclubId = this.sharedservice.getPostgreParentClubId();
     this.commonInput.clubId = this.selectedClub;
-    this.httpService.post(`club_activity/get_club_activities`, this.commonInput).subscribe((res: any) => {
+    this.httpService.post(`${API.CLUB_ACTIVITIES}`, this.commonInput).subscribe((res: any) => {
       console.log("club activities", JSON.stringify(res.data.club_activities));
       if (res.data.club_activities.length > 0) {
         this.activities = res.data.club_activities;
@@ -279,14 +273,14 @@ export class CreatematchPage {
   saveMatchDetails() {
     // try {
     // this.commonService.showLoader()
-    const clubName = this.clubs.find(clubName => clubName.Id === this.selectedClub);
-    console.log("clubName", clubName);
-    this.createMatchInput.MatchVenueKey = clubName.FirebaseId;
-    this.createMatchInput.MatchVenueName = clubName.ClubName;
-    this.createMatchInput.MatchVenueId = clubName.Id;
+    const postgreClub = this.clubs.find(clubName => clubName.Id === this.selectedClub);
+    console.log("club", postgreClub);
+    this.createMatchInput.MatchVenueKey = postgreClub.FirebaseId;
+    this.createMatchInput.MatchVenueName = postgreClub.ClubName;
+    this.createMatchInput.MatchVenueId = postgreClub.Id;
     const selected_activity = this.activities.find(activity => activity.id === this.activityId);
-    this.createMatchInput.user_postgre_metadata.UserActivityId = selected_activity.Id;
-    this.createMatchInput.location_id = clubName.Id;
+    this.createMatchInput.user_postgre_metadata.UserActivityId = selected_activity.activity.Id;
+    this.createMatchInput.location_id = postgreClub.Id;
     this.createMatchInput.location_type = LeagueVenueType.Club;
 
     this.createMatchInput.Round = Number(this.createMatchInput.Round);
@@ -339,19 +333,13 @@ export class CreatematchPage {
       const message = "match created successfully";
       this.commonService.updateCategory("match");
       this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-      this.navCtrl.pop().then(() => this.navCtrl.pop());
+      this.navCtrl.pop();
+      //this.navCtrl.pop().then(() => this.navCtrl.pop());
     }, (error) => {
       this.commonService.hideLoader();
       this.commonService.toastMessage("match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       console.error("Error in fetching:", error);
-    }
-    )
-    // } catch (err) {
-    //   this.commonService.hideLoader();
-    //   console.error("Error in fetching:", err);
-    //   this.commonService.toastMessage("match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    // }
-
+    })
   }
   goToDashboardMenuPage() {
     this.navCtrl.setRoot("Dashboard");
@@ -410,14 +398,3 @@ export class UserDeviceMetadataField {
   UpdatedBy: number
 }
 
-export class RoundTypeInput {
-  parentclubId: string;
-  clubId: string;
-  activityId: string;
-  memberId: string;
-  action_type: number;
-  device_type: number;
-  app_type: number;
-  device_id: string;
-  updated_by: string;
-}
