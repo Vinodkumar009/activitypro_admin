@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>🏆 Match Result</ion-title>
+    <ion-buttons end style="color:#fff">
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="result-content">
+  <div class="header-section">
+    <div class="match-info">
+      <ion-icon name="trophy"></ion-icon>
+      <h3>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}} vs {{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</h3>
+    </div>
+    <p class="subtitle">Enter match result details</p>
+  </div>
+
+  <div class="result-sections">
+    <!-- Match Winner Section -->
+    <div class="result-card">
+      <div class="card-header">
+        <ion-icon name="medal"></ion-icon>
+        <span>Match Winner</span>
+      </div>
+      <div class="winner-options">
+        <div class="team-option" [class.selected]="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)" 
+             (click)="selectedWinner = homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id">
+          <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)"></ion-icon>
+          <span>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</span>
+        </div>
+        <div class="team-option" [class.selected]="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)" 
+             (click)="selectedWinner = awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id">
+          <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)"></ion-icon>
+          <span>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Match Status Section -->
+    <div class="result-card">
+      <div class="card-header">
+        <ion-icon name="flag" color="primary"></ion-icon>
+        <span>Match Status</span>
+      </div>
+      <div class="status-options">
+        <div *ngFor="let status of resultStatusList" 
+             class="status-option" 
+             [class.selected]="selectedResultStatus?.id === status.id" 
+             (click)="onStatusClick(status)">
+          <ion-icon name="checkmark-circle" *ngIf="selectedResultStatus?.id === status.id"></ion-icon>
+          <span>{{status.status}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sets Won Section -->
+    <div class="result-card">
+      <div class="card-header">
+        <ion-icon name="stats" color="primary"></ion-icon>
+        <span>Sets Won</span>
+      </div>
+      <div class="score-inputs">
+        <div class="team-input">
+          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <ion-input type="number" [(ngModel)]="homeSetsWon" min="0" class="score-field"></ion-input>
+        </div>
+        <div class="vs-separator">vs</div>
+        <div class="team-input">
+          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <ion-input type="number" [(ngModel)]="awaySetsWon" min="0" class="score-field"></ion-input>
+        </div>
+      </div>
+    </div>
+
+    <!-- Games Won Section -->
+    <div class="result-card">
+      <div class="card-header">
+        <ion-icon name="analytics" ></ion-icon>
+        <span>Games Won</span>
+      </div>
+      <div class="score-inputs">
+        <div class="team-input">
+          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <ion-input type="number" [(ngModel)]="homeGamesWon" min="0" class="score-field"></ion-input>
+        </div>
+        <div class="vs-separator">vs</div>
+        <div class="team-input">
+          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <ion-input type="number" [(ngModel)]="awayGamesWon" min="0" class="score-field"></ion-input>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="custom-footer">
+  <div class="footer-buttons">
+    <button ion-button large outline (click)="cancel()">
+      <ion-icon name="close"></ion-icon>
+      Cancel
+    </button>
+    <button ion-button large style="background-color: #5be283 !important;" (click)="saveResult()">
+      <ion-icon name="checkmark"></ion-icon>
+      Save Result
+    </button>
+  </div>
+</ion-footer>

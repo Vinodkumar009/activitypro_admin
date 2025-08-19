@@ -40,3 +40,9 @@ export enum MatchType {
     DOUBLES = 1,
     TEAM = 2,
 }
+
+export enum ActivityTypeEnum {
+  TENNIS = 1001,
+  FOOTBALL = 1002,
+  CRICKET = 1015,
+}

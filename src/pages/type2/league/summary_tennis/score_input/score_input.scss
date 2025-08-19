@@ -1,4 +1,24 @@
 page-tennis-score-input {
+    .scroll-content {
+        background-image: none !important;
+    }
+    ion-title {
+        background-color: #2b92bb !important;
+
+        div {
+            color: #fff !important;
+        }
+    }
+
+    ion-buttons{
+        button{
+        color:#fff !important;
+        }
+    }
+
+    .toolbar-background-md {
+        background-color: #2b92bb;
+    }
     .score-input-container {
         padding: 20px;
 

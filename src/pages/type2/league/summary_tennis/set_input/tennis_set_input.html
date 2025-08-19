@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Set Scores</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="set-input-content">
+  <div class="header-section">
+    <div class="team-info">
+      <ion-icon name="trophy" color="primary"></ion-icon>
+      <h3>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}} vs {{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</h3>
+    </div>
+    <p class="subtitle">Enter set scores for each set played</p>
+  </div>
+
+  <div class="sets-container">
+    <div class="set-card" *ngFor="let set of setScores; let i = index">
+      <div class="set-header">
+        <span class="set-number">Set {{i + 1}}</span>
+      </div>
+      <div class="score-inputs">
+        <div class="team-score">
+          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <ion-input type="number" [(ngModel)]="set.SCORE1" placeholder="0" class="score-input"></ion-input>
+        </div>
+        <div class="vs-divider">-</div>
+        <div class="team-score">
+          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <ion-input type="number" [(ngModel)]="set.SCORE2" placeholder="0" class="score-input"></ion-input>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button ion-button outline (click)="addSet()" [disabled]="setScores.length >= 5">
+      <ion-icon name="add"></ion-icon>
+      Add Set
+    </button>
+    <button ion-button outline color="danger" (click)="removeSet()" [disabled]="setScores.length <= 1">
+      <ion-icon name="remove"></ion-icon>
+      Remove Set
+    </button>
+  </div>
+</ion-content>
+
+<ion-footer class="custom-footer">
+  <div class="footer-buttons">
+    <button ion-button large outline (click)="cancel()">
+      <ion-icon name="close"></ion-icon>
+      Cancel
+    </button>
+    <button ion-button large style="background-color: #5be283 !important;" (click)="saveSetScores()">
+      <ion-icon name="checkmark"></ion-icon>
+      Save Scores
+    </button>
+  </div>
+</ion-footer>

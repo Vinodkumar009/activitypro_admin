@@ -1,0 +1,298 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>🎾 Tennis Summary</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="tennis-summary-content">
+  <!-- Match Header -->
+  <div class="match-header">
+    <div class="match-title">
+      <h2>{{matchObj && matchObj.match_title}}</h2>
+    </div>
+    <div class="match-details">
+      <div class="detail-item">
+        <ion-icon name="calendar" color="primary"></ion-icon>
+        <span>{{matchObj && matchObj.start_date}}</span>
+      </div>
+      <div class="detail-item">
+        <ion-icon name="location" color="primary"></ion-icon>
+        <span>{{matchObj && matchObj.location_name}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score Section -->
+  <div class="score-section">
+    <!-- Home Team -->
+    <div class="team-card" (click)="gotoSetInputPage(true)">
+      <div class="team-logo-container">
+        <img class="team-logo" [src]="(homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.logo_url) || 'assets/imgs/default-team-logo.png'">
+        <ion-icon name="create" class="edit-icon"></ion-icon>
+      </div>
+      <div class="team-details">
+        <div class="team-name">{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</div>
+        <div class="team-score">{{homeScore}}</div>
+      </div>
+    </div>
+    
+    <!-- VS Section -->
+    <div class="vs-container" (click)="gotoResultInputPage()">
+      <div class="vs-text">VS</div>
+      <ion-icon name="create" class="vs-edit-icon"></ion-icon>
+    </div>
+    
+    <!-- Away Team -->
+    <div class="team-card" (click)="gotoSetInputPage(false)">
+      <div class="team-details away">
+        <div class="team-name">{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</div>
+        <div class="team-score">{{awayScore}}</div>
+      </div>
+      <div class="team-logo-container">
+        <img class="team-logo" [src]="(awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.logo_url) || 'assets/imgs/default-team-logo.png'">
+        <ion-icon name="create" class="edit-icon"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Set Scores Display -->
+  <div class="set-scores-section" *ngIf="result_json && result_json.SET_SCORES && result_json.SET_SCORES.length > 0">
+    <div class="section-header">
+      <ion-icon name="trophy" color="warning"></ion-icon>
+      <h4>Set Scores</h4>
+    </div>
+    <div class="sets-grid">
+      <div class="set-item" *ngFor="let set of result_json.SET_SCORES; let i = index">
+        <div class="set-number">Set {{i + 1}}</div>
+        <div class="set-score">{{set.SCORE}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POTM Section -->
+  <!-- <div class="potm-section" (click)="gotoPotmPage()">
+    <div class="section-header">
+      <ion-icon name="star" color="warning"></ion-icon>
+      <h4>Player of the Match</h4>
+      <ion-icon name="create" class="edit-icon"></ion-icon>
+    </div>
+    <div class="potm-content" *ngIf="potmDisplayNames && potmDisplayNames.length > 0; else noPotm">
+      <div class="potm-players">
+        <div class="potm-player" *ngFor="let potm of potmDisplayNames; let last = last">
+          <ion-icon name="medal" color="warning"></ion-icon>
+          <span>{{potm.PLAYER}}</span>
+        </div>
+      </div>
+    </div>
+    <ng-template #noPotm>
+      <div class="no-potm">
+        <ion-icon name="add-circle" color="medium"></ion-icon>
+        <span>Select Player of the Match</span>
+      </div>
+    </ng-template>
+  </div> -->
+
+  <!-- Match Stats Section -->
+  <div class="stats-section" *ngIf="result_json">
+    <div class="section-header">
+      <ion-icon name="analytics" color="secondary"></ion-icon>
+      <h4>Match Statistics</h4>
+    </div>
+
+    <div class="stats-grid">
+      <!-- Aces Section -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <ion-icon name="flash" color="warning"></ion-icon>
+          <span class="stat-title">Aces</span>
+        </div>
+        <div class="stat-bars">
+          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.ACES, result_json.AWAY_TEAM.ACES, 'HOME_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.HOME_TEAM.ACES}}</span>
+          </div>
+          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.ACES, result_json.AWAY_TEAM.ACES, 'AWAY_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.AWAY_TEAM.ACES}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Double Faults Section -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <ion-icon name="warning" color="danger"></ion-icon>
+          <span class="stat-title">Double Faults</span>
+        </div>
+        <div class="stat-bars">
+          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.DOUBLE_FAULTS, result_json.AWAY_TEAM.DOUBLE_FAULTS, 'HOME_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.HOME_TEAM.DOUBLE_FAULTS}}</span>
+          </div>
+          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.DOUBLE_FAULTS, result_json.AWAY_TEAM.DOUBLE_FAULTS, 'AWAY_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.AWAY_TEAM.DOUBLE_FAULTS}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- First Serve Percentage Section -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <ion-icon name="checkmark-circle" color="success"></ion-icon>
+          <span class="stat-title">First Serve %</span>
+        </div>
+        <div class="stat-bars">
+          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE, result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE, 'HOME_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE}}%</span>
+          </div>
+          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE, result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE, 'AWAY_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE}}%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unforced Errors Section -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <ion-icon name="close-circle" color="danger"></ion-icon>
+          <span class="stat-title">Unforced Errors</span>
+        </div>
+        <div class="stat-bars">
+          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.UNFORCED_ERRORS, result_json.AWAY_TEAM.UNFORCED_ERRORS, 'HOME_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.HOME_TEAM.UNFORCED_ERRORS}}</span>
+          </div>
+          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.UNFORCED_ERRORS, result_json.AWAY_TEAM.UNFORCED_ERRORS, 'AWAY_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.AWAY_TEAM.UNFORCED_ERRORS}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Break Points Won Section -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <ion-icon name="trophy" color="warning"></ion-icon>
+          <span class="stat-title">Break Points Won</span>
+        </div>
+        <div class="stat-bars">
+          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.BREAK_POINTS_WON, result_json.AWAY_TEAM.BREAK_POINTS_WON, 'HOME_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.HOME_TEAM.BREAK_POINTS_WON}}</span>
+          </div>
+          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="getPercentage(result_json.HOME_TEAM.BREAK_POINTS_WON, result_json.AWAY_TEAM.BREAK_POINTS_WON, 'AWAY_TEAM')"></div>
+            </div>
+            <span class="stat-value">{{result_json.AWAY_TEAM.BREAK_POINTS_WON}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Home Team Stats Popup -->
+<div class="custom-popup" *ngIf="isHomeStatsPopupVisible && result_json">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>Update {{homeTeamObj.parentclubteam.teamName}} Stats</h3>
+      <button class="close-button" (click)="isHomeStatsPopupVisible=false">×</button>
+    </div>
+
+    <div class="popup-content">
+      <ion-item class="input_item">
+        <ion-label>Aces</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.ACES"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Double Faults</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.DOUBLE_FAULTS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>First Serve %</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Unforced Errors</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.UNFORCED_ERRORS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Break Points Won</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.BREAK_POINTS_WON"></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isHomeStatsPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateHomeTeamStats()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Away Team Stats Popup -->
+<div class="custom-popup" *ngIf="isAwayStatsPopupVisible && result_json">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>Update {{awayTeamObj.parentclubteam.teamName}} Stats</h3>
+      <button class="close-button" (click)="isAwayStatsPopupVisible=false">×</button>
+    </div>
+
+    <div class="popup-content">
+      <ion-item class="input_item">
+        <ion-label>Aces</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.ACES"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Double Faults</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.DOUBLE_FAULTS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>First Serve %</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Unforced Errors</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.UNFORCED_ERRORS"></ion-input>
+      </ion-item>
+
+      <ion-item class="input_item">
+        <ion-label>Break Points Won</ion-label>
+        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.BREAK_POINTS_WON"></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="popup-buttons">
+      <button ion-button class="timekare-primary-btn" (click)="isAwayStatsPopupVisible=false">Cancel</button>
+      <button ion-button class="timekare-primary-btn" (click)="updateAwayTeamStats()">Update</button>
+    </div>
+  </div>
+</div>

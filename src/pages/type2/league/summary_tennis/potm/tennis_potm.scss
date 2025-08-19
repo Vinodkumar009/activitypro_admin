@@ -1,0 +1,227 @@
+page-tennis-potm {
+  .scroll-content {
+    background-image: none !important;
+  }
+
+  ion-title {
+    background-color: #2b92bb !important;
+
+    div {
+      color: #fff !important;
+    }
+  }
+
+  ion-buttons{
+    button{
+      color:#fff !important;
+    }
+  }
+
+  .toolbar-background-md {
+    background-color: #2b92bb;
+  }
+
+  .potm-content {
+    padding: 16px;
+  }
+
+  .header-section {
+    text-align: center;
+    margin-bottom: 24px;
+    
+    .potm-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      
+      h3 {
+        margin: 0;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+    }
+    
+    .subtitle {
+      margin: 0 0 12px 0;
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+    
+    .selection-counter {
+      .counter-badge {
+        background: #3fbcd3;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .players-section {
+    margin-bottom: 24px;
+  }
+
+  .player-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &.selected {
+      border-color: #f39c12;
+      background: #fff8e1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+    }
+    
+    .player-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      border: 2px solid #e9ecef;
+      
+      ion-icon {
+        font-size: 24px;
+      }
+    }
+    
+    .player-info {
+      flex: 1;
+      
+      h4 {
+        margin: 0 0 4px 0;
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 16px;
+      }
+      
+      p {
+        margin: 0;
+        color: #7f8c8d;
+        font-size: 14px;
+      }
+    }
+    
+    .selection-indicator {
+      ion-icon {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #7f8c8d;
+    
+    ion-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    
+    h4 {
+      margin: 0 0 8px 0;
+      color: #2c3e50;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+
+  .selected-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      
+      span {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .selected-players {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .selected-player {
+    display: flex;
+    align-items: center;
+    background: #fff8e1;
+    border-radius: 12px;
+    padding: 12px;
+    border-left: 4px solid #f39c12;
+    
+    .player-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f39c12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      
+      ion-icon {
+        color: white;
+        font-size: 20px;
+      }
+    }
+    
+    .player-details {
+      h5 {
+        margin: 0 0 4px 0;
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      
+      span {
+        color: #7f8c8d;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .custom-footer {
+    padding: 16px;
+    
+    .footer-buttons {
+      display: flex;
+      gap: 12px;
+      
+      button {
+        flex: 1;
+        height: 48px;
+      }
+    }
+  }
+}

@@ -516,7 +516,11 @@ export class MemberprofilePage implements OnInit {
         }
       },(err) => {
         this.commonService.hideLoader();
-        this.commonService.toastMessage("Profile update failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        if(err.errors && err.errors.length > 0){
+          this.commonService.toastMessage(err.errors[0].message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }else{
+          this.commonService.toastMessage("Profile update failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
       });      
     }catch(ex){
       this.commonService.hideLoader();

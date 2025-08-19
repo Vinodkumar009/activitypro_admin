@@ -10,7 +10,7 @@ import { HttpService } from "../../../../services/http.service";
 import { API } from "../../../../shared/constants/api_constants";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { LeagueMatch } from "../models/location.model";
-import { LeagueParticipationStatus, LeagueTeamPlayerStatusType } from "../../../../shared/utility/enums";
+import { ActivityTypeEnum, LeagueParticipationStatus, LeagueTeamPlayerStatusType } from "../../../../shared/utility/enums";
 import { GetPlayerModel } from "../../team/models/team.model";
 import { GraphqlService } from "../../../../services/graphql.service";
 import gql from "graphql-tag";
@@ -275,13 +275,28 @@ export class LeagueMatchInfoPage {
     console.log("Selected Home Team:", homeTeam);
     console.log(this.selectedHomeTeamText);
     console.log(this.selectedAwayTeamText);
-    this.selectedHomeTeamText != 'Home Team' ||
-      this.selectedAwayTeamText != 'Away Team' ?
-      this.navCtrl.push("SummaryFootballPage", {
+    if (this.selectedHomeTeamText != 'Home Team' && this.selectedAwayTeamText != 'Away Team') {
+      const params = {
         "match": this.matchObj, "leagueId": this.leagueId, "activityId": this.activityId, "homeTeam": homeTeam,
         "awayTeam": awayTeam, "activityCode": this.activityCode,
-      }) :
-      this.commonService.toastMessage('Select Home and Away Teams', 3000, ToastMessageType.Info,);
+      };
+      
+      if (parseInt(this.activityCode) === ActivityTypeEnum.TENNIS) {
+        this.navCtrl.push("TennisSummaryTennisPage", {
+            "match": this.matchObj, "leagueId": this.leagueId, "activityId": this.activityId, "homeTeam": homeTeam,
+            "awayTeam": awayTeam, "activityCode": this.activityCode,
+        })
+      } else if (parseInt(this.activityCode) === ActivityTypeEnum.FOOTBALL) {
+        this.navCtrl.push("SummaryFootballPage", {
+            "match": this.matchObj, "leagueId": this.leagueId, "activityId": this.activityId, "homeTeam": homeTeam,
+            "awayTeam": awayTeam, "activityCode": this.activityCode,
+        })
+      } else if (parseInt(this.activityCode) === ActivityTypeEnum.CRICKET) {
+        this.navCtrl.push("CricketSummaryPage", params);
+      }
+    } else {
+      this.commonService.toastMessage('Select Home and Away Teams', 2500, ToastMessageType.Info);
+    }
   }
 
   onEnterSection(sectionIndex: number) {

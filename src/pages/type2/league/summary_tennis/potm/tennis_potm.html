@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>🏅 Player of the Match</ion-title>
+    <ion-buttons end style="color:#fff">
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="potm-content">
+  <div class="header-section">
+    <div class="potm-info">
+      <ion-icon name="star" color="warning"></ion-icon>
+      <h3>Select Player of the Match</h3>
+    </div>
+    <p class="subtitle">Choose up to 2 outstanding players (Max: 2)</p>
+    <div class="selection-counter" *ngIf="selectedPlayers.length > 0">
+      <span class="counter-badge">{{selectedPlayers.length}}/2 Selected</span>
+    </div>
+  </div>
+
+  <div class="players-section" *ngIf="participants.length > 0">
+    <div class="player-card" *ngFor="let participant of participants" 
+         [class.selected]="participant.isSelected"
+         (click)="onPlayerSelect(participant)">
+      <div class="player-avatar">
+        <ion-icon name="person" *ngIf="!participant.isSelected"></ion-icon>
+        <ion-icon name="checkmark" color="success" *ngIf="participant.isSelected"></ion-icon>
+      </div>
+      <div class="player-info">
+        <h4>{{participant.user && participant.user.FirstName}} {{participant.user && participant.user.LastName}}</h4>
+        <p>{{participant.parentclubteam && participant.parentclubteam.teamName}}</p>
+      </div>
+      <div class="selection-indicator" *ngIf="participant.isSelected">
+        <ion-icon name="star" color="warning"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="participants.length === 0">
+    <ion-icon name="people" color="medium"></ion-icon>
+    <h4>No Players Available</h4>
+    <p>No participants found for this match</p>
+  </div>
+
+  <div class="selected-section" *ngIf="selectedPlayers.length > 0">
+    <div class="section-header">
+      <ion-icon name="trophy" color="warning"></ion-icon>
+      <span>Selected POTM</span>
+    </div>
+    <div class="selected-players">
+      <div class="selected-player" *ngFor="let player of selectedPlayers">
+        <div class="player-badge">
+          <ion-icon name="star" color="warning"></ion-icon>
+        </div>
+        <div class="player-details">
+          <h5>{{player.user && player.user.FirstName}} {{player.user && player.user.LastName}}</h5>
+          <span>{{player.parentclubteam && player.parentclubteam.teamName}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="custom-footer">
+  <div class="footer-buttons">
+    <button ion-button large outline (click)="cancel()">
+      <ion-icon name="close"></ion-icon>
+      Cancel
+    </button>
+    <button ion-button large color="primary" (click)="savePotm()" [disabled]="selectedPlayers.length === 0">
+      <ion-icon name="checkmark"></ion-icon>
+      Save POTM
+    </button>
+  </div>
+</ion-footer>

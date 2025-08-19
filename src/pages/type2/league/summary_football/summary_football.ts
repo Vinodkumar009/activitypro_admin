@@ -208,10 +208,6 @@ export class SummaryFootballPage implements AfterViewInit {
       // Initialize API inputs
       this.initializeApiInputs();
 
-      // Load data
-      this.getLeagueMatchParticipant();
-      this.getLeagueMatchResult();
-
     } catch (error) {
       console.error("Error initializing component:", error);
       this.commonService.toastMessage("Error initializing page", 3000, ToastMessageType.Error);
@@ -279,6 +275,10 @@ export class SummaryFootballPage implements AfterViewInit {
         }
       }
     };
+
+    // Load data
+    this.getLeagueMatchParticipant();
+    this.getLeagueMatchResult();
   }
 
   private createBaseApiInput(): any {

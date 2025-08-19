@@ -1,10 +1,16 @@
 <!--
   Generated template for the TennisScoreInputPage page.
 -->
+
 <ion-header>
-    <ion-navbar>
-        <ion-title>Set Scores - {{teamObj?.parentclubteam?.teamName}}</ion-title>
-    </ion-navbar>
+  <ion-navbar>
+    <ion-title>Set Scores - {{teamObj?.parentclubteam?.teamName}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()" style="color:#fff">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding>

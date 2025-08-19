@@ -391,7 +391,8 @@ export class Dashboard {
            monthlySessionEnrolDets, memberDetails, coachDetails, activeBookings, eventDetails,loggedinuser]) => {
       
       if(loggedinuser){
-        this.sharedService.setLoggedInUserId(loggedinuser);
+        const loggedin_user_info = JSON.parse(loggedinuser);
+        this.sharedService.setLoggedInUserId(loggedin_user_info.id);
       }
 
       // Handle parent club data
