@@ -148,7 +148,7 @@ page-tennis-result-input {
   }
 
   .custom-footer {
-    padding: 16px;
+    padding: 10px 16px;
     
     .footer-buttons {
       display: flex;
@@ -160,8 +160,10 @@ page-tennis-result-input {
       }
       
       button {
+        padding: 5px;
+        font-size: 1em !important;
         flex: 1;
-        height: 48px;
+        height: 40px;
       }
     }
   }

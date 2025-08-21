@@ -6,6 +6,10 @@ page-autocreatematch {
     .details {
       color: #2b92bb;
     }
+
+    ion-checkbox{
+      margin: 9px 10px 9px 4px !important;
+    }
   
     .foo {
       padding: none;
@@ -198,6 +202,12 @@ page-autocreatematch {
     .info-box {
       text-align: center;
       padding: 4px;
+    }
+
+    h4{
+      font-weight: 400;
+      font-size: 1.2em;
+      text-transform: uppercase;
     }
     
   

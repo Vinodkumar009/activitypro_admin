@@ -139,7 +139,7 @@ page-tennis-set-input {
   .custom-footer {
     background: white;
     border-top: 1px solid #e9ecef;
-    padding: 16px;
+    padding: 10px 16px;
     
     .footer-buttons {
       display: flex;
@@ -147,7 +147,8 @@ page-tennis-set-input {
       
       button {
         flex: 1;
-        height: 48px;
+        height: 40px;
+        font-size: 1em !important;
         ion-icon{
           padding: 0px 5px !important;
           font-size: 1.5em !important;

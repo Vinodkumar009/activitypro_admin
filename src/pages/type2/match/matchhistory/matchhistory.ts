@@ -159,15 +159,13 @@ export class MatchhistoryPage {
             this.historymatches[i].Teams[j]["Sets_Points"] = JSON.parse(teamsetsar[j]);
           }
 
-
-
         }
 
       }
 
       this.filteredMatches = JSON.parse(JSON.stringify(this.historymatches));
-
     },(error)=>{
+      this.commonService.hideLoader();
       this.commonService.toastMessage("Fetching failed for match", 2500, ToastMessageType.Error);
       console.error("Error in fetching:", error);
       if (error.graphQLErrors) {

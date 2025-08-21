@@ -282,16 +282,16 @@ export class AutocreatematchPage {
   }
 
   isPlayerDisabledForTeam1(player: LeagueParticipantModel): boolean {
-    return this.team1Players.length >= 2 && !this.isPlayerInTeam1(player) || this.isPlayerInTeam2(player);
+    return this.isPlayerInTeam2(player);
   }
 
   isPlayerDisabledForTeam2(player: LeagueParticipantModel): boolean {
-    return this.team2Players.length >= 2 && !this.isPlayerInTeam2(player) || this.isPlayerInTeam1(player);
+    return this.isPlayerInTeam1(player);
   }
 
   selectPlayerForTeam1(player: LeagueParticipantModel, event: any) {
     if (event.checked) {
-      if (this.team1Players.length < 2 && !this.isPlayerInTeam2(player)) {
+      if (!this.isPlayerInTeam2(player)) {
         this.team1Players.push(player);
       }
     } else {
@@ -302,7 +302,7 @@ export class AutocreatematchPage {
 
   selectPlayerForTeam2(player: LeagueParticipantModel, event: any) {
     if (event.checked) {
-      if (this.team2Players.length < 2 && !this.isPlayerInTeam1(player)) {
+      if (!this.isPlayerInTeam1(player)) {
         this.team2Players.push(player);
       }
     } else {
@@ -325,8 +325,8 @@ export class AutocreatematchPage {
 
   private isValidToCreateMatch(): boolean {
     if (this.matchType === 'doubles') {
-      if (this.team1Players.length !== 2 || this.team2Players.length !== 2) {
-        this.commonService.toastMessage('Please select 2 players for each team', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      if (this.team1Players.length < 2 || this.team2Players.length < 2) {
+        this.commonService.toastMessage('Please select at least 2 players for each team', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         return false;
       }
     } else {
@@ -341,10 +341,10 @@ export class AutocreatematchPage {
       this.commonService.toastMessage('Please select match date and time', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;
     }
-    if(!this.selectedRound || +this.selectedRound <= 0) {
-      this.commonService.toastMessage('Please select a valid round', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-      return false;
-    }
+    // if(!this.selectedRound || +this.selectedRound <= 0) {
+    //   this.commonService.toastMessage('Please select a valid round', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+    //   return false;
+    // }
     if(this.inputObj.match_payment_type == 1 && (!this.inputObj.member_fees || this.inputObj.non_member_fees <= 0)) {
       this.commonService.toastMessage('Please enter valid fees for members and non-members', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;

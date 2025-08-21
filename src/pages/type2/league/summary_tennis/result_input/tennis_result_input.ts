@@ -70,9 +70,7 @@ export class TennisResultInputPage {
       this.awayGamesWon = parseInt(this.result_json.AWAY_TEAM.GAMES_WON) || 0;
     }
 
-    if(this.result_json.RESULT_STATUS) {
-      this.selectedResultStatus = this.resultStatusList.find(status => status.id.toString() === this.result_json.RESULT_STATUS);
-    }
+    
     
   }
 
@@ -101,6 +99,9 @@ export class TennisResultInputPage {
           if (res.data && Array.isArray(res.data)) {
             this.resultStatusList = res.data;
             console.log("Get_Result_Status_By_Activity RESPONSE", this.resultStatusList);
+            if(this.result_json.RESULT) {
+              this.selectedResultStatus = this.resultStatusList.find(status => status.id.toString() === this.result_json.RESULT.RESULT_STATUS);
+            }
           } else {
             console.log("No result status data received");
             this.resultStatusList = [];

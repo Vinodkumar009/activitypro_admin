@@ -68,10 +68,10 @@ page-tennis-summary-tennis {
 
   .team-logo-container {
     position: relative;
-    margin: 0 8px;
+    margin: 0 5px;
     
     .team-logo {
-      width: 60px;
+      width: 90px;
       height: 60px;
       border-radius: 50%;
       object-fit: cover;
@@ -101,7 +101,7 @@ page-tennis-summary-tennis {
     }
     
     .team-name {
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 600;
       color: #2c3e50;
       margin-bottom: 4px;
@@ -109,10 +109,11 @@ page-tennis-summary-tennis {
     }
     
     .team-score {
-      font-size: 32px;
-      font-weight: 700;
+      font-size: 25px;
+      font-weight: 600;
       color: #3498db;
       line-height: 1;
+      text-align: center;
     }
   }
 

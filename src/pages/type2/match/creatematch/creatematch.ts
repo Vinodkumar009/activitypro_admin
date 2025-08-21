@@ -25,6 +25,7 @@ import { API } from "../../../../shared/constants/api_constants";
 import { RoundTypeInput, RoundTypesModel } from "../../../../shared/model/league.model";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { LeagueVenueType } from "../../../../shared/utility/enums";
+import { parse } from "querystring";
 
 /**
  * Generated class for the CreatematchPage page.
@@ -287,12 +288,12 @@ export class CreatematchPage {
     //   return false;
     // }
 
-     else if ((this.createMatchInput.MatchPaymentType == 1) && ((this.createMatchInput.MemberFees) <= 0 || this.createMatchInput.MemberFees == undefined || this.createMatchInput.MemberFees == 0.00)) {
+     else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.MemberFees) <= 0 || this.createMatchInput.MemberFees == undefined || this.createMatchInput.MemberFees == 0.00)) {
       const message = "Enter member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
-     else if ((this.createMatchInput.MatchPaymentType == 1) && ((this.createMatchInput.NonMemberFees) <= 0 || this.createMatchInput.NonMemberFees == undefined || this.createMatchInput.NonMemberFees == 0.00)) {
+     else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.NonMemberFees) <= 0 || this.createMatchInput.NonMemberFees == undefined || this.createMatchInput.NonMemberFees == 0.00)) {
       const message = "Enter non-member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
@@ -304,12 +305,14 @@ export class CreatematchPage {
   saveMatchDetails() {
     if(this.validateInput()) {
       try{
-        this.commonService.showLoader();
+        this.commonService.showLoader('Creating match ...');
         const postgreClub = this.clubs.find(clubName => clubName.Id === this.selectedClub);
         console.log("club", postgreClub);
         this.createMatchInput.MatchVenueKey = postgreClub.FirebaseId;
         this.createMatchInput.MatchVenueName = postgreClub.ClubName;
         this.createMatchInput.MatchVenueId = postgreClub.Id;
+        this.createMatchInput.MemberFees = parseFloat(this.createMatchInput.MemberFees.toString());
+        this.createMatchInput.NonMemberFees = parseFloat(this.createMatchInput.NonMemberFees.toString());
         const selected_activity = this.activities.find(activity => activity.id === this.activityId);
         this.createMatchInput.user_postgre_metadata.UserActivityId = selected_activity.activity.Id;
         this.createMatchInput.location_id = postgreClub.Id;
@@ -361,8 +364,7 @@ export class CreatematchPage {
             `;
           const mutationVaribale = { matchInput: this.createMatchInput };
           this.graphqlService.mutate(createMatch, mutationVaribale, 0).subscribe((res: any) => {
-            // this.commonService.hideLoader();
-            this.commonService.showLoader();
+          this.commonService.hideLoader();
             const message = "Match created successfully";
             this.commonService.updateCategory("match");
             this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
