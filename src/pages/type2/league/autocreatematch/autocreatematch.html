@@ -101,7 +101,7 @@
     </ion-item>
 
     <ion-item *ngIf="this.inputObj.match_payment_type==1" class="allign-right">
-      <ion-label fixed>Fee Member
+      <ion-label fixed>Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
@@ -109,11 +109,11 @@
     </ion-item>
 
     <ion-item *ngIf="this.inputObj.match_payment_type==1" class="allign-right">
-      <ion-label> Fee Non Member
+      <ion-label>Non Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
-        [(ngModel)]="inputObj.member_fees"></ion-input>
+        [(ngModel)]="inputObj.non_member_fees"></ion-input>
     </ion-item>
   
     <!-- Singles Match Selection -->
@@ -140,13 +140,13 @@
     <div *ngIf="matchType === 'doubles'">
       <ion-row>
         <ion-col col-6>
-          <ion-card>
+          <ion-card style="width:100%;padding:0px !important;margin: 0px !important;">
             <ion-card-header>
               Team 1 ({{team1Players.length}}/2)
             </ion-card-header>
-            <ion-card-content>
+            <ion-card-content no-padding>
               <ion-list *ngIf="players.length > 0">
-                <ion-item *ngFor="let player of players">
+                <ion-item *ngFor="let player of players" style="padding-left: 5px !important">
                   <ion-label>{{player.participant_name}}</ion-label>
                   <ion-checkbox 
                     [checked]="isPlayerInTeam1(player)"
@@ -160,13 +160,13 @@
         </ion-col>
         
         <ion-col col-6>
-          <ion-card>
+          <ion-card style="width:100%;padding:0px !important;margin: 0px !important;">
             <ion-card-header>
               Team 2 ({{team2Players.length}}/2)
             </ion-card-header>
-            <ion-card-content>
+            <ion-card-content no-padding>
               <ion-list *ngIf="players.length > 0">
-                <ion-item *ngFor="let player of players">
+                <ion-item *ngFor="let player of players" style="padding-left: 5px !important">
                   <ion-label>{{player.participant_name}}</ion-label>
                   <ion-checkbox 
                     [checked]="isPlayerInTeam2(player)"

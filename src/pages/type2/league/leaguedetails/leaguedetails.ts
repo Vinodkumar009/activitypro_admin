@@ -252,6 +252,7 @@ export class LeaguedetailsPage {
       }
     },
       (error) => {
+        this.commonService.hideLoader();
         console.error("Error in fetching:", error);
         if (error.graphQLErrors) {
           console.error("GraphQL Errors:", error.graphQLErrors);

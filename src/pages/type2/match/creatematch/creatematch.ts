@@ -75,8 +75,8 @@ export class CreatematchPage {
     MatchStatus: 0,
     MatchDetails: "",
     MatchPaymentType: 0,
-    MemberFees: 0,
-    NonMemberFees: 0,
+    MemberFees: 0.00,
+    NonMemberFees: 0.00,
     Hosts: {
       UserId: "",
       RoleType: 2,
@@ -141,8 +141,8 @@ export class CreatematchPage {
     // let now = moment().add(10, 'year');
     // this.maxDate = moment(now).format("YYYY-MM-DD");
     // this.minDate = moment().format("YYYY-MM-DD");
-    this.createMatchInput.CreatedBy = this.sharedservice.getLoggedInId();
-    this.createMatchInput.Hosts.UserId = this.sharedservice.getLoggedInId();
+    this.createMatchInput.CreatedBy = this.sharedservice.getLoggedInUserId();
+    this.createMatchInput.Hosts.UserId = this.sharedservice.getLoggedInUserId();
     this.createMatchInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
     this.createMatchInput.user_device_metadata.UserActionType = 2
   }
@@ -198,7 +198,6 @@ export class CreatematchPage {
   changeType(val) {
     this.publicType = val == "public" ? true : false;
     //this.privateType = 'private'? true : false;
-
     this.createMatchInput.MatchVisibility = val == "private" ? 1 : 0;
   }
 
@@ -206,8 +205,9 @@ export class CreatematchPage {
     this.club_activities = [];
   }
 
-
-
+  updateMatchPaymentType(isChecked: boolean): void {
+    this.createMatchInput.MatchPaymentType = isChecked ? 1 : 0;
+  }
 
   getListOfClub() {
     const clubs_input = {
@@ -270,76 +270,118 @@ export class CreatematchPage {
     })
   }
 
+  validateInput() {
+    if (this.startTime == "" || this.startTime == undefined) {
+      const message = "Please enter a valid start date";
+      this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
+      return false;
+    }
+    else if (this.createMatchInput.MatchTitle == "" || this.createMatchInput.MatchTitle == undefined) {
+      let message = "Please enter match title";
+      this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
+      return false;
+    }
+    //  if(this.createMatchInput.location_id==""||this.createMatchInput.location_id==undefined){
+    //   let message="Please select location";
+    //   this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
+    //   return false;
+    // }
+
+     else if ((this.createMatchInput.MatchPaymentType == 1) && ((this.createMatchInput.MemberFees) <= 0 || this.createMatchInput.MemberFees == undefined || this.createMatchInput.MemberFees == 0.00)) {
+      const message = "Enter member fee";
+      this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
+      return false;
+    }
+     else if ((this.createMatchInput.MatchPaymentType == 1) && ((this.createMatchInput.NonMemberFees) <= 0 || this.createMatchInput.NonMemberFees == undefined || this.createMatchInput.NonMemberFees == 0.00)) {
+      const message = "Enter non-member fee";
+      this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
+      return false;
+    }
+
+    return true;
+  }
+
   saveMatchDetails() {
-    // try {
-    // this.commonService.showLoader()
-    const postgreClub = this.clubs.find(clubName => clubName.Id === this.selectedClub);
-    console.log("club", postgreClub);
-    this.createMatchInput.MatchVenueKey = postgreClub.FirebaseId;
-    this.createMatchInput.MatchVenueName = postgreClub.ClubName;
-    this.createMatchInput.MatchVenueId = postgreClub.Id;
-    const selected_activity = this.activities.find(activity => activity.id === this.activityId);
-    this.createMatchInput.user_postgre_metadata.UserActivityId = selected_activity.activity.Id;
-    this.createMatchInput.location_id = postgreClub.Id;
-    this.createMatchInput.location_type = LeagueVenueType.Club;
+    if(this.validateInput()) {
+      try{
+        this.commonService.showLoader();
+        const postgreClub = this.clubs.find(clubName => clubName.Id === this.selectedClub);
+        console.log("club", postgreClub);
+        this.createMatchInput.MatchVenueKey = postgreClub.FirebaseId;
+        this.createMatchInput.MatchVenueName = postgreClub.ClubName;
+        this.createMatchInput.MatchVenueId = postgreClub.Id;
+        const selected_activity = this.activities.find(activity => activity.id === this.activityId);
+        this.createMatchInput.user_postgre_metadata.UserActivityId = selected_activity.activity.Id;
+        this.createMatchInput.location_id = postgreClub.Id;
+        this.createMatchInput.location_type = LeagueVenueType.Club;
 
-    this.createMatchInput.Round = Number(this.createMatchInput.Round);
-    this.createMatchInput.MatchStartDate = moment(
-      new Date(this.startDate + " " + this.startTime).getTime()
-    ).format("YYYY-MM-DD HH:mm");
-    this.createMatchInput.MatchEndDate = moment(
-      new Date(this.startDate + " " + '23:59').getTime()
-    ).format("YYYY-MM-DD HH:mm");
-    console.log(JSON.stringify(this.createMatchInput));
-    console.log(new Date(this.startDate + " " + 'this.startTime').getTime());
-    this.createMatchInput.GameType = Number(this.createMatchInput.GameType);
-    this.createMatchInput.MatchType = +this.createMatchInput.MatchType;
-    console.log("MATCH Input", JSON.stringify(this.createMatchInput));
+        this.createMatchInput.Round = Number(this.createMatchInput.Round);
+        this.createMatchInput.MatchStartDate = moment(
+          new Date(this.startDate + " " + this.startTime).getTime()
+        ).format("YYYY-MM-DD HH:mm");
+        this.createMatchInput.MatchEndDate = moment(
+          new Date(this.startDate + " " + '23:59').getTime()
+        ).format("YYYY-MM-DD HH:mm");
+        console.log(JSON.stringify(this.createMatchInput));
+        console.log(new Date(this.startDate + " " + 'this.startTime').getTime());
+        this.createMatchInput.GameType = Number(this.createMatchInput.GameType);
+        this.createMatchInput.MatchType = +this.createMatchInput.MatchType;
+        console.log("MATCH Input", JSON.stringify(this.createMatchInput));
 
-    const createMatch = gql`
-          mutation saveMatchDeatils($matchInput: CreateMatchInput!) {
-            saveMatchDeatils(matchInput: $matchInput) {
-              Id
-              IsActive
-              IsEnable
-              Activity {
-                ActivityName
-                ActivityCode
+        const createMatch = gql`
+              mutation saveMatchDeatils($matchInput: CreateMatchInput!) {
+                saveMatchDeatils(matchInput: $matchInput) {
+                  Id
+                  IsActive
+                  IsEnable
+                  Activity {
+                    ActivityName
+                    ActivityCode
+                  }
+                  Hosts {
+                    Name
+                  }
+                  MatchVisibility
+                  GameType
+                  MatchType
+                  PaymentType
+                  ResultStatus
+                  MatchStatus
+                  VenueName
+                  Details
+                  MatchStartDate
+                  Result {
+                    ResultStatus
+                    ResultDetails
+                  }
+                  Capacity
+                  MatchTitle
+                }
               }
-              Hosts {
-                Name
-              }
-              MatchVisibility
-              GameType
-              MatchType
-              PaymentType
-              ResultStatus
-              MatchStatus
-              VenueName
-              Details
-              MatchStartDate
-              Result {
-                ResultStatus
-                ResultDetails
-              }
-              Capacity
-              MatchTitle
+            `;
+          const mutationVaribale = { matchInput: this.createMatchInput };
+          this.graphqlService.mutate(createMatch, mutationVaribale, 0).subscribe((res: any) => {
+            // this.commonService.hideLoader();
+            this.commonService.showLoader();
+            const message = "Match created successfully";
+            this.commonService.updateCategory("match");
+            this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+            this.navCtrl.pop();
+            //this.navCtrl.pop().then(() => this.navCtrl.pop());
+          }, (err) => {
+            this.commonService.hideLoader();
+            if(err.errors && err.errors.length > 0){
+              this.commonService.toastMessage(err.errors[0].message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            } else {
+              this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
             }
-          }
-        `;
-    const mutationVaribale = { matchInput: this.createMatchInput };
-    this.graphqlService.mutate(createMatch, mutationVaribale, 0).subscribe((res: any) => {
-      // this.commonService.hideLoader();
-      const message = "match created successfully";
-      this.commonService.updateCategory("match");
-      this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-      this.navCtrl.pop();
-      //this.navCtrl.pop().then(() => this.navCtrl.pop());
-    }, (error) => {
-      this.commonService.hideLoader();
-      this.commonService.toastMessage("match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-      console.error("Error in fetching:", error);
-    })
+            console.error("Error in fetching:", err);
+          })
+      }catch(e){
+        this.commonService.hideLoader();
+        this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    }
   }
   goToDashboardMenuPage() {
     this.navCtrl.setRoot("Dashboard");

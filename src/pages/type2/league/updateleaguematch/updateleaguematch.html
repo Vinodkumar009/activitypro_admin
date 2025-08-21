@@ -72,16 +72,16 @@
       </ion-row>
     </ion-item>
 
-    <ion-item *ngIf="this.data.payment_type == 1 && isChecked" class="allign-right">
-      <ion-label fixed>Fee Member
+    <ion-item *ngIf="this.inputObj.payment_type == 1 && isChecked" class="allign-right">
+      <ion-label fixed>Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
         [(ngModel)]="data.member_fees"></ion-input>
     </ion-item>
 
-    <ion-item *ngIf="this.data.payment_type == 1 && isChecked" class="allign-right">
-      <ion-label> Fee Non Member
+    <ion-item *ngIf="this.inputObj.payment_type == 1 && isChecked" class="allign-right">
+      <ion-label>Non Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"

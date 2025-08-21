@@ -92,8 +92,8 @@ export class UpdateleaguematchPage {
     console.log("data is:", this.data);
     this.isChecked = this.data.payment_type == 1 ? true : false;
     this.publicType = this.data.match_visibility == 0 ? true : false;
-    this.inputObj.homeparticipant_id = this.data.home_team_id ? this.data.home_team_id : this.data.home_participant_id;
-    this.inputObj.awayparticipant_id = this.data.away_team_id ? this.data.away_team_id : this.data.away_participant_id;
+    this.inputObj.homeparticipant_id = this.data.home_participant_id;
+    this.inputObj.awayparticipant_id = this.data.away_participant_id;
     //const [start_date, start_time] = this.data.start_date.split(' ');
     // this.start_date = this.formatDateString(start_date);
     // this.start_time = start_time;

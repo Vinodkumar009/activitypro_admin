@@ -337,7 +337,7 @@
       <ion-icon name="md-create"></ion-icon>
     </button>
     <p class="fabEmailText" (tap)="autoCreateMatch()"
-      *ngIf="individualLeague && individualLeague.league_type_text == 'Singles'">Auto Create Match</p>
+      *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">Auto Create Match</p>
     <button style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop"
       *ngIf="individualLeague && individualLeague.league_type_text == 'Singles'" (tap)="autoCreateMatch()">
       <ion-icon name="md-create"></ion-icon>

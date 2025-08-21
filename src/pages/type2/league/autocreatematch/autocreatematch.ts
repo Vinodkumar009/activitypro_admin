@@ -255,6 +255,13 @@ export class AutocreatematchPage {
     return Math.floor((numberOfPlayers * (numberOfPlayers - 1)) / 2);
   }
 
+  calculateDoublesMatches(totalPlayers: number): number {
+    // Calculate number of possible doubles teams
+    const possibleTeams = Math.floor(totalPlayers / 2);
+    // Round robin for doubles teams: (teams * (teams-1)) / 2
+    return possibleTeams >= 2 ? Math.floor((possibleTeams * (possibleTeams - 1)) / 2) : 0;
+  }
+
   resetMatch() {
     this.navCtrl.pop();
   }
@@ -306,7 +313,13 @@ export class AutocreatematchPage {
 
   updateDoublesMatchCounts() {
     this.numberofPlayers = this.team1Players.length + this.team2Players.length;
-    this.numberofMatches = (this.team1Players.length === 2 && this.team2Players.length === 2) ? 1 : 0;
+    
+    if (this.team1Players.length >= 2 && this.team2Players.length >= 2) {
+      // Calculate doubles matches using round robin for doubles teams
+      this.numberofMatches = this.calculateDoublesMatches(this.numberofPlayers);
+    } else {
+      this.numberofMatches = 0;
+    }
   }
 
 

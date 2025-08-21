@@ -31,6 +31,7 @@ export class TennisResultInputPage {
   activityId: string;
   activityCode: number;
   getResultStatusByActivityInput: any = {};
+  isEditable: boolean = true;
 
   constructor(
     public navCtrl: NavController,
@@ -46,6 +47,7 @@ export class TennisResultInputPage {
     this.result_json = this.navParams.get('result_json') || {};
     this.activityId = this.navParams.get('activityId');
     this.activityCode = this.navParams.get('activityCode');
+    this.isEditable = !(this.navParams.get('result_status') === 1);
     
     this.initializeValues();
     this.initializeResultStatusInput();
@@ -67,6 +69,11 @@ export class TennisResultInputPage {
       this.awaySetsWon = parseInt(this.result_json.AWAY_TEAM.SETS_WON) || 0;
       this.awayGamesWon = parseInt(this.result_json.AWAY_TEAM.GAMES_WON) || 0;
     }
+
+    if(this.result_json.RESULT_STATUS) {
+      this.selectedResultStatus = this.resultStatusList.find(status => status.id.toString() === this.result_json.RESULT_STATUS);
+    }
+    
   }
 
   private initializeResultStatusInput(): void {
@@ -132,7 +139,6 @@ export class TennisResultInputPage {
       awayGamesWon: this.awayGamesWon.toString()
     };
 
-    this.commonService.toastMessage("Result saved successfully", 2500, ToastMessageType.Success);
     this.viewCtrl.dismiss(resultData);
   }
 

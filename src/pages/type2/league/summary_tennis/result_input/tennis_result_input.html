@@ -27,12 +27,14 @@
       </div>
       <div class="winner-options">
         <div class="team-option" [class.selected]="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)" 
-             (click)="selectedWinner = homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id">
+             [class.disabled]="!isEditable"
+             (click)="isEditable && (selectedWinner = homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)">
           <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)"></ion-icon>
           <span>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</span>
         </div>
         <div class="team-option" [class.selected]="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)" 
-             (click)="selectedWinner = awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id">
+             [class.disabled]="!isEditable"
+             (click)="isEditable && (selectedWinner = awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)">
           <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)"></ion-icon>
           <span>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</span>
         </div>
@@ -49,7 +51,8 @@
         <div *ngFor="let status of resultStatusList" 
              class="status-option" 
              [class.selected]="selectedResultStatus?.id === status.id" 
-             (click)="onStatusClick(status)">
+             [class.disabled]="!isEditable"
+             (click)="isEditable && onStatusClick(status)">
           <ion-icon name="checkmark-circle" *ngIf="selectedResultStatus?.id === status.id"></ion-icon>
           <span>{{status.status}}</span>
         </div>
@@ -65,12 +68,12 @@
       <div class="score-inputs">
         <div class="team-input">
           <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
-          <ion-input type="number" [(ngModel)]="homeSetsWon" min="0" class="score-field"></ion-input>
+          <ion-input type="number" [(ngModel)]="homeSetsWon" min="0" class="score-field" [disabled]="!isEditable"></ion-input>
         </div>
         <div class="vs-separator">vs</div>
         <div class="team-input">
           <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
-          <ion-input type="number" [(ngModel)]="awaySetsWon" min="0" class="score-field"></ion-input>
+          <ion-input type="number" [(ngModel)]="awaySetsWon" min="0" class="score-field" [disabled]="!isEditable"></ion-input>
         </div>
       </div>
     </div>
@@ -84,12 +87,12 @@
       <div class="score-inputs">
         <div class="team-input">
           <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
-          <ion-input type="number" [(ngModel)]="homeGamesWon" min="0" class="score-field"></ion-input>
+          <ion-input type="number" [(ngModel)]="homeGamesWon" min="0" class="score-field" [disabled]="!isEditable"></ion-input>
         </div>
         <div class="vs-separator">vs</div>
         <div class="team-input">
           <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
-          <ion-input type="number" [(ngModel)]="awayGamesWon" min="0" class="score-field"></ion-input>
+          <ion-input type="number" [(ngModel)]="awayGamesWon" min="0" class="score-field" [disabled]="!isEditable"></ion-input>
         </div>
       </div>
     </div>
@@ -102,7 +105,7 @@
       <ion-icon name="close"></ion-icon>
       Cancel
     </button>
-    <button ion-button large style="background-color: #5be283 !important;" (click)="saveResult()">
+    <button ion-button large style="background-color: #5be283 !important;" (click)="saveResult()" [disabled]="!isEditable">
       <ion-icon name="checkmark"></ion-icon>
       Save Result
     </button>

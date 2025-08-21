@@ -212,7 +212,7 @@
     <ion-input type="number" class="textareastyle" [(ngModel)]="league.non_member_price"></ion-input>
   </ion-item> -->
    <ion-item *ngIf="league.is_paid && league.league_type != 3">
-      <ion-label fixed>Fee Member
+      <ion-label fixed>Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
@@ -220,7 +220,7 @@
     </ion-item>
 
     <ion-item *ngIf="league.is_paid && league.league_type != 3">
-      <ion-label> Fee Non Member
+      <ion-label>Non Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"

@@ -181,7 +181,7 @@
     </ion-item>
 
     <ion-item *ngIf="leagueCreationInput.league.is_paid && !isTeamType">
-      <ion-label fixed>Fee Member
+      <ion-label fixed>Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
@@ -189,7 +189,7 @@
     </ion-item>
 
     <ion-item *ngIf="leagueCreationInput.league.is_paid && !isTeamType">
-      <ion-label> Fee Non Member
+      <ion-label>Non Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"

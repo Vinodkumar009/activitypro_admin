@@ -199,7 +199,8 @@ export class TennisSummaryTennisPage {
       awayTeamObj: this.awayTeamObj,
       result_json: this.result_json,
       activityId: this.activityId,
-      activityCode: this.activityCode
+      activityCode: this.activityCode,
+      result_status: this.getLeagueMatchResultRes.ResultStatus || 0,
     });
 
     modal.onDidDismiss(data => {
@@ -251,7 +252,7 @@ export class TennisSummaryTennisPage {
       },
       (error) => {
         console.error("Error fetching league match result:", error);
-        this.commonService.toastMessage("Error fetching match result", 3000, ToastMessageType.Error);
+        this.commonService.toastMessage("Error fetching match result", 2500, ToastMessageType.Error);
         this.initializeDefaultValues();
       }
     );
@@ -400,7 +401,7 @@ export class TennisSummaryTennisPage {
     const teamName = team === 'HOME' ? this.homeTeamObj.parentclubteam.teamName : this.awayTeamObj.parentclubteam.teamName;
 
     if (!teamData) {
-      this.commonService.toastMessage(`${teamName} data not found`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName} data not found`, 2500, ToastMessageType.Error);
       return false;
     }
 
@@ -411,42 +412,42 @@ export class TennisSummaryTennisPage {
     const breakPointsWon = parseInt(teamData.BREAK_POINTS_WON) || 0;
 
     if (aces < 0) {
-      this.commonService.toastMessage(`${teamName}: Aces cannot be negative`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: Aces cannot be negative`, 2500, ToastMessageType.Error);
       return false;
     }
 
     if (doubleFaults < 0) {
-      this.commonService.toastMessage(`${teamName}: Double faults cannot be negative`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: Double faults cannot be negative`, 2500, ToastMessageType.Error);
       return false;
     }
 
     if (firstServePercentage < 0 || firstServePercentage > 100) {
-      this.commonService.toastMessage(`${teamName}: First serve percentage must be between 0-100`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: First serve percentage must be between 0-100`, 2500, ToastMessageType.Error);
       return false;
     }
 
     if (unforcedErrors < 0) {
-      this.commonService.toastMessage(`${teamName}: Unforced errors cannot be negative`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: Unforced errors cannot be negative`, 2500, ToastMessageType.Error);
       return false;
     }
 
     if (breakPointsWon < 0) {
-      this.commonService.toastMessage(`${teamName}: Break points won cannot be negative`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: Break points won cannot be negative`, 2500, ToastMessageType.Error);
       return false;
     }
 
     if (aces > 50) {
-      this.commonService.toastMessage(`${teamName}: Aces seem too high (max 50)`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: Aces seem too high (max 50)`, 2500, ToastMessageType.Error);
       return false;
     }
 
     if (doubleFaults > 30) {
-      this.commonService.toastMessage(`${teamName}: Double faults seem too high (max 30)`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: Double faults seem too high (max 30)`, 2500, ToastMessageType.Error);
       return false;
     }
 
     if (unforcedErrors > 100) {
-      this.commonService.toastMessage(`${teamName}: Unforced errors seem too high (max 100)`, 3000, ToastMessageType.Error);
+      this.commonService.toastMessage(`${teamName}: Unforced errors seem too high (max 100)`, 2500, ToastMessageType.Error);
       return false;
     }
 
@@ -525,13 +526,13 @@ export class TennisSummaryTennisPage {
 
   private validateResultData(data: any): boolean {
     if (!data) {
-      this.commonService.toastMessage('No result data provided', 3000, ToastMessageType.Error);
+      this.commonService.toastMessage('No result data provided', 2500, ToastMessageType.Error);
       return false;
     }
 
     if (data.resultStatus === '1') {
       if (!data.selectedWinner) {
-        this.commonService.toastMessage('Winner must be selected for completed matches', 3000, ToastMessageType.Error);
+        this.commonService.toastMessage('Winner must be selected for completed matches', 2500, ToastMessageType.Error);
         return false;
       }
 
@@ -539,12 +540,12 @@ export class TennisSummaryTennisPage {
       const awaySets = parseInt(data.awaySetsWon) || 0;
 
       if (homeSets < 0 || awaySets < 0) {
-        this.commonService.toastMessage('Sets cannot be negative', 3000, ToastMessageType.Error);
+        this.commonService.toastMessage('Sets cannot be negative', 2500, ToastMessageType.Error);
         return false;
       }
 
       if (homeSets === awaySets) {
-        this.commonService.toastMessage('Match cannot end in a tie', 3000, ToastMessageType.Error);
+        this.commonService.toastMessage('Match cannot end in a tie', 2500, ToastMessageType.Error);
         return false;
       }
     }
@@ -554,12 +555,12 @@ export class TennisSummaryTennisPage {
 
   private validatePotmData(potmPlayers: any[]): boolean {
     if (!potmPlayers || potmPlayers.length === 0) {
-      this.commonService.toastMessage('No POTM players selected', 3000, ToastMessageType.Error);
+      this.commonService.toastMessage('No POTM players selected', 2500, ToastMessageType.Error);
       return false;
     }
 
     if (potmPlayers.length > 2) {
-      this.commonService.toastMessage('Maximum 2 players can be selected as POTM', 3000, ToastMessageType.Error);
+      this.commonService.toastMessage('Maximum 2 players can be selected as POTM', 2500, ToastMessageType.Error);
       return false;
     }
 
@@ -595,6 +596,7 @@ export class TennisSummaryTennisPage {
   }
 
   PublishLeagueResult(result_input: any): void {
+    this.commonService.showLoader("Updating result");
     this.httpService.post(`${API.Publish_League_Result_For_Activities}`, result_input).subscribe(
       (res: any) => {
         if (res.data) {
@@ -608,8 +610,13 @@ export class TennisSummaryTennisPage {
         }
       },
       (error) => {
+        this.commonService.hideLoader();
         console.error("Error publishing league result:", error);
-        this.commonService.toastMessage("Error publishing result", 3000, ToastMessageType.Error);
+        if(error.error && error.error.message) {
+          this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error);
+        } else {
+          this.commonService.toastMessage("Error publishing result", 2500, ToastMessageType.Error);
+        }
       }
     );
   }
@@ -638,7 +645,7 @@ export class TennisSummaryTennisPage {
       (error) => {
         this.commonService.hideLoader();
         console.error("Error publishing result:", error);
-        this.commonService.toastMessage("Failed to update stats. Reverted to previous values.", 3000, ToastMessageType.Error);
+        this.commonService.toastMessage("Failed to update stats. Reverted to previous values.", 2500, ToastMessageType.Error);
         if (this.isHomeStatsPopupVisible) this.isHomeStatsPopupVisible = false;
         if (this.isAwayStatsPopupVisible) this.isAwayStatsPopupVisible = false;
         this.rollbackStats(team);
@@ -692,7 +699,7 @@ export class TennisSummaryTennisPage {
       (error) => {
         this.commonService.hideLoader();
         console.error("Error fetching league match participants:", error);
-        this.commonService.toastMessage("Error fetching participants", 3000, ToastMessageType.Error);
+        this.commonService.toastMessage("Error fetching participants", 2500, ToastMessageType.Error);
         this.leagueMatchParticipantRes = [];
       }
     );

@@ -472,7 +472,7 @@ export class CreatematchleaguePage {
       return false;
     }
      else if ((this.inputObj.MatchPaymentType == 1) && (parseFloat(this.inputObj.Non_Member_Fee) <= 0 || this.inputObj.Non_Member_Fee == undefined || this.inputObj.Non_Member_Fee == '0.00')) {
-      const message = "Enter member fee";
+      const message = "Enter non-member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
