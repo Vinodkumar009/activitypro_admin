@@ -9,10 +9,16 @@ import { Menu } from '../../services/sharedservice';
 import gql from 'graphql-tag';
 import {IonicPage } from 'ionic-angular';
 import { Apollo } from 'apollo-angular';
+import { HttpService } from '../../../services/http.service';
+import { API } from '../../../shared/constants/api_constants';
+import { AppType } from '../../../shared/constants/module.constants';
+import { CheckParentclubEmailExistance } from './coach.model';
+import { GraphqlService } from '../../../services/graphql.service';
 @IonicPage()
 @Component({
   selector: 'addcoach-page',
-  templateUrl: 'addcoach.html'
+  templateUrl: 'addcoach.html',
+  providers: [HttpService]
 })
 
 export class Type2AddCoach {
@@ -67,14 +73,17 @@ export class Type2AddCoach {
   }
   selectedLanguageCode: any;
 
-  constructor(private toastCtrl: ToastController,private apollo: Apollo,public loadingCtrl: LoadingController, storage: Storage, public commonService: CommonService, public fb: FirebaseService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController) {
+  constructor(private apollo: Apollo,
+    private httpService: HttpService,
+    storage: Storage, public commonService: CommonService,
+     public fb: FirebaseService, public navCtrl: NavController, 
+     public sharedservice: SharedServices, 
+     private graphqlService: GraphqlService,
+     public popoverCtrl: PopoverController) {
 
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
+    this.commonService.showLoader("Please wait...");
     this.selectedLanguageCode = 'en-gb'
-    this.loading.present();
-
+  
     this.themeType = sharedservice.getThemeType();
 
     storage.get('userObj').then((val) => {
@@ -84,21 +93,12 @@ export class Type2AddCoach {
           this.selectedParentclubKey = user.ParentClubKey;
         }
       }
-      this.loading.dismiss().catch(() => { });
+      this.commonService.hideLoader();
     })
   }
 
 
-  //Show&Hide loaders
-  showLoader(){
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    this.loading.present();
-  }
-  hideLoader(){
-    this.loading.dismiss().catch(() => { });
-  }
+  
 
   presentPopover(myEvent) {
     let popover = this.popoverCtrl.create("PopoverPage");
@@ -111,22 +111,14 @@ export class Type2AddCoach {
 
   //checking for the coach email across all the parentclubs
   checkCoachExistance = (emailid) => {
-    //this.commonService.showLoader("Checking coach...");
-    const coachQuery = gql`
-    query fetchCoaches($coach:CoachFetchInput!) {
-      fetchCoaches(coachFetchInput:$coach){
-        Id
-        first_name
-        last_name
-      }
-    }
-  `;
-  return this.apollo
-    .query({
-      query: coachQuery,
-      fetchPolicy: 'network-only',
-      variables: {coach:{email_id:emailid}}
-    })    
+    const validate_email = new CheckParentclubEmailExistance();
+    validate_email.parentclub_id = this.sharedservice.getPostgreParentClubId();
+    validate_email.device_id = this.sharedservice.getDeviceId() || 'web';
+      validate_email.updated_by = this.sharedservice.getLoggedInUserId() || 'system';
+    validate_email.device_type = this.sharedservice.getPlatform() == "android" ? 1:2;
+    validate_email.app_type = AppType.ADMIN_NEW;
+    validate_email.email = emailid;
+    return this.httpService.post(`${API.CHECK_PARENTCLUB_EMAIL_EXISTANCE}`, validate_email);
   }
 
 
@@ -134,10 +126,8 @@ export class Type2AddCoach {
 
   //check email validations
   async checkCoachCanSave(){
-    this.showLoader();
     if(this.coachDetailsObj.EmailID == ""){
-      this.hideLoader();
-      this.commonService.toastMessage("Please enter email id", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+      this.commonService.toastMessage("Please enter email id", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;
     }
     else if (this.validateEmail(this.coachDetailsObj.EmailID)) {
@@ -147,23 +137,21 @@ export class Type2AddCoach {
         //   this.coachObs$.unsubscribe();
         //   if (response.length > 0) {
         //     this.hideLoader();
-        //     this.commonService.toastMessage("Email already in use", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+        //     this.commonService.toastMessage("Email already in use", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         //     return false;
         //   } else {
         //     this.saveCoach();
         //   }
         // })
         this.checkCoachExistance(this.coachDetailsObj.EmailID).subscribe((res:any)=>{
-            if(res.data && res.data.fetchCoaches.length > 0){
-              this.hideLoader();
-              this.commonService.toastMessage("Email already in use", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
-            }else {
+            if(!res.data){ //not exists
               this.saveCoach();
+            }else {
+              this.commonService.toastMessage(`${res.message}`, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
             }
         })
     } else {
-      this.hideLoader();
-      this.commonService.toastMessage("Please enter valid email id", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+      this.commonService.toastMessage("Please enter valid email id", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;
     }
   }
@@ -199,29 +187,29 @@ export class Type2AddCoach {
               this.fb.saveReturningKey(`UserMenus/${this.userInfoObj.ParentClubKey}/${this.userresponseDetails}/Menu`, newmenu);
               console.log("subscribed in add coach");
             });
-            this.hideLoader();
+            
             this.saveInPostgres(this.coachKey)
           
-            this.commonService.toastMessage("Saved successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
+            this.commonService.toastMessage("Saved successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
             this.commonService.updateCategory("coach_list");
             this.navCtrl.pop();
           }
         }
       }else{
-        this.hideLoader();
-        this.commonService.toastMessage("Enter first 5 fields", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+        
+        this.commonService.toastMessage("Enter first 5 fields", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
     }catch(err){
-      this.commonService.toastMessage("Something went wrong", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+      this.commonService.toastMessage("Something went wrong", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       console.log(err);
-      console.error(err);
+      
     }
     
 
   }
 
   saveInPostgres(coachfirebasekey){
-    let data = {
+    const data = {
       parentclub: this.coachDetailsObj.ParentClubKey,
       coach_firebase_id: coachfirebasekey,
       first_name: this.coachDetailsObj.FirstName,
@@ -252,18 +240,16 @@ export class Type2AddCoach {
       is_venue_assigned: false,
       language: this.coachDetailsObj.Language
     }
-      this.apollo
-        .mutate({
-          mutation: gql`mutation saveCoachDeatils($coachCreateInput:CoachModel!){
-            saveCoachDeatils(coachCreateInput:$coachCreateInput)
-          }`,
-          variables: {coachCreateInput:data},
-        }).subscribe(({ data }) => {
-
-        
-        }, (err) => {
-          console.log(JSON.stringify(err));
-        })
+    
+    const saveCoachMutation = gql`mutation saveCoachDeatils($coachCreateInput:CoachModel!){
+      saveCoachDeatils(coachCreateInput:$coachCreateInput)
+    }`;
+    
+    this.graphqlService.mutate(saveCoachMutation, {coachCreateInput:data}, 0).subscribe((res: any) => {
+      
+    }, (err) => {
+      console.log(JSON.stringify(err));
+    })
   }
 
   //checking email is valid
@@ -282,12 +268,7 @@ export class Type2AddCoach {
     this.navCtrl.setRoot("Dashboard");
   }
 
-  showToast(m: string, howLongShow: number) {
-        let toast = this.toastCtrl.create({
-            message: m,
-            duration: howLongShow,
-            position: 'bottom'
-        });
-        toast.present();
-    }
+  
 }
+
+

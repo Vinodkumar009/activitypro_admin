@@ -4,7 +4,11 @@ import { Storage } from "@ionic/storage";
 import { FirebaseService } from "../../services/firebase.service";
 import { CommonService, ToastMessageType, ToastPlacement } from "../../services/common.service";
 import { DefaultMenus } from "../services/defaultmenus";
-import { Menu } from "../services/sharedservice";
+import { Menu, SharedServices } from "../services/sharedservice";
+import { CheckParentclubEmailExistance } from "../type2/coach/coach.model";
+import { AppType } from "../../shared/constants/module.constants";
+import { API } from "../../shared/constants/api_constants";
+import { HttpService } from "../../services/http.service";
 /**
  * Generated class for the AddsubadminPage page.
  *
@@ -16,6 +20,7 @@ import { Menu } from "../services/sharedservice";
 @Component({
   selector: "page-addsubadmin",
   templateUrl: "addsubadmin.html",
+  providers: [HttpService]
 })
 export class AddsubadminPage {
   DefaultMenus: Menu[] = [];
@@ -38,7 +43,9 @@ export class AddsubadminPage {
     public navParams: NavParams,
     storage: Storage,
     public fb: FirebaseService,
-    public CommonService: CommonService
+    public CommonService: CommonService,
+    private sharedservice: SharedServices,
+    private httpService: HttpService,
   ) {
     storage
       .get("userObj")
@@ -88,68 +95,92 @@ export class AddsubadminPage {
     this.DefaultMenus = DefaultMenus.getSubAdminMenus();
     this.Menus = this.DefaultMenus.filter((menu) => menu.Level == 1);
   }
-  saveUser() {
-    let selectedClubLength = this.selectedClubSet.size;
-    if (
-      selectedClubLength > 0 &&
-      this.saveObj.EmailID != "" &&
-      this.saveObj.Password &&
-      this.saveObj.EmailID != undefined &&
-      this.saveObj.FirstName != "" &&
-      this.saveObj.FirstName &&
-      this.saveObj.LastName != "" &&
-      this.saveObj.LastName
-    ) {
-      let obj = {
-        EmailID: this.saveObj.EmailID.trim().toLowerCase(),
-        Name: this.saveObj.FirstName + " " + this.saveObj.LastName,
-        Password: this.saveObj.Password,
-        RoleType: this.roleObj[this.selectedRole].RoleType,
-        RoleTypeName: this.roleObj[this.selectedRole].Name,
-        Type: this.roleObj[this.selectedRole].Type,
-        UserType: this.roleObj[this.selectedRole].UserType,
-      };
-      let saveObjKey = this.fb.saveReturningKey("User/SubAdmin", obj);
-      //saving userinfo
-      this.fb.save(
-        {
-          ParentClubKey: this.selectedParentClubKey,
-        },
-        "User/SubAdmin/" + saveObjKey + "/UserInfo"
-      );
-      //saving selectedClubs
-      this.selectedClubSet.forEach((club) => {
-        this.fb.save(
-          {
-            ClubKey: club.Key,
-            ClubName: club.ClubName,
-            IsActive: true,
-            IsEnable: true,
-          },
-          "User/SubAdmin/" + saveObjKey + "/Clubs"
-        );
-      });
 
-      this.Menus.forEach((visiblemenu) => {
-        this.DefaultMenus.forEach((defaultmenu) => {
-          if (visiblemenu.MobComponent == defaultmenu.MobComponent) {
-            defaultmenu.MobileAccess = visiblemenu.MobileAccess;
-          }
-        });
-      });
-      this.DefaultMenus.forEach((newmenu) => {
-        this.fb.saveReturningKey(
-          `UserMenus/${this.selectedParentClubKey}/${saveObjKey}/Menu`,
-          newmenu
-        );
-        console.log("subscribed in add subadmin");
-      });
-      this.CommonService.toastMessage("User created successfully.",2500,ToastMessageType.Success,ToastPlacement.Bottom);
-      this.CommonService.updateCategory("coach_list");
-      this.navCtrl.pop();
-    } else {
-      this.CommonService.toastMessage("Provide all information.",2500,ToastMessageType.Error,ToastPlacement.Bottom);
-    }
+  checkCoachExistance = (emailid) => {
+      //this.commonService.showLoader("Checking coach...");
+      const validate_email = new CheckParentclubEmailExistance();
+      validate_email.parentclub_id = this.sharedservice.getPostgreParentClubId();
+      validate_email.device_id = this.sharedservice.getDeviceId() || 'web';
+      validate_email.updated_by = this.sharedservice.getLoggedInUserId() || 'system';
+      validate_email.device_type = this.sharedservice.getPlatform() == "android" ? 1:2;
+      validate_email.app_type = AppType.ADMIN_NEW;
+      validate_email.email = emailid;
+      return this.httpService.post(`${API.CHECK_PARENTCLUB_EMAIL_EXISTANCE}`, validate_email);
+  }
+
+
+  saveUser() {
+    this.CommonService.showLoader("Please wait...");
+    this.checkCoachExistance(this.saveObj.EmailID.toLowerCase()).subscribe((res:any)=>{
+      if(!res.data){
+          const selectedClubLength = this.selectedClubSet.size;
+          if (
+            selectedClubLength > 0 &&
+            this.saveObj.EmailID != "" &&
+            this.saveObj.Password &&
+            this.saveObj.EmailID != undefined &&
+            this.saveObj.FirstName != "" &&
+            this.saveObj.FirstName &&
+            this.saveObj.LastName != "" &&
+            this.saveObj.LastName
+          ) {
+            let obj = {
+              EmailID: this.saveObj.EmailID.trim().toLowerCase(),
+              Name: this.saveObj.FirstName + " " + this.saveObj.LastName,
+              Password: this.saveObj.Password,
+              RoleType: this.roleObj[this.selectedRole].RoleType,
+              RoleTypeName: this.roleObj[this.selectedRole].Name,
+              Type: this.roleObj[this.selectedRole].Type,
+              UserType: this.roleObj[this.selectedRole].UserType,
+            };
+            let saveObjKey = this.fb.saveReturningKey("User/SubAdmin", obj);
+            //saving userinfo
+            this.fb.save(
+              {
+                ParentClubKey: this.selectedParentClubKey,
+              },
+              "User/SubAdmin/" + saveObjKey + "/UserInfo"
+            );
+            //saving selectedClubs
+            this.selectedClubSet.forEach((club) => {
+              this.fb.save(
+                {
+                  ClubKey: club.Key,
+                  ClubName: club.ClubName,
+                  IsActive: true,
+                  IsEnable: true,
+                },
+                "User/SubAdmin/" + saveObjKey + "/Clubs"
+              );
+            });
+
+            this.Menus.forEach((visiblemenu) => {
+              this.DefaultMenus.forEach((defaultmenu) => {
+                if (visiblemenu.MobComponent == defaultmenu.MobComponent) {
+                  defaultmenu.MobileAccess = visiblemenu.MobileAccess;
+                }
+              });
+            });
+            this.DefaultMenus.forEach((newmenu) => {
+              this.fb.saveReturningKey(
+                `UserMenus/${this.selectedParentClubKey}/${saveObjKey}/Menu`,
+                newmenu
+              );
+              console.log("subscribed in add subadmin");
+            });
+            this.CommonService.hideLoader();
+            this.CommonService.toastMessage("User created successfully",2500,ToastMessageType.Success,ToastPlacement.Bottom);
+            this.CommonService.updateCategory("coach_list");
+            this.navCtrl.pop();
+          } else {
+            this.CommonService.hideLoader();
+            this.CommonService.toastMessage("Provide all information",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+          }        
+      }else {
+        this.CommonService.hideLoader();
+        this.CommonService.toastMessage(`${res.message}`, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    })
   }
   
 }

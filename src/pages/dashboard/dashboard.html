@@ -446,12 +446,16 @@
         <ion-icon name="chatbubbles"></ion-icon>
     </button>
   </ion-fab>
-  <div class="footer_div" [ngClass]="{'footer_bottom_pad':isIOS}" *ngIf="footermenu.length > 0">
-    <ion-row>
-        <ion-col *ngFor="let menu of footermenu;let i=index;" >
-            <ion-icon *ngIf="menu.Icon!=''" [name]="menu.Icon" (click)="navigate(i)"></ion-icon>
-            <p (click)="navigate(i)">{{menu.DisplayName}}</p>
-        </ion-col>
-    </ion-row>
-  </div>
+  
+  <ion-footer>
+    <div class="footer_div" [ngClass]="{'footer_bottom_pad':isIOS}" *ngIf="footermenu.length > 0">
+        <ion-row>
+            <ion-col *ngFor="let menu of footermenu;let i=index;" >
+                <ion-icon *ngIf="menu.Icon!=''" [name]="menu.Icon" (click)="navigate(i)"></ion-icon>
+                <p (click)="navigate(i)">{{menu.DisplayName}}</p>
+            </ion-col>
+        </ion-row>
+    </div>
+  </ion-footer>
+  
   

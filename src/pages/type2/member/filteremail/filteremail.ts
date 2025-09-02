@@ -427,11 +427,11 @@ async getParentClubUsers(){
               
               const email_variable = { emailInput: emailFormembers };
               this.graphqlService.mutate(email_mutation, email_variable,0).subscribe((response)=>{
-                let firebs = this.fb;
-                let members = [];
-                members = this.filteredMember; //this.memberList;
-                let pc = this.parentClubKey;
-                let url = this.sharedservice.getEmailUrl();
+                //let firebs = this.fb;
+                //let members = [];
+                //members = this.filteredMember; //this.memberList;
+                // let pc = this.parentClubKey;
+                // let url = this.sharedservice.getEmailUrl();
                 this.commonService.hideLoader();
                 this.commonService.toastMessage("Mail sent successfully",2500,ToastMessageType.Success, ToastPlacement.Bottom);
                 this.emailObj.Message = "Dear All,\n\n\n\nSincerely Yours,\n" + this.parentClubDetails.ParentClubName + "\n" + "Ph:" + this.parentClubDetails.ContactPhone + "\n" + this.parentClubDetails.ParentClubAdminEmailID;

@@ -1,0 +1,21 @@
+// Safe area support for Android SDK 35+
+body {
+  padding-bottom: 48px;
+  padding-bottom: calc(48px + env(safe-area-inset-bottom));
+}
+
+ion-app {
+  padding-bottom: 48px;
+  padding-bottom: calc(48px + env(safe-area-inset-bottom));
+}
+
+ion-footer {
+  padding-bottom: 48px !important;
+  padding-bottom: calc(48px + env(safe-area-inset-bottom)) !important;
+}
+
+// Ensure content doesn't overlap with navigation bar
+.content {
+  margin-bottom: 48px;
+  margin-bottom: calc(48px + env(safe-area-inset-bottom));
+}

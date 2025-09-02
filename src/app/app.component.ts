@@ -130,8 +130,8 @@ export class MyApp {
   })
   }
 
-  //comparing app version
 
+  //comparing app version
   getAppVersion() {
     if (this.platform.is("android")) {
       this.fb

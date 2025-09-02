@@ -8,15 +8,18 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { FirebaseService } from '../../../services/firebase.service';
 import { CommonService, ToastPlacement, ToastMessageType } from '../../../services/common.service';
 import { DefaultMenus } from '../../services/defaultmenus';
-import { Menu } from '../../services/sharedservice';
-import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { GraphqlService } from '../../../services/graphql.service';
+import { CheckParentclubEmailExistance } from './coach.model';
+import { AppType } from '../../../shared/constants/module.constants';
+import { API } from '../../../shared/constants/api_constants';
+import { HttpService } from '../../../services/http.service';
 
 @IonicPage()
 @Component({
   selector: 'editcoach-page',
-  templateUrl: 'editcoach.html'
+  templateUrl: 'editcoach.html',
+  providers: [HttpService]
 })
 
 export class Type2EditCoach {
@@ -46,13 +49,14 @@ export class Type2EditCoach {
   ]
   selectedLanguageCode: any = '';
   isMenusAvailable:boolean = false;
-  constructor(public navCtrl: NavController, private apollo: Apollo,
+  constructor(public navCtrl: NavController,
     private alertCtrl: AlertController, 
     public commonService: CommonService,
     public sharedservice: SharedServices, 
     public popoverCtrl: PopoverController, 
     public navParams: NavParams, public fb: FirebaseService, 
-    private graphqlService: GraphqlService) {
+    private graphqlService: GraphqlService,
+    private httpService: HttpService,) {
     this.themeType = sharedservice.getThemeType();
     this.coachInfo = this.navParams.get('coachInfo');
     this.current_email = this.coachInfo.EmailID;
@@ -304,13 +308,13 @@ export class Type2EditCoach {
               //     this.UpdateCoachEmail(data.email.toLowerCase());
               //   }
               // })
-              this.checkCoachExistance(data.email.toLowerCase()).subscribe((res:any)=>{
-                if(res.data && res.data.fetchCoaches.length > 0){
-                  this.commonService.toastMessage("Email already in use", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-                }else {
-                  this.UpdateCoachEmail(data.email.toLowerCase());
-                }
-              })
+                this.checkCoachExistance(data.email.toLowerCase()).subscribe((res:any)=>{
+                    if(!res.data){ //not exists
+                      this.UpdateCoachEmail(data.email.toLowerCase());
+                    }else {
+                      this.commonService.toastMessage(`${res.message}`, 2500, ToastMessageType.Error, ToastPlacement.Bottom);                      
+                    }
+                })
             } else {
               this.commonService.toastMessage("Please enter valid email id", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
               return false;
@@ -326,21 +330,14 @@ export class Type2EditCoach {
   //checking for the coach email across all the parentclubs
   checkCoachExistance = (emailid) => {
     //this.commonService.showLoader("Checking coach...");
-    const coachQuery = gql`
-    query fetchCoaches($coach:CoachFetchInput!) {
-      fetchCoaches(coachFetchInput:$coach){
-        Id
-        first_name
-        last_name
-      }
-    }
-  `;
-  return this.apollo
-    .query({
-      query: coachQuery,
-      fetchPolicy: 'network-only',
-      variables: {coach:{email_id:emailid}}
-    })    
+    const validate_email = new CheckParentclubEmailExistance();
+    validate_email.parentclub_id = this.sharedservice.getPostgreParentClubId();
+    validate_email.device_id = this.sharedservice.getDeviceId() || 'web';
+    validate_email.updated_by = this.sharedservice.getLoggedInUserId() || 'system';
+    validate_email.device_type = this.sharedservice.getPlatform() == "android" ? 1:2;
+    validate_email.app_type = AppType.ADMIN_NEW;
+    validate_email.email = emailid;
+    return this.httpService.post(`${API.CHECK_PARENTCLUB_EMAIL_EXISTANCE}`, validate_email);
   }
 
   //checking email is valid
