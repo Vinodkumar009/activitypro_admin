@@ -130,6 +130,7 @@ export class LeagueteamlistingPage {
     this.navCtrl.push("LeaguedetailsPage", {
       league_id: league.id,
     });
+
   }
 
   gotoTeamdetailsPage(team) {

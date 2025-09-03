@@ -6,7 +6,7 @@ export const environment = {
   email_url : "http://54.84.255.41:8121/",
   //emailUrl: "http://localhost:32683/";
   node_url :"https://activitypro-node.appspot.com",
-  new_http_url:"http://localhost:9000/api",//https://api-dev.activitypro.co.uk:1026/api
+  new_http_url:"https://api-dev.activitypro.co.uk:1026/api",//https://api-dev.activitypro.co.uk:1026/api
   nest_url :"https://oonxvy0hcd.execute-api.eu-west-2.amazonaws.com/DEV",
   group_sessionsUrl: "https://oonxvy0hcd.execute-api.eu-west-2.amazonaws.com/DEV",
   group_session_apikey : "",
@@ -14,7 +14,7 @@ export const environment = {
   aws_presignedUrl : "https://i97kakk5tk.execute-api.eu-west-2.amazonaws.com/Dev/generatesignedurl",
   SuperAdminKey : "-KoGLONcroK1vB02b9Gg", 
   graphql_url : "https://api-dev.activitypro.co.uk/graphql",  
-  new_graphql_url : "http://localhost:9000/graphql",//https://api-dev.activitypro.co.uk:1026/graphql
+  new_graphql_url : "https://api-dev.activitypro.co.uk:1026/graphql",//https://api-dev.activitypro.co.uk:1026/graphql
   apigateway_url1 : "https://i97kakk5tk.execute-api.eu-west-2.amazonaws.com/Dev",
   android_onesignal_id:"",
   ios_onesignal_id:"",

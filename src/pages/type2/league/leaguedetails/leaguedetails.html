@@ -29,7 +29,7 @@
         <ion-row class="cardrow">
           <p class="largetext">{{individualLeague?.activity?.ActivityName}},{{individualLeague?.league_type_text}}</p>
         </ion-row>
-        <ion-row class="cardrow" >
+        <ion-row class="cardrow">
           <p class="smalltext">Start:{{individualLeague?.start_date}}</p>
           <p class="smalltext">End:{{individualLeague?.end_date}}</p>
         </ion-row>
@@ -43,19 +43,17 @@
       <ion-col col-5>
         <div
           style="position: absolute; top: 0px; right: 1px; display: flex; align-items: center; padding-right: 9px; padding-top: 4px;">
-          <button ion-button clear small (click)="gotoEditLeague()" style="padding: 0; margin: 0;">
-            <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
-              [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
-            <p class="smalltext" style="margin: 0;">{{individualLeague?.league_visibility == 0 ? "Public" : "Private"}}</p>
-          </button>
+          <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
+            [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
+          <p class="smalltext">{{individualLeague?.league_visibility == 0 ? "Public" : "Private"}}</p>
         </div>
-        <div
+        <!-- <div
           style="align-items: center; position: absolute; top: 30px; right: 1px; display: flex; align-items: center; padding-right: 9px; padding-top: 4px;">
           <button ion-fab mini style="background-color: #2b92bb !important; color: white !important;"
             (click)="gotoEditLeague()">
             <ion-icon name="create"></ion-icon>
           </button>
-        </div>
+        </div> -->
         <div style="display: flex; justify-content: flex-end; align-items: center; padding-right: 10px;">
           <ion-fab right bottom>
             <button ion-fab mini style="background-color: #2b92bb; color: white !important;" (click)="removeLeague()">
@@ -221,6 +219,7 @@
     </div>
 
     <div *ngIf="activeIndex == 1">
+      <!-- <ion-card class="maincard" (click)="mat.league_type === 3 ? gotoLeagueMatchInfoPage(mat):gotoMatchDetails(mat)" *ngFor="let mat of match"></ion-card> -->
       <ion-card class="maincard" (click)="showMatchActionSheet(mat)" *ngFor="let mat of match">
         <ion-card-header class="Location-head">
           <ion-card-title style="font-weight: 600; font-size: 20px; color: #154766; text-align: center;">
@@ -339,7 +338,7 @@
     <p class="fabEmailText" (tap)="autoCreateMatch()"
       *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">Auto Create Match</p>
     <button style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop"
-      *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')" (tap)="autoCreateMatch()">
+      *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">
       <ion-icon name="md-create"></ion-icon>
     </button>
   </ion-fab-list>

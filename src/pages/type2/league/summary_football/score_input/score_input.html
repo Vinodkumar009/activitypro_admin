@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>{{teamName}} - Goals</ion-title>
+    <ion-title text-center>{{teamName}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="dismiss()" style="color:#fff">
         <ion-icon name="close"></ion-icon>
@@ -23,7 +23,7 @@
   <div *ngIf="score > 0" class="goals-container">
     <div class="team-header">
       <ion-icon name="football"></ion-icon>
-      <h4>{{teamName}} Goals ({{score}})</h4>
+      <h4>Goals ({{score}})</h4>
     </div>
 
     <ion-card class="goal-card" *ngFor="let i of getNumberArray(score); let idx = index"
@@ -41,7 +41,7 @@
             <ion-label stacked>Select Player</ion-label>
             <ion-select [(ngModel)]="selectedPlayer[idx]" (ionChange)="onPlayerSelect(idx)"
               placeholder="Choose a player" interface="popover">
-              <ion-option *ngFor="let player of leagueMatchParticipantRes" [value]="player.user.Id">
+              <ion-option *ngFor="let player of participantData" [value]="player.user.Id">
                 {{getPlayerDisplayName(player)}}
               </ion-option>
             </ion-select>

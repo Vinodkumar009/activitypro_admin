@@ -1,6 +1,6 @@
 // ===== LEAGUE RESULT MODELS AND INTERFACES =====
-
-
+ 
+ 
 // Main League Result Model
 export class LeagueResultModel {
   Id: string;
@@ -22,7 +22,7 @@ export class LeagueResultModel {
   winner_league_participation?: any;
   loser_league_participation?: any;
 }
-
+ 
 // League Fixture Info
 export class LeagueFixtureInfo {
   id: string;
@@ -37,9 +37,9 @@ export class LeagueFixtureInfo {
   location_type: number;
   location_id: string;
 }
-
+ 
 // ===== API INPUT INTERFACES =====
-
+ 
 // Updated League Match Result Input
 export interface LeagueMatchResultInput {
   parentclubId: string;
@@ -55,7 +55,7 @@ export interface LeagueMatchResultInput {
   created_by: string;
   MatchId: string;
 }
-
+ 
 // Updated Publish League Result For Activities Input
 export interface PublishLeagueResultForActivitiesInput {
   parentclubId: string;
@@ -76,8 +76,8 @@ export interface PublishLeagueResultForActivitiesInput {
   Tennis?: TennisSectionModel;
   Cricket?: CricketSectionModel;
 }
-
-// League Match Participant Input (unchanged)
+ 
+// League Match Participant Input
 export interface LeagueMatchParticipantInput {
   parentclubId: string;
   clubId: string;
@@ -93,10 +93,11 @@ export interface LeagueMatchParticipantInput {
   TeamId?: string;
   TeamId2?: string;
   leagueTeamPlayerStatusType?: number;
+  ActivityCode?: number;
 }
-
+ 
 // ===== FOOTBALL MODELS =====
-
+ 
 export interface FootballSectionModel {
   LEAGUE_FIXTURE_ID?: string;
   result_description?: string;
@@ -105,7 +106,7 @@ export interface FootballSectionModel {
   AWAY_TEAM?: FootballTeamStatsModel;
   RESULT?: FootballResultStatsModel;
 }
-
+ 
 export interface FootballTeamStatsModel {
   TEAM_NAME?: string;
   TEAM_ID?: string;
@@ -120,26 +121,26 @@ export interface FootballTeamStatsModel {
   RED_CARD?: string;
   SCORE?: FootballScoreDetailModel[];
 }
-
+ 
 export interface FootballScoreDetailModel {
   PLAYER?: string;
   PLAYER_ID?: string;
   TIME?: string;
 }
-
+ 
 export interface POTMDetailModel {
   PLAYER?: string;
   PLAYER_ID?: string;
   TEAM?: string;
   TEAM_ID?: string;
 }
-
+ 
 export interface FootballResultStatsModel {
   DESCRIPTION: string;
   WINNER_ID: string;
   RESULT_STATUS: string;
 }
-
+ 
 // Football Result Model (for API response)
 export interface FootballResultModel {
   result_description?: string;
@@ -149,9 +150,9 @@ export interface FootballResultModel {
   AWAY_TEAM?: FootballTeamStatsModel;
   RESULT?: FootballResultStatsModel;
 }
-
+ 
 // ===== TENNIS MODELS =====
-
+ 
 export interface TennisSectionModel {
   LEAGUE_FIXTURE_ID?: string;
   result_description?: string;
@@ -160,28 +161,35 @@ export interface TennisSectionModel {
   HOME_TEAM?: TennisTeamStatsModel;
   AWAY_TEAM?: TennisTeamStatsModel;
   SET_SCORES?: TennisSetScoreModel[];
+  RESULT?: TennisResultStatsModel;
 }
-
+ 
+export interface TennisResultStatsModel {
+  DESCRIPTION: string;
+  WINNER_ID: string;
+  RESULT_STATUS: string;
+}
+ 
 export interface TennisTeamStatsModel {
   IS_WINNER?: boolean;
-  NAME?: string;
+  TEAM_NAME?: string;
   TEAM_ID?: string;
-  SETS_WON?: number;
-  GAMES_WON?: number;
-  ACES?: number;
-  DOUBLE_FAULTS?: number;
+  SETS_WON?: string;
+  GAMES_WON?: string;
+  ACES?: string;
+  DOUBLE_FAULTS?: string;
   FIRST_SERVE_PERCENTAGE?: string;
-  WINNERS?: number;
-  UNFORCED_ERRORS?: number;
-  BREAK_POINTS_WON?: number;
+  WINNERS?: string;
+  UNFORCED_ERRORS?: string;
+  BREAK_POINTS_WON?: string;
 }
-
+ 
 export interface TennisSetScoreModel {
-  SET_NUMBER?: number;
+  SET_NUMBER?: string;
   SCORE?: string;
   WINNER?: string;
 }
-
+ 
 // Tennis Result Model (for API response)
 export interface TennisResultModel {
   LEAGUE_FIXTURE_ID?: string;
@@ -189,10 +197,11 @@ export interface TennisResultModel {
   HOME_TEAM?: TennisTeamStatsModel;
   AWAY_TEAM?: TennisTeamStatsModel;
   SET_SCORES?: TennisSetScoreModel[];
+  RESULT?: TennisResultStatsModel;
 }
-
+ 
 // ===== CRICKET MODELS =====
-
+ 
 export interface CricketSectionModel {
   result_description?: string;
   result_details?: string;
@@ -200,7 +209,7 @@ export interface CricketSectionModel {
   Team1?: CricketTeamStatsModel;
   Team2?: CricketTeamStatsModel;
 }
-
+ 
 export interface CricketTeamStatsModel {
   RUNS?: string;
   WICKETS?: string;
@@ -213,9 +222,11 @@ export interface CricketTeamStatsModel {
   BATTING_SCORECARD?: CricketPlayerDetailModel[];
   BOWLING_FIGURES?: CricketPlayerDetailModel[];
 }
-
+ 
 export interface CricketPlayerDetailModel {
   PLAYER?: string;
   PLAYER_ID?: string;
   TIME?: string;
 }
+ 
+ 

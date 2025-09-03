@@ -28,11 +28,11 @@
     </ion-list-header>
   </ion-list> -->
 
-  <ion-list radio-group>
+  <ion-list radio-group [(ngModel)]="selectedRoleId">
     <ion-item *ngFor="let role of roles;">
       <ion-label> {{role.role_name}}
       </ion-label>
-      <ion-radio (ionSelect)="selectRoleToUpdate(role)"></ion-radio>
+      <ion-radio [value]="role.id" (ionSelect)="selectRoleToUpdate(role)"></ion-radio>
     </ion-item>
   </ion-list>
 </ion-content>

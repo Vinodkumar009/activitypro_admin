@@ -5,7 +5,11 @@ import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
 import { SharedServices } from '../../../../services/sharedservice';
 import { AppType } from '../../../../../shared/constants/module.constants';
-import { ResultStatusModel } from '../../models/league.model';
+import { LeagueParticipationForMatchModel, ResultStatusModel } from '../../models/league.model';
+import { LeagueMatch } from '../../models/location.model';
+import { AllMatchData } from '../../../../../shared/model/match.model';
+import { TeamsForParentClubModel } from '../../models/team.model';
+import { TennisResultModel } from '../../../../../shared/model/league_result.model';
 
 @IonicPage()
 @Component({
@@ -14,24 +18,43 @@ import { ResultStatusModel } from '../../models/league.model';
   providers: [HttpService]
 })
 export class TennisResultInputPage {
-  matchObj: any;
-  homeTeamObj: any;
-  awayTeamObj: any;
-  result_json: any;
+  // Flow type
+  isLeague: boolean = false;
+
+  // League flow properties
+  homeTeamObj: LeagueParticipationForMatchModel;
+  awayTeamObj: LeagueParticipationForMatchModel;
+  matchObj: LeagueMatch;
+
+  // Non-League flow properties
+  matchTeamObj: AllMatchData;
+  hometeamMatchObj: TeamsForParentClubModel;
+  awayteamMatchObj: TeamsForParentClubModel;
+
+  // Optimized team properties for template binding
+  homeTeamId: string = "";
+  awayTeamId: string = "";
+  homeTeamName: string = "";
+  awayTeamName: string = "";
+
+  // Result properties
+  result_json: TennisResultModel;
   selectedWinner: string = "";
   resultStatus: string = "1";
   homeSetsWon: number = 0;
   awaySetsWon: number = 0;
   homeGamesWon: number = 0;
   awayGamesWon: number = 0;
-  
+
+  // Status properties
   resultStatusList: ResultStatusModel[] = [];
   selectedResultStatus: ResultStatusModel | null = null;
   isLoadingStatuses: boolean = false;
+  showMatchWinner: boolean = false; // 🏆 Show winner card when status is WIN
   activityId: string;
   activityCode: number;
   getResultStatusByActivityInput: any = {};
-  isEditable: boolean = true;
+
 
   constructor(
     public navCtrl: NavController,
@@ -41,17 +64,37 @@ export class TennisResultInputPage {
     public sharedservice: SharedServices,
     public viewCtrl: ViewController
   ) {
-    this.matchObj = this.navParams.get('matchObj');
-    this.homeTeamObj = this.navParams.get('homeTeamObj');
-    this.awayTeamObj = this.navParams.get('awayTeamObj');
+    this.isLeague = this.navParams.get("isLeague") || false;
     this.result_json = this.navParams.get('result_json') || {};
     this.activityId = this.navParams.get('activityId');
     this.activityCode = this.navParams.get('activityCode');
-    this.isEditable = !(this.navParams.get('result_status') === 1);
-    
+
+    this.initializeTeamData();
     this.initializeValues();
     this.initializeResultStatusInput();
     this.getResultStatusByActivity();
+  }
+
+  private initializeTeamData(): void {
+    if (this.isLeague) {
+      this.matchObj = this.navParams.get("matchObj");
+      this.homeTeamObj = this.navParams.get("homeTeamObj");
+      this.awayTeamObj = this.navParams.get("awayTeamObj");
+
+      this.homeTeamId = this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.id || "";
+      this.awayTeamId = this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.id || "";
+      this.homeTeamName = this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.teamName || "";
+      this.awayTeamName = this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.teamName || "";
+    } else {
+      this.matchTeamObj = this.navParams.get("matchObj");
+      this.hometeamMatchObj = this.navParams.get("homeTeamObj");
+      this.awayteamMatchObj = this.navParams.get("awayTeamObj");
+
+      this.homeTeamId = this.hometeamMatchObj && this.hometeamMatchObj.id || "";
+      this.awayTeamId = this.awayteamMatchObj && this.awayteamMatchObj.id || "";
+      this.homeTeamName = this.hometeamMatchObj && this.hometeamMatchObj.teamName || "";
+      this.awayTeamName = this.awayteamMatchObj && this.awayteamMatchObj.teamName || "";
+    }
   }
 
   initializeValues() {
@@ -59,19 +102,16 @@ export class TennisResultInputPage {
       this.selectedWinner = this.result_json.RESULT.WINNER_ID || "";
       this.resultStatus = this.result_json.RESULT.RESULT_STATUS || "1";
     }
-    
+
     if (this.result_json.HOME_TEAM) {
       this.homeSetsWon = parseInt(this.result_json.HOME_TEAM.SETS_WON) || 0;
       this.homeGamesWon = parseInt(this.result_json.HOME_TEAM.GAMES_WON) || 0;
     }
-    
+
     if (this.result_json.AWAY_TEAM) {
       this.awaySetsWon = parseInt(this.result_json.AWAY_TEAM.SETS_WON) || 0;
       this.awayGamesWon = parseInt(this.result_json.AWAY_TEAM.GAMES_WON) || 0;
     }
-
-    
-    
   }
 
   private initializeResultStatusInput(): void {
@@ -98,12 +138,8 @@ export class TennisResultInputPage {
         try {
           if (res.data && Array.isArray(res.data)) {
             this.resultStatusList = res.data;
-            console.log("Get_Result_Status_By_Activity RESPONSE", this.resultStatusList);
-            if(this.result_json.RESULT) {
-              this.selectedResultStatus = this.resultStatusList.find(status => status.id.toString() === this.result_json.RESULT.RESULT_STATUS);
-            }
+            this.preselectResultStatus();
           } else {
-            console.log("No result status data received");
             this.resultStatusList = [];
           }
         } catch (error) {
@@ -119,11 +155,30 @@ export class TennisResultInputPage {
     );
   }
 
-  onStatusClick(status: ResultStatusModel) {
+  private preselectResultStatus(): void {
+    console.log('Preselecting status:', this.resultStatus, 'from list:', this.resultStatusList);
+    if (this.resultStatus && this.resultStatusList.length > 0) {
+      this.selectedResultStatus = this.resultStatusList.find(status => 
+        status.id.toString() === this.resultStatus.toString()
+      ) || null;
+      
+      console.log('Selected status found:', this.selectedResultStatus);
+      if (this.selectedResultStatus) {
+        this.showMatchWinner = this.selectedResultStatus.status === 'WIN';
+        console.log('Show match winner:', this.showMatchWinner);
+      }
+    }
+  }
+
+  onStatusClick(status: ResultStatusModel): void {
     if (!status) return;
     this.selectedResultStatus = status;
     this.resultStatus = status.id.toString();
-    console.log("Selected Result Status:", this.selectedResultStatus);
+    this.showMatchWinner = status.status === 'WIN';
+  }
+
+  selectWinner(teamId: string): void {
+    this.selectedWinner = teamId;
   }
 
   saveResult() {
@@ -137,9 +192,12 @@ export class TennisResultInputPage {
       homeSetsWon: this.homeSetsWon.toString(),
       awaySetsWon: this.awaySetsWon.toString(),
       homeGamesWon: this.homeGamesWon.toString(),
-      awayGamesWon: this.awayGamesWon.toString()
+      awayGamesWon: this.awayGamesWon.toString(),
+      RESULT_STATUS: this.resultStatus,
+      WINNER_ID: this.selectedResultStatus && this.selectedResultStatus.status === 'WIN' ? this.selectedWinner : ''
     };
 
+    this.commonService.toastMessage("Result saved successfully", 2500, ToastMessageType.Success);
     this.viewCtrl.dismiss(resultData);
   }
 
@@ -170,9 +228,9 @@ export class TennisResultInputPage {
         return false;
       }
 
-      const winnerSets = this.selectedWinner === (this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.id) ? this.homeSetsWon : this.awaySetsWon;
-      const loserSets = this.selectedWinner === (this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.id) ? this.awaySetsWon : this.homeSetsWon;
-      
+      const winnerSets = this.selectedWinner === this.homeTeamId ? this.homeSetsWon : this.awaySetsWon;
+      const loserSets = this.selectedWinner === this.homeTeamId ? this.awaySetsWon : this.homeSetsWon;
+
       if (winnerSets <= loserSets) {
         this.commonService.toastMessage('Winner must have won more sets than the loser', 3000, ToastMessageType.Error);
         return false;
@@ -187,7 +245,7 @@ export class TennisResultInputPage {
     return true;
   }
 
-  cancel() {
+  cancel(): void {
     this.viewCtrl.dismiss();
   }
 }

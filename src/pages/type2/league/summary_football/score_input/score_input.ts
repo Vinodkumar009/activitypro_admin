@@ -10,6 +10,8 @@ import { SharedServices } from '../../../../services/sharedservice';
 import { LeagueParticipationForMatchModel, LeagueMatchParticipantModel } from '../../models/league.model';
 import { LeagueMatch } from '../../models/location.model';
 import { FootballResultModel, FootballScoreDetailModel } from '../../../../../shared/model/league_result.model';
+import { AllMatchData, GetIndividualMatchParticipantModel } from '../../../../../shared/model/match.model';
+import { TeamsForParentClubModel } from '../../models/team.model';
 
 @IonicPage()
 @Component({
@@ -19,10 +21,19 @@ import { FootballResultModel, FootballScoreDetailModel } from '../../../../../sh
 })
 export class ScoreInputPage {
   isWinner: boolean;
+
+  // League flow properties
   teamObj: LeagueParticipationForMatchModel;
   matchObj: LeagueMatch;
+
+  // Match flow properties
+  matchTeamObj: AllMatchData;
+  teamMatchObj: TeamsForParentClubModel;
+
+  // Common properties
   leagueId: string;
   activityId: string;
+  isLeague: boolean = false;
   selectedPlayer: string[] = [];
   goalTime: string[] = [];
   goalDateTime: string[] = [];
@@ -35,6 +46,8 @@ export class ScoreInputPage {
   resultObject: FootballResultModel;
 
   leagueMatchParticipantRes: LeagueMatchParticipantModel[] = [];
+  getIndividualMatchParticipantRes: GetIndividualMatchParticipantModel[] = [];
+
   leagueMatchParticipantInput: LeagueMatchParticipantInput = {
     parentclubId: "",
     clubId: "",
@@ -52,30 +65,52 @@ export class ScoreInputPage {
     leagueTeamPlayerStatusType: 0
   }
 
+  getIndividualMatchParticipantInput: GetIndividualMatchParticipantInput = {
+    parentclubId: "",
+    clubId: "",
+    activityId: "",
+    memberId: "",
+    action_type: 0,
+    device_type: 0,
+    app_type: 0,
+    device_id: "",
+    updated_by: "",
+    MatchId: "",
+    TeamId: "",
+    leagueTeamPlayerStatusType: 0
+  }
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
     public storage: Storage, private httpService: HttpService, public sharedservice: SharedServices,
     public commonService: CommonService, public alertCtrl: AlertController) {
 
+    this.initializeComponent();
+  }
+
+  private initializeComponent(): void {
     this.initializePageData();
     this.setupApiInput();
-    this.getLeagueMatchParticipant();
+    this.getMatchParticipants();
   }
 
   private initializePageData(): void {
     this.isWinner = this.navParams.get("ishome");
-    this.matchObj = this.navParams.get("matchObj");
+    this.isLeague = this.navParams.get("isLeague") || false;
     this.leagueId = this.navParams.get("leagueId");
     this.activityId = this.navParams.get("activityId");
-    this.teamObj = this.navParams.get("teamObj");
     this.score = this.navParams.get("score") || 0;
     this.resultObject = this.navParams.get("resultObject");
 
-    console.log("Initialized page data:", {
-      isWinner: this.isWinner,
-      score: this.score,
-      hasResultObject: !!this.resultObject,
-      resultObject: this.resultObject
-    });
+    // Initialize parameters based on flow type
+    if (this.isLeague) {
+      // League flow initialization
+      this.matchObj = this.navParams.get("matchObj");
+      this.teamObj = this.navParams.get("teamObj");
+    } else {
+      // Match flow initialization
+      this.matchTeamObj = this.navParams.get("matchObj");
+      this.teamMatchObj = this.navParams.get("teamObj");
+    }
 
     // Set team name for display
     this.teamName = this.getTeamName();
@@ -85,13 +120,37 @@ export class ScoreInputPage {
   }
 
   private setupApiInput(): void {
-    this.leagueMatchParticipantInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-    this.leagueMatchParticipantInput.memberId = this.sharedservice.getLoggedInId();
-    this.leagueMatchParticipantInput.action_type = 0;
-    this.leagueMatchParticipantInput.app_type = AppType.ADMIN_NEW;
-    this.leagueMatchParticipantInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
-    this.leagueMatchParticipantInput.LeagueId = this.leagueId;
-    this.leagueMatchParticipantInput.MatchId = this.matchObj.match_id;
+    const baseInput = {
+      parentclubId: this.sharedservice.getPostgreParentClubId(),
+      memberId: this.sharedservice.getLoggedInId(),
+      action_type: this.isLeague ? 0 : 1, // LeagueMatchActionType.MATCH for non-league
+      app_type: AppType.ADMIN_NEW,
+      device_type: this.sharedservice.getPlatform() == "android" ? 1 : 2,
+      activityId: this.activityId,
+      clubId: "",
+      device_id: "",
+      updated_by: ""
+    };
+
+    if (this.isLeague) {
+      // League flow setup
+      this.leagueMatchParticipantInput = {
+        ...baseInput,
+        LeagueId: this.leagueId,
+        MatchId: this.matchObj.match_id,
+        TeamId: "",
+        TeamId2: "",
+        leagueTeamPlayerStatusType: 0
+      };
+    } else {
+      // Match flow setup
+      this.getIndividualMatchParticipantInput = {
+        ...baseInput,
+        MatchId: this.matchTeamObj.MatchId,
+        TeamId: this.teamMatchObj.id,
+        leagueTeamPlayerStatusType: 0
+      };
+    }
   }
 
   private initializeFormArrays(): void {
@@ -105,8 +164,14 @@ export class ScoreInputPage {
   }
 
   private getTeamName(): string {
-    if (this.teamObj && this.teamObj.parentclubteam) {
-      return this.teamObj.parentclubteam.teamName || 'Team';
+    if (this.isLeague) {
+      if (this.teamObj && this.teamObj.parentclubteam) {
+        return this.teamObj.parentclubteam.teamName || 'Team';
+      }
+    } else {
+      if (this.teamMatchObj && this.teamMatchObj.teamName) {
+        return this.teamMatchObj.teamName || 'Team';
+      }
     }
     return 'Team';
   }
@@ -125,7 +190,12 @@ export class ScoreInputPage {
     return Array(count).fill(0);
   }
 
-  getPlayerDisplayName(player: LeagueMatchParticipantModel): string {
+  // Unified getter for participant data regardless of flow type
+  get participantData(): any[] {
+    return this.isLeague ? this.leagueMatchParticipantRes : this.getIndividualMatchParticipantRes;
+  }
+
+  getPlayerDisplayName(player: any): string {
     if (!player || !player.user) {
       return 'Unknown Player';
     }
@@ -177,8 +247,8 @@ export class ScoreInputPage {
     return this.goalTime[index] || '0"00"';
   }
 
-  getPlayerById(playerId: string): LeagueMatchParticipantModel {
-    return this.leagueMatchParticipantRes.find(p => p.user.Id === playerId);
+  getPlayerById(playerId: string): any {
+    return this.participantData.find(p => p.user.Id === playerId);
   }
 
   private createDateTimeString(minutes: number, seconds: number): string {
@@ -193,7 +263,7 @@ export class ScoreInputPage {
     const goalTime = this.goalTime[index];
 
     if (selectedPlayerId && this.isTimeSet(index)) {
-      const selectedPlayerObj = this.leagueMatchParticipantRes.find(player => player.user.Id === selectedPlayerId);
+      const selectedPlayerObj = this.participantData.find(player => player.user.Id === selectedPlayerId);
 
       // Ensure playerObj has the correct structure for summary_football.ts
       const enhancedPlayerObj = selectedPlayerObj ? {
@@ -299,7 +369,15 @@ export class ScoreInputPage {
     return true;
   }
   dismiss() {
-    this.viewCtrl.dismiss({ goalDetails: [], isWinner: this.isWinner });
+    this.viewCtrl.dismiss(null);
+  }
+
+  getMatchParticipants(): void {
+    if (this.isLeague) {
+      this.getLeagueMatchParticipant();
+    } else {
+      this.getIndividualMatchParticipant();
+    }
   }
 
   getLeagueMatchParticipant() {
@@ -307,15 +385,12 @@ export class ScoreInputPage {
     this.leagueMatchParticipantInput.TeamId = this.teamObj.parentclubteam.id;
     this.leagueMatchParticipantInput.leagueTeamPlayerStatusType = LeagueTeamPlayerStatusType.PLAYINGPLUSBENCH;
 
-    console.log("Fetching participants with input:", this.leagueMatchParticipantInput);
-
     this.httpService.post(`${API.Get_League_Match_Participant}`, this.leagueMatchParticipantInput).subscribe(
       (res: any) => {
         this.commonService.hideLoader();
         if (res && res.data) {
           this.leagueMatchParticipantRes = res.data;
           this.isDataLoaded = true;
-          console.log("Players loaded successfully:", res.data.length);
 
           // Try to initialize with existing scorers
           this.initializeFormWithExistingScorers();
@@ -326,7 +401,31 @@ export class ScoreInputPage {
       (error) => {
         this.commonService.hideLoader();
         this.handleApiError("Failed to load players");
-        console.error("API Error:", error);
+      }
+    );
+  }
+
+  getIndividualMatchParticipant(): void {
+    this.commonService.showLoader("Loading players...");
+    this.getIndividualMatchParticipantInput.TeamId = this.teamMatchObj.id;
+    this.getIndividualMatchParticipantInput.leagueTeamPlayerStatusType = LeagueTeamPlayerStatusType.PLAYINGPLUSBENCH;
+
+    this.httpService.post(`${API.GetIndividualMatchParticipant}`, this.getIndividualMatchParticipantInput).subscribe(
+      (res: any) => {
+        this.commonService.hideLoader();
+        if (res && res.data) {
+          this.getIndividualMatchParticipantRes = res.data;
+          this.isDataLoaded = true;
+
+          // Try to initialize with existing scorers
+          this.initializeFormWithExistingScorers();
+        } else {
+          this.handleApiError("No player data received");
+        }
+      },
+      (error) => {
+        this.commonService.hideLoader();
+        this.handleApiError("Failed to load players");
       }
     );
   }
@@ -337,7 +436,7 @@ export class ScoreInputPage {
   }
 
   private initializeFormWithExistingScorers(): void {
-    if (!this.resultObject || this.leagueMatchParticipantRes.length === 0) {
+    if (!this.resultObject || this.participantData.length === 0) {
       return;
     }
 
@@ -370,7 +469,7 @@ export class ScoreInputPage {
         }
 
         // Build goalDetail immediately
-        const playerObj = this.leagueMatchParticipantRes.find(player => player.user.Id === scorer.PLAYER_ID);
+        const playerObj = this.participantData.find(player => player.user.Id === scorer.PLAYER_ID);
         if (playerObj) {
           // Ensure playerObj has the correct structure for summary_football.ts
           const enhancedPlayerObj = {
@@ -446,4 +545,19 @@ export class LeagueMatchParticipantInput {
   TeamId: string;
   TeamId2: string;
   leagueTeamPlayerStatusType: number;
+}
+
+export class GetIndividualMatchParticipantInput {
+  parentclubId: string; // 🏢 Parent club ID
+  clubId: string; // 🏟️ Club ID
+  activityId: string; // ⚽ Activity ID
+  memberId: string; // 👤 Member ID
+  action_type: number; // ⚙️ Action type (e.g., LeagueMatchActionType)
+  device_type: number; // 📱 Device type (e.g., 1 for Android, 2 for iOS)
+  app_type: number; // 📱 App type (e.g., AppType.ADMIN_NEW)
+  device_id: string; // 🆔 Device ID
+  updated_by: string; // ✍️ User who updated
+  MatchId: string; // 🏟️ Match ID
+  TeamId: string; // 🏈 Team ID
+  leagueTeamPlayerStatusType: number; // 📊 Player status type (e.g., LeagueTeamPlayerStatusType)
 }

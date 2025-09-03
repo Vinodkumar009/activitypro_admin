@@ -26,7 +26,6 @@ import { API } from "../../../../shared/constants/api_constants";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { ParticipantModel } from "../../match/matchdetails/matchdetails";
 
-
 /**
  * Generated class for the LeaguedetailsPage page.
  *
@@ -42,10 +41,8 @@ import { ParticipantModel } from "../../match/matchdetails/matchdetails";
 })
 export class LeaguedetailsPage {
   @ViewChild('fab') fab: FabContainer;
-  
   participants: ParticipantModel[] = [];
   teams:TeamsModal[];
-
   TeamsType: boolean = true;
   MatchesType: boolean = true;
   league: LeaguesForParentClubModel;
@@ -112,7 +109,7 @@ export class LeaguedetailsPage {
     public modalCtrl: ModalController,
     private graphqlService: GraphqlService,
     private httpService: HttpService,
-    
+
   ) {
     // this.league = this.navParams.get("league");
     // console.log(this.league);
@@ -255,6 +252,7 @@ export class LeaguedetailsPage {
       if (this.individualLeague.league_type != 3) {
         this.getLeagueParticipants(); // if league type is not team then fetch participants
       }
+
     },
       (error) => {
         this.commonService.hideLoader();
@@ -377,6 +375,7 @@ export class LeaguedetailsPage {
     // this.navCtrl.push("LeaguematchdetailsPage");
     //this.navCtrl.push("UpdateleaguematchPage", { leagueId: this.individualLeague.id });
     let actionSheet = this.actionSheetCtrl.create({
+
       buttons: [
         // {
         //   text: "Manage Teams",
@@ -399,6 +398,7 @@ export class LeaguedetailsPage {
         {
           text: "Update Result",
           handler: () => {
+            
             //this.updateResult(match);
             const todays_date = moment().format("YYYY-MM-DD hh:mm A");
             // if (moment(this.match.MatchStartDate, "YYYY-MM-DD hh:mm A").isAfter(todays_date)) {
@@ -406,7 +406,6 @@ export class LeaguedetailsPage {
             //   return false;
             // }
             this.getActiveTeams(match);
-            
           }
         }
       ]
@@ -477,7 +476,7 @@ export class LeaguedetailsPage {
   updateResult(match: LeagueMatch) {
     this.navCtrl.push("LeaguematchresultPage", { leagueMatch: match });
   }
-  
+
   creatematchleaguePage() {
     this.navCtrl.push("CreatematchleaguePage", {
       leagueStartDate: this.individualLeague.start_date,
@@ -485,10 +484,10 @@ export class LeaguedetailsPage {
       leagueId: this.individualLeague.id, leagueName: this.individualLeague.league_name,
       location_id: this.individualLeague.location_id,
       location_type: this.individualLeague.location_type,
-      league_type_text: this.individualLeague.league_type_text
+      league_type_text: this.individualLeague.league_type_text,
+      activityId: this.individualLeague.activity.Id
     });
   }
-
   autoCreateMatch() {
     this.navCtrl.push("AutocreatematchPage", {
       leagueId: this.individualLeague.id,
@@ -499,7 +498,6 @@ export class LeaguedetailsPage {
       activityId: this.individualLeague.activity.Id,
     });
   }
-
   formatMatchStartDate(date) {
     return moment(+date).format("DD-MMM-YYYY");
   }
@@ -605,7 +603,6 @@ export class LeaguedetailsPage {
   chatConv(team) {
     this.navCtrl.push("TeamchatPage", { teams: team })
   }
-  
   gotoEditLeague() {
     this.navCtrl.push("EditleaguePage", { "individualleague": this.individualLeague });
     console.log("editLeague");
@@ -989,7 +986,10 @@ export class LeaguedetailsPage {
   }
 
   updatePayment(participant: LeagueParticipantModel) {
+
     this.navCtrl.push("LeaguepaymentPage", { SelectedMember: participant, SessionDetails: this.individualLeague })
+
+
   }
 
   sendEmailToMember(participant: LeagueParticipantModel) {
@@ -1065,6 +1065,7 @@ export class LeaguedetailsPage {
 
   getLeagueMatches() {
     this.commonInput.league_id = this.league_id;
+
     this.httpService.post(API.GET_LEAGUE_MATCHES, this.commonInput).subscribe((res: any) => {
       // this.match = res["data"];
       // console.log("match data is:", this.match);
@@ -1080,7 +1081,8 @@ export class LeaguedetailsPage {
       this.matchesLength = this.match.length;
     }, (error) => {
       this.commonService.toastMessage("match fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    })
+    }
+    )
   }
 
   showMatchActionSheet(match: LeagueMatch) {
@@ -1095,78 +1097,6 @@ export class LeaguedetailsPage {
       this.gotoMatchDetails(match);
     }
   }
-
-
-
-  showVisibilityOptions(event) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'Change League Visibility',
-      buttons: [
-        {
-          text: 'Public',
-          icon: 'ios-globe',
-          handler: () => {
-            if (this.individualLeague.league_visibility && this.individualLeague.league_visibility !== 0) {
-              this.modifyLeagueVisibility(0);
-            }
-          }
-        },
-        {
-          text: 'Private', 
-          icon: 'ios-lock-outline',
-          handler: () => {
-            if (this.individualLeague.league_visibility && this.individualLeague.league_visibility !== 1) {
-              this.modifyLeagueVisibility(1);
-            }
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  
-  modifyLeagueVisibility(visibility: number) {
-    const modifyLeagueMutation = gql`
-      mutation modifyLeague($leagueInput: LeagueEditInput!) {
-        modifyLeague(leagueInput: $leagueInput) {
-          id
-          league_visibility
-        }
-      }
-    `;
-
-    const leagueInput = {
-      id: this.league_id,
-      league_visibility: visibility
-    };
-
-    this.commonService.showLoader('Updating visibility...');
-    
-    this.graphqlService.mutate(modifyLeagueMutation, { leagueInput }, 0)
-      .subscribe((response: any) => {
-        this.commonService.hideLoader();
-        if (response.data.modifyLeague) {
-          this.individualLeague.league_visibility = visibility;
-          const visibilityText = visibility === 0 ? 'Public' : 'Private';
-          this.commonService.toastMessage(`League visibility changed to ${visibilityText}`,2500,ToastMessageType.Success,ToastPlacement.Bottom);
-        }
-      }, (error) => {
-        this.commonService.hideLoader();
-        if (error.graphQLErrors) {
-          error.graphQLErrors.forEach((e: any) => {
-            this.commonService.toastMessage(e.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-          });
-        }else{
-          this.commonService.toastMessage('Failed to update league visibility',2500,ToastMessageType.Error,ToastPlacement.Bottom);
-        }
-      });
-  }
-
 
 
 
@@ -1206,8 +1136,6 @@ export class UserDeviceMetadataField {
   UserActionType: number
 
 }
-
-
 
 
 export class TeamsModal{

@@ -6,14 +6,16 @@ export enum LeagueParticipationStatus {
     INJURED = 4
 }
 export enum LeaguePlayerInviteStatus {
-    PENDING = 0,
-    ACCEPTED = 1,
-    REJECTED = 2,
-    CANCELLED = 3,
-    ADMIN_ACCEPTED = 4,
-    ADMIN_REJECTED = 5,
-    ADMIN_CANCELLED = 6,
-    ADMIN_DELETED = 7
+    Pending = 0,
+    Accepted = 1,       // Playing
+    Declined = 2,       // Not playing
+    Cancelled = 3,
+    AdminAccepted = 4,  // Playing
+    AdminDeclined = 5,  // Not playing
+    AdminCancelled = 6,
+    AdminDeleted = 7,
+    Maybe = 8,
+    AdminMaybe = 9
 }
  
 export enum LeagueTeamPlayerStatusType {

@@ -12,20 +12,20 @@
 
 <ion-content>
   <div class="match-info">
-    <p class="largetext">{{matchObj?.match_title}}</p>
+    <p class="largetext">{{matchTitle}}</p>
     <ion-row>
       <p style="margin: 0; display: flex; align-items: center">
         <span><ion-icon class="smalltext" name="md-calendar" style="color: #2b92bb"></ion-icon></span>
-        <span class="smalltext" style="font-weight: 600;">{{matchObj?.start_date}}</span>
+        <span class="smalltext" style="font-weight: 600;">{{matchDate}}</span>
       </p>
     </ion-row>
     <div style="display: flex; align-items: center;">
       <ion-icon class="smalltext" name="pin" style="color: #2b92bb"></ion-icon>
-      <p class="smalltext">{{matchObj?.location_name}}</p>
+      <p class="smalltext">{{matchLocation}}</p>
     </div>
     <div style="display: flex;">
       <ion-col col-3 (click)="gotoScoreInputPage(true)">
-        <img class="teamLogo" [src]="homeTeamObj?.parentclubteam?.logo_url || 'assets/imgs/default-team-logo.png'">
+        <img class="teamLogo" [src]="homeTeamLogo">
         <div *ngIf="scorerObjectsHome && scorerObjectsHome.length > 0">
           <p class="scorerInfo" *ngFor="let scorer of scorerObjectsHome">
             {{scorer?.PLAYER}}<span *ngIf="scorer?.TIME">({{scorer?.TIME}}')</span>
@@ -36,7 +36,7 @@
       <ion-row text-center (click)="gotoResultInputPage()">
         <ion-col style="padding: 0px;display: ruby;">
           <ion-row style="color: green;font-size: 30px;">{{homeScore}}</ion-row>
-          <ion-row style="font-size: 12px;">{{homeTeamObj?.parentclubteam?.teamName}}</ion-row>
+          <ion-row style="font-size: 12px;">{{homeTeamName}}</ion-row>
         </ion-col>
         <ion-col>
           <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 12px;"></ion-icon>
@@ -44,11 +44,11 @@
         </ion-col>
         <ion-col style="padding: 0px;display: ruby;">
           <ion-row style="color: red; font-size: 30px;">{{awayScore}}</ion-row>
-          <ion-row style="font-size: 12px;">{{awayTeamObj?.parentclubteam?.teamName}}</ion-row>
+          <ion-row style="font-size: 12px;">{{awayTeamName}}</ion-row>
         </ion-col>
       </ion-row>
       <ion-col col-3 (click)="gotoScoreInputPage(false)">
-        <img class="teamLogo" [src]="awayTeamObj?.parentclubteam?.logo_url || 'assets/imgs/default-team-logo.png'">
+        <img class="teamLogo" [src]="awayTeamLogo">
         <div *ngIf="scorerObjectsAway && scorerObjectsAway.length > 0">
           <p class="scorerInfo" *ngFor="let scorer of scorerObjectsAway">
             {{scorer?.PLAYER}}<span *ngIf="scorer?.TIME">({{scorer?.TIME}}')</span>
@@ -87,15 +87,16 @@
     <p style="text-align: center;color: #f6ae4d;margin: 0px;">Possession</p>
 
     <div class="chartDiv">
-      <ion-col style="margin: 0; padding: 0" (click)="isAwayStatsPopupVisible = true">
-        <span style="color: red; font-size: 20px;">{{awayPoss}}%</span>
-        <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 16px;"></ion-icon>
-      </ion-col>
-      <canvas #doughnutCanvas width="200" height="200"></canvas>
       <ion-col style="margin: 0; padding: 0" (click)="isHomeStatsPopupVisible = true">
         <span style="color: green; font-size: 20px;">{{homePoss}}%</span>
         <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 16px; padding-right:20px;"></ion-icon>
       </ion-col>
+      <canvas #doughnutCanvas width="200" height="200"></canvas>
+      <ion-col style="margin: 0; padding: 0" (click)="isAwayStatsPopupVisible = true">
+        <span style="color: red; font-size: 20px;">{{awayPoss}}%</span>
+        <ion-icon name="create" style="color: rgba(0,0,0,0.50); font-size: 16px;"></ion-icon>
+      </ion-col>
+
     </div>
 
     <div class="stat-row" *ngIf="result_json">
@@ -357,7 +358,7 @@
 <div class="custom-popup" *ngIf="isHomeStatsPopupVisible && result_json">
   <div class="popup-container">
     <div class="popup-header">
-      <h3>Update {{homeTeamObj.parentclubteam.teamName}} Stats</h3>
+      <h3>Update {{homeTeamName}} Stats</h3>
       <button class="close-button" (click)="isHomeStatsPopupVisible=false">×</button>
     </div>
 
@@ -417,7 +418,7 @@
       <p>
         <span>Update</span>
         <span style="font-weight: bold; font-size: 20px;">
-          {{awayTeamObj.parentclubteam.teamName}}
+          {{awayTeamName}}
         </span>
       </p>
       <button class="close-button" (click)="isAwayStatsPopupVisible=false">×</button>

@@ -25,12 +25,12 @@
       </ion-item>
       <ion-item class="event_title_img">
         <ion-row>
-          <ion-col col-10 style="margin:auto">
+          <ion-col col-11 style="margin:auto">
             <p class="para">Team Logo</p>
-            <img *ngIf="parentClubTeamEdit.teamDetailsInput.logoUrl"
-              [src]="parentClubTeamEdit.teamDetailsInput.logoUrl">
+            <img *ngIf="parentClubTeamEdit.teamDetailsInput.logoUrl" [src]="parentClubTeamEdit.teamDetailsInput.logoUrl"
+              style="width: 200px; height: 100px;">
           </ion-col>
-          <ion-col col-2 style="margin:auto">
+          <ion-col col-1 style="margin:auto">
             <button ion-button icon-only clear (click)="selectTeamLogo()">
               <img src="assets/images/upload.svg" class="add_icon">
             </button>

@@ -26,7 +26,7 @@
   <ion-list *ngIf="filteredMembers.length > 0">
     <ion-item *ngFor="let member of filteredMembers;let i = index">
       <ion-label>{{member.FirstName}} {{member.LastName}}
-        {{getAge(member.DOB)}}
+        ({{getAge(member.DOB)}})
       </ion-label>
       <ion-checkbox [(ngModel)]="member.isSelected" [disabled]="member.isAlreadyExisted"
         (ionChange)="selectMembers(member,$event)"></ion-checkbox>

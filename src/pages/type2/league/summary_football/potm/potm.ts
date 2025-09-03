@@ -10,6 +10,8 @@ import { LeagueTeamPlayerStatusType } from '../../../../../shared/utility/enums'
 import { SharedServices } from '../../../../services/sharedservice';
 import { LeagueMatchParticipantModel, LeagueParticipationForMatchModel } from '../../models/league.model';
 import { LeagueMatch } from '../../models/location.model';
+import { AllMatchData, GetIndividualMatchParticipantModel } from '../../../../../shared/model/match.model';
+import { TeamsForParentClubModel } from '../../models/team.model';
 
 
 
@@ -23,16 +25,32 @@ export class PotmPage implements OnInit, OnDestroy {
   // Core data
   homeTeamName: string = '';
   awayTeamName: string = '';
+
+  // League flow properties
   homeTeamObj: LeagueParticipationForMatchModel;
   awayTeamObj: LeagueParticipationForMatchModel;
   matchObj: LeagueMatch;
+
+  // Match flow properties
+  matchTeamObj: AllMatchData;
+  hometeamMatchObj: TeamsForParentClubModel;
+  awayteamMatchObj: TeamsForParentClubModel;
+
+  // Common properties
   leagueId: string;
   activityId: string;
   resultObject: any;
+  isLeague: boolean = false;
 
-  // Player data
+  // Player data - League flow
   homeTeamPlayers: LeagueMatchParticipantModel[] = [];
   awayTeamPlayers: LeagueMatchParticipantModel[] = [];
+
+  // Player data - Match flow
+  homeTeamMatchPlayers: GetIndividualMatchParticipantModel[] = [];
+  awayTeamMatchPlayers: GetIndividualMatchParticipantModel[] = [];
+
+  // Common player data
   selectedPlayerIds: Set<string> = new Set();
   maxSelections: number = 2;
 
@@ -52,6 +70,10 @@ export class PotmPage implements OnInit, OnDestroy {
     private httpService: HttpService,
     public sharedservice: SharedServices
   ) {
+    this.initializeComponent();
+  }
+
+  private initializeComponent(): void {
     this.initializeNavParams();
     this.setupBaseApiInput();
   }
@@ -65,21 +87,29 @@ export class PotmPage implements OnInit, OnDestroy {
   }
 
   private initializeNavParams(): void {
-    this.matchObj = this.navParams.get("matchObj");
+    this.isLeague = this.navParams.get("isLeague") || false;
     this.leagueId = this.navParams.get("leagueId");
     this.activityId = this.navParams.get("activityId");
-    this.homeTeamObj = this.navParams.get("homeTeamObj");
-    this.awayTeamObj = this.navParams.get("awayTeamObj");
     this.resultObject = this.navParams.get("resultObject");
 
-    this.homeTeamName = (this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.teamName) || 'Home Team';
-    this.awayTeamName = (this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.teamName) || 'Away Team';
+    // Initialize parameters based on flow type
+    if (this.isLeague) {
+      // League flow initialization
+      this.matchObj = this.navParams.get("matchObj");
+      this.homeTeamObj = this.navParams.get("homeTeamObj");
+      this.awayTeamObj = this.navParams.get("awayTeamObj");
 
-    console.log("POTM Page initialized with:", {
-      homeTeam: this.homeTeamName,
-      awayTeam: this.awayTeamName,
-      hasResultObject: !!this.resultObject
-    });
+      this.homeTeamName = (this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.teamName) || 'Home Team';
+      this.awayTeamName = (this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.teamName) || 'Away Team';
+    } else {
+      // Match flow initialization
+      this.matchTeamObj = this.navParams.get("matchObj");
+      this.hometeamMatchObj = this.navParams.get("homeTeamObj");
+      this.awayteamMatchObj = this.navParams.get("awayTeamObj");
+
+      this.homeTeamName = (this.hometeamMatchObj && this.hometeamMatchObj.teamName) || 'Home Team';
+      this.awayTeamName = (this.awayteamMatchObj && this.awayteamMatchObj.teamName) || 'Away Team';
+    }
   }
 
   private setupBaseApiInput(): void {
@@ -88,15 +118,20 @@ export class PotmPage implements OnInit, OnDestroy {
       clubId: '',
       activityId: this.activityId || '',
       memberId: this.sharedservice.getLoggedInId() || '',
-      action_type: 0,
+      action_type: this.isLeague ? 0 : 1, // LeagueMatchActionType.MATCH for non-league
       device_type: this.sharedservice.getPlatform() === "android" ? 1 : 2,
       app_type: AppType.ADMIN_NEW,
       device_id: this.sharedservice.getDeviceId() || '',
       updated_by: '',
-      LeagueId: this.leagueId,
-      MatchId: (this.matchObj && this.matchObj.match_id) || '',
       leagueTeamPlayerStatusType: LeagueTeamPlayerStatusType.PLAYINGPLUSBENCH
     };
+
+    if (this.isLeague) {
+      this.baseApiInput.LeagueId = this.leagueId;
+      this.baseApiInput.MatchId = (this.matchObj && this.matchObj.match_id) || '';
+    } else {
+      this.baseApiInput.MatchId = (this.matchTeamObj && this.matchTeamObj.MatchId) || '';
+    }
   }
 
   private async loadTeamParticipants(): Promise<void> {
@@ -120,83 +155,119 @@ export class PotmPage implements OnInit, OnDestroy {
 
   private loadHomeTeamParticipants(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const input = {
-        ...this.baseApiInput,
-        TeamId: this.homeTeamObj.parentclubteam.id
-      };
+      if (this.isLeague) {
+        const input = {
+          ...this.baseApiInput,
+          TeamId: this.homeTeamObj.parentclubteam.id
+        };
 
-      this.httpService.post(`${API.Get_League_Match_Participant}`, input).subscribe(
-        (res: any) => {
-          if (res && res.data) {
-            this.homeTeamPlayers = res.data.map((player: any) => ({
-              ...player,
-              user: { ...player.user, selected: false }
-            }));
-            console.log("Home team participants loaded:", this.homeTeamPlayers.length);
-            resolve();
-          } else {
-            reject(new Error("No home team data received"));
+        this.httpService.post(`${API.Get_League_Match_Participant}`, input).subscribe(
+          (res: any) => {
+            if (res && res.data) {
+              this.homeTeamPlayers = res.data.map((player: any) => ({
+                ...player,
+                user: { ...player.user, selected: false }
+              }));
+              resolve();
+            } else {
+              reject(new Error("No home team data received"));
+            }
+          },
+          (error) => {
+            reject(error);
           }
-        },
-        (error) => {
-          console.error("Error loading home team participants:", error);
-          reject(error);
-        }
-      );
+        );
+      } else {
+        const input = {
+          ...this.baseApiInput,
+          TeamId: this.hometeamMatchObj.id
+        };
+
+        this.httpService.post(`${API.GetIndividualMatchParticipant}`, input).subscribe(
+          (res: any) => {
+            if (res && res.data) {
+              this.homeTeamMatchPlayers = res.data.map((player: any) => ({
+                ...player,
+                user: { ...player.user, selected: false }
+              }));
+              resolve();
+            } else {
+              reject(new Error("No home team data received"));
+            }
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      }
     });
   }
 
   private loadAwayTeamParticipants(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const input = {
-        ...this.baseApiInput,
-        TeamId: this.awayTeamObj.parentclubteam.id
-      };
+      if (this.isLeague) {
+        const input = {
+          ...this.baseApiInput,
+          TeamId: this.awayTeamObj.parentclubteam.id
+        };
 
-      this.httpService.post(`${API.Get_League_Match_Participant}`, input).subscribe(
-        (res: any) => {
-          if (res && res.data) {
-            this.awayTeamPlayers = res.data.map((player: any) => ({
-              ...player,
-              user: { ...player.user, selected: false }
-            }));
-            console.log("Away team participants loaded:", this.awayTeamPlayers.length);
-            resolve();
-          } else {
-            reject(new Error("No away team data received"));
+        this.httpService.post(`${API.Get_League_Match_Participant}`, input).subscribe(
+          (res: any) => {
+            if (res && res.data) {
+              this.awayTeamPlayers = res.data.map((player: any) => ({
+                ...player,
+                user: { ...player.user, selected: false }
+              }));
+              resolve();
+            } else {
+              reject(new Error("No away team data received"));
+            }
+          },
+          (error) => {
+            reject(error);
           }
-        },
-        (error) => {
-          console.error("Error loading away team participants:", error);
-          reject(error);
-        }
-      );
+        );
+      } else {
+        const input = {
+          ...this.baseApiInput,
+          TeamId: this.awayteamMatchObj.id
+        };
+
+        this.httpService.post(`${API.GetIndividualMatchParticipant}`, input).subscribe(
+          (res: any) => {
+            if (res && res.data) {
+              this.awayTeamMatchPlayers = res.data.map((player: any) => ({
+                ...player,
+                user: { ...player.user, selected: false }
+              }));
+              resolve();
+            } else {
+              reject(new Error("No away team data received"));
+            }
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      }
     });
   }
 
   private initializeExistingSelections(): void {
     if (!this.resultObject || !this.resultObject.POTM || !this.resultObject.POTM.length) {
-      console.log("No existing POTM data to initialize");
       return;
     }
 
-    console.log("Initializing existing POTM selections:", this.resultObject.POTM);
-
-    const allPlayers = [...this.homeTeamPlayers, ...this.awayTeamPlayers];
-
     this.resultObject.POTM.forEach((potm: any) => {
-      const player = allPlayers.find(p => p.user.Id === potm.PLAYER_ID);
+      const player = this.allPlayersData.find(p => p.user.Id === potm.PLAYER_ID);
       if (player) {
         player.user.selected = true;
         this.selectedPlayerIds.add(potm.PLAYER_ID);
-        console.log(`Pre-selected POTM: ${player.user.FirstName} ${player.user.LastName}`);
       }
     });
-
-    console.log(`Initialized ${this.selectedPlayerIds.size} existing POTM selections`);
   }
 
-  togglePlayerSelection(player: LeagueMatchParticipantModel): void {
+  togglePlayerSelection(player: any): void {
     const playerId = player.user.Id;
     const isCurrentlySelected = this.selectedPlayerIds.has(playerId);
 
@@ -225,13 +296,25 @@ export class PotmPage implements OnInit, OnDestroy {
     console.log(`Total selected: ${this.selectedPlayerIds.size}/${this.maxSelections}`);
   }
 
-  isPlayerDisabled(player: LeagueMatchParticipantModel): boolean {
+  isPlayerDisabled(player: any): boolean {
     return !player.user.selected && this.selectedPlayerIds.size >= this.maxSelections;
   }
 
-  get selectedPlayers(): LeagueMatchParticipantModel[] {
-    const allPlayers = [...this.homeTeamPlayers, ...this.awayTeamPlayers];
-    return allPlayers.filter(player => this.selectedPlayerIds.has(player.user.Id));
+  // Unified getters for player data regardless of flow type
+  get homePlayersData(): any[] {
+    return this.isLeague ? this.homeTeamPlayers : this.homeTeamMatchPlayers;
+  }
+
+  get awayPlayersData(): any[] {
+    return this.isLeague ? this.awayTeamPlayers : this.awayTeamMatchPlayers;
+  }
+
+  get allPlayersData(): any[] {
+    return [...this.homePlayersData, ...this.awayPlayersData];
+  }
+
+  get selectedPlayers(): any[] {
+    return this.allPlayersData.filter(player => this.selectedPlayerIds.has(player.user.Id));
   }
 
   get isLoading(): boolean {
@@ -258,7 +341,7 @@ export class PotmPage implements OnInit, OnDestroy {
     this.viewCtrl.dismiss([]);
   }
 
-  trackByPlayerId(_index: number, player: LeagueMatchParticipantModel): string {
+  trackByPlayerId(_index: number, player: any): string {
     return player.user.Id;
   }
 }

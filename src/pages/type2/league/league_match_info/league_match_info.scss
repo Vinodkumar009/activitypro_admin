@@ -188,4 +188,52 @@ page-league_match_info {
     position: absolute;
     left: 6px;
   }
+
+  // 🎯 Invite status color styles
+  .status-playing {
+    color: #32db64 !important; // Success green
+    font-weight: 600;
+  }
+
+  .status-not-playing {
+    color: #f53d3d !important; // Error red
+    font-weight: 600;
+  }
+
+  .status-maybe {
+    color: #b8860b !important; // Dark yellow for maybe status
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .status-other {
+    color: grey !important; // grey for other statuses
+    font-weight: 500;
+  }
+}
+
+// Global action sheet styles for league match info
+.action-sheet-confirmed .action-sheet-icon {
+  color: #32db64 !important; // Green
+}
+
+.action-sheet-maybe .action-sheet-icon {
+  color: #b8860b !important; // Dark yellow
+}
+
+.action-sheet-declined .action-sheet-icon {
+  color: #f53d3d !important; // Red
+}
+
+// Alternative selectors if above doesn't work
+ion-action-sheet .action-sheet-confirmed ion-icon {
+  color: #32db64 !important;
+}
+
+ion-action-sheet .action-sheet-maybe ion-icon {
+  color: #b8860b !important;
+}
+
+ion-action-sheet .action-sheet-declined ion-icon {
+  color: #f53d3d !important;
 }

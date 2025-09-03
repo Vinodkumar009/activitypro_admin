@@ -43,6 +43,8 @@ export class AddroleforplayernstaffPage {
   parentClubKey: string;
   // teamRoles: [];
   roles: Role[];
+  currentRole: any; // 🎯 Current player role data
+  selectedRoleId: string = ''; // 🎯 Selected role ID for preselection
 
   teamRolesInput: TeamRolesInput = {
     ParentClubKey: '',
@@ -77,8 +79,10 @@ export class AddroleforplayernstaffPage {
 
     this.team = this.navParams.get("team");
     this.playerId = this.navParams.get("memberId");
+    this.currentRole = this.navParams.get("currentRole"); // 🎯 Get current role data
     console.log(this.playerId);
     console.log(this.team.activity.ActivityCode);
+    console.log("Current role:", this.currentRole);
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
       if (val.$key != "") {
@@ -135,6 +139,16 @@ export class AddroleforplayernstaffPage {
       this.commonService.hideLoader();
       this.roles = data.data.getTeamRoles.teamRoles;
       console.log("Roles getting for player:", JSON.stringify(this.roles));
+
+      // 🎯 Preselect current role if available
+      if (this.currentRole && this.currentRole.role_name) {
+        const matchingRole = this.roles.find(role => role.role_name === this.currentRole.role_name);
+        if (matchingRole) {
+          this.selectedRoleId = matchingRole.id;
+          this.modifyMember.playerTeamId = this.playerId;
+          this.modifyMember.roleId = matchingRole.id;
+        }
+      }
     },
       (error) => {
 
@@ -194,6 +208,20 @@ export class AddroleforplayernstaffPage {
   //mutation for updating the role
 
   savePlayers = async () => {
+    // 🚫 Check if role is already assigned
+    if (this.currentRole && this.currentRole.role_name) {
+      const selectedRole = this.roles.find(role => role.id === this.modifyMember.roleId);
+      if (selectedRole && selectedRole.role_name === this.currentRole.role_name) {
+        this.commonService.toastMessage(
+          "Role is already assigned",
+          2500,
+          ToastMessageType.Info,
+          ToastPlacement.Bottom
+        );
+        return;
+      }
+    }
+
     console.log(JSON.stringify(this.modifyMember));
 
     this.modifyMember.playerTeamId = this.modifyMember.playerTeamId;
@@ -230,7 +258,7 @@ export class AddroleforplayernstaffPage {
           this.commonService.toastMessage(errorMessage, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         } else {
 
-          this.commonService.toastMessage("Roles updation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          this.commonService.toastMessage("Please select a role to update", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         }
       });
     }

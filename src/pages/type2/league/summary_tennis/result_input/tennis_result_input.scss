@@ -4,12 +4,12 @@ page-tennis-result-input {
     padding: 10px !important;
   }
 
-  ion-buttons{
-    button{
-      color:#fff !important;
+  ion-buttons {
+    button {
+      color: #fff !important;
     }
   }
-  
+
   ion-title {
     background-color: #2b92bb !important;
 
@@ -29,21 +29,21 @@ page-tennis-result-input {
   .header-section {
     text-align: center;
     margin-bottom: 24px;
-    
+
     .match-info {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       margin-bottom: 8px;
-      
+
       h3 {
         margin: 0;
         font-weight: 600;
         color: #2c3e50;
       }
     }
-    
+
     .subtitle {
       margin: 0;
       font-size: 14px;
@@ -60,14 +60,14 @@ page-tennis-result-input {
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
     .card-header {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 16px;
-      
+
       span {
         font-weight: 600;
         color: #2c3e50;
@@ -76,13 +76,15 @@ page-tennis-result-input {
     }
   }
 
-  .winner-options, .status-options {
+  .winner-options,
+  .status-options {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
 
-  .team-option, .status-option {
+  .team-option,
+  .status-option {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -91,12 +93,12 @@ page-tennis-result-input {
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &.selected {
       border-color: #3498db;
       background: #f8f9ff;
     }
-    
+
     span {
       font-weight: 500;
       color: #2c3e50;
@@ -107,11 +109,11 @@ page-tennis-result-input {
     display: flex;
     align-items: center;
     gap: 16px;
-    
+
     .team-input {
       flex: 1;
       text-align: center;
-      
+
       label {
         display: block;
         font-size: 12px;
@@ -119,7 +121,7 @@ page-tennis-result-input {
         margin-bottom: 8px;
         font-weight: 500;
       }
-      
+
       .score-field {
         background: #f8f9fa;
         border: 2px solid #e9ecef;
@@ -130,15 +132,15 @@ page-tennis-result-input {
         height: 60px;
 
         .text-input {
-              text-align: center !important;
+          text-align: center !important;
         }
-        
+
         &:focus {
           border-color: #3498db;
         }
       }
     }
-    
+
     .vs-separator {
       font-size: 14px;
       font-weight: 600;
@@ -149,16 +151,16 @@ page-tennis-result-input {
 
   .custom-footer {
     padding: 10px 16px;
-    
+
     .footer-buttons {
       display: flex;
       gap: 12px;
 
-      ion-icon{
-          padding: 0px 5px !important;
-          font-size: 1.5em !important;
+      ion-icon {
+        padding: 0px 5px !important;
+        font-size: 1.5em !important;
       }
-      
+
       button {
         padding: 5px;
         font-size: 1em !important;

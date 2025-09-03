@@ -39,12 +39,12 @@ export class LeagueMatch {
     description: string
     start_date: string
     match_title: string
-    match_visibility: number;
+    match_visibility: number
+    home_participant_id?: string
+    away_participant_id?:string;
     payment_type: number;
     member_fees:number;
     non_member_fees:number;
-    home_participant_id?: string
-    away_participant_id?:string;
     league_type: number;
 }
 

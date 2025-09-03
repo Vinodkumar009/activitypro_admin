@@ -98,7 +98,6 @@ export class AutocreatematchPage {
     this.min = new Date().toISOString();
     this.max = "2049-12-31";
     this.matchDate = moment().format("YYYY-MM-DD");
-
     this.roundTypeInput = new RoundTypeInput();
     this.roundTypeInput.parentclubId = this.sharedservice.getPostgreParentClubId();
     this.roundTypeInput.action_type = 0;
@@ -375,10 +374,10 @@ export class AutocreatematchPage {
       this.inputObj.participant_ids = selectedPlayers.map(player => player.id)
       this.inputObj.round = Number(this.selectedRound),
       this.inputObj.match_name = '',
-      this.inputObj.start_date = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format("YYYY-MM-DD HH:mm");
+      this.inputObj.start_date = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('YYYY-MM-DD'),
+
       this.inputObj.start_time = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('HH:mm'),
       this.inputObj.end_date = moment(new Date(this.matchDate + ' ' + '23:59').getTime()).format("YYYY-MM-DD HH:mm");
-      
       this.inputObj.group_id = '',
       this.inputObj.stage = this.selectedRound,
       this.inputObj.match_details = '',
@@ -390,7 +389,7 @@ export class AutocreatematchPage {
       this.inputObj.device_id = this.sharedservice.getDeviceId() || '';
 
       this.httpService.post(`${API.GENERATE_MATCHES}`, this.inputObj).subscribe({
-            next: (res: any) => {
+            next: (res: any) => {              
               this.commonService.toastMessage('Matches created successfully',2500,ToastMessageType.Success,ToastPlacement.Bottom);
               this.numberofPlayers = res.data.numberOfPlayers;
               this.numberofMatches = res.data.numberOfMatches;
@@ -417,7 +416,7 @@ export class AutocreatematchPage {
       this.commonService.hideLoader();
       console.error('Error creating matches:', error);
       this.commonService.toastMessage(error.message || 'Failed to create matches',2500,ToastMessageType.Error,ToastPlacement.Bottom);
-    }
+    } 
   }
 
   

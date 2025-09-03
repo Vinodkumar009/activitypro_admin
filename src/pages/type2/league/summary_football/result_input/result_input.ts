@@ -10,6 +10,8 @@ import { SharedServices } from '../../../../services/sharedservice';
 import { LeagueParticipationForMatchModel, LeagueMatchParticipantModel, ResultStatusModel } from '../../models/league.model';
 import { LeagueMatch } from '../../models/location.model';
 import { FootballResultModel, FootballResultStatsModel } from '../../../../../shared/model/league_result.model';
+import { AllMatchData } from '../../../../../shared/model/match.model';
+import { TeamsForParentClubModel } from '../../models/team.model';
 
 
 
@@ -29,12 +31,22 @@ export class ResultInputPage {
     winner_league_participation_id: '',
     loser_league_participation_id: ''
   }
+
+  // League flow properties
   homeTeamObj: LeagueParticipationForMatchModel;
   awayTeamObj: LeagueParticipationForMatchModel;
   matchObj: LeagueMatch;
+
+  // Match flow properties
+  matchTeamObj: AllMatchData;
+  hometeamMatchObj: TeamsForParentClubModel;
+  awayteamMatchObj: TeamsForParentClubModel;
+
+  // Common properties
   resultId: string;
   leagueId: string;
   activityId: string;
+  isLeague: boolean = false;
   selectedPlayer: string[] = [];
   goalTime: number[] = [];
   goalDetails: any[] = [];
@@ -78,19 +90,51 @@ export class ResultInputPage {
     public storage: Storage, private httpService: HttpService, public sharedservice: SharedServices,
     public commonService: CommonService, public alertCtrl: AlertController) {
 
+    this.initializeComponent();
+  }
 
-    this.matchObj = this.navParams.get("matchObj");
+  private initializeComponent(): void {
+    // Get navigation parameters
+    this.isLeague = this.navParams.get("isLeague") || false;
     this.leagueId = this.navParams.get("leagueId");
     this.activityId = this.navParams.get("activityId");
-    this.homeTeamObj = this.navParams.get("homeTeamObj");
-    this.awayTeamObj = this.navParams.get("awayTeamObj");
     this.resultId = this.navParams.get("resultId");
-    this.TEAMS = [this.homeTeamObj, this.awayTeamObj];
     this.score = this.navParams.get("score");
     this.activityCode = this.navParams.get("activityCode");
     this.resultObject = this.navParams.get("resultObject");
+
+    // Initialize parameters based on flow type
+    if (this.isLeague) {
+      // League flow initialization
+      this.matchObj = this.navParams.get("matchObj");
+      this.homeTeamObj = this.navParams.get("homeTeamObj");
+      this.awayTeamObj = this.navParams.get("awayTeamObj");
+      this.TEAMS = [this.homeTeamObj, this.awayTeamObj];
+    } else {
+      // Match flow initialization
+      this.matchTeamObj = this.navParams.get("matchObj");
+      this.hometeamMatchObj = this.navParams.get("homeTeamObj");
+      this.awayteamMatchObj = this.navParams.get("awayTeamObj");
+      // Create TEAMS array for match flow - convert to league format for compatibility
+      this.TEAMS = [
+        {
+          id: this.hometeamMatchObj.id || '',
+          parentclubteam: {
+            id: this.hometeamMatchObj.id || '',
+            teamName: this.hometeamMatchObj.teamName || 'Home Team'
+          }
+        } as LeagueParticipationForMatchModel,
+        {
+          id: this.awayteamMatchObj.id || '',
+          parentclubteam: {
+            id: this.awayteamMatchObj.id || '',
+            teamName: this.awayteamMatchObj.teamName || 'Away Team'
+          }
+        } as LeagueParticipationForMatchModel
+      ];
+    }
+
     this.updateResultEntityInput.resultId = this.resultId;
-    // this.updateResultEntityInput.resultDescription = '';//will add later
     this.updateResultEntityInput.PublishedByApp = AppType.ADMIN_NEW.toString();
 
     // Initialize form with existing result data if available
@@ -201,11 +245,16 @@ export class ResultInputPage {
 
     // 🏟️ Validate home and away goals for WIN and DRAW statuses
     if (isWin || isDrawn) {
+      const homeGoals = Number(this.homeTeamGoals);
+      const awayGoals = Number(this.awayTeamGoals);
+
       if (
         this.homeTeamGoals === undefined ||
         this.awayTeamGoals === undefined ||
-        isNaN(this.homeTeamGoals) ||
-        isNaN(this.awayTeamGoals)
+        isNaN(homeGoals) ||
+        isNaN(awayGoals) ||
+        homeGoals < 0 ||
+        awayGoals < 0
       ) {
         this.commonService.toastMessage('Please enter valid numbers for both team goals.', 3000, ToastMessageType.Info);
         return;
@@ -232,15 +281,18 @@ export class ResultInputPage {
       const loserTeam = this.TEAMS.find(team => team.parentclubteam.id !== this.selectedWinnerTeamId);
 
       // 🏟️ Assign goals based on which team is the winner
+      // Convert to numbers to ensure proper comparison
+      const homeGoals = Number(this.homeTeamGoals);
+      const awayGoals = Number(this.awayTeamGoals);
       let winnerTeamGoals = 0;
       let loserTeamGoals = 0;
 
-      if (winnerTeam.id === this.homeTeamObj.id) {
-        winnerTeamGoals = this.homeTeamGoals;
-        loserTeamGoals = this.awayTeamGoals;
-      } else if (winnerTeam.id === this.awayTeamObj.id) {
-        winnerTeamGoals = this.awayTeamGoals;
-        loserTeamGoals = this.homeTeamGoals;
+      if (this.selectedWinnerTeamId === this.homeTeamId) {
+        winnerTeamGoals = homeGoals;
+        loserTeamGoals = awayGoals;
+      } else if (this.selectedWinnerTeamId === this.awayTeamId) {
+        winnerTeamGoals = awayGoals;
+        loserTeamGoals = homeGoals;
       }
 
       // Validate that winner team has more goals than loser team
@@ -254,8 +306,8 @@ export class ResultInputPage {
 
       // 🟢 Dismiss modal with winner result data
       this.viewCtrl.dismiss({
-        homeTeamGoals: this.homeTeamGoals.toString(),
-        awayTeamGoals: this.awayTeamGoals.toString(),
+        homeTeamGoals: homeGoals.toString(),
+        awayTeamGoals: awayGoals.toString(),
         winnerTeamGoals: winnerTeamGoals.toString(),
         loserTeamGoals: loserTeamGoals.toString(),
         resultStatus: this.selectedResultStatus.id,
@@ -263,7 +315,11 @@ export class ResultInputPage {
       });
     } else if (isDrawn) {
       // For drawn type, check if both teams have the same number of goals
-      if (this.homeTeamGoals !== this.awayTeamGoals) {
+      // Convert to numbers to ensure proper comparison
+      const homeGoals = Number(this.homeTeamGoals);
+      const awayGoals = Number(this.awayTeamGoals);
+
+      if (homeGoals !== awayGoals) {
         this.commonService.toastMessage('For drawn matches, both teams must have the same number of goals.', 3000, ToastMessageType.Info);
         return;
       }
@@ -273,8 +329,8 @@ export class ResultInputPage {
 
       // 🤝 For drawn matches, dismiss modal with drawn match data
       this.viewCtrl.dismiss({
-        homeTeamGoals: this.homeTeamGoals.toString(),
-        awayTeamGoals: this.awayTeamGoals.toString(),
+        homeTeamGoals: homeGoals.toString(),
+        awayTeamGoals: awayGoals.toString(),
         winnerTeamGoals: null,
         loserTeamGoals: null,
         resultStatus: this.selectedResultStatus.id,
@@ -305,6 +361,55 @@ export class ResultInputPage {
       loserTeamGoals: 0,
       footballResultStats: null
     });
+  }
+
+  // Getter methods for unified access to team data
+  get homeTeamName(): string {
+    if (this.isLeague) {
+      return (this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.teamName)
+        ? this.homeTeamObj.parentclubteam.teamName : 'Home Team';
+    } else {
+      return (this.hometeamMatchObj && this.hometeamMatchObj.teamName)
+        ? this.hometeamMatchObj.teamName : 'Home Team';
+    }
+  }
+
+  get awayTeamName(): string {
+    if (this.isLeague) {
+      return (this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.teamName)
+        ? this.awayTeamObj.parentclubteam.teamName : 'Away Team';
+    } else {
+      return (this.awayteamMatchObj && this.awayteamMatchObj.teamName)
+        ? this.awayteamMatchObj.teamName : 'Away Team';
+    }
+  }
+
+  get matchTitle(): string {
+    if (this.isLeague) {
+      return (this.matchObj && this.matchObj.match_title) ? this.matchObj.match_title : '';
+    } else {
+      return (this.matchTeamObj && this.matchTeamObj.MatchTitle) ? this.matchTeamObj.MatchTitle : '';
+    }
+  }
+
+  get homeTeamId(): string {
+    if (this.isLeague) {
+      return (this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.id)
+        ? this.homeTeamObj.parentclubteam.id : '';
+    } else {
+      return (this.hometeamMatchObj && this.hometeamMatchObj.id)
+        ? this.hometeamMatchObj.id : '';
+    }
+  }
+
+  get awayTeamId(): string {
+    if (this.isLeague) {
+      return (this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.id)
+        ? this.awayTeamObj.parentclubteam.id : '';
+    } else {
+      return (this.awayteamMatchObj && this.awayteamMatchObj.id)
+        ? this.awayteamMatchObj.id : '';
+    }
   }
 }
 export class UpdateResultEntityInput {

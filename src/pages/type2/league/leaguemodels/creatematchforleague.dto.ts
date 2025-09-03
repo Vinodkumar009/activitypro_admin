@@ -1,5 +1,5 @@
 import { SrvRecord } from "dns"
-import { CommonInputTypeDefs_V3, CommonRestApiDto, CommonRestApiDtoV1 } from "../../../../shared/model/common.model"
+import { CommonRestApiDtoV1 } from "../../../../shared/model/common.model"
 
 export interface CreateLeagueMatchInput {
     MatchName: string
@@ -8,7 +8,7 @@ export interface CreateLeagueMatchInput {
     GroupId: string
     EndDate: string
     Stage: number
-    Round:number
+    Round: number
     MatchVisibility: number
     MatchDetails: string
     StartDate: string
@@ -21,7 +21,7 @@ export interface CreateLeagueMatchInput {
     location_id: string
     location_type: number
     user_postgre_metadata: UserPostgreMetadataField
-    user_device_metadata: UserDeviceMetadataField
+    user_device_metadata: UserDeviceMetadataField,
     Member_Fee: string;
     Non_Member_Fee: string;
 }
@@ -45,12 +45,12 @@ export class CreateLeagueMatchInputV1 extends CommonRestApiDtoV1 {
   non_member_fees: number;
 }
 
-export class UserPostgreMetadataField {
+export interface UserPostgreMetadataField {
     UserParentClubId: string
     UserActivityId: string
 }
 
-export class UserDeviceMetadataField {
+export interface UserDeviceMetadataField {
     UserAppType: number
     UserActionType: number
     UserDeviceType: number
@@ -78,17 +78,17 @@ export interface LeagueGroupInput {
     ActionType: number
     DeviceType: number
     leagueId: string
-    }
-
-export interface CoachList{
-    Id:string
-    first_name:string
-    last_name:string
-    phone_no:string
-    email_id:string
 }
 
-export interface SchoolList{
-    id:string
-    school_name:string
+export interface CoachList {
+    Id: string
+    first_name: string
+    last_name: string
+    phone_no: string
+    email_id: string
+}
+
+export interface SchoolList {
+    id: string
+    school_name: string
 }

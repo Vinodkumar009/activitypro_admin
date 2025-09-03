@@ -130,7 +130,6 @@ export class CreatematchleaguePage {
   selectedParticipant1: LeagueParticipantModel;
   location_id: string;
   location_type: number;
-
   activityId: string;
   postgre_parentclub_id: string;
   constructor(
@@ -185,7 +184,6 @@ export class CreatematchleaguePage {
       this.min = moment(this.leagueStartDate, inputFormat).format('YYYY-MM-DD');
       this.startDate = moment(this.leagueStartDate, inputFormat).format('YYYY-MM-DD');
       this.max = this.leagueEndDate ? moment(this.leagueEndDate, inputFormat).format('YYYY-MM-DD') : moment('2049-12-31', 'YYYY-MM-DD').format('YYYY-MM-DD');
-
     } else {
       // If leagueStartDate is not valid, use the current date as the default
       this.min = moment().format('YYYY-MM-DD');
@@ -493,6 +491,11 @@ export class CreatematchleaguePage {
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
+    //  if(this.inputObj.location_id==""||this.inputObj.location_id==undefined){
+    //   let message="Please select location";
+    //   this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
+    //   return false;
+    // }
     else if (this.matchType === 'Singles') {
       if (!this.inputObj.primary_participant_id || !this.inputObj.secondary_participant_id) {
         this.commonService.toastMessage("Please select both participants for singles match", 2500, ToastMessageType.Error);
@@ -550,12 +553,13 @@ export class CreatematchleaguePage {
   async createMatchForLeague() {
     try {
       if (this.validateInput()) {
-        // this.inputObj.primary_participant_id = this.inputObj.primary_participant_id;
-        // this.inputObj.secondary_participant_id = this.inputObj.secondary_participant_id;
+        this.inputObj.Round = Number(this.inputObj.Round);
+        if (this.inputObj.MatchPaymentType != 1) {
+          this.inputObj.Member_Fee = "0.00";
+          this.inputObj.Non_Member_Fee = "0.00";
+        }
 
         this.inputObj.match_type = this.matchType.toLowerCase() === 'singles' ? 0 : 1;
-        this.inputObj.Round = Number(this.inputObj.Round);
-
         if (this.inputObj.MatchPaymentType != 1) {
           this.inputObj.Member_Fee = "0.00";
           this.inputObj.Non_Member_Fee = "0.00";
@@ -564,8 +568,6 @@ export class CreatematchleaguePage {
         this.inputObj.StartDate = moment(new Date(this.startDate + " " + this.startTime).getTime()).format("YYYY-MM-DD HH:mm");
         this.inputObj.EndDate = moment(new Date(this.startDate + " " + this.endTime).getTime()).format("YYYY-MM-DD HH:mm");//this.startDate + " " + this.endTime;
 
-        // console.log('input date is:', this.inputObj.EndDate);
-        // console.log(new Date(this.startDate + " " + this.startTime).getTime());
         this.commonService.showLoader("Creating Match...");
         const createLeagueMutation = gql`
         mutation addMatchToLeague($createLeagueMatchInput: CreateLeagueMatchInput!) {

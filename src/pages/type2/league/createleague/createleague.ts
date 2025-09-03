@@ -24,7 +24,7 @@ import { CoachList, SchoolList } from '../leaguemodels/creatematchforleague.dto'
 import { CatandType, Locations } from '../models/location.model';
 import { ClubActivityInput, IClubDetails } from '../../../../shared/model/club.model';
 import { HttpService } from '../../../../services/http.service';
-
+import { error } from 'console';
 
 
 
@@ -68,7 +68,7 @@ export class CreateleaguePage {
       league_name: '',
       created_by: '',
       activity_code: '',
-      league_type: null,
+      league_type: 1,
       league_category: 0,
       league_ageGroup: '',
       league_logoURL: '',
@@ -245,6 +245,7 @@ export class CreateleaguePage {
         })
   }
   getActivityList() {
+    this.commonService.showLoader("Fetching activities...");
     const club_activity_input: ClubActivityInput = {
       ParentClubKey: this.parentClubKey,
       ClubKey: this.selectedClub,
@@ -265,6 +266,7 @@ export class CreateleaguePage {
       `;
     this.graphqlService.query(clubs_activity_query, { input_obj: club_activity_input }, 0)
       .subscribe((res: any) => {
+        this.commonService.hideLoader();
         this.club_activities = res.data.getAllActivityByVenue as Activity[];
         if (this.club_activities.length > 0) {
           this.leagueCreationInput.league.activity_code = String(this.club_activities[0].ActivityCode);
@@ -273,7 +275,7 @@ export class CreateleaguePage {
         }
       },
         (error) => {
-          //this.commonService.hideLoader();
+          this.commonService.hideLoader();
           this.commonService.toastMessage("No activities found", 2500, ToastMessageType.Error)
           console.error("Error in fetching:", error);
           // Handle the error here, you can display an error message or take appropriate action.
@@ -459,74 +461,69 @@ export class CreateleaguePage {
   //validating the fields
   validateInputField() {
     if (this.leagueCreationInput.league.league_name == "" || this.leagueCreationInput.league.league_name == undefined) {
-      const message = "Please enter competition name";
+      let message = "Please enter Competition name";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error);
       return false;
     }
-    else if (this.leagueCreationInput.league.league_type == null || this.leagueCreationInput.league.capacity == undefined) {
-      const message = "Please select league type";
-      this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
-      return false;
-    }
     else if (!this.isTeamType && this.leagueCreationInput.league.capacity == 0 || this.leagueCreationInput.league.capacity == undefined) {
-      const message = "Enter capacity";
+      let message = "Enter Capacity";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
     // else if (!this.isTeamType && this.leagueCreationInput.league.season == "" || this.leagueCreationInput.league.season == undefined) {
-    //   const message = "Enter season";
+    //   let message = "Enter season";
     //   this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
     //   return false;
     // }
     else if (!this.isTeamType && this.leagueCreationInput.league.grade == "" || this.leagueCreationInput.league.grade == undefined) {
-      const message = "Enter grade";
+      let message = "Enter grade";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
 
     } else if ((!this.isTeamType && this.leagueCreationInput.league.is_paid) && (parseFloat(this.leagueCreationInput.league.member_price) <= 0 || this.leagueCreationInput.league.member_price == undefined || this.leagueCreationInput.league.member_price == '')) {
-      const message = "Enter member fee";
+      let message = "Enter member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
     else if ((!this.isTeamType && this.leagueCreationInput.league.is_paid) && (parseFloat(this.leagueCreationInput.league.non_member_price) <= 0 || this.leagueCreationInput.league.non_member_price == undefined || this.leagueCreationInput.league.non_member_price == '')) {
-      const message = "Enter non-member fee";
+      let message = "Enter non-member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     } else if (!this.isTeamType && this.leagueCreationInput.league.contact_email == "" || this.leagueCreationInput.league.contact_email == undefined) {
-      const message = "Enter contact email";
+      let message = "Enter contact email";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     } else if (!this.isTeamType && this.leagueCreationInput.league.contact_phone == "" || this.leagueCreationInput.league.contact_phone == undefined) {
-      const message = "Enter contact phone";
+      let message = "Enter contact phone";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
     else if (this.leagueCreationInput.league.start_date == "") {
-      const msg = "Please enter a valid start date";
+      let msg = "Please enter a valid start date";
       this.commonService.toastMessage(msg, 2500, ToastMessageType.Error)
       return false;
     }
 
     else if (this.leagueCreationInput.league.end_date == "") {
-      const msg = "Please enter a valid end date";
+      let msg = "Please enter a valid end date";
       this.commonService.toastMessage(msg, 2500, ToastMessageType.Error)
       return false;
     }
     else if (moment(this.leagueCreationInput.league.end_date, "YYYY-MM-DD").isBefore(moment(this.leagueCreationInput.league.start_date, "YYYY-MM-DD"))) {
-      const msg = "Your end date is before the start date. Please enter a valid end date."
+      let msg = "Your end date is before the start date. Please enter a valid end date."
       this.commonService.toastMessage(msg, 2500, ToastMessageType.Error)
       return false;
     }
     else if (!this.isTeamType && this.leagueCreationInput.league.last_enrollment_date == "") {
-      const msg = "Please enter a valid enrolment date";
+      let msg = "Please enter a valid enrolment date";
       this.commonService.toastMessage(msg, 2500, ToastMessageType.Error)
       return false;
     } else if (!this.isTeamType && moment(this.leagueCreationInput.league.last_withdrawal_date, "YYYY-MM-DD").isBefore(moment(this.leagueCreationInput.league.last_enrollment_date, "YYYY-MM-DD"))) {
-      const msg = "Your withdrawal date is before the enrollment date. Please enter a valid withdrawal date."
+      let msg = "Your withdrawal date is before the enrollment date. Please enter a valid withdrawal date."
       this.commonService.toastMessage(msg, 2500, ToastMessageType.Error)
       return false;
     } else if (!this.isTeamType && moment(this.leagueCreationInput.league.last_withdrawal_date, "YYYY-MM-DD").isAfter(moment(this.leagueCreationInput.league.end_date, "YYYY-MM-DD"))) {
-      const msg = "Withdrawal date is after the end date. Please enter a valid withdrawal date"
+      let msg = "Withdrawal date is after the end date. Please enter a valid withdrawal date"
       this.commonService.toastMessage(msg, 2500, ToastMessageType.Error)
       return false;
     }

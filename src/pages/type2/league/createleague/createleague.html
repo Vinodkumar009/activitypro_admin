@@ -15,30 +15,28 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label fixed>Competition Name</ion-label>
-      <ion-input placeholder="Enter Competition Name" type="text" [(ngModel)]="leagueCreationInput.league.league_name"
-        class="input_txt_right"></ion-input>
-    </ion-item>
-    <ion-item>
       <ion-label>Activity</ion-label>
       <ion-select [(ngModel)]="leagueCreationInput.league.activity_code">
         <ion-option *ngFor="let activity of club_activities" value="{{activity.ActivityCode}}">{{activity.ActivityName}}
         </ion-option>
       </ion-select>
     </ion-item>
-    
+    <ion-item>
+      <ion-label>Type</ion-label>
+      <ion-select [(ngModel)]="leagueCreationInput.league.league_type" (ionChange)="onLeagueTypeChange($event)">
+        <ion-option *ngFor="let type of leagueType" [value]="type.value">{{type.key}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Name</ion-label>
+      <ion-input placeholder="Enter Competition Name" type="text" [(ngModel)]="leagueCreationInput.league.league_name"
+        class="input_txt_right"></ion-input>
+    </ion-item>
     <ion-item>
       <ion-label>Hosted By</ion-label>
       <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
         <ion-option *ngFor="let club of clubs" value="{{club.FirebaseId}}">
           {{club.ClubName}}</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Competition Type</ion-label>
-      <ion-select [(ngModel)]="leagueCreationInput.league.league_type" (ionChange)="onLeagueTypeChange($event)">
-        <ion-option *ngFor="let type of leagueType" [value]="type.value">{{type.key}}</ion-option>
       </ion-select>
     </ion-item>
     <!---based on location type -->
@@ -73,6 +71,8 @@
         <ion-option *ngFor="let scl of schools" value="{{scl.id}}">{{scl.school_name}}</ion-option>
       </ion-select>
     </ion-item>
+
+
 
     <ion-item *ngIf="!isTeamType">
       <ion-label>Category</ion-label>

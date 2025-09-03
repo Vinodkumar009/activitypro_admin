@@ -51,7 +51,7 @@ export class EditteamPage {
       teamStatus: 0,
       teamVisibility: 0,
       teamDescription: "",
-      logoUrl: ''
+      logo_url: ''
     },
     shortName: ""
   }
@@ -106,7 +106,7 @@ export class EditteamPage {
         this.parentClubTeamEdit.MemberKey = val.$key;
         this.venueDetailsInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
         this.venueDetailsInput.MemberKey = val.$key;
-        this.parentClubTeamEdit.teamDetailsInput.logoUrl = this.team.logo_url
+        this.parentClubTeamEdit.teamDetailsInput.logo_url = this.team.logo_url
         this.getClubVenues();
       }
     });
@@ -195,7 +195,7 @@ export class EditteamPage {
         this.commonService.hideLoader();
         const imageUrl = `${this.sharedService.getCloudfrontURL()}/team/${uniqueFileName}`;
         console.log(`uploadedurl:${this.sharedService.getCloudfrontURL()}/team/${uniqueFileName}`);
-        this.parentClubTeamEdit.teamDetailsInput.logoUrl = imageUrl;
+        this.parentClubTeamEdit.teamDetailsInput.logo_url = imageUrl;
         this.commonService.toastMessage("Image(s) uploaded successfully", 2500, ToastMessageType.Success);
       }).catch((err) => {
         console.log(`err:${JSON.stringify(err)}`);
@@ -425,7 +425,7 @@ export class ParentClubTeamEdit {
     teamStatus: number
     teamVisibility: number
     teamDescription: string;
-    logoUrl: string;
+    logo_url: string;
   }
 }
 

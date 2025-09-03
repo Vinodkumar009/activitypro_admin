@@ -15,6 +15,36 @@ page-result_input {
     text-align: right;
   }
 
+  // Target the ion-input with the class directly for 30px font size
+  ion-input.input-40px {
+    font-size: 30px !important;
+
+    // Target the actual input element inside ion-input
+    .text-input {
+      font-size: 30px !important;
+      text-align: right !important;
+    }
+
+    // Target native input element
+    input {
+      font-size: 30px !important;
+      text-align: right !important;
+    }
+  }
+
+  // Make team name labels wrap text
+  .maincard {
+    ion-item {
+      ion-label {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        word-wrap: break-word !important;
+        line-height: 1.2 !important;
+      }
+    }
+  }
+
   .scroll-content {
     padding: 0px !important;
     background-image: none !important;

@@ -50,14 +50,13 @@
 
           <div style="position: absolute;top:0px;right:1px;display:flex;align-items: center;padding-right: 9px;
               padding-top: 4px;">
-            <ion-icon style="padding-left: 20px; color: #2b92bb;font-size: 1.5em;" name="ios-lock-outline"></ion-icon>
-            <p class="smalltext">{{teamsForParentClub.teamVisibility==0?"Public":"Private"}}</p>
+            <ion-icon style="padding-left: 20px; color: #2b92bb;font-size: 1.5em;"
+              [name]="team.teamVisibility==0?'ios-globe':'lock'"></ion-icon>
+            <!-- <p class="smalltext">{{teamsForParentClub.teamVisibility==0?"Public":"Private"}}</p> -->
           </div>
 
 
           <div>
-
-
             <ion-fab right style="top: 27px;">
               <button ion-fab mini style="background-color: #2b92bb" style="
                 background-color: #2b92bb !important;

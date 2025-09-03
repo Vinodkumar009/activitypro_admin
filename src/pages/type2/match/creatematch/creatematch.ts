@@ -19,13 +19,12 @@ import { MatchModel } from "../models/match.model";
 import moment from "moment";
 import { ClubVenue, SchoolVenue } from "../models/venue.model";
 import { GraphqlService } from "../../../../services/graphql.service";
-import { Activity, ClubActivityInput, IClubDetails } from "../../../../shared/model/club.model";
+import { Activities, Activity, ClubActivityInput, IClubDetails } from "../../../../shared/model/club.model";
 import { HttpService } from "../../../../services/http.service";
 import { API } from "../../../../shared/constants/api_constants";
 import { RoundTypeInput, RoundTypesModel } from "../../../../shared/model/league.model";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { LeagueVenueType } from "../../../../shared/utility/enums";
-import { parse } from "querystring";
 
 /**
  * Generated class for the CreatematchPage page.
@@ -234,11 +233,9 @@ export class CreatematchPage {
         `;
     this.graphqlService.query(clubs_query, { clubs_input: clubs_input }, 0)
       .subscribe((res: any) => {
-        this.clubs = res.data.getVenuesByParentClub as IClubDetails[];
+        this.clubs = res.data.getVenuesByParentClub || [];
         if (this.clubs.length > 0) {
           this.selectedClub = this.clubs[0].Id;
-          //  this.selectedClub = this.clubs[0].FirebaseId; // Set default selected club
-          //this.getActivityList(); // Fetch the activities for the default club
           this.getClubActivity();
         }
 
@@ -288,12 +285,12 @@ export class CreatematchPage {
     //   return false;
     // }
 
-     else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.MemberFees) <= 0 || this.createMatchInput.MemberFees == undefined || this.createMatchInput.MemberFees == 0.00)) {
+    else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.MemberFees) <= 0 || this.createMatchInput.MemberFees == undefined || this.createMatchInput.MemberFees == 0.00)) {
       const message = "Enter member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
-     else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.NonMemberFees) <= 0 || this.createMatchInput.NonMemberFees == undefined || this.createMatchInput.NonMemberFees == 0.00)) {
+    else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.NonMemberFees) <= 0 || this.createMatchInput.NonMemberFees == undefined || this.createMatchInput.NonMemberFees == 0.00)) {
       const message = "Enter non-member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
@@ -303,16 +300,14 @@ export class CreatematchPage {
   }
 
   saveMatchDetails() {
-    if(this.validateInput()) {
-      try{
-        this.commonService.showLoader('Creating match ...');
+    if (this.validateInput()) {
+      try {
+        this.commonService.showLoader();
         const postgreClub = this.clubs.find(clubName => clubName.Id === this.selectedClub);
         console.log("club", postgreClub);
         this.createMatchInput.MatchVenueKey = postgreClub.FirebaseId;
         this.createMatchInput.MatchVenueName = postgreClub.ClubName;
         this.createMatchInput.MatchVenueId = postgreClub.Id;
-        this.createMatchInput.MemberFees = parseFloat(this.createMatchInput.MemberFees.toString());
-        this.createMatchInput.NonMemberFees = parseFloat(this.createMatchInput.NonMemberFees.toString());
         const selected_activity = this.activities.find(activity => activity.id === this.activityId);
         this.createMatchInput.user_postgre_metadata.UserActivityId = selected_activity.activity.Id;
         this.createMatchInput.location_id = postgreClub.Id;
@@ -362,29 +357,30 @@ export class CreatematchPage {
                 }
               }
             `;
-          const mutationVaribale = { matchInput: this.createMatchInput };
-          this.graphqlService.mutate(createMatch, mutationVaribale, 0).subscribe((res: any) => {
+        const mutationVaribale = { matchInput: this.createMatchInput };
+        this.graphqlService.mutate(createMatch, mutationVaribale, 0).subscribe((res: any) => {
           this.commonService.hideLoader();
-            const message = "Match created successfully";
-            this.commonService.updateCategory("match");
-            this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-            this.navCtrl.pop();
-            //this.navCtrl.pop().then(() => this.navCtrl.pop());
-          }, (err) => {
-            this.commonService.hideLoader();
-            if(err.errors && err.errors.length > 0){
-              this.commonService.toastMessage(err.errors[0].message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-            } else {
-              this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-            }
-            console.error("Error in fetching:", err);
-          })
-      }catch(e){
+          const message = "Match created successfully";
+          this.commonService.updateCategory("match");
+          this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+          this.navCtrl.pop();
+          //this.navCtrl.pop().then(() => this.navCtrl.pop());
+        }, (err) => {
+          this.commonService.hideLoader();
+          if (err.errors && err.errors.length > 0) {
+            this.commonService.toastMessage(err.errors[0].message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          } else {
+            this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+          console.error("Error in fetching:", err);
+        })
+      } catch (e) {
         this.commonService.hideLoader();
         this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
     }
   }
+
   goToDashboardMenuPage() {
     this.navCtrl.setRoot("Dashboard");
   }

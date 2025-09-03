@@ -346,9 +346,12 @@ export class Addplayertoteam {
   //mutation for saving the player
 
   savePlayers = async () => {
-    this.commonService.showLoader("Please wait...");
-    try {
-      const addPlayer = gql`
+    const memberlength = this.teamMembersInput.members.length;
+    if (memberlength > 0) {
+      try {
+        this.commonService.showLoader("Please wait...");
+
+        const addPlayer = gql`
     mutation addPlayerToTeam($addPlayer: TeamMembersInput!){
       addPlayerToTeam(addPlayer:$addPlayer)
         
@@ -356,35 +359,40 @@ export class Addplayertoteam {
     
   }
 `;
-      const mutationVariables = { addPlayer: this.teamMembersInput }
+        const mutationVariables = { addPlayer: this.teamMembersInput }
 
-      await this.graphqlService.mutate(addPlayer, mutationVariables, 0).subscribe((res: any) => {
-        this.commonService.hideLoader();
-        const message = "Player Added Successfully";
-
-        this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-        // this.navCtrl.pop().then(() => this.navCtrl.pop());
-        this.viewCtrl.dismiss({ canRefreshData: true });
-
-      },
-        (error) => {
+        await this.graphqlService.mutate(addPlayer, mutationVariables, 0).subscribe((res: any) => {
           this.commonService.hideLoader();
-          if (error.error) {
-            console.error("Server Error:", error.error);
-            this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-          } else
-            this.commonService.toastMessage("Error in saving player:", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
-      );
+          const message = "Player Added Successfully";
 
-    } catch (error) {
-      console.error("Error in saving player:", error);
-      if (error.error) {
-        console.error("Server Error:", error.error);
-        this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-      } else
-        this.commonService.toastMessage("Error in saving player:", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+          // this.navCtrl.pop().then(() => this.navCtrl.pop());
+          this.viewCtrl.dismiss({ canRefreshData: true });
+
+        },
+          (error) => {
+            this.commonService.hideLoader();
+            if (error.error) {
+              console.error("Server Error:", error.error);
+              this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            } else
+              this.commonService.toastMessage("Error in saving player:", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+        );
+
+      } catch (error) {
+        console.error("Error in saving player:", error);
+        if (error.error) {
+          console.error("Server Error:", error.error);
+          this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        } else
+          this.commonService.toastMessage("Error in saving player:", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
     }
+    else {
+      this.commonService.toastMessage("Please select a player", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+    }
+
   }
 
   dismiss() {

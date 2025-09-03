@@ -6,13 +6,13 @@ import {
   NavController,
   NavParams,
 } from "ionic-angular";
+import { type } from "os";
 import {
   CommonService,
   ToastMessageType,
   ToastPlacement,
 } from "../../../services/common.service";
 import { Storage } from "@ionic/storage";
-
 import { SharedServices } from "../../services/sharedservice";
 import { FetchAllMatchesInput, MatchModel } from "./models/match.model";
 import * as moment from "moment";
@@ -64,11 +64,16 @@ export class MatchPage {
   matches: MatchModel[] = [];
   filteredMatches: MatchModel[] = [];
   searchInput = "";
-  
+  // FetchUserInput: FetchUserInput = {
+  //   MemberKey: "-KubtWoLbO-XNPV_TGSZ",
+  //   ParentClubKey: "",
+  //   ParticipationStatus: 0,
+  // };
   today = moment().format("DD-MM-YYYY");
   Today: number = 0;
   isPublish: boolean = true;
   isPending: boolean = true;
+
   // sum: number = 0;
   // totalMatches = this.matches.filter((element) => {
   //   this.sum = this.sum + element.MatchStartDate.length;
@@ -93,26 +98,24 @@ export class MatchPage {
             // this.FetchUserInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
           }
           // this.getMatches();
-          this.fetchAllMatchesInput =  new FetchAllMatchesInput();
-          this.fetchMatchesInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
-          this.fetchAllMatchesInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-          this.fetchAllMatchesInput.memberId = this.sharedservice.getLoggedInUserId();
-          this.fetchAllMatchesInput.action_type = 0;
-          this.fetchAllMatchesInput.app_type = AppType.ADMIN_NEW;
-          this.fetchAllMatchesInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
-          this.fetchAllMatchesInput.FetchType = 1;
           this.fetchAllMatches();
         });
       }
     });
 
+    this.fetchMatchesInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
+
+    this.fetchAllMatchesInput.parentclubId = this.sharedservice.getPostgreParentClubId();
+    this.fetchAllMatchesInput.memberId = this.sharedservice.getLoggedInId();
+    this.fetchAllMatchesInput.action_type = 0;
+    this.fetchAllMatchesInput.app_type = AppType.ADMIN_NEW;
+    this.fetchAllMatchesInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
+    this.fetchAllMatchesInput.FetchType = 1;
   }
 
   ionViewWillEnter() {
     console.log("MatchPage");
   }
-
-  
 
   // 🔄 Method to get the string representation of MatchType from the enum
   getMatchTypeName(type: number): string {
@@ -144,7 +147,6 @@ export class MatchPage {
 
   fetchAllMatches() {
     this.commonService.showLoader("Fetching matches...");
-    
     this.httpService.post(`${API.FetchAllMatches}`, this.fetchAllMatchesInput).subscribe((res: any) => {
       if (res) {
         this.commonService.hideLoader();

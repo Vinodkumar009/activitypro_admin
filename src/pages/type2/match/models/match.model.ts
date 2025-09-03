@@ -28,7 +28,7 @@ export class MatchModel {
 }
 
 export class ActivityModel {
-  Id:string
+  Id: string
   ActivityKey: string;
   IsActive: boolean;
   IsEnable: boolean;
@@ -91,7 +91,7 @@ export class LadderModel {
 }
 //invite players
 export class MembersModel {
-  Id:string
+  Id: string
   FirstName: string;
   LastName: string;
   Gender: string;
@@ -132,7 +132,6 @@ export class MembersModel {
 //   UserModel Host;
 
 //   }
-
 
 export class FetchAllMatchesInput {
   parentclubId: string; // 🏢 Parent club ID

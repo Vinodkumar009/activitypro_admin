@@ -39,7 +39,6 @@ import { IClubDetails } from '../../../../shared/model/club.model';
   providers: [HttpService]
 })
 export class EditleaguePage {
-  isTeamType: boolean = false;
   min: any;
   max: any;
   publicType: boolean = true;
@@ -47,6 +46,7 @@ export class EditleaguePage {
   coaches: CoachList[];
 
   leagueEditInput: LeagueEditInput = {
+
     AppType: 0,
     ActionType: 0,
     leagueId: "",
@@ -527,8 +527,9 @@ export class EditleaguePage {
   getCoachList() {
     //  this.commonService.showLoader("fetching Coach");
     const parentClubId = this.sharedservice.getPostgreParentClubId();
-    const CoachFetchInput = {
+    let CoachFetchInput = {
       parentclub: parentClubId
+
     }
     const getCoaches = gql`
     query fetchCoaches($coachFetchInput: CoachFetchInput!){
@@ -563,7 +564,9 @@ export class EditleaguePage {
 
       },
         (error) => {
+
           console.error("Error in fetching:", error);
+
         })
 
   }
@@ -590,7 +593,7 @@ export class EditleaguePage {
     if (this.validateInputField()) {
       try {
         this.commonService.showLoader("Please wait");
-        this.leagueEditInput.leagueDetails.created_by = this.sharedservice.getLoggedInId();
+        this.leagueEditInput.leagueDetails.created_by = "system_user";
         //  this.leagueEditInput.leagueDetails.venue_key = this.venueKey;
 
         this.leagueEditInput.leagueDetails.league_category = Number(this.league.league_category);
@@ -619,15 +622,15 @@ export class EditleaguePage {
           this.leagueEditInput.leagueDetails.member_price = this.league.member_price;
           this.leagueEditInput.leagueDetails.non_member_price = this.league.non_member_price;
         } else {
-          this.leagueEditInput.leagueDetails.member_price = "0.00";
-          this.leagueEditInput.leagueDetails.non_member_price = "0.00";
+          this.leagueEditInput.leagueDetails.member_price = "0.0";
+          this.leagueEditInput.leagueDetails.non_member_price = "0.0";
         }
         this.leagueEditInput.leagueDetails.is_pay_later = this.league.is_pay_later;
         this.leagueEditInput.leagueDetails.referee_type = 1;
         // this.leagueEditInput.leagueDetails.location = this.league.location.id;
-        //const clubId = await this.getClubByFirebaseId(this.venueKey)
+        const clubId = await this.getClubByFirebaseId(this.venueKey)
 
-        this.leagueEditInput.leagueDetails.venue_id = this.selectedClubLocation;
+        this.leagueEditInput.leagueDetails.venue_id = clubId;
 
         if (this.league.location_type === 1) {
 
@@ -658,14 +661,14 @@ export class EditleaguePage {
 
         this.graphqlService.mutate(updateLeague, mutationVariable, 0).subscribe(({ data }) => {
           this.commonService.hideLoader();
-          const message = "League updated successfully";
+          const message = "League Updated Successfully";
           this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
           this.commonService.updateCategory("leagueteamlisting");
           this.navCtrl.pop();
         }, (err) => {
           this.commonService.hideLoader();
           console.log(JSON.stringify(err));
-          this.commonService.toastMessage("League updation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          this.commonService.toastMessage("Teams Addition failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         })
       } catch (error) {
         this.commonService.hideLoader()

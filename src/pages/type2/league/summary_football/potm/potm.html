@@ -26,8 +26,8 @@
           <h4>{{homeTeamName}}</h4>
         </div>
 
-        <ion-list class="player-list" *ngIf="homeTeamPlayers.length > 0">
-          <ion-item *ngFor="let player of homeTeamPlayers; trackBy: trackByPlayerId" class="player-item"
+        <ion-list class="player-list" *ngIf="homePlayersData.length > 0">
+          <ion-item *ngFor="let player of homePlayersData; trackBy: trackByPlayerId" class="player-item"
             [class.selected]="player.user.selected" [class.disabled]="isPlayerDisabled(player)">
 
             <ion-label class="player-label home-player">
@@ -40,7 +40,7 @@
           </ion-item>
         </ion-list>
 
-        <div *ngIf="homeTeamPlayers.length === 0 && isDataReady" class="no-players">
+        <div *ngIf="homePlayersData.length === 0 && isDataReady" class="no-players">
           <p>No players available</p>
         </div>
       </ion-col>
@@ -51,8 +51,8 @@
           <h4>{{awayTeamName}}</h4>
         </div>
 
-        <ion-list class="player-list" *ngIf="awayTeamPlayers.length > 0">
-          <ion-item *ngFor="let player of awayTeamPlayers; trackBy: trackByPlayerId" class="player-item"
+        <ion-list class="player-list" *ngIf="awayPlayersData.length > 0">
+          <ion-item *ngFor="let player of awayPlayersData; trackBy: trackByPlayerId" class="player-item"
             [class.selected]="player.user.selected" [class.disabled]="isPlayerDisabled(player)">
 
             <ion-label class="player-label away-player">
@@ -65,7 +65,7 @@
           </ion-item>
         </ion-list>
 
-        <div *ngIf="awayTeamPlayers.length === 0 && isDataReady" class="no-players">
+        <div *ngIf="awayPlayersData.length === 0 && isDataReady" class="no-players">
           <p>No players available</p>
         </div>
       </ion-col>

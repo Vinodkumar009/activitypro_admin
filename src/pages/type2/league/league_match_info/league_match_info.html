@@ -85,20 +85,22 @@
       <ion-buttons>
         <button ion-button class="select-filter" (click)="getLeagueMatchParticipant(1)"
           [style.opacity]="leagueMatchParticipantInput.leagueTeamPlayerStatusType === 1 ? '1' : '0.48'">
-          Playing
+          Playing ({{getPlayingCount()}})
         </button>
         <button ion-button class="select-filter" (click)="getLeagueMatchParticipant(2)"
           [style.opacity]="leagueMatchParticipantInput.leagueTeamPlayerStatusType === 2 ? '1' : '0.48'">
-          Bench
+          Bench ({{getBenchCount()}})
         </button>
         <button ion-button class="select-filter" (click)="getLeagueMatchParticipant(0)"
           [style.opacity]="leagueMatchParticipantInput.leagueTeamPlayerStatusType === 0 ? '1' : '0.48'">
-          All
+          All ({{getAllCount()}})
         </button>
       </ion-buttons>
 
       <div class="drop-zone" *ngFor="let section of getFilteredSections(); let sectionIndex = index" class="section">
-        <h2 class="section-title">{{ section.title }}</h2>
+        <h2 class="section-title">{{ section.title }} <span
+            style="float: right; margin-right: 8px; color: #32db64;">Confirmed:
+            {{getAcceptedCount(section.items)}}</span></h2>
         <div class="itemlist" (dragenter)="onEnterSection(sectionIndex)" (dragleave)="onDragLeaveSection(sectionIndex)"
           (dragover)="$event.preventDefault()" (drop)="onDrop($event, sectionIndex)" [ngStyle]="{
             'max-height': leagueMatchParticipantInput.leagueTeamPlayerStatusType === 0 ? '200px':'none'}">
@@ -118,29 +120,38 @@
             <ion-card-content class="item-card-content">
               <ion-grid>
                 <ion-row>
-                  <ion-col col-5 class="margin_auto">
+                  <ion-col col-7 class="margin_auto">
                     <p class="playerText margin_0 para_overflow" style="font-size:1.6rem">{{item.user.FirstName}}
-                      {{item.user.LastName}}</p>
+                      {{item.user.LastName}}({{item.user.DOB}})</p>
                     <p>{{item.teamrole?.role_name}}</p>
                   </ion-col>
                   <ion-col col-1 class="margin_auto">
                     <img *ngIf="item.user && item.user.Is_Had_Disease" src="assets/images/protection.svg"
                       style="margin-left:5px">
                   </ion-col>
-                  <ion-col col-2 class="margin_auto" style="padding: 7px 0px 0px 0px; line-height: 1;" text-center>
+                  <!-- <ion-col col-2 class="margin_auto" style="padding: 7px 0px 0px 0px; line-height: 1;" text-center>
                     {{item.user.DOB}}yrs
-                  </ion-col>
+                  </ion-col> -->
                   <ion-col col-1 class="margin_auto">
                     <img *ngIf="item.user && item.user.media_consent" src="assets/images/no_camere2.jpeg"
                       class="margin_auto">
                   </ion-col>
                   <ion-col col-3 class="paidBlock margin_auto">
-                    <div *ngIf=isMatchPaid(item?.Match,item?.paid_amount) style="float: right; margin-top: 0px;">
+                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                      <p [class]="getInviteStatusDisplay(item.invite_status, item.invite_status_text).cssClass"
+                        style="margin: 0; margin-right: 5px;">
+                        {{getInviteStatusDisplay(item.invite_status, item.invite_status_text).text}}
+                      </p>
+                      <ion-icon [name]="getInviteStatusIcon(item.invite_status)"
+                        [style.color]="getInviteStatusIcon(item.invite_status) === 'checkmark-circle' ? '#32db64' : getInviteStatusIcon(item.invite_status) === 'close-circle' ? '#f53d3d' : getInviteStatusIcon(item.invite_status) === 'help-circle' ? '#b8860b' : '#f76e04'">
+                      </ion-icon>
+                    </div>
+                    <!-- <div *ngIf=isMatchPaid(item?.Match,item?.paid_amount) style="float: right; margin-top: 0px;">
                       <p class="pending">
                         <span>{{currencyDetails.CurrencySymbol}}{{item.paid_amount}}</span>
                       </p>
                       <p class="pending" style="margin-top:-10px">{{item.amount_pay_status_text}}</p>
-                    </div>
+                    </div> -->
                   </ion-col>
                 </ion-row>
               </ion-grid>

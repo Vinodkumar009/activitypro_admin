@@ -272,7 +272,8 @@ export class LeagueMatchParticipantModel {
   Team: Team;
   Match: Match;
   teamrole: TeamRole;
-  amount_pay_status_text: string;
+  invite_status_text: string;
+  amount_pay_status_text: string
 }
 
 export interface ResultStatusModel {
@@ -306,3 +307,4 @@ export class FetchMatchesInput {
   // MemberKey: string;
   FetchType: number;
 }
+

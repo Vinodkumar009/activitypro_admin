@@ -43,6 +43,8 @@ export class UpdateroleforstaffPage {
   team: TeamsForParentClubModel;
   parentClubKey: string;
   roles: Role[];
+  currentRole: any; // 🎯 Current staff role data
+  selectedRoleId: string = ''; // 🎯 Selected role ID for preselection
 
   teamRolesInput: TeamRolesInput = {
     ParentClubKey: '',
@@ -79,9 +81,9 @@ export class UpdateroleforstaffPage {
 
     this.team = this.navParams.get("team");
     this.staffId = this.navParams.get("staffId");
-    //this.playerId=this.navParams.get("memberId");
-    // console.log(this.playerId);
+    this.currentRole = this.navParams.get("currentRole"); // 🎯 Get current role data
     console.log(this.team.activity.ActivityCode);
+    console.log("Current staff role:", this.currentRole);
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
       if (val.$key != "") {
@@ -141,8 +143,17 @@ export class UpdateroleforstaffPage {
     this.graphqlService.query(getRole, { activityDetails: this.teamRolesInput }, 0).subscribe((data: any) => {
       this.commonService.hideLoader();
       this.roles = data.data.getTeamRoles.staffRoles;
-
       console.log("Roles getting for staff:", JSON.stringify(this.roles));
+      
+      // 🎯 Preselect current role if available
+      if (this.currentRole && this.currentRole.role_name) {
+        const matchingRole = this.roles.find(role => role.role_name === this.currentRole.role_name);
+        if (matchingRole) {
+          this.selectedRoleId = matchingRole.id;
+          this.modifyStaff.staffId = this.staffId;
+          this.modifyStaff.roleId = matchingRole.id;
+        }
+      }
     },
 
       (error) => {
@@ -175,7 +186,19 @@ export class UpdateroleforstaffPage {
   }
 
   async updateroleforstaff() {
-
+    // 🚫 Check if role is already assigned
+    if (this.currentRole && this.currentRole.role_name) {
+      const selectedRole = this.roles.find(role => role.id === this.modifyStaff.roleId);
+      if (selectedRole && selectedRole.role_name === this.currentRole.role_name) {
+        this.commonService.toastMessage(
+          "Role is already assigned",
+          2500,
+          ToastMessageType.Info,
+          ToastPlacement.Bottom
+        );
+        return;
+      }
+    }
 
     this.modifyStaff.staffId = this.modifyStaff.staffId;
     this.modifyStaff.roleId = this.modifyStaff.roleId;
