@@ -5,6 +5,7 @@
 
 export const API = {
     GET_PARENTCLUB_USER_BY_FIREBASEID: `parentclubuser/by_firebase_loggedinkey`,
+    CHECK_PARENTCLUB_EMAIL_EXISTANCE: `parentclubuser/validate_email`,
     CAMP_SESSION_CAPACITY_UPDATE: `holidaycamp/updateSessionCapcity`,
     CHECK_STRIPE_AVAILABILITY: `payment/stripe_availability`,
     GET_PARENTCLUB_STRIPES: `payment/paerntclub_stripe_accounts`,

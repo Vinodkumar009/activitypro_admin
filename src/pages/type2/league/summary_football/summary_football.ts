@@ -141,7 +141,7 @@ export class SummaryFootballPage implements AfterViewInit {
     device_id: '',
     updated_by: '',
     created_by: '',
-    activityCode: '',
+    activityCode: 0,
     leaguefixtureId: '',
     homeLeagueParticipationId: '',
     awayLeagueParticipationId: '',
@@ -660,7 +660,7 @@ export class SummaryFootballPage implements AfterViewInit {
       updated_by: this.sharedservice.getLoggedInId() || '',
       created_by: this.sharedservice.getLoggedInId() || '',
       activityId: this.activityId || '',
-      activityCode: this.activityCode.toString() || '',
+      activityCode: +this.activityCode,
       leaguefixtureId: this.matchObj.fixture_id || '',
     };
   }

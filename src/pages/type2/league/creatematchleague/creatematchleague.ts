@@ -102,8 +102,18 @@ export class CreatematchleaguePage {
     StartDate: '',
     primary_participant_id: '',
     secondary_participant_id: '',
-    user_postgre_metadata: new UserPostgreMetadataField,
-    user_device_metadata: new UserDeviceMetadataField,
+    primary_participant_id2: '',
+    secondary_participant_id2: '',
+    match_type: 0,
+    user_postgre_metadata: {
+      UserParentClubId: '',
+      UserActivityId: ''
+    },
+    user_device_metadata: {
+      UserAppType: 0,
+      UserActionType: 0,
+      UserDeviceType: 0
+    },
     location_id: '',
     location_type: 0,
     EndDate: '',
@@ -121,10 +131,8 @@ export class CreatematchleaguePage {
   location_id: string;
   location_type: number;
 
-  primary_participant_id2: string;
-  secondary_participant_id2: string;
-  postgre_parentclub_id: string;
   activityId: string;
+  postgre_parentclub_id: string;
   constructor(
     public alertCtrl: AlertController,
     public navCtrl: NavController,
@@ -138,7 +146,7 @@ export class CreatematchleaguePage {
     public popoverCtrl: PopoverController,
     private graphqlService: GraphqlService,
     private sharedService: SharedServices,
-    ) {
+  ) {
 
     this.leagueId = this.navParams.get("leagueId");
     this.location_id = this.navParams.get('location_id');
@@ -177,7 +185,7 @@ export class CreatematchleaguePage {
       this.min = moment(this.leagueStartDate, inputFormat).format('YYYY-MM-DD');
       this.startDate = moment(this.leagueStartDate, inputFormat).format('YYYY-MM-DD');
       this.max = this.leagueEndDate ? moment(this.leagueEndDate, inputFormat).format('YYYY-MM-DD') : moment('2049-12-31', 'YYYY-MM-DD').format('YYYY-MM-DD');
-      
+
     } else {
       // If leagueStartDate is not valid, use the current date as the default
       this.min = moment().format('YYYY-MM-DD');
@@ -186,37 +194,48 @@ export class CreatematchleaguePage {
 
     this.getLoggedInData();
     this.getParticipants();
-    //  this.getLocationForParentClub();
 
-    // this.getLeagueGroups();
   }
+
 
   async getLoggedInData() {
-     const [login_obj,postgre_parentclub] = await Promise.all([
-          this.storage.get('userObj'),
-          this.storage.get('postgre_parentclub'),
-      ])
-    
-        if(login_obj) {
-          this.parentClubKey = JSON.parse(login_obj).UserInfo[0].ParentClubKey;
-          const val = JSON.parse(login_obj);
-          this.roundTypeInput = new RoundTypeInput();
-          this.roundTypeInput.updated_by = this.sharedservice.getLoggedInUserId();
-          this.roundTypeInput.device_id = this.sharedservice.getDeviceId() || ""; 
-          this.roundTypeInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-          this.roundTypeInput.clubId = val.$key;
-          this.roundTypeInput.action_type = 0;
-          this.roundTypeInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
-          this.roundTypeInput.app_type = AppType.ADMIN_NEW;
-          this.getRoundTypes();
-        }
-        if(postgre_parentclub){
-           this.postgre_parentclub_id = postgre_parentclub.Id
-           console.log("parentclubid is:", this.postgre_parentclub_id);
-           this.getClubVenues();
-        }    
-        
+    const [login_obj, postgre_parentclub] = await Promise.all([
+      this.storage.get('userObj'),
+      this.storage.get('postgre_parentclub'),
+    ])
+
+    if (login_obj) {
+      this.parentClubKey = JSON.parse(login_obj).UserInfo[0].ParentClubKey;
+      const val = JSON.parse(login_obj);
+      this.roundTypeInput = new RoundTypeInput();
+      this.roundTypeInput.updated_by = this.sharedservice.getLoggedInUserId();
+      this.roundTypeInput.device_id = this.sharedservice.getDeviceId() || "";
+      this.roundTypeInput.parentclubId = this.sharedservice.getPostgreParentClubId();
+      this.roundTypeInput.clubId = val.$key;
+      this.roundTypeInput.action_type = 0;
+      this.roundTypeInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
+      this.roundTypeInput.app_type = AppType.ADMIN_NEW;
+      this.getRoundTypes();
+    }
+    if (postgre_parentclub) {
+      this.postgre_parentclub_id = postgre_parentclub.Id
+      console.log("parentclubid is:", this.postgre_parentclub_id);
+      this.getClubVenues();
+    }
+
   }
+
+  goToDashboardMenuPage() {
+    this.navCtrl.setRoot("Dashboard");
+  }
+
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create("PopoverPage");
+    popover.present({
+      ev: myEvent,
+    });
+  }
+
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad CreatematchleaguePage");
@@ -231,18 +250,19 @@ export class CreatematchleaguePage {
     this.inputObj.MatchVisibility = val == 'private' ? 1 : 0;
   }
 
+
   getClubVenues() {
-      const clubs_input = {
-        parentclub_id:this.postgre_parentclub_id,
-        user_postgre_metadata:{
-          UserMemberId:this.sharedservice.getLoggedInUserId()
-        },
-        user_device_metadata:{
-          UserAppType:0,
-          UserDeviceType:this.sharedservice.getPlatform() == "android" ? 1:2
-        }
+    const clubs_input = {
+      parentclub_id: this.postgre_parentclub_id,
+      user_postgre_metadata: {
+        UserMemberId: this.sharedservice.getLoggedInUserId()
+      },
+      user_device_metadata: {
+        UserAppType: 0,
+        UserDeviceType: this.sharedservice.getPlatform() == "android" ? 1 : 2
       }
-      const clubs_query = gql`
+    }
+    const clubs_query = gql`
           query getVenuesByParentClub($clubs_input: ParentClubVenuesInput!){
             getVenuesByParentClub(clubInput:$clubs_input){
                   Id
@@ -253,19 +273,20 @@ export class CreatematchleaguePage {
               }
           }
           `;
-          this.graphqlService.query(clubs_query,{clubs_input: clubs_input},0)
-              .subscribe((res: any) => {
-                this.clubVenues = res.data.getVenuesByParentClub;
-                //console.log("clubs lists:", JSON.stringify(this.clubs));
-                //this.selectedClub = this.clubs[0].FirebaseId;
-                
-              },
-             (error) => {
-                  //this.commonService.hideLoader();
-                  console.error("Error in fetching:", error);
-                 // Handle the error here, you can display an error message or take appropriate action.
-          });            
+    this.graphqlService.query(clubs_query, { clubs_input: clubs_input }, 0)
+      .subscribe((res: any) => {
+        this.clubVenues = res.data.getVenuesByParentClub;
+        //console.log("clubs lists:", JSON.stringify(this.clubs));
+        //this.selectedClub = this.clubs[0].FirebaseId;
+
+      },
+        (error) => {
+          //this.commonService.hideLoader();
+          console.error("Error in fetching:", error);
+          // Handle the error here, you can display an error message or take appropriate action.
+        });
   }
+
 
   //this api will give all the location available for parentclub
   getLocationForParentClub() {
@@ -318,30 +339,33 @@ export class CreatematchleaguePage {
   filterParticipants() {
     if (this.matchType === 'Singles') {
       this.filteredPrimaryParticipants = this.participantData.filter(
-        participant => participant.id !== this.inputObj.secondary_participant_id
+        participant => 
+          participant.id === this.inputObj.primary_participant_id || 
+          participant.id !== this.inputObj.secondary_participant_id
       );
 
       this.filteredSecondaryParticipants = this.participantData.filter(
-        participant => participant.id !== this.inputObj.primary_participant_id
-      );
-    } else if (this.matchType === 'Doubles') {
-      // Doubles filtering logic
-      // Filter for Team 1 (exclude all Team 2 players and selected Team 1 players)
-      this.filteredPrimaryParticipants = this.participantData.filter(
-        participant =>
-          participant.id !== this.inputObj.secondary_participant_id &&
-          participant.id !== this.secondary_participant_id2 &&
-          participant.id !== this.primary_participant_id2 &&
+        participant => 
+          participant.id === this.inputObj.secondary_participant_id || 
           participant.id !== this.inputObj.primary_participant_id
       );
+    } else if (this.matchType === 'Doubles') {
+      // Filter for Team 1 - include current selection or exclude other selected players
+      this.filteredPrimaryParticipants = this.participantData.filter(
+        participant =>
+          participant.id === this.inputObj.primary_participant_id ||
+          participant.id === this.inputObj.primary_participant_id2 ||
+          (participant.id !== this.inputObj.secondary_participant_id &&
+           participant.id !== this.inputObj.secondary_participant_id2)
+      );
 
-      // Filter for Team 2 (exclude all Team 1 players and selected Team 2 players)
+      // Filter for Team 2 - include current selection or exclude other selected players
       this.filteredSecondaryParticipants = this.participantData.filter(
         participant =>
-          participant.id !== this.inputObj.primary_participant_id &&
-          participant.id !== this.primary_participant_id2 &&
-          participant.id !== this.secondary_participant_id2 &&
-          participant.id !== this.inputObj.secondary_participant_id
+          participant.id === this.inputObj.secondary_participant_id ||
+          participant.id === this.inputObj.secondary_participant_id2 ||
+          (participant.id !== this.inputObj.primary_participant_id &&
+           participant.id !== this.inputObj.primary_participant_id2)
       );
     }
   }
@@ -377,15 +401,24 @@ export class CreatematchleaguePage {
     },
       (error) => {
         console.error("Error in fetching:", error);
+
+
         if (error.graphQLErrors) {
+
           console.error("GraphQL Errors:", error.graphQLErrors);
+
           for (const gqlError of error.graphQLErrors) {
             console.error("Error Message:", gqlError.message);
             console.error("Error Extensions:", gqlError.extensions);
+
           }
         }
+
+
         if (error.networkError) {
+
           console.error("Network Error:", error.networkError);
+
         }
       }
     )
@@ -460,18 +493,25 @@ export class CreatematchleaguePage {
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
-    //  if(this.inputObj.location_id==""||this.inputObj.location_id==undefined){
-    //   let message="Please select location";
-    //   this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
-    //   return false;
-    // }
-
-     else if ((this.inputObj.MatchPaymentType == 1) && (parseFloat(this.inputObj.Member_Fee) <= 0 || this.inputObj.Member_Fee == undefined || this.inputObj.Member_Fee == '0.00')) {
+    else if (this.matchType === 'Singles') {
+      if (!this.inputObj.primary_participant_id || !this.inputObj.secondary_participant_id) {
+        this.commonService.toastMessage("Please select both participants for singles match", 2500, ToastMessageType.Error);
+        return false;
+      }
+    }
+    else if (this.matchType === 'Doubles') {
+      if (!this.inputObj.primary_participant_id || !this.inputObj.primary_participant_id2 || 
+          !this.inputObj.secondary_participant_id || !this.inputObj.secondary_participant_id2) {
+        this.commonService.toastMessage("Please select all players for doubles match", 2500, ToastMessageType.Error);
+        return false;
+      }
+    }
+    else if ((this.inputObj.MatchPaymentType == 1) && (parseFloat(this.inputObj.Member_Fee) <= 0 || this.inputObj.Member_Fee == undefined || this.inputObj.Member_Fee == '0.00')) {
       const message = "Enter member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
-     else if ((this.inputObj.MatchPaymentType == 1) && (parseFloat(this.inputObj.Non_Member_Fee) <= 0 || this.inputObj.Non_Member_Fee == undefined || this.inputObj.Non_Member_Fee == '0.00')) {
+    else if ((this.inputObj.MatchPaymentType == 1) && (parseFloat(this.inputObj.Non_Member_Fee) <= 0 || this.inputObj.Non_Member_Fee == undefined || this.inputObj.Non_Member_Fee == '0.00')) {
       const message = "Enter non-member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
@@ -510,21 +550,19 @@ export class CreatematchleaguePage {
   async createMatchForLeague() {
     try {
       if (this.validateInput()) {
-        this.inputObj.primary_participant_id = this.inputObj.primary_participant_id;
-        this.inputObj.secondary_participant_id = this.inputObj.secondary_participant_id;
+        // this.inputObj.primary_participant_id = this.inputObj.primary_participant_id;
+        // this.inputObj.secondary_participant_id = this.inputObj.secondary_participant_id;
 
+        this.inputObj.match_type = this.matchType.toLowerCase() === 'singles' ? 0 : 1;
         this.inputObj.Round = Number(this.inputObj.Round);
 
-        if (this.inputObj.MatchPaymentType!= 1) {
+        if (this.inputObj.MatchPaymentType != 1) {
           this.inputObj.Member_Fee = "0.00";
           this.inputObj.Non_Member_Fee = "0.00";
-        } 
+        }
 
-        // this.inputObj.StartDate = moment(new Date(this.startDate + " " + this.startTime).getTime()).format("YYYY-MM-DD HH:mm");
-        this.inputObj.StartDate = this.startDate + " " + this.startTime;
-        // this.inputObj.StartDate = new Date(this.startDate + " " + this.startTime).toISOString(); //iso date string if needed uncomment this line
-
-        this.inputObj.EndDate = this.startDate + " " + this.endTime;
+        this.inputObj.StartDate = moment(new Date(this.startDate + " " + this.startTime).getTime()).format("YYYY-MM-DD HH:mm");
+        this.inputObj.EndDate = moment(new Date(this.startDate + " " + this.endTime).getTime()).format("YYYY-MM-DD HH:mm");//this.startDate + " " + this.endTime;
 
         // console.log('input date is:', this.inputObj.EndDate);
         // console.log(new Date(this.startDate + " " + this.startTime).getTime());

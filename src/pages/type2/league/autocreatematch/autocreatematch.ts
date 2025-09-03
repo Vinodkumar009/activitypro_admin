@@ -90,13 +90,14 @@ export class AutocreatematchPage {
     private httpService: HttpService,
   ) {
     this.leagueId = this.navParams.get('leagueId');
-    this.matchDate = this.navParams.get('leagueDate');
+    //this.matchDate = moment(this.navParams.get('leagueDate'),'DD-MMM-YYYY, ddd').format("YYYY-MM-DD");
     this.matchTime = this.navParams.get('leagueTime');
     this.location_id = this.navParams.get('location_id');
     this.location_type = this.navParams.get('location_type');
     
     this.min = new Date().toISOString();
     this.max = "2049-12-31";
+    this.matchDate = moment().format("YYYY-MM-DD");
 
     this.roundTypeInput = new RoundTypeInput();
     this.roundTypeInput.parentclubId = this.sharedservice.getPostgreParentClubId();
@@ -374,9 +375,10 @@ export class AutocreatematchPage {
       this.inputObj.participant_ids = selectedPlayers.map(player => player.id)
       this.inputObj.round = Number(this.selectedRound),
       this.inputObj.match_name = '',
-      this.inputObj.start_date = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('YYYY-MM-DD'),
+      this.inputObj.start_date = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format("YYYY-MM-DD HH:mm");
       this.inputObj.start_time = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('HH:mm'),
-      this.inputObj.end_date = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('YYYY-MM-DD'),
+      this.inputObj.end_date = moment(new Date(this.matchDate + ' ' + '23:59').getTime()).format("YYYY-MM-DD HH:mm");
+      
       this.inputObj.group_id = '',
       this.inputObj.stage = this.selectedRound,
       this.inputObj.match_details = '',
@@ -389,7 +391,6 @@ export class AutocreatematchPage {
 
       this.httpService.post(`${API.GENERATE_MATCHES}`, this.inputObj).subscribe({
             next: (res: any) => {
-              this.commonService.hideLoader();
               this.commonService.toastMessage('Matches created successfully',2500,ToastMessageType.Success,ToastPlacement.Bottom);
               this.numberofPlayers = res.data.numberOfPlayers;
               this.numberofMatches = res.data.numberOfMatches;
@@ -398,9 +399,11 @@ export class AutocreatematchPage {
                 match_date: this.matchDate,
                 match_time: this.matchTime
               }));
+              this.commonService.hideLoader();
               this.navCtrl.pop();
             },
             error: (error) => {
+              this.commonService.hideLoader();
               if (error && error.error && error.error.message) {
                 this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
               }
@@ -408,14 +411,12 @@ export class AutocreatematchPage {
                 this.commonService.toastMessage('Failed to create matches', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
               }
               console.error('Error creating matches:', error);
-              this.commonService.hideLoader();
             }
       });
     } catch (error) {
+      this.commonService.hideLoader();
       console.error('Error creating matches:', error);
       this.commonService.toastMessage(error.message || 'Failed to create matches',2500,ToastMessageType.Error,ToastPlacement.Bottom);
-    } finally {
-      this.commonService.hideLoader();
     }
   }
 

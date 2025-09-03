@@ -24,6 +24,7 @@ import { DatePipe } from "@angular/common";
 import { LeagueMatch } from "../models/location.model";
 import { API } from "../../../../shared/constants/api_constants";
 import { AppType } from "../../../../shared/constants/module.constants";
+import { ParticipantModel } from "../../match/matchdetails/matchdetails";
 
 
 /**
@@ -41,6 +42,10 @@ import { AppType } from "../../../../shared/constants/module.constants";
 })
 export class LeaguedetailsPage {
   @ViewChild('fab') fab: FabContainer;
+  
+  participants: ParticipantModel[] = [];
+  teams:TeamsModal[];
+
   TeamsType: boolean = true;
   MatchesType: boolean = true;
   league: LeaguesForParentClubModel;
@@ -286,17 +291,99 @@ export class LeaguedetailsPage {
     });
   }
 
+  getActiveTeams = (match:LeagueMatch) => {
+    //this.commonService.showLoader("Fetching teams...");
+    this.teams = [];
+    const getTeamsQuery = gql`
+      query getTeamsByMatch($matchDetailsInput: FetchTeamsInput!) {
+        getTeamsByMatch(matchDetailsInput: $matchDetailsInput) {
+          Id
+          TeamName
+          TeamPoint
+          ResultStatus
+          Participants{
+          PaymentStatus
+          InviteStatus
+          InviteType
+          ParticipationStatus
+            User{
+              FirstName
+              LastName
+              FirebaseKey
+            }
+          }
+      }
+    }`;
+    this.graphqlService.query(getTeamsQuery, { matchDetailsInput: {MatchId:match.match_id} }, 0)
+      .subscribe(
+        (res: any) => {
+          const data = res.data;
+          // console.log(
+          //   "teams data" + JSON.stringify(data["getTeamsByMatch"])
+          // );
+          //this.commonService.hideLoader();
+          this.teams = data["getTeamsByMatch"];
+          console.log(this.teams.length); 
+          const participants_length = match.league_type == 0 ? 1 : 2; 
+          //this.teams = this.sortByTeamName(this.teams);
+          if(this.teams.length > 0){
+            for(let i=0; i < this.teams.length;i++){
+              this.teams[i]["IsWinner"] = false;
+              this.teams[i]['Sets_Points']=[];
+              // if(this.match.Result && this.match.Result.ResultStatus == 1){
+              //   this.teams[i]["IsWinner"] = this.match.Result.Winner.Id === this.teams[i].Id ? true : false;
+              //   this.teams[i]["Sets_Points"] = this.match.Result && this.match.Result.ResultDetails ? JSON.parse(this.match.Result.ResultDetails.split(":")[i]) : [];
+              //   //this.teams[i]["Sets_Points"] = this.match.Result.Winner.Id === this.teams[i].Id ? JSON.parse(this.match.Result.ResultDetails.split(":")[i]) : [];
+                
+              // }
+              
+              for(let j=0; j < participants_length;j++){
+                console.log(`${j}:${this.teams[i].Participants[j]}`);
+                if(this.teams[i].Participants[j] && this.teams[i].Participants[j].User && this.teams[i].Participants[j].User.FirebaseKey!=''){
+                  this.teams[i].Participants[j].User["isUserAvailable"] = true;
+                }
+                else {
+                  let participant_obj = {
+                    InviteStatus: 0,
+                    InviteType: 0,
+                    ParticipationStatus: 0,
+                    PaymentStatus: 0,
+                    User:{
+                      FirstName:'',
+                      LastName:'',
+                      FirebaseKey:'',
+                      isUserAvailable:false
+                    }
+                  }
+                  this.teams[i].Participants[j] = participant_obj;
+                  console.log(this.teams[i].Participants[j]["User"]);
+                }
+              }
+            }
+            console.log("teams data" + JSON.stringify(this.teams));
+            const teams = JSON.parse(JSON.stringify(this.teams));
+            this.navCtrl.push("PublishresultPage", { matchId: match.match_id, teams: teams });
+          }
+        },
+        (err) => {
+          //this.commonService.hideLoader();
+          console.log(JSON.stringify(err));
+          this.commonService.toastMessage("Failed to fetch teams",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+        }
+      );
+  }
+
   gotoMatchDetails(match: LeagueMatch) {
     // this.navCtrl.push("LeaguematchdetailsPage");
     //this.navCtrl.push("UpdateleaguematchPage", { leagueId: this.individualLeague.id });
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
-        {
-          text: "Manage Teams",
-          handler: () => {
-            this.gotoManageTeamsPage();
-          }
-        },
+        // {
+        //   text: "Manage Teams",
+        //   handler: () => {
+        //     this.gotoManageTeamsPage();
+        //   }
+        // },
         {
           text: "Edit Match",
           handler: () => {
@@ -312,7 +399,14 @@ export class LeaguedetailsPage {
         {
           text: "Update Result",
           handler: () => {
-            this.updateResult(match);
+            //this.updateResult(match);
+            const todays_date = moment().format("YYYY-MM-DD hh:mm A");
+            // if (moment(this.match.MatchStartDate, "YYYY-MM-DD hh:mm A").isAfter(todays_date)) {
+            //   this.commonService.toastMessage("cannot publish future match", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            //   return false;
+            // }
+            this.getActiveTeams(match);
+            
           }
         }
       ]
@@ -1114,3 +1208,28 @@ export class UserDeviceMetadataField {
 }
 
 
+
+
+export class TeamsModal{
+  Id:string;
+  TeamName:string;
+  Participants:TeamParticipants[]
+}
+
+export class TeamParticipants{
+  PaymentStatus:number
+  InviteStatus:number
+  InviteType:number
+  ParticipationStatus:number
+  User:{FirstName:string,LastName:string,FirebaseKey:string,isUserAvailable?:boolean}  
+}
+
+export class PublishResultInput{
+  CreatedBy: string; //MemberKey
+  ResultDetails: string; //MemberKey
+  resultDescription: string; //MemberKey
+  ResultStatus: number; //MemberKey
+  MatchId: string; //matchId
+  WinnerId: string; //Always a Team ID
+  PublishedBy: string; //MemberKey
+}

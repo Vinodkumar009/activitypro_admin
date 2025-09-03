@@ -70,7 +70,7 @@
 
       <ion-item>
         <ion-label>Team 1 - Player 2</ion-label>
-        <ion-select placeholder="<Select>" [(ngModel)]="primary_participant_id2" (ionChange)="filterParticipants()">
+        <ion-select placeholder="<Select>" [(ngModel)]="inputObj.primary_participant_id2" (ionChange)="filterParticipants()">
           <ion-option *ngFor="let participant of filteredPrimaryParticipants"
             value="{{participant.id}}">{{participant.participant_name}}</ion-option>
         </ion-select>
@@ -87,7 +87,7 @@
 
       <ion-item>
         <ion-label>Team 2 - Player 2</ion-label>
-        <ion-select placeholder="<Select>" [(ngModel)]="secondary_participant_id2" (ionChange)="filterParticipants()">
+        <ion-select placeholder="<Select>" [(ngModel)]="inputObj.secondary_participant_id2" (ionChange)="filterParticipants()">
           <ion-option *ngFor="let participant of filteredSecondaryParticipants"
             value="{{participant.id}}">{{participant.participant_name}}</ion-option>
         </ion-select>

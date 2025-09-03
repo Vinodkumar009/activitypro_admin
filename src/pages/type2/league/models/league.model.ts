@@ -279,3 +279,30 @@ export interface ResultStatusModel {
   id: number;
   status: string;
 }
+
+
+
+export class ParentClubTeamFetchInput {
+  user_postgre_metadata: UserPostgreMetadataField
+  user_device_metadata: UserDeviceMetadataField
+}
+export class LeagueFetchInput {
+  user_postgre_metadata: UserPostgreMetadataField
+  user_device_metadata: UserDeviceMetadataField
+
+}
+export class UserPostgreMetadataField {
+  UserParentClubId: string
+
+}
+export class UserDeviceMetadataField {
+  UserAppType: number
+  UserDeviceType: number
+}
+
+export class FetchMatchesInput {
+  user_postgre_metadata: UserPostgreMetadataField
+  // ParentClubKey: string;
+  // MemberKey: string;
+  FetchType: number;
+}

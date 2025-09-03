@@ -68,7 +68,7 @@ export interface PublishLeagueResultForActivitiesInput {
   device_id: string;
   updated_by: string;
   created_by: string;
-  activityCode: string;
+  activityCode: number;
   leaguefixtureId: string;
   homeLeagueParticipationId: string;
   awayLeagueParticipationId: string;

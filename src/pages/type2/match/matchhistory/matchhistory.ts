@@ -9,6 +9,13 @@ import { SharedServices } from "../../../services/sharedservice";
 import gql from "graphql-tag";
 import { first } from "rxjs/operators";
 import { GraphqlService } from "../../../../services/graphql.service";
+import { LeagueFetchInput, LeaguesForParentClubModel, ParentClubTeamFetchInput, UserDeviceMetadataField, UserPostgreMetadataField } from "../../league/models/league.model";
+import { FetchAllMatchesInput, MatchModel } from "../models/match.model";
+import { TeamsForParentClubModel } from "../../league/models/team.model";
+import { AllMatchData, MatchModelV3 } from "../../../../shared/model/match.model";
+import { AppType } from "../../../../shared/constants/module.constants";
+import { HttpService } from "../../../../services/http.service";
+import { API } from "../../../../shared/constants/api_constants";
 
 
 /**
@@ -22,21 +29,49 @@ import { GraphqlService } from "../../../../services/graphql.service";
 @Component({
   selector: "page-matchhistory",
   templateUrl: "matchhistory.html",
+  providers: [HttpService]
 })
 export class MatchhistoryPage {
   activeIndex: number = 0;
-  isTournament = "Tournament";
-  // isHistoryPoints = "HistoryPoints";
+  fetchAllMatchesRes: MatchModelV3;
   fetchMatchesInput = {
     user_postgre_metadata: {
       UserParentClubId: ""
-
     },
     FetchType: 5,
   };
-  historymatches: MatchModel[] = [];
+  fetchAllMatchesInput: FetchAllMatchesInput = {
+      parentclubId: "",
+      clubId: "",
+      activityId: "",
+      memberId: "",
+      action_type: 0,
+      device_type: 0,
+      app_type: 0,
+      device_id: "",
+      updated_by: "",
+      created_by: "",
+      FetchType: 0
+  };
+  matches: MatchModel[] = [];
+  filteredMatchlist: AllMatchData[] = [];
+  matchlist: AllMatchData[] = [];
   filteredMatches: MatchModel[] = [];
+  ParentClubTeam: TeamsForParentClubModel[] = [];
+  teamsForParentClub: TeamsForParentClubModel[] = [];
+  filteredteams: TeamsForParentClubModel[] = [];
+  leaguesForParentClub: LeaguesForParentClubModel[] = [];
+  filteredleagues: LeaguesForParentClubModel[] = [];
+    
+  ParentClubTeamFetchInput: ParentClubTeamFetchInput = {
+    user_postgre_metadata: new UserPostgreMetadataField,
+    user_device_metadata: new UserDeviceMetadataField
+  }
 
+  LeagueFetchInput: LeagueFetchInput = {
+    user_postgre_metadata: new UserPostgreMetadataField,
+    user_device_metadata: new UserDeviceMetadataField
+  }
 
   constructor(
     public navCtrl: NavController,
@@ -46,7 +81,8 @@ export class MatchhistoryPage {
     public storage: Storage,
     public fb: FirebaseService,
     public sharedservice: SharedServices,
-    public graphqlService: GraphqlService
+    public graphqlService: GraphqlService,
+    private httpService: HttpService,
   ) {
     this.commonService.category.pipe(first()).subscribe((data) => {
       if (data == "match_history") {
@@ -55,7 +91,15 @@ export class MatchhistoryPage {
           if (val.$key != "") {
             // this.FetchMatchesInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
             this.fetchMatchesInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
-            this.getHistory();
+            this.fetchAllMatchesInput =  new FetchAllMatchesInput();
+            this.fetchMatchesInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
+            this.fetchAllMatchesInput.parentclubId = this.sharedservice.getPostgreParentClubId();
+            this.fetchAllMatchesInput.memberId = this.sharedservice.getLoggedInUserId();
+            this.fetchAllMatchesInput.action_type = 0;
+            this.fetchAllMatchesInput.app_type = AppType.ADMIN_NEW;
+            this.fetchAllMatchesInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
+            this.fetchAllMatchesInput.FetchType = 1;
+            this.changeType(0); // Default to leagues
           }
         });
       }
@@ -68,346 +112,151 @@ export class MatchhistoryPage {
     console.log("MatchhistoryPage");
   }
 
-  gotoMatchdetailsPage(history) {
-    this.navCtrl.push("MatchdetailsPage", {
-      match: history,
-      isHistory: true
+  changeType(index: number) {
+    console.log('LeagueTeamListing changing type to:', index);
+
+    // ✅ Set activeIndex immediately to avoid timing issues
+    this.activeIndex = index;
+
+    // 📡 Also update the service for other components
+    //this.leagueService.setActiveLeagueType(index);
+
+    // 🎯 Load appropriate data based on selection
+    if (index === 0) {
+      this.getLeaguesForParentClub();
+    } else {
+      this.fetchAllMatches();
+    }
+  }
+
+  //function to get the list of league
+  getLeaguesForParentClub = () => {
+      // this.commonService.showLoader("Fetching Leagues...");
+      this.LeagueFetchInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
+      this.LeagueFetchInput.user_device_metadata.UserAppType = 0;
+      this.LeagueFetchInput.user_device_metadata.UserDeviceType = this.sharedservice.getPlatform() == "android" ? 1 : 2
+      const leaguesforparentclubQuery = gql`
+        query getLeaguesForParentClub($ParentClubDetails: LeagueFetchInput!) {
+          getLeaguesForParentClub(ParentClubDetails: $ParentClubDetails) {
+            id
+            created_at
+            created_by
+            updated_at
+            is_active
+            league_name
+            activity {
+              ActivityName
+              ActivityCode
+            }
+            league_category_text
+            league_category
+            league_age_group
+            start_date
+            end_date
+            league_visibility
+            league_type_text
+            club{
+              Id
+              ClubName
+              FirebaseId
+            }
+            league_visibility
+            
+          }
+        }
+      `;
+      this.graphqlService.query(leaguesforparentclubQuery, { ParentClubDetails: this.LeagueFetchInput }, 0).subscribe((res: any) => {
+        // this.commonService.hideLoader();
+        this.leaguesForParentClub = res.data.getLeaguesForParentClub;
+        this.filteredleagues = JSON.parse(JSON.stringify(this.leaguesForParentClub));
+      },
+        (error) => {
+          // this.commonService.hideLoader();
+          this.commonService.toastMessage("Fetching failed for leagues", 2500, ToastMessageType.Error);
+          console.error("Error in fetching:", error);
+        })
+  };
+
+  fetchAllMatches() {
+      this.commonService.showLoader("Fetching matches...");
+      
+      this.httpService.post(`${API.FetchAllMatches}`, this.fetchAllMatchesInput).subscribe((res: any) => {
+        if (res) {
+          this.commonService.hideLoader();
+          this.fetchAllMatchesRes = res.data;
+          this.matchlist = this.fetchAllMatchesRes.AllMatches;
+          console.log("FetchAllMatches RESPONSE", JSON.stringify(res.data));
+          this.filteredMatchlist = JSON.parse(JSON.stringify(this.matchlist));  
+        } else {
+          console.log("error in fetching",)
+        }
+      }, error => {
+        this.commonService.hideLoader();
+        this.commonService.toastMessage(error.error.message, 3000, ToastMessageType.Error,);
+      });
+  }
+
+
+  gotoLeaguedetailsPage(league: LeaguesForParentClubModel) {
+    this.navCtrl.push("LeaguedetailsPage", {
+      league_id: league.id,
     });
   }
 
-  getColor(index: number) {
-    switch (index) {
-      case 0:
-        return 'green';
-      case 1:
-        return 'red';
-    }
-  }
-
-  formatMatchStartDate(date) {
-    //return moment(+date, "YYYY-MM-DD hh:mm:ss").format("DD-MMM-YYYY, hh:mm");
-    return moment(date, "YYYY-MM-DD HH:mm").format("DD-MMM-YYYY, hh:mm A");
-  }
-
-  getHistory = () => {
-    this.commonService.showLoader("Fetching matches history...");
-
-    const historyQuery = gql`
-      query fetchMatches($fetchMatchesInput: FetchMatchesInput!) {
-        fetchMatches(fetchMatchesInput: $fetchMatchesInput) {
-          Id
-          IsActive
-          IsEnable
-          CreatedAt
-          CreatedBy
-          Activity {
-            ActivityName
-          }
-          Result {
-            ResultStatus
-            resultDescription
-            CreatedAt
-            ResultDetails
-            Winner {
-              Id
-            }
-          }
-          MatchVisibility
-          GameType
-          MatchType
-          PaymentType
-          ResultStatus
-          MatchStatus
-          VenueName
-          Details
-          MatchStartDate
-          Capacity
-          MatchTitle
-          Hosts {
-            Name
-          }
-          Teams {
-            Id
-            TeamName
-            TeamPoint
-            ResultStatus
-            Participants {
-              User {
-                FirstName
-                LastName
-                FirebaseKey
-              }
-            }
-          }
-        }
-      }
-    `;
-    this.graphqlService.query(historyQuery, { fetchMatchesInput: this.fetchMatchesInput }, 0).subscribe((res: any) => {
-      this.commonService.hideLoader();
-      this.historymatches = res.data["fetchMatches"];
-      this.historymatches = this.historymatches.sort(function (a, b) {
-        return moment(b.MatchStartDate, 'YYYY-MM-DD hh:mm').diff(moment(a.MatchStartDate, 'YYYY-MM-DD hh:mm'))
-      });
-      for (let i = 0; i < this.historymatches.length; i++) {
-        let teamsetsar = this.historymatches[i].Result && this.historymatches[i].Result.ResultDetails ? this.historymatches[i].Result.ResultDetails.split(":") : []
-        console.log(`splitted arrray:${teamsetsar}`);
-        for (let j = 0; j < this.historymatches[i].Teams.length; j++) {
-          this.historymatches[i].Teams = this.sortByTeamName(this.historymatches[i].Teams);
-          if (this.historymatches[i].Result && this.historymatches[i].Result.ResultStatus == 1) {
-            //console.log((teamsetsar[j]));
-            this.historymatches[i].Teams[j]["IsWinner"] = this.historymatches[i].Result.Winner.Id === this.historymatches[i].Teams[j].Id ? true : false;
-            this.historymatches[i].Teams[j]["Sets_Points"] = JSON.parse(teamsetsar[j]);
-          }
-
-        }
-
-      }
-
-      this.filteredMatches = JSON.parse(JSON.stringify(this.historymatches));
-    },(error)=>{
-      this.commonService.hideLoader();
-      this.commonService.toastMessage("Fetching failed for match", 2500, ToastMessageType.Error);
-      console.error("Error in fetching:", error);
-      if (error.graphQLErrors) {
-        console.error("GraphQL Errors:", error.graphQLErrors);
-        for (const gqlError of error.graphQLErrors) {
-          console.error("Error Message:", gqlError.message);
-          console.error("Error Extensions:", gqlError.extensions);
-        }
-      }
-      if (error.networkError) {
-        console.error("Network Error:", error.networkError);
-      }
-    }
-  )
-    // this.apollo
-    //   .query({
-    //     query: historyQuery,
-    //     fetchPolicy: "network-only",
-    //     variables: {
-    //       fetchMatchesInput: this.fetchMatchesInput,
-    //     },
-    //   })
-    //   .subscribe(
-    //     ({ data }) => {
-    //       console.log("matches data" + JSON.stringify(data["fetchMatches"]));
-    //       this.commonService.hideLoader();
-    //       this.historymatches = data["fetchMatches"];
-    //       this.historymatches = this.historymatches.sort(function (a, b) {
-    //         return moment(b.MatchStartDate, 'YYYY-MM-DD hh:mm').diff(moment(a.MatchStartDate, 'YYYY-MM-DD hh:mm'))
-    //       });
-
-    //       for(let i=0; i < this.historymatches.length;i++){
-    //         let teamsetsar = this.historymatches[i].Result && this.historymatches[i].Result.ResultDetails ? this.historymatches[i].Result.ResultDetails.split(":") :[]
-    //         console.log(`splitted arrray:${teamsetsar}`);
-    //         for(let j=0; j < this.historymatches[i].Teams.length;j++){
-    //             this.historymatches[i].Teams = this.sortByTeamName(this.historymatches[i].Teams);
-
-
-    //             if(this.historymatches[i].Result && this.historymatches[i].Result.ResultStatus == 1){
-
-    //               console.log((teamsetsar[j]));
-    //               this.historymatches[i].Teams[j]["IsWinner"] = this.historymatches[i].Result.Winner.Id === this.historymatches[i].Teams[j].Id ? true : false;
-    //               this.historymatches[i].Teams[j]["Sets_Points"] = JSON.parse(teamsetsar[j]);
-    //             }
-
-
-
-    //         }
-
-    //       }
-
-    //       this.filteredMatches = JSON.parse(JSON.stringify(this.historymatches));
-
-    //     },
-    //     (err) => {
-    //       this.commonService.hideLoader();
-    //       console.log(JSON.stringify(err));
-    //       this.commonService.toastMessage("Failed to fetch matches history",2500,ToastMessageType.Error,ToastPlacement.Bottom);
-    //     }
-    //   );
-  };
-
-  //sorting teams by teamname
-  sortByTeamName(teams: any) {
-    return teams.sort((a, b) => (a.TeamName > b.TeamName) ? 1 : ((b.TeamName > a.TeamName) ? -1 : 0))
-  }
-
-  getFilterItems(ev: any) {
+  getLeagueSearch(ev: any) {
     // Reset items back to all of the items
-    // this.initializeItems();
+    this.initializeItems();
+
     // set val to the value of the searchbar
-    let val = ev.target.value;
+    const val = ev.target.value;
+
     // if the value is an empty string don't filter the items
     if (val && val.trim() != "") {
-      this.filteredMatches = this.historymatches.filter((item) => {
-        if (item.MatchTitle != undefined) {
-          if (item.MatchTitle.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+      this.filteredleagues = this.leaguesForParentClub.filter((item) => {
+        if (item.league_name != undefined) {
+          if (item.league_name.toLowerCase().indexOf(val.toLowerCase()) > -1)
             return true;
-          }
         }
-        if (item.Activity.ActivityName != undefined) {
-          if (item.Activity.ActivityName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+        if (item.activity.ActivityName != undefined) {
+          if (item.activity.ActivityName.toLowerCase().indexOf(val.toLowerCase()) > -1)
             return true;
-          }
         }
-        if (item.Hosts.length > 0) {
-          if (item.Hosts.map(host => host.Name.toLowerCase()).indexOf(val.toLowerCase()) > -1) return true;
+        if (item.club.ClubName != undefined) {
+          if (item.club.ClubName.toLowerCase().indexOf(val.toLowerCase()) > -1)
+            return true;
         }
+
       });
-    } else this.initializeItems();
+    }
+
+  }
+
+  getFilterEvents(ev: any) {
+    let val = ev.target.value;
+    if (val && val.trim() !== "") {
+      this.filteredMatchlist = this.matchlist.filter((item) => {
+        if (item.MatchTitle && item.MatchTitle.toLowerCase().indexOf(val.toLowerCase()) > -1) return true;
+        if (item.ActivityName && item.ActivityName.toLowerCase().indexOf(val.toLowerCase()) > -1) return true;
+        if (item.homeUserName && item.homeUserName.toLowerCase().indexOf(val.toLowerCase()) > -1) return true;
+        if (item.awayUserName && item.awayUserName.toLowerCase().indexOf(val.toLowerCase()) > -1) return true;
+        return false;
+      });
+    } else {
+      this.initializeMatches();
+    }
+  }
+
+  initializeMatches() {
+    this.filteredMatchlist = this.matchlist;
   }
 
   initializeItems() {
-    this.filteredMatches = this.historymatches;
+    this.filteredleagues = this.leaguesForParentClub;
   }
-}
 
-export class MatchModel {
-  VenueKey: string;
-  Id: string;
-  Message: string;
-  CreatedAt: any;
-  UpdatedAt: string;
-  CreatedBy: string;
-  IsActive: boolean;
-  IsEnable: boolean;
-  MatchCreator: string; //APP Name
-  Activity: ActivityModel; //Which activity it is inside the member App
-  MatchVisibility: number;
-  GameType: number;
-  MatchType: number;
-  PaymentType: number;
-  ResultStatus: number;
-  MatchStatus: number;
-  VenueName: string;
-  Details: string;
-  MemberFees: number;
-  NonMemberFees: number;
-  MatchStartDate: any;
-  Result: ResultModel;
-  Capacity: number;
-  MatchTitle: string;
-  Teams: TeamModel[];
-  Hosts: Host[];
-}
+  
 
-export class Host {
-  Name: string;
-  firebaseKey: string;
-  roleType: number;
-  userType: number;
-}
-
-export class ActivityModel {
-  ActivityKey: string;
-  IsActive: boolean;
-  IsEnable: boolean;
-  ActivityCode: string;
-  ActivityName: string;
-  ActivityImageURL: string;
-}
-
-export class ResultModel {
-  ResultDetails: string;
-  ResultStatus: number;
-  PublishedByApp: string;
-  Winner: TeamModel;
-}
-
-export class TeamModel {
-  Id: string;
-  TeamName: string;
-  ResultStatus: number;
-  TeamPoint: number;
-  Description: string;
-  CoachName: string;
-  IsWinner?: boolean;
-  Sets_Points?: any;
-  Participants: ParticipantModel[];
-}
-
-export class ParticipantModel {
-  ParticipationStatus: number;
-  PaymentStatus: number;
-  PaymentTracking: string;
-  InviteStatus: number;
-  TotalPoints: number;
-  User: UserModel;
-  CreatedAt: string;
-  UpdatedAt: string;
-  InviteType: number;
-  TotalPonumbers: number;
-  Team: TeamModel[];
-  Match: MatchModel;
-}
-
-export class UserModel {
-  Id: string;
-  FirstName: string;
-  LastName: string;
-  Gender: string;
-  DOB: string;
-  FirebaseKey: string;
-}
-
-//ladder model
-
-export class LadderModel {
-  IsActive: boolean;
-  IsEnable: boolean;
-  FirstName: string;
-  LastName: string;
-  rank: number;
-  Points: number;
-  IsSelf?: boolean;
-  LastMatchPlayed: string;
-  TotalMatches: any;
-}
-//invite players
-export class MembersModel {
-  FirstName: string;
-  LastName: string;
-  Gender: string;
-  DOB: string;
-  FirebaseKey: string;
+  
 }
 
 
-export class TeamsModal {
-  Id: string;
-  TeamName: string;
-  IsWinner?: boolean;
-  Sets_Points?: any;
-  ResultDescription: string;
-  Participants: TeamParticipants[]
-}
-
-export class TeamParticipants {
-  PaymentStatus: number
-  InviteStatus: number
-  InviteType: number
-  ParticipationStatus: number
-  User: { FirstName: string, LastName: string, FirebaseKey: string, isUserAvailable?: boolean }
-}
-
-export class PublishResultInput {
-  CreatedBy: string; //MemberKey
-  ResultDetails: string; //MemberKey
-  resultDescription: string; //MemberKey
-  ResultStatus: number; //MemberKey
-  MatchId: string; //matchId
-  WinnerId: string; //Always a Team ID
-  PublishedBy: string; //MemberKey
-}
-
-export class MatchSetupModel {
-  IsActive: string;
-  IsEnable: true;
-  DisplayName: string;
-  Name: string;
-  CreateDate: string;
-  Member: boolean;
-  NonMember: boolean;
-  Code: number
-}

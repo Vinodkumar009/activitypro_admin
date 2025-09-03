@@ -15,6 +15,9 @@ export interface CreateLeagueMatchInput {
     MatchPaymentType: number
     primary_participant_id: string
     secondary_participant_id: string
+    primary_participant_id2?: string;
+    secondary_participant_id2?: string;
+    match_type?: number;
     location_id: string
     location_type: number
     user_postgre_metadata: UserPostgreMetadataField
@@ -44,6 +47,7 @@ export class CreateLeagueMatchInputV1 extends CommonRestApiDtoV1 {
 
 export class UserPostgreMetadataField {
     UserParentClubId: string
+    UserActivityId: string
 }
 
 export class UserDeviceMetadataField {

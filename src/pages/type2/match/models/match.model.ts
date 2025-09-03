@@ -132,3 +132,18 @@ export class MembersModel {
 //   UserModel Host;
 
 //   }
+
+
+export class FetchAllMatchesInput {
+  parentclubId: string; // 🏢 Parent club ID
+  clubId: string; // 🏢 Club ID
+  activityId: string; // ⚽ Activity ID
+  memberId: string; // 🧑‍ User/Member ID
+  action_type: number; // ⚙️ Type of action
+  device_type: number; // 📱 Type of device
+  app_type: number; // 📱 Type of application
+  device_id: string; // 🆔 Device identifier
+  updated_by: string; // 🧑‍ Identifier of the updater
+  created_by: string | null; // 🧑‍ Identifier of the creator (can be null)
+  FetchType: number; // 🔍 Type of fetch operation
+}

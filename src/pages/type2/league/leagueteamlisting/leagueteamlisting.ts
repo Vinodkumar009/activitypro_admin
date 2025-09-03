@@ -14,7 +14,7 @@ import { CommonService, ToastMessageType, ToastPlacement } from '../../../../ser
 import { FirebaseService } from '../../../../services/firebase.service';
 import { SharedServices } from '../../../services/sharedservice';
 import { TeamsForParentClubModel } from '../models/team.model';
-import { LeaguesForParentClubModel } from '../models/league.model';
+import { FetchMatchesInput, LeagueFetchInput, LeaguesForParentClubModel, ParentClubTeamFetchInput, UserDeviceMetadataField, UserPostgreMetadataField } from '../models/league.model';
 import { MatchModel } from '../../match/models/match.model';
 import { GraphqlService } from '../../../../services/graphql.service';
 import { CommonLeagueService } from '../commonleague.service';
@@ -55,11 +55,7 @@ export class LeagueteamlistingPage {
   };
   matches: MatchModel[] = [];
   filteredMatches: MatchModel[] = [];
-
-
-
   ParentClubTeam: TeamsForParentClubModel[] = [];
-
   teamsForParentClub: TeamsForParentClubModel[] = [];
   filteredteams: TeamsForParentClubModel[] = [];
   leaguesForParentClub: LeaguesForParentClubModel[] = [];
@@ -69,10 +65,6 @@ export class LeagueteamlistingPage {
   today = moment().format("DD-MM-YYYY");
   Today: number = 0;
   searchInput: "";
-
-
-
-
   isPublish: boolean = true;
   isPending: boolean = true;
   private subscription: RxSubscription; // Use the renamed type
@@ -138,7 +130,6 @@ export class LeagueteamlistingPage {
     this.navCtrl.push("LeaguedetailsPage", {
       league_id: league.id,
     });
-
   }
 
   gotoTeamdetailsPage(team) {
@@ -571,30 +562,7 @@ export class LeagueteamlistingPage {
 
 
 
-export class ParentClubTeamFetchInput {
-  user_postgre_metadata: UserPostgreMetadataField
-  user_device_metadata: UserDeviceMetadataField
-}
-export class LeagueFetchInput {
-  user_postgre_metadata: UserPostgreMetadataField
-  user_device_metadata: UserDeviceMetadataField
 
-}
-export class UserPostgreMetadataField {
-  UserParentClubId: string
-
-}
-export class UserDeviceMetadataField {
-  UserAppType: number
-  UserDeviceType: number
-}
-
-export class FetchMatchesInput {
-  user_postgre_metadata: UserPostgreMetadataField
-  // ParentClubKey: string;
-  // MemberKey: string;
-  FetchType: number;
-}
 
 export class FetchUserInput {
   ParentClubKey: String;
