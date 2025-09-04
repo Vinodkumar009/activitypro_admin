@@ -21,6 +21,21 @@ page-leaguedetails {
     background-color: #f7f7f7;
   }
 
+  .deletebtn{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    position: absolute;
+    right: 0px;
+    bottom: 10px;
+    //background: none;
+    color: #2b92bb !important;    
+    ion-icon{
+      font-size: 1.5em;
+    }
+  }
+
   .circle {
     background: #FFEBEB;
     width: 44px;
@@ -53,18 +68,7 @@ page-leaguedetails {
     color: #154766;
   }
 
-  .deletebtn {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    padding: 5px;
-    position: absolute;
-    right: 0px;
-    bottom: 10px;
-    background: none;
-    background-color: none !important;
-    color: white !important;
-  }
+  
 
   .smalltext {
     // margin: 5px 0px;

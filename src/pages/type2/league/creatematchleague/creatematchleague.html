@@ -40,7 +40,7 @@
         [(ngModel)]="startTime"></ion-datetime>
     </ion-item>
 
-    <div *ngIf="matchType === 'Singles'">
+    <div *ngIf="inputObj.match_type == '1'">
       <ion-item>
         <ion-label>Participants 1</ion-label>
         <ion-select placeholder=" <Select>" [(ngModel)]="inputObj.primary_participant_id"
@@ -60,7 +60,7 @@
       </ion-item>
     </div>
 
-    <div *ngIf="matchType === 'Doubles'">
+    <div *ngIf="inputObj.match_type == '2'">
       <ion-item>
         <ion-label>Team 1 - Player 1</ion-label>
         <ion-select placeholder="Select" [(ngModel)]="inputObj.primary_participant_id">

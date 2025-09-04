@@ -485,9 +485,11 @@ export class LeaguedetailsPage {
       location_id: this.individualLeague.location_id,
       location_type: this.individualLeague.location_type,
       league_type_text: this.individualLeague.league_type_text,
-      activityId: this.individualLeague.activity.Id
+      activityId: this.individualLeague.activity.Id,
+      league_type: this.individualLeague.league_type
     });
   }
+
   autoCreateMatch() {
     this.navCtrl.push("AutocreatematchPage", {
       leagueId: this.individualLeague.id,
@@ -496,6 +498,7 @@ export class LeaguedetailsPage {
       location_id: this.individualLeague.location_id,
       location_type: this.individualLeague.location_type,
       activityId: this.individualLeague.activity.Id,
+      league_type: this.individualLeague.league_type
     });
   }
   formatMatchStartDate(date) {

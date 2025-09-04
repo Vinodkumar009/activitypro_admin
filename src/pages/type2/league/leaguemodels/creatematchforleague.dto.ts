@@ -40,6 +40,7 @@ export class CreateLeagueMatchInputV1 extends CommonRestApiDtoV1 {
   location_id: string;
   location_type: string;
   end_date: string;
+  match_type:number;
   match_payment_type: number;
   member_fees: number;
   non_member_fees: number;

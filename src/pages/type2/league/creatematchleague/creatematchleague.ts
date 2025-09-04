@@ -75,7 +75,7 @@ export class CreatematchleaguePage {
   parentClubId: string
   leagueGroup: LeagueGroup[]
   leagueId: string
-  matchType: string
+  //matchType: string
   isChecked: boolean = false;
   leagueGroupInput: LeagueGroupInput = {
     ParentClubKey: '',
@@ -104,7 +104,7 @@ export class CreatematchleaguePage {
     secondary_participant_id: '',
     primary_participant_id2: '',
     secondary_participant_id2: '',
-    match_type: 0,
+    match_type: 1,
     user_postgre_metadata: {
       UserParentClubId: '',
       UserActivityId: ''
@@ -175,7 +175,7 @@ export class CreatematchleaguePage {
 
     this.inputObj.LeagueId = this.leagueId;
 
-    this.matchType = this.navParams.get("league_type_text");
+    this.inputObj.match_type = +this.navParams.get("league_type");
 
     const inputFormat = 'DD-MMM-YYYY, ddd';
 
@@ -335,7 +335,7 @@ export class CreatematchleaguePage {
   }
 
   filterParticipants() {
-    if (this.matchType === 'Singles') {
+    if (+this.inputObj.match_type === 1) {
       this.filteredPrimaryParticipants = this.participantData.filter(
         participant => 
           participant.id === this.inputObj.primary_participant_id || 
@@ -347,7 +347,7 @@ export class CreatematchleaguePage {
           participant.id === this.inputObj.secondary_participant_id || 
           participant.id !== this.inputObj.primary_participant_id
       );
-    } else if (this.matchType === 'Doubles') {
+    } else if (+this.inputObj.match_type === 2) {
       // Filter for Team 1 - include current selection or exclude other selected players
       this.filteredPrimaryParticipants = this.participantData.filter(
         participant =>
@@ -496,13 +496,13 @@ export class CreatematchleaguePage {
     //   this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
     //   return false;
     // }
-    else if (this.matchType === 'Singles') {
+    else if (+this.inputObj.match_type === 1) {
       if (!this.inputObj.primary_participant_id || !this.inputObj.secondary_participant_id) {
         this.commonService.toastMessage("Please select both participants for singles match", 2500, ToastMessageType.Error);
         return false;
       }
     }
-    else if (this.matchType === 'Doubles') {
+    else if (+this.inputObj.match_type === 2) {
       if (!this.inputObj.primary_participant_id || !this.inputObj.primary_participant_id2 || 
           !this.inputObj.secondary_participant_id || !this.inputObj.secondary_participant_id2) {
         this.commonService.toastMessage("Please select all players for doubles match", 2500, ToastMessageType.Error);
@@ -559,7 +559,7 @@ export class CreatematchleaguePage {
           this.inputObj.Non_Member_Fee = "0.00";
         }
 
-        this.inputObj.match_type = this.matchType.toLowerCase() === 'singles' ? 0 : 1;
+        this.inputObj.match_type = +this.inputObj.match_type;
         if (this.inputObj.MatchPaymentType != 1) {
           this.inputObj.Member_Fee = "0.00";
           this.inputObj.Non_Member_Fee = "0.00";

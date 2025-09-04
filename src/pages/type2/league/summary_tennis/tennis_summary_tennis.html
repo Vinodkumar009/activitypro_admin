@@ -28,7 +28,7 @@
     <div class="team-card" (click)="gotoSetInputPage(true)">
       <div class="team-logo-container">
         <img class="team-logo" [src]="homeTeamLogo" [alt]="homeTeamName + ' logo'">
-        <ion-icon name="create" class="edit-icon"></ion-icon>
+        <!-- <ion-icon name="create" class="edit-icon"></ion-icon> -->
       </div>
       <div class="team-details">
         <div class="team-name">{{homeTeamName}}</div>
@@ -50,13 +50,13 @@
       </div>
       <div class="team-logo-container">
         <img class="team-logo" [src]="awayTeamLogo" [alt]="awayTeamName + ' logo'">
-        <ion-icon name="create" class="edit-icon"></ion-icon>
+        <!-- <ion-icon name="create" class="edit-icon"></ion-icon> -->
       </div>
     </div>
   </div>
 
   <!-- Set Scores Display -->
-  <div class="set-scores-section" *ngIf="result_json && result_json.SET_SCORES && result_json.SET_SCORES.length > 0">
+  <div class="set-scores-section" *ngIf="result_json && result_json.SET_SCORES && result_json.SET_SCORES.length > 0" (click)="gotoSetInputPage(true)">
     <div class="section-header">
       <ion-icon name="trophy" color="warning"></ion-icon>
       <h4>Set Scores</h4>

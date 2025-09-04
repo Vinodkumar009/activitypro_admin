@@ -54,12 +54,15 @@
             <ion-icon name="create"></ion-icon>
           </button>
         </div> -->
-        <div style="display: flex; justify-content: flex-end; align-items: center; padding-right: 10px;">
-          <ion-fab right bottom>
+        <div>
+          <!-- <ion-fab right bottom>
             <button ion-fab mini style="background-color: #2b92bb; color: white !important;" (click)="removeLeague()">
               <ion-icon name="trash"></ion-icon>
             </button>
-          </ion-fab>
+          </ion-fab> -->
+        <button class="deletebtn" ion-button clear (click)="removeLeague()">
+          <ion-icon name="trash"></ion-icon>
+        </button>
         </div>
       </ion-col>
     </ion-row>

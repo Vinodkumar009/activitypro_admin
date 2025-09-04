@@ -11,6 +11,8 @@ import { HttpService } from '../../../../services/http.service';
 import { RoundTypeInput, RoundTypesModel } from '../../../../shared/model/league.model';
 import { API } from '../../../../shared/constants/api_constants';
 import { AppType } from '../../../../shared/constants/module.constants';
+import { CatandType } from '../models/location.model';
+import { CommonRestApiDto } from '../../../../shared/model/common.model';
 
 
 /**
@@ -58,6 +60,7 @@ export class AutocreatematchPage {
     location_id: '',
     location_type: '',
     end_date: '',
+    match_type: 0,
     match_payment_type: 0,
     member_fees: 0.00,
     non_member_fees: 0.00,
@@ -77,10 +80,11 @@ export class AutocreatematchPage {
   }
   numberofMatches: number;
   numberofPlayers: number;
-  matchType: string = 'singles';
+  
   team1Players: LeagueParticipantModel[] = [];
   team2Players: LeagueParticipantModel[] = [];
-
+  
+  leagueType: CatandType[] = [];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -110,10 +114,28 @@ export class AutocreatematchPage {
     this.inputObj.match_status = 1; // Default to public match
     this.inputObj.location_id = this.location_id;
     this.inputObj.location_type = this.location_type.toString();
+    this.getLeagueTypes();
     this.getRoundTypes();
     this.getPlayers();
   }
 
+
+  getLeagueTypes() {
+    const commonInput = new CommonRestApiDto();
+    commonInput.parentclubId = this.sharedservice.getPostgreParentClubId();
+    commonInput.activityId = this.navParams.get('activity_id');
+    commonInput.memberId = this.sharedservice.getLoggedInUserId();
+    commonInput.action_type = 0;
+    commonInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
+    commonInput.app_type = AppType.ADMIN_NEW;
+    commonInput.device_id = this.sharedservice.getDeviceId() || '';
+    this.httpService.post(`${API.GET_LEAGUE_OR_MATCH_TYPES}`, commonInput).subscribe((res: any) => {
+      this.leagueType = res["data"];
+      this.inputObj.match_type = +this.navParams.get('league_type');
+    }, (error) => {
+      this.commonService.toastMessage("type fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+    })
+  }
 
   getRoundTypes() {
     this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe((res: any) => {
@@ -175,6 +197,7 @@ export class AutocreatematchPage {
           ...player,
           isSelected: false
         }));
+        this.onMatchTypeChange();
       },
       (error) => {
           // this.handleError(error);
@@ -232,7 +255,7 @@ export class AutocreatematchPage {
   }
 
   updateMatchCounts() {
-    if (this.matchType === 'doubles') {
+    if (+this.inputObj.match_type === 2) {
       this.updateDoublesMatchCounts();
       return;
     }
@@ -324,7 +347,7 @@ export class AutocreatematchPage {
 
 
   private isValidToCreateMatch(): boolean {
-    if (this.matchType === 'doubles') {
+    if (+this.inputObj.match_type === 2) { //doubles
       if (this.team1Players.length < 2 || this.team2Players.length < 2) {
         this.commonService.toastMessage('Please select at least 2 players for each team', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         return false;
@@ -345,8 +368,13 @@ export class AutocreatematchPage {
     //   this.commonService.toastMessage('Please select a valid round', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     //   return false;
     // }
-    if(this.inputObj.match_payment_type == 1 && (!this.inputObj.member_fees || this.inputObj.non_member_fees <= 0)) {
-      this.commonService.toastMessage('Please enter valid fees for members and non-members', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+    else if(this.inputObj.match_payment_type == 1 && (!this.inputObj.member_fees || this.inputObj.member_fees <= 0)) {
+      this.commonService.toastMessage('Please enter valid fees for member', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      return false;
+    }
+
+    else if(this.inputObj.match_payment_type == 1 && (!this.inputObj.non_member_fees || this.inputObj.non_member_fees <= 0)) {
+      this.commonService.toastMessage('Please enter valid fees for mnon-member', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;
     }
 
@@ -364,7 +392,7 @@ export class AutocreatematchPage {
 
       
       let selectedPlayers;
-      if (this.matchType === 'doubles') {
+      if (+this.inputObj.match_type === 2) { //doubles
         selectedPlayers = [...this.team1Players, ...this.team2Players];
       } else {
         selectedPlayers = this.players.filter(player => player.isSelected);
@@ -374,8 +402,8 @@ export class AutocreatematchPage {
       this.inputObj.participant_ids = selectedPlayers.map(player => player.id)
       this.inputObj.round = Number(this.selectedRound),
       this.inputObj.match_name = '',
+      this.inputObj.match_type = +this.inputObj.match_type; // 0 - singles, 1 - doubles, 2 - teams
       this.inputObj.start_date = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('YYYY-MM-DD'),
-
       this.inputObj.start_time = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('HH:mm'),
       this.inputObj.end_date = moment(new Date(this.matchDate + ' ' + '23:59').getTime()).format("YYYY-MM-DD HH:mm");
       this.inputObj.group_id = '',

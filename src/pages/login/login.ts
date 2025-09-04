@@ -242,8 +242,8 @@ export class Login {
       .subscribe(admin => {
         if (admin.length > 0 && this.user.password === admin[0].Password) {
           loading.dismiss().catch(() => {});
-          this.handleLogin(admin[0], BookingMemberType.ADMIN, "admin");
-          this.getLoggedInUserInfo(admin[0].$key);
+          this.handleLogin(admin[0], BookingMemberType.ADMIN, "admin",admin[0].$key);
+          //this.getLoggedInUserInfo(admin[0].$key);
           return;
         }
         
@@ -253,8 +253,8 @@ export class Login {
             if (coach.length > 0 && (coach[0].IsActive == undefined || coach[0].IsActive) && 
                 this.user.password === coach[0].Password) {
               loading.dismiss().catch(() => {});
-              this.handleLogin(coach[0], BookingMemberType.COACH, "coach");
-              this.getLoggedInUserInfo(coach[0].$key);
+              this.handleLogin(coach[0], BookingMemberType.COACH, "coach",coach[0].$key);
+              //this.getLoggedInUserInfo();
               return;
             }
             
@@ -265,8 +265,8 @@ export class Login {
                     (subAdmin[0].IsActive == undefined || subAdmin[0].IsActive)) {
                   loading.dismiss().catch(() => {});
                   subAdmin[0]["SignedUpUnder"] = 6;
-                  this.handleLogin(subAdmin[0], BookingMemberType.SUBADMIN, "subadmin");
-                  this.getLoggedInUserInfo(subAdmin[0].$key);
+                  this.handleLogin(subAdmin[0], BookingMemberType.SUBADMIN, "subadmin",subAdmin[0].$key);
+                  //this.getLoggedInUserInfo(subAdmin[0].$key);
                   return;
                 }
                 
@@ -304,35 +304,31 @@ export class Login {
   }
 
 
-  private handleLogin(userData: any, memberType: any, userType: string) {
-    const userinfo = this.commonService.convertFbObjectToArray(userData.UserInfo);
-    userData.UserInfo = userinfo;
-    
-    this.storage.set('isLogin', true);
-    this.storage.set('LoginWhen', 'first');
-    this.storage.set('userObj', JSON.stringify(userData));
-    this.storage.set('memberType', memberType);
-    this.storage.set('UserKey', JSON.stringify(userData.$key));
-    
-    this.sharedservice.setLoggedInType(memberType);
-    this.sharedservice.setUserData(userData);
-    this.events.publish('user:loginsuccessfully', userData, Date.now());
-    
-    if (this.sharedservice.getDeviceToken()) {
-      this.checkAndStoreDeviceToken(this.sharedservice.getDeviceToken(), userinfo[0], userType);
-    }
-    
-    if (this.themeType === 2) {
-      this.navCtrl.setRoot("Dashboard");
-      this.commonService.toastMessage("Logged in successfully...", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-    }
-  }        
-
-
-  getLoggedInUserInfo(firebase_loggedinkey:string){
+  private handleLogin(userData: any, memberType: any, userType: string, firebase_loggedinkey:string) {
     this.httpService.get<{message: string,data: ParentClubUserResponseDto}>(`${API.GET_PARENTCLUB_USER_BY_FIREBASEID}/${firebase_loggedinkey}`)
         .subscribe({
             next: (res) => {
+                const userinfo = this.commonService.convertFbObjectToArray(userData.UserInfo);
+                userData.UserInfo = userinfo;
+                
+                this.storage.set('isLogin', true);
+                this.storage.set('LoginWhen', 'first');
+                this.storage.set('userObj', JSON.stringify(userData));
+                this.storage.set('memberType', memberType);
+                this.storage.set('UserKey', JSON.stringify(userData.$key));
+                
+                this.sharedservice.setLoggedInType(memberType);
+                this.sharedservice.setUserData(userData);
+                this.events.publish('user:loginsuccessfully', userData, Date.now());
+                
+                if (this.sharedservice.getDeviceToken()) {
+                  this.checkAndStoreDeviceToken(this.sharedservice.getDeviceToken(), userinfo[0], userType);
+                }
+                
+                if (this.themeType === 2) {
+                  this.navCtrl.setRoot("Dashboard");
+                  this.commonService.toastMessage("Logged in successfully...", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+                }
                this.storage.set('loggedin_user', JSON.stringify(res.data));
             },
             error: (err) => {
@@ -343,8 +339,28 @@ export class Login {
                 this.commonService.toastMessage("Failed to fetch loggedin user details", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
               }
             }
-          });
-    }
+    });
+
+
+  }        
+
+
+  // getLoggedInUserInfo(firebase_loggedinkey:string){
+  //   this.httpService.get<{message: string,data: ParentClubUserResponseDto}>(`${API.GET_PARENTCLUB_USER_BY_FIREBASEID}/${firebase_loggedinkey}`)
+  //       .subscribe({
+  //           next: (res) => {
+  //              this.storage.set('loggedin_user', JSON.stringify(res.data));
+  //           },
+  //           error: (err) => {
+  //             console.error("Error fetching events:", err);
+  //             if(err && err.error && err.error.message){
+  //               this.commonService.toastMessage(err.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+  //             }else{
+  //               this.commonService.toastMessage("Failed to fetch loggedin user details", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+  //             }
+  //           }
+  //   });
+  // }
   
 
 
