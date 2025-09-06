@@ -82,6 +82,7 @@ export class AutocreatematchPage {
   team1Players: LeagueParticipantModel[] = [];
   team2Players: LeagueParticipantModel[] = [];
   leagueType: CatandType[] = [];
+  league_type:number = 1; // Default to singles
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -111,6 +112,7 @@ export class AutocreatematchPage {
     this.inputObj.match_status = 1; // Default to public match
     this.inputObj.location_id = this.location_id;
     this.inputObj.location_type = this.location_type.toString();
+    this.inputObj.match_type = Number(this.navParams.get('league_type'));
     this.getLeagueTypes();
     this.getRoundTypes();
     this.getPlayers();
@@ -127,7 +129,6 @@ export class AutocreatematchPage {
     commonInput.device_id = this.sharedservice.getDeviceId() || '';
     this.httpService.post(`${API.GET_LEAGUE_OR_MATCH_TYPES}`, commonInput).subscribe((res: any) => {
       this.leagueType = res["data"];
-      this.inputObj.match_type = +this.navParams.get('league_type');
     }, (error) => {
       this.commonService.toastMessage("type fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     })
