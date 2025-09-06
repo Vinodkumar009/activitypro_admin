@@ -143,12 +143,13 @@
                         [style.color]="getInviteStatusIcon(item.invite_status) === 'checkmark-circle' ? '#32db64' : getInviteStatusIcon(item.invite_status) === 'close-circle' ? '#f53d3d' : getInviteStatusIcon(item.invite_status) === 'help-circle' ? '#b8860b' : '#f76e04'">
                       </ion-icon>
                     </div>
-                    <!-- <div *ngIf=isMatchPaid(item?.Match,item?.paid_amount) style="float: right; margin-top: 0px;">
-                      <p class="pending">
-                        <span>{{currencyDetails.CurrencySymbol}}{{item.paid_amount}}</span>
+                    <div *ngIf="match.PaymentType==1"
+                      style="display: flex; align-items: center; justify-content: flex-end;">
+                      <p class="pending" style="margin: 0; padding-right: 2px;">{{item.amount_pay_status_text}}</p>
+                      <p class="pending" style="margin: 0;">
+                        <span style="color: #2b92bb;">{{currencyDetails.CurrencySymbol}}{{item.paid_amount}}</span>
                       </p>
-                      <p class="pending" style="margin-top:-10px">{{item.amount_pay_status_text}}</p>
-                    </div> -->
+                    </div>
                   </ion-col>
                 </ion-row>
               </ion-grid>

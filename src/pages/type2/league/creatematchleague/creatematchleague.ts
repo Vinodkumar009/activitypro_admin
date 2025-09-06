@@ -75,7 +75,7 @@ export class CreatematchleaguePage {
   parentClubId: string
   leagueGroup: LeagueGroup[]
   leagueId: string
-  //matchType: string
+  
   isChecked: boolean = false;
   leagueGroupInput: LeagueGroupInput = {
     ParentClubKey: '',

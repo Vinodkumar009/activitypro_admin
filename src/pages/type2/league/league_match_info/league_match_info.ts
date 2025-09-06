@@ -638,20 +638,19 @@ export class LeagueMatchInfoPage {
             if (selectedVal === this.selectedAwayTeamText) {
               this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
             } else {
-              this.selectedHomeTeamText = this.selectedTeam.parentclubteam.teamName;
               this.UpdateLeagueFixtureInput.HomeParticipantId = selectedVal;
               this.UpdateLeagueFixtureInput.AwayParticipantId = ""; //setting the deafult val to ""
+              this.updateLeagueFixture(isHomeTeam, this.selectedTeam.parentclubteam.teamName);
             }
           } else {
             if (selectedVal === this.selectedHomeTeamText) {
               this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
             } else {
-              this.selectedAwayTeamText = this.selectedTeam.parentclubteam.teamName;
               this.UpdateLeagueFixtureInput.AwayParticipantId = selectedVal;
               this.UpdateLeagueFixtureInput.HomeParticipantId = ""; //setting the deafult val to ""
+              this.updateLeagueFixture(isHomeTeam, this.selectedTeam.parentclubteam.teamName);
             }
           }
-          this.updateLeagueFixture();
         }
       });
 
@@ -698,12 +697,21 @@ export class LeagueMatchInfoPage {
     });
   }
 
-  updateLeagueFixture() {
+  updateLeagueFixture(isHomeTeam?: boolean, teamName?: string) {
     this.commonService.showLoader("Updating...");
     this.httpService.post(`${API.Update_League_Fixture}`, this.UpdateLeagueFixtureInput).subscribe((res: any) => {
       if (res) {
         this.commonService.hideLoader();
         var res = res.message;
+
+        // Only update frontend variables on successful API call
+        if (isHomeTeam !== undefined && teamName) {
+          if (isHomeTeam) {
+            this.selectedHomeTeamText = teamName;
+          } else {
+            this.selectedAwayTeamText = teamName;
+          }
+        }
 
         this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
         // this.sections.forEach(section => section.items = []); // Clear the sections array
@@ -717,6 +725,7 @@ export class LeagueMatchInfoPage {
         } else {
           this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error,);
         }
+        // Frontend variables are NOT updated on API failure
       }
     );
   }
@@ -754,11 +763,11 @@ export class LeagueMatchInfoPage {
     });
   }
 
-  isMatchPaid(matchItem: Match, amount: string): boolean {
-    //1 paid, 0  free
-    return matchItem.PaymentType == 1 && amount != "0.00" ?
-      true : false;
-  }
+  // isMatchPaid(matchItem: Match, amount: string): boolean {
+  //   //1 paid, 0  free
+  //   return matchItem.PaymentType == 1 && amount != "0.00" ?
+  //     true : false;
+  // }
 
 
   populateSections() {

@@ -14,7 +14,6 @@ import { AppType } from '../../../../shared/constants/module.constants';
 import { CatandType } from '../models/location.model';
 import { CommonRestApiDto } from '../../../../shared/model/common.model';
 
-
 /**
  * Generated class for the AutocreatematchPage page.
  *
@@ -80,10 +79,8 @@ export class AutocreatematchPage {
   }
   numberofMatches: number;
   numberofPlayers: number;
-  
   team1Players: LeagueParticipantModel[] = [];
   team2Players: LeagueParticipantModel[] = [];
-  
   leagueType: CatandType[] = [];
   constructor(
     public navCtrl: NavController,
@@ -119,7 +116,6 @@ export class AutocreatematchPage {
     this.getPlayers();
   }
 
-
   getLeagueTypes() {
     const commonInput = new CommonRestApiDto();
     commonInput.parentclubId = this.sharedservice.getPostgreParentClubId();
@@ -136,6 +132,7 @@ export class AutocreatematchPage {
       this.commonService.toastMessage("type fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     })
   }
+
 
   getRoundTypes() {
     this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe((res: any) => {
@@ -197,6 +194,7 @@ export class AutocreatematchPage {
           ...player,
           isSelected: false
         }));
+        this.onMatchTypeChange();
       },
       (error) => {
           // this.handleError(error);

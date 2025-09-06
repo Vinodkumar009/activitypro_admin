@@ -105,40 +105,13 @@ export class AddstafftoteamPage {
   }
 
   selectMembers(member) {
-    let isPresent = false;
-    // if (!isPresent) {
-    //   for (let i = 0; i < this.addStaffInput.staffDetails.length; i++) {
-    //     this.addStaffInput.staffDetails.push({ userPostGresId: member.id, userType: 1 });
-    //   }
-    // }
-
-    if (this.addStaffInput.staffDetails.length > 0) {
-      for (let i = 0; i < this.addStaffInput.staffDetails.length; i++) {
-        if (this.addStaffInput.staffDetails[i] == member.firebaseKey) {
-          isPresent = true;
-          this.addStaffInput.staffDetails.splice(i, 1);
-
-          break;
-        }
-      }
-      if (!isPresent) {
-        // this.addStaffInput.members.push({roleId:"a66c78c9-994b-4ced-8942-11c9a047611b",memberKey:member.FirebaseKey})
-        this.addStaffInput.staffDetails.push({ userPostGresId: member.id, userType: member.user_type });;
-
-      }
-    } else if (this.addStaffInput.staffDetails.length == 0) {
+    const memberIndex = this.addStaffInput.staffDetails.findIndex(m => m.userPostGresId === member.id);
+    if (memberIndex > -1) {
+      this.addStaffInput.staffDetails.splice(memberIndex, 1);
+    } else {
       this.addStaffInput.staffDetails.push({ userPostGresId: member.id, userType: member.user_type });
     }
-
-    console.log(this.addStaffInput.staffDetails);
-
-    // for(let i=0;i<this.addStaffInput.staffDetails.length;i++){
-    //    this.addStaffInput.staffDetails[i].userPostGresId=member.id;
-    //    this.addStaffInput.staffDetails[i].userType=1;
-    // }
-    // console.log(this.addStaffInput.staffDetails);
-    // return this.addStaffInput;
-
+    console.log("Updated Staff Details:", this.addStaffInput.staffDetails);
   }
 
 
@@ -281,34 +254,58 @@ export class AddstafftoteamPage {
   }
 
   saveStaff = async () => {
-    console.log(JSON.stringify(this.addStaffInput));
+    const staffLength = this.addStaffInput.staffDetails.length;
+    if (staffLength > 0) {
+      try {
+        this.commonService.showLoader("Please wait...");
+        console.log(JSON.stringify(this.addStaffInput));
 
-    const addStaff = gql`
-        mutation addStaffToParentClubTeam($addStaffInput:AddStaffInput!){
-          addStaffToParentClubTeam(addStaffInput:$addStaffInput){
-            
+        const addStaff = gql`
+        mutation addStaffToParentClubTeam($addStaffInput: AddStaffInput!) {
+          addStaffToParentClubTeam(addStaffInput: $addStaffInput) {
             id
-            role{
+            role {
               role_name
             }
             postgres_user_id
-
           }
         }
-    `;
-    const mutationVariables = { addStaffInput: this.addStaffInput }
+      `;
 
-    await this.graphqlService.mutate(addStaff, mutationVariables, 0).toPromise();
+        const mutationVariables = { addStaffInput: this.addStaffInput };
 
-    const message = "Staff Added Successfully";
-
-    this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-    // this.navCtrl.pop().then(() => this.navCtrl.pop());
-    this.viewCtrl.dismiss({ canRefreshData: true });
-
-
-
-  }
+        await this.graphqlService
+          .mutate(addStaff, mutationVariables, 0)
+          .subscribe(
+            (res: any) => {
+              this.commonService.hideLoader();
+              const message = "Staff Added Successfully";
+              this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+              this.viewCtrl.dismiss({ canRefreshData: true });
+            },
+            (error) => {
+              this.commonService.hideLoader();
+              if (error.error) {
+                console.error("Server Error:", error.error);
+                this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+              } else {
+                this.commonService.toastMessage("Error in saving staff", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+              }
+            }
+          );
+      } catch (error) {
+        console.error("Error in saving staff:", error);
+        this.commonService.hideLoader();
+        if (error.error) {
+          this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        } else {
+          this.commonService.toastMessage("Error in saving staff", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
+      }
+    } else {
+      this.commonService.toastMessage("Please select a staff member", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+    }
+  };
 
   dismiss() {
     this.viewCtrl.dismiss({ canRefreshData: true });

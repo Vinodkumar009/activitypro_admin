@@ -48,3 +48,10 @@ export enum ActivityTypeEnum {
   FOOTBALL = 1002,
   CRICKET = 1015,
 }
+
+export enum PaymentStatusEnum {
+    Due = 0,
+    Paid = 1,
+    PendingVerification = 3,
+    Failed = 4,
+}

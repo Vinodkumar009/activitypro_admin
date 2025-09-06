@@ -618,26 +618,23 @@ export class MatchTeamDetailsPage {
           }
           this.selectedTeam = this.activitySpecificTeamsRes.find(team => team.id === selectedVal);
 
-
-
           if (isHomeTeam) {
             if (this.selectedTeam.teamName === this.selectedAwayTeamText) {
               this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
             } else {
-              this.selectedHomeTeamText = this.selectedTeam.teamName;
               this.updateTeamInput.HomeParentclubTeamId = selectedVal;
               this.updateTeamInput.AwayParentclubTeamId = ""; //setting the deafult val to ""
+              this.updateTeam(isHomeTeam, this.selectedTeam.teamName);
             }
           } else {
             if (this.selectedTeam.teamName === this.selectedHomeTeamText) {
               this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
             } else {
-              this.selectedAwayTeamText = this.selectedTeam.teamName;
               this.updateTeamInput.AwayParentclubTeamId = selectedVal;
               this.updateTeamInput.HomeParentclubTeamId = ""; //setting the deafult val to ""
+              this.updateTeam(isHomeTeam, this.selectedTeam.teamName);
             }
           }
-          this.updateTeam();
         }
       });
 
@@ -759,12 +756,22 @@ export class MatchTeamDetailsPage {
     });
   }
 
-  updateTeam() {
+  updateTeam(isHomeTeam?: boolean, teamName?: string) {
     this.commonService.showLoader("Updating...");
     this.httpService.post(`${API.Update_League_Fixture}`, this.updateTeamInput).subscribe((res: any) => {
       if (res) {
         this.commonService.hideLoader();
         var res = res.message;
+
+        // Only update frontend variables on successful API call
+        if (isHomeTeam !== undefined && teamName) {
+          if (isHomeTeam) {
+            this.selectedHomeTeamText = teamName;
+          } else {
+            this.selectedAwayTeamText = teamName;
+          }
+        }
+
         this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
       } else {
         this.commonService.hideLoader();
@@ -778,6 +785,7 @@ export class MatchTeamDetailsPage {
         } else {
           this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error,);
         }
+        // Frontend variables are NOT updated on API failure
       }
     );
   }

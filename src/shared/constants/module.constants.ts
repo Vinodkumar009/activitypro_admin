@@ -60,4 +60,3 @@ export enum ParentclubAccountType {
   EVENTS = 3,
   MEMBERSHIP = 4
 }
-

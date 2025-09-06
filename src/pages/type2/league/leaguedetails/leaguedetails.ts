@@ -489,7 +489,6 @@ export class LeaguedetailsPage {
       league_type: this.individualLeague.league_type
     });
   }
-
   autoCreateMatch() {
     this.navCtrl.push("AutocreatematchPage", {
       leagueId: this.individualLeague.id,

@@ -196,6 +196,7 @@ export class TennisResultInputPage {
       awaySetsWon: this.awaySetsWon.toString(),
       homeGamesWon: this.homeGamesWon.toString(),
       awayGamesWon: this.awayGamesWon.toString(),
+      //RESULT_STATUS: this.resultStatus,
       WINNER_ID: this.selectedResultStatus && this.selectedResultStatus.status === 'WIN' ? this.selectedWinner : ''
     };
 
