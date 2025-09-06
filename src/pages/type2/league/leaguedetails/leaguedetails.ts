@@ -827,11 +827,12 @@ export class LeaguedetailsPage {
                 teamVisibility
                 teamDescription
               }
-        wins
-        loss
-        rank
-        total_points
-        draw
+              matches
+              wins
+              loss
+              rank
+              total_points
+              draw
       }
     }
   `;

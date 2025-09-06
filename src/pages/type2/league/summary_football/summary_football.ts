@@ -1497,6 +1497,13 @@ export class SummaryFootballPage implements AfterViewInit {
       this.homeScore = homeGoals.toString();
       this.awayScore = awayGoals.toString();
 
+      let loserId = '';
+      if (data.footballResultStats.WINNER_ID) {
+        const homeTeamId = this.getHomeTeamId();
+        const awayTeamId = this.getAwayTeamId();
+        loserId = data.footballResultStats === homeTeamId ? awayTeamId : homeTeamId;
+      }
+
       // Extract footballResultStats with null checks
       const footballResultStats: FootballResultStatsModel = data.footballResultStats || {};
 
@@ -1517,6 +1524,7 @@ export class SummaryFootballPage implements AfterViewInit {
           RESULT: {
             DESCRIPTION: footballResultStats.DESCRIPTION || '',
             WINNER_ID: footballResultStats.WINNER_ID || '',
+            LOSER_ID: loserId || '',
             RESULT_STATUS: data.resultStatus || '0'
           }
         }

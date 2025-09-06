@@ -138,6 +138,7 @@ export interface POTMDetailModel {
 export interface FootballResultStatsModel {
   DESCRIPTION: string;
   WINNER_ID: string;
+  LOSER_ID: string;
   RESULT_STATUS: string;
 }
  

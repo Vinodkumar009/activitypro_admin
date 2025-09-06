@@ -265,6 +265,7 @@ export class ResultInputPage {
     const footballResultStats: FootballResultStatsModel = {
       DESCRIPTION: this.resultDescription || '',
       WINNER_ID: '',
+      LOSER_ID: '',
       RESULT_STATUS: this.selectedResultStatus.status
     };
 

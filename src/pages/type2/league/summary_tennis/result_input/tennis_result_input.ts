@@ -20,7 +20,7 @@ import { TennisResultModel } from '../../../../../shared/model/league_result.mod
 export class TennisResultInputPage {
   // Flow type
   isLeague: boolean = false;
-
+  isEditable: boolean = true;
   // League flow properties
   homeTeamObj: LeagueParticipationForMatchModel;
   awayTeamObj: LeagueParticipationForMatchModel;
@@ -68,7 +68,7 @@ export class TennisResultInputPage {
     this.result_json = this.navParams.get('result_json') || {};
     this.activityId = this.navParams.get('activityId');
     this.activityCode = this.navParams.get('activityCode');
-
+    this.isEditable = !(this.navParams.get('result_status') === 1);
     this.initializeTeamData();
     this.initializeValues();
     this.initializeResultStatusInput();
@@ -157,17 +157,20 @@ export class TennisResultInputPage {
 
   private preselectResultStatus(): void {
     console.log('Preselecting status:', this.resultStatus, 'from list:', this.resultStatusList);
-    if (this.resultStatus && this.resultStatusList.length > 0) {
-      this.selectedResultStatus = this.resultStatusList.find(status => 
-        status.id.toString() === this.resultStatus.toString()
-      ) || null;
-      
-      console.log('Selected status found:', this.selectedResultStatus);
-      if (this.selectedResultStatus) {
-        this.showMatchWinner = this.selectedResultStatus.status === 'WIN';
-        console.log('Show match winner:', this.showMatchWinner);
-      }
+    if(this.result_json.RESULT) {
+        this.selectedResultStatus = this.resultStatusList.find(status => status.id.toString() === this.result_json.RESULT.RESULT_STATUS);
     }
+    // if (this.resultStatus && this.resultStatusList.length > 0) {
+    //   this.selectedResultStatus = this.resultStatusList.find(status => 
+    //     status.id.toString() === this.resultStatus.toString()
+    //   ) || null;
+      
+    //   console.log('Selected status found:', this.selectedResultStatus);
+    //   if (this.selectedResultStatus) {
+    //     this.showMatchWinner = this.selectedResultStatus.status === 'WIN';
+    //     console.log('Show match winner:', this.showMatchWinner);
+    //   }
+    // }
   }
 
   onStatusClick(status: ResultStatusModel): void {
@@ -193,11 +196,10 @@ export class TennisResultInputPage {
       awaySetsWon: this.awaySetsWon.toString(),
       homeGamesWon: this.homeGamesWon.toString(),
       awayGamesWon: this.awayGamesWon.toString(),
-      RESULT_STATUS: this.resultStatus,
       WINNER_ID: this.selectedResultStatus && this.selectedResultStatus.status === 'WIN' ? this.selectedWinner : ''
     };
 
-    this.commonService.toastMessage("Result saved successfully", 2500, ToastMessageType.Success);
+    //this.commonService.toastMessage("Result saved successfully", 2500, ToastMessageType.Success);
     this.viewCtrl.dismiss(resultData);
   }
 

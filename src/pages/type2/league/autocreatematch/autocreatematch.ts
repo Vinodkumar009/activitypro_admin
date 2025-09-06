@@ -197,7 +197,6 @@ export class AutocreatematchPage {
           ...player,
           isSelected: false
         }));
-        this.onMatchTypeChange();
       },
       (error) => {
           // this.handleError(error);
