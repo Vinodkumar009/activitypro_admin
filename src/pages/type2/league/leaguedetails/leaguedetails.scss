@@ -538,6 +538,231 @@ page-leaguedetails {
   }
 
   //**here styling of match card started
+  .modern-match-card {
+    background: white;
+    border-radius: 16px;
+    margin: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .match-card-header {
+    background: linear-gradient(135deg, #3fbcd3 0%, #2b92bb 100%);
+    color: white;
+    padding: 10px 10px;
+    position: relative;
+
+    .match-date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+
+    .match-title {
+      h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+    }
+
+    .match-round {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+
+      .round-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .match-card-content {
+    padding: 15px 5px;
+  }
+
+  .match-teams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    .team-section {
+      flex: 1;
+      text-align: center;
+
+      &.home {
+        text-align: right;
+      }
+
+      &.away {
+        text-align: left;
+      }
+
+      .team-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2c3e50;
+        padding: 12px 12px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+
+        &.tbd-text {
+          color: #f39c12;
+          background: #fff8e1;
+          border-color: #f39c12;
+          font-style: italic;
+        }
+      }
+    }
+
+    .vs-section {
+      .vs-text {
+        background: #3fbcd3;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .match-result {
+    .result-teams {
+      margin-bottom: 20px;
+
+      .team-result {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        background: #f8f9fa;
+        border-radius: 12px;
+
+        &.winner {
+          background: linear-gradient(135deg, #fff8e1 0%, #ffeaa7 100%);
+          border-left: 4px solid #f39c12;
+        }
+
+        .team-name {
+          font-weight: 600;
+          color: #2c3e50;
+        }
+
+        .winner-trophy {
+          color: #f39c12;
+          font-size: 18px;
+        }
+      }
+
+      .result-divider {
+        height: 1px;
+        background: #e9ecef;
+        margin: 8px 0;
+      }
+    }
+
+    .match-scores {
+      .scores-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+
+        .score-row {
+          display: flex;
+          justify-content: space-around;
+          margin-bottom: 8px;
+
+          &.away {
+            margin-top: 8px;
+            margin-bottom: 0;
+          }
+
+          .score-item {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            color: #7f8c8d;
+            min-width: 30px;
+
+            &.highlight {
+              background: #3fbcd3;
+              color: white;
+              font-weight: 600;
+            }
+          }
+        }
+
+        .score-label {
+          font-size: 12px;
+          color: #7f8c8d;
+          margin: 8px 0;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .pending-decision {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      background: #fff8e1;
+      border-radius: 12px;
+      color: #f39c12;
+      font-weight: 500;
+
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .match-card-footer {
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+
+    .visibility-info {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      font-size: 14px;
+      color: #7f8c8d;
+
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+  }
+
   .maincard {
     background: #FFFFFF;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.14);

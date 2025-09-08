@@ -83,7 +83,7 @@ export class MailToMemberByAdminPage {
       if (this.module_obj.email_users.length > 0) {
         this.numberOfPeople = this.module_obj.email_users.length + " recipients";
       }
-    }else if (this.module_obj.type == ModuleTypeForEmail.LEAGUE) {
+    }else if (this.module_obj.type == ModuleTypeForEmail.LEAGUE || this.module_obj.type == ModuleTypeForEmail.LEAGUE_TEAM) {
       this.emailObj.Message = "Dear All,";
       if (this.module_obj.email_users.length > 0) {
         this.numberOfPeople = this.module_obj.email_users.length + " recipients";
@@ -254,7 +254,8 @@ export enum ModuleTypeForEmail {
   ATTENDANCE = 107,
   MEMBER = 110,
   HOLIDAYCAMP = 500,
-  LEAGUE = 600
+  LEAGUE = 600,
+  LEAGUE_TEAM = 125
 }
 
 export enum ModuleReportTypeForEmail {

@@ -27,6 +27,11 @@ export interface CatandType {
 export class LeagueMatch {
     fixture_id: string
     location_id: string
+    club_id?:string
+    club_name?:string
+    league_name?:string
+    MatchEndDate?:string
+    activity_name?:string
     home_team_id: string
     away_team_id: string;
     user1_id: string
@@ -35,6 +40,7 @@ export class LeagueMatch {
     awayusername: string
     league_id: string
     round: number
+    formatted_round?: string
     match_id: string
     description: string
     start_date: string

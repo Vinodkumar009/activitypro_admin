@@ -15,23 +15,40 @@
   <div style="background-color: #f2f5fa">
     <ion-row class="cardrow">
       <ion-col col-12>
-        <p style="margin: 5px 0px; display: flex; align-items: center">
-          <span><ion-icon class="smalltext" name="md-calendar"></ion-icon></span>
-          <span class="largetext" style="font-weight: 600;">{{matchObj?.start_date}}</span>
-        </p>
-        <p style="font-weight: 600" class="largetext">
-          {{matchObj?.match_title}}
-        </p>
-        <p class="largetext">
-          <span>{{matchObj?.activity_name}}</span>,
-          <span>Team</span>
-        </p>
-        <p class="largetext">
-          <span>Hosted by:</span>
-          <span class="largetext">{{matchObj?.club_name}}</span>
-        </p>
-
-
+        <ion-row>
+          <ion-col col-9>
+            <p style="margin: 5px 0px; display: flex; align-items: center">
+              <span><ion-icon class="smalltext" name="md-calendar"></ion-icon></span>
+              <span class="largetext" style="font-weight: 600;">{{matchObj?.start_date}}</span>
+            </p>
+            <p style="font-weight: 600" class="largetext">
+              {{matchObj?.match_title}}
+            </p>
+            <p class="largetext">
+              <span>{{matchObj?.activity_name}}</span>,
+              <span>Team</span>
+            </p>
+            <!-- <p class="largetext">
+              <span>Hosted by:</span>
+              <span class="largetext">{{matchObj?.club_name}}</span>
+            </p> -->
+            <p class="largetext">
+              <span>Round:</span>
+              <span class="largetext">{{matchObj?.formatted_round}}</span>
+            </p>
+          </ion-col>
+          <ion-col col-3 style="margin: auto;">
+            <div style="display: inline-block;text-align: center">
+                <button ion-button (click)="deleteConfirm()" clear>
+                  <ion-icon style="" name="trash"></ion-icon>
+                </button>
+                <button class="" ion-button clear (click)="selectTeamForEmail()">
+                    <ion-icon name="mail"></ion-icon>
+                </button>
+            </div>
+          </ion-col>
+        </ion-row>
+        
         <ion-row style="margin-right: 25px !important; margin: 0; padding: 0;">
           <ion-col col-8 style="margin: 0; padding: 0;">
             <p style="margin: 5px 0px; display: flex; align-items: center">
@@ -45,12 +62,6 @@
             </p>
           </ion-col>
         </ion-row>
-
-        <p style="position: absolute; top: 0px; right: 3px; display: flex; align-items: center;">
-          <span> <button ion-button (click)="deleteConfirm()" style="color: #2b92bb !important;" clear>
-              <ion-icon style="" name="trash"></ion-icon>
-            </button></span>
-        </p>
       </ion-col>
     </ion-row>
   </div>

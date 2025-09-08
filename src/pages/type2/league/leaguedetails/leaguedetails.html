@@ -64,6 +64,7 @@
           <button class="deletebtn" ion-button clear (click)="removeLeague()">
             <ion-icon name="trash"></ion-icon>
           </button>
+          
         </div>
       </ion-col>
     </ion-row>
@@ -165,8 +166,8 @@
           </table>
         </div>
       </div>
-      <div *ngIf="individualLeague?.league_type_text !== 'Team'">
 
+      <div *ngIf="individualLeague?.league_type_text !== 'Team'">
         <ion-card class="membercard" *ngFor="let participant of partcipantData" (click)="ActionSheet(participant)">
           <ion-card-content no-padding>
             <ion-grid>
@@ -222,99 +223,92 @@
       </div>
     </div>
 
-    <div *ngIf="activeIndex == 1">
-      <!-- <ion-card class="maincard" (click)="mat.league_type === 3 ? gotoLeagueMatchInfoPage(mat):gotoMatchDetails(mat)" *ngFor="let mat of match"></ion-card> -->
-      <ion-card class="maincard" (click)="showMatchActionSheet(mat)" *ngFor="let mat of match">
-        <ion-card-header class="Location-head">
-          <ion-card-title style="font-weight: 600; font-size: 20px; color: #154766; text-align: center;">
-            {{mat.start_date}}
-          </ion-card-title>
-          <ion-card-title class="largetext" style="text-align: center;">
-            {{mat.match_title}}
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content style="padding-right: 2px; padding-left: 5px; padding-top: 5px;">
-          <ion-row style="margin-top: -5px; justify-content: space-between;">
-            <ion-col class="align-right" style="text-align: right;">
-              <p style="color: rgba(0, 0, 0, 0.6)">{{mat.formatted_round}}</p>
-            </ion-col>
-          </ion-row>
-          <ion-row class=" username-row" *ngIf="!isPublish">
-            <ion-col col-5 class="username-col margin_auto" style="text-align: right;">
-              <div class="username-container" [ngClass]="{'tbd-text': !mat.homeusername || !mat.homeusername.trim()}">
-                <p class="teamName">{{mat.homeusername && mat.homeusername.trim() ? mat.homeusername : 'TBD'}}</p>
-              </div>
-            </ion-col>
-            <ion-col col-2 class="vs-col margin_auto" style="text-align: center;">
-              <div class="vs-container">
-                <span class="teamName">Vs</span>
-              </div>
-            </ion-col>
-            <ion-col col-5 class="username-col margin_auto"
-              [ngClass]="{'tbd-text': !mat.homeusername || !mat.homeusername.trim()}" style="text-align: left;">
-              <div class="username-container">
-                <p class="teamName">{{mat.awayusername && mat.awayusername.trim() ? mat.awayusername : 'TBD'}}</p>
-              </div>
-            </ion-col>
-          </ion-row>
-          <ion-row *ngIf="isPublish" style="margin-top: -5px;">
-            <ion-col col-6>
-              <ion-row>
-                <div>
-                  <p class="username">{{mat.homeusername}}</p>
-                </div>
-              </ion-row>
-              <ion-row style="margin-top: 5px; margin-bottom: 4px;">
-                <div style="width: 100%; height: 1px; background-color: #ded8d8; margin-right: 0; margin-left: 0"></div>
-              </ion-row>
-              <ion-row>
-                <div>
-                  <p class="username">{{mat.awayusername}} <span style="padding-right: 2px;"> <ion-icon name="trophy"
-                        class="golden-trophy"></ion-icon></span></p>
-                </div>
-              </ion-row>
-            </ion-col>
-            <ion-col col-6 *ngIf="!isPending">
-              <ion-row>
-                <ion-col style="padding-top: 2px;">
-                  <span class="gapBetween">30</span>
-                  <span class="gapBetween"><strong>20</strong></span>
-                  <span class="gapBetween"><strong>70</strong></span>
-                  <span class="gapBetween">38</span>
-                  <span class="gapBetween">50</span>
-                </ion-col>
-              </ion-row>
-              <ion-row style="font-size: 12px; margin-top: -10px; opacity: 0.60;">
-                <ion-col>Pts</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col style="padding-top: 0px">
-                  <span class="gapBetween"><strong>22</strong></span>
-                  <span class="gapBetween">56</span>
-                  <span class="gapBetween">30</span>
-                  <span class="gapBetween"><strong>80</strong></span>
-                  <span class="gapBetween"><strong>16</strong></span>
-                </ion-col>
-              </ion-row>
-            </ion-col>
-            <ion-col col-6 *ngIf="isPending">
-              <div class="pendingStyle">Decision Pending...</div>
-            </ion-col>
-          </ion-row>
-          <ion-row style="margin-top: -10px; margin-bottom: -8px;">
-            <ion-col style="text-align: right;">
+    <div *ngIf="activeIndex == 1" class="matchCard">
+      <div class="modern-match-card" (click)="showMatchActionSheet(mat)" *ngFor="let mat of match">
+        <!-- Match Header -->
+        <div class="match-card-header">
+          <div class="match-date">
+            <ion-icon name="calendar" color="light"></ion-icon>
+            <span>{{mat.start_date}}</span>
+          </div>
+          <div class="match-title">
+            <h3>{{mat.match_title}}</h3>
+          </div>
+          <div class="match-round" *ngIf="mat.formatted_round">
+            <span class="round-badge">{{mat.formatted_round}}</span>
+          </div>
+        </div>
 
-              <p class="public-text">
-                <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.1em"
-                  [name]="mat.match_visibility==0?'ios-globe':'ios-lock-outline'">
-                </ion-icon>
-                {{mat.match_visibility == 0 ? 'Public' : 'Private'}}
-              </p>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
+        <!-- Match Content -->
+        <div class="match-card-content">
+          <!-- Pre-Match State -->
+          <div class="match-teams" *ngIf="!isPublish">
+            <div class="team-section home">
+              <div class="team-name" [ngClass]="{'tbd-text': !mat.homeusername || !mat.homeusername.trim()}">
+                {{mat.homeusername && mat.homeusername.trim() ? mat.homeusername : 'TBD'}}
+              </div>
+            </div>
+            <div class="vs-section">
+              <span class="vs-text">VS</span>
+            </div>
+            <div class="team-section away">
+              <div class="team-name" [ngClass]="{'tbd-text': !mat.awayusername || !mat.awayusername.trim()}">
+                {{mat.awayusername && mat.awayusername.trim() ? mat.awayusername : 'TBD'}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Post-Match State -->
+          <div class="match-result" *ngIf="isPublish">
+            <div class="result-teams">
+              <div class="team-result">
+                <span class="team-name">{{mat.homeusername}}</span>
+              </div>
+              <div class="result-divider"></div>
+              <div class="team-result winner">
+                <span class="team-name">{{mat.awayusername}}</span>
+                <ion-icon name="trophy" class="winner-trophy"></ion-icon>
+              </div>
+            </div>
+            
+            <div class="match-scores" *ngIf="!isPending">
+              <div class="scores-section">
+                <div class="score-row home">
+                  <span class="score-item">30</span>
+                  <span class="score-item highlight">20</span>
+                  <span class="score-item highlight">70</span>
+                  <span class="score-item">38</span>
+                  <span class="score-item">50</span>
+                </div>
+                <div class="score-label">Points</div>
+                <div class="score-row away">
+                  <span class="score-item highlight">22</span>
+                  <span class="score-item">56</span>
+                  <span class="score-item">30</span>
+                  <span class="score-item highlight">80</span>
+                  <span class="score-item highlight">16</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="pending-decision" *ngIf="isPending">
+              <ion-icon name="time" color="warning"></ion-icon>
+              <span>Decision Pending...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Match Footer -->
+        <div class="match-card-footer">
+          <div class="visibility-info">
+            <ion-icon [name]="mat.match_visibility==0?'globe':'lock-closed'" 
+                      [color]="mat.match_visibility==0?'success':'medium'"></ion-icon>
+            <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
+          </div>
+        </div>
+      </div>
     </div>
+    
   </div>
 </ion-content>
 

@@ -274,6 +274,10 @@ export class LeaguedetailsPage {
   };
 
   gotoLeagueMatchInfoPage(mat: LeagueMatch) {
+    // const match_data = {
+    //   ...mat
+    //   formatted_round: mat.formatted_round
+    // };
     this.navCtrl.push("LeagueMatchInfoPage", { "match": mat, "leagueId": this.individualLeague.id, "activityCode": this.individualLeague.activity.ActivityCode, "activityId": this.individualLeague.activity.Id, "existingteam": this.leagueStanding.map(league_team => league_team.parentclubteam) });
     // this.navCtrl.push("LeagueMatchInfoPage", { "leagueId": this.individualLeague.id, "activityId": this.individualLeague.activity.Id, "existingteam": this.partcipantData });
   }
@@ -645,11 +649,10 @@ export class LeaguedetailsPage {
     confirm.present();
   }
 
+  
   deleteLeague() {
-
     try {
       const removeLeague = gql`
-      
       mutation deleteLeague($leagueInput: String!){
         deleteLeague(leagueInput:$leagueInput)
       }

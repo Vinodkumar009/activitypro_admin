@@ -174,6 +174,12 @@ export class User {
   LastName: string;
   Gender: string;
   DOB: string;
+  IsChild:boolean;
+  ParentId:string;
+  EmailID:string;
+  PhoneNumber:string;
+  ParentEmailID:string;
+  ParentPhoneNumber:string;
   member_type: number;
   FirebaseKey: string;
   media_consent: boolean;

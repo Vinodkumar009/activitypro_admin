@@ -15,7 +15,8 @@ import { GetPlayerModel } from "../../team/models/team.model";
 import { GraphqlService } from "../../../../services/graphql.service";
 import gql from "graphql-tag";
 import { Role } from "../../team/team.model";
-import { error } from "console";
+import { ModuleTypeForEmail } from "../../mailtomemberbyadmin/mailtomemberbyadmin";
+
 /**
  * Generated class for the LeagueMatchInfoPage page.
  *
@@ -606,7 +607,76 @@ export class LeagueMatchInfoPage {
   }
 
 
+selectTeamForEmail(match:LeagueMatch) {
+    // const teams = [
+    //   {
+    //     name:'home_team_id',
+    //     label: match.homeusername,
+    //     type: 'radio',
+    //     value: match.home_team_id
+    //   },
+    //   {
+    //     name:'away_team_id',
+    //     label: match.awayusername,
+    //     type: 'radio',
+    //     value: match.away_team_id
+    //   }
+    // ];
+    
+    // const buttons = [
+    //   { text: 'Cancel', role: 'cancel' },
+    //   { text: 'OK', handler: (data) => { 
+    //     console.log('Selected teams:', data); 
+    //     this.gotoEmailPage(data)
+    //   } 
+    // }
+    // ];
+    
+    // this.commonService.presentMultiInputDynamicAlert(
+    //   'Select Team',
+    //   teams,
+    //   buttons
+    // );     
+    
+    this.gotoEmailPage();
 
+  }
+
+  gotoEmailPage() {
+    if (this.leagueMatchParticipantRes.length > 0) {
+      const member_list = this.leagueMatchParticipantRes.map((enrol_member,index) => {
+          return {
+              IsChild:enrol_member.user.IsChild ? true:false,
+              ParentId:enrol_member.user.IsChild ? enrol_member.user.ParentId:"",
+              MemberId:enrol_member.user.Id, 
+              MemberEmail:enrol_member.user.EmailID!="" && enrol_member.user.EmailID!="-" && enrol_member.user.EmailID!="n/a" ? enrol_member.user.EmailID:(enrol_member.user.IsChild ? enrol_member.user.ParentEmailID:""), 
+              MemberName: enrol_member.user.FirstName + " " + enrol_member.user.LastName
+          }
+      })
+      const league_team_info = {
+          module_booking_club_id:this.matchObj.club_id,
+          module_booking_club_name:this.matchObj.club_name,
+          // module_booking_coach_id:this.monthly_ses_dets.coaches[0].Id,
+          // module_booking_coach_name:this.monthly_ses_dets.coaches[0].first_name + " " + this.monthly_ses_dets.coaches[0].last_name,
+          module_id:this.matchObj.fixture_id,
+          module_booking_name:`${this.matchObj.league_name}(${this.matchObj.match_title})`,
+          module_booking_start_date: this.matchObj.start_date.split(" ")[1],
+          module_booking_end_date:this.matchObj.MatchEndDate.split(" ")[0],
+          module_booking_start_time:this.matchObj.start_date.split(" ")[2],
+          module_booking_end_time:this.matchObj.MatchEndDate.split(" ")[1],
+          module_booking_activity_id:this.activityId,
+          module_booking_activity_name:this.matchObj.activity_name,
+      }
+      const email_modal = {
+          module_info:league_team_info,
+          email_users:member_list,
+          type:ModuleTypeForEmail.LEAGUE_TEAM
+      }
+      this.navCtrl.push("MailToMemberByAdminPage", {email_modal});
+    } else {
+        this.commonService.toastMessage("No member(s) found in current session",2500,ToastMessageType.Error);
+    }
+  }
 
 
   showAvailableTeams(isHomeTeam: boolean): void {
