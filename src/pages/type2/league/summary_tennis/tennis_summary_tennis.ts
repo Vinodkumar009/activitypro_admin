@@ -906,12 +906,25 @@ export class TennisSummaryTennisPage {
     this.homeScore = data.homeSetsWon || '0';
     this.awayScore = data.awaySetsWon || '0';
 
+    // Determine loser ID based on winner
+    let loserId = '';
+    if (data.selectedWinner) {
+      const homeTeamId = this.getHomeTeamId();
+      const awayTeamId = this.getAwayTeamId();
+      loserId = data.selectedWinner === homeTeamId ? awayTeamId : homeTeamId;
+    }
+
     const result_input = {
       ...this.createBaseResultInput(),
       Tennis: {
         LEAGUE_FIXTURE_ID: this.getLeagueFixtureId(),
-        RESULT_STATUS: data.RESULT_STATUS || '',
-        WINNER_ID: data.WINNER_ID || '',
+        // RESULT_STATUS: data.RESULT_STATUS || '',
+        // WINNER_ID: data.WINNER_ID || '',
+        RESULT: {
+          WINNER_ID: data.selectedWinner || '',
+          LOSER_ID: loserId,
+          RESULT_STATUS: data.resultStatus || '0'
+        },
         HOME_TEAM: {
           NAME: this.getHomeTeamName(),
           TEAM_ID: this.getHomeTeamId(),

@@ -1367,6 +1367,7 @@ export class SummaryFootballPage implements AfterViewInit {
         "resultId": this.getLeagueMatchResultRes.Id,
         "activityCode": this.activityCode,
         "resultObject": this.result_json,
+        "getLeagueMatchResultRes": this.getLeagueMatchResultRes,
         "isLeague": this.isLeague
       });
 
@@ -1501,7 +1502,7 @@ export class SummaryFootballPage implements AfterViewInit {
       if (data.footballResultStats.WINNER_ID) {
         const homeTeamId = this.getHomeTeamId();
         const awayTeamId = this.getAwayTeamId();
-        loserId = data.footballResultStats === homeTeamId ? awayTeamId : homeTeamId;
+        loserId = data.footballResultStats.WINNER_ID === homeTeamId ? awayTeamId : homeTeamId;
       }
 
       // Extract footballResultStats with null checks

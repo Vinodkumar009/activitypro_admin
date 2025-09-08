@@ -14,14 +14,14 @@
     <ion-item>
       <ion-label>Status</ion-label>
       <ion-select [(ngModel)]="selectedResultStatus" (ionChange)="onStatusClick(selectedResultStatus)"
-        placeholder="Select Status">
+        placeholder="Select Status" [disabled]="!isEditable">
         <ion-option *ngFor="let status of resultStatusList" [value]="status">{{ status.status }}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="selectedResultStatus?.status?.toUpperCase() === 'WIN'">
       <ion-label>Winner</ion-label>
       <ion-select [(ngModel)]="selectedWinnerTeamId" (ionChange)="onWinnerTeamChange()"
-        placeholder="Select Winner Team">
+        placeholder="Select Winner Team" [disabled]="!isEditable">
         <ion-option *ngFor="let team of TEAMS" [value]="team?.parentclubteam?.id">{{team?.parentclubteam?.teamName}}
         </ion-option>
       </ion-select>
@@ -42,12 +42,12 @@
         <ion-item>
           <ion-label fixed style="flex: 1;">{{homeTeamName}}</ion-label>
           <ion-input class="input-40px" style="flex: 2; font-size: 30px !important; text-align: right !important;"
-            type="number" [(ngModel)]="homeTeamGoals" min="0" max="150" placeholder="0"></ion-input>
+            type="number" [(ngModel)]="homeTeamGoals" min="0" max="150" placeholder="0" [disabled]="!isEditable"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label fixed style="flex: 1;">{{awayTeamName}}</ion-label>
           <ion-input class="input-40px" style="flex: 2; font-size: 30px !important; text-align: right !important;"
-            type="number" [(ngModel)]="awayTeamGoals" min="0" max="150" placeholder="0"></ion-input>
+            type="number" [(ngModel)]="awayTeamGoals" min="0" max="150" placeholder="0" [disabled]="!isEditable"></ion-input>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -63,7 +63,7 @@
     <ion-card-content style="padding: 10px;">
       <ion-item no-lines>
         <ion-textarea [(ngModel)]="resultDescription" placeholder="Enter result description..." rows="3"
-          autosize="true">
+          autosize="true" [disabled]="!isEditable">
         </ion-textarea>
       </ion-item>
     </ion-card-content>
@@ -74,7 +74,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <button class="foobtn" ion-button block (click)="saveGoal()">Save</button>
+        <button class="foobtn" ion-button block (click)="saveGoal()" [disabled]="!isEditable">Save</button>
       </ion-col>
     </ion-row>
   </ion-grid>

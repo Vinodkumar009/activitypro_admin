@@ -85,6 +85,7 @@ export class ResultInputPage {
 
   // 📝 Result Description Properties
   resultDescription: string = '';
+  isEditable: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
     public storage: Storage, private httpService: HttpService, public sharedservice: SharedServices,
@@ -102,6 +103,9 @@ export class ResultInputPage {
     this.score = this.navParams.get("score");
     this.activityCode = this.navParams.get("activityCode");
     this.resultObject = this.navParams.get("resultObject");
+    
+    const getLeagueMatchResultRes = this.navParams.get('getLeagueMatchResultRes');
+    this.isEditable = !(getLeagueMatchResultRes && getLeagueMatchResultRes.data && getLeagueMatchResultRes.data.ResultStatus === 1);
 
     // Initialize parameters based on flow type
     if (this.isLeague) {
@@ -139,6 +143,11 @@ export class ResultInputPage {
 
     // Initialize form with existing result data if available
     this.initializeFormWithExistingData();
+    
+    // Set selected result status if available
+    if (this.resultObject && this.resultObject.RESULT && this.resultObject.RESULT.RESULT_STATUS) {
+      // Will be set after result status list is loaded
+    }
 
     // Initialize API input for result status
     this.initializeResultStatusInput();
@@ -194,6 +203,13 @@ export class ResultInputPage {
           if (res.data && Array.isArray(res.data)) {
             this.resultStatusList = res.data;
             console.log("Get_Result_Status_By_Activity RESPONSE", this.resultStatusList);
+            
+            // Preselect result status if available from existing data
+            if (this.resultObject && this.resultObject.RESULT && this.resultObject.RESULT.RESULT_STATUS) {
+              this.selectedResultStatus = this.resultStatusList.find(status => 
+                status.id.toString() === this.resultObject.RESULT.RESULT_STATUS.toString()
+              ) || null;
+            }
           } else {
             console.log("No result status data received");
             this.resultStatusList = [];
