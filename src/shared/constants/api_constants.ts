@@ -105,6 +105,7 @@ export const API = {
     // Get_League_Match_Participant: `league/GetLeagueMatchParticipant`,
     // Update_League_Match_Participantipation_Status: `league/UpdateLeagueMatchParticipantipationStatus`,
     GET_LEAGUE_OR_MATCH_TYPES: `league/getTypes`,
+    GET_LEAGUE_CATEGORIES:`league/getCategories`,
     Get_Round_Types: `league/getRoundTypes`,
     GENERATE_MATCHES: `league/generate-matches`,
     Get_League_Match_Result: `LeagueResult/getLeagueMatchResult`,

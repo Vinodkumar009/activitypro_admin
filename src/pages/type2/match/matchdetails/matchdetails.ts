@@ -340,7 +340,7 @@ export class MatchdetailsPage {
 
       this.teams = res.data.getTeamsByMatch;
       console.log(this.teams.length);
-      const participants_length = this.match.MatchType == 0 ? 1 : 2;
+      const participants_length = this.match.MatchType == 1 ? 1 : 2;
       this.teams = this.sortByTeamName(this.teams);
 
       if (this.teams.length > 0) {

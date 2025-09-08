@@ -38,9 +38,9 @@ export enum LeagueMatchActionType {
 }
  
 export enum MatchType {
-    SINGLES = 0,
-    DOUBLES = 1,
-    TEAM = 2,
+    SINGLES = 1,
+    DOUBLES = 2,
+    TEAM = 3,
 }
 
 export enum ActivityTypeEnum {

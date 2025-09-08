@@ -20,7 +20,7 @@
         <p class="largetext">
           <span>{{match.MatchTitle}}</span>
           <span>{{match.ActivityName}}</span>,
-          <span>{{match.MatchType==0?"Singles":"Doubles"}}</span>
+          <span>{{match.MatchType==1?"Singles":"Doubles"}}</span>
         </p>
 
         <p class="largetext" *ngIf="match.homeUserName || match.awayUserName">
