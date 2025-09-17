@@ -385,10 +385,11 @@ export class Dashboard {
       this.storage.get("coachDetails"),
       this.storage.get("activeBookingsCount"),
       this.storage.get("eventDetails"),
-      this.storage.get("loggedin_user")
+      this.storage.get("loggedin_user"),
+      this.storage.get("dashboardTheme")
     ])
     .then(([parentClub, sessionDetails, sessionEnrolDets, sclSessionEnrolDets, 
-           monthlySessionEnrolDets, memberDetails, coachDetails, activeBookings, eventDetails,loggedinuser]) => {
+           monthlySessionEnrolDets, memberDetails, coachDetails, activeBookings, eventDetails, loggedinuser, isDarkTheme]) => {
       
       if(loggedinuser){
         const loggedin_user_info = JSON.parse(loggedinuser);
@@ -441,6 +442,16 @@ export class Dashboard {
       // Handle event details
       if (eventDetails != null) {
         this.EventObj = eventDetails;
+      }
+      
+      // Handle theme preference
+      if (isDarkTheme !== null) {
+        this.isDarkTheme = isDarkTheme;
+        const dashboardElement = document.querySelector('dashboard-page');
+        if (dashboardElement && !this.isDarkTheme) {
+          dashboardElement.classList.add('light-theme');
+          document.body.classList.add('light-theme');
+        }
       }
     })
     .catch(error => {
@@ -1086,6 +1097,38 @@ export class Dashboard {
     }else{
       this.navCtrl.push(this.footermenu[index].Component);
     }
+  }
+
+  // Dashboard UI helper methods
+  isFacilityExpanded: boolean = false;
+  isDarkTheme: boolean = true;
+
+  toggleFacilityAccordion(): void {
+    this.isFacilityExpanded = !this.isFacilityExpanded;
+  }
+
+  toggleTheme(): void {
+    this.isDarkTheme = !this.isDarkTheme;
+    const dashboardElement = document.querySelector('dashboard-page');
+    if (dashboardElement) {
+      if (this.isDarkTheme) {
+        dashboardElement.classList.remove('light-theme');
+        document.body.classList.remove('light-theme');
+      } else {
+        dashboardElement.classList.add('light-theme');
+        document.body.classList.add('light-theme');
+      }
+    }
+    this.storage.set('dashboardTheme', this.isDarkTheme);
+  }
+
+
+
+  getSessionCountBg(count: number): string {
+    if (count <= 2) return 'count-low';
+    if (count <= 5) return 'count-medium';
+    if (count <= 10) return 'count-high';
+    return 'count-very-high';
   }
 
 }

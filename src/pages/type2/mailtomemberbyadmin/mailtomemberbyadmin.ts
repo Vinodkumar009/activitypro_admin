@@ -93,6 +93,7 @@ export class MailToMemberByAdminPage {
     //this.getEmailsForChilds();
     this.getParentclubDetails();
   }
+  
 
   //get parentclub setup
   getParentclubDetails() {
@@ -114,9 +115,33 @@ export class MailToMemberByAdminPage {
     })
   }
 
-  
+
+
+
   sendEmails() {
     try {
+      // Validate required fields
+      if (!this.parentClubDetails.ParentClubName || this.parentClubDetails.ParentClubName === "") {
+        this.commonService.toastMessage("Parent club name is required", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        return;
+      }
+      if (!this.parentClubDetails.ParentClubAdminEmailID || this.parentClubDetails.ParentClubAdminEmailID === "") {
+        this.commonService.toastMessage("Parent club admin email is required", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        return;
+      }
+      if (!this.emailObj.Subject.trim() || this.emailObj.Subject === "") {
+        this.commonService.toastMessage("Email subject is required", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        return;
+      }
+      if (!this.emailObj.Message.trim() || this.emailObj.Message === "") {
+        this.commonService.toastMessage("Email message is required", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        return;
+      }
+      if (this.module_obj.email_users.length == 0) {
+        this.commonService.toastMessage("No recipients found", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        return;
+      }
+
       const emailFormembers = {
         Members: [],
         ImagePath: this.parentClubDetails.ParentClubAppIconURL,
@@ -148,12 +173,12 @@ export class MailToMemberByAdminPage {
         //this.navCtrl.remove(this.navCtrl.getActive().index - 1, 2);
       },(err)=>{
         //this.commonService.hideLoader();
-        this.commonService.toastMessage("Email sent failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+        this.commonService.toastMessage(err.message || "Email sent failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
       });        
       
     } catch (ex) {
       console.log(JSON.stringify(ex));
-      this.commonService.toastMessage("Error in sending email", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      this.commonService.toastMessage(ex.message || "Error in sending email", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     }
 
   }

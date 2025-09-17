@@ -1,163 +1,1084 @@
 dashboard-page {
-    ion-slides {
-        height: auto;
-    }
-    // slides--2
-    .logo_center {
-        text-align: center;
-    }
-    .margin_auto{
-        margin:auto;
-    }
-    $user-icon-size: 44px;
-    .dashboard_user {
-        font-size: $user-icon-size; // color: $dashoboard-icon-color;
-        color: #2292bb !important;
-    }
-    .pendingpayment {
-        color: rgb(173, 161, 161);
-        font-size: 1.6rem;
-        margin: 26px 14px 9px !important;
-        float: left;
-    }
-    .cardpending {
-        margin-bottom: 10px;
-        border-radius: 12px;
-        background: #ffffff;
-        box-shadow: 0px 2px 8px -1px #b4b3b7;
-    }
-    .circle35 {
-        width: 44px;
-        background: #D3F8DD;
-        border-radius: 50%;
-        padding: 10px 2px 9px;
-        text-align: center;
-        height: 44px;
-        color: #4B6051;
-        font-size: 19px;
-        font-weight: 600;
-    }
-    .circle2r {
-        background: #FFEBEB;
-        width: 44px;
-        border-radius: 50%;
-        padding: 10px 2px 9px;
-        text-align: center;
-        height: 44px;
-        color: #FF6E6E;
-        font-size: 19px;
-        font-weight: 600;
-    }
-    .sessionrow {
-        padding: 0 0 6px 0;
-    }
-    .border_bottom{
-        border-bottom: 0.55px solid rgba(0, 0, 0, 0.30196078431372547);
-    }
-    .facilitycard{
-        border-radius: 12px;
-        background: #ffffff;
-        -webkit-box-shadow: 0px 2px 8px -1px #b4b3b7;
-        box-shadow: 0px 2px 8px -1px #b4b3b7;
-        .cardheader{
-            padding: 8px 16px;
-            border: 0.5px solid rgba(128, 128, 128, 0.2);
-        }
-        .name{
-            color: rgba(0,0,0,0.65);
-        }
-        .lightcolor{
-            color: rgba(0,0,0,0.5);
-        }
-        .family{
-            color: #4B6051;
-        font-weight: 600;
-        }
-        .row1{
-            line-height: 1;
-        }
-        .align-text-left{
-            text-align: left !important;  
+    // Theme Variables
+    &.light-theme {
+        .modern-dashboard {
+            background: #f8fafc;
+            min-height: 100vh;
         }
         
+        .modern-navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e2e8f0;
+            
+            .navbar-title {
+                color: #1e293b;
+            }
+            
+            .menu-btn, .more-btn, .theme-btn {
+                color: #64748b !important;
+                background: transparent !important;
+                border: none !important;
+                
+                &:hover {
+                    color: #1e293b !important;
+                }
+            }
+            
+            .theme-btn {
+                background: #e2e8f0 !important;
+                border-radius: 8px !important;
+                margin-right: 8px !important;
+                padding: 8px !important;
+                min-width: 40px !important;
+                height: 40px !important;
+                
+                ion-icon {
+                    font-size: 20px !important;
+                    color: #1e293b !important;
+                }
+            }
+        }
+        
+        .modern-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            
+            .club-branding {
+                .club-avatar {
+                    border: 2px solid #e2e8f0;
+                }
+                
+                .club-info {
+                    .welcome-title {
+                        color: #1e293b;
+                    }
+                    
+                    .welcome-subtitle {
+                        color: #64748b;
+                    }
+                }
+            }
+            
+            .theme-toggle {
+                background: #e2e8f0;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                
+                &:hover {
+                    background: #cbd5e1;
+                }
+                
+                ion-icon {
+                    color: #1e293b;
+                }
+            }
+        }
+        
+        .modern-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            
+            &:hover {
+                box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                border-color: #cbd5e1;
+            }
+            
+            .card-header {
+                border-bottom: 1px solid #e2e8f0;
+                
+                .card-info {
+                    .card-title {
+                        color: #1e293b !important;
+                        font-size: 18px !important;
+                        font-weight: 600 !important;
+                    }
+                    
+                    .card-subtitle {
+                        color: #64748b !important;
+                    }
+                }
+                
+                .arrow-icon {
+                    color: #94a3b8;
+                }
+            }
+            
+            .card-body {
+                color: #1e293b;
+                
+                .venue-label, .venue-value, .metric-value, .metric-label,
+                .session-name, .facility-name, .coach-name, .club-title {
+                    color: #1e293b !important;
+                }
+                
+                .session-metrics .metric, .facility-meta span, .club-metric {
+                    color: white !important;
+                }
+                
+                .chevron-icon {
+                    color: #64748b !important;
+                }
+            }
+        }
     }
-    .circle2b {
-        background: #E5F4FF;
-        width: 44px;
-        border-radius: 50%;
-        padding: 10px 2px 9px;
-        text-align: center;
-        height: 44px;
-        color: #43A2E7;
-        font-size: 19px;
-        font-weight: 600;
+    
+    // Dark Theme Dashboard Styles
+    .modern-dashboard {
+        background: #0f172a;
+        min-height: 100vh;
     }
-    .circle {
-        width: 100px;
-        border: 2px solid #E3544F;
-        border-radius: 50%;
-        padding: 35px 4px;
-        text-align: center;
-        height: 100px;
-        font-size: 16px;
-        color: #000000;
+    
+    // Dark Theme Navbar
+    .modern-navbar {
+        background: #1e293b;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid #334155;
+        
+        .navbar-title {
+            font-weight: 600;
+            color: #f1f5f9;
+            font-size: 18px;
+        }
+        
+        .menu-btn, .more-btn, .theme-btn {
+            color: #cbd5e1 !important;
+            background: transparent !important;
+            border: none !important;
+            
+            &:hover {
+                color: #f1f5f9 !important;
+            }
+        }
+        
+        .theme-btn {
+            background: #475569 !important;
+            border-radius: 8px !important;
+            margin-right: 8px !important;
+            padding: 8px !important;
+            min-width: 40px !important;
+            height: 40px !important;
+            
+            ion-icon {
+                font-size: 20px !important;
+                color: #f1f5f9 !important;
+            }
+        }
     }
-    .school {
-        color: #000000bd;
-        font-weight: 500;
-        float: left;
-        padding: 17px 22px 0px 0px;
-        text-transform: capitalize;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        width: 99%;
-        display: block;
+    
+    // Dark Theme Header
+    .modern-header {
+        background: #1e293b;
+        padding: 24px 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #334155;
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .club-branding {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            
+            .club-avatar {
+                width: 56px;
+                height: 56px;
+                border-radius: 12px;
+                border: 2px solid #475569;
+                object-fit: cover;
+            }
+            
+            .club-info {
+                .welcome-title {
+                    font-size: 24px;
+                    font-weight: 700;
+                    color: #f1f5f9;
+                    margin: 0;
+                    line-height: 1.2;
+                }
+                
+                .welcome-subtitle {
+                    font-size: 14px;
+                    color: #94a3b8;
+                    margin: 4px 0 0 0;
+                }
+            }
+        }
+        
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            background: #475569;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            
+            &:hover {
+                background: #64748b;
+                transform: scale(1.1);
+            }
+            
+            ion-icon {
+                font-size: 24px;
+                color: #f1f5f9;
+            }
+        }
+    }
+    
+    // Dashboard Container
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 50px 20px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        
+        @media (min-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    // Dark Theme Card Base
+    .modern-card {
+        background: #1e293b;
+        border-radius: 16px;
+        border: 1px solid #334155;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+        cursor: pointer;
         overflow: hidden;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+            border-color: #475569;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #334155;
+            
+            .card-icon-wrapper {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 16px;
+                
+                .card-icon {
+                    font-size: 20px;
+                    color: #ffffff;
+                }
+                
+                &.payment-bg, &.coaches-bg {
+                    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                }
+                
+                &.events-bg, &.booking-bg {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                }
+                
+                &.sessions-bg, &.members-bg {
+                    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+                }
+                
+                &.school-bg, &.camp-bg {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                }
+            }
+            
+            .card-info {
+                flex: 1;
+                
+                .card-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #f1f5f9;
+                    margin: 0;
+                    line-height: 1.3;
+                }
+                
+                .card-subtitle {
+                    font-size: 15px;
+                    color: #94a3b8;
+                    margin: 2px 0 0 0;
+                }
+            }
+            
+            .arrow-icon {
+                font-size: 16px;
+                color: #64748b;
+                margin-left: 8px;
+            }
+        }
+        
+        .card-body {
+            padding: 20px;
+            
+            .venue-label, .venue-value, .metric-value, .metric-label,
+            .session-name, .facility-name, .coach-name, .club-title {
+                color: #f1f5f9 !important;
+            }
+        }
+        
+        .card-header .card-info .card-title {
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            color: #f1f5f9 !important;
+        }
     }
-    .transaction {
-        color: #00000080;
-        float: left;
+    
+    // Members Card Specific Title Fix
+    .members-card {
+        .card-header .card-info .card-title {
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            color: #f1f5f9 !important;
+            margin: 0 !important;
+            line-height: 1.3 !important;
+        }
     }
-    .circlegreen {
-        //width: 130px;
-        border: 1px solid #16de4e;
-        border-radius: 10px;
-        padding: 18px 18px;
-        text-align: center;
-        /* height: 80px; */
-        font-size: 21px;
-        background: rgb(220,245,232);
-        color: #338249;
-        margin: auto;
+    // Dark Theme Payment Card Styles
+    .payment-card {
+        .amount-display {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
+            
+            .currency-symbol {
+                font-size: 18px;
+                opacity: 0.9;
+                margin-right: 4px;
+            }
+            
+            .main-amount {
+                font-size: 32px;
+                font-weight: 700;
+            }
+        }
+        
+        .venue-list {
+            .venue-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 14px 0;
+                border-bottom: 1px solid #334155;
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+                
+                .venue-label {
+                    font-weight: 500;
+                    color: #cbd5e1;
+                    font-size: 16px;
+                }
+                
+                .venue-value {
+                    font-weight: 600;
+                    color: #f1f5f9;
+                    font-size: 16px;
+                }
+            }
+        }
     }
-    .pvenue {
-        //margin: 0px 3px 4px -1px;
-        color: rgba(0, 0, 0, 0.5294117647058824);
+    
+    // Dark Theme Events Card Styles
+    .events-card {
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+            
+            .metric-item {
+                text-align: center;
+                padding: 18px;
+                background: #334155;
+                border-radius: 12px;
+                border: 1px solid #475569;
+                
+                &.revenue-metric {
+                    grid-column: span 2;
+                    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                    color: white;
+                    border: none;
+                    box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+                    
+                    .metric-value, .metric-label {
+                        color: white;
+                    }
+                }
+                
+                .metric-value {
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #f1f5f9;
+                    margin-bottom: 6px;
+                    
+                    .currency-small {
+                        font-size: 16px;
+                        opacity: 0.8;
+                    }
+                }
+                
+                .metric-label {
+                    font-size: 12px;
+                    color: #94a3b8;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    font-weight: 500;
+                }
+            }
+        }
     }
-    // .dashboard_col_item_block {
-    //     padding: 0px 5px 0px 5px;
-    //     text-align: center;
-    //     margin-bottom: 8px;
-    // }
-    .indivi {
-        color: #000000a3;
-        padding: 6px 0;
-        font-size: 16px;
-        text-align-last: center;
+    // Dark Theme Sessions Card Styles
+    .sessions-card {
+        .session-row {
+            display: flex;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            
+            &:hover {
+                background: #334155;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            
+            &:last-child {
+                border-bottom: none;
+            }
+            
+            .session-indicator {
+                width: 52px;
+                height: 52px;
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                font-weight: 700;
+                color: white;
+                margin-right: 18px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                
+                &.term-indicator {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                }
+                
+                &.monthly-indicator {
+                    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+                }
+                
+                &.school-indicator {
+                    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                }
+                
+                &.camp-indicator {
+                    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                    color: white;
+                }
+                
+                // Dynamic session count backgrounds
+                &.count-low {
+                    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+                }
+                
+                &.count-medium {
+                    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+                }
+                
+                &.count-high {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+                }
+                
+                &.count-very-high {
+                    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+                }
+            }
+            
+            .session-details {
+                flex: 1;
+                
+                .session-name {
+                    margin: 0 0 8px 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #f1f5f9;
+                }
+                
+                .session-metrics {
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    
+                    .metric {
+                        font-size: 13px;
+                        color: #cbd5e1;
+                        background: #334155;
+                        padding: 6px 12px;
+                        border-radius: 8px;
+                        border: 1px solid #475569;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                        
+                        ion-icon {
+                            font-size: 14px;
+                            opacity: 0.8;
+                        }
+                        
+                        &:first-child {
+                            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+                            color: white;
+                            border: none;
+                            
+                            ion-icon {
+                                color: white;
+                                opacity: 0.9;
+                            }
+                        }
+                        
+                        &:last-child {
+                            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                            color: white;
+                            border: none;
+                            
+                            ion-icon {
+                                color: white;
+                                opacity: 0.9;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            .chevron-icon {
+                font-size: 18px;
+                color: #64748b;
+                margin-left: 8px;
+            }
+        }
     }
-    .gradientcircle {
-        width: 62px;
-        height: 62px;
-        border-radius: 50%;
-        background: white;
-        margin-left: auto;
-        margin: auto;
+    // Dark Theme Booking Card Styles
+    .booking-card {
+        .booking-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            
+            .booking-metric {
+                text-align: center;
+                padding: 20px;
+                background: #334155;
+                border-radius: 12px;
+                border: 1px solid #475569;
+                
+                .metric-value {
+                    font-size: 26px;
+                    font-weight: 700;
+                    color: #f1f5f9 !important;
+                    margin-bottom: 6px;
+                }
+                
+                .metric-label {
+                    font-size: 12px;
+                    color: #94a3b8 !important;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    font-weight: 500;
+                }
+            }
+        }
     }
-    .coachname {
-        // float: left;
-        padding: 2px 2px 2px 4px;
-        color: #000000d6;
-        text-transform: capitalize !important;
+    
+    // Facility Accordion Styles
+    .facility-accordion {
+        margin-top: 20px;
+        
+        .accordion-card {
+            .accordion-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+                background: #334155;
+                border-bottom: 1px solid #475569;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-radius: 16px 16px 0 0;
+                
+                &:hover {
+                    background: #475569;
+                }
+                
+                .accordion-title {
+                    h3 {
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: #f1f5f9;
+                        margin: 0;
+                    }
+                }
+                
+                .accordion-icon {
+                    font-size: 18px;
+                    color: #94a3b8;
+                    transition: transform 0.2s ease;
+                }
+            }
+            
+            .accordion-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                background: #1e293b;
+                border-radius: 0 0 16px 16px;
+                padding-bottom: 0;
+                
+                &.expanded {
+                    max-height: 400px;
+                    overflow-y: auto;
+                    padding-bottom: 0;
+                }
+                
+                .facility-item {
+                    margin: 8px;
+                    padding: 12px;
+                    border: 1px solid #475569;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    background: #334155;
+                    
+                    &:hover {
+                        background: #475569;
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    }
+                    
+                    &:first-child {
+                        margin-top: 16px;
+                    }
+                    
+                    &:last-child {
+                        margin-bottom: 16px;
+                    }
+                    
+                    .facility-details {
+                        display: block;
+                        
+                        .facility-info {
+                            margin-bottom: 16px;
+                            
+                            .facility-name {
+                                font-weight: 600;
+                                color: #f1f5f9 !important;
+                                margin: 0 0 12px 0;
+                                font-size: 18px;
+                            }
+                            
+                            .facility-meta {
+                                display: flex;
+                                gap: 12px;
+                                flex-wrap: wrap;
+                                
+                                .time-range {
+                                    font-size: 13px;
+                                    color: #60a5fa;
+                                    background: #1e3a8a;
+                                    padding: 6px 12px;
+                                    border-radius: 8px;
+                                    border: 1px solid #3b82f6;
+                                    font-weight: 500;
+                                }
+                                
+                                .booking-date {
+                                    font-size: 13px;
+                                    color: #94a3b8;
+                                    background: #374151;
+                                    padding: 6px 12px;
+                                    border-radius: 8px;
+                                    font-weight: 500;
+                                }
+                            }
+                        }
+                        
+                        .facility-court {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 2px 0;
+                            border-top: 1px solid #334155;
+                            
+                            .court-name {
+                                font-size: 16px;
+                                color: #cbd5e1 !important;
+                                font-weight: 500;
+                            }
+                            
+                            .slot-price {
+                                font-weight: 600;
+                                color: white;
+                                font-size: 16px;
+                                background: #10b981;
+                                padding: 8px 14px;
+                                border-radius: 8px;
+                            }
+                        }
+                    }
+                    
+                    .partner-note {
+                        margin-top: 16px;
+                        padding-top: 16px;
+                        border-top: 1px solid #334155;
+                        
+                        .note-text {
+                            color: #94a3b8;
+                            font-size: 13px;
+                            font-style: italic;
+                            background: #374151;
+                            padding: 8px 12px;
+                            border-radius: 8px;
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Dark Theme School & Camp Payment Card Styles
+    .school-payment-card, .camp-payment-card {
+        .total-revenue {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(168, 237, 234, 0.3);
+            
+            .currency-symbol {
+                font-size: 18px;
+                color: #1f2937;
+                margin-right: 4px;
+            }
+            
+            .revenue-amount {
+                font-size: 32px;
+                font-weight: 700;
+                color: #1f2937;
+            }
+        }
+        
+        .school-breakdown, .camp-breakdown {
+            .school-row, .camp-row {
+                display: flex;
+                align-items: center;
+                padding: 16px 0;
+                border-bottom: 1px solid #334155;
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+                
+                .school-avatar, .camp-avatar {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 12px;
+                    background: #334155;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 16px;
+                    border: 1px solid #475569;
+                    
+                    .school-icon, .camp-icon {
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+                
+                .school-details, .camp-details {
+                    flex: 1;
+                    
+                    .school-name, .camp-name {
+                        font-weight: 600;
+                        color: #f1f5f9;
+                        margin-bottom: 4px;
+                        font-size: 14px;
+                    }
+                    
+                    .transaction-info {
+                        font-size: 12px;
+                        color: #60a5fa;
+                        background: #1e3a8a;
+                        padding: 2px 8px;
+                        border-radius: 6px;
+                        display: inline-block;
+                        border: 1px solid #3b82f6;
+                    }
+                }
+                
+                .school-revenue, .camp-revenue {
+                    font-weight: 600;
+                    color: #10b981;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    // Dark Theme Members Card Styles
+    .members-card {
+        .member-overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+            
+            .member-metric {
+                display: flex;
+                align-items: center;
+                padding: 12px;
+                border-radius: 12px;
+                background: #334155;
+                border: 1px solid #475569;
+                transition: all 0.2s ease;
+                min-width: 0;
+                overflow: hidden;
+                
+                &:hover {
+                    background: #475569;
+                }
+                
+                &.individual-metric {
+                    .metric-indicator {
+                        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                    }
+                }
+                
+                &.family-metric {
+                    .metric-indicator {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    }
+                }
+                
+                .metric-indicator {
+                    min-width: 50px;
+                    height: 45px;
+                    padding: 0 12px;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: white;
+                    margin-right: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    flex-shrink: 0;
+                    white-space: nowrap;
+                }
+                
+                .metric-details {
+                    flex: 1;
+                    
+                    .metric-value {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #f1f5f9 !important;
+                        margin-bottom: 6px;
+                    }
+                    
+                    .metric-label {
+                        font-size: 11px;
+                        color: white;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        font-weight: 600;
+                        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        display: inline-block;
+                        margin-top: 4px;
+                    }
+                }
+                
+                &.family-metric .metric-details .metric-label {
+                    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                }
+            }
+        }
+        
+        .club-details {
+            .club-row {
+                margin-bottom: 16px;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                
+                .club-summary {
+                    padding: 16px;
+                    background: #334155;
+                    border-radius: 12px;
+                    border: 1px solid #475569;
+                    
+                    .club-title {
+                        font-weight: 600;
+                        color: #f1f5f9 !important;
+                        margin-bottom: 8px;
+                        font-size: 15px;
+                    }
+                    
+                    .club-metrics {
+                        display: flex;
+                        gap: 12px;
+                        
+                        .club-metric {
+                            font-size: 12px;
+                            padding: 4px 8px;
+                            border-radius: 6px;
+                            color: white;
+                            font-weight: 500;
+                            border: none;
+                            
+                            &:first-child {
+                                background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+                            }
+                            
+                            &:last-child {
+                                background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Dark Theme Coaches Card Styles
+    .coaches-card {
+        .coach-listing {
+            .coach-row {
+                display: flex;
+                align-items: center;
+                padding: 16px;
+                border-bottom: 1px solid #334155;
+                border-radius: 12px;
+                margin-bottom: 12px;
+                background: #334155;
+                border: 1px solid #475569;
+                transition: all 0.2s ease;
+                
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    background: #475569;
+                }
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+                
+
+                
+                .coach-profile {
+                    width: 52px;
+                    height: 52px;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    margin-right: 16px;
+                    border: 2px solid #64748b;
+                    
+                    .coach-image {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+                
+                .coach-data {
+                    flex: 1;
+                    
+                    .coach-name {
+                        font-weight: 600;
+                        margin-bottom: 8px;
+                        font-size: 15px;
+                        text-transform: capitalize;
+                        color: #f1f5f9 !important;
+                    }
+                    
+                    .coach-performance {
+                        display: flex;
+                        gap: 16px;
+                        
+                        .performance-item {
+                            text-align: center;
+                            
+                            .performance-value {
+                                display: block;
+                                font-size: 16px;
+                                font-weight: 700;
+                                margin-bottom: 2px;
+                                color: #f1f5f9 !important;
+                            }
+                            
+                            .performance-label {
+                                font-size: 10px;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                                font-weight: 500;
+                                color: white;
+                                background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+                                padding: 2px 6px;
+                                border-radius: 4px;
+                                display: inline-block;
+                                margin-top: 2px;
+                            }
+                            
+                            &:nth-child(2) .performance-label {
+                                background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                            }
+                            
+                            &:nth-child(3) .performance-label {
+                                background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     .memclubwise {
         font-size: 18px;
@@ -343,12 +1264,10 @@ dashboard-page {
     .oddbox {
         border-bottom: 1px solid #e8e3e3;
     }
-    //slides--1
     .scroll-content {
-        background-image: none !important;
+        background: #0f172a !important;
         padding: 0px !important;
-        background-color: #f7f7f7;
-        margin-bottom: 60px;
+        margin-bottom: 80px;
     }
     // .footer_bottom_pad{
     //     padding: 0px 0px 10px 0px !important;
@@ -670,41 +1589,122 @@ dashboard-page {
         /* line-height: 44; */
         margin: auto;
     }
-    .dashboard_empty{
-        top: 16%;
-        position: absolute;
-        width: 100%;
+    // Dark Theme Empty State Styles
+    .modern-empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 50vh;
+        padding: 40px 20px;
+        text-align: center;
+        
+        .empty-illustration {
+            margin-bottom: 32px;
+            
+            .empty-image {
+                width: 200px;
+                height: auto;
+                opacity: 0.8;
+                filter: brightness(0.9);
+            }
+        }
+        
+        .empty-text {
+            .empty-title {
+                font-size: 24px;
+                font-weight: 700;
+                color: #f1f5f9;
+                margin-bottom: 12px;
+            }
+            
+            .empty-description {
+                font-size: 16px;
+                color: #94a3b8;
+                margin: 0;
+                max-width: 400px;
+            }
+        }
     }
+    
     .bottom_10{
         bottom: 10% !important;
     }
 
-    .parentimg {
-        width: 30%;
-        margin-top: 2%;
-    }
-
-    .footer_div{
-        position: absolute;
-        background: #fff;
-        //border-top: 1px solid rgba(128, 128, 128, 0.23);
-        padding: 0px 0px;
-        bottom:0px;
-        width:100%;
-        z-index:999;
-        box-shadow: 0px 0 3px rgba(0, 0, 0, 0.2);
-        ion-col{
-            margin:0px;
+    // Dark Theme Footer Styles
+    .footer_div {
+        position: fixed;
+        background: #1e293b;
+        border-top: 1px solid #334155;
+        padding: 0px 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 999;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        
+        ion-col {
+            margin: 0;
             text-align: center;
-            font-size: 13px;
-            p{
-                color: rgba(0, 0, 0, 0.65) !important;
-                margin: 0px 0px;
+            font-size: 14px;
+            padding: 8px 12px;
+            
+            p {
+                color: #94a3b8 !important;
+                margin: 2px 0 0 0;
+                font-weight: 500;
+                font-size: 14px;
             }
         }
-        ion-icon{
-            font-size: 30px;
-            color: #2292bb !important;
+        
+        ion-icon {
+            font-size: 28px;
+            color: #60a5fa !important;
+            transition: all 0.2s ease;
+            
+            &:active {
+                transform: scale(0.95);
+                color: #3b82f6 !important;
+            }
+        }
+    }
+    
+    // Responsive Design
+    @media (min-width: 768px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .coach-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .coach-card {
+            flex-direction: column;
+            text-align: center;
+            
+            .coach-stats {
+                justify-content: center;
+            }
+        }
+        
+        .facility-accordion {
+            .facility-item {
+                .facility-details {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 8px;
+                }
+            }
         }
     }
 }

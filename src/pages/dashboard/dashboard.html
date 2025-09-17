@@ -1,441 +1,407 @@
 <ion-header *ngIf="isAppAdminLoggedin">
-    <ion-navbar>
-        <button ion-button icon-only menuToggle>
+    <ion-navbar class="modern-navbar">
+        <button ion-button icon-only menuToggle class="menu-btn">
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title class="logo_center">
+        <ion-title class="navbar-title">
             {{LangObj.dashboard_Dashboard}}
         </ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="presentPopover($event)" class="pop-over">
+            <button ion-button icon-only (click)="presentPopover($event)" class="more-btn">
                 <ion-icon name="more"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
-  </ion-header>
-  <!-- [ngStyle]="{'background-image': 'url('+backUrl+')'}" -->
-  <ion-content [style.top.px]="!isAppAdminLoggedin ? 0 : 55"  [style.paddingTop.px]="!isAppAdminLoggedin ? 30 : 0">
-    <ion-refresher slot="fixed" style="background: #f7f7f7 !important;" pullFactor="0.5"
-        (ionRefresh)="doRefresh($event)">
+</ion-header>
+
+<ion-content class="modern-dashboard" [style.top.px]="!isAppAdminLoggedin ? 0 : 55" [style.paddingTop.px]="!isAppAdminLoggedin ? 30 : 0">
+    <ion-refresher slot="fixed" pullFactor="0.5" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <div class="fixed" [style.paddingTop.px]="!isAppAdminLoggedin ? 30 : 0">
-        <div *ngIf="parentClubInfo != undefined" text-center>
-            <img [src]="parentClubInfo.ParentClubAppIconURL" class="parentimg">
-        </div>
-        <ion-row style="margin-top: -30px;" (click)="goToPage('Payment')" *ngIf="(dashboradView.PendingPaymentAdmin == undefined || dashboradView.PendingPaymentAdmin == 1) && (showPendingPayments)">
-            <!-- <p class="pendingpayment">{{LangObj.dashboard_PendingPayment}}</p> -->
-            <div *ngIf="sessionDetails.VenueDetails && sessionDetails.VenueDetails.length > 0">
-                <p class="pendingpayment">Term Session Pending Payments</p>
-                <ion-card class="cardpending">
-                    <ion-card-content>
-                        <ion-row>
-                            <ion-col col-5 style="margin: auto;">
-                                <div class="circle">
-                                    <span
-                                        *ngIf="userData!= undefined">{{userData.Currency}}</span>{{sessionDetails.TotalAmountDue | number : '1.2-2'}}
-                                </div>
-                            </ion-col>
-                            <ion-col col-1 class="mar_auto">
-                                <div class="all border-left-style"></div>
-                            </ion-col>
-                            <ion-col style="padding: 0 0 0 37px;text-align: left; margin-top: auto; margin-bottom: auto;"
-                                col-6>
-                                <div *ngFor="let club of sessionDetails.VenueDetails">
-                                    <p class="pvenue" *ngIf="club.Total">{{club.ClubName}}:
-                                        <span *ngIf="userData!= undefined"
-                                            style="color: #000000cf;">{{userData.Currency}}{{club.Total | number : '1.2-2'}}</span>
-                                    </p>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-card-content>
-                </ion-card>
+    
+    <!-- Modern Header -->
+    <div class="modern-header" [style.paddingTop.px]="!isAppAdminLoggedin ? 30 : 0">
+        <div *ngIf="parentClubInfo != undefined" class="header-content">
+            <div class="club-branding">
+                <img [src]="parentClubInfo.ParentClubAppIconURL" class="club-avatar">
+                <div class="club-info">
+                    <h1 class="welcome-title">Dashboard</h1>
+                    <p class="welcome-subtitle">Overview of your activities</p>
+                </div>
             </div>
-            
-        </ion-row>
-        <ion-row *ngIf="EventObj.TotalEvents > 0">
-            <p class="pendingpayment">Event Summary</p>
-            <ion-card class="cardpending" (click)="GotoEvents()">
-                <ion-card-content style="padding: 13px 10px !important;">
-                    <ion-row class="sessionrow" style="border-bottom:none !important;">
-                        <ion-col col-3 style="display: flex" no-padding>
-                            <div class="event_circle">
-                                <span>{{EventObj.TotalEvents}}</span>
-                                <p>Events</p>
-                            </div>
-                            <div class="border-left"></div>
-                        </ion-col>
-                        <ion-col col-3 style="display: flex" no-padding>
-                            <div class="event_circle">
-                                <span>{{EventObj.TicketsSold}}</span>
-                                <p>Bookings</p>
-                            </div>
-                            <div class="border-left"></div>
-                        </ion-col>
-                        <ion-col col-6>
-                            <div class="event_circle_rev">
-                                <span *ngIf="userData!= undefined">{{userData.Currency}}</span>
-                                <span style="margin-left:-2px">{{EventObj.TotRevenue}}</span>
-                            </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-        </ion-row>
-  
-        <ion-row
-            *ngIf="(dashboradView.SessionCountAdmin == undefined || dashboradView.SessionCountAdmin == 1) && (sessionEnrolDetails.Total_Sessions > 0 || monthlySessionEnrolDetails.Total_Sessions > 0 || sclSessionEnrolDetails.Total_Sessions > 0 || holidayCampDetails.holidayCamps.length > 0)">
-            <p class="pendingpayment">{{LangObj.dashboard_SesandEnrols}}</p>
-  
-            <ion-card class="cardpending">
-                <ion-card-content>
-                    <!-- <ion-row class="sessionrow" [ngClass]="{'border_bottom':holidayCampDetails.holidayCamps.length > 0 || schoolSessionDetails.schoolSessions.length > 0}" *ngIf="sessionDetails.totalSessions > 0"
-                        (click)="goToPage('Type2ManageSession')">
-                        <ion-col col-2>
-                            <div class="circle35">{{sessionDetails.totalSessions}}</div>
-  
-                        </ion-col>
-                        <ion-col col-4>
-                            <p class="list3">{{LangObj.dashboard_RegSes}}</p>
-                        </ion-col>
-                        <ion-col col-2 style="padding: 13px 9px 0px 0px; text-align: right;">
-                            <p class="size15" (ionChange)="roundOff($event)">{{sessionDetails.totalHours}}</p>
-                            <p class="size15">{{sessionDetails.totalMemberEnrolled}}</p>
-                        </ion-col>
-                        <ion-col col-4 style="padding: 13px 0px 0px 0px;  color: #00000080;">
-                            <p class="size15">{{LangObj.dashboard_WeeklyHrs}}</p>
-                            <p class="size15">{{LangObj.dashboard_Enrolments}}</p>
-                        </ion-col>
-                    </ion-row> -->
-                    <!-- term session enrol info stats -->
-                    <ion-row class="sessionrow" [ngClass]="{'border_bottom':sessionEnrolDetails.Total_Sessions > 0}" *ngIf="sessionEnrolDetails.Total_Sessions > 0"
-                        (click)="goToPage('Type2ManageSession')">
-                        <ion-col col-2 class="margin_auto">
-                            <div class="circle35">{{sessionEnrolDetails.Total_Sessions}}</div>
-                        </ion-col>
-                        <ion-col col-4 class="margin_auto">
-                            <p class="list3">{{LangObj.dashboard_RegSes}}</p>
-                        </ion-col>
-                        <ion-col col-2 style="padding: 13px 9px 0px 0px; text-align: right;">
-                            <p *ngIf="sessionEnrolDetails.Total_Hours" class="size15" (ionChange)="roundOff($event)">{{sessionEnrolDetails.Total_Hours | number : '1.2-2'}}</p>
-                            <p class="size15">{{sessionEnrolDetails.Total_Members}}</p>
-                        </ion-col>
-                        <ion-col col-4 style="padding: 13px 0px 0px 0px;  color: #00000080;">
-                            <p *ngIf="sessionEnrolDetails.Total_Hours" class="size15">{{LangObj.dashboard_WeeklyHrs}}</p>
-                            <p class="size15">{{LangObj.dashboard_Enrolments}}</p>
-                        </ion-col>
-                    </ion-row>
-
-                    <!-- monthly session enrol info stats -->
-                    <ion-row class="sessionrow" [ngClass]="{'border_bottom':monthlySessionEnrolDetails.Total_Sessions > 0 }" *ngIf="monthlySessionEnrolDetails.Total_Sessions > 0"
-                        (click)="goToPage('Type2ManageSession')">
-                        <ion-col col-2 class="margin_auto">
-                            <p class="circle2r">{{monthlySessionEnrolDetails.Total_Sessions}}</p>
-                        </ion-col>
-                        <ion-col col-4 class="margin_auto">
-                            <p class="list3">Monthly Sessions</p>
-                        </ion-col>
-                        <ion-col col-2 style="padding: 13px 9px 0px 0px; text-align: right;">
-                            <p class="size15">{{monthlySessionEnrolDetails.Total_Hours | number : '1.2-2'}}</p>
-                            <p class="size15">{{monthlySessionEnrolDetails.Total_Members}}</p>
-                        </ion-col>
-                        <ion-col col-4 style="padding: 13px 0px 0px 0px; color: rgba(0, 0, 0, 0.5294117647058824);">
-                            <p>{{LangObj.dashboard_WeeklyHrs}}</p>
-                            <p>{{LangObj.dashboard_Enrolments}}</p>
-                        </ion-col>
-                    </ion-row>
-
-                    <!-- school session enrol info stats -->
-                    <ion-row class="sessionrow" [ngClass]="{'border_bottom':sclSessionEnrolDetails.Total_Sessions > 0 }" *ngIf="sclSessionEnrolDetails.Total_Sessions > 0"
-                        (click)="goToPage('Type2SchoolSessionList')">
-                        <ion-col col-2 class="margin_auto">
-                            <p class="circle2r">{{sclSessionEnrolDetails.Total_Sessions}}</p>
-                        </ion-col>
-                        <ion-col col-4 class="margin_auto">
-                            <p class="list3">{{LangObj.dashboard_SchoolSns}}</p>
-                        </ion-col>
-                        <ion-col col-2 style="padding: 13px 9px 0px 0px; text-align: right;">
-                            <p class="size15">{{sclSessionEnrolDetails.Total_Hours | number : '1.2-2'}}</p>
-                            <p class="size15">{{sclSessionEnrolDetails.Total_Members}}</p>
-                        </ion-col>
-                        <ion-col col-4 style="padding: 13px 0px 0px 0px; color: rgba(0, 0, 0, 0.5294117647058824);">
-                            <p>{{LangObj.dashboard_WeeklyHrs}}</p>
-                            <p>{{LangObj.dashboard_Enrolments}}</p>
-                        </ion-col>
-                    </ion-row>
-
-                    <!-- holidaycamp enrol info stats -->
-                    <ion-row (click)="goToPage('Type2HolidayCamp')" *ngIf="campEnrolDetails.Total_Sessions > 0">
-                        <ion-col col-2 class="margin_auto">
-                            <p class="circle2b">{{campEnrolDetails.Total_Sessions.length}}</p>
-                        </ion-col>
-                        <ion-col col-4 class="margin_auto">
-                            <p class="list3">{{LangObj.dashboard_HolidayCamps}}</p>
-                        </ion-col>
-                        <ion-col col-2 style="padding: 13px 9px 0px 0px; text-align: right;">
-                            <p class="size15">{{campEnrolDetails.Total_Hours | number : '1.2-2'}}</p>
-                            <p class="size15">{{campEnrolDetails.Total_Members}}</p>
-                        </ion-col>
-                        <ion-col col-4 style="padding: 13px 0px 0px 0px;  color: rgba(0, 0, 0, 0.5294117647058824);">
-                            <p>{{LangObj.dashboard_WeeklyHrs}}</p>
-                            <p>{{LangObj.dashboard_Enrolments}}</p>
-                        </ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-        </ion-row>
-  
-        <ion-row *ngIf="bookingInfo && type">
-            <p class="pendingpayment">Facility Booking</p>
-            <ion-card class="facilitycard" (click)="GotoBooking()">
-                <ion-card-content style="padding: 13px 10px !important;">
-                    <ion-row class="sessionrow" style="border-bottom:none !important;">
-                        <ion-col col-6 style="display: flex" no-padding>
-                            <div class="event_circle">
-                                <span>{{bookingInfo.totalbook}}</span>
-                                <p>Total Bookings</p>
-                            </div>
-                            <div class="border-left"></div>
-                        </ion-col>
-                        <ion-col col-6 style="display: flex" no-padding>
-                            <div class="event_circle">
-                                <span>{{bookingInfo.todaycount}}</span>
-                                <p>Today's Bookings</p>
-                            </div>
-                            <!-- <div class="border-left"></div> -->
-                        </ion-col>
-                       
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>   
-        </ion-row>
-  
-        <ion-row *ngIf="bookingInfo.slotListing.length > 0 && type"> 
-  
-                  <ion-card *ngFor="let slot of bookingInfo.slotListing;let i = index" class="facilitycard" (click)="gotoBookings(i,slot)">
-                    <ion-card-header class="cardheader">
-                      <ion-row >
-                        <ion-col col-10 class="align-text-left">
-                          <span class="name">{{slot.name}}</span>
-                        </ion-col>
-                        <ion-col col-2 style="text-align: right">
-                          <span class="family">{{slot.slot_start_time}}</span>
-                        </ion-col>
-                      </ion-row>
-                    </ion-card-header>
-                    <ion-card-content style="color: #c5b495">
-                      <ion-row class="row1">
-                        <ion-col col-7 class="align-text-left">
-                           {{slot.slot_start_time}} - {{slot.slot_end_time}}
-                        </ion-col>
-                        <ion-col col-5 style="text-align: right">
-                            {{getTime(slot.booking_date)}}
-                        </ion-col>
-                      </ion-row>
-                      <ion-row class="row1"> 
-                        <ion-col col-6 class="align-text-left lightcolor">
-                            {{slot.courtname}}
-                        </ion-col>
-                        <ion-col *ngIf="userData.Currency!=undefined" col-6 text-right>
-                          {{userData.Currency}}{{slot.price | number : '1.2-2'}}
-                      </ion-col>
-                      </ion-row>
-                      <ion-row style="border-top: 1px solid rgba(0, 0, 0, 0.04);" *ngIf="slot.partnerAddedText">
-                        <ion-col style="
-                                        color: rgba(0,0,0,0.65);" col-12 class="align-text-left">
-                          <span>{{slot.partnerAddedText}}</span>
-                        </ion-col>
-                      </ion-row>
-                    </ion-card-content>
-            
-                  </ion-card>
-            
-        
-        </ion-row>
-        
-        <ion-row *ngIf="dashboradView.SessionCount && schoolSessionDetails.totalPaidAmount > 0 && showPendingPayments"
-            (click)="goToPage('SchoolpaymentreportPage')">
-            <p class="pendingpayment">{{LangObj.dashboard_SclPaymenSum}}</p>
-  
-            <ion-card class="cardpending">
-                <ion-card-content style="padding: 13px 3px 13px 3px;">
-                    <ion-row style="    padding-left: 40%;">
-                        <div class="circlegreen">
-                            <span
-                                *ngIf="userData!= undefined">{{userData.Currency}}{{schoolSessionDetails.totalPaidAmount | number: '1.2-2'}}</span>
-  
+            <div class="theme-toggle" (click)="toggleTheme()">
+                <ion-icon [name]="isDarkTheme ? 'sunny' : 'moon'"></ion-icon>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modern Dashboard Cards -->
+    <div class="dashboard-container">
+        <!-- Pending Payments Card -->
+        <div class="modern-card payment-card" (click)="goToPage('Payment')" *ngIf="(dashboradView.PendingPaymentAdmin == undefined || dashboradView.PendingPaymentAdmin == 1) && (showPendingPayments) && sessionDetails.VenueDetails && sessionDetails.VenueDetails.length > 0">
+            <div class="card-header">
+                <div class="card-icon-wrapper payment-bg">
+                    <ion-icon name="card" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Pending Payments</h3>
+                    <p class="card-subtitle">Term Session Payments</p>
+                </div>
+                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+            </div>
+            <div class="card-body">
+                <div class="amount-display">
+                    <span class="currency-symbol" *ngIf="userData!= undefined">{{userData.Currency}}</span>
+                    <span class="main-amount">{{sessionDetails.TotalAmountDue | number : '1.2-2'}}</span>
+                </div>
+                <div class="venue-list">
+                    <div class="venue-row" *ngFor="let club of sessionDetails.VenueDetails">
+                        <span class="venue-label" *ngIf="club.Total">{{club.ClubName}}</span>
+                        <span class="venue-value" *ngIf="userData!= undefined && club.Total">{{userData.Currency}}{{club.Total | number : '1.2-2'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Events Summary Card -->
+        <div class="modern-card events-card" (click)="GotoEvents()" *ngIf="EventObj.TotalEvents > 0">
+            <div class="card-header">
+                <div class="card-icon-wrapper events-bg">
+                    <ion-icon name="calendar" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Events Summary</h3>
+                    <p class="card-subtitle">Active events overview</p>
+                </div>
+                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+            </div>
+            <div class="card-body">
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div class="metric-value">{{EventObj.TotalEvents}}</div>
+                        <div class="metric-label">Events</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">{{EventObj.TicketsSold}}</div>
+                        <div class="metric-label">Bookings</div>
+                    </div>
+                    <div class="metric-item revenue-metric">
+                        <div class="metric-value">
+                            <span *ngIf="userData!= undefined" class="currency-small">{{userData.Currency}}</span>{{EventObj.TotRevenue}}
                         </div>
+                        <div class="metric-label">Revenue</div>
+                    </div>
+                </div>
+            </div>
+        </div>
   
-                    </ion-row>
-                    <ion-row class="" *ngFor="let school of schoolSessionDetails.schoolSessions">
-                        <ion-col col-3>
-                            <p class="schoolimg">
-                                <img class="imgstyle" src="assets/imgs/school.svg">
-                            </p>
-  
-  
-                        </ion-col>
-                        <ion-col col-6 style="padding: 4px 16px 0px 14px;">
-                            <p class="school">{{school.SchoolName}}</p>
-                            <p class="transaction"><span style="color: blue;">{{school.TransactionCount}}</span>
-                                transaction
-                            </p>
-  
-                        </ion-col>
-                        <ion-col col-3 style="padding: 22px 23px 10px 0px;">
-                            <p>
-                                <span style="color:green !important ;"
-                                    *ngIf="userData!= undefined">{{userData.Currency}}{{school.TotalPaidAmount | number: '1.2-2'}}</span>                               
-                            </p>
-                            <!-- <p style="color:green !important ;font-weight: 500;" *ngIf="userData!= undefined">
-                                {{userData.Currency}}{{school.TotalPaidAmount | number}}</p> -->
-                        </ion-col>
-  
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-        </ion-row>
-        <ion-row *ngIf="dashboradView.SessionCount && holidayCampDetails.totalPaidAmount > 0 && showPendingPayments"
-            (click)="goToPage('HolidaycamppaymentreportPage')">
-            <p class="pendingpayment">{{LangObj.dashboard_HolPaymentSum}}</p>
-  
-            <ion-card class="cardpending">
-                <ion-card-content style="padding: 13px 3px 13px 3px;">
-                    <ion-row>
-                        <div class="circlegreen" style="margin:auto;">
-                            <span
-                                *ngIf="userData!= undefined">{{userData.Currency}}{{holidayCampDetails.totalPaidAmount | number: '1.2-2'}}</span>
+        <!-- Sessions & Enrollments Card -->
+        <div class="modern-card sessions-card" *ngIf="(dashboradView.SessionCountAdmin == undefined || dashboradView.SessionCountAdmin == 1) && (sessionEnrolDetails.Total_Sessions > 0 || monthlySessionEnrolDetails.Total_Sessions > 0 || sclSessionEnrolDetails.Total_Sessions > 0 || holidayCampDetails.holidayCamps.length > 0)">
+            <div class="card-header">
+                <div class="card-icon-wrapper sessions-bg">
+                    <ion-icon name="people" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Sessions & Enrollments</h3>
+                    <p class="card-subtitle">Session overview</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Term Sessions -->
+                <div class="session-row" *ngIf="sessionEnrolDetails.Total_Sessions > 0" (click)="goToPage('Type2ManageSession')">
+                    <div class="session-indicator term-indicator" [ngClass]="getSessionCountBg(sessionEnrolDetails.Total_Sessions)">{{sessionEnrolDetails.Total_Sessions}}</div>
+                    <div class="session-details">
+                        <h4 class="session-name">{{LangObj.dashboard_RegSes}}</h4>
+                        <div class="session-metrics">
+                            <span class="metric" *ngIf="sessionEnrolDetails.Total_Hours && sessionEnrolDetails.Total_Hours != '0'">
+                                <ion-icon name="time"></ion-icon>
+                                {{sessionEnrolDetails.Total_Hours | number : '1.1-1'}}h weekly
+                            </span>
+                            <span class="metric">
+                                <ion-icon name="people"></ion-icon>
+                                {{sessionEnrolDetails.Total_Members}} enrolled
+                            </span>
                         </div>
+                    </div>
+                    <ion-icon name="chevron-forward" class="chevron-icon"></ion-icon>
+                </div>
+                
+                <!-- Monthly Sessions -->
+                <div class="session-row" *ngIf="monthlySessionEnrolDetails.Total_Sessions > 0" (click)="goToPage('Type2ManageSession')">
+                    <div class="session-indicator monthly-indicator" [ngClass]="getSessionCountBg(monthlySessionEnrolDetails.Total_Sessions)">{{monthlySessionEnrolDetails.Total_Sessions}}</div>
+                    <div class="session-details">
+                        <h4 class="session-name">Monthly Sessions</h4>
+                        <div class="session-metrics">
+                            <span class="metric" *ngIf="monthlySessionEnrolDetails.Total_Hours && monthlySessionEnrolDetails.Total_Hours != '0'">
+                                <ion-icon name="time"></ion-icon>
+                                {{monthlySessionEnrolDetails.Total_Hours | number : '1.1-1'}}h weekly
+                            </span>
+                            <span class="metric">
+                                <ion-icon name="people"></ion-icon>
+                                {{monthlySessionEnrolDetails.Total_Members}} enrolled
+                            </span>
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-forward" class="chevron-icon"></ion-icon>
+                </div>
+                
+                <!-- School Sessions -->
+                <div class="session-row" *ngIf="sclSessionEnrolDetails.Total_Sessions > 0" (click)="goToPage('Type2SchoolSessionList')">
+                    <div class="session-indicator school-indicator" [ngClass]="getSessionCountBg(sclSessionEnrolDetails.Total_Sessions)">{{sclSessionEnrolDetails.Total_Sessions}}</div>
+                    <div class="session-details">
+                        <h4 class="session-name">{{LangObj.dashboard_SchoolSns}}</h4>
+                        <div class="session-metrics">
+                            <span class="metric" *ngIf="sclSessionEnrolDetails.Total_Hours && sclSessionEnrolDetails.Total_Hours != '0'">
+                                <ion-icon name="time"></ion-icon>
+                                {{sclSessionEnrolDetails.Total_Hours | number : '1.1-1'}}h weekly
+                            </span>
+                            <span class="metric">
+                                <ion-icon name="people"></ion-icon>
+                                {{sclSessionEnrolDetails.Total_Members}} enrolled
+                            </span>
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-forward" class="chevron-icon"></ion-icon>
+                </div>
+                
+                <!-- Holiday Camps -->
+                <div class="session-row" *ngIf="campEnrolDetails.Total_Sessions > 0" (click)="goToPage('Type2HolidayCamp')">
+                    <div class="session-indicator camp-indicator" [ngClass]="getSessionCountBg(campEnrolDetails.Total_Sessions)">{{campEnrolDetails.Total_Sessions}}</div>
+                    <div class="session-details">
+                        <h4 class="session-name">{{LangObj.dashboard_HolidayCamps}}</h4>
+                        <div class="session-metrics">
+                            <span class="metric" *ngIf="campEnrolDetails.Total_Hours && campEnrolDetails.Total_Hours != '0'">
+                                <ion-icon name="time"></ion-icon>
+                                {{campEnrolDetails.Total_Hours | number : '1.1-1'}}h total
+                            </span>
+                            <span class="metric">
+                                <ion-icon name="people"></ion-icon>
+                                {{campEnrolDetails.Total_Members}} enrolled
+                            </span>
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-forward" class="chevron-icon"></ion-icon>
+                </div>
+            </div>
+        </div>
   
-                    </ion-row>
-                    <ion-row class="" *ngFor="let holidayCamp of holidayCampDetails.holidayCamps">
-                        <ion-col col-3>
-                            <p class="cupimg">
-                                <img style="width: 44px; height: 44px;" class="imgstyle" src="assets/imgs/cup.png">
-                            </p>
+        <!-- Facility Booking Card -->
+        <div class="modern-card booking-card" (click)="GotoBooking()" *ngIf="bookingInfo && type">
+            <div class="card-header">
+                <div class="card-icon-wrapper booking-bg">
+                    <ion-icon name="business" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Facility Booking</h3>
+                    <p class="card-subtitle">Court bookings overview</p>
+                </div>
+                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+            </div>
+            <div class="card-body">
+                <div class="booking-metrics">
+                    <div class="booking-metric">
+                        <div class="metric-value">{{bookingInfo.totalbook}}</div>
+                        <div class="metric-label">Total Bookings</div>
+                    </div>
+                    <div class="booking-metric">
+                        <div class="metric-value">{{bookingInfo.todaycount}}</div>
+                        <div class="metric-label">Today's Bookings</div>
+                    </div>
+                </div>
+            </div>
+        </div>
   
-                        </ion-col>
-                        <ion-col col-6 style="padding: 4px 16px 0px 14px;">
-                            <p class="school">{{holidayCamp.CampName}}</p>
-                            <p class="transaction"><span style="color: blue;">{{holidayCamp.TransactionCount}}</span>
-                                transactions
-                            </p>
-  
-                        </ion-col>
-                        <ion-col col-3 style="padding: 22px 23px 10px 0px;">
-  
-                            <p>
-                                <span style="color:green !important ;"
-                                    *ngIf="userData!= undefined">{{userData.Currency}}{{holidayCamp.TotalCampPaidAmount | number: '1.2-2'}}</span>
-                                
-                            </p>
-                        </ion-col>
-  
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-        </ion-row>
-  
-        <ion-row *ngIf="dashboradView.Family" (click)="goToPage('Type2Member')">
-            <p class="pendingpayment">{{LangObj.MemDets}}</p>
-  
-            <ion-card class="cardpending">
-                <ion-card-content style="padding: 13px 3px 13px 3px;">
-                    <ion-row>
-                        <ion-col col-6>
-                            <p class="indivimem45">{{memberDetails.member_count}}</p>
-                            <p class="indivi">{{LangObj.dashboard_individual}}</p>
-                        </ion-col>
-                        <ion-col col-6>
-                            <p style="color: #3eaa9c !important;" class="indivimem45">
-                                {{memberDetails.child_count}}</p>
-                            <p class="indivi">{{LangObj.dashboard_Family}}</p>
-                        </ion-col>
-  
-                    </ion-row>
-                    <ion-row class="">
-                        <ion-col col-6 *ngFor="let clubDet of memberDetails.club">
-                            <div class="memclub" *ngIf="clubDet.member_count > 0 || clubDet.child_count > 0">
-                                <p class="memclubwise">{{clubDet.clubname}}</p>
-                                <p class="pmemclubwise"><span
-                                        style="color: #9b713f;font-size: 17px;">{{clubDet.member_count}}
-                                    </span>{{LangObj.dashboard_individuals}}</p>
-                                <p class="pmemclubwise"><span
-                                        style="color: #9b713f;font-size: 17px;">{{clubDet.child_count}}
-                                    </span>{{LangObj.dashboard_Family}}</p>
-                            </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-        </ion-row>
-        <ion-row *ngIf="dashboradView.Coach" (click)="goToPage('Type2Schedule')">
-            <p class="pendingpayment">{{LangObj.dashboard_CoachSummary}}</p>
-            <ion-card class="cardpending">
-                <ion-card-content style="padding: 13px 3px 13px 3px;">
-                    <ion-row style=" padding: 0 0 0px 10px;" *ngFor="let coach of coachDetails">
-                        <ion-col col-4 style="text-align: -webkit-center;">
-                            <div [class.coachimg]="coach.profile_image == '' || coach.profile_image == null">
-                                <div class="gradientcircle">
-                                    <img style="margin-left: auto;
-                                                margin-right: auto;
-                                                margin-top: 0px;
-                                                width: 52px;
-                                                height: 52px;
-                                                border-radius: 50%;
-                                                " [src]="coach.profile_image"
-                                        *ngIf="coach.profile_image != '' && coach.profile_image != null">
-  
-                                    <img style="margin-left: auto;
-                                                     margin-right: auto;
-                                                     margin-top: 3px;width: 52px;" src="assets/images/dummyCoach.jpg"
-                                        *ngIf="coach.profile_image == '' || !coach.profile_image">
+        <!-- Booking Slots Accordion -->
+        <div class="facility-accordion" *ngIf="bookingInfo.slotListing.length > 0 && type">
+            <div class="modern-card accordion-card">
+                <div class="accordion-header" (click)="toggleFacilityAccordion()">
+                    <div class="accordion-title">
+                        <h3>Facility Bookings ({{bookingInfo.slotListing.length}})</h3>
+                    </div>
+                    <ion-icon [name]="isFacilityExpanded ? 'arrow-down' : 'arrow-forward'" class="accordion-icon"></ion-icon>
+                </div>
+                <div class="accordion-content" [ngClass]="{'expanded': isFacilityExpanded}">
+                    <div class="facility-item" *ngFor="let slot of bookingInfo.slotListing" (click)="gotoBookings(0,slot)">
+                        <div class="facility-details">
+                            <div class="facility-info">
+                                <h4 class="facility-name">{{slot.name}}</h4>
+                                <div class="facility-meta">
+                                    <span class="time-range">{{slot.slot_start_time}} - {{slot.slot_end_time}}</span>
+                                    <span class="booking-date">{{getTime(slot.booking_date)}}</span>
                                 </div>
                             </div>
-                            <p class="coachname">{{coach.first_name}} {{coach.last_name}}</p>
-                        </ion-col>
-                        <ion-col col-1 class="mar_auto">
-                            <div style=" border-right:1px solid #60f5f4; height: 64px;bottom: 29px;left: 124%;"
-                                class="all border-left-style"></div>
-                        </ion-col>
-                        <ion-col col-3 style="padding-top: 4%; text-align: right;">
+                            <div class="facility-court">
+                                <span class="court-name">{{slot.courtname}}</span>
+                                <span class="slot-price" *ngIf="userData.Currency!=undefined">{{userData.Currency}}{{slot.price | number : '1.2-2'}}</span>
+                            </div>
+                        </div>
+                        <div class="partner-note" *ngIf="slot.partnerAddedText">
+                            <span class="note-text">{{slot.partnerAddedText}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- School Payment Summary -->
+        <div class="modern-card school-payment-card" (click)="goToPage('SchoolpaymentreportPage')" *ngIf="dashboradView.SessionCount && schoolSessionDetails.totalPaidAmount > 0 && showPendingPayments">
+            <div class="card-header">
+                <div class="card-icon-wrapper school-bg">
+                    <ion-icon name="school" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">{{LangObj.dashboard_SclPaymenSum}}</h3>
+                    <p class="card-subtitle">School payment overview</p>
+                </div>
+                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+            </div>
+            <div class="card-body">
+                <div class="total-revenue">
+                    <span class="currency-symbol" *ngIf="userData!= undefined">{{userData.Currency}}</span>
+                    <span class="revenue-amount">{{schoolSessionDetails.totalPaidAmount | number: '1.2-2'}}</span>
+                </div>
+                <div class="school-breakdown">
+                    <div class="school-row" *ngFor="let school of schoolSessionDetails.schoolSessions">
+                        <div class="school-avatar">
+                            <img src="assets/imgs/school.svg" alt="School" class="school-icon">
+                        </div>
+                        <div class="school-details">
+                            <div class="school-name">{{school.SchoolName}}</div>
+                            <div class="transaction-info">{{school.TransactionCount}} transactions</div>
+                        </div>
+                        <div class="school-revenue" *ngIf="userData!= undefined">
+                            {{userData.Currency}}{{school.TotalPaidAmount | number: '1.2-2'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Holiday Camp Payment Summary -->
+        <div class="modern-card camp-payment-card" (click)="goToPage('HolidaycamppaymentreportPage')" *ngIf="dashboradView.SessionCount && holidayCampDetails.totalPaidAmount > 0 && showPendingPayments">
+            <div class="card-header">
+                <div class="card-icon-wrapper camp-bg">
+                    <ion-icon name="trophy" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">{{LangObj.dashboard_HolPaymentSum}}</h3>
+                    <p class="card-subtitle">Holiday camp payments</p>
+                </div>
+                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+            </div>
+            <div class="card-body">
+                <div class="total-revenue">
+                    <span class="currency-symbol" *ngIf="userData!= undefined">{{userData.Currency}}</span>
+                    <span class="revenue-amount">{{holidayCampDetails.totalPaidAmount | number: '1.2-2'}}</span>
+                </div>
+                <div class="camp-breakdown">
+                    <div class="camp-row" *ngFor="let holidayCamp of holidayCampDetails.holidayCamps">
+                        <div class="camp-avatar">
+                            <img src="assets/imgs/cup.png" alt="Camp" class="camp-icon">
+                        </div>
+                        <div class="camp-details">
+                            <div class="camp-name">{{holidayCamp.CampName}}</div>
+                            <div class="transaction-info">{{holidayCamp.TransactionCount}} transactions</div>
+                        </div>
+                        <div class="camp-revenue" *ngIf="userData!= undefined">
+                            {{userData.Currency}}{{holidayCamp.TotalCampPaidAmount | number: '1.2-2'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
   
-                            <p style="font-size: 15px; margin: 0 !important"><span
-                                    style="font-size: 18px; color: #1b1b5d; ">{{coach.sessions}} </span></p>
-                            <p style="font-size: 15px;  margin: 0 !important "><span
-                                    style="font-size: 18px; color: #1b1b5d;  ">{{coach.total_hours | number : '1.2-2'}}</span></p>
-                            <p style="font-size: 15px;  margin: 0 !important"><span
-                                    style="font-size: 18px; color: #1b1b5d; ">{{coach.total_enrol_members}} </span>
-                            </p>
-  
-                        </ion-col>
-                        <ion-col col-4 style="padding-top: 5%; text-align: left;">
-                            <p style="font-size: 15px;margin-bottom: 4px;
-                            margin-top: 1px;">
-                                {{LangObj.dashboard_Sessions}}</p>
-                            <p style="font-size: 15px; "> {{LangObj.dashboard_hours}}</p>
-                            <p style="font-size: 15px; margin-top: 4px;">
-                                {{LangObj.dashboard_Members}}</p>
-  
-                        </ion-col>
-  
-                    </ion-row>
-  
-                </ion-card-content>
-            </ion-card>
-        </ion-row>
+        <!-- Member Details Card -->
+        <div class="modern-card members-card" (click)="goToPage('Type2Member')" *ngIf="dashboradView.Family">
+            <div class="card-header">
+                <div class="card-icon-wrapper members-bg">
+                    <ion-icon name="contacts" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <!-- <h3 class="card-title">{{LangObj.MemDets}}</h3> -->
+                     <h3 class="card-title">Member Summary</h3>
+                    <p class="card-subtitle">Member reg venue summary</p>
+                </div>
+                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+            </div>
+            <div class="card-body">
+                <div class="member-overview">
+                    <div class="member-metric individual-metric">
+                        <div class="metric-indicator">{{memberDetails.member_count}}</div>
+                        <div class="metric-details">
+                            <div class="metric-label">{{LangObj.dashboard_individual}}</div>
+                        </div>
+                    </div>
+                    <div class="member-metric family-metric">
+                        <div class="metric-indicator">{{memberDetails.child_count}}</div>
+                        <div class="metric-details">
+                            <div class="metric-label">{{LangObj.dashboard_Family}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="club-details">
+                    <div class="club-row" *ngFor="let clubDet of memberDetails.club">
+                        <div class="club-summary" *ngIf="clubDet.member_count > 0 || clubDet.child_count > 0">
+                            <div class="club-title">{{clubDet.clubname}}</div>
+                            <div class="club-metrics">
+                                <span class="club-metric">{{clubDet.member_count}} {{LangObj.dashboard_individuals}}</span>
+                                <span class="club-metric">{{clubDet.child_count}} {{LangObj.dashboard_Family}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Coach Summary Card -->
+        <div class="modern-card coaches-card" (click)="goToPage('Type2Schedule')" *ngIf="dashboradView.Coach">
+            <div class="card-header">
+                <div class="card-icon-wrapper coaches-bg">
+                    <ion-icon name="person" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">{{LangObj.dashboard_CoachSummary}} ({{coachDetails.length}})</h3>
+                    <p class="card-subtitle">Coach performance overview</p>
+                </div>
+                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+            </div>
+            <div class="card-body">
+                <div class="coach-listing">
+                    <div class="coach-row" *ngFor="let coach of coachDetails; let i = index">
+                        <div class="coach-profile">
+                            <img [src]="coach.profile_image" *ngIf="coach.profile_image != '' && coach.profile_image != null" alt="Coach" class="coach-image">
+                            <img src="assets/images/dummyCoach.jpg" *ngIf="coach.profile_image == '' || !coach.profile_image" alt="Coach" class="coach-image">
+                        </div>
+                        <div class="coach-data">
+                            <div class="coach-name">{{coach.first_name}} {{coach.last_name}}</div>
+                            <div class="coach-performance">
+                                <div class="performance-item">
+                                    <span class="performance-value">{{coach.sessions}}</span>
+                                    <span class="performance-label">{{LangObj.dashboard_Sessions}}</span>
+                                </div>
+                                <div class="performance-item">
+                                    <span class="performance-value">{{coach.total_hours | number : '1.2-2'}}</span>
+                                    <span class="performance-label">{{LangObj.dashboard_hours}}</span>
+                                </div>
+                                <div class="performance-item">
+                                    <span class="performance-value">{{coach.total_enrol_members}}</span>
+                                    <span class="performance-label">{{LangObj.dashboard_Members}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  
-    <ion-row
-        *ngIf="(!this.dashboradView.SessionCount) && (!this.dashboradView.Coach) && (!this.dashboradView.Family) && (this.EventObj.TotalEvents == 0) && (Events.length > 0)"
-        class="dashboard_empty">
-        <ion-col col-12 text-center>
-            <img
-                src="https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FAPAdminEmptyDashboard.svg?alt=media&token=36c01632-6ff0-4e29-aaf3-2e54ffd4a4d7">
-            <p>Let's start setting up your app!</p>
-        </ion-col>
-    </ion-row>
+    
+    <!-- Modern Empty State -->
+    <div class="modern-empty-state" *ngIf="(!this.dashboradView.SessionCount) && (!this.dashboradView.Coach) && (!this.dashboradView.Family) && (this.EventObj.TotalEvents == 0) && (Events.length > 0)">
+        <div class="empty-illustration">
+            <img src="https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FAPAdminEmptyDashboard.svg?alt=media&token=36c01632-6ff0-4e29-aaf3-2e54ffd4a4d7" alt="Empty Dashboard" class="empty-image">
+        </div>
+        <div class="empty-text">
+            <h2 class="empty-title">Let's start setting up your app!</h2>
+            <p class="empty-description">Add some content to see your dashboard come to life</p>
+        </div>
+    </div>
   
     
   
