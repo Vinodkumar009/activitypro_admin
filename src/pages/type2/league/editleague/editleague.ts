@@ -463,7 +463,7 @@ export class EditleaguePage {
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error);
       return false;
     } else if (this.league.league_type!= 3 && this.league.is_paid && (parseFloat(this.league.member_price) <= 0.00 || this.league.member_price == '')) {
-      let message = "Member fee should be greater than non-member fee";
+      let message = "Enter member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error);
       return false;
     } 

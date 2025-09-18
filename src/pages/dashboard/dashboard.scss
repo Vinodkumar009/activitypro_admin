@@ -264,11 +264,7 @@ dashboard-page {
         cursor: pointer;
         overflow: hidden;
         
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-            border-color: #475569;
-        }
+
         
         .card-header {
             display: flex;
@@ -468,11 +464,7 @@ dashboard-page {
             transition: all 0.2s ease;
             border-radius: 8px;
             
-            &:hover {
-                background: #334155;
-                padding-left: 12px;
-                padding-right: 12px;
-            }
+
             
             &:last-child {
                 border-bottom: none;
@@ -638,9 +630,7 @@ dashboard-page {
                 transition: all 0.2s ease;
                 border-radius: 16px 16px 0 0;
                 
-                &:hover {
-                    background: #475569;
-                }
+
                 
                 .accordion-title {
                     h3 {
@@ -681,11 +671,7 @@ dashboard-page {
                     transition: all 0.2s ease;
                     background: #334155;
                     
-                    &:hover {
-                        background: #475569;
-                        transform: translateY(-2px);
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                    }
+
                     
                     &:first-child {
                         margin-top: 16px;
@@ -867,6 +853,7 @@ dashboard-page {
             
             .member-metric {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 padding: 12px;
                 border-radius: 12px;
@@ -875,10 +862,6 @@ dashboard-page {
                 transition: all 0.2s ease;
                 min-width: 0;
                 overflow: hidden;
-                
-                &:hover {
-                    background: #475569;
-                }
                 
                 &.individual-metric {
                     .metric-indicator {
@@ -903,7 +886,7 @@ dashboard-page {
                     font-size: 14px;
                     font-weight: 700;
                     color: white;
-                    margin-right: 8px;
+                    margin-bottom: 8px;
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
                     flex-shrink: 0;
                     white-space: nowrap;
@@ -942,12 +925,12 @@ dashboard-page {
         }
         
         .club-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            
             .club-row {
-                margin-bottom: 16px;
-                
-                &:last-child {
-                    margin-bottom: 0;
-                }
+                margin-bottom: 0;
                 
                 .club-summary {
                     padding: 16px;
@@ -1001,11 +984,7 @@ dashboard-page {
                 border: 1px solid #475569;
                 transition: all 0.2s ease;
                 
-                &:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-                    background: #475569;
-                }
+
                 
                 &:last-child {
                     border-bottom: none;

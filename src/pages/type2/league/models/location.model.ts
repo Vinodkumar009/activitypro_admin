@@ -52,6 +52,11 @@ export class LeagueMatch {
     member_fees:number;
     non_member_fees:number;
     league_type: number;
+    is_home_team_winner: boolean;
+    is_away_team_winner: boolean;
+    result_status_text: boolean;
+    result_id:string;
+    ResultStatus:number
 }
 
 export class MatchEditInput {

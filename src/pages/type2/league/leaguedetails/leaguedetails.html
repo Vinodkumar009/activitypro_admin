@@ -237,6 +237,11 @@
           <div class="match-round" *ngIf="mat.formatted_round">
             <span class="round-badge">{{mat.formatted_round}}</span>
           </div>
+          <div class="payment-type">
+            <span class="payment-badge" [ngClass]="mat.payment_type == 1 ? 'paid' : 'free'">
+              {{mat.payment_type == 1 ? 'Paid' : 'Free'}}
+            </span>
+          </div>
         </div>
 
         <!-- Match Content -->
@@ -246,6 +251,7 @@
             <div class="team-section home">
               <div class="team-name" [ngClass]="{'tbd-text': !mat.homeusername || !mat.homeusername.trim()}">
                 {{mat.homeusername && mat.homeusername.trim() ? mat.homeusername : 'TBD'}}
+                <ion-icon name="trophy" style="color:#daa520" *ngIf="mat.ResultStatus == 1 && mat.is_home_team_winner"></ion-icon>
               </div>
             </div>
             <div class="vs-section">
@@ -254,61 +260,29 @@
             <div class="team-section away">
               <div class="team-name" [ngClass]="{'tbd-text': !mat.awayusername || !mat.awayusername.trim()}">
                 {{mat.awayusername && mat.awayusername.trim() ? mat.awayusername : 'TBD'}}
+                <ion-icon name="trophy" style="color:#daa520" *ngIf="mat.ResultStatus == 1 && mat.is_away_team_winner"></ion-icon>
               </div>
             </div>
           </div>
-
-          <!-- Post-Match State -->
-          <div class="match-result" *ngIf="isPublish">
-            <div class="result-teams">
-              <div class="team-result">
-                <span class="team-name">{{mat.homeusername}}</span>
-              </div>
-              <div class="result-divider"></div>
-              <div class="team-result winner">
-                <span class="team-name">{{mat.awayusername}}</span>
-                <ion-icon name="trophy" class="winner-trophy"></ion-icon>
-              </div>
-            </div>
-            
-            <div class="match-scores" *ngIf="!isPending">
-              <div class="scores-section">
-                <div class="score-row home">
-                  <span class="score-item">30</span>
-                  <span class="score-item highlight">20</span>
-                  <span class="score-item highlight">70</span>
-                  <span class="score-item">38</span>
-                  <span class="score-item">50</span>
-                </div>
-                <div class="score-label">Points</div>
-                <div class="score-row away">
-                  <span class="score-item highlight">22</span>
-                  <span class="score-item">56</span>
-                  <span class="score-item">30</span>
-                  <span class="score-item highlight">80</span>
-                  <span class="score-item highlight">16</span>
-                </div>
-              </div>
-            </div>
-            
-            <div class="pending-decision" *ngIf="isPending">
-              <ion-icon name="time" color="warning"></ion-icon>
-              <span>Decision Pending...</span>
-            </div>
-          </div>
-        </div>
 
         <!-- Match Footer -->
         <div class="match-card-footer">
+          <div class="result-status-dropdown">
+            <ion-icon name="flag" [color]="mat.ResultStatus == 1 ? 'success' : 'warning'"></ion-icon>
+            <span class="status-text" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
+              {{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}
+            </span>
+          </div>
           <div class="visibility-info">
             <ion-icon [name]="mat.match_visibility==0?'globe':'lock-closed'" 
                       [color]="mat.match_visibility==0?'success':'medium'"></ion-icon>
             <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
           </div>
         </div>
+        </div>
       </div>
-    </div>
     
+    </div>
   </div>
 </ion-content>
 
