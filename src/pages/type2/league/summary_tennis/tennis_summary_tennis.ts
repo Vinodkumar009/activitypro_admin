@@ -921,9 +921,10 @@ export class TennisSummaryTennisPage {
         // RESULT_STATUS: data.RESULT_STATUS || '',
         // WINNER_ID: data.WINNER_ID || '',
         RESULT: {
+          DESCRIPTION:'',
           WINNER_ID: data.selectedWinner || '',
           LOSER_ID: loserId,
-          RESULT_STATUS: data.resultStatus || '0'
+          RESULT_STATUS: +data.resultStatus || 0
         },
         HOME_TEAM: {
           NAME: this.getHomeTeamName(),

@@ -316,7 +316,8 @@
     <div class="popup-content">
       <ion-item class="input_item">
         <ion-label>Possession</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="homePoss"></ion-input>
+        <ion-input type="number" class="textright" [(ngModel)]="homePoss"
+          (ionInput)="onHomePossessionChange()"></ion-input>
       </ion-item>
 
       <ion-item class="input_item">
@@ -378,7 +379,8 @@
     <div class="popup-content">
       <ion-item class="input_item">
         <ion-label>Possession</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="awayPoss"></ion-input>
+        <ion-input type="number" class="textright" [(ngModel)]="awayPoss"
+          (ionInput)="onAwayPossessionChange()"></ion-input>
       </ion-item>
 
       <ion-item class="input_item">

@@ -30,7 +30,7 @@ import { CommonRestApiDto } from '../../../../shared/model/common.model';
 export class AutocreatematchPage {
   min: any;
   max: any;
-  selectedRound:number = 0;
+  selectedRound: number = 0;
   leagueId: string;
   matchDate: string;
   matchTime: string;
@@ -49,7 +49,7 @@ export class AutocreatematchPage {
     league_id: '',
     participant_ids: [],
     round: 0,
-    match_status: 1,
+    match_status: 0,
     match_name: '',
     group_id: '',
     stage: 0,
@@ -82,7 +82,7 @@ export class AutocreatematchPage {
   team1Players: LeagueParticipantModel[] = [];
   team2Players: LeagueParticipantModel[] = [];
   leagueType: CatandType[] = [];
-  league_type:number = 1; // Default to singles
+  league_type: number = 1; // Default to singles
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -96,7 +96,7 @@ export class AutocreatematchPage {
     this.matchTime = this.navParams.get('leagueTime');
     this.location_id = this.navParams.get('location_id');
     this.location_type = this.navParams.get('location_type');
-    
+
     this.min = new Date().toISOString();
     this.max = "2049-12-31";
     this.matchDate = moment().format("YYYY-MM-DD");
@@ -109,7 +109,7 @@ export class AutocreatematchPage {
     this.inputObj.parentclub_id = this.sharedservice.getPostgreParentClubId();
     this.inputObj.activity_id = this.navParams.get('activity_id');
     this.inputObj.updated_by = this.sharedservice.getLoggedInUserId();
-    this.inputObj.match_status = 1; // Default to public match
+    this.inputObj.match_status = 0; // Default to public match
     this.inputObj.location_id = this.location_id;
     this.inputObj.location_type = this.location_type.toString();
     this.inputObj.match_type = Number(this.navParams.get('league_type'));
@@ -145,7 +145,7 @@ export class AutocreatematchPage {
         this.commonService.hideLoader();
         console.log("error in fetching",)
       }
-    },(error) => {
+    }, (error) => {
       console.error("Error fetching round types:", error);
       if (error && error.error && error.error.message) {
         this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
@@ -197,7 +197,7 @@ export class AutocreatematchPage {
         }));
         this.onMatchTypeChange();
       },
-      (error) => {
+        (error) => {
           // this.handleError(error);
           console.error("Error fetching league participants:", error);
           if (error && error.error && error.error.message) {
@@ -205,7 +205,7 @@ export class AutocreatematchPage {
           } else {
             this.commonService.toastMessage('Failed to fetch match participants', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
           }
-      });
+        });
   }
 
   getSelectedPlayersCount(): number {
@@ -215,7 +215,7 @@ export class AutocreatematchPage {
 
   changeType(val) {
     this.publicType = val == 'public' ? true : false;
-    this.inputObj.match_status = val == 'public' ? 1 : 0; // 1 for public, 0 for private
+    this.inputObj.match_status = val == 'public' ? 0 : 1; // 1 for public, 0 for private
   }
 
   updateMatchPaymentType(isChecked: boolean): void {
@@ -257,7 +257,7 @@ export class AutocreatematchPage {
       this.updateDoublesMatchCounts();
       return;
     }
-    
+
     // Count selected players for singles
     const selectedPlayers = this.players.filter(player => player.isSelected);
     this.numberofPlayers = selectedPlayers.length;
@@ -334,7 +334,7 @@ export class AutocreatematchPage {
 
   updateDoublesMatchCounts() {
     this.numberofPlayers = this.team1Players.length + this.team2Players.length;
-    
+
     if (this.team1Players.length >= 2 && this.team2Players.length >= 2) {
       // Calculate doubles matches using round robin for doubles teams
       this.numberofMatches = this.calculateDoublesMatches(this.numberofPlayers);
@@ -352,13 +352,13 @@ export class AutocreatematchPage {
       }
     } else {
       const selectedPlayers = this.players.filter(player => player.isSelected);
-      if(!selectedPlayers || selectedPlayers.length < 2) {
+      if (!selectedPlayers || selectedPlayers.length < 2) {
         this.commonService.toastMessage('Please select at least 2 players', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         return false;
       }
     }
-    
-    if(!this.matchDate || !this.matchTime) {
+
+    if (!this.matchDate || !this.matchTime) {
       this.commonService.toastMessage('Please select match date and time', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;
     }
@@ -366,12 +366,12 @@ export class AutocreatematchPage {
     //   this.commonService.toastMessage('Please select a valid round', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     //   return false;
     // }
-    else if(this.inputObj.match_payment_type == 1 && (!this.inputObj.member_fees || this.inputObj.member_fees <= 0)) {
+    else if (this.inputObj.match_payment_type == 1 && (!this.inputObj.member_fees || this.inputObj.member_fees <= 0)) {
       this.commonService.toastMessage('Please enter valid fees for member', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;
     }
 
-    else if(this.inputObj.match_payment_type == 1 && (!this.inputObj.non_member_fees || this.inputObj.non_member_fees <= 0)) {
+    else if (this.inputObj.match_payment_type == 1 && (!this.inputObj.non_member_fees || this.inputObj.non_member_fees <= 0)) {
       this.commonService.toastMessage('Please enter valid fees for mnon-member', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       return false;
     }
@@ -382,70 +382,69 @@ export class AutocreatematchPage {
 
   async createMatch() {
     try {
-      if(!this.isValidToCreateMatch()) {
-        this.commonService.toastMessage('Please select match date, time, and at least 2 players',2500,ToastMessageType.Error,ToastPlacement.Bottom);
+      if (!this.isValidToCreateMatch()) {
+        this.commonService.toastMessage('Please select match date, time, and at least 2 players', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         return;
       }
       this.commonService.showLoader('Creating matches...');
 
-      
+
       let selectedPlayers;
       if (+this.inputObj.match_type === 2) { //doubles
         selectedPlayers = [...this.team1Players, ...this.team2Players];
       } else {
         selectedPlayers = this.players.filter(player => player.isSelected);
       }
-      
+
       this.inputObj.league_id = this.leagueId,
-      this.inputObj.participant_ids = selectedPlayers.map(player => player.id)
+        this.inputObj.participant_ids = selectedPlayers.map(player => player.id)
       this.inputObj.round = Number(this.selectedRound),
-      this.inputObj.match_name = '',
-      this.inputObj.match_type = +this.inputObj.match_type; // 0 - singles, 1 - doubles, 2 - teams
-      this.inputObj.start_date = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('YYYY-MM-DD'),
-      this.inputObj.start_time = moment(new Date(this.matchDate + ' ' + this.matchTime).getTime()).format('HH:mm'),
-      this.inputObj.end_date = moment(new Date(this.matchDate + ' ' + '23:59').getTime()).format("YYYY-MM-DD HH:mm");
+        this.inputObj.match_name = '',
+        this.inputObj.match_type = +this.inputObj.match_type; // 0 - singles, 1 - doubles, 2 - teams
+      this.inputObj.start_date = moment(new Date(this.matchDate + " " + this.matchTime).getTime()).format("YYYY-MM-DD HH:mm");
+      this.inputObj.end_date = moment(new Date(this.matchDate + " " + '23:59').getTime()).format("YYYY-MM-DD HH:mm");
       this.inputObj.group_id = '',
-      this.inputObj.stage = this.selectedRound,
-      this.inputObj.match_details = '',
-      this.inputObj.match_payment_type = this.isChecked ? 1 : 0; //
-    
+        this.inputObj.stage = this.selectedRound,
+        this.inputObj.match_details = '',
+        this.inputObj.match_payment_type = this.isChecked ? 1 : 0; //
+
       this.inputObj.app_type = AppType.ADMIN_NEW;
       this.inputObj.action_type = 1; // Assuming 1 is the action type for creating matches
       this.inputObj.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
       this.inputObj.device_id = this.sharedservice.getDeviceId() || '';
 
       this.httpService.post(`${API.GENERATE_MATCHES}`, this.inputObj).subscribe({
-            next: (res: any) => {              
-              this.commonService.toastMessage('Matches created successfully',2500,ToastMessageType.Success,ToastPlacement.Bottom);
-              this.numberofPlayers = res.data.numberOfPlayers;
-              this.numberofMatches = res.data.numberOfMatches;
-              this.generatedMatches = res.data.matches.map(match => ({
-                ...match,
-                match_date: this.matchDate,
-                match_time: this.matchTime
-              }));
-              this.commonService.hideLoader();
-              this.navCtrl.pop();
-            },
-            error: (error) => {
-              this.commonService.hideLoader();
-              if (error && error.error && error.error.message) {
-                this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              }
-              else {
-                this.commonService.toastMessage('Failed to create matches', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              }
-              console.error('Error creating matches:', error);
-            }
+        next: (res: any) => {
+          this.commonService.toastMessage('Matches created successfully', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+          this.numberofPlayers = res.data.numberOfPlayers;
+          this.numberofMatches = res.data.numberOfMatches;
+          this.generatedMatches = res.data.matches.map(match => ({
+            ...match,
+            match_date: this.matchDate,
+            match_time: this.matchTime
+          }));
+          this.commonService.hideLoader();
+          this.navCtrl.pop();
+        },
+        error: (error) => {
+          this.commonService.hideLoader();
+          if (error && error.error && error.error.message) {
+            this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+          else {
+            this.commonService.toastMessage('Failed to create matches', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+          console.error('Error creating matches:', error);
+        }
       });
     } catch (error) {
       this.commonService.hideLoader();
       console.error('Error creating matches:', error);
-      this.commonService.toastMessage(error.message || 'Failed to create matches',2500,ToastMessageType.Error,ToastPlacement.Bottom);
-    } 
+      this.commonService.toastMessage(error.message || 'Failed to create matches', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+    }
   }
 
-  
+
 }
 
 

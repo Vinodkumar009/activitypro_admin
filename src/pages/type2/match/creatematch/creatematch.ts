@@ -26,7 +26,6 @@ import { RoundTypeInput, RoundTypesModel } from "../../../../shared/model/league
 import { AppType } from "../../../../shared/constants/module.constants";
 import { LeagueVenueType } from "../../../../shared/utility/enums";
 import { CatandType } from "../../league/models/location.model";
-
 /**
  * Generated class for the CreatematchPage page.
  *
@@ -187,10 +186,9 @@ export class CreatematchPage {
       this.leagueType = res["data"]
     }, (error) => {
       this.commonService.toastMessage("type fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    }
-    )
+    })
   }
-
+  
   getRoundTypes() {
     this.commonService.showLoader("Fetching info ...");
     this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe((res: any) => {
@@ -198,7 +196,6 @@ export class CreatematchPage {
         this.commonService.hideLoader();
         this.roundTypes = res.data || [];
         console.log("Get_Round_Types RESPONSE", JSON.stringify(res.data));
-
       } else {
         this.commonService.hideLoader();
         console.log("error in fetching",)

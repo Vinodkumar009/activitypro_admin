@@ -19,18 +19,40 @@ import gql from "graphql-tag";
 import { Apollo } from "apollo-angular";
 import { MembersModel } from "../../match/models/match.model";
 import { GetPlayerModel } from "../models/team.model";
-import { join } from "path";
 import { GraphqlService } from "../../../../services/graphql.service";
-//import { UsersModel } from "../../holidaycamp/addmembertocamp";
 import { Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { UsersListInput, UsersModel } from "../../../../shared/model/league.model";
 
+interface FetchAPPlusMembers {
+  ParentClubKey: string;
+}
+
+interface InvitationInput {
+  ParentClubKey: string;
+  MatchId: string;
+  InvitedBy: string;
+  Users: any;
+  appType: number;
+}
+
+interface TeamMembersInput {
+  ParentClubKey: string;
+  MemberKey: string;
+  AppType: number;
+  ActionType: number;
+  members: TeamMember[];
+  teamId: string;
+}
+
+interface TeamMember {
+  memberKey: string;
+  roleId: string;
+}
+
 /**
- * Generated class for the TeaminvitePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Component for adding players to team.
+ * Handles player search, selection, and team member management.
  */
 
 @IonicPage()
@@ -45,10 +67,13 @@ export class Addplayertoteam {
     ParentClubKey: "",
   };
   members: MembersModel[] = [];
-  selectedMembers = [];
+
 
   private searchTerms = new Subject<string>();
-
+  private selectedMembersSet = new Set<string>(); // 🚀 Performance optimization for member selection
+  private existingPlayersSet = new Set<string>(); // 🚀 Performance optimization for existing players check
+  private readonly DEFAULT_ROLE_ID = "b221720f-a6dd-4782-b80f-0ba23ed7cbcf"; // 🔧 Extract hardcoded role ID
+  private subscriptions: any[] = []; // 🧹 Subscription management
 
   InvitationInput: InvitationInput = {
     ParentClubKey: "",
@@ -65,8 +90,7 @@ export class Addplayertoteam {
     ActionType: 0,
     teamId: "",
     members: []
-
-  }
+  };
 
   venus_user_input: UsersListInput = {
     parentclub_id: "",
@@ -75,15 +99,9 @@ export class Addplayertoteam {
     member_type: 1,
     limit: 18,
     offset: 0,
-  }
-
-
-
-  invitePlayers: [];
+  };
 
   filteredMembers: MembersModel[] = [];
-  newSelectedMemberArray = [];
-  //existed_members: GetPlayerModel[] = [];
   existedPlayer: GetPlayerModel[];
   constructor(
     public navCtrl: NavController,
@@ -100,44 +118,55 @@ export class Addplayertoteam {
   ) {
     this.themeType = sharedservice.getThemeType();
     this.existedPlayer = this.navParams.get("existedPlayer");
-    console.log("TeaminvitePage");
     this.teamMembersInput.teamId = this.navParams.get("teamid");
-    // this.existed_members = this.navParams.get('existed_members');
+
     this.storage.get("userObj").then((val) => {
-      val = JSON.parse(val);
-      if (val.$key != "") {
-        this.FetchAPPlusMembers.ParentClubKey = val.UserInfo[0].ParentClubKey;
-        this.teamMembersInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
-        this.teamMembersInput.MemberKey = val.$key;
-        this.venus_user_input.parentclub_id = this.sharedservice.getPostgreParentClubId();
-        // this.getPlayerList();
-        this.getMembersData()
+      if (val && typeof val === 'string') {
+        try {
+          const userData = this.parseUserData(val);
+          if (userData && userData.$key && userData.UserInfo && userData.UserInfo[0]) {
+            this.FetchAPPlusMembers.ParentClubKey = userData.UserInfo[0].ParentClubKey;
+            this.teamMembersInput.ParentClubKey = userData.UserInfo[0].ParentClubKey;
+            this.teamMembersInput.MemberKey = userData.$key;
+            this.venus_user_input.parentclub_id = this.sharedservice.getPostgreParentClubId();
+            this.getMembersData();
+          }
+        } catch (error) {
+          this.handleError(error, "Failed to load user data");
+        }
       }
     });
 
-    this.searchTerms.pipe(
-      //filter(search_term => search_term.length > 2), // Filter out search terms with length less than 2
-      debounceTime(400), // Wait for 500ms after the user stops typing
-      distinctUntilChanged() // Only emit if the search term has changed
+    // 🔍 Initialize existing players set for performance
+    if (this.existedPlayer && this.existedPlayer.length > 0) {
+      this.existingPlayersSet = new Set(this.existedPlayer.map(p => p.user.Id));
+    }
+
+    const searchSubscription = this.searchTerms.pipe(
+      debounceTime(400), // 🕐 Wait for 400ms after user stops typing
+      distinctUntilChanged() // 🔄 Only emit if search term changed
     ).subscribe(search_term => {
-      // Call your API here using the term
-      this.venus_user_input.offset = 0;
-      this.venus_user_input.limit = 18;
-      this.members = [];
-      this.filteredMembers = [];
-      if (search_term) {
-        this.venus_user_input.search_term = search_term != '' ? search_term : "";
-      } else {
-        this.venus_user_input.search_term = '';
-      }
+      this.resetSearchState();
+      this.venus_user_input.search_term = search_term || "";
       this.getMembersData();
     });
+
+    this.subscriptions.push(searchSubscription);
   }
 
-  ionViewWillEnter() { }
+
 
   ionViewDidLoad() {
-    console.log("ionViewDidLoad TeaminvitePage");
+    // Component loaded
+  }
+
+  ionViewWillLeave() {
+    // 🧹 Always cleanup subscriptions
+    this.subscriptions.forEach(sub => {
+      if (sub && !sub.closed) {
+        sub.unsubscribe();
+      }
+    });
   }
 
   doInfinite(infiniteScroll) {
@@ -149,9 +178,6 @@ export class Addplayertoteam {
   }
 
   getFilterItems(ev: any) {
-    // Reset items back to all of the items
-    this.initializeItems();
-    let val = ev.target.value;
     const searchTerm = ev.target.value;
     this.searchTerms.next(searchTerm);
   }
@@ -170,13 +196,18 @@ export class Addplayertoteam {
   }
 
   selectMembers(member) {
-    const memberIndex = this.teamMembersInput.members.findIndex(m => m.memberKey === member.Id);
-    if (memberIndex > -1) {
-      this.teamMembersInput.members.splice(memberIndex, 1);
+    if (this.selectedMembersSet.has(member.Id)) {
+      // 🗑️ Remove member
+      this.selectedMembersSet.delete(member.Id);
+      const memberIndex = this.teamMembersInput.members.findIndex(m => m.memberKey === member.Id);
+      if (memberIndex > -1) {
+        this.teamMembersInput.members.splice(memberIndex, 1);
+      }
     } else {
-      this.teamMembersInput.members.push({ roleId: "b221720f-a6dd-4782-b80f-0ba23ed7cbcf", memberKey: member.Id });
+      // ➕ Add member
+      this.selectedMembersSet.add(member.Id);
+      this.teamMembersInput.members.push({ roleId: this.DEFAULT_ROLE_ID, memberKey: member.Id });
     }
-    console.log("Updated Team Members:", this.teamMembersInput.members);
   }
 
   getPlayerList() {
@@ -193,53 +224,25 @@ export class Addplayertoteam {
       }
     }
   `;
-    this.graphqlService.query(userQuery, { parentclubid: this.FetchAPPlusMembers.ParentClubKey }, 0).subscribe((res: any) => {
+    const querySubscription = this.graphqlService.query(userQuery, { parentclubid: this.FetchAPPlusMembers.ParentClubKey }, 0).subscribe((res: any) => {
       this.members = res.data.getAllMembersByParentClubNMemberType as MembersModel[];
 
       if (this.members.length > 0) {
-        for (let i = 0; i < this.members.length; i++) {
-          this.members[i]["isSelect"] = false;
-          this.members[i]["isAlreadExisted"] = false;
-          if (this.existedPlayer.length > 0) {
-            for (let j = 0; j < this.existedPlayer.length; j++) {
-              if (
-                this.members[i].FirebaseKey ===
-                this.existedPlayer[j].user.FirebaseKey
-              ) {
-                this.members[i]["isSelect"] = true;
-                this.members[i]["isAlreadExisted"] = true;
-              }
-            }
-          }
-        }
+        this.members = this.members.map(member => ({
+          ...member,
+          isSelect: this.existingPlayersSet.has(member.Id),
+          isAlreadExisted: this.existingPlayersSet.has(member.Id)
+        }));
       }
-      this.filteredMembers = JSON.parse(JSON.stringify(this.members));
-      console.log("Getting Staff Data", this.members);
+      this.filteredMembers = [...this.members];
 
       this.commonService.hideLoader();
     }, (error) => {
-      console.error("Error in fetching:", error);
+      this.commonService.hideLoader();
+      this.handleError(error, "Failed to fetch players");
+    });
 
-
-      if (error.graphQLErrors) {
-
-        console.error("GraphQL Errors:", error.graphQLErrors);
-
-        for (const gqlError of error.graphQLErrors) {
-          console.error("Error Message:", gqlError.message);
-          console.error("Error Extensions:", gqlError.extensions);
-
-        }
-      }
-
-
-      if (error.networkError) {
-
-        console.error("Network Error:", error.networkError);
-
-      }
-    }
-    );
+    this.subscriptions.push(querySubscription);
 
   }
 
@@ -270,75 +273,76 @@ export class Addplayertoteam {
       }
     }
   `;
-    this.graphqlService.query(
+    const membersSubscription = this.graphqlService.query(
       userQuery,
       { list_input: this.venus_user_input },
       0
     ).subscribe(({ data }) => {
       this.members = [];
-      // Optionally, you may log or process the data here
       if (data["getAllMembersByParentClubNMemberType"].length > 0) {
         this.members = data["getAllMembersByParentClubNMemberType"].map((member: UsersModel) => ({
           ...member,
-          isSelected: false,
-          isAlreadyExisted: false,
+          isSelected: this.selectedMembersSet.has(member.Id),
+          isAlreadyExisted: this.existingPlayersSet.has(member.Id)
         }));
+        this.filteredMembers.push(...this.members);
       }
-      // if(type === 2){
-      //   this.filteredMembers = JSON.parse(JSON.stringify(this.members))
-      // }else{
-      this.filteredMembers = [...this.filteredMembers, ...JSON.parse(JSON.stringify(this.members))];
-      // }
-      console.log("filterd memer shown")
-      this.checkForExistingUsers();
+      this.updateMemberStates();
     },
       (error) => {
-        console.error("Error occurred while fetching data:");
-
-        if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-          console.error("GraphQL Errors:");
-          error.graphQLErrors.forEach((gqlError, index) => {
-            console.error(`Error ${index + 1}:`);
-            console.error("Message:", gqlError.message);
-            console.error("Extensions:", gqlError.extensions);
-          });
-        }
-
-        if (error.networkError) {
-          console.error("Network Error:", error.networkError);
-        }
+        this.handleError(error, "Failed to fetch members data");
       }
-    )
+    );
+
+    this.subscriptions.push(membersSubscription);
 
   }
 
-  //find existing users in sessions and make them disable
-  checkForExistingUsers() {
+  // 🔍 Update member states based on existing players and selected members
+  private updateMemberStates() {
+    if (!this.filteredMembers.length) return;
 
-    if (!this.existedPlayer || this.existedPlayer.length === 0) {
-      console.error("existedMember is not defined or empty");
-      return;
+    this.filteredMembers.forEach(member => {
+      member.isSelected = this.selectedMembersSet.has(member.Id);
+      member.isAlreadyExisted = this.existingPlayersSet.has(member.Id);
+    });
+  }
+
+  // 🔒 Safe JSON parsing with validation
+  private parseUserData(data: string): any {
+    if (!data || data.length > 10000) { // Basic size validation
+      throw new Error('Invalid data format');
     }
 
-    // Check against filteredMembers and update properties if IDs match
-    this.existedPlayer.forEach((team_user) => {
-      const matchingMember = this.filteredMembers.find(member => member.Id === team_user.user.Id);
-      console.log("Checking for existing member:", team_user);
-      if (matchingMember) {
-        matchingMember.isSelected = true;
-        matchingMember.isAlreadyExisted = true;
-      }
-    });
+    const parsed = JSON.parse(data);
 
-    // Also check leagueParticipantInput.participantsIds against filteredMembers
-    this.teamMembersInput.members.forEach((enrolledUser) => {
-      const matchingMember = this.filteredMembers.find(member => member.Id === enrolledUser.memberKey);
-      if (matchingMember) {
-        matchingMember.isSelected = true;
-        matchingMember.isAlreadyExisted = true;
-      }
-    });
+    // Validate expected structure
+    if (typeof parsed !== 'object' || parsed === null) {
+      throw new Error('Invalid user data structure');
+    }
 
+    return parsed;
+  }
+
+  // 🔄 Reset search state for new search
+  private resetSearchState() {
+    this.venus_user_input.offset = 0;
+    this.venus_user_input.limit = 18;
+    this.members = [];
+    this.filteredMembers = [];
+  }
+
+  // 🚨 Centralized error handling
+  private handleError(error: any, userMessage: string) {
+    let errorMsg = userMessage;
+
+    if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+      errorMsg = error.graphQLErrors[0].message || userMessage;
+    } else if (error.networkError) {
+      errorMsg = "Network connection error. Please check your internet connection.";
+    }
+
+    this.commonService.toastMessage(errorMsg, 3000, ToastMessageType.Error);
   }
 
 
@@ -361,7 +365,7 @@ export class Addplayertoteam {
 `;
         const mutationVariables = { addPlayer: this.teamMembersInput }
 
-        await this.graphqlService.mutate(addPlayer, mutationVariables, 0).subscribe((res: any) => {
+        const saveSubscription = this.graphqlService.mutate(addPlayer, mutationVariables, 0).subscribe((res: any) => {
           this.commonService.hideLoader();
           const message = "Player Added Successfully";
 
@@ -372,21 +376,15 @@ export class Addplayertoteam {
         },
           (error) => {
             this.commonService.hideLoader();
-            if (error.error) {
-              console.error("Server Error:", error.error);
-              this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-            } else
-              this.commonService.toastMessage("Error in saving player:", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            this.handleError(error, "Failed to save player");
           }
         );
 
+        this.subscriptions.push(saveSubscription);
+
       } catch (error) {
-        console.error("Error in saving player:", error);
-        if (error.error) {
-          console.error("Server Error:", error.error);
-          this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        } else
-          this.commonService.toastMessage("Error in saving player:", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        this.commonService.hideLoader();
+        this.handleError(error, "Failed to save player");
       }
     }
     else {
@@ -401,172 +399,4 @@ export class Addplayertoteam {
 
 
 
-}
-export class FetchAPPlusMembers {
-  ParentClubKey: string;
-}
-export class InvitationInput {
-  ParentClubKey: String;
-  MatchId: String;
-  InvitedBy: String;
-  Users: any;
-  appType: number;
-}
-export class MatchModel {
-  VenueKey: string;
-  Id: string;
-  Message: string;
-  CreatedAt: any;
-  UpdatedAt: string;
-  CreatedBy: string;
-  IsActive: boolean;
-  IsEnable: boolean;
-  MatchCreator: string; //APP Name
-  Activity: ActivityModel; //Which activity it is inside the member App
-  MatchVisibility: number;
-  GameType: number;
-  MatchType: number;
-  PaymentType: number;
-  ResultStatus: number;
-  MatchStatus: number;
-  VenueName: string;
-  Details: string;
-  MemberFees: number;
-  NonMemberFees: number;
-  MatchStartDate: any;
-  Result: ResultModel;
-  Capacity: number;
-  MatchTitle: string;
-  Teams: TeamModel[];
-  Hosts: Host[];
-}
-
-export class Host {
-  Name: string;
-  firebaseKey: string;
-  roleType: number;
-  userType: number;
-}
-
-export class ActivityModel {
-  ActivityKey: string;
-  IsActive: boolean;
-  IsEnable: boolean;
-  ActivityCode: string;
-  ActivityName: string;
-  ActivityImageURL: string;
-}
-
-export class ResultModel {
-  ResultDetails: string;
-  ResultStatus: number;
-  PublishedByApp: string;
-  Winner: TeamModel;
-}
-
-export class TeamModel {
-  Id: string;
-  TeamName: string;
-  ResultStatus: number;
-  TeamPoint: number;
-  Description: string;
-  CoachName: string;
-  IsWinner?: boolean;
-  Sets_Points?: any;
-  Participants: ParticipantModel[];
-}
-
-export class ParticipantModel {
-  ParticipationStatus: number;
-  PaymentStatus: number;
-  PaymentTracking: string;
-  InviteStatus: number;
-  TotalPoints: number;
-  User: UserModel;
-  CreatedAt: string;
-  UpdatedAt: string;
-  InviteType: number;
-  TotalPonumbers: number;
-  Team: TeamModel[];
-  Match: MatchModel;
-}
-
-export class UserModel {
-  Id?: string;
-  FirstName: string;
-  LastName: string;
-  Gender: string;
-  DOB: string;
-  FirebaseKey?: string;
-}
-
-//ladder model
-
-export class LadderModel {
-  IsActive: boolean;
-  IsEnable: boolean;
-  FirstName: string;
-  LastName: string;
-  rank: number;
-  Points: number;
-  IsSelf?: boolean;
-  LastMatchPlayed: string;
-  TotalMatches: any;
-}
-
-export class TeamsModal {
-  Id: string;
-  TeamName: string;
-  IsWinner?: boolean;
-  Sets_Points?: any;
-  ResultDescription: string;
-  Participants: TeamParticipants[];
-}
-
-export class TeamParticipants {
-  PaymentStatus: number;
-  InviteStatus: number;
-  InviteType: number;
-  ParticipationStatus: number;
-  User: {
-    FirstName: string;
-    LastName: string;
-    FirebaseKey: string;
-    isUserAvailable?: boolean;
-  };
-}
-
-export class PublishResultInput {
-  CreatedBy: string; //MemberKey
-  ResultDetails: string; //MemberKey
-  resultDescription: string; //MemberKey
-  ResultStatus: number; //MemberKey
-  MatchId: string; //matchId
-  WinnerId: string; //Always a Team ID
-  PublishedBy: string; //MemberKey
-}
-
-export class MatchSetupModel {
-  IsActive: string;
-  IsEnable: true;
-  DisplayName: string;
-  Name: string;
-  CreateDate: string;
-  Member: boolean;
-  NonMember: boolean;
-  Code: number;
-}
-
-export class TeamMembersInput {
-  ParentClubKey: string
-  MemberKey: string
-  AppType: number
-  ActionType: number
-  members: TeamMember[]
-  teamId: string
-}
-
-export class TeamMember {
-  memberKey: string
-  roleId: string
 }

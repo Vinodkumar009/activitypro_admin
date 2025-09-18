@@ -22,14 +22,33 @@ import { MembersModel } from "../../match/models/match.model";
 import { GetStaffModel, StaffModel } from '../models/team.model';
 import { membershipPaymentSetupPage } from '../../../dashboard/membershippaymentsetup/membershippaymentsetup';
 import { GraphqlService } from '../../../../services/graphql.service';
-import { error } from 'console';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
+interface GetStaffListInput {
+  ParentClubKey: string;
+  MemberKey: string;
+  AppType: number;
+  ActionType: number;
+}
+
+interface AddStaffInput {
+  ParentClubKey: string;
+  MemberKey: string;
+  AppType: number;
+  ActionType: number;
+  staffDetails: StaffDetails[];
+  parentClubteamId: string;
+}
+
+interface StaffDetails {
+  userPostGresId: string;
+  userType: number;
+}
 
 /**
- * Generated class for the LeagueinvitecoachPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Component for adding staff to team.
+ * Handles staff search, selection, and team staff management.
  */
 
 @IonicPage()
@@ -43,9 +62,11 @@ export class AddstafftoteamPage {
   themeType: number;
   staff: StaffModel[] = [];
   filteredStaff: StaffModel[] = [];
-  allMemebers: StaffModel[] = [];
-  members: StaffModel[] = [];
-  searchTerm: string;
+
+  private searchTerms = new Subject<string>();
+  private selectedStaffSet = new Set<string>(); // 🚀 Performance optimization for staff selection
+  private existingStaffSet = new Set<string>(); // 🚀 Performance optimization for existing staff check
+  private subscriptions: any[] = []; // 🧹 Subscription management
 
   addStaffInput: AddStaffInput = {
     ParentClubKey: '',
@@ -85,33 +106,63 @@ export class AddstafftoteamPage {
     this.addStaffInput.parentClubteamId = this.navParams.get("teamid")
 
     this.storage.get("userObj").then((val) => {
-      val = JSON.parse(val);
-      if (val.$key != "") {
-        this.getStaffListInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
-        this.getStaffListInput.MemberKey = val.$key;
+      if (val) {
+        try {
+          const userData = JSON.parse(val);
+          if (userData && userData.$key && userData.UserInfo && userData.UserInfo[0]) {
+            this.getStaffListInput.ParentClubKey = userData.UserInfo[0].ParentClubKey;
+            this.getStaffListInput.MemberKey = userData.$key;
+            this.addStaffInput.ParentClubKey = userData.UserInfo[0].ParentClubKey;
+            this.addStaffInput.MemberKey = userData.$key;
+            this.getStaff();
+          }
+        } catch (error) {
+          this.handleError(error, "Failed to load user data");
+        }
+      }
+    });
 
-        // this.getStaffListInput.ParentClubKey=val.UserInfo[0].ParentClubKey;
-        // this.getStaffListInput.MemberKey = val.$key;
-        this.addStaffInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
-        this.addStaffInput.MemberKey = val.$key;
+    // 🔍 Initialize existing staff set for performance
+    if (this.existedstaff && this.existedstaff.length > 0) {
+      this.existingStaffSet = new Set(this.existedstaff.map(s => s.StaffDetail.firebaseKey));
+    }
 
-        this.getStaff();
+    const searchSubscription = this.searchTerms.pipe(
+      debounceTime(400), // 🕐 Wait for 400ms after user stops typing
+      distinctUntilChanged() // 🔄 Only emit if search term changed
+    ).subscribe(search_term => {
+      this.filterStaff(search_term);
+    });
+
+    this.subscriptions.push(searchSubscription);
+  }
+
+  ionViewDidLoad() {
+    // Component loaded
+  }
+
+  ionViewWillLeave() {
+    // 🧹 Always cleanup subscriptions
+    this.subscriptions.forEach(sub => {
+      if (sub && !sub.closed) {
+        sub.unsubscribe();
       }
     });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LeagueinvitecoachPage');
-  }
-
   selectMembers(member) {
-    const memberIndex = this.addStaffInput.staffDetails.findIndex(m => m.userPostGresId === member.id);
-    if (memberIndex > -1) {
-      this.addStaffInput.staffDetails.splice(memberIndex, 1);
+    if (this.selectedStaffSet.has(member.id)) {
+      // 🗑️ Remove staff
+      this.selectedStaffSet.delete(member.id);
+      const memberIndex = this.addStaffInput.staffDetails.findIndex(m => m.userPostGresId === member.id);
+      if (memberIndex > -1) {
+        this.addStaffInput.staffDetails.splice(memberIndex, 1);
+      }
     } else {
+      // ➕ Add staff
+      this.selectedStaffSet.add(member.id);
       this.addStaffInput.staffDetails.push({ userPostGresId: member.id, userType: member.user_type });
     }
-    console.log("Updated Staff Details:", this.addStaffInput.staffDetails);
   }
 
 
@@ -132,121 +183,43 @@ export class AddstafftoteamPage {
         }
       }
     `;
-    this.graphqlService.query(userQuery, { ParentClubDetails: this.getStaffListInput }, 0).subscribe((data) => {
+    const staffSubscription = this.graphqlService.query(userQuery, { ParentClubDetails: this.getStaffListInput }, 0).subscribe((data) => {
       this.staff = data.data.getStaffForParentClub;
 
       if (this.staff.length > 0) {
-        for (let i = 0; i < this.staff.length; i++) {
-          this.staff[i]["isSelect"] = false;
-          this.staff[i]["isAlreadExisted"] = false;
-          if (this.existedstaff.length > 0) {
-            for (let j = 0; j < this.existedstaff.length; j++) {
-              if (
-                this.staff[i].firebaseKey ===
-                this.existedstaff[j].StaffDetail.firebaseKey
-              ) {
-                this.staff[i]["isSelect"] = true;
-                this.staff[i]["isAlreadExisted"] = true;
-              }
-            }
-          }
-        }
+        this.staff = this.staff.map(staffMember => ({
+          ...staffMember,
+          isSelect: this.existingStaffSet.has(staffMember.firebaseKey),
+          isAlreadExisted: this.existingStaffSet.has(staffMember.firebaseKey)
+        }));
       }
 
-      this.filteredStaff = JSON.parse(JSON.stringify(this.staff));
-      console.log("Getting Staff Data", this.staff);
+      this.filteredStaff = [...this.staff];
       this.commonService.hideLoader();
-    },
-      (error) => {
-        console.error("Error in fetching:", error);
+    }, (error) => {
+      this.commonService.hideLoader();
+      this.handleError(error, "Failed to fetch staff");
+    });
 
-
-        if (error.graphQLErrors) {
-
-          console.error("GraphQL Errors:", error.graphQLErrors);
-
-          for (const gqlError of error.graphQLErrors) {
-            console.error("Error Message:", gqlError.message);
-            console.error("Error Extensions:", gqlError.extensions);
-
-          }
-        }
-
-
-        if (error.networkError) {
-
-          console.error("Network Error:", error.networkError);
-
-        }
-      })
+    this.subscriptions.push(staffSubscription);
 
   }
-  /*   
-  
-   this.apollo
-        .query({
-          query: userQuery,
-          fetchPolicy: "network-only",
-          variables: {
-            ParentClubDetails: this.getStaffListInput,
-          },
-        })
-        .subscribe(
-          ({ data }) => {
-            console.log(
-              "staff data" + JSON.stringify(data["getStaffForParentClub"])
-            );
-            // this.staff = JSON.parse(JSON.stringify(data["getStaffForParentClub"]))
-            this.staff = data["getStaffForParentClub"] as StaffModel[];
-            if (this.staff.length > 0) {
-              for (let i = 0; i < this.staff.length; i++) {
-                this.staff[i]["isSelect"] = false;
-                this.staff[i]["isAlreadExisted"] = false;
-                if (this.existedstaff.length > 0) {
-                  for (let j = 0; j < this.existedstaff.length; j++) {
-                    if (
-                      this.staff[i].firebaseKey ===
-                      this.existedstaff[j].StaffDetail.firebaseKey
-                    ) {
-                      this.staff[i]["isSelect"] = true;
-                      this.staff[i]["isAlreadExisted"] = true;
-                    }
-                  }
-                }
-              }
-            }
-            this.filteredStaff = JSON.parse(JSON.stringify(this.staff));
-            console.log("Getting Staff Data", this.staff);
-  
-            this.commonService.hideLoader();
-  
-          },
-          (err) => {
-            console.log(JSON.stringify(err));
-            this.commonService.toastMessage(
-              "failed to fetch Staff",
-              2500,
-              ToastMessageType.Error,
-              ToastPlacement.Bottom
-            );
-          })
-  
-  */
+
 
   getFilterItems(ev: any) {
+    const searchTerm = ev.target.value;
+    this.searchTerms.next(searchTerm);
+  }
 
-    // Reset items back to all of the items
-    this.initializeItems();
-    let val = ev.target.value;
-    if (val && val.trim() != "") {
+  // 🔍 Filter staff based on search term
+  private filterStaff(searchTerm: string) {
+    if (searchTerm && searchTerm.trim() !== "") {
       this.filteredStaff = this.staff.filter((item) => {
-        if (item.name != undefined) {
-          if (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1)
-            return true;
-        }
-
+        return item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase());
       });
-    } else this.initializeItems();
+    } else {
+      this.initializeItems();
+    }
   }
 
   initializeItems() {
@@ -274,7 +247,7 @@ export class AddstafftoteamPage {
 
         const mutationVariables = { addStaffInput: this.addStaffInput };
 
-        await this.graphqlService
+        const saveSubscription = this.graphqlService
           .mutate(addStaff, mutationVariables, 0)
           .subscribe(
             (res: any) => {
@@ -285,54 +258,34 @@ export class AddstafftoteamPage {
             },
             (error) => {
               this.commonService.hideLoader();
-              if (error.error) {
-                console.error("Server Error:", error.error);
-                this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              } else {
-                this.commonService.toastMessage("Error in saving staff", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              }
+              this.handleError(error, "Failed to save staff");
             }
           );
+
+        this.subscriptions.push(saveSubscription);
       } catch (error) {
-        console.error("Error in saving staff:", error);
         this.commonService.hideLoader();
-        if (error.error) {
-          this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        } else {
-          this.commonService.toastMessage("Error in saving staff", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
+        this.handleError(error, "Failed to save staff");
       }
     } else {
       this.commonService.toastMessage("Please select a staff member", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     }
   };
 
+  // 🚨 Centralized error handling
+  private handleError(error: any, userMessage: string) {
+    let errorMsg = userMessage;
+
+    if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+      errorMsg = error.graphQLErrors[0].message || userMessage;
+    } else if (error.networkError) {
+      errorMsg = "Network connection error. Please check your internet connection.";
+    }
+
+    this.commonService.toastMessage(errorMsg, 3000, ToastMessageType.Error);
+  }
+
   dismiss() {
     this.viewCtrl.dismiss({ canRefreshData: true });
   }
-
-
-
-}
-
-export class GetStaffListInput {
-  ParentClubKey: string
-  MemberKey: string
-  AppType: number
-  ActionType: number
-}
-
-export class AddStaffInput {
-  ParentClubKey: string
-  MemberKey: string
-  AppType: number
-  ActionType: number
-
-  staffDetails: StaffDetails[]
-  parentClubteamId: string
-}
-
-export class StaffDetails {
-  userPostGresId: string
-  userType: number
 }

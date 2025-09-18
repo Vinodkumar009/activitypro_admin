@@ -773,6 +773,10 @@ export class MatchTeamDetailsPage {
         }
 
         this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
+        // Refresh participant counts after team update
+        this.loadAllParticipantsForCounts().then(() => {
+          this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
+        });
       } else {
         this.commonService.hideLoader();
         this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error);

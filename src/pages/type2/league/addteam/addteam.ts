@@ -15,6 +15,8 @@ import { GraphqlService } from '../../../../services/graphql.service';
 import { MembersModel } from '../../match/models/match.model';
 import { HttpService } from '../../../../services/http.service';
 import { AppType } from '../../../../shared/constants/module.constants';
+import { Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 
 /**
  * Generated class for the AddteamPage page.
@@ -35,6 +37,11 @@ export class AddteamPage {
   teamsForParentClub: TeamsForParentClubModel[] = [];
   filteredteams: TeamsForParentClubModel[] = [];
 
+  private searchTerms = new Subject<string>();
+  private selectedTeamsSet = new Set<string>(); // 🚀 Performance optimization for team selection
+  private existingTeamsSet = new Set<string>(); // 🚀 Performance optimization for existing teams check
+  private subscriptions: any[] = []; // 🧹 Subscription management
+
   inputObj = {
     parentclubId: '',
     clubId: '',
@@ -47,9 +54,7 @@ export class AddteamPage {
     updated_by: ''
   }
 
-  // existingteam: LeagueParticipantModel[];
   existingteam: TeamsForParentClubModel[];
-
 
   leagueParticipantInput: LeagueParticipantInput = {
     user_postgre_metadata: {
@@ -68,7 +73,6 @@ export class AddteamPage {
   }
 
   leagueId: string;
-
   capacity_left: number = 0;
   constructor(public navCtrl: NavController,
     private graphqlService: GraphqlService,
@@ -81,7 +85,6 @@ export class AddteamPage {
   ) {
 
     this.leagueId = this.navParams.get("leagueId");
-    console.log("league id is:", this.leagueId);
     const activityId = this.navParams.get("activityId");
     this.existingteam = this.navParams.get("existingteam");
     this.inputObj.parentclubId = this.sharedservice.getPostgreParentClubId();
@@ -92,104 +95,168 @@ export class AddteamPage {
     this.leagueParticipantInput.user_device_metadata.UserDeviceType = this.sharedservice.getPlatform() == "android" ? 1 : 2
     this.leagueParticipantInput.leagueId = this.leagueId;
     this.inputObj.activityId = activityId;
-    this.getTeam();
 
+    // 🔍 Initialize existing teams set for performance
+    if (this.existingteam && this.existingteam.length > 0) {
+      this.existingTeamsSet = new Set(this.existingteam.map(t => t.id));
+    }
+
+    // 🔍 Setup search with debouncing
+    const searchSubscription = this.searchTerms.pipe(
+      debounceTime(400), // 🕐 Wait for 400ms after user stops typing
+      distinctUntilChanged() // 🔄 Only emit if search term changed
+    ).subscribe(searchTerm => {
+      this.filterTeams(searchTerm);
+    });
+
+    this.subscriptions.push(searchSubscription);
+    this.getTeam();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddteamPage');
+    // Component loaded
+  }
+
+  ionViewWillLeave() {
+    // 🧹 Always cleanup subscriptions
+    this.subscriptions.forEach(sub => {
+      if (sub && !sub.closed) {
+        sub.unsubscribe();
+      }
+    });
   }
 
 
 
   getTeam() {
     this.commonService.showLoader("Fetching teams...");
-    // Assuming you're using Angular's HttpClient
-    this.httpService.post('league/getActivitySpecificTeam', this.inputObj).subscribe({
+
+    const teamSubscription = this.httpService.post('league/getActivitySpecificTeam', this.inputObj).subscribe({
       next: (res: any) => {
         this.commonService.hideLoader();
-        this.teamsForParentClub = res.data; // Adjust this if the response structure is different
+        this.teamsForParentClub = res.data;
+
         if (this.teamsForParentClub.length > 0) {
-          for (let i = 0; i < this.teamsForParentClub.length; i++) {
-            this.teamsForParentClub[i]["isSelect"] = false;
-            this.teamsForParentClub[i]["isAlreadExisted"] = false;
-            if (this.existingteam.length > 0) {
-              for (let j = 0; j < this.existingteam.length; j++) {
-                if (this.teamsForParentClub[i].id === this.existingteam[j].id) {
-                  this.teamsForParentClub[i]["isSelect"] = true;
-                  this.teamsForParentClub[i]["isAlreadExisted"] = true;
-                }
-              }
-            }
-          }
+          this.teamsForParentClub = this.teamsForParentClub.map(team => ({
+            ...team,
+            isSelected: this.selectedTeamsSet.has(team.id),
+            isAlreadyExisted: this.existingTeamsSet.has(team.id)
+          }));
         }
-        this.filteredteams = JSON.parse(JSON.stringify(this.teamsForParentClub));
+
+        this.filteredteams = [...this.teamsForParentClub];
+        this.updateTeamStates();
       },
       error: (error) => {
         this.commonService.hideLoader();
-        console.error("Error in fetching:", error);
-        if (error.error) {
-          console.error("Server Error:", error.error);
-          this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        } else {
-          this.commonService.toastMessage("Teams fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
-        // if (error.status) {
-        //   console.error("Status Code:", error.status);
-        //   console.error("Status Text:", error.statusText);
-        // }
+        this.handleError(error, "Failed to fetch teams");
       }
+    });
+
+    this.subscriptions.push(teamSubscription);
+  }
+
+  selectTeam(team) {
+    if (this.selectedTeamsSet.has(team.id)) {
+      // 🗑️ Remove team
+      this.selectedTeamsSet.delete(team.id);
+      const teamIndex = this.leagueParticipantInput.parentclubteamIds.findIndex(id => id === team.id);
+      if (teamIndex > -1) {
+        this.leagueParticipantInput.parentclubteamIds.splice(teamIndex, 1);
+      }
+    } else {
+      // ➕ Add team
+      this.selectedTeamsSet.add(team.id);
+      this.leagueParticipantInput.parentclubteamIds.push(team.id);
+    }
+  }
+
+  getFilterItems(ev: any) {
+    const searchTerm = ev.target.value;
+    this.searchTerms.next(searchTerm);
+  }
+
+  private filterTeams(searchTerm: string) {
+    if (!searchTerm || searchTerm.trim() === '') {
+      this.filteredteams = [...this.teamsForParentClub];
+    } else {
+      const term = searchTerm.toLowerCase().trim();
+      this.filteredteams = this.teamsForParentClub.filter(team =>
+        team.teamName && team.teamName.toLowerCase().includes(term)
+      );
+    }
+    this.updateTeamStates();
+  }
+
+  // 🔍 Update team states based on existing teams and selected teams
+  private updateTeamStates() {
+    if (!this.filteredteams.length) return;
+
+    this.filteredteams.forEach(team => {
+      team.isSelected = this.selectedTeamsSet.has(team.id);
+      team.isAlreadyExisted = this.existingTeamsSet.has(team.id);
     });
   }
 
-  isSelect: boolean;
+  // 🚨 Centralized error handling
+  private handleError(error: any, userMessage: string) {
+    let errorMsg = userMessage;
 
-
-  selectTeam(e) {
-    console.log('team new state:' + e.isSelect);
-    console.log("selected data is:" + e.id);
-    if (e.isSelect) {
-      this.leagueParticipantInput.parentclubteamIds.push(e.id)
-      console.log("selected team is:" + this.leagueParticipantInput.parentclubteamIds)
+    if (error.error && error.error.message) {
+      errorMsg = error.error.message;
+    } else if (error.status === 0) {
+      errorMsg = "Network connection error. Please check your internet connection.";
+    } else if (error.status >= 500) {
+      errorMsg = "Server error. Please try again later.";
     }
+
+    this.commonService.toastMessage(errorMsg, 3000, ToastMessageType.Error, ToastPlacement.Bottom);
   }
 
 
   assignTeams() {
-    this.commonService.showLoader("Please wait");
-    console.log('input giving for adding members:', this.leagueParticipantInput);
-    const submitMembersMutation = gql`
-       mutation addParticipantToLeague($leagueParticipant: LeagueParticipantInput!) {
-         addParticipantToLeague(leagueParticipant: $leagueParticipant) {
-           id
-           participant_name
-           participant_type
-       
+    const selectedTeamsCount = this.leagueParticipantInput.parentclubteamIds.length;
+
+    if (selectedTeamsCount === 0) {
+      this.commonService.toastMessage("Please select at least one team", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      return;
+    }
+
+    try {
+      this.commonService.showLoader("Please wait");
+
+      const submitMembersMutation = gql`
+         mutation addParticipantToLeague($leagueParticipant: LeagueParticipantInput!) {
+           addParticipantToLeague(leagueParticipant: $leagueParticipant) {
+             id
+             participant_name
+             participant_type
+           }
          }
-       }
-     `;
+       `;
 
-    const variables = { leagueParticipant: this.leagueParticipantInput }
+      const variables = { leagueParticipant: this.leagueParticipantInput };
 
-    this.graphqlService.mutate(
-      submitMembersMutation,
-      variables,
-      0).
-      subscribe((response) => {
+      const assignSubscription = this.graphqlService.mutate(
+        submitMembersMutation,
+        variables,
+        0
+      ).subscribe((response) => {
         this.commonService.hideLoader();
         const message = "Teams added successfully";
         this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
         this.navCtrl.pop();
       }, (error) => {
         this.commonService.hideLoader();
-        console.error("GraphQL mutation error:", error);
-        if (error.error.message) {
-          console.error("Server Error:", error.error);
-          this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        } else {
-          this.commonService.toastMessage("Teams assign failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
+        this.handleError(error, "Failed to assign teams");
       });
+
+      this.subscriptions.push(assignSubscription);
+
+    } catch (error) {
+      this.commonService.hideLoader();
+      this.handleError(error, "Failed to assign teams");
+    }
   }
 
 

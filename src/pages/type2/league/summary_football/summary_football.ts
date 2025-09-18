@@ -1060,6 +1060,11 @@ export class SummaryFootballPage implements AfterViewInit {
             YELLOW_CARD: (this.result_json.HOME_TEAM.YELLOW_CARD || 0).toString(),
             RED_CARD: (this.result_json.HOME_TEAM.RED_CARD || 0).toString(),
             SHOTS: (this.result_json.HOME_TEAM.SHOTS || 0).toString(),
+          },
+          AWAY_TEAM: {
+            TEAM_NAME: this.getAwayTeamName(),
+            TEAM_ID: this.getAwayTeamId(),
+            BALL_POSSESSION: (100 - parseFloat(this.homePoss || '0')).toFixed(2)
           }
         }
       };
@@ -1108,6 +1113,11 @@ export class SummaryFootballPage implements AfterViewInit {
         ...baseInput,
         Football: {
           LEAGUE_FIXTURE_ID: fixtureId,
+          HOME_TEAM: {
+            TEAM_NAME: this.getHomeTeamName(),
+            TEAM_ID: this.getHomeTeamId(),
+            BALL_POSSESSION: (100 - parseFloat(this.awayPoss || '0')).toFixed(2)
+          },
           AWAY_TEAM: {
             TEAM_NAME: awayTeamName,
             TEAM_ID: awayTeamId,
@@ -1526,7 +1536,7 @@ export class SummaryFootballPage implements AfterViewInit {
             DESCRIPTION: footballResultStats.DESCRIPTION || '',
             WINNER_ID: footballResultStats.WINNER_ID || '',
             LOSER_ID: loserId || '',
-            RESULT_STATUS: data.resultStatus || '0'
+            RESULT_STATUS: data.resultStatus || 0
           }
         }
       };
@@ -1725,6 +1735,34 @@ export class SummaryFootballPage implements AfterViewInit {
     awayLogo.onload = () => {
       checkImagesLoaded();
     };
+  }
+
+  onHomePossessionChange(): void {
+    const homeValue = parseFloat(this.homePoss);
+    if (!isNaN(homeValue) && homeValue >= 0 && homeValue <= 100) {
+      this.awayPoss = (100 - homeValue).toFixed(2);
+      if (this.result_json && this.result_json.HOME_TEAM && this.result_json.AWAY_TEAM) {
+        this.result_json.HOME_TEAM.BALL_POSSESSION = this.homePoss;
+        this.result_json.AWAY_TEAM.BALL_POSSESSION = this.awayPoss;
+      }
+      if (this.doughnutCanvas && this.doughnutCanvas.nativeElement) {
+        setTimeout(() => this.drawDoughnutChart(), 100);
+      }
+    }
+  }
+
+  onAwayPossessionChange(): void {
+    const awayValue = parseFloat(this.awayPoss);
+    if (!isNaN(awayValue) && awayValue >= 0 && awayValue <= 100) {
+      this.homePoss = (100 - awayValue).toFixed(2);
+      if (this.result_json && this.result_json.HOME_TEAM && this.result_json.AWAY_TEAM) {
+        this.result_json.HOME_TEAM.BALL_POSSESSION = this.homePoss;
+        this.result_json.AWAY_TEAM.BALL_POSSESSION = this.awayPoss;
+      }
+      if (this.doughnutCanvas && this.doughnutCanvas.nativeElement) {
+        setTimeout(() => this.drawDoughnutChart(), 100);
+      }
+    }
   }
 
   // Utility Methods - Updated for conditional access based on flow type

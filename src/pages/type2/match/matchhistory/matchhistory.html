@@ -13,17 +13,6 @@
           </button>
         </ion-col>
       </ion-row>
-      <ion-row class="sub-container rows-allign2">
-          <ion-col col-1 style="text-align: center; margin-top: 12px; padding: 0px">
-                  <ion-icon name="ios-search"></ion-icon>
-          </ion-col>
-          <ion-col col-11 class="search-bar">
-              <ion-searchbar class="search" placeholder="Search by Title, Activity etc"
-                    (ionInput)="getFilterItems($event)" autocorrect="off"
-                    showCanelButton="focus" animated>
-              </ion-searchbar>
-          </ion-col>
-      </ion-row>
     </ion-card-content>
   </ion-card>
 </div>
@@ -107,9 +96,6 @@
             <div>
               <ion-row class="sub-container rows-allign2">
                 <ion-col col-1 style="text-align: center; margin-top: 12px; padding: 0px">
-                  <!-- <button>
-                    <ion-icon name="ios-search"></ion-icon>
-                </button> -->
                   <ion-icon name="ios-search"></ion-icon>
                 </ion-col>
                 <ion-col col-11 class="search-bar">
@@ -199,7 +185,7 @@
                 </ion-col>
                 <ion-col col-11 class="search-bar">
                   <ion-searchbar placeholder="Search by Host, Title, Activity" id="customsearchbar" autocorrect="off"
-                    (ionInput)="getTeamItems($event)" showCanelButton="focus"></ion-searchbar>
+                    (ionInput)="getFilterEvents($event)" showCanelButton="focus"></ion-searchbar>
                 </ion-col>
               </ion-row>
             </div>
@@ -208,50 +194,40 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-row *ngIf="filteredteams.length > 0">
-      <ion-col col-12 style="padding-left: 10px" *ngFor="let team of filteredteams">
+    <ion-row *ngIf="filteredMatchlist.length > 0">
+      <ion-col col-12 style="padding-left: 10px" *ngFor="let match of filteredMatchlist">
         <div class="all border-left-style"></div>
-        <ion-card (click)="gotoTeamdetailsPage(team)">
+        <ion-card (click)="gotoMatchdetailsPage(match)">
           <ion-card-header class="Location-head">
             <ion-row>
-              <ion-col col-auto *ngIf="team.logo_url"> 
-                <img [src]="team.logo_url" alt="{{team.teamName}} Logo" class="team-logo"> 
-              </ion-col> 
               <ion-col>
-                <ion-row>
-                  <ion-col col-11>
-                    <p class="name">{{team.teamName | titlecase}}</p>
-                  </ion-col>
-                  <ion-col col-1 style="text-align: right; padding-top: 8px;">
-                    <ion-icon *ngIf="team.teamVisibility == 1" style="font-size: 18px; color: #2b92bb"
-                      name="lock"></ion-icon>
-                  </ion-col>
-                </ion-row>
+                <p class="name">{{match.MatchTitle | titlecase}}</p>
               </ion-col>
             </ion-row>
           </ion-card-header>
           <ion-card-content style="color: #c5b495">
             <ion-row>
-              <ion-col col-6>
-                <p class="card-text">
-                  <span>{{team.ageGroup}}</span>
-                </p>
-                <p class="card-text">
-                  <span>{{team.club.ClubName}} </span>
-                </p>
-                <p class="card-text">
-                  <span>{{team.teamDescription}}</span>
+              <ion-col col-6 style="margin-bottom: -15px;">
+                <p class="datetext">
+                  <span>{{match.MatchStartDate}}</span>
                 </p>
               </ion-col>
-              <ion-col col-6>
+              <ion-col col-6 style="margin-bottom: -15px;" class="align-right">
                 <p class="card-text">
-                  <span>{{team.activity.ActivityName}}</span>
+                  <span>{{match.ActivityName}}</span>
                 </p>
-
-                <div class="flex-style">
-                  <div></div>
-                  <span style="margin-top: 4px"> </span>
-                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row style="margin-bottom: -12px">
+              <ion-col col-7>
+                <p class="card-text">
+                  <span>{{match.homeUserName}} vs {{match.awayUserName}}</span>
+                </p>
+              </ion-col>
+              <ion-col col-5 class="align-right">
+                <p class="card-text">
+                  <span>{{match.VenueName}}</span>
+                </p>
               </ion-col>
             </ion-row>
           </ion-card-content>

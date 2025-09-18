@@ -69,6 +69,9 @@ page-summary_football {
   .team-logo-container {
     position: relative;
     margin: 0 5px;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
 
     .team-logo {
       width: 60px;
@@ -107,7 +110,7 @@ page-summary_football {
 
     .scorers {
       margin-top: 8px;
-      
+
       .scorer-info {
         font-size: 10px;
         color: #7f8c8d;
@@ -208,50 +211,50 @@ page-summary_football {
 
   .possession-section {
     margin-bottom: 24px;
-    
+
     .possession-header {
       text-align: center;
       margin-bottom: 16px;
-      
+
       h5 {
         margin: 0;
         color: #2c3e50;
         font-weight: 600;
       }
     }
-    
+
     .possession-chart {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 20px;
-      
+
       .possession-item {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 8px;
         cursor: pointer;
-        
+
         .possession-value {
           font-size: 20px;
           font-weight: 600;
-          
+
           &.home {
             color: #27ae60;
           }
-          
+
           &.away {
             color: #e74c3c;
           }
         }
-        
+
         .edit-icon {
           color: #7f8c8d;
           font-size: 16px;
         }
       }
-      
+
       canvas {
         max-width: 200px;
         max-height: 200px;

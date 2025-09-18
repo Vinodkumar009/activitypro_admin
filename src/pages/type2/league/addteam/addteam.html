@@ -23,14 +23,17 @@
     </ion-list-header>
   </ion-list>
 
-  <ion-list>
+  <ion-list *ngIf="filteredteams.length > 0">
     <ion-item *ngFor="let team of filteredteams;let i = index">
-      <ion-label>{{team.teamName}}
-      </ion-label>
-      <ion-checkbox [(ngModel)]="team.isSelect" [disabled]="team.isAlreadExisted"
+      <ion-label>{{team.teamName}}</ion-label>
+      <ion-checkbox [(ngModel)]="team.isSelected" [disabled]="team.isAlreadyExisted"
         (ionChange)="selectTeam(team)"></ion-checkbox>
     </ion-item>
   </ion-list>
+
+  <ion-item *ngIf="filteredteams.length === 0" class="no-data">
+    <ion-label>No teams found</ion-label>
+  </ion-item>
 
 
 </ion-content>
