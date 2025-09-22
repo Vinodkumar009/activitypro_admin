@@ -31,6 +31,9 @@ export class AttendanceUpdate{
   attendees: AttendeesInfo[];
   ActionType: number; // 0 for insert, 1 for update, 2 for cancel
   cancel_reason?: string; // Reason for cancellation if ActionType is 2
+  AppType?:number;
+  DeviceType?:number;
+  DeviceId?:string;
 }
 export class SchoolUpdateAttendanceInput extends CommonIdFields{
   session_postgre_fields?: CommonIdFields;

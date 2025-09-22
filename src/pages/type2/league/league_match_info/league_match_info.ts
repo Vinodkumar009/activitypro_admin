@@ -668,6 +668,7 @@ export class LeagueMatchInfoPage {
       const email_modal = {
         module_info: league_team_info,
         email_users: member_list,
+        subject:this.activeType ? `${this.selectedHomeTeamText}: ` : `${this.selectedAwayTeamText}: `, 
         type: ModuleTypeForEmail.LEAGUE_TEAM
       }
       this.navCtrl.push("MailToMemberByAdminPage", { email_modal });
@@ -910,6 +911,10 @@ export class LeagueMatchInfoPage {
   }
 
 
+  //edit league match
+  EditLeague(){
+    this.navCtrl.push("UpdateleaguematchPage", { match:this.matchObj })
+  }
 
   removeLeagueMatch() {
     const commonInput = {

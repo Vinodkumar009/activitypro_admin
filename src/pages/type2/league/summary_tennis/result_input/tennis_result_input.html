@@ -29,13 +29,13 @@
       <div class="winner-options">
         <div class="team-option" [class.selected]="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)" 
              [class.disabled]="!isEditable"
-             (click)="isEditable && (selectedWinner = homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)">
+             (click)="isEditable && (selectedWinner = homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id); $event.stopPropagation()">
           <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)"></ion-icon>
           <span>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</span>
         </div>
         <div class="team-option" [class.selected]="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)" 
              [class.disabled]="!isEditable"
-             (click)="isEditable && (selectedWinner = awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)">
+             (click)="isEditable && (selectedWinner = awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id); $event.stopPropagation()">
           <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)"></ion-icon>
           <span>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</span>
         </div>
@@ -48,16 +48,22 @@
         <ion-icon name="flag" color="primary"></ion-icon>
         <span>Match Status</span>
       </div>
-      <div class="dropdown-container">
-        <ion-select [(ngModel)]="selectedResultStatus" 
-                    [disabled]="!isEditable"
-                    (ionChange)="onStatusClick($event)"
-                    interface="popover"
-                    placeholder="Select status">
-          <ion-option *ngFor="let status of resultStatusList" [value]="status">
-            {{status.status}}
-          </ion-option>
-        </ion-select>
+      <div class="custom-dropdown">
+        <div class="dropdown-trigger" 
+             [class.disabled]="!isEditable"
+             (click)="isEditable && toggleStatusDropdown()">
+          <span class="selected-text">{{selectedResultStatus?.status || 'Select status'}}</span>
+          <ion-icon name="chevron-down" [class.rotated]="showStatusDropdown"></ion-icon>
+        </div>
+        <div class="dropdown-options" *ngIf="showStatusDropdown">
+          <div *ngFor="let status of resultStatusList" 
+               class="dropdown-option" 
+               [class.selected]="selectedResultStatus?.id === status.id"
+               (click)="selectStatus(status)">
+            <span>{{status.status}}</span>
+            <ion-icon name="checkmark" *ngIf="selectedResultStatus?.id === status.id"></ion-icon>
+          </div>
+        </div>
       </div>
     </div>
 

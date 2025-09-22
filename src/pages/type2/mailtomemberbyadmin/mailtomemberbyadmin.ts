@@ -85,6 +85,7 @@ export class MailToMemberByAdminPage {
       }
     }else if (this.module_obj.type == ModuleTypeForEmail.LEAGUE || this.module_obj.type == ModuleTypeForEmail.LEAGUE_TEAM) {
       this.emailObj.Message = "Dear All,";
+      this.emailObj.Subject = this.module_obj.subject;
       if (this.module_obj.email_users.length > 0) {
         this.numberOfPeople = this.module_obj.email_users.length + " recipients";
       }
@@ -258,7 +259,8 @@ export class EmailModalForModule{
     module_booking_start_time:string;  
   }
   email_users:EmailUsers[];
-  type:number;                           
+  type:number;         
+  subject?:string;                  
 }
 
 export class EmailUsers{

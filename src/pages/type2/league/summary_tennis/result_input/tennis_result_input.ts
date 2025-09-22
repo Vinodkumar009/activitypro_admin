@@ -51,6 +51,7 @@ export class TennisResultInputPage {
   selectedResultStatus: ResultStatusModel | null = null;
   isLoadingStatuses: boolean = false;
   showMatchWinner: boolean = false; // 🏆 Show winner card when status is WIN
+  showStatusDropdown: boolean = false;
   activityId: string;
   activityCode: number;
   getResultStatusByActivityInput: any = {};
@@ -178,6 +179,15 @@ export class TennisResultInputPage {
     this.selectedResultStatus = status;
     this.resultStatus = status.id.toString();
     this.showMatchWinner = status.status === 'WIN';
+  }
+
+  toggleStatusDropdown(): void {
+    this.showStatusDropdown = !this.showStatusDropdown;
+  }
+
+  selectStatus(status: ResultStatusModel): void {
+    this.onStatusClick(status);
+    this.showStatusDropdown = false;
   }
 
   selectWinner(teamId: string): void {
