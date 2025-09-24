@@ -165,7 +165,6 @@
     <ion-row *ngIf="filteredteams.length > 0">
       <ion-col col-12 style="padding-left: 10px" *ngFor="let team of filteredteams">
         <div class="all border-left-style"></div>
-
         <ion-card (click)="gotoTeamdetailsPage(team)">
           <ion-card-header class="Location-head">
             <ion-row>
@@ -192,6 +191,7 @@
                   <span>{{team.ageGroup}}</span>
                 </p>
                 <p class="card-text">
+                  <span><ion-icon class="smalltext" name="pin" style="color: #2b92bb"></ion-icon></span>
                   <span>{{team.club.ClubName}} </span>
                 </p>
                 <p class="card-text">
@@ -202,8 +202,6 @@
                 <p class="card-text">
                   <span>{{team.activity.ActivityName}}</span>
                 </p>
-
-
                 <div class="flex-style">
                   <div>
                     <!-- <ion-icon style="font-size: 18px; color: #2b92bb"

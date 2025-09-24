@@ -40,7 +40,7 @@
           <ion-item class="player-select">
             <ion-label stacked>Select Player</ion-label>
             <ion-select [(ngModel)]="selectedPlayer[idx]" (ionChange)="onPlayerSelect(idx)"
-              placeholder="Choose a player" interface="popover">
+              placeholder="Choose a player">
               <ion-option *ngFor="let player of participantData" [value]="player.user.Id">
                 {{getPlayerDisplayName(player)}}
               </ion-option>

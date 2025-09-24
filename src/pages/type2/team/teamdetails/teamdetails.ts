@@ -48,7 +48,6 @@ export class TeamdetailsPage {
 
   //**Team related stuff(edit,delete) start from line no 312*/
   searchTerm: string;
-
   activeType: boolean = true;
   invitedType: boolean = true;
   playerType: boolean = true;
@@ -134,8 +133,7 @@ export class TeamdetailsPage {
       if (val.$key != "") {
 
 
-        this.parentClubKey =
-          val.UserInfo[0].ParentClubKey;
+        this.parentClubKey = val.UserInfo[0].ParentClubKey;
 
         this.getStaffInput.ParentClubKey =
           val.UserInfo[0].ParentClubKey;
@@ -202,7 +200,6 @@ export class TeamdetailsPage {
           for (const gqlError of error.graphQLErrors) {
             console.error("Error Message:", gqlError.message);
             console.error("Error Extensions:", gqlError.extensions);
-
           }
         }
         if (error.networkError) {
@@ -831,7 +828,7 @@ export class TeamdetailsPage {
   addRoleforPlayerandStaff(member) {
     console.log("TEAM OBJ is", this.team);
     this.navCtrl.push("AddroleforplayernstaffPage", {
-      "team": this.team,
+      "team": this.teamsForParentClub,
       "memberId": member.id,
       "currentRole": member.teamrole
     });

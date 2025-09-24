@@ -25,23 +25,27 @@
       </ion-item>
       <ion-item class="event_title_img">
         <ion-row>
-          <ion-col col-11 style="margin:auto">
+          <ion-col col-10 style="margin:auto">
             <p class="para">Team Logo</p>
-            <img *ngIf="parentClubTeamEdit.teamDetailsInput.logoUrl" [src]="parentClubTeamEdit.teamDetailsInput.logoUrl"
-              style="width: 200px; height: 100px;">
+            <!-- <img *ngIf="parentClubTeamEdit.teamDetailsInput.logoUrl" [src]="parentClubTeamEdit.teamDetailsInput.logoUrl"
+              style="width: 200px; height: 100px; cursor: pointer;"
+              (click)="showImagePopup(parentClubTeamEdit.teamDetailsInput.logoUrl)"> -->
           </ion-col>
-          <ion-col col-1 style="margin:auto">
-            <button ion-button icon-only clear (click)="selectTeamLogo()">
-              <img src="assets/images/upload.svg" class="add_icon">
-            </button>
+          <ion-col col-2 style="margin:auto">
+            <!-- <button ion-button icon-only clear (click)="selectTeamLogo()"> -->
+            <img *ngIf="!parentClubTeamEdit.teamDetailsInput.logoUrl" src="assets/images/upload.svg" class="add_icon" (click)="selectTeamLogo()">
+            <img *ngIf="parentClubTeamEdit.teamDetailsInput.logo_url" [src]="parentClubTeamEdit.teamDetailsInput.logo_url"
+              class="add_icon"
+              (click)="showImagePopup(parentClubTeamEdit.teamDetailsInput.logoUrl)">
+            <!-- </button> -->
           </ion-col>
         </ion-row>
       </ion-item>
 
       <ion-item>
         <ion-label>Venue</ion-label>
-        <ion-select (ionChange)=" getActivity()" [(ngModel)]="venueKey">
-          <ion-option *ngFor="let club of clubVenues" value="{{club.ClubKey}}">
+        <ion-select (ionChange)="getActivity()" [(ngModel)]="this.parentClubTeamEdit.teamDetailsInput.venueKey">
+          <ion-option *ngFor="let club of clubVenues" value="{{club.FirebaseId}}">
             {{club.ClubName}}</ion-option>
         </ion-select>
       </ion-item>
@@ -104,6 +108,16 @@
         </ion-item>
       </div>
     </ion-card>
+  </div>
+
+  <!-- Image Popup -->
+  <div class="image-popup-overlay" *ngIf="isShowImagePopup" (click)="closeImagePopup()">
+    <div class="image-popup-container" (click)="$event.stopPropagation()">
+      <img [src]="popupImageUrl" class="popup-image">
+      <button ion-button clear class="close-btn" (click)="closeImagePopup()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
   </div>
 </ion-content>
 

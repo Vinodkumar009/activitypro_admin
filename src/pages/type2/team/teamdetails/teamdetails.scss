@@ -11,6 +11,23 @@ page-teamdetails {
     
   }
 
+  .action_btns_div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    top: 35%;
+    left: 50%;
+    transform: translate(-30%, -20%);
+    button{
+      ion-icon{
+       color: #2b92bb !important;
+       font-size: 1.4em !important;
+      }
+    }
+  }
+
   .cardrow {
     div {
       display: flex;
@@ -19,7 +36,7 @@ page-teamdetails {
     }
 
     ion-icon {
-      font-size: 1.5em !important;
+      font-size: 18px !important;
       color: #2b92bb !important;
     }
   }
@@ -118,7 +135,7 @@ page-teamdetails {
   .cardStyle {
     background: #FFFFFF;
     // border-radius: 4px;
-    height: 50px;
+    height: 60px;
     margin-right: 10px;
     margin-left: 10px;
     margin-bottom: 0px;
@@ -130,21 +147,20 @@ page-teamdetails {
 
   }
 
-  .applyPadding {
+  .team_left_card {
+    margin: auto;
     padding-top: 18px;
     padding-bottom: 18px;
     padding-left: 16px;
     // color: rgba(0, 0, 0, 0.64);
   }
 
-  .margin-auto {
-    padding-top: 19px;
-    padding-bottom: 19px;
+  .team_right_card {
+    padding-top: 18px;
+    padding-bottom: 18px;
     padding-right: 11px;
     text-align: right;
-    // font-style:italic;
-    // color: rgba(0, 0, 0, 0.64);
-    //font-family: 'Raleway';
+    margin: auto;
   }
 
   /*Css for searchbar*/
@@ -389,7 +405,7 @@ page-teamdetails {
 
   .smalltext {
     margin: 5px 0px;
-    padding: 0 0 0 5px;
+    padding: 0 0 0 0px;
     font-size: 16px;
     color: #154766;
   }

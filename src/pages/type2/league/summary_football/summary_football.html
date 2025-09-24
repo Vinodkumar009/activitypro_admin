@@ -22,7 +22,7 @@
         <span>{{matchDate}}</span>
       </div>
       <div class="detail-item" *ngIf="matchLocation">
-        <ion-icon name="location" color="primary"></ion-icon>
+        <ion-icon name="pin" color="primary"></ion-icon>
         <span>{{matchLocation}}</span>
       </div>
     </div>
@@ -309,7 +309,10 @@
 <div class="custom-popup" *ngIf="isHomeStatsPopupVisible && result_json">
   <div class="popup-container">
     <div class="popup-header">
-      <h3>Update {{homeTeamName}} Stats</h3>
+      <p>
+        <span>Update</span>
+        <span style="font-weight: bold; font-size: 20px;">{{homeTeamName}}</span>
+      </p>
       <button class="close-button" (click)="isHomeStatsPopupVisible=false">×</button>
     </div>
 
@@ -369,9 +372,7 @@
     <div class="popup-header">
       <p>
         <span>Update</span>
-        <span style="font-weight: bold; font-size: 20px;">
-          {{awayTeamName}}
-        </span>
+        <span style="font-weight: bold; font-size: 20px;">{{awayTeamName}}</span>
       </p>
       <button class="close-button" (click)="isAwayStatsPopupVisible=false">×</button>
     </div>

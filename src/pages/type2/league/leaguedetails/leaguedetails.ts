@@ -25,6 +25,7 @@ import { LeagueMatch } from "../models/location.model";
 import { API } from "../../../../shared/constants/api_constants";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { ParticipantModel } from "../../match/matchdetails/matchdetails";
+import { MatchType } from "../../../../shared/utility/enums";
 
 /**
  * Generated class for the LeaguedetailsPage page.
@@ -604,6 +605,7 @@ export class LeaguedetailsPage {
   chatConv(team) {
     this.navCtrl.push("TeamchatPage", { teams: team })
   }
+  
   gotoEditLeague() {
     this.navCtrl.push("EditleaguePage", { "individualleague": this.individualLeague });
     console.log("editLeague");
@@ -738,10 +740,16 @@ export class LeaguedetailsPage {
         0
       ).subscribe((response) => {
         this.commonService.hideLoader();
-        const message = actionType === 1 ? "Member removed successfully" : "Member withdrawal successfully";
+        let message: string = '';
+        if(this.individualLeague.league_type === MatchType.TEAM && this.leagueStanding.length === 1){
+          message = "Team removed from the competition";
+        }else{
+          message = actionType === 1 ? "Member removed successfully" : "Member withdrawal successfully";
+        }
+       
         this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
         // this.weeklySessionDetails();
-        this.individualLeague.league_type_text != 'Team' ? this.getLeagueParticipants() : this.teamStanding();
+        this.individualLeague.league_type !== MatchType.TEAM ? this.getLeagueParticipants() : this.teamStanding();
         this.getLeagueDetails();
       }, (err) => {
         this.commonService.hideLoader();
@@ -876,11 +884,10 @@ export class LeaguedetailsPage {
   }
 
   openTeamActions(team: LeagueStandingModel) {
-    this.navCtrl.push("LeaguematchdetailsPage");
+    //this.navCtrl.push("LeaguematchdetailsPage");
     //this.navCtrl.push("UpdateleaguematchPage", { leagueId: this.individualLeague.id });
 
     let actionSheet = this.actionSheetCtrl.create({
-
       buttons: [
         {
           text: "View Team",

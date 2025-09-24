@@ -20,7 +20,7 @@
 <ion-content>
   <div style="background-color: #f2f5fa">
     <ion-row *ngIf="individualLeague">
-      <ion-col col-7>
+      <ion-col col-9>
         <ion-row class="cardrow">
           <p style="font-weight: 600" class="largetext">
             {{individualLeague?.league_name}}
@@ -40,31 +40,21 @@
           </div>
         </ion-row>
       </ion-col>
-      <ion-col col-5>
-        <div
-          style="position: absolute; top: 0px; right: 1px; display: flex; align-items: center; padding-right: 9px; padding-top: 4px;">
+      <ion-col col-3 text-right>
+        <div style="display: flex; align-items: center;">
           <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
             [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
           <p class="smalltext">{{individualLeague?.league_visibility == 0 ? "Public" : "Private"}}</p>
         </div>
-        <!-- <div
-          style="align-items: center; position: absolute; top: 30px; right: 1px; display: flex; align-items: center; padding-right: 9px; padding-top: 4px;">
-          <button ion-fab mini style="background-color: #2b92bb !important; color: white !important;"
-            (click)="gotoEditLeague()">
+
+        <div class="action_btns_div">
+          <button ion-button clear (click)="gotoEditLeague()">
             <ion-icon name="create"></ion-icon>
           </button>
-        </div> -->
-        
-        <div>
-          <!-- <ion-fab right bottom>
-            <button ion-fab mini style="background-color: #2b92bb; color: white !important;" (click)="removeLeague()">
-              <ion-icon name="trash"></ion-icon>
-            </button>
-          </ion-fab> -->
-          <button class="deletebtn" ion-button clear (click)="removeLeague()">
+
+          <button ion-button clear (click)="removeLeague()">
             <ion-icon name="trash"></ion-icon>
           </button>
-          
         </div>
       </ion-col>
     </ion-row>
@@ -274,7 +264,7 @@
             </span>
           </div>
           <div class="visibility-info">
-            <ion-icon [name]="mat.match_visibility==0?'globe':'lock-closed'" 
+            <ion-icon [name]="mat.match_visibility==0?'globe':'lock'" 
                       [color]="mat.match_visibility==0?'success':'medium'"></ion-icon>
             <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
           </div>

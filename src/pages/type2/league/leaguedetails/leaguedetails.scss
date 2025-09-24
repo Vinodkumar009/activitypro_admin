@@ -53,20 +53,36 @@ page-leaguedetails {
     color: #154766;
   }
 
-  .deletebtn{
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    padding: 5px;
+  .action_btns_div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
-    right: 0px;
-    bottom: 10px;
-    //background: none;
-    color: #2b92bb !important;    
-    ion-icon{
-      font-size: 1.5em;
+    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -20%);
+    button{
+      ion-icon{
+       color: #2b92bb !important;
+       font-size: 1.5em !important;
+      }
     }
   }
+  // .deletebtn{
+  //   border-radius: 50%;
+  //   width: 50px;
+  //   height: 50px;
+  //   padding: 5px;
+  //   position: absolute;
+  //   right: 0px;
+  //   bottom: 10px;
+  //   //background: none;
+  //   color: #2b92bb !important;    
+  //   ion-icon{
+  //     font-size: 1.5em;
+  //   }
+  // }
 
   .smalltext {
     // margin: 5px 0px;
@@ -989,12 +1005,7 @@ page-leaguedetails {
     margin: 0;
   }
 
-  .nowrap-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    /* Optional: Adds ellipsis (...) if the text overflows */
-  }
+  
 
   .margin_0 {
     margin: 0px;

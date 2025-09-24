@@ -19,18 +19,18 @@
     </ion-item>
     
     <ion-item>
-      <ion-label>Activity</ion-label>
-      <ion-select [(ngModel)]="league.activity.ActivityCode" disabled="true">
-        <ion-option *ngFor="let activity of activities" value="{{activity.ActivityCode}}">{{activity.ActivityName}}
-        </ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
       <ion-label>Hosted By</ion-label>
       <ion-select (ionChange)="getActivity()" [(ngModel)]="venueKey">
         <ion-option *ngFor="let club of clubVenues" value="{{club.FirebaseId}}">
           {{club.ClubName}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Activity</ion-label>
+      <ion-select [(ngModel)]="league.activity.ActivityCode" disabled="true">
+        <ion-option *ngFor="let activity of activities" value="{{activity.ActivityCode}}">{{activity.ActivityName}}
+        </ion-option>
       </ion-select>
     </ion-item>
 
@@ -53,14 +53,13 @@
     </ion-item>
 
     <ion-item *ngIf="league.location_type===2">
-      <ion-label>Location</ion-label>
+      <ion-label>Location Type</ion-label>
       <ion-select [(ngModel)]="selectedLocation">
         <ion-option *ngFor="let location of locations" value="{{location.id}}">{{location.name}}</ion-option>
       </ion-select>
     </ion-item>
    
     <ion-item *ngIf="league.location_type===3">
-
       <ion-label>School</ion-label>
       <ion-select [(ngModel)]="selectedSchoolLocation">
         <ion-option *ngFor="let scl of schools" value="{{scl.id}}">{{scl.school_name}}</ion-option>
