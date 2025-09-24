@@ -310,13 +310,12 @@ export class LeagueMatchInfoPage {
   // 📊 Load all participants for accurate counting
   loadAllParticipantsForCounts(): Promise<void> {
     return new Promise((resolve) => {
-      let teamId: string | null = null;
-      if (this.selectedTeam) {
-        teamId = this.selectedTeam.parentclubteam.id;
-      } else if (this.activeType && this.matchObj.home_team_id !== null) {
-        teamId = this.matchObj.home_team_id;
-      } else if (!this.activeType && this.matchObj.away_team_id !== null) {
-        teamId = this.matchObj.away_team_id;
+      const teamId = this.activeType ? this.matchObj.home_team_id : this.matchObj.away_team_id;
+
+      if (!teamId) {
+        this.allParticipants = [];
+        resolve();
+        return;
       }
 
       const input = { ...this.leagueMatchParticipantInput };
@@ -668,7 +667,7 @@ export class LeagueMatchInfoPage {
       const email_modal = {
         module_info: league_team_info,
         email_users: member_list,
-        subject:this.activeType ? `${this.selectedHomeTeamText}: ` : `${this.selectedAwayTeamText}: `, 
+        subject: this.activeType ? `${this.selectedHomeTeamText}: ` : `${this.selectedAwayTeamText}: `,
         type: ModuleTypeForEmail.LEAGUE_TEAM
       }
       this.navCtrl.push("MailToMemberByAdminPage", { email_modal });
@@ -736,17 +735,14 @@ export class LeagueMatchInfoPage {
     this.activeType = val !== undefined ? val : !this.activeType;
     this.getLeagueParticipantForMatch();
 
-    if (this.activeType && this.matchObj.home_team_id !== null) {
+    // Load participants for the selected tab
+    const teamId = this.activeType ? this.matchObj.home_team_id : this.matchObj.away_team_id;
+    if (teamId !== null) {
       this.loadAllParticipantsForCounts().then(() => {
-        this.getLeagueMatchParticipant(1);
-      });
-    } else if (!this.activeType && this.matchObj.away_team_id !== null) {
-      this.loadAllParticipantsForCounts().then(() => {
-        this.getLeagueMatchParticipant(1);
+        this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
       });
     }
     this.getFilteredSections();
-
   }
 
   //to fetch list of avilable teams
@@ -771,22 +767,31 @@ export class LeagueMatchInfoPage {
     this.httpService.post(`${API.Update_League_Fixture}`, this.UpdateLeagueFixtureInput).subscribe((res: any) => {
       if (res) {
         this.commonService.hideLoader();
-        var res = res.message;
+        var response = res.message;
 
-        // Only update frontend variables on successful API call
+        // Update frontend variables and match data on successful API call
         if (isHomeTeam !== undefined && teamName) {
           if (isHomeTeam) {
             this.selectedHomeTeamText = teamName;
+            this.matchObj.home_team_id = this.selectedTeam.parentclubteam.id; // Update match data
           } else {
             this.selectedAwayTeamText = teamName;
+            this.matchObj.away_team_id = this.selectedTeam.parentclubteam.id; // Update match data
           }
         }
 
-        this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
-        // this.sections.forEach(section => section.items = []); // Clear the sections array
-        this.loadAllParticipantsForCounts().then(() => {
-          this.getLeagueMatchParticipant(1);
-        });
+        this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
+
+        // Only refresh data if we're on the tab that was just updated
+        const shouldRefresh = (isHomeTeam && this.activeType) || (!isHomeTeam && !this.activeType);
+        if (shouldRefresh) {
+          this.loadAllParticipantsForCounts().then(() => {
+            this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
+          });
+        }
+      } else {
+        this.commonService.hideLoader();
+        this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error);
       }
     },
       (err) => {
@@ -911,10 +916,6 @@ export class LeagueMatchInfoPage {
   }
 
 
-  //edit league match
-  EditLeague(){
-    this.navCtrl.push("UpdateleaguematchPage", { match:this.matchObj })
-  }
 
   removeLeagueMatch() {
     const commonInput = {
@@ -936,40 +937,42 @@ export class LeagueMatchInfoPage {
   getInviteStatusDisplay(inviteStatus: number, inviteStatusText?: string): { text: string; cssClass: string } {
     // Handle null/undefined cases
     if (inviteStatus === null || inviteStatus === undefined) {
-      return { text: inviteStatusText || 'Pending', cssClass: 'status-other' };
+      return { text: inviteStatusText || 'Accepted', cssClass: 'status-other' };
     }
 
-
-
     // Playing status (green) - for Accepted (1) and AdminAccepted (4)
-    if (inviteStatus === LeaguePlayerInviteStatus.Accepted || inviteStatus === LeaguePlayerInviteStatus.AdminAccepted) {
-
+    if (inviteStatus === LeaguePlayerInviteStatus.Accepted) {
       return { text: 'Playing', cssClass: 'status-playing' };
+    }
+    if (inviteStatus === LeaguePlayerInviteStatus.AdminAccepted) {
+      return { text: 'Coach Accepted', cssClass: 'status-playing' };
     }
 
     // Not Playing status (red) - for Rejected (2) and AdminRejected (5)
-    if (inviteStatus === LeaguePlayerInviteStatus.Declined || inviteStatus === LeaguePlayerInviteStatus.AdminDeclined) {
-
+    if (inviteStatus === LeaguePlayerInviteStatus.Declined) {
       return { text: 'Declined', cssClass: 'status-not-playing' };
     }
-
-    if (inviteStatus === LeaguePlayerInviteStatus.Maybe || inviteStatus === LeaguePlayerInviteStatus.AdminMaybe) {
-      return { text: 'Maybe', cssClass: 'status-maybe' };
+    if (inviteStatus === LeaguePlayerInviteStatus.AdminDeclined) {
+      return { text: 'Coach Declined', cssClass: 'status-not-playing' };
     }
 
-    // All other statuses (orange) - Pending (0), Cancelled (3), Maybe (8), etc.
-    // Use the text from API for display, fallback to enum mapping if needed
+    // Maybe status
+    if (inviteStatus === LeaguePlayerInviteStatus.Maybe) {
+      return { text: 'Maybe', cssClass: 'status-maybe' };
+    }
+    if (inviteStatus === LeaguePlayerInviteStatus.AdminMaybe) {
+      return { text: 'Coach Maybe', cssClass: 'status-maybe' };
+    }
+
+    // All other statuses (orange) - Pending (0), Cancelled (3), etc.
     const statusLabels = {
       [LeaguePlayerInviteStatus.Pending]: 'Pending',
       [LeaguePlayerInviteStatus.Cancelled]: 'Cancelled',
-      [LeaguePlayerInviteStatus.AdminCancelled]: 'AdminCancelled',
-      [LeaguePlayerInviteStatus.AdminDeleted]: 'AdminDeleted',
-      [LeaguePlayerInviteStatus.Maybe]: 'Maybe',
-      [LeaguePlayerInviteStatus.AdminMaybe]: 'AdminMaybe'
+      [LeaguePlayerInviteStatus.AdminCancelled]: 'Coach Cancelled',
+      [LeaguePlayerInviteStatus.AdminDeleted]: 'Coach Deleted'
     };
 
     const displayText = inviteStatusText || statusLabels[inviteStatus] || 'Unknown';
-
     return { text: displayText, cssClass: 'status-other' };
   }
 

@@ -44,8 +44,8 @@
 
       <ion-item>
         <ion-label>Venue</ion-label>
-        <ion-select (ionChange)="getActivity()" [(ngModel)]="this.parentClubTeamEdit.teamDetailsInput.venueKey">
-          <ion-option *ngFor="let club of clubVenues" value="{{club.FirebaseId}}">
+        <ion-select (ionChange)=" getActivity()" [(ngModel)]="venueKey">
+          <ion-option *ngFor="let club of clubVenues" value="{{club.ClubKey}}">
             {{club.ClubName}}</ion-option>
         </ion-select>
       </ion-item>

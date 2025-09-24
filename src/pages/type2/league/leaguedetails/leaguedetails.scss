@@ -69,6 +69,7 @@ page-leaguedetails {
       }
     }
   }
+
   // .deletebtn{
   //   border-radius: 50%;
   //   width: 50px;
@@ -818,7 +819,6 @@ page-leaguedetails {
         }
       }
     }
-
     .visibility-info {
       display: flex;
       align-items: center;
@@ -1005,7 +1005,12 @@ page-leaguedetails {
     margin: 0;
   }
 
-  
+  .nowrap-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Optional: Adds ellipsis (...) if the text overflows */
+  }
 
   .margin_0 {
     margin: 0px;

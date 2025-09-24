@@ -26,7 +26,6 @@ import { API } from "../../../../shared/constants/api_constants";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { ParticipantModel } from "../../match/matchdetails/matchdetails";
 import { MatchType } from "../../../../shared/utility/enums";
-
 /**
  * Generated class for the LeaguedetailsPage page.
  *
@@ -275,7 +274,12 @@ export class LeaguedetailsPage {
   };
 
   gotoLeagueMatchInfoPage(mat: LeagueMatch) {
+    // const match_data = {
+    //   ...mat
+    //   formatted_round: mat.formatted_round
+    // };
     this.navCtrl.push("LeagueMatchInfoPage", { "match": mat, "leagueId": this.individualLeague.id, "activityCode": this.individualLeague.activity.ActivityCode, "activityId": this.individualLeague.activity.Id, "existingteam": this.leagueStanding.map(league_team => league_team.parentclubteam) });
+    // this.navCtrl.push("LeagueMatchInfoPage", { "leagueId": this.individualLeague.id, "activityId": this.individualLeague.activity.Id, "existingteam": this.partcipantData });
   }
 
   goToDashboardMenuPage() {
@@ -605,7 +609,6 @@ export class LeaguedetailsPage {
   chatConv(team) {
     this.navCtrl.push("TeamchatPage", { teams: team })
   }
-  
   gotoEditLeague() {
     this.navCtrl.push("EditleaguePage", { "individualleague": this.individualLeague });
     console.log("editLeague");
@@ -888,6 +891,7 @@ export class LeaguedetailsPage {
     //this.navCtrl.push("UpdateleaguematchPage", { leagueId: this.individualLeague.id });
 
     let actionSheet = this.actionSheetCtrl.create({
+
       buttons: [
         {
           text: "View Team",
@@ -1094,10 +1098,10 @@ export class LeaguedetailsPage {
   }
 
   showMatchActionSheet(match: LeagueMatch) {
-    if(this.individualLeague.league_type === 3) {
+    if( this.individualLeague.league_type === 3) {
       //this.commonService.showMatchActionSheet(match, {
-          // onViewDetails: () => this.gotoLeagueMatchInfoPage(match),
-          // onEdit: () => this.navCtrl.push("UpdateleaguematchPage", { match }),
+          //onViewDetails: () => this.gotoLeagueMatchInfoPage(match),//this.gotoLeagueMatchInfoPage(match),
+          //onEdit: () => this.navCtrl.push("UpdateleaguematchPage", { match }),
           // onDelete: () => this.removeMatch(match),
           // onUpdateResult: () => this.updateResult(match)
       //});

@@ -48,6 +48,17 @@
         <ion-icon name="flag" color="primary"></ion-icon>
         <span>Match Status</span>
       </div>
+      <!-- <div class="dropdown-container">
+        <ion-select [(ngModel)]="selectedResultStatus" 
+                    [disabled]="!isEditable"
+                    (ionChange)="onStatusClick($event)"
+                    interface="popover"
+                    placeholder="Select status">
+          <ion-option *ngFor="let status of resultStatusList" [value]="status">
+            {{status.status}}
+          </ion-option>
+        </ion-select>
+      </div> -->
       <div class="custom-dropdown">
         <div class="dropdown-trigger" 
              [class.disabled]="!isEditable"

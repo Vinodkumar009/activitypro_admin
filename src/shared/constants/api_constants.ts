@@ -123,4 +123,5 @@ export const API = {
     UPDATE_RESULT_ENTITY: `LeagueResult/updateResultEntity`,
     GET_RESULT_STATUS_BY_ACTIVITY: `LeagueResult/getResultStatusByActivity`,
     UpdateLeagueMatchInviteStatus: `league/UpdateLeagueMatchInviteStatus`,
+    UPDATE_TEAM_MEMBER_FIELDS: `league/UpdateTeamMemberFields`
 }

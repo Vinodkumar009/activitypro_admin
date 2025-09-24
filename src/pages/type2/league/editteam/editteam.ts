@@ -4,10 +4,7 @@ import { Storage } from '@ionic/storage';
 import gql from 'graphql-tag';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { SharedServices } from '../../../services/sharedservice';
-import { ClubVenue } from '../models/venue.model';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
-import { Apollo } from 'apollo-angular';
-
 import { EditTeamsForParentClubModel, TeamsForParentClubModel } from '../models/team.model';
 import { Activity } from '../models/activity.model';
 import { GraphqlService } from '../../../../services/graphql.service';
@@ -37,7 +34,6 @@ export class EditteamPage {
   isShowImagePopup: boolean = false;
   arrow: boolean = false;
   popupImageUrl: string = "";
-
   parentClubTeamEdit: ParentClubTeamEdit = {
     ParentClubKey: "",
     MemberKey: "",
@@ -69,8 +65,10 @@ export class EditteamPage {
 
   types = [];
   editTeams: TeamsForParentClubModel;
+  // team:EditTeamsForParentClubModel;
   team: TeamsForParentClubModel;
   activities: Activity[] = [];
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -93,6 +91,7 @@ export class EditteamPage {
     this.parentClubTeamEdit.teamDetailsInput.venueKey = this.team.venueKey;
     this.parentClubTeamEdit.teamDetailsInput.logo_url = this.team.logo_url;
     this.publicType = this.team.teamVisibility == '0' ? true : false
+    console.log(this.team);
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
       if (val.$key != "") {
@@ -123,6 +122,7 @@ export class EditteamPage {
   }
 
   changeType(val) {
+
     this.publicType = val == 'public' ? true : false;
     this.parentClubTeamEdit.teamDetailsInput.teamVisibility = val == 'private' ? 1 : 0;
   }
@@ -214,6 +214,8 @@ export class EditteamPage {
       cluubIndex > -1 ? this.clubVenues[cluubIndex].ClubName : "";
   }
 
+
+  //getting venues
   getParentClubVenues() {
       const clubs_input = {
         parentclub_id: this.sharedservice.getPostgreParentClubId(),
@@ -265,7 +267,6 @@ export class EditteamPage {
         });
     }
 
-
   getActivity() {
     //this.commonService.showLoader("Please wait...");
     this.venueDetailsInput.VenueKey = this.parentClubTeamEdit.teamDetailsInput.venueKey;
@@ -315,7 +316,7 @@ export class EditteamPage {
   //Mutation for updating the team
   updateTeamDetails = async () => {
     console.log(JSON.stringify(this.parentClubTeamEdit));
-  
+
     this.parentClubTeamEdit.teamDetailsInput.teamVisibility = this.parentClubTeamEdit.teamDetailsInput.teamVisibility;
     this.parentClubTeamEdit.teamDetailsInput.teamDescription = this.team.teamDescription;
     this.parentClubTeamEdit.teamDetailsInput.teamName = this.team.teamName;
@@ -374,18 +375,10 @@ export class EditteamPage {
   //age group hint
   ageGroupHint() {
     let message = "Enter age group separated by comma (,) e.g. 12U, 14U etc.";
-    this.showToast(message, 5000);
+    this.commonService.toastMessage(message, 2500, ToastMessageType.Info);
   }
 
-  showToast(m: string, dur: number) {
-    let toast = this.toastCtrl.create({
-      message: m,
-      duration: dur,
-      position: "bottom",
-    });
-    toast.present();
-  }
-
+  
   goToDashboardMenuPage() {
     this.navCtrl.setRoot("Dashboard");
   }
@@ -406,7 +399,10 @@ export class EditteamPage {
     this.isShowImagePopup = false;
     this.popupImageUrl = "";
   }
+
 } // ✅ Corrected closing bracket for the class
+
+
 
 export class ParentClubTeamEdit {
   ParentClubKey: string

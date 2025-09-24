@@ -781,7 +781,6 @@ export class SummaryFootballPage implements AfterViewInit {
             3000,
             ToastMessageType.Error
           );
-          
           return false;
         }
       } else {

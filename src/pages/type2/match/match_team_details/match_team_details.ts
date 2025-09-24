@@ -651,11 +651,9 @@ export class MatchTeamDetailsPage {
     this.activeType = val !== undefined ? val : !this.activeType;
     this.getActivitySpecificTeam();
 
-    if (this.activeType && this.match.homeUserId !== null) {
-      this.loadAllParticipantsForCounts().then(() => {
-        this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
-      });
-    } else if (!this.activeType && this.match.awayUserId !== null) {
+    // Load participants for the selected tab
+    const teamId = this.activeType ? this.match.homeUserId : this.match.awayUserId;
+    if (teamId !== null) {
       this.loadAllParticipantsForCounts().then(() => {
         this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
       });
@@ -666,13 +664,12 @@ export class MatchTeamDetailsPage {
   // 📊 Load all participants for accurate counting
   loadAllParticipantsForCounts(): Promise<void> {
     return new Promise((resolve) => {
-      let teamId: string | null = null;
-      if (this.selectedTeam) {
-        teamId = this.selectedTeam.id;
-      } else if (this.activeType && this.match.homeUserId !== null) {
-        teamId = this.match.homeUserId;
-      } else if (!this.activeType && this.match.awayUserId !== null) {
-        teamId = this.match.awayUserId;
+      const teamId = this.activeType ? this.match.homeUserId : this.match.awayUserId;
+
+      if (!teamId) {
+        this.allParticipants = [];
+        resolve();
+        return;
       }
 
       const input = { ...this.getIndividualMatchParticipantInput };
@@ -693,13 +690,13 @@ export class MatchTeamDetailsPage {
   //to fetch list of avilable players of both home & away teams
   getIndividualMatchParticipant(par?: LeagueTeamPlayerStatusType) {
     this.commonService.showLoader("Fetching info ...");
-    let teamId: string | null = null;
-    if (this.selectedTeam) {
-      teamId = this.selectedTeam.id;
-    } else if (this.activeType && this.match.homeUserId !== null) {
-      teamId = this.match.homeUserId;
-    } else if (!this.activeType && this.match.awayUserId !== null) {
-      teamId = this.match.awayUserId;
+    const teamId = this.activeType ? this.match.homeUserId : this.match.awayUserId;
+
+    if (!teamId) {
+      this.commonService.hideLoader();
+      this.getIndividualMatchParticipantRes = [];
+      this.sections.forEach(section => section.items = []);
+      return;
     }
 
     this.getIndividualMatchParticipantInput.TeamId = teamId;
@@ -763,20 +760,26 @@ export class MatchTeamDetailsPage {
         this.commonService.hideLoader();
         var res = res.message;
 
-        // Only update frontend variables on successful API call
+        // Update frontend variables and match data on successful API call
         if (isHomeTeam !== undefined && teamName) {
           if (isHomeTeam) {
             this.selectedHomeTeamText = teamName;
+            this.match.homeUserId = this.selectedTeam.id; // Update match data
           } else {
             this.selectedAwayTeamText = teamName;
+            this.match.awayUserId = this.selectedTeam.id; // Update match data
           }
         }
 
         this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
-        // Refresh participant counts after team update
-        this.loadAllParticipantsForCounts().then(() => {
-          this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
-        });
+
+        // Only refresh data if we're on the tab that was just updated
+        const shouldRefresh = (isHomeTeam && this.activeType) || (!isHomeTeam && !this.activeType);
+        if (shouldRefresh) {
+          this.loadAllParticipantsForCounts().then(() => {
+            this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
+          });
+        }
       } else {
         this.commonService.hideLoader();
         this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error);
@@ -862,29 +865,35 @@ export class MatchTeamDetailsPage {
     }
 
     // Playing status (green) - for Accepted (1) and AdminAccepted (4)
-    if (inviteStatus === LeaguePlayerInviteStatus.Accepted || inviteStatus === LeaguePlayerInviteStatus.AdminAccepted) {
+    if (inviteStatus === LeaguePlayerInviteStatus.Accepted) {
       return { text: 'Playing', cssClass: 'status-playing' };
+    }
+    if (inviteStatus === LeaguePlayerInviteStatus.AdminAccepted) {
+      return { text: 'Coach Accepted', cssClass: 'status-playing' };
     }
 
     // Not Playing status (red) - for Rejected (2) and AdminRejected (5)
-    if (inviteStatus === LeaguePlayerInviteStatus.Declined || inviteStatus === LeaguePlayerInviteStatus.AdminDeclined) {
+    if (inviteStatus === LeaguePlayerInviteStatus.Declined) {
       return { text: 'Declined', cssClass: 'status-not-playing' };
     }
-
-    ///add nother condition for Maybe and admin maybe
-    if (inviteStatus === LeaguePlayerInviteStatus.Maybe || inviteStatus === LeaguePlayerInviteStatus.AdminMaybe) {
-      return { text: 'Maybe', cssClass: 'status-maybe' };
+    if (inviteStatus === LeaguePlayerInviteStatus.AdminDeclined) {
+      return { text: 'Coach Declined', cssClass: 'status-not-playing' };
     }
 
-    // All other statuses (orange) - Pending (0), Cancelled (3), Maybe (8), etc.
-    // Use the text from API for display, fallback to enum mapping if needed
+    // Maybe status
+    if (inviteStatus === LeaguePlayerInviteStatus.Maybe) {
+      return { text: 'Maybe', cssClass: 'status-maybe' };
+    }
+    if (inviteStatus === LeaguePlayerInviteStatus.AdminMaybe) {
+      return { text: 'Coach Maybe', cssClass: 'status-maybe' };
+    }
+
+    // All other statuses (orange) - Pending (0), Cancelled (3), etc.
     const statusLabels = {
       [LeaguePlayerInviteStatus.Pending]: 'Pending',
       [LeaguePlayerInviteStatus.Cancelled]: 'Cancelled',
-      [LeaguePlayerInviteStatus.AdminCancelled]: 'AdminCancelled',
-      [LeaguePlayerInviteStatus.AdminDeleted]: 'AdminDeleted',
-      [LeaguePlayerInviteStatus.Maybe]: 'Maybe',
-      [LeaguePlayerInviteStatus.AdminMaybe]: 'AdminMaybe'
+      [LeaguePlayerInviteStatus.AdminCancelled]: 'Coach Cancelled',
+      [LeaguePlayerInviteStatus.AdminDeleted]: 'Coach Deleted'
     };
 
     const displayText = inviteStatusText || statusLabels[inviteStatus] || 'Unknown';

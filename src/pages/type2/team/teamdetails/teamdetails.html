@@ -21,7 +21,7 @@
   <div *ngIf="teamsForParentClub">
     <div style="background-color: #f2f5fa">
       <ion-row row-12>
-        <ion-col col-9>
+       <ion-col col-9>
           <ion-row class="cardrow">
             <p style="font-weight: 600" class="largetext">
               {{teamsForParentClub.teamName}}
@@ -110,8 +110,20 @@
 
     <ion-card class="cardStyle" (click)="presentActionSheet(player)" *ngFor="let player of filteredParticipant">
         <ion-row style="height: 100%;">
-          <ion-col col-6 class="team_left_card"> {{player.user.FirstName}} {{player.user.LastName}}</ion-col>
-          <ion-col col-6 class="team_right_card">{{player.teamrole.role_name}}</ion-col>
+          <ion-col col-7 class="team_left_card"> 
+            <p class="para_overflow" style="font-weight: 500;">{{player.user.FirstName}} {{player.user.LastName}}</p>
+            <p class="para_overflow">{{player.teamrole.role_name}}</p>
+          </ion-col>
+          <ion-col col-5 class="status-col team_right_card">
+            <div class="status-container">
+              <ion-icon [name]="getInviteStatusIconByText(player.user.invite_status_text)"
+                [style.color]="getInviteStatusColor(player.user.invite_status_text)">
+              </ion-icon>
+              <span class="status-text para_overflow" [style.color]="getInviteStatusColor(player.user.invite_status_text)">
+                {{player.user.invite_status_text}}
+              </span>
+            </div>
+          </ion-col>
         </ion-row>
     </ion-card>
 
@@ -123,6 +135,8 @@
         <ion-col col-6 class="margin-auto">  </ion-col>
       </ion-row>
     </ion-card> -->
+
+
   </div>
 
   <div *ngIf="!playerType">
