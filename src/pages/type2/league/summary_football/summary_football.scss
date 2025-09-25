@@ -50,7 +50,7 @@ page-summary_football {
     background: white;
     margin: 16px;
     border-radius: 20px;
-    padding: 20px 0px;
+    padding: 20px 2px;
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
   }
 
@@ -59,8 +59,8 @@ page-summary_football {
     align-items: center;
     cursor: pointer;
     transition: transform 0.2s ease;
-    flex: 1;
-
+    width: 42%;
+    min-width: 0;
     &:hover {
       transform: scale(1.02);
     }
@@ -87,7 +87,8 @@ page-summary_football {
     flex-direction: column;
     justify-content: center;
     min-height: 60px;
-
+    flex: 1;
+    min-width: 0;
     &.away {
       text-align: right;
     }
@@ -98,6 +99,9 @@ page-summary_football {
       color: #2c3e50;
       margin-bottom: 4px;
       line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .team-score {
@@ -125,7 +129,9 @@ page-summary_football {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    padding: 0 20px;
+    padding: 0 5px;
+    width: 15%;
+    flex-shrink: 0;
 
     .vs-text {
       font-size: 18px;

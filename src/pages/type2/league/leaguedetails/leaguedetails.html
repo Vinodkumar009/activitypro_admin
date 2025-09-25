@@ -146,7 +146,7 @@
                 <td class="firstcol" style="white-space: nowrap;" (click)="openTeamActions(score)">
                   {{score?.parentclubteam?.teamName}}
                 </td>
-                <td class="otherclumn">{{score.rank}}</td>
+                <td class="otherclumn">{{score.matches}}</td>
                 <td class="otherclumn">{{score.wins}}</td>
                 <td class="otherclumn">{{score.loss}}</td>
                 <td class="otherclumn">{{score.draw}}</td>
@@ -258,7 +258,7 @@
         <!-- Match Footer -->
         <div class="match-card-footer">
           <div class="result-status-dropdown">
-            <ion-icon name="flag" [color]="mat.ResultStatus == 1 ? 'success' : 'warning'"></ion-icon>
+            <!-- <ion-icon name="flag" [color]="mat.ResultStatus == 1 ? 'success' : 'warning'"></ion-icon> -->
             <span class="status-text" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
               {{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}
             </span>

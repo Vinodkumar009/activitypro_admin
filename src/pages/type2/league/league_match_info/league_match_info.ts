@@ -729,6 +729,9 @@ export class LeagueMatchInfoPage {
     }
   }
 
+  EditLeague(){
+    this.navCtrl.push("UpdateleaguematchPage", { match:this.matchObj })
+  }
   //tab change
   changeType(val: boolean) {
     this.sections.forEach(section => section.items = []); // Clear the sections array

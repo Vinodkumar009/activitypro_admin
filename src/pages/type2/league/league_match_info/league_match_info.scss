@@ -75,6 +75,23 @@ page-league-match-info {
     color: #154766;
   }
 
+  .action_btns_div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -20%);
+    button{
+      height: 2em;
+      ion-icon{
+       color: #2b92bb !important;
+       font-size: 1.5em !important;
+      }
+    }
+  }
 
   .selected {
     background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;

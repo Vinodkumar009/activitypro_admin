@@ -14,15 +14,12 @@
 <ion-content>
   <div style="background-color: #f2f5fa">
     <ion-row class="cardrow">
-      <ion-col col-12>
-        <!-- details -->
-
+      <ion-col col-9>
         <p class="largetext">
           <span>{{match.MatchTitle}}</span>
           <span>{{match.ActivityName}}</span>,
           <span>{{match.MatchType==1?"Singles":"Doubles"}}</span>
         </p>
-
         <!-- <p class="largetext" *ngIf="match.homeUserName || match.awayUserName">
           <span>Hosted by:</span>
           <span class="largetext">{{match.homeUserName}} {{match.awayUserName}}</span>
@@ -37,33 +34,18 @@
           <span><ion-icon class="smalltext" name="pin"></ion-icon></span>
           <span class="smalltext">{{match.VenueName}}</span>
         </p>
-        <p style="position: absolute;top:0px;right:3px;display:flex;align-items: center;">
-          <!-- Note: AllMatchData doesn't have MatchVisibility, using a default icon -->
-          <span><ion-icon style="padding:0px 10px 0px 10px;" name="ios-globe"></ion-icon></span>
-        </p>
-
-        <button class="deletebtn" ion-button (click)="deleteConfirm()" clear *ngIf="match">
-          <ion-icon name="trash"></ion-icon>
-        </button>
-
-        <!-- <div>
-              <ion-fab left bottom>
-                <button ion-fab mini style="background-color: #2b92bb" style="
-                    background-color: #2b92bb !important;
-                    color: white !important;
-                  ">
-                  <ion-icon name="mail"></ion-icon>
-                </button>
-              </ion-fab>
-              <ion-fab right bottom>
-                <button ion-fab mini style="background-color: #2b92bb" style="
-                    background-color: #2b92bb !important;
-                    color: white !important;
-                  " (click)="gotoMatchInvitePlayers()">
-                  <ion-icon name="chatbubbles"></ion-icon>
-                </button>
-              </ion-fab>
-            </div> -->
+      </ion-col>
+      <ion-col col-3 style="margin: auto;">
+        <div style="display: flex; align-items: center;">
+          <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
+            [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
+          <p class="smalltext">{{match?.MatchVisibility == 0 ? "Public" : "Private"}}</p>
+        </div>
+        <div style="display: inline-block;text-align: center">
+          <button ion-button (click)="deleteConfirm()" clear>
+            <ion-icon style="" name="trash"></ion-icon>
+          </button>
+        </div>
       </ion-col>
     </ion-row>
   </div>

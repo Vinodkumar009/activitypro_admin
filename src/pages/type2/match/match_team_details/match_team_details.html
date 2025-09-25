@@ -14,44 +14,37 @@
 <ion-content>
   <div style="background-color: #f2f5fa">
     <ion-row class="cardrow">
-      <ion-col col-12>
+      <ion-col col-8>
         <p class="largetext">
           <span>{{match?.MatchTitle}}</span>
           <span>{{match?.ActivityName}}</span>,
           <span>Teams</span>
         </p>
-        <!-- <p class="largetext" *ngIf="match.Hosts && match.Hosts.length > 0">
-          <span>Hosted by:</span>
-          <span *ngFor="let host of match.Hosts" class="largetext">{{host.Name}}</span>
-        </p> -->
-        <ion-row style="margin: 5px 0px;align-items: center;">
-          <ion-col col-10 style="display: flex;align-items: center;padding: 0;">
-            <ion-icon class="smalltext" name="md-calendar"></ion-icon>
-            <span class="largetext"
-              style="font-weight: 600;margin-left: 5px;">{{formatMatchStartDate(match?.MatchStartDate)}}</span>
-          </ion-col>
-          <ion-col col-2 text-right style="padding: 0;">
-            <button class="deletebtn" ion-button (click)="deleteConfirm()" clear
-              *ngIf="(match) && (!match.Result || !match.Result.CreatedAt)">
-              <ion-icon name="trash"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
-
+         <p style="margin: 5px 0px;display: flex;align-items: center">
+          <span><ion-icon class="smalltext" name="md-calendar"></ion-icon></span>
+          <span class="largetext" style="font-weight: 600;">{{formatMatchStartDate(match.MatchStartDate)}}</span>
+        </p>
         <p style="margin: 5px 0px;display: flex;align-items: center">
           <span><ion-icon class="smalltext" name="pin"></ion-icon></span>
           <span class="smalltext">{{match.VenueName}}</span>
         </p>
-        <p style="position: absolute;top:0px;right:3px;display:flex;align-items: center;">
-          <span><ion-icon style="padding:0px 10px 0px 10px;"
-              [name]="match.MatchVisibility==0?'ios-globe':'lock'"></ion-icon></span>
-        </p>
-
-
-        <span class="publishBtn" (tap)="publish()" style="float: right;">
-          <!-- <button ion-button class="publishBtn" style="background-color: #2b92bb !important; color: #ffffff !important;" (tap)="publish()"> -->
-          Publish Result
-        </span>
+      </ion-col>
+      <ion-col col-4 style="margin: auto;">
+        <div style="display: flex; align-items: center;">
+          <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
+            [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
+          <p class="smalltext">{{match?.MatchVisibility == 0 ? "Public" : "Private"}}</p>
+        </div>
+        <div style="display: inline-block;text-align: center" *ngIf="(match) && (!match.Result || !match.Result.CreatedAt)">
+          <button ion-button (click)="deleteConfirm()" clear>
+            <ion-icon style="" name="trash"></ion-icon>
+          </button>
+        </div>
+        <div>
+          <p style="margin: 5px 0px; color: #2b92bb; font-weight: 600; cursor: pointer;" (tap)="publish()">
+              Publish Result
+          </p>
+        </div>
       </ion-col>
     </ion-row>
   </div>

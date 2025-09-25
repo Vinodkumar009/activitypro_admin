@@ -159,7 +159,7 @@ export class TennisResultInputPage {
   private preselectResultStatus(): void {
     console.log('Preselecting status:', this.resultStatus, 'from list:', this.resultStatusList);
     if(this.result_json.RESULT) {
-        this.selectedResultStatus = this.resultStatusList.find(status => status.id.toString() === this.result_json.RESULT.RESULT_STATUS);
+        this.selectedResultStatus = this.resultStatusList.find(status => Number(status.id) === Number(this.result_json.RESULT.RESULT_STATUS));
     }
     // if (this.resultStatus && this.resultStatusList.length > 0) {
     //   this.selectedResultStatus = this.resultStatusList.find(status => 
