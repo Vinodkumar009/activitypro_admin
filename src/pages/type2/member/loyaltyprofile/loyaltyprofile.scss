@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-loyaltyprofile {
+    @include android-sdk35-fixes;
     .walletCard {
         padding: 10px 10px 10px 15px;
 

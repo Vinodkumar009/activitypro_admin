@@ -5,6 +5,7 @@ import { SharedServices } from '../../services/sharedservice';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 import { CommonService } from '../../../services/common.service';
+import { ThemeService } from '../../../services/theme.service';
 //import { PopoverPage } from ./popover';
 import * as moment from 'moment';
 // import { Setup } from './setup';
@@ -22,6 +23,7 @@ export class MenupagePage {
   @ViewChild(Slides) slides: Slides;
   LangObj:any = {};//by vinod
   themeType: number;
+  isDarkTheme: boolean = true;
 
   menus = [];
   submenus = [];
@@ -101,7 +103,7 @@ export class MenupagePage {
   daysLeftforMembership: any;
   schooldetails: any;
   allholidaycampdetails: any;
-  constructor(public events: Events,public commonService: CommonService, public storage: Storage, public menuCtrl: MenuController, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController, public fb: FirebaseService) {
+  constructor(public events: Events,public commonService: CommonService, public storage: Storage, public menuCtrl: MenuController, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController, public fb: FirebaseService, public themeService: ThemeService) {
     this.storage.get('userObj').then(async (val) => {
       this.userObj = JSON.parse(val);
       console.log(this.userObj)
@@ -147,7 +149,6 @@ export class MenupagePage {
       // if(obj.MobComponent === "Type2HolidayCamp"){
       //   this.commonService.updateCategory('holidaycamp');
       // }
-      
       if(obj.MobComponent === "Type2SchoolSessionList" || obj.MobComponent === "CoachSchoolSessionList"){
         obj.MobComponent = "Type2SchoolSessionList"
         this.commonService.updateCategory('update_scl_session_list'); 
@@ -185,9 +186,54 @@ export class MenupagePage {
  //added by vinod
  ionViewDidLoad() {
   this.getLanguage();
+  this.loadTheme();
   this.events.subscribe('language', (res) => {
     this.getLanguage();
   });
+}
+
+loadTheme() {
+  this.storage.get('dashboardTheme').then((isDarkTheme) => {
+    console.log('Menu page - loaded theme from storage:', isDarkTheme);
+    if (isDarkTheme !== null) {
+      this.isDarkTheme = isDarkTheme;
+    } else {
+      // Default to dark theme if no preference is stored
+      this.isDarkTheme = true;
+    }
+    this.applyTheme();
+  }).catch((error) => {
+    console.log('Menu page - error loading theme:', error);
+    this.isDarkTheme = true; // Default to dark theme
+    this.applyTheme();
+  });
+  
+  // Listen for theme changes from other pages
+  this.events.subscribe('theme:changed', (isDark) => {
+    console.log('Menu page - received theme change event:', isDark);
+    this.isDarkTheme = isDark;
+    this.applyTheme();
+  });
+}
+
+applyTheme() {
+  const menuElement = document.querySelector('menupage-page');
+  console.log('Menu page - applying theme:', this.isDarkTheme ? 'dark' : 'light');
+  console.log('Menu page - element found:', !!menuElement);
+  
+  if (menuElement) {
+    if (this.isDarkTheme) {
+      menuElement.classList.remove('light-theme');
+      document.body.classList.remove('light-theme');
+    } else {
+      menuElement.classList.add('light-theme');
+      document.body.classList.add('light-theme');
+    }
+  }
+}
+
+ionViewWillLeave() {
+  this.events.unsubscribe('theme:changed');
 }
 getLanguage(){
   this.storage.get("language").then((res)=>{
@@ -740,6 +786,33 @@ getLabel(label:string){
   goToDashboardMenuPage(){
     this.navCtrl.setRoot('Dashboard');
   }
+
+  // Method to get data attribute for gradient targeting
+  getMenuDataAttribute(displayTitle: string): string {
+    if (!displayTitle) return '';
+    
+    const title = displayTitle.toLowerCase();
+    
+    // Map common menu titles to data attributes for gradient targeting
+    if (title.includes('member')) return 'member';
+    if (title.includes('session') || title.includes('group')) return 'session';
+    if (title.includes('school')) return 'school';
+    if (title.includes('holiday') || title.includes('camp')) return 'holiday';
+    if (title.includes('notification')) return 'notification';
+    if (title.includes('payment')) return 'payment';
+    if (title.includes('booking')) return 'booking';
+    if (title.includes('setting') || title.includes('setup')) return 'setting';
+    if (title.includes('report')) return 'report';
+    if (title.includes('tournament')) return 'holiday';
+    if (title.includes('attendance')) return 'session';
+    if (title.includes('news') || title.includes('event')) return 'notification';
+    if (title.includes('video')) return 'report';
+    if (title.includes('appraisal')) return 'setting';
+    if (title.includes('location')) return 'booking';
+    
+    return ''; // Default - will use nth-child gradients
+  }
+
   // ionViewWillLeave(){
   //   this.commonService.updateCategory("");
   // }

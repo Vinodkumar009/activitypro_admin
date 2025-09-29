@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-sessioninstallment {
+    @include android-sdk35-fixes;
+
+
+
     ion-item {
         ion-label {
             overflow: visible !important;
@@ -31,4 +37,7 @@ page-sessioninstallment {
     .installmentnamearea {
         background-color: #81c7ff;
     }
+
+managesession-page {
+}
 }

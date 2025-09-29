@@ -18,7 +18,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <div style="background-color: #f2f5fa">
+  <div class="league-header-section">
     <ion-row *ngIf="individualLeague">
       <ion-col col-9>
         <ion-row class="cardrow">
@@ -213,7 +213,7 @@
       </div>
     </div>
 
-   <div *ngIf="activeIndex == 1" class="matchCard">
+    <div *ngIf="activeIndex == 1" class="matchCard">
       <div class="modern-match-card" (click)="showMatchActionSheet(mat)" *ngFor="let mat of match">
         <!-- Match Header -->
         <div class="match-card-header">
@@ -241,7 +241,8 @@
             <div class="team-section home">
               <div class="team-name" [ngClass]="{'tbd-text': !mat.homeusername || !mat.homeusername.trim()}">
                 {{mat.homeusername && mat.homeusername.trim() ? mat.homeusername : 'TBD'}}
-                <ion-icon name="trophy" style="color:#daa520" *ngIf="mat.ResultStatus == 1 && mat.is_home_team_winner"></ion-icon>
+                <ion-icon name="trophy" style="color:#daa520"
+                  *ngIf="mat.ResultStatus == 1 && mat.is_home_team_winner"></ion-icon>
               </div>
             </div>
             <div class="vs-section">
@@ -250,29 +251,30 @@
             <div class="team-section away">
               <div class="team-name" [ngClass]="{'tbd-text': !mat.awayusername || !mat.awayusername.trim()}">
                 {{mat.awayusername && mat.awayusername.trim() ? mat.awayusername : 'TBD'}}
-                <ion-icon name="trophy" style="color:#daa520" *ngIf="mat.ResultStatus == 1 && mat.is_away_team_winner"></ion-icon>
+                <ion-icon name="trophy" style="color:#daa520"
+                  *ngIf="mat.ResultStatus == 1 && mat.is_away_team_winner"></ion-icon>
               </div>
             </div>
           </div>
 
-        <!-- Match Footer -->
-        <div class="match-card-footer">
-          <div class="result-status-dropdown">
-            <!-- <ion-icon name="flag" [color]="mat.ResultStatus == 1 ? 'success' : 'warning'"></ion-icon> -->
-            <span class="status-text" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
-              {{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}
-            </span>
+          <!-- Match Footer -->
+          <div class="match-card-footer">
+            <div class="result-status-dropdown">
+              <!-- <ion-icon name="flag" [color]="mat.ResultStatus == 1 ? 'success' : 'warning'"></ion-icon> -->
+              <span class="status-text" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
+                {{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}
+              </span>
+            </div>
+            <div class="visibility-info">
+              <ion-icon [name]="mat.match_visibility==0?'globe':'lock'"
+                [color]="mat.match_visibility==0?'success':'medium'"></ion-icon>
+              <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
+            </div>
           </div>
-          <div class="visibility-info">
-            <ion-icon [name]="mat.match_visibility==0?'globe':'lock-closed'" 
-                      [color]="mat.match_visibility==0?'success':'medium'"></ion-icon>
-            <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
-          </div>
-        </div>
         </div>
       </div>
     </div>
-    
+
   </div>
 </ion-content>
 
@@ -298,7 +300,8 @@
       <ion-icon name="md-create"></ion-icon>
     </button>
     <p class="fabEmailText" (tap)="autoCreateMatch()"
-      *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">Auto Create Match</p>
+      *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">
+      Auto Create Match</p>
     <button style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop"
       *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">
       <ion-icon name="md-create"></ion-icon>

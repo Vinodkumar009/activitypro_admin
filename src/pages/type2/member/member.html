@@ -36,17 +36,60 @@
 </ion-header>
 
 
-<ion-content>
-    <ion-row class="sub-container rows-allign2">
-        <ion-col col-2 style="text-align: -webkit-right;">
-            <button>
-                <ion-icon name="ios-search"></ion-icon>
-            </button>
-        </ion-col>
-        <ion-col col-10 class="search-bar" style="margin-left: -8px;">
-            <ion-searchbar placeholder="Search by name, vehicle, memberid" [(ngModel)]="searchText" id="customsearchbar" (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
-        </ion-col>
-    </ion-row>
+<ion-content class="member-content">
+    <!-- Modern Search Card -->
+    <div class="modern-search-card">
+        <div class="search-header">
+            <div class="search-icon">
+                <ion-icon name="search"></ion-icon>
+            </div>
+            <div class="search-label">Search Members</div>
+        </div>
+        <div class="search-wrapper">
+            <ion-searchbar class="sleek-searchbar" placeholder="Search by name, phone, email" [(ngModel)]="searchText" (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+        </div>
+    </div>
+
+    <!-- Modern Filters Container -->
+    <div class="modern-filters-container">
+        <!-- Club Filter -->
+        <div class="modern-dropdown-card club-filter">
+            <div class="dropdown-header">
+                <div class="dropdown-icon">
+                    <ion-icon name="business"></ion-icon>
+                </div>
+                <div class="dropdown-label">Club</div>
+            </div>
+            <div class="dropdown-wrapper">
+                <ion-select class="modern-select" [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()">
+                    <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
+                </ion-select>
+                <div class="dropdown-arrow">
+                    <ion-icon name="arrow-down"></ion-icon>
+                </div>
+            </div>
+        </div>
+
+        <!-- Member Type Filter -->
+        <div class="modern-dropdown-card member-filter">
+            <div class="dropdown-header">
+                <div class="dropdown-icon">
+                    <ion-icon name="people"></ion-icon>
+                </div>
+                <div class="dropdown-label">Type</div>
+            </div>
+            <div class="dropdown-wrapper">
+                <ion-select class="modern-select" [(ngModel)]="memberType" (ionChange)="memberTabClick()">
+                    <ion-option value="Member">Members</ion-option>
+                    <ion-option value="Holidaycampmember">Holiday Camp</ion-option>
+                    <ion-option value="Schoolmember">School</ion-option>
+                </ion-select>
+                <div class="dropdown-arrow">
+                    <ion-icon name="arrow-down"></ion-icon>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div [ngSwitch]="memberType">
         <ion-list *ngSwitchCase="'Member'">
@@ -58,16 +101,7 @@
                 </ion-select>
                 
             </ion-item> -->
-            <ion-row style="margin-top: -13px;" class="rows-allign">
-                <ion-col col-1></ion-col>
-                <ion-col col-11 class="allignment-col">
-                    <ion-item style="background-color: #efefefd9;" class="headitem">
-                        <ion-select [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()">
-                            <ion-option *ngFor="let club of clubs" value={{club.Id}}>{{club.ClubName}}</ion-option>
-                        </ion-select>
-                    </ion-item>
-                </ion-col>
-            </ion-row> 
+ 
 
             <!-- <div *ngFor="let member of members;let i = index">
                 <ion-card class="cardStyle" *ngIf="!member.IsChild" (click)="presentActionSheet(member,i,'Member')"  [class.selected]="false === member.IsEnable">
@@ -112,48 +146,36 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-row *ngFor="let member of members;let i = index" style="margin-top: -12px;" class="rows-allign">
-                <ion-col col-1>
-                    <div  [class.selected]="false === member.is_enable" class="all border-left-style"></div>
-                </ion-col>
-               
-                <ion-col col-11 class="allignment-col">
-                    <ion-card (click)="presentActionSheet(member,i,'Member')" >
-                        <ion-card-header>
-                            <ion-row>
-                                <ion-col col-10>
-                                        <span class="name"> {{member.parent_firstname}} {{member.parent_lastname}}</span>
-                                </ion-col>
-                                <ion-col col-2>
-                                    <span class="family" *ngIf="member.childcount!= 0 && member.childcount!= null">+{{member.childcount}}</span>
-                                </ion-col>
-                            </ion-row>
-                        </ion-card-header>
-                        <ion-card-content style="color: #c5b495">
-                            <ion-row>
-                                <ion-col col-2>
-                                    <img src="assets/imgs/phone.svg" class="icon-img">
-                                </ion-col>
-                                <ion-col col-5>
-                                    {{member.phone_number}}
-                                </ion-col>
-                                <ion-col col-5 class="nonmember-col">
-                                    <span *ngIf="!member.is_enable" class="nonmember-style">Non-member</span>
-                                </ion-col>
-                            </ion-row>
-                            <ion-row>
-                                <ion-col col-2>
-                                    <img src="assets/imgs/message.svg" class="icon-img">
-                                </ion-col>
-                                <ion-col col-10>
-                                    {{member.email}}
-                                </ion-col>
-                            </ion-row>
-                        </ion-card-content>
-
-                    </ion-card>
-                </ion-col>
-            </ion-row>
+            <div class="member-container">
+                <div class="modern-member-card" *ngFor="let member of members;let i = index" (click)="presentActionSheet(member,i,'Member')" [class.inactive]="!member.is_enable">
+                    <div class="card-header">
+                        <div class="member-avatar">
+                            <ion-icon name="person"></ion-icon>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">{{member.parent_firstname}} {{member.parent_lastname}}</div>
+                            <div class="member-status" *ngIf="!member.is_enable">Inactive Member</div>
+                        </div>
+                        <div class="member-badge" *ngIf="member.childcount > 0">
+                            <span class="family-count">+{{member.childcount}}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-row">
+                            <div class="contact-item">
+                                <ion-icon name="call" class="contact-icon"></ion-icon>
+                                <span class="contact-text">{{member.phone_number}}</span>
+                            </div>
+                        </div>
+                        <div class="contact-row">
+                            <div class="contact-item">
+                                <ion-icon name="mail" class="contact-icon"></ion-icon>
+                                <span class="contact-text">{{member.email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </ion-list>
 
@@ -290,11 +312,10 @@
 
             <ion-row *ngFor="let member of schoolMemberList;let i = index" style="margin-top: -12px;" class="rows-allign">
                 <ion-col col-1>
-                        <div  [ngClass]=
-                            "{
-                            'selected':member.IsEnable,
-                            'all':member.IsEnable
-                            }"class="border-left-style"></div>
+                        <div [ngClass]="{
+                            'selected': member.IsEnable,
+                            'all': member.IsEnable
+                            }" class="border-left-style"></div>
                 </ion-col>
                 <ion-col col-11 class="allignment-col">
                     <ion-card *ngIf="!member.IsChild" (click)="presentActionSheetForSchoolMember(member,i,'Schoolmember')">
@@ -334,7 +355,7 @@
         </ion-list>
     </div>
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data...">></ion-infinite-scroll-content>
+        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data..."></ion-infinite-scroll-content>
     </ion-infinite-scroll>
     <!-- <ion-fab right bottom (click)="addMember()" *ngIf="memberType != 'Schoolmember'">
         <button ion-fab mini style="background-color:#2b92bb !important; color: white !important">
@@ -350,7 +371,7 @@
     <!-- style="margin-top: -32px;"  -->
     <ion-fab mini right bottom #fab>
         <!-- <p *ngIf="isShowNewPost" class="newPost">New Post</p> -->
-        <button ion-fab mini style='background-color: #2b92bb;'(click)="showNewPost()">
+        <button ion-fab mini style='background-color: #2b92bb;' (click)="showNewPost()">
             <ion-icon name="add"></ion-icon>
         </button>
         <ion-fab-list side="top">
@@ -432,3 +453,34 @@
 
 
 </ion-content>
+
+<!-- Modern Footer -->
+<ion-footer>
+    <div class="modern-footer">
+        <div class="footer-stats">
+            <div class="stat-item">
+                <div class="stat-value">{{members.length}}</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{activeMembers}}</div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{inactiveMembers}}</div>
+                <div class="stat-label">Inactive</div>
+            </div>
+        </div>
+        <div class="footer-actions">
+            <button ion-button icon-only class="footer-btn" (click)="addMember()">
+                <ion-icon name="person-add"></ion-icon>
+            </button>
+            <button ion-button icon-only class="footer-btn" (click)="gotoSendEmailPage(1)">
+                <ion-icon name="mail"></ion-icon>
+            </button>
+            <button ion-button icon-only class="footer-btn" (click)="gotoSendNotification(0)">
+                <ion-icon name="notifications"></ion-icon>
+            </button>
+        </div>
+    </div>
+</ion-footer>

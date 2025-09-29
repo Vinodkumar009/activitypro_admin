@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-editweeklysession {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         padding: 3px !important;
         //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
@@ -162,7 +168,6 @@ page-editweeklysession {
 
 .installmentblock {
     margin: 6px 0px;
-}
 .installmentName {
     div {
         border-bottom-color: #81c7ff;
@@ -372,4 +377,5 @@ page-editweeklysession {
       }
 
 
+}
 }

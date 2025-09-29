@@ -5,6 +5,7 @@ import {
   LoadingController,
   NavController,
   NavParams,
+  Events,
 } from "ionic-angular";
 import { type } from "os";
 import {
@@ -23,6 +24,7 @@ import { HttpService } from "../../../services/http.service";
 import { API } from "../../../shared/constants/api_constants";
 import { AllMatchData, MatchModelV3 } from "../../../shared/model/match.model";
 import { AppType } from "../../../shared/constants/module.constants";
+import { ThemeService } from "../../../services/theme.service";
 /**
  * Generated class for the MatchPage page.
  *
@@ -73,6 +75,7 @@ export class MatchPage {
   Today: number = 0;
   isPublish: boolean = true;
   isPending: boolean = true;
+  isDarkTheme: boolean = false;
 
   // sum: number = 0;
   // totalMatches = this.matches.filter((element) => {
@@ -88,10 +91,16 @@ export class MatchPage {
     public sharedservice: SharedServices,
     private graphqlService: GraphqlService,
     private httpService: HttpService,
-
+    private themeService: ThemeService,
+    public events: Events
   ) {
     this.commonService.category.pipe(first()).subscribe((data) => {
       if (data == "matchlist") {
+        // Force theme application when navigating to this page
+        setTimeout(() => {
+          this.loadTheme();
+        }, 100);
+        
         this.storage.get("userObj").then((val) => {
           val = JSON.parse(val);
           if (val.$key != "") {
@@ -114,7 +123,142 @@ export class MatchPage {
   }
 
   ionViewWillEnter() {
-    console.log("MatchPage");
+    console.log("Match page - ionViewWillEnter");
+    
+    // Load and apply theme immediately
+    this.loadTheme();
+    
+    // Subscribe to theme changes
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      console.log("Match page - theme service change:", isDark);
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    });
+    
+    // Listen for theme changes from other pages
+    this.events.subscribe('theme:changed', (isDark) => {
+      console.log('Match page - received theme change event:', isDark);
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    });
+  }
+
+  ionViewDidEnter() {
+    console.log("Match page - ionViewDidEnter");
+    
+    // Apply theme again after view is fully loaded with multiple attempts
+    setTimeout(() => {
+      this.forceThemeCheck();
+    }, 50);
+    
+    setTimeout(() => {
+      this.forceThemeCheck();
+    }, 200);
+    
+    setTimeout(() => {
+      this.forceThemeCheck();
+    }, 500);
+    
+    setTimeout(() => {
+      this.forceThemeCheck();
+    }, 1000);
+  }
+
+  ionViewDidLoad() {
+    console.log("Match page - ionViewDidLoad");
+    
+    // Force theme application on load
+    setTimeout(() => {
+      this.loadTheme();
+    }, 100);
+  }
+
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      console.log('Match page - loaded theme from storage:', isDarkTheme);
+      const isDark = isDarkTheme !== null ? isDarkTheme : true; // Default to dark theme
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    }).catch((error) => {
+      console.log('Match page - error loading theme:', error);
+      this.isDarkTheme = true; // Default to dark theme
+      this.applyTheme(true);
+    });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    console.log("Match page - applying theme:", isDark ? "dark" : "light");
+    
+    // Force apply theme immediately and with retries
+    const applyThemeToElement = () => {
+      const matchElement = document.querySelector("page-match");
+      
+      if (matchElement) {
+        if (isDark) {
+          matchElement.classList.remove("light-theme");
+          document.body.classList.remove("light-theme");
+        } else {
+          matchElement.classList.add("light-theme");
+          document.body.classList.add("light-theme");
+        }
+        console.log("Match page - theme applied successfully:", isDark ? "dark" : "light");
+        return true;
+      }
+      return false;
+    };
+    
+    // Try to apply immediately
+    if (!applyThemeToElement()) {
+      // If not found, retry multiple times
+      let retryCount = 0;
+      const maxRetries = 5;
+      
+      const retryApply = () => {
+        if (retryCount < maxRetries) {
+          retryCount++;
+          console.log(`Match page - retry ${retryCount}/${maxRetries}`);
+          
+          if (!applyThemeToElement()) {
+            setTimeout(retryApply, 100 * retryCount); // Increasing delay
+          }
+        } else {
+          console.warn("Match page - failed to apply theme after all retries");
+        }
+      };
+      
+      setTimeout(retryApply, 50);
+    }
+  }
+
+  ionViewWillLeave() {
+    // Clean up theme event subscription
+    this.events.unsubscribe('theme:changed');
+  }
+
+  // Force theme check method
+  private forceThemeCheck(): void {
+    console.log("Match page - forcing theme check");
+    
+    // Check multiple sources for theme
+    this.storage.get("dashboardTheme").then((storageTheme) => {
+      console.log("Match page - storage theme:", storageTheme);
+      
+      // Also check if body has light-theme class
+      const bodyHasLightTheme = document.body.classList.contains("light-theme");
+      console.log("Match page - body has light theme:", bodyHasLightTheme);
+      
+      // Determine final theme
+      let isDark = true;
+      if (storageTheme !== null && storageTheme !== undefined) {
+        isDark = storageTheme;
+      } else if (bodyHasLightTheme) {
+        isDark = false;
+      }
+      
+      console.log("Match page - force applying theme:", isDark ? "dark" : "light");
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    });
   }
 
   // 🔄 Method to get the string representation of MatchType from the enum
@@ -129,6 +273,42 @@ export class MatchPage {
       default:
         return 'Unknown'; // 🤷 Handle unexpected values
     }
+  }
+
+  // 🎨 Get color based on match type with theme support
+  getMatchTypeColor(matchType: number): string {
+    const isDark = this.themeService.getCurrentTheme();
+    
+    switch (matchType) {
+      case MatchType.TEAM:
+        return isDark ? '#32db64' : '#28a745'; // Green - darker in light theme
+      case MatchType.SINGLES:
+        return isDark ? '#35adff' : '#007bff'; // Blue - darker in light theme
+      case MatchType.DOUBLES:
+        return isDark ? '#f76e04' : '#fd7e14'; // Orange - slightly different in light theme
+      default:
+        return '#2b92bb'; // Primary blue for unknown types
+    }
+  }
+
+  // 🎨 Get color based on match type name string with theme support
+  getMatchTypeColorByName(matchTypeName: string): string {
+    if (!matchTypeName) return '#2b92bb';
+    
+    const type = matchTypeName.toLowerCase();
+    const isDark = this.themeService.getCurrentTheme();
+    
+    if (type.includes('team')) {
+      return isDark ? '#32db64' : '#28a745'; // Green
+    }
+    if (type.includes('singles') || type.includes('single')) {
+      return isDark ? '#35adff' : '#007bff'; // Blue
+    }
+    if (type.includes('doubles') || type.includes('double')) {
+      return isDark ? '#f76e04' : '#fd7e14'; // Orange
+    }
+    
+    return '#2b92bb'; // Primary blue for unknown types
   }
 
   gotoDashboard() {

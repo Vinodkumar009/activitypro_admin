@@ -11,7 +11,7 @@ page-teamdetails {
 
   }
 
-  .action_btns_div{
+  .action_btns_div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,11 +20,11 @@ page-teamdetails {
     top: 35%;
     left: 50%;
     transform: translate(-30%, -20%);
-    button{
+    button {
       height: 2em !important;
-      ion-icon{
-       color: #2b92bb !important;
-       font-size: 1.4em !important;
+      ion-icon {
+        color: #2b92bb !important;
+        font-size: 1.4em !important;
       }
     }
   }
@@ -156,15 +156,15 @@ page-teamdetails {
     // padding-top: 18px;
     // padding-bottom: 18px;
     padding-left: 16px;
-    //color: rgba(0, 0, 0, 0.64);
+    // color: rgba(0, 0, 0, 0.64);
   }
 
   .team_right_card {
     margin: auto;
     padding-right: 11px;
     text-align: right;
-    padding-top: 18px;
-    padding-bottom: 18px;
+    // padding-top: 18px;
+    // padding-bottom: 18px;
   }
 
   /*Css for searchbar*/

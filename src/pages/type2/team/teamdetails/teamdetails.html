@@ -21,7 +21,7 @@
   <div *ngIf="teamsForParentClub">
     <div style="background-color: #f2f5fa">
       <ion-row row-12>
-       <ion-col col-9>
+        <ion-col col-9>
           <ion-row class="cardrow">
             <p style="font-weight: 600" class="largetext">
               {{teamsForParentClub.teamName}}
@@ -30,7 +30,8 @@
             <p class="largetext"></p>
           </ion-row>
           <ion-row class="cardrow">
-            <p class="largetext" *ngIf="teamsForParentClub?.activity">{{teamsForParentClub?.activity?.ActivityName}} </p>
+            <p class="largetext" *ngIf="teamsForParentClub?.activity">{{teamsForParentClub?.activity?.ActivityName}}
+            </p>
             <p class="largetext"> </p>
           </ion-row>
           <ion-row class="cardrow">
@@ -55,11 +56,11 @@
             <button ion-button clear (click)="gotoEditTeam()">
               <ion-icon name="create"></ion-icon>
             </button>
-            
+
             <button ion-button clear (click)="!playerType ? gotoMemberemailPage():gotoMultiplayeremailPage()">
               <ion-icon name="mail"></ion-icon>
             </button>
-            
+
             <button ion-button clear (click)="removeteam()">
               <ion-icon name="trash"></ion-icon>
             </button>
@@ -94,6 +95,7 @@
 
   <div *ngIf="playerType">
     <div>
+
       <ion-row class="sub-container rows-allign2">
         <ion-col col-1 style="text-align:center;margin:auto;">
           <ion-icon name="ios-search"></ion-icon>
@@ -108,22 +110,23 @@
 
 
     <ion-card class="cardStyle" (click)="presentActionSheet(player)" *ngFor="let player of filteredParticipant">
-        <ion-row style="height: 100%;">
-          <ion-col col-7 class="team_left_card"> 
-            <p class="para_overflow" style="font-weight: 500;">{{player.user.FirstName}} {{player.user.LastName}}</p>
-            <p class="para_overflow">{{player.teamrole.role_name}}</p>
-          </ion-col>
-          <ion-col col-5 class="status-col team_right_card">
-            <div class="status-container">
-              <ion-icon [name]="getInviteStatusIconByText(player.user.invite_status_text)"
-                [style.color]="getInviteStatusColor(player.user.invite_status_text)">
-              </ion-icon>
-              <span class="status-text para_overflow" [style.color]="getInviteStatusColor(player.user.invite_status_text)">
-                {{player.user.invite_status_text}}
-              </span>
-            </div>
-          </ion-col>
-        </ion-row>
+      <ion-row style="height: 100%;">
+        <ion-col col-7 class="team_left_card">
+          <p class="para_overflow" style="font-weight: 500;">{{player.user.FirstName}} {{player.user.LastName}}</p>
+          <p class="para_overflow">{{player.teamrole.role_name}}</p>
+        </ion-col>
+        <ion-col col-5 class="status-col team_right_card">
+          <div class="status-container">
+            <ion-icon [name]="getInviteStatusIconByText(player.user.invite_status_text)"
+              [style.color]="getInviteStatusColor(player.user.invite_status_text)">
+            </ion-icon>
+            <span class="status-text para_overflow"
+              [style.color]="getInviteStatusColor(player.user.invite_status_text)">
+              {{player.user.invite_status_text}}
+            </span>
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-card>
 
 
@@ -155,9 +158,10 @@
 
 
     <ion-card class="cardStyle" (click)="actionSheetforStaff(player)" *ngFor="let player of filteredStaff;">
-      <ion-row>
-        <ion-col col-6 class="applyPadding">{{player.StaffDetail.name}}</ion-col>
-        <ion-col col-6 class="margin-auto">{{player.role.role_name}} </ion-col>
+      <ion-row style="height: 100%;">
+        <ion-col col-7 class="team_left_card">
+          <p class="para_overflow" style="font-weight: 500;">{{player.StaffDetail.name}}</p></ion-col>
+        <ion-col col-5 class="status-col team_right_card"><p class="para_overflow">{{player.role.role_name}}</p></ion-col>
       </ion-row>
     </ion-card>
   </div>

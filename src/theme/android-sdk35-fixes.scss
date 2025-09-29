@@ -1,0 +1,90 @@
+// Android SDK 35 Edge-to-Edge Display Fixes
+// Only applies on actual Android SDK 35 devices, not browser
+
+@mixin android-sdk35-fixes {
+  // Only apply on actual Android SDK 35+ devices (not browser)
+  .android-sdk35 & {
+    // Header fixes for edge-to-edge display
+    ion-header {
+      padding-top: env(safe-area-inset-top, 32px) !important;
+      background-color: #2b92bb !important;
+
+      ion-navbar {
+        background-color: #2b92bb !important;
+
+        .toolbar-title {
+          color: white !important;
+        }
+
+        .bar-button {
+          color: white !important;
+        }
+      }
+    }
+
+    // Content padding to avoid system UI overlap
+    ion-content .scroll-content {
+      padding-bottom: env(safe-area-inset-bottom, 32px) !important;
+    }
+
+    //Footer positioning
+    ion-footer {
+      padding-bottom: env(safe-area-inset-bottom, 16px) !important;
+    }
+
+    // Custom footer positioning
+    .footer_div {
+      bottom: env(safe-area-inset-bottom, 0px) !important;
+      //padding-bottom: env(safe-area-inset-bottom, 16px) !important;
+    }
+
+    // FAB positioning for different scenarios
+    ion-fab[bottom] {
+      bottom: calc(16px + env(safe-area-inset-bottom, 32px)) !important;
+    }
+
+    // FAB with custom bottom positioning
+    ion-fab.bottom_10 {
+      bottom: calc(10% + env(safe-area-inset-bottom, 32px)) !important;
+    }
+
+    ion-fab.margintop-10 {
+      bottom: calc(10% + env(safe-area-inset-bottom, 32px)) !important;
+    }
+
+    // FAB in pages with footers
+    .footer_div ~ ion-fab {
+      bottom: calc(60px + env(safe-area-inset-bottom, 50px)) !important;
+    }
+
+    // Modal fixes
+    .modal-wrapper {
+      top: env(safe-area-inset-top, 32px) !important;
+      height: calc(
+        100vh - env(safe-area-inset-top, 32px) -
+          env(safe-area-inset-bottom, 32px)
+      ) !important;
+    }
+
+    // Toast positioning fixes
+    .toast-wrapper {
+      top: calc(env(safe-area-inset-top, 32px) + 16px) !important;
+
+      &.toast-bottom {
+        bottom: calc(env(safe-area-inset-bottom, 32px) + 16px) !important;
+        top: auto !important;
+      }
+
+      &.toast-middle {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+      }
+    }
+
+    // Toast container adjustments
+    .toast-container {
+      margin-left: env(safe-area-inset-left, 16px) !important;
+      margin-right: env(safe-area-inset-right, 16px) !important;
+    }
+  }
+}

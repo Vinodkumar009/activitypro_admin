@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-upcomingmatch {
+  @include league-theme-base;
     .img{
         height:60px;
         width:60px;

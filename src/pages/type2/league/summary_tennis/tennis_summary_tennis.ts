@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { CommonService, ToastMessageType } from '../../../../services/common.service';
 import { SharedServices } from '../../../services/sharedservice';
 import { HttpService } from '../../../../services/http.service';
@@ -18,6 +19,7 @@ import {
   LeagueMatchParticipantInput,
   POTMDetailModel
 } from '../../../../shared/model/league_result.model';
+import { ThemeService } from '../../../../services/theme.service';
 
 @IonicPage()
 @Component({
@@ -175,12 +177,59 @@ export class TennisSummaryTennisPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public storage: Storage,
     public commonService: CommonService,
     public sharedservice: SharedServices,
     private httpService: HttpService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private themeService: ThemeService,
+    public events: Events
   ) {
     this.initializeComponent();
+  }
+
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe((isDark) => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe("theme:changed", (isDark) => {
+      this.applyTheme(isDark);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("theme:changed");
+  }
+
+  private loadTheme(): void {
+    this.storage.get("dashboardTheme").then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => {
+      this.applyTheme(true);
+    });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    const applyThemeToElement = () => {
+      const element = document.querySelector("page-tennis-summary-tennis");
+      if (element) {
+        if (isDark) {
+          element.classList.remove("light-theme");
+          document.body.classList.remove("light-theme");
+        } else {
+          element.classList.add("light-theme");
+          document.body.classList.add("light-theme");
+        }
+        return true;
+      }
+      return false;
+    };
+
+    if (!applyThemeToElement()) {
+      setTimeout(() => applyThemeToElement(), 100);
+    }
   }
 
   private initializeComponent(): void {

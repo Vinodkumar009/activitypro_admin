@@ -15,9 +15,9 @@
 
     <ion-item>
       <ion-label>Competition Name</ion-label>
-      <ion-input type="text" [(ngModel)]="league.league_name" ></ion-input>
+      <ion-input type="text" [(ngModel)]="league.league_name"></ion-input>
     </ion-item>
-    
+
     <ion-item>
       <ion-label>Hosted By</ion-label>
       <ion-select (ionChange)="getActivity()" [(ngModel)]="venueKey">
@@ -36,15 +36,15 @@
 
     <ion-item>
       <ion-label>Competition Type</ion-label>
-      <ion-select [(ngModel)]="league.location_type" >
+      <ion-select [(ngModel)]="league.location_type">
         <ion-option [value]="1">Club</ion-option>
         <ion-option [value]="2">Location</ion-option>
         <ion-option [value]="3">School</ion-option>
       </ion-select>
     </ion-item>
-  
+
     <ion-item *ngIf="league.location_type===1">
-    
+
       <ion-label>Club</ion-label>
       <ion-select [(ngModel)]="selectedClubLocation">
         <ion-option *ngFor="let club of clubVenues" value="{{club.Id}}">
@@ -58,7 +58,7 @@
         <ion-option *ngFor="let location of locations" value="{{location.id}}">{{location.name}}</ion-option>
       </ion-select>
     </ion-item>
-   
+
     <ion-item *ngIf="league.location_type===3">
       <ion-label>School</ion-label>
       <ion-select [(ngModel)]="selectedSchoolLocation">
@@ -68,7 +68,7 @@
 
     <ion-item>
       <ion-label>League Type</ion-label>
-      <ion-select [(ngModel)]="league.league_type" disabled="true"> 
+      <ion-select [(ngModel)]="league.league_type" disabled="true">
         <ion-option *ngFor="let type of leagueType" [value]="type.value">{{type.key}}</ion-option>
         <!-- <ion-option value="1">Singles</ion-option>
         <ion-option value="2">Doubles</ion-option> -->
@@ -176,15 +176,13 @@
 
   <ion-item *ngIf="league.league_type != 3">
     <ion-label>Contact Mail</ion-label>
-    <ion-input type="text" [(ngModel)]="league.contact_email"
-      class="right-align-input"></ion-input>
+    <ion-input type="text" [(ngModel)]="league.contact_email" class="right-align-input"></ion-input>
   </ion-item>
 
 
   <ion-item *ngIf="league.league_type != 3">
     <ion-label>Contact Phone</ion-label>
-    <ion-input type="text"  [(ngModel)]="league.contact_phone"
-      class="right-align-input"></ion-input>
+    <ion-input type="text" [(ngModel)]="league.contact_phone" class="right-align-input"></ion-input>
   </ion-item>
 
 
@@ -210,62 +208,62 @@
     <ion-label>Fee Non Member<span *ngIf="currency != undefined">({{currency}})</span></ion-label>
     <ion-input type="number" class="textareastyle" [(ngModel)]="league.non_member_price"></ion-input>
   </ion-item> -->
-   <ion-item *ngIf="league.is_paid && league.league_type != 3">
-      <ion-label fixed>Member Fee
-        <span *ngIf="currency != undefined">({{currency}})</span>
-      </ion-label>
-      <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
-        [(ngModel)]="league.member_price"></ion-input>
-    </ion-item>
+  <ion-item *ngIf="league.is_paid && league.league_type != 3">
+    <ion-label fixed>Member Fee
+      <span *ngIf="currency != undefined">({{currency}})</span>
+    </ion-label>
+    <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
+      [(ngModel)]="league.member_price"></ion-input>
+  </ion-item>
 
-    <ion-item *ngIf="league.is_paid && league.league_type != 3">
-      <ion-label>Non Member Fee
-        <span *ngIf="currency != undefined">({{currency}})</span>
-      </ion-label>
-      <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
-        [(ngModel)]="league.non_member_price"></ion-input>
-    </ion-item>
+  <ion-item *ngIf="league.is_paid && league.league_type != 3">
+    <ion-label>Non Member Fee
+      <span *ngIf="currency != undefined">({{currency}})</span>
+    </ion-label>
+    <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
+      [(ngModel)]="league.non_member_price"></ion-input>
+  </ion-item>
 
   <div *ngIf="league.is_paid && league.league_type != 3">
-  <ion-item>
-    <ion-row>
-      <ion-col col-12 no-padding class="flex_col">
-        <p class="toggle_para">Allow Pay Later</p>
-        <label class="toggle">
-          <input type="checkbox" [(ngModel)]="league.is_pay_later ">
-          <span data-unchecked="No" data-checked="Yes"></span>
-        </label>
-      </ion-col>
-    </ion-row>
-  </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">Allow Pay Later</p>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="league.is_pay_later ">
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-item>
 
 
-  <ion-item>
-    <ion-row>
-      <ion-col col-12 no-padding class="flex_col">
-        <p class="toggle_para">Allow BACS</p>
-        <label class="toggle">
-          <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_bacs " />
-          <span data-unchecked="No" data-checked="Yes"></span>
-        </label>
-      </ion-col>
-    </ion-row>
-  </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">Allow BACS</p>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_bacs " />
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-item>
 
-  <ion-item>
-    <ion-row>
-      <ion-col col-12 no-padding class="flex_col">
-        <p class="toggle_para">Allow Cash</p>
-        <label class="toggle">
-          <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_cash " />
-          <span data-unchecked="No" data-checked="Yes"></span>
-        </label>
-      </ion-col>
-    </ion-row>
-  </ion-item>
-</div>
+    <ion-item>
+      <ion-row>
+        <ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">Allow Cash</p>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_cash " />
+            <span data-unchecked="No" data-checked="Yes"></span>
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </div>
 
-  
+
   <ion-item *ngIf="league.league_type != 3">
     <ion-row>
       <ion-col col-12 no-padding class="flex_col">

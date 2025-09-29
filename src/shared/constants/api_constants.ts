@@ -1,7 +1,3 @@
-// import { environment as devEnvironment } from '../../environments/environment';
-// import { environment as prodEnvironment } from '../../environments/environment.prod';
-
-// const env_const = prodEnvironment.production ? prodEnvironment:devEnvironment;
 
 export const API = {
     GET_PARENTCLUB_USER_BY_FIREBASEID: `parentclubuser/by_firebase_loggedinkey`,
@@ -9,10 +5,8 @@ export const API = {
     CAMP_SESSION_CAPACITY_UPDATE: `holidaycamp/updateSessionCapcity`,
     CHECK_STRIPE_AVAILABILITY: `payment/stripe_availability`,
     GET_PARENTCLUB_STRIPES: `payment/paerntclub_stripe_accounts`,
-    GET_SUBSCRIPTION_PAUSE_MONTHS: `monthly_session/getSubscriptionPauseMonths`,
-    PAUSE_MONTHLY_SUBSCRIPTION: `pause_monthly_subscription`,
-    COPY_PARENTCLUB_STRIPE_ACCOUNT: `stripe/copy_stripe_account`,
     UPDATE_STRIPE_STATUS: `payment/update_stripe_account`,
+    COPY_PARENTCLUB_STRIPE_ACCOUNT: `stripe/copy_stripe_account`,
     USER_EXTRA_PROPS_UPDATE: `user/updatextraprops`,
     USER_UPDATE: `user`,
     TERM_SESSION_PENDING_PAYMENTS: `session/getTermPendingPayments`,
@@ -95,15 +89,8 @@ export const API = {
     Get_League_Participant_For_Match: `league/GetLeagueParticipantForMatch`,
     Update_League_Fixture: `league/UpdateLeagueFixture`,
     Get_League_Match_Participant: `league/GetLeagueMatchParticipant`,
-    //Update_League_Match_Participantipation_Status: `league/UpdateLeagueMatchParticipationStatus`,
     Update_League_Match_Participation_Status: `league/UpdateLeagueMatchParticipationStatus`,
     Update_League_Match_Participantipation_Role: `league/update_league_match_participant_role`,
-    // GET_LEAGUE_MATCHES: `league/getLeagueMatches`,
-    // DELETE_LEAGUE_MATCHES: `league/deleteLeagueMatches`,
-    // Get_League_Participant_For_Match: `league/GetLeagueParticipantForMatch`,
-    // Update_League_Fixture: `league/UpdateLeagueFixture`,
-    // Get_League_Match_Participant: `league/GetLeagueMatchParticipant`,
-    // Update_League_Match_Participantipation_Status: `league/UpdateLeagueMatchParticipantipationStatus`,
     GET_LEAGUE_OR_MATCH_TYPES: `league/getTypes`,
     GET_LEAGUE_CATEGORIES:`league/getCategories`,
     Get_Round_Types: `league/getRoundTypes`,
@@ -115,6 +102,8 @@ export const API = {
     SchoolSessionPendingPayment: `school_session/SchoolSessionPendingPayment`,
     MonthlyPendingPayment: `monthly_session/MonthlyPendingPayment`,
     EnrolmentDetails: `holidaycamp/enrolment-details`,
+    PAUSE_MONTHLY_SUBSCRIPTION: `pause_monthly_subscription`,
+    GET_SUBSCRIPTION_PAUSE_MONTHS: `monthly_session/getSubscriptionPauseMonths`,
     GET_ACTIVIY_SPECIFIC_TEAM: `league/getActivitySpecificTeam`,
     CREATE_CLUB: `club/create_club`,
     GetTeamsByMatch: `match/get_teams_by_match`,

@@ -1,9 +1,53 @@
-page-summary_football {
+@import "../_league-theme.scss";
+
+page-summary-football {
+  @include league-theme-base;
+  
+  // Card theme support
+  .match-header,
+  .score-section,
+  .potm-section,
+  .stats-section {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    
+    h2, h4, h5, .team-name, .stat-title, .possession-value {
+      color: #f1f5f9 !important;
+    }
+    
+    .stat-card {
+      background: #334155 !important;
+      color: #f1f5f9 !important;
+    }
+  }
+  
+  &.light-theme {
+    .match-header,
+    .score-section,
+    .potm-section,
+    .stats-section {
+      background: white !important;
+      color: #1e293b !important;
+      
+      h2, h4, h5, .team-name, .stat-title, .possession-value {
+        color: #2c3e50 !important;
+      }
+      
+      .stat-card {
+        background: #f8f9fa !important;
+        color: #1e293b !important;
+      }
+    }
+  }
   .football-summary-content {
     background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
     min-height: 100vh;
+    ion-icon{
+      color:#2b92bb ;
+    }
   }
 
+  
   .match-header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -61,6 +105,7 @@ page-summary_football {
     transition: transform 0.2s ease;
     width: 42%;
     min-width: 0;
+
     &:hover {
       transform: scale(1.02);
     }

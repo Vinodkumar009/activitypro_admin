@@ -1,8 +1,55 @@
+@import "../_league-theme.scss";
+
 page-tennis-summary-tennis {
+  @include league-theme-base;
+  
+  // Card theme support
+  .match-header,
+  .score-section,
+  .set-scores-section,
+  .potm-section,
+  .stats-section {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    
+    h2, h4, .team-name, .stat-title, .set-number, .set-score, .stat-value {
+      color: #f1f5f9 !important;
+    }
+    
+    .set-item, .stat-card {
+      background: #334155 !important;
+      color: #f1f5f9 !important;
+    }
+  }
+  
+  &.light-theme {
+    .match-header,
+    .score-section,
+    .set-scores-section,
+    .potm-section,
+    .stats-section {
+      background: white !important;
+      color: #1e293b !important;
+      
+      h2, h4, .team-name, .stat-title, .set-number, .set-score {
+        color: #2c3e50 !important;
+      }
+      
+      .set-item, .stat-card {
+        background: #f8f9fa !important;
+        color: #1e293b !important;
+      }
+    }
+  }
   .tennis-summary-content {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+    ion-icon{
+      color:#2b92bb ;
+    }
   }
+
+  
 
   .match-header {
     background: rgba(255, 255, 255, 0.95);
@@ -98,7 +145,6 @@ page-tennis-summary-tennis {
     min-height: 60px;
     flex: 1;
     min-width: 0;
-
     &.away {
       text-align: right;
     }

@@ -1,4 +1,7 @@
+@import "../../_league-theme.scss";
+
 page-potm {
+  @include league-theme-base;
   .scroll-content {
     background: #f7f7f7 !important;
   }

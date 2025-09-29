@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
@@ -27,6 +27,7 @@ import {
 } from '../../../../shared/model/league_result.model';
 import { AllMatchData, GetIndividualMatchParticipantModel } from '../../../../shared/model/match.model';
 import { TeamsForParentClubModel } from '../models/team.model';
+import { ThemeService } from '../../../../services/theme.service';
 
 @IonicPage()
 @Component({
@@ -217,9 +218,55 @@ export class SummaryFootballPage implements AfterViewInit {
     public alertCtrl: AlertController,
     private httpService: HttpService,
     public sharedservice: SharedServices,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private themeService: ThemeService,
+    public events: Events
   ) {
     this.initializeComponent();
+  }
+
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe((isDark) => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe("theme:changed", (isDark) => {
+      this.applyTheme(isDark);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("theme:changed");
+  }
+
+  private loadTheme(): void {
+    this.storage.get("dashboardTheme").then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => {
+      this.applyTheme(true);
+    });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    const applyThemeToElement = () => {
+      const element = document.querySelector("page-summary-football");
+      if (element) {
+        if (isDark) {
+          element.classList.remove("light-theme");
+          document.body.classList.remove("light-theme");
+        } else {
+          element.classList.add("light-theme");
+          document.body.classList.add("light-theme");
+        }
+        return true;
+      }
+      return false;
+    };
+
+    if (!applyThemeToElement()) {
+      setTimeout(() => applyThemeToElement(), 100);
+    }
   }
 
   private initializeComponent(): void {
@@ -793,7 +840,7 @@ export class SummaryFootballPage implements AfterViewInit {
               3000,
               ToastMessageType.Error
             );
-            this.calculateDefaultPossession(homeValue,awayValue);
+            this.calculateDefaultPossession(homeValue, awayValue);
             return false;
           }
         }
@@ -839,11 +886,11 @@ export class SummaryFootballPage implements AfterViewInit {
     }
   }
 
-  calculateDefaultPossession(homeValue:number,awayValue:number): void {
-    if(this.isHomeStatsPopupVisible) {
-        this.homePoss = (100 - awayValue).toFixed(2);
-    }else{
-        this.awayPoss = (100 - homeValue).toFixed(2)//.split('.')[0];
+  calculateDefaultPossession(homeValue: number, awayValue: number): void {
+    if (this.isHomeStatsPopupVisible) {
+      this.homePoss = (100 - awayValue).toFixed(2);
+    } else {
+      this.awayPoss = (100 - homeValue).toFixed(2)//.split('.')[0];
     }
     // Redraw chart when data updates
     setTimeout(() => {

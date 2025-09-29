@@ -210,7 +210,7 @@ export class FirebaseService {
     return dbRef.remove();
   }
 
-   uploadPhoto(imgdata: any) {
+  uploadPhoto(imgdata: any) {
     return new Promise((resolve, reject) => {
       console.log(`base64: ${JSON.stringify(imgdata.url)}`);
       const cleanedBase64 = imgdata.url.startsWith('data:image/jpeg;base64,') ? imgdata.url : `data:image/jpeg;base64,${imgdata.url}`;

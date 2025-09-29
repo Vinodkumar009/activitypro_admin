@@ -1,0 +1,171 @@
+// Modern Member Card Styles
+member-page {
+    // Member Container
+    .member-container {
+        padding: 8px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    // Modern Member Card (Dark Theme)
+    .modern-member-card {
+        background: #1e293b;
+        border-radius: 12px;
+        border: 1px solid #334155;
+        cursor: pointer;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 8px;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+        }
+        
+        &.inactive {
+            border-color: #dc2626;
+            background: #1e293b;
+            
+            .card-header {
+                border-bottom-color: #dc2626;
+            }
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            
+            .member-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+                
+                ion-icon {
+                    font-size: 20px;
+                    color: #ffffff;
+                }
+            }
+            
+            .member-info {
+                flex: 1;
+                
+                .member-name {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #f1f5f9;
+                    margin: 0 0 2px 0;
+                    line-height: 1.2;
+                }
+                
+                .member-status {
+                    font-size: 12px;
+                    color: #dc2626;
+                    font-style: italic;
+                    margin: 0;
+                }
+            }
+            
+            .member-badge {
+                .family-count {
+                    background: #059669;
+                    color: #ffffff;
+                    padding: 4px 8px;
+                    border-radius: 12px;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+            }
+        }
+        
+        .card-body {
+            padding: 12px;
+            
+            .contact-row {
+                margin-bottom: 8px;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                
+                .contact-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    
+                    .contact-icon {
+                        font-size: 14px;
+                        color: #94a3b8;
+                        flex-shrink: 0;
+                    }
+                    
+                    .contact-text {
+                        font-size: 14px;
+                        color: #cbd5e1;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        flex: 1;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Light Theme Overrides
+    &.light-theme {
+        .modern-member-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            
+            &:hover {
+                box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            
+            &.inactive {
+                border-color: #dc2626;
+                
+                .card-header {
+                    border-bottom-color: #dc2626;
+                }
+            }
+            
+            .card-header {
+                border-bottom: 1px solid #e2e8f0;
+                
+                .member-info {
+                    .member-name {
+                        color: #1e293b;
+                    }
+                    
+                    .member-status {
+                        color: #dc2626;
+                    }
+                }
+            }
+            
+            .card-body {
+                .contact-row {
+                    .contact-item {
+                        .contact-icon {
+                            color: #64748b;
+                        }
+                        
+                        .contact-text {
+                            color: #374151;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

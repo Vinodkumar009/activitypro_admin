@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 editgroupsession-page {
+    @include android-sdk35-fixes;
     .scroll-content {
         background-image: none !important;
         padding: 6px !important;
@@ -155,4 +158,6 @@ editgroupsession-page {
             -webkit-transform: translateY(-1rem);
         }
     }
+}
+managesession-page {
 }

@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-weeklysessiondets {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         // margin-top: 43px !important;
         background-image: none !important;

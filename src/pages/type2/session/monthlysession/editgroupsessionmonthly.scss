@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 editgroupsessionmonthly-page {
+    @include android-sdk35-fixes;
     .scroll-content {
         padding: 6px 6px 1px 6px !important;
     }
@@ -231,16 +234,4 @@ editgroupsessionmonthly-page {
     padding: 0px !important;
     margin-right: 0px !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 addmember-page{
+    @include android-sdk35-fixes;
     // .scroll-content{
     //     background-image: url("../assets/images/background/innerbg.png");
     //     background-size: 100% 100%;

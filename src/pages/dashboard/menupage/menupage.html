@@ -1,55 +1,43 @@
-<!--
-  Generated template for the DashboardreportPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<!-- <ion-header>
-  <ion-navbar>
-    <ion-title>Das</ion-title>
-  </ion-navbar>
-
-</ion-header> -->
     <ion-header>
-        <ion-navbar >
-            <button ion-button icon-only menuToggle>
-          <ion-icon name="apps"></ion-icon>
-        </button>
-            <ion-title>
+        <ion-navbar class="modern-navbar">
+            <button ion-button menuToggle class="menu-btn">
+                <ion-icon name="apps"></ion-icon>
+            </button>
+            <ion-title class="navbar-title">
                 Menu
-                <!--<img src="assets/images/logo.png" class="logo-img">-->
             </ion-title>
             <ion-buttons end>
-                    <button ion-button icon-only (click)="goToDashboardMenuPage()">
-                            <img src="assets/images/home.svg" class="home_btn">
-                        </button>
-                <button ion-button icon-only (click)="presentPopover($event)"> 
-            <ion-icon name="more"></ion-icon>
-          </button>
+                <button ion-button icon-only (click)="goToDashboardMenuPage()" class="home-btn">
+                    <ion-icon name="home"></ion-icon>
+                </button>
+                <button ion-button icon-only (click)="presentPopover($event)" class="more-btn"> 
+                    <ion-icon name="more"></ion-icon>
+                </button>
             </ion-buttons>
         </ion-navbar>
     </ion-header>
-<ion-content padding>
-
+<ion-content class="menu-content">
+    <div class="menu-container">
         <ion-grid>
-                <ion-row wrap>
-                    <ion-col col-6 class="dashboard_col_item_block" (click)="goTo(m)"
-                        *ngFor="let m of menus;let i=index" [ngClass]="{'evenbox': i%2 == 0, 'oddbox':  i%2 != 0}">
-                        <div class="dashboard_col_item" >
+            <ion-row wrap>
+                <ion-col col-4 col-sm-6 col-xs-6 class="menu-card-wrapper" (click)="goTo(m)" *ngFor="let m of menus;let i=index">
+                    <div class="menu-card" [attr.data-menu]="getMenuDataAttribute(m.DisplayTitle)">
+                        <div class="card-icon-wrapper">
                             <span *ngIf="unreadNotificationCounts> 0 && m.MobComponent=='Type2notification'"
-                                class="notification">{{unreadNotificationCounts}}</span>
-                            <ion-icon *ngIf="m.MobIcon !=undefined && m.MobIcon != ''" [name]="m.MobIcon" class="dashboard_user"></ion-icon>
-                            <img *ngIf="m.MobLocalImage !=undefined && m.MobLocalImage != ''" [src]="m.MobLocalImage"
-                                style="height:42px;width:42px;margin-top:10px;" />
-                            <!-- <object id="svg1" *ngIf="m.SvgLink != undefined " [data]="m.SvgLink" type="image/svg+xml"></object> -->
-                            <!-- <img *ngIf="m.SvgLink != undefined " [src]="m.SvgLink"
-                                style="height: 42px;width:42px;margin-top: 10px;"> vinod commented after menus api done -->
-                            <p class="dashboard_col_item_name"> {{getLabel('menu_' +m.DisplayTitle)}} </p>
-                            <!-- {{m.title}} -->
+                                class="notification-badge">{{unreadNotificationCounts}}</span>
+                            <ion-icon *ngIf="m.MobIcon !=undefined && m.MobIcon != ''" [name]="m.MobIcon" class="card-icon"></ion-icon>
+                            <img *ngIf="m.MobLocalImage !=undefined && m.MobLocalImage != ''" [src]="m.MobLocalImage" class="card-image">
                         </div>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
+                        <div class="card-content">
+                            <h3 class="card-title">{{getLabel('menu_' +m.DisplayTitle) || m.DisplayTitle}}</h3>
+                            <p class="card-subtitle">Access module</p>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
               <!-- [ngClass]="{
         'member-color':m.title === 'Member',
          'session-color': m.title == 'Group', 

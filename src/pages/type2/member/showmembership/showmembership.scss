@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-showmembership {
+    @include android-sdk35-fixes;
    
     .card-text {
         color: #cab389 !important;

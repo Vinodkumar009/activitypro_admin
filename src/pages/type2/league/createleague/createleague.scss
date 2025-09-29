@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-createleague {
+  @include league-theme-base;
 
   .scroll-content {
     padding: 3px !important;

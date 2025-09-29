@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-tournamentmail {
+  @include league-theme-base;
     .scroll-content {
         background-image: none !important;
         padding: 16px 9px !important;

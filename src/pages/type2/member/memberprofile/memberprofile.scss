@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-memberprofile {
+    @include android-sdk35-fixes;
     .profile-pic {
         text-align: -webkit-center;
         img {

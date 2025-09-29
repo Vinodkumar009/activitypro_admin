@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-addteam {
+  @include league-theme-base;
   .foobtn {
     background-color: #5be283;
     height: 3.6rem;

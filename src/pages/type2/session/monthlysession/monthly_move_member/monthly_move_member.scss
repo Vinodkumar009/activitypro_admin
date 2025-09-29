@@ -1,4 +1,10 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-monthly-move-member {
+    @include android-sdk35-fixes;
+
+
+
     .custom-card {
         border-radius: 4px;
     }

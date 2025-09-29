@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-leagueresult {
+  @include league-theme-base;
 
     .scroll-content {
         padding: 0px !important;

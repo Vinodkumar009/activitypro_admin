@@ -12,11 +12,11 @@
     </div>
     <div class="match-details">
       <div class="detail-item">
-        <ion-icon name="calendar" color="primary"></ion-icon>
+        <ion-icon name="calendar"></ion-icon>
         <span>{{matchDate}}</span>
       </div>
       <div class="detail-item" *ngIf="matchLocation">
-        <ion-icon name="pin" color="primary"></ion-icon>
+        <ion-icon name="pin"></ion-icon>
         <span>{{matchLocation}}</span>
       </div>
     </div>
@@ -56,9 +56,10 @@
   </div>
 
   <!-- Set Scores Display -->
-  <div class="set-scores-section" *ngIf="result_json && result_json.SET_SCORES && result_json.SET_SCORES.length > 0" (click)="gotoSetInputPage(true)">
+  <div class="set-scores-section" *ngIf="result_json && result_json.SET_SCORES && result_json.SET_SCORES.length > 0"
+    (click)="gotoSetInputPage(true)">
     <div class="section-header">
-      <ion-icon name="trophy" color="warning"></ion-icon>
+      <ion-icon name="trophy"></ion-icon>
       <h4>Set Scores</h4>
     </div>
     <div class="sets-grid">
@@ -72,7 +73,7 @@
   <!-- Match Stats Section -->
   <div class="stats-section" *ngIf="result_json">
     <div class="section-header">
-      <ion-icon name="analytics" color="secondary"></ion-icon>
+      <ion-icon name="analytics"></ion-icon>
       <h4>Match Statistics</h4>
     </div>
 

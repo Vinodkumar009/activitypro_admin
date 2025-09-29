@@ -1,4 +1,10 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-confirmmonthly {
+    @include android-sdk35-fixes;
+
+
+
     .ses_card_col{
         width:100%;
         margin:auto;
@@ -116,6 +122,4 @@ page-confirmmonthly {
     }
 
     
-
-
 }

@@ -553,16 +553,18 @@
 </ion-content>
 
 <ion-footer>
-    <ion-row>
-        <ion-col col-2 text-center class="margin_auto" *ngIf="!isBeginSlide">
-            <button ion-button (click)="GotoPrevious()" ion-button block class="timekare-primary-btn">
-                <ion-icon name="ios-arrow-back"></ion-icon>
-            </button>
-        </ion-col>
-        <ion-col col-10 text-center class="margin_auto">
-            <button *ngIf="!isEndSlide" ion-button block class="timekare-primary-btn"
-                (click)="GotoNext()">Continue</button>
-            <button *ngIf="isEndSlide" ion-button block class="timekare-primary-btn" (click)="Create()">Create</button>
-        </ion-col>
-    </ion-row>
+    <div class="footer_div">
+        <ion-row>
+            <ion-col col-2 text-center class="margin_auto" *ngIf="!isBeginSlide">
+                <button ion-button (click)="GotoPrevious()" ion-button block class="timekare-primary-btn">
+                    <ion-icon name="ios-arrow-back"></ion-icon>
+                </button>
+            </ion-col>
+            <ion-col col-10 text-center class="margin_auto">
+                <button *ngIf="!isEndSlide" ion-button block class="timekare-primary-btn"
+                    (click)="GotoNext()">Continue</button>
+                <button *ngIf="isEndSlide" ion-button block class="timekare-primary-btn" (click)="Create()">Create</button>
+            </ion-col>
+        </ion-row>
+    </div>
 </ion-footer>

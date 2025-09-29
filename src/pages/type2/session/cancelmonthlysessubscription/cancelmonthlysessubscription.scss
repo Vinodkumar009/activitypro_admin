@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-cancelmonthlysessubscription {
+    @include android-sdk35-fixes;
+
+
+
     .toolbar-title{
         color:#FFF !important;
      }

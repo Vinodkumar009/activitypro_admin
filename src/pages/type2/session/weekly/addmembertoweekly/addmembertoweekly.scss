@@ -1,4 +1,10 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-addmembertoweekly {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content{
         background-image: none !important;
     }
@@ -104,5 +110,4 @@ page-addmembertoweekly {
     // .timekare-primary-btn {
     //     background-color: #f6ae4d !important;
     // }
-
 }

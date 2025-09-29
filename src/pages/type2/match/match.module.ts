@@ -3,12 +3,14 @@ import { IonicStorageModule } from "@ionic/storage";
 import { storage } from "firebase";
 import { IonicPageModule } from "ionic-angular";
 import { MatchPage } from "./match";
+import { ThemeService } from "../../../services/theme.service";
 
 @NgModule({
   declarations: [
     MatchPage
   ],
   imports: [IonicPageModule.forChild(MatchPage), IonicStorageModule.forRoot()],
+  providers: [ThemeService],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class MatchPageModule {}

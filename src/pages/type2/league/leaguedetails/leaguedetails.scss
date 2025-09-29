@@ -1,4 +1,158 @@
+@import "../_league-theme.scss";
+
 page-leaguedetails {
+  @include league-theme-base;
+
+  // Enhanced theme support for specific elements
+  &.light-theme {
+    .modern-match-card {
+      background: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .facilityCard {
+      background: #ffffff !important;
+      color: #1e293b !important;
+    }
+
+    .maincard {
+      background: #ffffff !important;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.14) !important;
+    }
+
+    .teamName,
+    .largetext,
+    .smalltext,
+    .eventname {
+      color: #1e293b !important;
+    }
+
+    .card-text {
+      color: #1e293b !important;
+    }
+
+    table {
+      background: #ffffff !important;
+    }
+
+    th {
+      background-color: #1e293b !important;
+      color: #f1f5f9 !important;
+    }
+
+    td {
+      color: #1e293b !important;
+    }
+
+    .match-card-content {
+      background: #ffffff !important;
+    }
+
+    .team-name {
+      color: #1e293b !important;
+      background: #f8f9fa !important;
+    }
+
+    .match-card-footer {
+      background: #f8f9fa !important;
+    }
+  }
+
+  // Dark theme specific overrides
+  .modern-match-card {
+    background: #1e293b !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .facilityCard {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+  }
+
+  .maincard {
+    background: #1e293b !important;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .teamName,
+  .largetext,
+  .smalltext,
+  .eventname {
+    color: #f1f5f9 !important;
+  }
+
+  .card-text {
+    color: #f1f5f9 !important;
+  }
+
+  table {
+    background: #1e293b !important;
+  }
+
+  th {
+    background-color: #334155 !important;
+    color: #f1f5f9 !important;
+  }
+
+  td {
+    color: #cbd5e1 !important;
+  }
+
+  .match-card-content {
+    background: #1e293b !important;
+  }
+
+  .team-name {
+    color: #f1f5f9 !important;
+    background: #334155 !important;
+  }
+
+  .match-card-footer {
+    background: #334155 !important;
+  }
+
+  // First div and card elements theme support
+  ion-card {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+  }
+
+  ion-card-content {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+  }
+
+  .membercard {
+    background: #1e293b !important;
+    border-left: 3px solid #60a5fa !important;
+  }
+
+  &.light-theme {
+    ion-card {
+      background: #ffffff !important;
+      color: #1e293b !important;
+    }
+
+    ion-card-content {
+      background: #ffffff !important;
+      color: #1e293b !important;
+    }
+
+    .membercard {
+      background: #ffffff !important;
+      border-left: 3px solid #3b82f6 !important;
+    }
+
+    .league-header-section {
+      background-color: #f8fafc !important;
+    }
+  }
+
+  // Dark theme header section
+  .league-header-section {
+    background-color: #334155 !important;
+    padding: 16px;
+  }
   .teamName {
     color: #154766;
     font-size: 18px;
@@ -17,9 +171,7 @@ page-leaguedetails {
     padding: 5px;
   }
 
-  .scroll-content {
-    background-color: #f7f7f7;
-  }
+  // Removed hardcoded background - now uses theme
 
   .circle {
     background: #FFEBEB;
@@ -243,13 +395,7 @@ page-leaguedetails {
     margin: -1px 0px 7px;
   }
 
-  .scroll-content {
-    background-color: #f7f7f7;
-  }
-
-  .scroll-content {
-    background-color: #f7f7f7;
-  }
+  // Removed duplicate hardcoded backgrounds - now uses theme
 
   .details {
     color: #2b92bb;
@@ -623,12 +769,12 @@ page-leaguedetails {
         border-radius: 8px;
         font-size: 11px;
         font-weight: 600;
-        
+
         &.paid {
           background: #e8f5e8;
           color: #2e7d32;
         }
-        
+
         &.free {
           background: #fff3e0;
           color: #f57c00;
@@ -810,16 +956,17 @@ page-leaguedetails {
       .status-text {
         font-size: 12px;
         font-weight: 500;
-        
+
         &.status-published {
           color: #2e7d32;
         }
-        
+
         &.status-pending {
           color: #f57c00;
         }
       }
     }
+
     .visibility-info {
       display: flex;
       align-items: center;

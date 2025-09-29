@@ -201,6 +201,7 @@ export interface ParticipantUserData {
     FirebaseKey: string; // 🔥 Firebase key
     media_consent: boolean; // 📸 Media consent status
     profile_status: string; // 👁️ Profile visibility status
+    AGE?: number; // 👶 Age (optional)
 }
 
 // 🏈 Interface for the Team details within a participant entry
@@ -295,6 +296,7 @@ export class GetIndividualMatchParticipantModel {
     Match: ParticipantMatchData; // 🏟️ Nested match details
     teamrole: ParticipantTeamRoleData; // 🎭 Nested team role details
     invite_status_text: string;
+    fixture_id: string;
 }
 
 // ___________-----------------------

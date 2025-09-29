@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 editmembershipsession-page {
+    @include android-sdk35-fixes;
   .scroll-content {
     background-image: none !important;
   }
@@ -226,4 +229,7 @@ editmembershipsession-page {
   .selected_day_checkmark_style {
     background-color: #f6ae4d;
   }
+}
+
+managesession-page {
 }

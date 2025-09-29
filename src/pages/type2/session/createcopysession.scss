@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 createcopysession-page {
+    @include android-sdk35-fixes;
     // .margin_top {
     //     margin-top: 10px;
     // }
@@ -78,4 +81,6 @@ createcopysession-page {
         font-size: 19px;
         color: #0b9eb9;
     }
+}
+managesession-page {
 }

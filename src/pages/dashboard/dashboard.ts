@@ -1120,6 +1120,9 @@ export class Dashboard {
       }
     }
     this.storage.set('dashboardTheme', this.isDarkTheme);
+    
+    // Notify other pages about theme change
+    this.events.publish('theme:changed', this.isDarkTheme);
   }
 
 

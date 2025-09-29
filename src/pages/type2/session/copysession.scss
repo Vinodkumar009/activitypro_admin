@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 copysession-page {
+    @include android-sdk35-fixes;
     .margin_top {
         margin-top: 10px;
     }
@@ -92,4 +95,6 @@ copysession-page {
         padding-top: 0px;
         padding-bottom: 0px;
     }
+}
+managesession-page {
 }

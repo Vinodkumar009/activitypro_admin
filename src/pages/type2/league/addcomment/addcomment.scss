@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-addcomment {
+  @include league-theme-base;
   .scroll-content {
     background: #F5F5F5;
   }

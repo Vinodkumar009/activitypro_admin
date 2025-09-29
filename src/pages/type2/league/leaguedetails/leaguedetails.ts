@@ -9,6 +9,7 @@ import {
   Platform,
   FabContainer,
   PopoverController,
+  Events,
 } from "ionic-angular";
 import * as moment from "moment";
 import { Storage } from "@ionic/storage";
@@ -26,6 +27,7 @@ import { API } from "../../../../shared/constants/api_constants";
 import { AppType } from "../../../../shared/constants/module.constants";
 import { ParticipantModel } from "../../match/matchdetails/matchdetails";
 import { MatchType } from "../../../../shared/utility/enums";
+import { ThemeService } from "../../../../services/theme.service";
 /**
  * Generated class for the LeaguedetailsPage page.
  *
@@ -42,7 +44,7 @@ import { MatchType } from "../../../../shared/utility/enums";
 export class LeaguedetailsPage {
   @ViewChild('fab') fab: FabContainer;
   participants: ParticipantModel[] = [];
-  teams:TeamsModal[];
+  teams: TeamsModal[];
   TeamsType: boolean = true;
   MatchesType: boolean = true;
   league: LeaguesForParentClubModel;
@@ -109,7 +111,8 @@ export class LeaguedetailsPage {
     public modalCtrl: ModalController,
     private graphqlService: GraphqlService,
     private httpService: HttpService,
-
+    private themeService: ThemeService,
+    public events: Events
   ) {
     // this.league = this.navParams.get("league");
     // console.log(this.league);
@@ -119,22 +122,14 @@ export class LeaguedetailsPage {
   }
 
 
-  ionViewDidLoad() {
-    console.log("ionViewDidLoad LeaguedetailsPage");
-    this.activeIndex = "0";
-  }
-
-  ionViewDidEnter() {
-    this.closeFab();
-  }
-
-  closeFab() {
-    if (this.fab) {
-      this.fab.close();
-    }
-  }
-
   async ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe((isDark) => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe("theme:changed", (isDark) => {
+      this.applyTheme(isDark);
+    });
     this.league_id = this.navParams.get("league_id");
     console.log("teams are", this.league_id);
     const [userobj, currency] = await Promise.all([
@@ -162,7 +157,58 @@ export class LeaguedetailsPage {
       // this.getLeaguesForParentClub();
       // this.getLeagueMatches();
     });
+  }
 
+  ionViewDidLoad() {
+    console.log("ionViewDidLoad LeaguedetailsPage");
+    this.activeIndex = "0";
+    setTimeout(() => {
+      this.loadTheme();
+    }, 100);
+  }
+
+  ionViewDidEnter() {
+    this.closeFab();
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("theme:changed");
+  }
+
+  private loadTheme(): void {
+    this.storage.get("dashboardTheme").then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => {
+      this.applyTheme(true);
+    });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    const applyThemeToElement = () => {
+      const element = document.querySelector("page-leaguedetails");
+      if (element) {
+        if (isDark) {
+          element.classList.remove("light-theme");
+          document.body.classList.remove("light-theme");
+        } else {
+          element.classList.add("light-theme");
+          document.body.classList.add("light-theme");
+        }
+        return true;
+      }
+      return false;
+    };
+
+    if (!applyThemeToElement()) {
+      setTimeout(() => applyThemeToElement(), 100);
+    }
+  }
+
+  closeFab() {
+    if (this.fab) {
+      this.fab.close();
+    }
   }
 
   getLeagueDetails = () => {
@@ -293,7 +339,7 @@ export class LeaguedetailsPage {
     });
   }
 
-  getActiveTeams = (match:LeagueMatch) => {
+  getActiveTeams = (match: LeagueMatch) => {
     //this.commonService.showLoader("Fetching teams...");
     this.teams = [];
     const getTeamsQuery = gql`
@@ -316,7 +362,7 @@ export class LeaguedetailsPage {
           }
       }
     }`;
-    this.graphqlService.query(getTeamsQuery, { matchDetailsInput: {MatchId:match.match_id} }, 0)
+    this.graphqlService.query(getTeamsQuery, { matchDetailsInput: { MatchId: match.match_id } }, 0)
       .subscribe(
         (res: any) => {
           const data = res.data;
@@ -325,23 +371,23 @@ export class LeaguedetailsPage {
           // );
           //this.commonService.hideLoader();
           this.teams = data["getTeamsByMatch"];
-          console.log(this.teams.length); 
-          const participants_length = match.league_type == 0 ? 1 : 2; 
+          console.log(this.teams.length);
+          const participants_length = match.league_type == 0 ? 1 : 2;
           //this.teams = this.sortByTeamName(this.teams);
-          if(this.teams.length > 0){
-            for(let i=0; i < this.teams.length;i++){
+          if (this.teams.length > 0) {
+            for (let i = 0; i < this.teams.length; i++) {
               this.teams[i]["IsWinner"] = false;
-              this.teams[i]['Sets_Points']=[];
+              this.teams[i]['Sets_Points'] = [];
               // if(this.match.Result && this.match.Result.ResultStatus == 1){
               //   this.teams[i]["IsWinner"] = this.match.Result.Winner.Id === this.teams[i].Id ? true : false;
               //   this.teams[i]["Sets_Points"] = this.match.Result && this.match.Result.ResultDetails ? JSON.parse(this.match.Result.ResultDetails.split(":")[i]) : [];
               //   //this.teams[i]["Sets_Points"] = this.match.Result.Winner.Id === this.teams[i].Id ? JSON.parse(this.match.Result.ResultDetails.split(":")[i]) : [];
-                
+
               // }
-              
-              for(let j=0; j < participants_length;j++){
+
+              for (let j = 0; j < participants_length; j++) {
                 console.log(`${j}:${this.teams[i].Participants[j]}`);
-                if(this.teams[i].Participants[j] && this.teams[i].Participants[j].User && this.teams[i].Participants[j].User.FirebaseKey!=''){
+                if (this.teams[i].Participants[j] && this.teams[i].Participants[j].User && this.teams[i].Participants[j].User.FirebaseKey != '') {
                   this.teams[i].Participants[j].User["isUserAvailable"] = true;
                 }
                 else {
@@ -350,11 +396,11 @@ export class LeaguedetailsPage {
                     InviteType: 0,
                     ParticipationStatus: 0,
                     PaymentStatus: 0,
-                    User:{
-                      FirstName:'',
-                      LastName:'',
-                      FirebaseKey:'',
-                      isUserAvailable:false
+                    User: {
+                      FirstName: '',
+                      LastName: '',
+                      FirebaseKey: '',
+                      isUserAvailable: false
                     }
                   }
                   this.teams[i].Participants[j] = participant_obj;
@@ -370,7 +416,7 @@ export class LeaguedetailsPage {
         (err) => {
           //this.commonService.hideLoader();
           console.log(JSON.stringify(err));
-          this.commonService.toastMessage("Failed to fetch teams",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+          this.commonService.toastMessage("Failed to fetch teams", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         }
       );
   }
@@ -399,19 +445,19 @@ export class LeaguedetailsPage {
             this.removeMatch(match)
           }
         },
-        {
-          text: "Update Result",
-          handler: () => {
-            
-            //this.updateResult(match);
-            const todays_date = moment().format("YYYY-MM-DD hh:mm A");
-            // if (moment(this.match.MatchStartDate, "YYYY-MM-DD hh:mm A").isAfter(todays_date)) {
-            //   this.commonService.toastMessage("cannot publish future match", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-            //   return false;
-            // }
-            this.getActiveTeams(match);
-          }
-        }
+        // {
+        //   text: "Update Result",
+        //   handler: () => {
+
+        //     //this.updateResult(match);
+        //     const todays_date = moment().format("YYYY-MM-DD hh:mm A");
+        //     // if (moment(this.match.MatchStartDate, "YYYY-MM-DD hh:mm A").isAfter(todays_date)) {
+        //     //   this.commonService.toastMessage("cannot publish future match", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        //     //   return false;
+        //     // }
+        //     this.getActiveTeams(match);
+        //   }
+        // }
       ]
     });
     actionSheet.present();
@@ -649,7 +695,7 @@ export class LeaguedetailsPage {
     confirm.present();
   }
 
-  
+
   deleteLeague() {
     try {
       const removeLeague = gql`
@@ -744,14 +790,15 @@ export class LeaguedetailsPage {
       ).subscribe((response) => {
         this.commonService.hideLoader();
         let message: string = '';
-        if(this.individualLeague.league_type === MatchType.TEAM && this.leagueStanding.length === 1){
+        if (this.individualLeague.league_type === MatchType.TEAM && this.leagueStanding.length === 1) {
           message = "Team removed from the competition";
-        }else{
+        } else {
           message = actionType === 1 ? "Member removed successfully" : "Member withdrawal successfully";
         }
-       
+
         this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
         // this.weeklySessionDetails();
+        //this.individualLeague.league_type_text != 'Team' ? this.getLeagueParticipants() : this.teamStanding();
         this.individualLeague.league_type !== MatchType.TEAM ? this.getLeagueParticipants() : this.teamStanding();
         this.getLeagueDetails();
       }, (err) => {
@@ -1098,15 +1145,15 @@ export class LeaguedetailsPage {
   }
 
   showMatchActionSheet(match: LeagueMatch) {
-    if( this.individualLeague.league_type === 3) {
+    if (this.individualLeague.league_type === 3) {
       //this.commonService.showMatchActionSheet(match, {
-          //onViewDetails: () => this.gotoLeagueMatchInfoPage(match),//this.gotoLeagueMatchInfoPage(match),
-          //onEdit: () => this.navCtrl.push("UpdateleaguematchPage", { match }),
-          // onDelete: () => this.removeMatch(match),
-          // onUpdateResult: () => this.updateResult(match)
+      //onViewDetails: () => this.gotoLeagueMatchInfoPage(match),//this.gotoLeagueMatchInfoPage(match),
+      //onEdit: () => this.navCtrl.push("UpdateleaguematchPage", { match }),
+      // onDelete: () => this.removeMatch(match),
+      // onUpdateResult: () => this.updateResult(match)
       //});
       this.gotoLeagueMatchInfoPage(match);
-    }else{
+    } else {
       this.gotoMatchDetails(match);
     }
   }
@@ -1151,21 +1198,21 @@ export class UserDeviceMetadataField {
 }
 
 
-export class TeamsModal{
-  Id:string;
-  TeamName:string;
-  Participants:TeamParticipants[]
+export class TeamsModal {
+  Id: string;
+  TeamName: string;
+  Participants: TeamParticipants[]
 }
 
-export class TeamParticipants{
-  PaymentStatus:number
-  InviteStatus:number
-  InviteType:number
-  ParticipationStatus:number
-  User:{FirstName:string,LastName:string,FirebaseKey:string,isUserAvailable?:boolean}  
+export class TeamParticipants {
+  PaymentStatus: number
+  InviteStatus: number
+  InviteType: number
+  ParticipationStatus: number
+  User: { FirstName: string, LastName: string, FirebaseKey: string, isUserAvailable?: boolean }
 }
 
-export class PublishResultInput{
+export class PublishResultInput {
   CreatedBy: string; //MemberKey
   ResultDetails: string; //MemberKey
   resultDescription: string; //MemberKey

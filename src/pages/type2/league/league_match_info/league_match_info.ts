@@ -1,5 +1,5 @@
 import { Component, Renderer2, ViewChild } from "@angular/core";
-import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, FabContainer } from "ionic-angular";
+import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, FabContainer, Events } from "ionic-angular";
 import { Storage } from "@ionic/storage";
 import { SharedServices } from "../../../services/sharedservice";
 import { CommonService, ToastMessageType, ToastPlacement } from "../../../../services/common.service";
@@ -16,6 +16,7 @@ import { GraphqlService } from "../../../../services/graphql.service";
 import gql from "graphql-tag";
 import { Role } from "../../team/team.model";
 import { ModuleTypeForEmail } from "../../mailtomemberbyadmin/mailtomemberbyadmin";
+import { ThemeService } from "../../../../services/theme.service";
 /**
  * Generated class for the LeagueMatchInfoPage page.
  *
@@ -179,8 +180,10 @@ export class LeagueMatchInfoPage {
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
     private httpService: HttpService,
-    private renderer: Renderer2,// Inject Renderer2
+    private renderer: Renderer2,
     private graphqlService: GraphqlService,
+    private themeService: ThemeService,
+    public events: Events
   ) {
     this.matchObj = this.navParams.get("match");
     this.leagueId = this.navParams.get("leagueId");
@@ -270,7 +273,73 @@ export class LeagueMatchInfoPage {
     }
   }
 
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe((isDark) => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe("theme:changed", (isDark) => {
+      this.applyTheme(isDark);
+    });
+  }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.forceThemeCheck();
+    }, 100);
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("theme:changed");
+  }
+
+  private loadTheme(): void {
+    this.storage.get("dashboardTheme").then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => {
+      this.applyTheme(true);
+    });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    const applyThemeToElement = () => {
+      const element = document.querySelector("page-league-match-info");
+      if (element) {
+        if (isDark) {
+          element.classList.remove("light-theme");
+          document.body.classList.remove("light-theme");
+        } else {
+          element.classList.add("light-theme");
+          document.body.classList.add("light-theme");
+        }
+        return true;
+      }
+      return false;
+    };
+
+    if (!applyThemeToElement()) {
+      setTimeout(() => applyThemeToElement(), 100);
+    }
+  }
+
+  private forceThemeCheck(): void {
+    this.storage.get("dashboardTheme").then((storageTheme) => {
+      const bodyHasLightTheme = document.body.classList.contains("light-theme");
+      let isDark = true;
+      if (storageTheme !== null && storageTheme !== undefined) {
+        isDark = storageTheme;
+      } else if (bodyHasLightTheme) {
+        isDark = false;
+      }
+      this.applyTheme(isDark);
+    });
+  }
+
   ionViewDidLoad() {
+    setTimeout(() => {
+      this.loadTheme();
+    }, 100);
   }
 
   getFilteredSections(): { title: string; items: LeagueMatchParticipantModel[] }[] {
@@ -729,9 +798,10 @@ export class LeagueMatchInfoPage {
     }
   }
 
-  EditLeague(){
-    this.navCtrl.push("UpdateleaguematchPage", { match:this.matchObj })
+  EditLeague() {
+    this.navCtrl.push("UpdateleaguematchPage", { match: this.matchObj })
   }
+
   //tab change
   changeType(val: boolean) {
     this.sections.forEach(section => section.items = []); // Clear the sections array
@@ -938,44 +1008,30 @@ export class LeagueMatchInfoPage {
 
   // 🎯 Get display text and CSS class for invite status
   getInviteStatusDisplay(inviteStatus: number, inviteStatusText?: string): { text: string; cssClass: string } {
+    // Always use invite_status_text from response if available
+    const displayText = inviteStatusText || 'Unknown';
+
     // Handle null/undefined cases
     if (inviteStatus === null || inviteStatus === undefined) {
-      return { text: inviteStatusText || 'Accepted', cssClass: 'status-other' };
+      return { text: displayText, cssClass: 'status-other' };
     }
 
     // Playing status (green) - for Accepted (1) and AdminAccepted (4)
-    if (inviteStatus === LeaguePlayerInviteStatus.Accepted) {
-      return { text: 'Playing', cssClass: 'status-playing' };
-    }
-    if (inviteStatus === LeaguePlayerInviteStatus.AdminAccepted) {
-      return { text: 'Coach Accepted', cssClass: 'status-playing' };
+    if (inviteStatus === LeaguePlayerInviteStatus.Accepted || inviteStatus === LeaguePlayerInviteStatus.AdminAccepted) {
+      return { text: displayText, cssClass: 'status-playing' };
     }
 
     // Not Playing status (red) - for Rejected (2) and AdminRejected (5)
-    if (inviteStatus === LeaguePlayerInviteStatus.Declined) {
-      return { text: 'Declined', cssClass: 'status-not-playing' };
-    }
-    if (inviteStatus === LeaguePlayerInviteStatus.AdminDeclined) {
-      return { text: 'Coach Declined', cssClass: 'status-not-playing' };
+    if (inviteStatus === LeaguePlayerInviteStatus.Declined || inviteStatus === LeaguePlayerInviteStatus.AdminDeclined) {
+      return { text: displayText, cssClass: 'status-not-playing' };
     }
 
     // Maybe status
-    if (inviteStatus === LeaguePlayerInviteStatus.Maybe) {
-      return { text: 'Maybe', cssClass: 'status-maybe' };
-    }
-    if (inviteStatus === LeaguePlayerInviteStatus.AdminMaybe) {
-      return { text: 'Coach Maybe', cssClass: 'status-maybe' };
+    if (inviteStatus === LeaguePlayerInviteStatus.Maybe || inviteStatus === LeaguePlayerInviteStatus.AdminMaybe) {
+      return { text: displayText, cssClass: 'status-maybe' };
     }
 
     // All other statuses (orange) - Pending (0), Cancelled (3), etc.
-    const statusLabels = {
-      [LeaguePlayerInviteStatus.Pending]: 'Pending',
-      [LeaguePlayerInviteStatus.Cancelled]: 'Cancelled',
-      [LeaguePlayerInviteStatus.AdminCancelled]: 'Coach Cancelled',
-      [LeaguePlayerInviteStatus.AdminDeleted]: 'Coach Deleted'
-    };
-
-    const displayText = inviteStatusText || statusLabels[inviteStatus] || 'Unknown';
     return { text: displayText, cssClass: 'status-other' };
   }
 

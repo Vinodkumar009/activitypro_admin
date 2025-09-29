@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-autocreatematch {
+  @include league-theme-base;
     .scroll-content {
       background-color: #f7f7f7;
     }

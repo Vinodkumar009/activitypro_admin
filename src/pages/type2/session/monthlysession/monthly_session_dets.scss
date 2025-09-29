@@ -1,6 +1,10 @@
-/* Importing shared-styles.scss into another folder */
-//@import '../groupsessiondetails.scss';
-page-monthly_session_dets{
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-monthly_session_dets {
+    @include android-sdk35-fixes;
+
+
+
     $themelistotheritemcolor1: #7F7F7F;
     $themelistheaderitemcolor: #00BED3;
     $themecolor: #35adff;

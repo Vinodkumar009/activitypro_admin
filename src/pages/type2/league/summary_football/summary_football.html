@@ -18,11 +18,11 @@
     </div>
     <div class="match-details">
       <div class="detail-item">
-        <ion-icon name="calendar" color="primary"></ion-icon>
+        <ion-icon name="calendar" color=""></ion-icon>
         <span>{{matchDate}}</span>
       </div>
       <div class="detail-item" *ngIf="matchLocation">
-        <ion-icon name="pin" color="primary"></ion-icon>
+        <ion-icon name="pin" color=""></ion-icon>
         <span>{{matchLocation}}</span>
       </div>
     </div>
@@ -72,20 +72,20 @@
   <!-- POTM Section -->
   <div class="potm-section" (click)="gotoPotmPage()">
     <div class="section-header">
-      <ion-icon name="trophy" color="warning"></ion-icon>
+      <ion-icon name="trophy" ></ion-icon>
       <h4>Player of the Match</h4>
       <ion-icon name="create" class="edit-icon"></ion-icon>
     </div>
     <div class="potm-content" *ngIf="potmDisplayNames && potmDisplayNames.length > 0">
       <div class="potm-players">
         <div class="potm-player" *ngFor="let potm of potmDisplayNames">
-          <ion-icon name="star" color="warning"></ion-icon>
+          <ion-icon name="star" ></ion-icon>
           <span>{{potm.PLAYER}}</span>
         </div>
       </div>
     </div>
     <div class="no-potm" *ngIf="!potmDisplayNames || potmDisplayNames.length === 0">
-      <ion-icon name="add-circle" color="medium"></ion-icon>
+      <ion-icon name="add-circle" ></ion-icon>
       <span>Select Player of the Match</span>
     </div>
   </div>
@@ -93,7 +93,7 @@
   <!-- Match Stats Section -->
   <div class="stats-section" *ngIf="result_json">
     <div class="section-header">
-      <ion-icon name="analytics" color="secondary"></ion-icon>
+      <ion-icon name="analytics" ></ion-icon>
       <h4>Match Statistics</h4>
     </div>
 
@@ -309,10 +309,7 @@
 <div class="custom-popup" *ngIf="isHomeStatsPopupVisible && result_json">
   <div class="popup-container">
     <div class="popup-header">
-      <p>
-        <span>Update</span>
-        <span style="font-weight: bold; font-size: 20px;">{{homeTeamName}}</span>
-      </p>
+      <h3>Update {{homeTeamName}} Stats</h3>
       <button class="close-button" (click)="isHomeStatsPopupVisible=false">×</button>
     </div>
 

@@ -1,326 +1,455 @@
 page-leagueteamlisting {
-  .Location-head {
-    font-size: 1.6rem;
-    color: #222;
-    padding: 10px;
-    border-bottom: 1px solid #ded8d8 !important;
+  .scroll-content {
+    padding: 0 !important;
+  }
+  
+  // Sticky header and scrollable content
+  .sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #0f172a;
+  }
+  
+  .scrollable-content {
+    margin-top: 120px;
+    padding: 0 4px 20px 4px;
   }
 
+  // Light Theme Styles
+  &.light-theme {
+    .sticky-header {
+      background: #f8fafc !important;
+    }
+    .modern-competition {
+      background: #f8fafc;
+      min-height: 100vh;
+    }
 
-  // ✅ Style for the team logo image
-  .team-logo {
-    width: 40px; // Adjust size as needed
-    height: 40px; // Adjust size as needed
-    border-radius: 50%; // Make it round if desired
-    margin-right: 0px; // Space between logo and name
-    object-fit: cover; // Ensure image covers the area without distortion
-    flex-shrink: 0; // Prevent image from shrinking
-  }
+    .modern-tab-selector {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
 
-  .name {
-    color: #5ea68d;
-    font-size: 20px !important;
-    font-weight: 600;
-    margin: 0; // ✅ Remove default margin
-    overflow: hidden; // Hide overflow text
-    text-overflow: ellipsis; // Add ellipsis for overflow
-    white-space: nowrap; // Prevent wrapping
-  }
+      .modern-tab {
+        background: transparent;
+        color: #64748b;
+        border-color: #e2e8f0;
 
-  .headercard {
-    margin: 10 10px;
-    padding: 0 0px;
-    border-radius: 2px;
-    background: #ffffff;
-    -webkit-box-shadow: 0px 2px 8px -1px #b4b3b7;
-    box-shadow: 0px 2px 8px -1px #b4b3b7;
-    border-bottom: none !important;
-
-    ion-card-content {
-      padding: 0 5px;
-
-      span {
-        font-size: 20px;
-
-      }
-
-      p {
-        font-size: 20px;
-        color: #4b6051;
+        &.active {
+          background: #e2e8f0;
+          color: #1e293b;
+          border-color: #cbd5e1;
+        }
       }
     }
-  }
 
-  .sub-container {
-    ion-icon {
-      width: 90%;
-      height: 46px;
-      background: transparent !important;
+    .modern-search-card {
+      .sleek-searchbar {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 
-      border-radius: 5px;
+        .searchbar-input {
+          color: #1e293b;
+          padding: 8px 12px 8px 32px;
 
-      color: rgba(250, 169, 40, 0.827451)
+          &::placeholder {
+            color: #64748b;
+          }
+        }
+
+        .searchbar-search-icon {
+          color: #64748b;
+          left: 8px;
+        }
+
+        .searchbar-clear-icon {
+          color: #64748b;
+          right: 8px;
+        }
+      }
     }
 
-    .search-bar {
-      padding: 0px 5px;
+    .modern-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+        border-color: #cbd5e1;
+      }
+
+      .card-header {
+        border-bottom: 1px solid #e2e8f0;
+
+        .card-info {
+          .card-title {
+            color: #1e293b !important;
+          }
+
+          .card-subtitle {
+            color: #64748b !important;
+          }
+        }
+
+        .team-avatar {
+          border-color: #e2e8f0;
+        }
+      }
+
+      .card-body {
+        .detail-text {
+          color: #1e293b !important;
+        }
+
+        .detail-icon {
+          color: #64748b !important;
+        }
+
+        .badge-text {
+          background: #f1f5f9 !important;
+          color: #64748b !important;
+          border-color: #e2e8f0 !important;
+        }
+      }
     }
 
-    .searchbar {
-      border: none !important;
-      background: #ffffff !important;
-      border-radius: 5px !important;
-      height: 86% !important;
-      margin-top: 4px !important;
-      padding: 8px 5px;
+    .modern-empty-state {
+      .empty-icon {
+        color: #cbd5e1;
+      }
+
+      .empty-title {
+        color: #1e293b;
+      }
+
+      .empty-description {
+        color: #64748b;
+      }
     }
 
-    .searchbar-input {
-      padding-left: 4px !important;
-      box-shadow: none !important;
-      -webkit-box-shadow: none !important;
-      border-bottom: 1px solid #34343442;
-      border-radius: 0;
+    // .scroll-content {
+    //   background: #f8fafc !important;
+    // }
 
-    }
-
-    .search {
-      padding: 0 0 -50px 0;
-    }
-
-    .searchbar-search-icon {
-      display: none !important;
-    }
-
-    ion-icon {
-      font-size: 30px;
+    ion-content {
+      background: #f8fafc !important;
     }
   }
 
-  .flex-style {
-    display: flex;
-    justify-content: space-between;
+  // Dark Theme Competition Styles (Default)
+  .modern-competition {
+    background: #0f172a;
+    min-height: 100vh;
   }
 
-  .fab_btn1 {
-    position: sticky;
-    right: 30px;
-    float: right;
-    bottom: 60px !important;
-  }
-
-  .card-text {
-    color: #c5b495;
-    width: 100%;
-  }
-
-  .card-text>span {
-    color: gray;
-  }
-
-
-  .amount {
-    text-align: right;
-  }
-
-  .name {
-    color: #5ea68d;
-    font-size: 20px !important;
-    width: 100%;
-    font-weight: 600;
-  }
-
-  .Location-head {
-    font-size: 1.6rem;
-    color: #222;
-    padding: 10px;
-    border-bottom: 1px solid #ded8d8 !important;
-  }
-
-
-  .all {
-
-    border-width: 1px;
-    border-style: solid;
-    -webkit-border-image: -webkit-gradient(linear,
-        0 0,
-        0 100%,
-        from(#35adff),
-        to(#7dbce6)) 1 100%;
-    -webkit-border-image: -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
-    -moz-border-image: -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
-    -o-border-image: -o-linear-gradient(#35adff, #7dbce6) 1 100%;
-    border-image: linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
-  }
-
-  ion-card {
-    margin: 0px !important;
-    width: 100% !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    //border-bottom: 1px solid #f6ae4d !important;
-  }
-
-  ion-card-content {
+  .scroll-content {
+    background: #0f172a !important;
     padding: 0px !important;
   }
 
-  .border-left-style {
-    height: 70px;
-    position: absolute;
-    top: 35px;
-    left: 7px;
+  ion-content {
+    background: #0f172a !important;
   }
 
 
-  .matchesplayed {
-    width: 100%;
-    margin: auto;
+
+
+
+  .modern-tab-selector {
+    background: #1e293b;
+    padding: 8px 4px;
+    border-bottom: 1px solid #334155;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 4px;
+
+    .modern-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: #94a3b8;
+      font-weight: 500;
+      cursor: pointer;
+
+      &.active {
+        background: #475569;
+        color: #f1f5f9;
+        border-color: #64748b;
+      }
+
+      ion-icon {
+        font-size: 16px;
+      }
+
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .tab-content {
+    padding: 0;
+  }
+
+  .modern-search-card {
+    margin-bottom: 12px;
+
+    .sleek-searchbar {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      margin: 0;
+
+      .searchbar-input {
+        background: transparent;
+        border: none;
+        color: #f1f5f9;
+        padding: 8px 12px 8px 32px;
+        font-size: 14px;
+
+        &::placeholder {
+          color: #94a3b8;
+        }
+      }
+
+      .searchbar-search-icon {
+        color: #94a3b8;
+        left: 8px;
+        font-size: 16px;
+      }
+
+      .searchbar-clear-icon {
+        color: #94a3b8;
+        right: 8px;
+      }
+    }
+  }
+
+  .competitions-container,
+  .teams-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .modern-card {
+    background: #1e293b;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    cursor: pointer;
+    overflow: hidden;
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #334155;
+      position: relative;
+
+      .card-icon-wrapper {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+
+        .card-icon {
+          font-size: 16px;
+          color: #ffffff;
+        }
+
+        &.competition-bg {
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        &.teams-bg {
+          background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+      }
+
+      .team-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        margin-right: 8px;
+        overflow: hidden;
+        border: 1px solid #475569;
+
+        .team-logo {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .card-info {
+        flex: 1;
+
+        .card-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: #f1f5f9;
+          margin: 0 0 2px 0;
+          line-height: 1.2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .card-subtitle {
+          font-size: 12px;
+          color: #94a3b8;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      .visibility-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #10b981;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+
+        &.private {
+          background: #ef4444;
+        }
+
+        ion-icon {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .card-body {
+      padding: 12px;
+
+      .competition-details,
+      .team-details {
+        .detail-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 6px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+
+            &.description {
+              flex: 1;
+              margin-top: 4px;
+            }
+
+            .detail-icon {
+              font-size: 12px;
+              color: #94a3b8;
+              flex-shrink: 0;
+            }
+
+            .detail-text {
+              font-size: 12px;
+              color: #cbd5e1;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+            &.type-badge,
+            &.category-badge {
+              flex: 0 0 auto;
+              justify-content: flex-end;
+
+              .badge-text {
+                background: #334155;
+                color: #94a3b8;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 500;
+                border: 1px solid #475569;
+              }
+            }
+
+            &.club-name-right {
+              justify-content: flex-end;
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .modern-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 30vh;
+    padding: 20px;
     text-align: center;
-    color: #4b6051;
 
-    ion-card-content {
-      padding: 0 5px;
+    .empty-illustration {
+      margin-bottom: 12px;
+
+      .empty-icon {
+        font-size: 48px;
+        color: #475569;
+        opacity: 0.6;
+      }
+    }
+
+    .empty-text {
+      .empty-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #f1f5f9;
+        margin-bottom: 4px;
+      }
+
+      .empty-description {
+        font-size: 13px;
+        color: #94a3b8;
+        margin: 0;
+      }
     }
   }
 
-  .searchbar-input {
-    border-bottom: 1px solid #141414;
-    box-shadow: none !important;
-  }
 
-  .search {
-    padding: 0 0 -50px 0;
-  }
-
-  .matchcard {
-    margin: 15 10px;
-    padding: 5 5px;
-    border-radius: 12px;
-
-    ion-card-content {
-      padding: 0 5px;
-      justify-content: right;
-    }
-
-    -webkit-box-shadow: 0px 2px 8px -1px #b4b3b7;
-    box-shadow: 0px 3px 4px -1px #b4b3b7;
-  }
-
-  .date {
-    padding: 0 5px;
-    font-size: 19px;
-    color: black;
-    font-weight: 600;
-  }
-
-  .host {
-    padding: 0 0 0 5px;
-    font-size: 17px;
-    color: #4b6051;
-    font-weight: 600;
-  }
-
-  .cardrow {
-    display: flex;
-
-    p {
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-  }
-
-  .largetext {
-    padding: 0 0 0 5px;
-    font-size: 18px;
-    color: black;
-  }
-
-  .smalltext {
-    padding: 0 0 0 5px;
-    font-size: 16px;
-    color: #4b6051;
-  }
-
-  .pending {
-    padding: 0 0 0 5px;
-    color: #2b92bb;
-    font-size: 16px;
-  }
-
-  .selected {
-    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
-
-    color: #2b92bb !important;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border-radius: 10px;
-  }
-
-  .select-type {
-    text-transform: capitalize;
-    background-color: transparent;
-    width: 95%;
-    margin: 0px !important;
-    color: #707070;
-    border-radius: 10px;
-    box-shadow: none;
-  }
-
-  .fabs {
-    position: absolute;
-    background: #fff;
-
-    padding: 0px 0px;
-
-
-    z-index: 999;
-  }
-
-  .fab_btn {
-    position: absolute;
-    right: 12px;
-    float: right;
-    bottom: 70px !important;
-  }
-
-  .fabTop {
-    margin-bottom: 13px;
-  }
-
-  .fabEmailText {
-    margin-left: -115px;
-    background-color: #2b92bb;
-    margin-top: -47px;
-    padding: 5px 12px 5px 11px;
-    margin-bottom: 5px;
-    color: #ffffff;
-    border-radius: 3px;
-    margin-right: 36px;
-    -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .datetext {
-    font-size: 18px;
-    font-weight: 600;
-    opacity: 0.54;
-    color: black;
-  }
-
-  .visibility {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    color: #c5b495;
-  }
-
-  .align-right {
-    text-align: right;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
 
 }

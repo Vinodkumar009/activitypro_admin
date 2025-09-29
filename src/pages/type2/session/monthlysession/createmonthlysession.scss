@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-createmonthlysession {
+    @include android-sdk35-fixes;
+
+
+
     // .color-theme-1 .timekare-primary-btn {
     //     background-color: #5be283;
     // }

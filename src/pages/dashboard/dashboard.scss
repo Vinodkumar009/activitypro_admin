@@ -1,9 +1,25 @@
+@import '../../theme/android-sdk35-fixes.scss';
 dashboard-page {
     // Theme Variables
+    @include android-sdk35-fixes;
     &.light-theme {
         .modern-dashboard {
             background: #f8fafc;
             min-height: 100vh;
+            
+            // Fix pull-to-refresh footer overlap
+            ion-refresher {
+                z-index: 1000;
+            }
+            
+            .scroll-content {
+                padding-bottom: 100px !important;
+                
+                // Prevent content showing behind footer during pull-to-refresh
+                &.refresher-active {
+                    padding-bottom: 120px !important;
+                }
+            }
         }
         
         .modern-navbar {
@@ -127,6 +143,15 @@ dashboard-page {
     .modern-dashboard {
         background: #0f172a;
         min-height: 100vh;
+        
+        // Fix pull-to-refresh footer overlap
+        ion-refresher {
+            z-index: 1000;
+        }
+        
+        .scroll-content {
+            padding-bottom: 100px !important;
+        }
     }
     
     // Dark Theme Navbar
@@ -1247,6 +1272,11 @@ dashboard-page {
         background: #0f172a !important;
         padding: 0px !important;
         margin-bottom: 80px;
+        
+        // Prevent content showing behind footer during pull-to-refresh
+        &.refresher-active {
+            padding-bottom: 120px !important;
+        }
     }
     // .footer_bottom_pad{
     //     padding: 0px 0px 10px 0px !important;
@@ -1618,7 +1648,7 @@ dashboard-page {
         padding: 0px 0;
         bottom: 0;
         width: 100%;
-        z-index: 999;
+        z-index: 1001;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         
         ion-col {

@@ -217,17 +217,17 @@ export class EditteamPage {
 
   //getting venues
   getParentClubVenues() {
-      const clubs_input = {
-        parentclub_id: this.sharedservice.getPostgreParentClubId(),
-        user_postgre_metadata: {
-          UserMemberId: this.sharedservice.getLoggedInUserId()
-        },
-        user_device_metadata: {
-          UserAppType: 0,
-          UserDeviceType: this.sharedservice.getPlatform() == "android" ? 1 : 2
-        }
+    const clubs_input = {
+      parentclub_id: this.sharedservice.getPostgreParentClubId(),
+      user_postgre_metadata: {
+        UserMemberId: this.sharedservice.getLoggedInUserId()
+      },
+      user_device_metadata: {
+        UserAppType: 0,
+        UserDeviceType: this.sharedservice.getPlatform() == "android" ? 1 : 2
       }
-      const clubs_query = gql`
+    }
+    const clubs_query = gql`
           query getVenuesByParentClub($clubs_input: ParentClubVenuesInput!){
             getVenuesByParentClub(clubInput:$clubs_input){
                   Id
@@ -238,34 +238,34 @@ export class EditteamPage {
               }
           }
           `;
-        this.graphqlService.query(clubs_query, { clubs_input: clubs_input }, 0)
-        .subscribe((res: any) => {
-          console.log("teams data" + JSON.stringify(res.data["getVenuesByParentClub"]));
-          this.commonService.hideLoader();
-          this.clubVenues = res.data["getVenuesByParentClub"];
-          console.log("alll venues:", this.clubVenues)
+    this.graphqlService.query(clubs_query, { clubs_input: clubs_input }, 0)
+      .subscribe((res: any) => {
+        console.log("teams data" + JSON.stringify(res.data["getVenuesByParentClub"]));
+        this.commonService.hideLoader();
+        this.clubVenues = res.data["getVenuesByParentClub"];
+        console.log("alll venues:", this.clubVenues)
 
-          if (this.clubVenues.length > 0) {
-            // Set the venueKey from the team data to pre-select the correct venue
-            
-            // Find the selected venue in the clubVenues array
-            const selectedVenue = this.clubVenues.find(venue => venue.FirebaseId === this.parentClubTeamEdit.teamDetailsInput.venueKey);
-            if (selectedVenue) {
-              this.parentClubTeamEdit.teamDetailsInput.venueKey = selectedVenue.FirebaseId;
-              //this.parentClubTeamEdit.teamDetailsInput.venueType = selectedVenue.LocationType;
-            } else {
-              // Fallback to first venue if team's venue is not found
-              this.parentClubTeamEdit.teamDetailsInput.venueKey = this.clubVenues[0].FirebaseId;
-              //this.parentClubTeamEdit.teamDetailsInput.venueType = this.clubVenues[0].LocationType;
-            }
-            this.getActivity();
+        if (this.clubVenues.length > 0) {
+          // Set the venueKey from the team data to pre-select the correct venue
+
+          // Find the selected venue in the clubVenues array
+          const selectedVenue = this.clubVenues.find(venue => venue.FirebaseId === this.parentClubTeamEdit.teamDetailsInput.venueKey);
+          if (selectedVenue) {
+            this.parentClubTeamEdit.teamDetailsInput.venueKey = selectedVenue.FirebaseId;
+            //this.parentClubTeamEdit.teamDetailsInput.venueType = selectedVenue.LocationType;
+          } else {
+            // Fallback to first venue if team's venue is not found
+            this.parentClubTeamEdit.teamDetailsInput.venueKey = this.clubVenues[0].FirebaseId;
+            //this.parentClubTeamEdit.teamDetailsInput.venueType = this.clubVenues[0].LocationType;
           }
-            console.log("activity", this.clubVenues);
-        },(error) => {
-            this.commonService.toastMessage("No venues found", 2500, ToastMessageType.Error)
-            console.error("Error in fetching:", error);
-        });
-    }
+          this.getActivity();
+        }
+        console.log("activity", this.clubVenues);
+      }, (error) => {
+        this.commonService.toastMessage("No venues found", 2500, ToastMessageType.Error)
+        console.error("Error in fetching:", error);
+      });
+  }
 
   getActivity() {
     //this.commonService.showLoader("Please wait...");
@@ -378,7 +378,7 @@ export class EditteamPage {
     this.commonService.toastMessage(message, 2500, ToastMessageType.Info);
   }
 
-  
+
   goToDashboardMenuPage() {
     this.navCtrl.setRoot("Dashboard");
   }

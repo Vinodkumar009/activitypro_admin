@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 session-page {
+    @include android-sdk35-fixes;
     
     
     .scroll-content {
@@ -186,4 +189,6 @@ session-page {
             -webkit-transform: translateY(-1rem);
         }
     }
+}
+managesession-page {
 }

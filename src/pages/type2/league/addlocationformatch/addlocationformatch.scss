@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-addlocationformatch {
+  @include league-theme-base;
 
     ion-label {
         color: #faae4e

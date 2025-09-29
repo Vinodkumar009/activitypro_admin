@@ -148,7 +148,7 @@ export class TeamdetailsPage {
       val = JSON.parse(val);
       if (val.$key != "") {
         this.parentClubKey = val.UserInfo[0].ParentClubKey;
-        this.getStaffInput.ParentClubKey = val.UserInfo[0].ParentClubKey; 
+        this.getStaffInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
         this.getStaffInput.MemberKey = val.$key;
 
         this.getStaffInput.parentClubteamId = String(this.team.id);

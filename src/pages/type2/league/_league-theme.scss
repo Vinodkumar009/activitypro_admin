@@ -1,0 +1,284 @@
+// Common League Theme Mixin
+@mixin league-theme-base {
+  // Light Theme Styles
+  &.light-theme {
+    background: #f8fafc !important;
+
+    ion-content {
+      background: #f8fafc !important;
+    }
+
+    .scroll-content {
+      background: #f8fafc !important;
+    }
+
+    // Modern Cards
+    .modern-card,
+    .card,
+    ion-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+
+      &:hover {
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1) !important;
+        border-color: #cbd5e1 !important;
+      }
+
+      .card-header {
+        border-bottom: 1px solid #e2e8f0 !important;
+
+        .card-title,
+        h1, h2, h3, h4, h5, h6 {
+          color: #1e293b !important;
+        }
+
+        .card-subtitle,
+        p {
+          color: #64748b !important;
+        }
+      }
+
+      .card-body,
+      .card-content,
+      ion-card-content {
+        .detail-text,
+        p, span {
+          color: #1e293b !important;
+        }
+
+        .detail-icon,
+        ion-icon {
+          color: #64748b !important;
+        }
+
+        .badge-text {
+          background: #f1f5f9 !important;
+          color: #64748b !important;
+          border-color: #e2e8f0 !important;
+        }
+      }
+    }
+
+    // Forms and Inputs
+    ion-input,
+    ion-textarea,
+    ion-select,
+    .searchbar {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      color: #1e293b !important;
+
+      .select-text,
+      .searchbar-input {
+        color: #1e293b !important;
+
+        &::placeholder {
+          color: #64748b !important;
+        }
+      }
+    }
+
+    // Buttons
+    .button,
+    button {
+      &.button-clear {
+        color: #1e293b !important;
+      }
+
+      &.button-outline {
+        border-color: #e2e8f0 !important;
+        color: #1e293b !important;
+      }
+    }
+
+    // Lists and Items
+    ion-item {
+      background: #ffffff !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+
+      ion-label {
+        color: #1e293b !important;
+      }
+    }
+
+    // Headers and Navbars
+    ion-header,
+    .header,
+    ion-navbar {
+      background: #ffffff !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+
+      ion-title,
+      .title {
+        color: #1e293b !important;
+      }
+
+      .button {
+        color: #64748b !important;
+      }
+    }
+
+    // Footers
+    ion-footer,
+    .footer {
+      background: #ffffff !important;
+      border-top: 1px solid #e2e8f0 !important;
+    }
+
+    // Empty States
+    .empty-state {
+      .empty-icon {
+        color: #cbd5e1 !important;
+      }
+
+      .empty-title {
+        color: #1e293b !important;
+      }
+
+      .empty-description {
+        color: #64748b !important;
+      }
+    }
+  }
+
+  // Dark Theme Styles (Default)
+  background: #0f172a !important;
+
+  ion-content {
+    background: #0f172a !important;
+  }
+
+  .scroll-content {
+    background: #0f172a !important;
+  }
+
+  // Modern Cards
+  .modern-card,
+  .card,
+  ion-card {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+
+    &:hover {
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4) !important;
+      border-color: #475569 !important;
+    }
+
+    .card-header {
+      border-bottom: 1px solid #334155 !important;
+
+      .card-title,
+      h1, h2, h3, h4, h5, h6 {
+        color: #f1f5f9 !important;
+      }
+
+      .card-subtitle,
+      p {
+        color: #94a3b8 !important;
+      }
+    }
+
+    .card-body,
+    .card-content,
+    ion-card-content {
+      .detail-text,
+      p, span {
+        color: #cbd5e1 !important;
+      }
+
+      .detail-icon,
+      ion-icon {
+        color: #94a3b8 !important;
+      }
+
+      .badge-text {
+        background: #334155 !important;
+        color: #94a3b8 !important;
+        border-color: #475569 !important;
+      }
+    }
+  }
+
+  // Forms and Inputs
+  ion-input,
+  ion-textarea,
+  ion-select,
+  .searchbar {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #f1f5f9 !important;
+
+    .select-text,
+    .searchbar-input {
+      color: #f1f5f9 !important;
+
+      &::placeholder {
+        color: #94a3b8 !important;
+      }
+    }
+  }
+
+  // Buttons
+  .button,
+  button {
+    &.button-clear {
+      color: #f1f5f9 !important;
+    }
+
+    &.button-outline {
+      border-color: #334155 !important;
+      color: #f1f5f9 !important;
+    }
+  }
+
+  // Lists and Items
+  ion-item {
+    background: #1e293b !important;
+    border-bottom: 1px solid #334155 !important;
+
+    ion-label {
+      color: #f1f5f9 !important;
+    }
+  }
+
+  // Headers and Navbars
+  ion-header,
+  .header,
+  ion-navbar {
+    background: #1e293b !important;
+    border-bottom: 1px solid #334155 !important;
+
+    ion-title,
+    .title {
+      color: #f1f5f9 !important;
+    }
+
+    .button {
+      color: #94a3b8 !important;
+    }
+  }
+
+  // Footers
+  ion-footer,
+  .footer {
+    background: #1e293b !important;
+    border-top: 1px solid #334155 !important;
+  }
+
+  // Empty States
+  .empty-state {
+    .empty-icon {
+      color: #475569 !important;
+    }
+
+    .empty-title {
+      color: #f1f5f9 !important;
+    }
+
+    .empty-description {
+      color: #94a3b8 !important;
+    }
+  }
+}

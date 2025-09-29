@@ -33,7 +33,6 @@ export class CommonService {
     private apollo: Apollo,
     private sanitizer: DomSanitizer,
     private actionSheetCtrl: ActionSheetController,
-    
   ) {}
   public navCtrl: NavController;
   //<Summary>

@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content>
-  <div style="background-color: #f2f5fa">
+  <div class="league-header-section">
     <ion-row class="cardrow">
       <ion-col col-12>
         <ion-row>
@@ -36,9 +36,13 @@
               <span>Round:</span>
               <span class="largetext">{{matchObj?.formatted_round}}</span>
             </p>
+            <p style="margin: 5px 0px; display: flex; align-items: center">
+              <span><ion-icon class="smalltext" name="pin"></ion-icon></span>
+              <span class="smalltext">{{matchObj?.location_name}}</span>
+            </p>
           </ion-col>
-          <ion-col col-3 style="margin: auto;">
-            <div class="action_btns_div" style="display: inline-block;text-align: center">
+          <ion-col col-3>
+            <div class="action_btns_div">
                 <button ion-button (click)="deleteConfirm()" clear>
                   <ion-icon style="" name="trash"></ion-icon>
                 </button>
@@ -49,19 +53,7 @@
                     <ion-icon name="mail"></ion-icon>
                 </button>
             </div>
-          </ion-col>
-        </ion-row>
-        <ion-row style="margin-right: 25px !important; margin: 0; padding: 0;">
-          <ion-col col-8 style="margin: 0; padding: 0;">
-            <p style="margin: 5px 0px; display: flex; align-items: center">
-              <span><ion-icon class="smalltext" name="pin"></ion-icon></span>
-              <span class="smalltext">{{matchObj?.location_name}}</span>
-            </p>
-          </ion-col>
-          <ion-col col-4 style="margin: auto; padding: 0;text-align: right;">
-            <p style="margin: 5px 0px; color: #2b92bb; font-weight: 600; cursor: pointer;" (tap)="gotoSummary()">
-              Publish Result
-            </p>
+            <div style="position: absolute;width: 100%;top: 60%;left: 50%;transform: translate(-47%, 110%);"><p style="margin: 5px 0px; color: #2b92bb; font-weight: 600; cursor: pointer;" (tap)="gotoSummary()">Publish Result</p></div>
           </ion-col>
         </ion-row>
       </ion-col>

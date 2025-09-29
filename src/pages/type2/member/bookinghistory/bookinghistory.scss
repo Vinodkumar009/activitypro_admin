@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-bookinghistory {
+    @include android-sdk35-fixes;
     .total-amount-display {
         background: rgba(211, 47, 47, 0.1); // 🟥 Light red background
         padding: 8px 12px;

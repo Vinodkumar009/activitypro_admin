@@ -1,0 +1,238 @@
+// Modern styles for member page
+member-page {
+    // Dark theme content styles
+    .member-content {
+        background: #0f172a !important;
+        
+        .scroll-content {
+            background: #0f172a !important;
+            padding: 0 !important;
+        }
+    }
+    
+    // Modern Search Card (Dark Theme)
+    .modern-search-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        margin: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        
+        .search-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            .search-icon {
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                ion-icon {
+                    font-size: 16px;
+                    color: #ffffff;
+                }
+            }
+            
+            .search-label {
+                font-size: 14px;
+                font-weight: 600;
+                color: #ffffff;
+                letter-spacing: 0.025em;
+            }
+        }
+        
+        .search-wrapper {
+            background: #1e293b;
+            padding: 16px;
+            
+            .sleek-searchbar {
+                background: transparent;
+                border: none;
+                margin: 0;
+                padding: 0;
+                
+                .searchbar-input {
+                    background: transparent;
+                    border: none;
+                    color: #f1f5f9;
+                    padding: 0;
+                    font-size: 14px;
+                    box-shadow: none;
+                    -webkit-box-shadow: none;
+                    
+                    &::placeholder {
+                        color: #94a3b8;
+                    }
+                }
+                
+                .searchbar-search-icon {
+                    display: none;
+                }
+                
+                .searchbar-clear-icon {
+                    color: #94a3b8;
+                }
+            }
+        }
+    }
+    
+    // Modern Filters Container
+    .modern-filters-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin: 8px;
+    }
+    
+    // Modern Dropdown Cards (Dark Theme)
+    .modern-dropdown-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        
+        &.club-filter .dropdown-header {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        &.member-filter .dropdown-header {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .dropdown-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            .dropdown-icon {
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                ion-icon {
+                    font-size: 16px;
+                    color: #ffffff;
+                }
+            }
+            
+            .dropdown-label {
+                font-size: 14px;
+                font-weight: 600;
+                color: #ffffff;
+                letter-spacing: 0.025em;
+            }
+        }
+        
+        .dropdown-wrapper {
+            background: #1e293b;
+            padding: 16px 20px 16px 16px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            
+            .modern-select {
+                width: 100%;
+                max-width: 100%;
+                background: transparent;
+                border: none;
+                color: #f1f5f9;
+                font-size: 14px;
+                padding: 0;
+                flex: 1;
+                
+                .select-text {
+                    color: #f1f5f9;
+                    width: 100%;
+                    padding-right: 28px;
+                }
+                
+                .item-inner {
+                    padding-right: 0 !important;
+                }
+            }
+            
+            .dropdown-arrow {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+                z-index: 1;
+                
+                ion-icon {
+                    font-size: 16px;
+                    color: #94a3b8;
+                }
+            }
+        }
+    }
+    
+    // Modern Footer (Dark Theme)
+    .modern-footer {
+        background: #1e293b;
+        border-top: 1px solid #334155;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        
+        .footer-stats {
+            display: flex;
+            gap: 16px;
+            
+            .stat-item {
+                text-align: center;
+                
+                .stat-value {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #f1f5f9;
+                    margin: 0;
+                }
+                
+                .stat-label {
+                    font-size: 12px;
+                    color: #94a3b8;
+                    margin: 2px 0 0 0;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+            }
+        }
+        
+        .footer-actions {
+            display: flex;
+            gap: 8px;
+            
+            .footer-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                background: #334155;
+                color: #60a5fa;
+                border: 1px solid #475569;
+                margin: 0;
+                
+                &:hover {
+                    background: #475569;
+                    transform: scale(1.05);
+                }
+                
+                ion-icon {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}

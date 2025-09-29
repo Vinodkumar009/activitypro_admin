@@ -1,37 +1,501 @@
 page-matchhistory {
   .scroll-content {
-    background-color: #f7f7f7;
+    padding: 0 !important;
+  }
+
+  // Light Theme Styles
+  &.light-theme {
+    .modern-history {
+      background: #f8fafc;
+      min-height: 100vh;
+    }
+
+    .scroll-content {
+      background: #f8fafc !important;
+    }
+
+    ion-content {
+      background: #f8fafc !important;
+    }
+
+    .modern-tab-selector {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+
+      .modern-tab {
+        background: transparent;
+        color: #64748b;
+        border-color: #e2e8f0;
+
+        &.active {
+          background: #e2e8f0;
+          color: #1e293b;
+          border-color: #cbd5e1;
+        }
+      }
+    }
+
+    .select-type {
+      color: #64748b;
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+    }
+
+    .selected {
+      background-color: #2b92bb !important;
+      color: #ffffff !important;
+      border-color: #2b92bb;
+    }
+
+    .headercard {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .sub-container {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin: 8px;
+
+      ion-icon {
+        color: #64748b !important;
+      }
+
+      .searchbar {
+        background: #ffffff !important;
+      }
+
+      .searchbar-input {
+        color: #1e293b;
+        border-bottom: 1px solid #e2e8f0;
+
+        &::placeholder {
+          color: #64748b;
+        }
+      }
+    }
+
+    ion-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .Location-head {
+      color: #1e293b;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .name {
+      color: #2b92bb;
+    }
+
+    .card-text {
+      color: #64748b;
+
+      span {
+        color: #64748b;
+      }
+    }
+
+    .datetext {
+      color: #1e293b;
+    }
+
+    .modern-search-card {
+      .sleek-searchbar {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+        .searchbar-input {
+          color: #1e293b;
+          padding: 8px 12px 8px 32px;
+
+          &::placeholder {
+            color: #64748b;
+          }
+        }
+
+        .searchbar-search-icon {
+          color: #64748b;
+          left: 8px;
+        }
+
+        .searchbar-clear-icon {
+          color: #64748b;
+          right: 8px;
+        }
+      }
+    }
+
+    .modern-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+      .card-header {
+        border-bottom: 1px solid #e2e8f0;
+
+        .card-info {
+          .card-title {
+            color: #1e293b !important;
+          }
+
+          .card-subtitle {
+            color: #64748b !important;
+          }
+        }
+      }
+
+      .card-body {
+        .detail-text {
+          color: #1e293b !important;
+        }
+
+        .detail-icon {
+          color: #64748b !important;
+        }
+
+        .badge-text {
+          background: #f1f5f9 !important;
+          color: #64748b !important;
+          border-color: #e2e8f0 !important;
+        }
+      }
+    }
+
+    .modern-empty-state {
+      .empty-icon {
+        color: #cbd5e1;
+      }
+
+      .empty-title {
+        color: #1e293b;
+      }
+
+      .empty-description {
+        color: #64748b;
+      }
+    }
+  }
+
+  // Dark Theme Styles (Default)
+  .modern-history {
+    background: #0f172a;
+    min-height: 100vh;
+  }
+
+  .scroll-content {
+    background: #0f172a !important;
+    padding: 0px !important;
+  }
+
+  ion-content {
+    background: #0f172a !important;
   }
 
   .toolbar-title {
     color: #fff;
   }
 
+  // Modern Tab Selector (Dark Theme)
+  .modern-tab-selector {
+    background: #1e293b;
+    padding: 8px 4px;
+    border-bottom: 1px solid #334155;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 4px;
+
+    .modern-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: #94a3b8;
+      font-weight: 500;
+      cursor: pointer;
+
+      &.active {
+        background: #475569;
+        color: #f1f5f9;
+        border-color: #64748b;
+      }
+
+      .tab-icon-wrapper {
+        ion-icon {
+          font-size: 16px;
+        }
+      }
+
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .tab-content {
+    padding: 0 4px 20px 4px;
+  }
+
+  .modern-search-card {
+    margin-bottom: 12px;
+
+    .sleek-searchbar {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      margin: 0;
+
+      .searchbar-input {
+        background: transparent;
+        border: none;
+        color: #f1f5f9;
+        padding: 8px 12px 8px 32px;
+        font-size: 14px;
+
+        &::placeholder {
+          color: #94a3b8;
+        }
+      }
+
+      .searchbar-search-icon {
+        color: #94a3b8;
+        left: 8px;
+        font-size: 16px;
+      }
+
+      .searchbar-clear-icon {
+        color: #94a3b8;
+        right: 8px;
+      }
+    }
+  }
+
+  .competitions-container,
+  .matches-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .modern-card {
+    background: #1e293b;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    cursor: pointer;
+    overflow: hidden;
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #334155;
+      position: relative;
+
+      .card-icon-wrapper {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+
+        .card-icon {
+          font-size: 16px;
+          color: #ffffff;
+        }
+
+        &.competition-bg {
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        &.matches-bg {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+      }
+
+      .card-info {
+        flex: 1;
+
+        .card-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: #f1f5f9;
+          margin: 0 0 2px 0;
+          line-height: 1.2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .card-subtitle {
+          font-size: 12px;
+          color: #94a3b8;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      .visibility-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #10b981;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+
+        &.private {
+          background: #ef4444;
+        }
+
+        ion-icon {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .card-body {
+      padding: 12px;
+
+      .competition-details,
+      .match-details {
+        .detail-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 6px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+
+            &.players {
+              flex: 1;
+              margin-top: 4px;
+            }
+
+            .detail-icon {
+              font-size: 12px;
+              color: #94a3b8;
+              flex-shrink: 0;
+            }
+
+            .detail-text {
+              font-size: 12px;
+              color: #cbd5e1;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+            &.type-badge,
+            &.category-badge,
+            &.venue-badge {
+              flex: 0 0 auto;
+              justify-content: flex-end;
+
+              .badge-text {
+                background: #334155;
+                color: #94a3b8;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 500;
+                border: 1px solid #475569;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .modern-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 30vh;
+    padding: 20px;
+    text-align: center;
+
+    .empty-illustration {
+      margin-bottom: 12px;
+
+      .empty-icon {
+        font-size: 48px;
+        color: #475569;
+        opacity: 0.6;
+      }
+    }
+
+    .empty-text {
+      .empty-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #f1f5f9;
+        margin-bottom: 4px;
+      }
+
+      .empty-description {
+        font-size: 13px;
+        color: #94a3b8;
+        margin: 0;
+      }
+    }
+  }
+
   // Tab button styling
   .selected {
-    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
-    color: #2b92bb !important;
+    background-color: #2b92bb !important;
+    color: #ffffff !important;
     -webkit-box-shadow: none;
     box-shadow: none;
     border-radius: 10px;
+    border: 1px solid #2b92bb;
   }
 
   .select-type {
     text-transform: capitalize;
-    background-color: transparent;
+    background-color: #1e293b;
     width: 95%;
     margin: 0px !important;
-    color: #707070;
+    color: #94a3b8;
     border-radius: 10px;
     box-shadow: none;
+    border: 1px solid #334155;
   }
 
   // Header card styling
   .headercard {
     margin: 10 10px;
     padding: 0 0px;
-    border-radius: 2px;
-    background: #ffffff;
+    border-radius: 8px;
+    background: #1e293b;
+    border: 1px solid #334155;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     border-bottom: none !important;
@@ -43,12 +507,17 @@ page-matchhistory {
 
   // Search container styling
   .sub-container {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    margin: 8px;
+
     ion-icon {
       width: 90%;
       height: 46px;
       background: transparent !important;
       border-radius: 5px;
-      color: rgba(250, 169, 40, 0.827451);
+      color: #94a3b8 !important;
       font-size: 30px;
     }
 
@@ -58,7 +527,7 @@ page-matchhistory {
 
     .searchbar {
       border: none !important;
-      background: #ffffff !important;
+      background: #1e293b !important;
       border-radius: 5px !important;
       height: 86% !important;
       margin-top: 4px !important;
@@ -69,8 +538,13 @@ page-matchhistory {
       padding-left: 4px !important;
       box-shadow: none !important;
       -webkit-box-shadow: none !important;
-      border-bottom: 1px solid #34343442;
+      border-bottom: 1px solid #334155;
       border-radius: 0;
+      color: #f1f5f9;
+
+      &::placeholder {
+        color: #94a3b8;
+      }
     }
 
     .searchbar-search-icon {
@@ -85,13 +559,13 @@ page-matchhistory {
   // Card styling
   .Location-head {
     font-size: 1.6rem;
-    color: #222;
+    color: #f1f5f9;
     padding: 10px;
-    border-bottom: 1px solid #ded8d8 !important;
+    border-bottom: 1px solid #334155 !important;
   }
 
   .name {
-    color: #5ea68d;
+    color: #2b92bb;
     font-size: 20px !important;
     font-weight: 600;
     margin: 0;
@@ -101,19 +575,19 @@ page-matchhistory {
   }
 
   .card-text {
-    color: #c5b495;
+    color: #cbd5e1;
     width: 100%;
   }
 
   .card-text>span {
-    color: gray;
+    color: #94a3b8;
   }
 
   .datetext {
     font-size: 18px;
     font-weight: 600;
     opacity: 0.54;
-    color: black;
+    color: #f1f5f9;
   }
 
   .align-right {
@@ -144,7 +618,8 @@ page-matchhistory {
   ion-card {
     margin: 0px !important;
     width: 100% !important;
-    background: #FFFFFF;
+    background: #1e293b;
+    border: 1px solid #334155;
     -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
     border-radius: 6px;

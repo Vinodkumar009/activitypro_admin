@@ -1,5 +1,69 @@
 page-match_team_details {
+  // Light Theme Styles
+  &.light-theme {
+    .scroll-content {
+      background: #f8fafc !important;
+    }
 
+    ion-content {
+      background: #f8fafc !important;
+    }
+
+    .largetext,
+    .smalltext,
+    .playerText {
+      color: #1e293b !important;
+    }
+
+    .item {
+      background: #ffffff !important;
+      color: #1e293b !important;
+    }
+
+    .section-title {
+      color: #64748b !important;
+    }
+
+    .drop-zone {
+      border-color: #e2e8f0 !important;
+    }
+
+    .drop-zone.drag-over {
+      background-color: #f1f5f9 !important;
+    }
+  }
+
+  // Dark Theme Styles (Default)
+  .scroll-content {
+    background: #0f172a !important;
+  }
+
+  ion-content {
+    background: #0f172a !important;
+  }
+
+  .largetext,
+  .smalltext,
+  .playerText {
+    color: #f1f5f9 !important;
+  }
+
+  .item {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+  }
+
+  .section-title {
+    color: #94a3b8 !important;
+  }
+
+  .drop-zone {
+    border-color: #334155 !important;
+  }
+
+  .drop-zone.drag-over {
+    background-color: #334155 !important;
+  }
 
   .cardrow {
     div {

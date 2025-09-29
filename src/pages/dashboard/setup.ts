@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { NavParams, NavController, PopoverController,IonicPage } from 'ionic-angular';
 import { SharedServices } from '../services/sharedservice';
 import { CommonService } from '../../services/common.service';
+import { ThemeService } from '../../services/theme.service';
 // import { PopoverPage } from '../popover/popover';
 
 @IonicPage()
@@ -17,7 +18,9 @@ export class Setup {
   themeType: number;
   LangObj:any = {};//by vinod 
   menus = [];
-  constructor(public events: Events, public alertCtrl: AlertController, public navParams: NavParams,public commonService: CommonService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController,public storage:Storage) {
+  isDarkTheme: boolean = true;
+  
+  constructor(public events: Events, public alertCtrl: AlertController, public navParams: NavParams,public commonService: CommonService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController,public storage:Storage, public themeService: ThemeService) {
     this.themeType = sharedservice.getThemeType();
     this.menus = [];
     let x = [];
@@ -34,9 +37,56 @@ export class Setup {
   // //added by vinod
   ionViewDidLoad() {
     this.getLanguage();
+    this.loadTheme();
     this.events.subscribe('language', (res) => {
       this.getLanguage();
     });
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      console.log('Setup page - loaded theme from storage:', isDarkTheme);
+      if (isDarkTheme !== null) {
+        this.isDarkTheme = isDarkTheme;
+      } else {
+        // Default to dark theme if no preference is stored
+        this.isDarkTheme = true;
+      }
+      this.applyTheme();
+    }).catch((error) => {
+      console.log('Setup page - error loading theme:', error);
+      this.isDarkTheme = true; // Default to dark theme
+      this.applyTheme();
+    });
+    
+    // Listen for theme changes from other pages
+    this.events.subscribe('theme:changed', (isDark) => {
+      console.log('Setup page - received theme change event:', isDark);
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const setupElement = document.querySelector('setup-page');
+    console.log('Setup page - applying theme:', this.isDarkTheme ? 'dark' : 'light');
+    console.log('Setup page - element found:', !!setupElement);
+    
+    if (setupElement) {
+      if (this.isDarkTheme) {
+        setupElement.classList.remove('light-theme');
+        document.body.classList.remove('light-theme');
+      } else {
+        setupElement.classList.add('light-theme');
+        document.body.classList.add('light-theme');
+      }
+    }
+  }
+
+
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
   }
   getLanguage(){
     this.storage.get("language").then((res)=>{
@@ -56,7 +106,7 @@ export class Setup {
   goTo(obj) {
     this.commonService.screening(obj.MobComponent)
     if(obj.MobComponent == 'StaffattendancesetupPage'){
-      this.showAlter('Coming Soon...')
+      this.showAlter()
       return false;
     }
     // else if( obj.component == 'WalletPage'){
@@ -71,16 +121,15 @@ export class Setup {
       this.commonService.updateCategory("coach_list");
     }
     else if(obj.MobComponent === "TermsandconditionsPage"){
-        const alert_msg = "We are upgrading our platform. This module is temporarily unavailable. We apologise for the inconvenience."
-        this.commonService.alertWithText("Info",alert_msg,"OK");
-        return false;
+      const alert_msg = "We are upgrading our platform. This module is temporarily unavailable. We apologise for the inconvenience."
+      this.commonService.alertWithText("Info",alert_msg,"OK");
+      return false;
     }
-
     this.navCtrl.push(obj.MobComponent);
   }
-  showAlter(title:string){
+  showAlter(){
     let confirm = this.alertCtrl.create({
-      title: title,
+      title: 'Coming Soon...',
   
       buttons: [
           {

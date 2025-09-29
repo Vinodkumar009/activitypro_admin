@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-assignpayment {
+    @include android-sdk35-fixes;
    
     .card-text {
         color: #c5b495 !important;

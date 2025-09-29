@@ -1,9 +1,154 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+@import './member-modern.scss';
+@import './member-cards.scss';
+
 member-page {
-    .scroll-content {
-        // margin-top: 122px !important;
-        padding: 16px 9px !important;
-        background-image: none !important;
+    @include android-sdk35-fixes;
+    
+    // Default dark theme
+    background: #0f172a !important;
+    
+    // Light Theme Styles
+    &.light-theme {
+        background: #f8fafc !important;
+        
+        .member-content {
+            background: #f8fafc !important;
+            
+            .scroll-content {
+                background: #f8fafc !important;
+            }
+        }
+        
+        // Modern Search Card (Light Theme)
+        .modern-search-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            
+            .search-header {
+                background: linear-gradient(135deg, #10b981, #059669);
+                
+                .search-icon ion-icon {
+                    color: #ffffff;
+                }
+                
+                .search-label {
+                    color: #ffffff;
+                }
+            }
+            
+            .search-wrapper {
+                background: #ffffff;
+                
+                .sleek-searchbar {
+                    .searchbar-input {
+                        color: #1e293b;
+                        background: transparent;
+                        
+                        &::placeholder {
+                            color: #64748b;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Modern Dropdown Cards (Light Theme)
+        .modern-dropdown-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            
+            &.club-filter .dropdown-header {
+                background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            }
+            
+            &.member-filter .dropdown-header {
+                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            }
+            
+            .dropdown-header {
+                .dropdown-icon ion-icon {
+                    color: #ffffff;
+                }
+                
+                .dropdown-label {
+                    color: #ffffff;
+                }
+            }
+            
+            .dropdown-wrapper {
+                background: #ffffff;
+                
+                .modern-select {
+                    color: #1e293b;
+                    
+                    .select-text {
+                        color: #1e293b;
+                    }
+                }
+                
+                .dropdown-arrow ion-icon {
+                    color: #64748b;
+                }
+            }
+        }
+        
+        // Member cards (Light Theme)
+        ion-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .name {
+            color: #1e293b !important;
+        }
+        
+        .family {
+            color: #059669 !important;
+        }
+        
+        ion-card-content {
+            color: #64748b !important;
+        }
+        
+        .nonmember-style {
+            color: #dc2626 !important;
+        }
+        
+        // Modern Footer (Light Theme)
+        .modern-footer {
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            
+            .footer-stats {
+                .stat-item {
+                    .stat-value {
+                        color: #1e293b;
+                    }
+                    
+                    .stat-label {
+                        color: #64748b;
+                    }
+                }
+            }
+            
+            .footer-actions {
+                .footer-btn {
+                    background: #f1f5f9;
+                    color: #2b92bb;
+                    border: 1px solid #e2e8f0;
+                    
+                    &:hover {
+                        background: #e2e8f0;
+                    }
+                }
+            }
+        }
     }
+
 
     div {
         ion-list {
@@ -57,7 +202,7 @@ member-page {
 
     .member_name,
     .btn_clr {
-        color: $dashoboard-icon-color;
+        color: #2b92bb;
     }
 
     .block {
@@ -169,7 +314,7 @@ member-page {
     }
 
     .memberfont {
-        color: $cardhightlighttextcolor;
+        color: #2b92bb;
         font-size: 17px;
     }
 
@@ -327,8 +472,8 @@ member-page {
     }
 
     .scroll-content {
-        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
-
+        background: #0f172a !important;
+        padding: 0px !important;
     }
 
     .allignment-col {

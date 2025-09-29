@@ -17,7 +17,7 @@ export enum LeaguePlayerInviteStatus {
     Maybe = 8,
     AdminMaybe = 9
 }
- 
+
 export enum LeagueTeamPlayerStatusType {
     All = 0, //added here to get all players, not present in backend code
     PLAYING = 1,
@@ -25,18 +25,18 @@ export enum LeagueTeamPlayerStatusType {
     EXTRA = 3,
     PLAYINGPLUSBENCH = 4, // combine both 1 & 2
 }
- 
+
 export enum LeagueVenueType {
     Club = 1,
     Location = 2,
     School = 3,
 }
- 
+
 export enum LeagueMatchActionType {
     LEAGUE = 0,
     MATCH = 1,
 }
- 
+
 export enum MatchType {
     SINGLES = 1,
     DOUBLES = 2,
@@ -44,9 +44,9 @@ export enum MatchType {
 }
 
 export enum ActivityTypeEnum {
-  TENNIS = 1001,
-  FOOTBALL = 1002,
-  CRICKET = 1015,
+    TENNIS = 1001,
+    FOOTBALL = 1002,
+    CRICKET = 1015,
 }
 
 export enum PaymentStatusEnum {

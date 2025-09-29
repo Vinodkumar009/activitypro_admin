@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-sessionmonthlycreationlist {
+    @include android-sdk35-fixes;
+
+
+
     ion-item {
         ion-label {
             overflow: visible !important;

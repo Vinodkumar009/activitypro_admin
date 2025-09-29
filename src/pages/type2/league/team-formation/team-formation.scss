@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-team-formation {
+  @include league-theme-base;
     .ionlist{
         margin:-1px 0px 7px;
       }

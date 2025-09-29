@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-editfeesmembership {
+    @include android-sdk35-fixes;
     .scroll-content {
         padding: 6px !important;
         background-image: none !important; // background: white !important;

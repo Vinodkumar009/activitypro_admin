@@ -14,6 +14,7 @@ import { GraphqlService } from '../../../services/graphql.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { IClubDetails } from '../../../shared/model/club.model';
+import { ThemeService } from '../../../services/theme.service';
 @IonicPage()
 @Component({
   selector: 'member-page',
@@ -34,6 +35,7 @@ export class Type2Member {
   LangObj: any = {};//by vinod
   themeType: number;
   show: boolean;
+  isDarkTheme: boolean = true;
   selectedParentClubKey: string;
   selectedClubKey: string;
   members:VenueUser[] = [];
@@ -64,6 +66,14 @@ export class Type2Member {
   }
   loggedin_type:number = 2;
   can_coach_see_revenue:boolean = true;
+
+  get activeMembers(): number {
+    return this.members.filter(m => m.is_enable).length;
+  }
+
+  get inactiveMembers(): number {
+    return this.members.filter(m => !m.is_enable).length;
+  }
   constructor(public events: Events, 
      private callNumber: CallNumber,
      public commonService: CommonService, 
@@ -72,7 +82,8 @@ export class Type2Member {
      public storage: Storage, public navCtrl: NavController, 
      public sharedservice: SharedServices, 
      public fb: FirebaseService, public popoverCtrl: PopoverController,
-      private graphqlService:GraphqlService) {
+      private graphqlService:GraphqlService,
+      private themeService: ThemeService) {
       this.themeType = sharedservice.getThemeType();
       this.selectedIndex = -1;
       this.selectedIndexOfHolidayCampMember = -1;
@@ -110,6 +121,7 @@ export class Type2Member {
   //added by vinod
   ionViewDidLoad() {
     this.getLanguage();
+    this.loadTheme();
     this.events.subscribe('language', (res) => {
       this.getLanguage();
     });
@@ -117,6 +129,24 @@ export class Type2Member {
     this.selectedParentClubKey = this.sharedservice.getParentclubKey();
     this.venus_user_input.parentclub_id = this.sharedservice.getPostgreParentClubId();
     this.getClubDetails();          
+  }
+
+  loadTheme() {
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const memberElement = document.querySelector('member-page');
+    if (memberElement) {
+      if (this.isDarkTheme) {
+        memberElement.classList.remove('light-theme');
+      } else {
+        memberElement.classList.add('light-theme');
+      }
+    }
   }
   getLanguage() {
     this.storage.get("language").then((res) => {
@@ -390,6 +420,16 @@ export class Type2Member {
 
   presentActionSheet(member, index, type) {
     this.navCtrl.push('MemberprofilePage', {member_id: member.Id,type: type});
+    this.commonService.updateCategory("user_profile");
+  }
+
+  presentActionSheetForHolidayCampMember(member, index, type) {
+    this.navCtrl.push('MemberprofilePage', {member_id: member.Id || member.$key, type: type});
+    this.commonService.updateCategory("user_profile");
+  }
+
+  presentActionSheetForSchoolMember(member, index, type) {
+    this.navCtrl.push('MemberprofilePage', {member_id: member.Id || member.$key, type: type});
     this.commonService.updateCategory("user_profile");
   }
 

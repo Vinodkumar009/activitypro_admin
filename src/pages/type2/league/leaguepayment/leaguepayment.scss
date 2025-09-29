@@ -1,4 +1,7 @@
+@import "../_league-theme.scss";
+
 page-leaguepayment {
+  @include league-theme-base;
     // .price_btn{
     //     //margin-top: 10px;
     //     padding: 20px;

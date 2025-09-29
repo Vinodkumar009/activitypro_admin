@@ -1,89 +1,440 @@
- setup-page {
-    .scroll-content {
-        background-image: none !important;
-        padding: 6px !important;
-        background-color: #f7f7f7;
-    }
-     $user-icon-size: 44px;
-     .dashboard_user {
-         font-size: $user-icon-size;
-         color:#2292bb !important;
-     }
-    //  .myStyle{
-    //      background-color: #f1ca99;
-    //  }
-     .dashboard_col_item_block {
-        padding: 8px 8px 0px 8px;
-        text-align: center;
-        margin-bottom: 10px;
-        border-radius: 7px;
-        background: #fffefe;
-      //  -webkit-box-shadow: 0px 1px 5px -1px #7b7a76;
-        box-shadow: 0px 2px 5px -1px #887f82;
-        height: 11.5rem;
-        margin: 5px;
-        max-width: 30%;
-     }
-     .dashboard_col_item {
-        background-color: rgba(255, 254, 254, 0);
-         //background-color: rgba(155, 147, 147, 0.34);
-         padding-bottom: 1px;
-         border-radius: 5px;
-     }
-     .dashboard_col_item_name {
-         color: #3a4a50 !important;
-       //  font-weight: bold;
-         margin-top: 0px;
-         font-size:13px;
-     }
-    //  @media screen and (min-width : 360px) and (max-width : 375px) {
-    //     .dashboard_col_item_block {
-    //         padding: 12px 8px 0px 8px;
-    //         text-align: center;
-    //         margin-bottom: 10px;
-    //         border-radius: 7px;
-    //         background: #fffefe;
-    //         -webkit-box-shadow: 0px 2px 5px -1px #887f82;
-    //         box-shadow: 0px 2px 5px -1px #887f82;
-    //         height:  11.5rem;
-    //         margin: 5px;
-    //         max-width: 10.6rem;
-    //     }
-    //  }
-     @media screen and (max-width : 360px){
-        .dashboard_col_item_block {
-            padding: 12px 8px 0px 8px;
-            text-align: center;
-            margin-bottom: 10px;
-            border-radius: 7px;
-            background: #fffefe;
-            -webkit-box-shadow: 0px 2px 5px -1px #887f82;
-            box-shadow: 0px 2px 5px -1px #887f82;
-            height: 12.5rem;
-            margin: 5px;
-            max-width: 29.8%;
-        }
-     }
-     
-    //  @media screen and (max-width : 320px){
-    //     .dashboard_col_item_block {
-    //         padding: 12px 8px 0px 8px;
-    //         text-align: center;
-    //         margin-bottom: 10px;
-    //         border-radius: 7px;
-    //         background: #fffefe;
-    //         -webkit-box-shadow: 0px 2px 5px -1px #887f82;
-    //         box-shadow: 0px 2px 5px -1px #887f82;
-    //         height: 13.2rem;
-    //         margin: 5px;
-    //         max-width: 8.8rem;
-    //     }
-    //  }
-     
+@import '../../theme/android-sdk35-fixes.scss';
 
- 
-     .logo-img {
-         margin-top: 5px;
-         height: 39px;
-     }
- }
+setup-page {
+    @include android-sdk35-fixes;
+    
+    // Default dark theme for the entire page
+    background: #0f172a !important;
+    
+    // Light Theme Styles
+    &.light-theme {
+        background: #f8fafc !important;
+        .modern-navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e2e8f0;
+            
+            .navbar-title {
+                color: #1e293b;
+            }
+            
+            .menu-btn, .more-btn, .home-btn {
+                color: #64748b !important;
+                background: transparent !important;
+                border: none !important;
+                
+                &:hover {
+                    color: #1e293b !important;
+                }
+            }
+        }
+        
+        // Light theme content styles
+        ion-content.setup-content {
+            background: #f8fafc !important;
+            
+            .scroll-content {
+                background: #f8fafc !important;
+            }
+            
+            .fixed-content {
+                background: #f8fafc !important;
+            }
+        }
+        
+        .setup-content {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+        }
+        
+        // Light theme gradient variations - SAME AS MENU PAGE for consistency
+        .setup-card-wrapper {
+            &:nth-child(6n+1) .setup-card {
+                background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); // Blue gradient
+            }
+            
+            &:nth-child(6n+2) .setup-card {
+                background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); // Teal gradient
+            }
+            
+            &:nth-child(6n+3) .setup-card {
+                background: linear-gradient(135deg, #64748b 0%, #475569 100%); // Gray gradient
+            }
+            
+            &:nth-child(6n+4) .setup-card {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%); // Green gradient
+            }
+            
+            &:nth-child(6n+5) .setup-card {
+                background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); // Purple gradient
+            }
+            
+            &:nth-child(6n+6) .setup-card {
+                background: linear-gradient(135deg, #e11d48 0%, #be185d 100%); // Pink gradient
+            }
+        }
+        
+        .setup-card {
+            // Light theme default - SAME AS MENU PAGE
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            
+            &:hover {
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 6px 16px rgba(0, 0, 0, 0.08);
+                transform: translateY(-4px) scale(1.02);
+            }
+            
+
+            
+            .card-icon-wrapper {
+                background: rgba(255, 255, 255, 0.3) !important;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+                
+                .card-icon {
+                    color: #ffffff !important;
+                    font-weight: 600;
+                    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+                }
+                
+                .card-image {
+                    filter: brightness(0) invert(1) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4)) !important;
+                }
+            }
+            
+            .card-title {
+                color: #ffffff !important;
+            }
+            
+            .card-subtitle {
+                color: rgba(255, 255, 255, 0.9) !important;
+            }
+        }
+    }
+    
+    // Dark Theme Styles (Default)
+    .modern-navbar {
+        background: #1e293b;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid #334155;
+        
+        .navbar-title {
+            font-weight: 600;
+            color: #f1f5f9;
+            font-size: 18px;
+        }
+        
+        .menu-btn, .more-btn, .home-btn {
+            color: #cbd5e1 !important;
+            background: transparent !important;
+            border: none !important;
+            
+            &:hover {
+                color: #f1f5f9 !important;
+            }
+        }
+    }
+    
+    // Dark theme content styles
+    ion-content.setup-content {
+        background: #0f172a !important;
+        
+        .scroll-content {
+            background: #0f172a !important;
+        }
+        
+        .fixed-content {
+            background: #0f172a !important;
+        }
+    }
+    
+    .setup-content {
+        background: linear-gradient(135deg, #0f172a 0%, #1a202c 100%) !important;
+        min-height: 100vh;
+        padding: 20px !important;
+    }
+    
+    .setup-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        
+        ion-grid {
+            padding: 0;
+        }
+        
+        ion-row {
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        ion-col {
+            display: flex;
+        }
+    }
+    
+    .setup-card-wrapper {
+        padding: 10px;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+        transform: translateY(20px);
+        display: flex; // Ensure flex layout for equal height
+        
+        @for $i from 1 through 12 {
+            &:nth-child(#{$i}) {
+                animation-delay: #{$i * 0.1}s;
+            }
+        }
+        
+        // 6 different gradient variations - SAME AS MENU PAGE for consistency
+        &:nth-child(6n+1) .setup-card {
+            background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%); // Lighter Blue gradient
+        }
+        
+        &:nth-child(6n+2) .setup-card {
+            background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%); // Lighter Teal gradient
+        }
+        
+        &:nth-child(6n+3) .setup-card {
+            background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%); // Lighter Gray gradient
+        }
+        
+        &:nth-child(6n+4) .setup-card {
+            background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%); // Lighter Green gradient
+        }
+        
+        &:nth-child(6n+5) .setup-card {
+            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%); // Lighter Purple gradient
+        }
+        
+        &:nth-child(6n+6) .setup-card {
+            background: linear-gradient(135deg, #fda4af 0%, #fb7185 100%); // Lighter Pink gradient
+        }
+        
+        @media (max-width: 768px) {
+            padding: 8px;
+        }
+        
+        @media (max-width: 480px) {
+            padding: 6px;
+        }
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .setup-card {
+        // Default gradient background - SAME AS MENU PAGE
+        background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        overflow: hidden;
+        padding: 0;
+        height: 160px;
+        width: 100%;
+        position: relative;
+        
+
+
+        &:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 12px 24px rgba(0, 0, 0, 0.3);
+            
+            .card-icon-wrapper {
+                transform: scale(1.15);
+            }
+        }
+        
+        &:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        
+        .card-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            
+            .card-icon {
+                font-size: 22px;
+                color: #ffffff !important;
+                font-weight: 600;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            }
+            
+            .card-image {
+                width: 26px;
+                height: 26px;
+                object-fit: contain;
+                filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+            }
+        }
+        
+        .card-content {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 2;
+            
+            .card-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: #ffffff;
+                margin: 0 0 4px 0;
+                line-height: 1.2;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            .card-subtitle {
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.8);
+                margin: 0;
+                opacity: 0.9;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                line-height: 1.3;
+            }
+        }
+        
+        // Add a subtle overlay for better text readability
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            z-index: 1;
+        }
+        
+        // Add a subtle shine effect
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+            border-radius: 16px;
+        }
+        
+        &:hover::after {
+            left: 100%;
+        }
+
+    }
+    
+    // Responsive adjustments for 3 cards per row
+    @media (max-width: 768px) {
+        .setup-card {
+            height: 140px;
+            
+            .card-icon-wrapper {
+                width: 40px;
+                height: 40px;
+                top: 12px;
+                left: 12px;
+                
+                .card-icon {
+                    font-size: 18px;
+                    color: #ffffff !important;
+                    font-weight: 600;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                }
+                
+                .card-image {
+                    width: 22px;
+                    height: 22px;
+                    filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+                }
+            }
+            
+            .card-content {
+                bottom: 12px;
+                left: 12px;
+                right: 12px;
+                
+                .card-title {
+                    font-size: 15px;
+                    line-height: 1.2;
+                }
+                
+                .card-subtitle {
+                    font-size: 11px;
+                }
+            }
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .setup-content {
+            padding: 12px !important;
+        }
+        
+        .setup-card-wrapper {
+            padding: 4px;
+        }
+        
+        .setup-card {
+            height: 120px;
+            border-radius: 12px;
+            
+            .card-icon-wrapper {
+                width: 36px;
+                height: 36px;
+                top: 10px;
+                left: 10px;
+                border-radius: 10px;
+                
+                .card-icon {
+                    font-size: 16px;
+                    color: #ffffff !important;
+                    font-weight: 600;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                }
+                
+                .card-image {
+                    width: 18px;
+                    height: 18px;
+                    filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+                }
+            }
+            
+            .card-content {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                
+                .card-title {
+                    font-size: 13px;
+                    line-height: 1.1;
+                    margin-bottom: 2px;
+                }
+                
+                .card-subtitle {
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+}

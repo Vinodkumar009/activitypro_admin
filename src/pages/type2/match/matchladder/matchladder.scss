@@ -1,27 +1,421 @@
 page-matchladder {
-  // ion-label {
-  //   color: #faae4e;
-  // }
+  .scroll-content {
+    padding: 0 !important;
+  }
+
+  // Light Theme Styles
+  &.light-theme {
+    .modern-ladder {
+      background: #f8fafc;
+      min-height: 100vh;
+    }
+
+    .scroll-content {
+      background: #f8fafc !important;
+    }
+
+    ion-content {
+      background: #f8fafc !important;
+    }
+
+    .modern-tab-selector {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+
+      .modern-tab {
+        background: transparent;
+        color: #64748b;
+        border-color: #e2e8f0;
+
+        &.active {
+          background: #e2e8f0;
+          color: #1e293b;
+          border-color: #cbd5e1;
+        }
+      }
+    }
+
+    // Modern Dropdown Card (Light Theme)
+    .modern-dropdown-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+      .dropdown-header {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+
+        .dropdown-icon ion-icon {
+          color: #ffffff;
+        }
+
+        .dropdown-label {
+          color: #ffffff;
+        }
+      }
+
+      .dropdown-wrapper {
+        background: #ffffff;
+
+        .modern-select {
+          color: #1e293b;
+        }
+
+        .dropdown-arrow ion-icon {
+          color: #64748b;
+        }
+      }
+    }
+
+    // Modern Search Card (Light Theme)
+    .modern-search-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+      .search-header {
+        background: linear-gradient(135deg, #10b981, #059669);
+
+        .search-icon ion-icon {
+          color: #ffffff;
+        }
+
+        .search-label {
+          color: #ffffff;
+        }
+      }
+
+      .search-wrapper {
+        background: #ffffff;
+
+        .sleek-searchbar {
+          background: transparent;
+          border: none;
+
+          .searchbar-input {
+            color: #1e293b;
+            background: transparent;
+
+            &::placeholder {
+              color: #64748b;
+            }
+          }
+
+          .searchbar-search-icon {
+            display: none;
+          }
+
+          .searchbar-clear-icon {
+            color: #64748b;
+          }
+        }
+      }
+    }
+
+    .segment-button {
+      color: #64748b !important;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+    }
+
+    .segment-activated {
+      color: #ffffff !important;
+      background-color: #2b92bb !important;
+      border-color: #2b92bb;
+    }
+
+    // Legacy dropdown styles (Light Theme)
+    .dropdownrow {
+      ion-item {
+        background: #ffffff;
+        color: #1e293b;
+        border: 1px solid #e2e8f0;
+      }
+
+      ion-select {
+        color: #1e293b;
+      }
+    }
+
+    .sub-container {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin: 8px;
+
+      ion-icon {
+        color: #64748b !important;
+      }
+
+      .searchbar {
+        background: #ffffff !important;
+        border: none !important;
+      }
+
+      .searchbar-input {
+        background-color: #ffffff !important;
+        color: #1e293b;
+        border-bottom: 1px solid #e2e8f0;
+
+        &::placeholder {
+          color: #64748b;
+        }
+      }
+    }
+
+    .item {
+      background: #ffffff;
+      color: #1e293b;
+
+      p {
+        color: #1e293b !important;
+      }
+
+      .name {
+        color: #1e293b !important;
+      }
+    }
+
+    .headings {
+      color: #1e293b;
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .rightheading {
+      color: #1e293b;
+    }
+
+    // Light Theme Hover Effects
+    .modern-dropdown-card,
+    .modern-search-card {
+      &:hover {
+        box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+
+  // Dark Theme Styles (Default)
+  .modern-ladder {
+    background: #0f172a;
+    min-height: 100vh;
+  }
+
+  .scroll-content {
+    background: #0f172a !important;
+    padding: 0px !important;
+  }
+
+  ion-content {
+    background: #0f172a !important;
+  }
+
+  // Modern Tab Selector (Dark Theme)
+  .modern-tab-selector {
+    background: #1e293b;
+    padding: 8px 4px;
+    border-bottom: 1px solid #334155;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 4px;
+
+    .modern-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: #94a3b8;
+      font-weight: 500;
+      cursor: pointer;
+
+      &.active {
+        background: #475569;
+        color: #f1f5f9;
+        border-color: #64748b;
+      }
+
+      .tab-icon-wrapper {
+        ion-icon {
+          font-size: 16px;
+        }
+      }
+
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+
+  // Modern Dropdown Card (Dark Theme)
+  .modern-dropdown-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    margin: 8px 16px 12px 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+
+    .dropdown-header {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .dropdown-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+          font-size: 16px;
+          color: #ffffff;
+        }
+      }
+
+      .dropdown-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: 0.025em;
+      }
+    }
+
+    .dropdown-wrapper {
+      background: #1e293b;
+      padding: 16px;
+      position: relative;
+
+      .modern-select {
+        width: 100%;
+        background: transparent;
+        border: none;
+        color: #f1f5f9;
+        font-size: 14px;
+        padding: 0;
+
+        .select-text {
+          color: #f1f5f9;
+        }
+      }
+
+      .dropdown-arrow {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+
+        ion-icon {
+          font-size: 16px;
+          color: #94a3b8;
+        }
+      }
+    }
+  }
+
+  // Modern Search Card (Dark Theme)
+  .modern-search-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    margin: 8px 16px 12px 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+
+    .search-header {
+      background: linear-gradient(135deg, #10b981, #059669);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .search-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+          font-size: 16px;
+          color: #ffffff;
+        }
+      }
+
+      .search-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: 0.025em;
+      }
+    }
+
+    .search-wrapper {
+      background: #1e293b;
+      padding: 16px;
+
+      .sleek-searchbar {
+        background: transparent;
+        border: none;
+        margin: 0;
+        padding: 0;
+
+        .searchbar-input {
+          background: transparent;
+          border: none;
+          color: #f1f5f9;
+          padding: 0;
+          font-size: 14px;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+
+          &::placeholder {
+            color: #94a3b8;
+          }
+        }
+
+        .searchbar-search-icon {
+          display: none;
+        }
+
+        .searchbar-clear-icon {
+          color: #94a3b8;
+          right: 0;
+        }
+      }
+    }
+  }
 
   .segment-button {
-    color: #aba5a5 !important;
+    color: #94a3b8 !important;
     line-height: 1rem !important;
+    background: #1e293b;
+    border: 1px solid #334155;
   }
   .segment-activated {
     color: white !important;
-    background-color: #f6ae4d !important;
+    background-color: #2b92bb !important;
+    border-color: #2b92bb;
   }
   .sub-container {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    margin: 8px;
+
     ion-icon {
         width: 90%;
         height: 46px;
         background: transparent !important;
-        //margin-top: 4px;
-        //background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
         border-radius: 5px;
-        //color: white;
-        color: rgba(250, 169, 40, 0.827451)
-        //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+        color: #94a3b8 !important;
+        font-size: 30px;
     }
 
     .search-bar{
@@ -29,7 +423,7 @@ page-matchladder {
     }
     .searchbar {
         border: none !important;
-        background: #f7f7f7 !important;
+        background: #1e293b !important;
         border-radius: 5px !important;
         height: 86% !important;
         margin-top: 4px !important;
@@ -40,27 +434,28 @@ page-matchladder {
         padding-left: 4px !important;
         box-shadow: none !important;
         -webkit-box-shadow:none !important;
-        border-bottom: 1px solid #34343442;
+        border-bottom: 1px solid #334155;
         border-radius: 0;
-        background-color: #f7f7f7 !important;
-        //margin-left:-8px !important;
+        background-color: #1e293b !important;
+        color: #f1f5f9;
+
+        &::placeholder {
+          color: #94a3b8;
+        }
     }
 
     .searchbar-search-icon {
         display: none !important;
     }
-
-    ion-icon {
-        font-size: 30px;
-    }
-}
+  }
+// Legacy dropdown styles - keeping for backward compatibility
 .dropdownrow{
- 
   ion-item{
       width: 50%;
       font-size: 16px;
-      color: rgba(0,0,0,0.65);
-      /* border-radius: 6px; */
+      color: #f1f5f9;
+      background: #1e293b;
+      border: 1px solid #334155;
       border-top-left-radius: 6px;
       border-bottom-left-radius: 6px;
       .item-inner{
@@ -70,8 +465,8 @@ page-matchladder {
   ion-select{
       max-width: 100%;
       padding: 7px;
+      color: #f1f5f9;
   }
-
 }
   // .scroll-content {
   //   padding: 0px !important;
@@ -84,29 +479,114 @@ page-matchladder {
     padding: 5px 10px;
   }
   .item {
-    // border-bottom: 2px solid #f6ae4d !important;
+    background: #1e293b;
     padding-bottom: 10px;
+    color: #f1f5f9;
+
+    p {
+      color: #f1f5f9 !important;
+    }
   }
   .line {
-    border-right: 2px solid #f6ae4d;
+    border-right: 2px solid #2b92bb;
   }
   .headings {
-    // color: #154766;
-    color: #4b6051;
+    color: #f1f5f9;
     font-weight: 600;
     font-size: 16px;
-    border-right: 1px solid #faae4e;
+    border-right: 1px solid #334155;
     padding-left: 5px;
   }
   .rightheading {
-    color: #4b6051;
+    color: #f1f5f9;
     font-weight: 600;
     font-size: 16px;
     padding-left: 5px;
   }
   .name {
     font-size: 20px;
-    color: #707070 !important;
-    // font-weight: 500;
+    color: #cbd5e1 !important;
+  }
+
+  ion-item {
+    .item-inner {
+      border-bottom: none !important;
+    }
+  }
+
+  // Modern Card Hover Effects and Animations
+  .modern-dropdown-card,
+  .modern-search-card {
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    .dropdown-header,
+    .search-header {
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-wrapper,
+    .search-wrapper {
+      transition: all 0.3s ease;
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    .modern-dropdown-card,
+    .modern-search-card {
+      margin: 8px 12px;
+      
+      .dropdown-header,
+      .search-header {
+        padding: 10px 14px;
+        
+        .dropdown-label,
+        .search-label {
+          font-size: 13px;
+        }
+      }
+      
+      .dropdown-wrapper,
+      .search-wrapper {
+        padding: 14px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .modern-dropdown-card,
+    .modern-search-card {
+      margin: 6px 8px;
+      
+      .dropdown-header,
+      .search-header {
+        padding: 8px 12px;
+        
+        .dropdown-icon,
+        .search-icon {
+          width: 18px;
+          height: 18px;
+          
+          ion-icon {
+            font-size: 14px;
+          }
+        }
+        
+        .dropdown-label,
+        .search-label {
+          font-size: 12px;
+        }
+      }
+      
+      .dropdown-wrapper,
+      .search-wrapper {
+        padding: 12px;
+      }
+    }
   }
 }

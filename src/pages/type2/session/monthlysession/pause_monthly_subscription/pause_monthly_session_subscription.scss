@@ -1,4 +1,10 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-pause_monthly_session_subscription {
+    @include android-sdk35-fixes;
+
+
+
     .price_btn {
         //margin-top: 10px;
         padding: 20px;
