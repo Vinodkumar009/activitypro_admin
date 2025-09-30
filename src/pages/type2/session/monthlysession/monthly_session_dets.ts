@@ -13,6 +13,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import { AppType, ModuleTypes } from '../../../../shared/constants/module.constants';
 import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
+import { ThemeService } from '../../../../services/theme.service';
 /**
  * Generated class for the SessioninstallmentPage page.
  *
@@ -22,7 +23,7 @@ import { API } from '../../../../shared/constants/api_constants';
 // {SessionDetailsObject:this.sessionDetails,InstallmentSesionObject:this.installmentSessionObj}
 @IonicPage()
 @Component({
-  selector: 'page-monthly_session_dets',
+  selector: 'page-monthly-session-dets',
   templateUrl: 'monthly_session_dets.html',
   providers: [HttpService]
 })
@@ -66,6 +67,7 @@ export class MonthlySessionDetails {
   loggedin_type:number = 2;
   can_coach_see_revenue:boolean = true;
   pause_subscription_months:{id:string, month_text: string}[] = [];
+  isDarkTheme: boolean = true;
   constructor(private storage: Storage,
       public callNumber: CallNumber,
       public fb: FirebaseService, 
@@ -77,7 +79,9 @@ export class MonthlySessionDetails {
       private graphqlService: GraphqlService,
       private platform: Platform,
       private httpService: HttpService,
+      private themeService: ThemeService
     ) {
+        
         this.storage.get('postgre_parentclub').then((postgre_parentclub) => {
             this.postgre_parentclub_id = postgre_parentclub.Id;
         }).catch(error => {
@@ -86,6 +90,7 @@ export class MonthlySessionDetails {
   }
 
   async ionViewWillEnter(){
+    this.loadTheme();
     this.loggedin_type = this.sharedservice.getLoggedInType();
     if(this.loggedin_type == 4){
         this.can_coach_see_revenue = this.sharedservice.getCanCoachSeeRevenue();
@@ -834,6 +839,19 @@ export class MonthlySessionDetails {
       session:this.monthly_ses_dets,
       type:101
     });
+  }
+
+  loadTheme() {
+    this.isDarkTheme = this.themeService.getCurrentTheme();
+    this.applyTheme();
+  }
+
+  applyTheme() {
+    const pageElement = document.querySelector('page-monthly-session-dets');
+    if (pageElement) {
+        pageElement.classList.remove('dark-theme', 'light-theme');
+        pageElement.classList.add(this.isDarkTheme ? 'dark-theme' : 'light-theme');
+    }
   }
 
   ionViewWillLeave(){

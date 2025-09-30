@@ -1,17 +1,40 @@
 @import '../../../../theme/android-sdk35-fixes.scss';
+@import './monthly_session_dets_modern.scss';
 
-page-monthly_session_dets {
+page-monthly-session-dets {
     @include android-sdk35-fixes;
 
 
+  // Default dark theme for the entire page
+  background: #0f172a !important;
 
-    $themelistotheritemcolor1: #7F7F7F;
-    $themelistheaderitemcolor: #00BED3;
-    $themecolor: #35adff;
+  // Light Theme Styles
+  &.light-theme {
+    background: #f8fafc !important;
+
     .scroll-content {
-        background-image: none !important;
-        padding: 0px !important;
+      background: #f8fafc !important;
+      background-image: none !important;
     }
+
+    ion-content {
+      --background: #f8fafc !important;
+    }
+  }
+
+  $themelistotheritemcolor1: #7F7F7F;
+  $themelistheaderitemcolor: #00BED3;
+  $themecolor: #35adff;
+  
+  .scroll-content {
+    background: #0f172a !important;
+    background-image: none !important;
+    padding: 0px !important;
+  }
+
+  ion-content {
+    --background: #0f172a !important;
+  }
     .customcard {
         border-radius: 0px;
         margin: 0px;
@@ -591,7 +614,7 @@ page-monthly_session_dets {
         line-height: 27px;
         font-size: 14px;
         text-align: right;
-        color: rgba(255, 0, 0,0.65);
+        //color: rgba(255, 0, 0,0.65);
         //font-style: italic;
     }
     .fabAttendanceText {

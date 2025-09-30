@@ -13,6 +13,7 @@ import {  user_status_update_v1 } from './model/session.model';
 import { GraphqlService } from '../../../services/graphql.service';
 import { TermSessionDets, TermSessionMembers } from './model/session_details.model';
 import { ModuleTypes } from '../../../shared/constants/module.constants';
+import { ThemeService } from '../../../services/theme.service';
 
 /** 
  * Generated class for the GroupsessiondetailsPage page.
@@ -27,6 +28,7 @@ import { ModuleTypes } from '../../../shared/constants/module.constants';
     templateUrl: 'groupsessiondetails.html',
 })
 export class GroupsessiondetailsPage {
+    isDarkTheme: boolean = false;
     parentkeys_map = new Map();
     @ViewChild(Slides) slides: Slides;
     
@@ -150,7 +152,8 @@ export class GroupsessiondetailsPage {
         public commonService: CommonService,
         public sharedservice: SharedServices,
         public fab: FabContainer,
-        private graphqlService: GraphqlService
+        private graphqlService: GraphqlService,
+        private themeService: ThemeService
        
     ) {
         
@@ -160,6 +163,7 @@ export class GroupsessiondetailsPage {
     }
 
 async ionViewWillEnter(){
+    this.loadTheme();
     this.loggedin_type = this.sharedservice.getLoggedInType();
     if(this.loggedin_type == 4){
         this.can_coach_see_revenue = this.sharedservice.getCanCoachSeeRevenue();
@@ -173,6 +177,19 @@ async ionViewWillEnter(){
     ])
     this.currencyDetails = JSON.parse(currency);
     this.user_status_update.updated_by = JSON.parse(userobj).$key;       
+}
+
+loadTheme() {
+    this.isDarkTheme = this.themeService.getCurrentTheme();
+    this.applyTheme();
+}
+
+applyTheme() {
+    const pageElement = document.querySelector('page-groupsessiondetails');
+    if (pageElement) {
+        pageElement.classList.remove('dark-theme', 'light-theme');
+        pageElement.classList.add(this.isDarkTheme ? 'dark-theme' : 'light-theme');
+    }
 }    
 
 

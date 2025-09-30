@@ -39,6 +39,8 @@ export class Type2Member {
   selectedParentClubKey: string;
   selectedClubKey: string;
   members:VenueUser[] = [];
+  allMembers:VenueUser[] = [];
+  filteredMembers:VenueUser[] = [];
   holidayCampMembers = [];
   schoolMemberList = [];
   allMemebers = [];
@@ -246,11 +248,13 @@ export class Type2Member {
       console.log("time ended")
       //if(data["getAllVenueUsersByFilter"]["venue_users"].length > 0){
         if(type === 2){
-          this.members = [];
-          this.members = data["getAllVenueUsersByFilter"]["venue_users"];
+          this.allMembers = [];
+          this.allMembers = data["getAllVenueUsersByFilter"]["venue_users"];
+          this.members = this.allMembers;
         }else{
           if(data["getAllVenueUsersByFilter"]["venue_users"].length > 0){
-            this.members = [...this.members, ...data["getAllVenueUsersByFilter"]["venue_users"]];
+            this.allMembers = [...this.allMembers, ...data["getAllVenueUsersByFilter"]["venue_users"]];
+            this.members = this.allMembers;
           }
         }
       //}
@@ -294,7 +298,11 @@ export class Type2Member {
   memberTabClick() {
     if (this.selectedTabValue != this.memberType) {
       this.limitToFirst = 0;
-      //this.callMemberListMethod();
+      this.venus_user_input.offset = 0;
+      this.venus_user_input.limit = 8;
+      this.venus_user_input.search_term = '';
+      this.members = [];
+      this.getParentClubUsers(2);
     }
   }
   

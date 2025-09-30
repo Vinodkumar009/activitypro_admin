@@ -37,59 +37,31 @@
 
 
 <ion-content class="member-content">
-    <!-- Modern Search Card -->
-    <div class="modern-search-card">
-        <div class="search-header">
-            <div class="search-icon">
-                <ion-icon name="search"></ion-icon>
-            </div>
-            <div class="search-label">Search Members</div>
+    <!-- Sticky Header Container -->
+    <div class="sticky-header-container">
+        <!-- Compact Filters -->
+        <div class="compact-filter-card">
+            <ion-row>
+                <ion-col col-12 style="padding: 4px;">
+                    <ion-select class="compact-select" [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()" placeholder="Club">
+                        <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
+                    </ion-select>
+                </ion-col>
+            </ion-row>
         </div>
-        <div class="search-wrapper">
-            <ion-searchbar class="sleek-searchbar" placeholder="Search by name, phone, email" [(ngModel)]="searchText" (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
-        </div>
-    </div>
-
-    <!-- Modern Filters Container -->
-    <div class="modern-filters-container">
-        <!-- Club Filter -->
-        <div class="modern-dropdown-card club-filter">
-            <div class="dropdown-header">
-                <div class="dropdown-icon">
-                    <ion-icon name="business"></ion-icon>
-                </div>
-                <div class="dropdown-label">Club</div>
-            </div>
-            <div class="dropdown-wrapper">
-                <ion-select class="modern-select" [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()">
-                    <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
-                </ion-select>
-                <div class="dropdown-arrow">
-                    <ion-icon name="arrow-down"></ion-icon>
-                </div>
-            </div>
-        </div>
-
-        <!-- Member Type Filter -->
-        <div class="modern-dropdown-card member-filter">
-            <div class="dropdown-header">
-                <div class="dropdown-icon">
-                    <ion-icon name="people"></ion-icon>
-                </div>
-                <div class="dropdown-label">Type</div>
-            </div>
-            <div class="dropdown-wrapper">
-                <ion-select class="modern-select" [(ngModel)]="memberType" (ionChange)="memberTabClick()">
-                    <ion-option value="Member">Members</ion-option>
-                    <ion-option value="Holidaycampmember">Holiday Camp</ion-option>
-                    <ion-option value="Schoolmember">School</ion-option>
-                </ion-select>
-                <div class="dropdown-arrow">
-                    <ion-icon name="arrow-down"></ion-icon>
-                </div>
+        
+        <!-- Compact Search -->
+        <div class="compact-search-card">
+            <div class="search-content">
+                <ion-searchbar class="sleek-searchbar" placeholder="Search by name, phone, email" 
+                    [(ngModel)]="searchText" (ionInput)="getFilterItems($event)" autocorrect="off" 
+                    showCancelButton="never"></ion-searchbar>
             </div>
         </div>
     </div>
+
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content-area">
 
     <div [ngSwitch]="memberType">
         <ion-list *ngSwitchCase="'Member'">
@@ -138,26 +110,33 @@
                     <p class="danger_color2"></p>
                 </ion-card-content>
             </ion-card> -->
-            <ion-card  *ngIf="members.length ==0"  class="add-court">
-                <ion-card-content>
-                    <p  class="no">
-                            {{LangObj.member_no_mem_found}}
-                    </p>
-                </ion-card-content>
-            </ion-card>
+            <!-- Empty State -->
+            <div class="modern-empty-state" *ngIf="members.length === 0">
+                <div class="empty-illustration">
+                    <ion-icon name="people" class="empty-icon"></ion-icon>
+                </div>
+                <div class="empty-text">
+                    <h2 class="empty-title">{{LangObj.member_no_mem_found}}</h2>
+                    <p class="empty-description">Add your first member to get started</p>
+                </div>
+            </div>
 
             <div class="member-container">
-                <div class="modern-member-card" *ngFor="let member of members;let i = index" (click)="presentActionSheet(member,i,'Member')" [class.inactive]="!member.is_enable">
+                <div class="modern-member-card" *ngFor="let member of members;let i = index" (click)="presentActionSheet(member,i,'Member')">
                     <div class="card-header">
                         <div class="member-avatar">
                             <ion-icon name="person"></ion-icon>
                         </div>
                         <div class="member-info">
                             <div class="member-name">{{member.parent_firstname}} {{member.parent_lastname}}</div>
-                            <div class="member-status" *ngIf="!member.is_enable">Inactive Member</div>
                         </div>
-                        <div class="member-badge" *ngIf="member.childcount > 0">
-                            <span class="family-count">+{{member.childcount}}</span>
+                        <div class="member-badges">
+                            <div class="member-badge" *ngIf="member.childcount > 0">
+                                <span class="family-count">+{{member.childcount}}</span>
+                            </div>
+                            <div class="member-status-badge" [class.active]="member.is_enable" [class.inactive]="!member.is_enable">
+                                {{member.is_enable ? 'Member' : 'Non-Member'}}
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -354,9 +333,11 @@
 
         </ion-list>
     </div>
+    
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
         <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data..."></ion-infinite-scroll-content>
     </ion-infinite-scroll>
+    </div>
     <!-- <ion-fab right bottom (click)="addMember()" *ngIf="memberType != 'Schoolmember'">
         <button ion-fab mini style="background-color:#2b92bb !important; color: white !important">
             <ion-icon name="add"></ion-icon>
@@ -466,10 +447,7 @@
                 <div class="stat-value">{{activeMembers}}</div>
                 <div class="stat-label">Active</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value">{{inactiveMembers}}</div>
-                <div class="stat-label">Inactive</div>
-            </div>
+
         </div>
         <div class="footer-actions">
             <button ion-button icon-only class="footer-btn" (click)="addMember()">

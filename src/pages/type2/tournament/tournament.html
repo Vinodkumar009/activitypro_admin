@@ -178,7 +178,7 @@
       <!-- <page-leagueteamlisting></page-leagueteamlisting> -->
     </ion-col>
   </ion-row>
-  <ion-fab right bottom style="padding-bottom: 80px" *ngIf="selectedFooterIndex == 0">
+  <ion-fab right bottom style="padding-bottom: 80px !important" *ngIf="selectedFooterIndex == 0">
     <button ion-fab mini style="background-color: #2b92bb !important; color: white !important"
       (click)="createTournament()" style="background-color: #2b92bb !important; color: white !important">
       <ion-icon name="add"></ion-icon>
@@ -200,11 +200,11 @@
     <ion-icon name="add"></ion-icon>
   </button>
 </ion-fab> -->
-<button class="fabs fab_btn" *ngIf="selectedFooterIndex == 4" ion-fab mini style="background-color: #2b92bb"
+<button class="fabs fab_btn" style="padding-bottom: 80px !important" *ngIf="selectedFooterIndex == 4" ion-fab mini style="background-color: #2b92bb"
   (click)="gotoDifferentTab()" style="background-color: #2b92bb !important; color: white !important">
   <ion-icon name="add"></ion-icon>
 </button>
-<button class="fabs fab_btn " *ngIf="selectedFooterIndex == 1" ion-fab mini style="background-color: #2b92bb;"
+<button class="fabs fab_btn" style="padding-bottom: 80px !important" *ngIf="selectedFooterIndex == 1" ion-fab mini style="background-color: #2b92bb;"
   (click)="gotoCreateMatch()" style="background-color:#2b92bb !important; color: white !important">
   <ion-icon name="add"></ion-icon>
 </button>

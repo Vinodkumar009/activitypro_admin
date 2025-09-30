@@ -1,5 +1,14 @@
 // Modern styles for member page
 member-page {
+    
+    // Global dropdown option styling
+    .select-popover ion-item {
+        padding-left: 16px !important;
+        
+        .item-inner {
+            padding-left: 16px !important;
+        }
+    }
     // Dark theme content styles
     .member-content {
         background: #0f172a !important;
@@ -8,6 +17,90 @@ member-page {
             background: #0f172a !important;
             padding: 0 !important;
         }
+    }
+    
+    // Sticky Header Container
+    .sticky-header-container {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #0f172a;
+        padding: 8px;
+        border-bottom: 1px solid #334155;
+    }
+    
+    // Compact Filter Card
+    .compact-filter-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px;
+        margin-bottom: 8px;
+        
+        .compact-select {
+            background: transparent;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            color: #f1f5f9;
+            font-size: 14px;
+            padding: 12px 16px;
+            min-height: 44px;
+            
+            .select-text {
+                color: #f1f5f9;
+                padding: 10px !important;
+            }
+            
+            .item-inner {
+                padding-right: 32px !important;
+                padding-left: 16px !important;
+            }
+        }
+    }
+    
+    // Compact Search Card
+    .compact-search-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px;
+        
+        .search-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            .sleek-searchbar {
+                flex: 1;
+                background: transparent;
+                border: 1px solid #475569;
+                border-radius: 6px;
+                margin: 0;
+                padding: 0;
+                
+                .searchbar-input {
+                    background: transparent;
+                    color: #f1f5f9;
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    
+                    &::placeholder {
+                        color: #94a3b8;
+                    }
+                }
+                
+                .searchbar-search-icon {
+                    display: none;
+                }
+            }
+        }
+    }
+    
+    // Scrollable Content Area
+    .scrollable-content-area {
+        height: calc(100vh - 200px);
+        overflow-y: auto;
+        padding: 8px;
     }
     
     // Modern Search Card (Dark Theme)
@@ -233,6 +326,179 @@ member-page {
                     font-size: 18px;
                 }
             }
+        }
+    }
+    
+    // Member Status Badge
+    .member-status-badge {
+        padding: 2px 4px;
+        border-radius: 6px;
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.2px;
+        
+        &.active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        &.inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+    }
+    
+    // Modern Member Card
+    .modern-member-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        margin: 4px 0;
+        padding: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        
+
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            
+            .member-avatar {
+                width: 32px;
+                height: 32px;
+                background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                
+                ion-icon {
+                    font-size: 16px;
+                    color: #ffffff;
+                }
+            }
+            
+            .member-info {
+                flex: 1;
+                
+                .member-name {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #f1f5f9;
+                    margin: 0;
+                }
+            }
+            
+            .member-badges {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                
+                .member-badge {
+                    background: linear-gradient(135deg, #10b981, #059669);
+                    color: #ffffff;
+                    padding: 2px 6px;
+                    border-radius: 8px;
+                    font-size: 10px;
+                    font-weight: 600;
+                    
+                    .family-count {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+        
+        .card-body {
+            .contact-row {
+                margin-bottom: 4px;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                
+                .contact-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    
+                    .contact-icon {
+                        font-size: 14px;
+                        color: #60a5fa;
+                        width: 16px;
+                        flex-shrink: 0;
+                    }
+                    
+                    .contact-text {
+                        font-size: 12px;
+                        color: #cbd5e1;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Modern Empty State
+    .modern-empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+        min-height: 300px;
+        
+        .empty-illustration {
+            margin-bottom: 24px;
+            
+            .empty-icon {
+                font-size: 64px;
+                color: #475569;
+                opacity: 0.6;
+            }
+        }
+        
+        .empty-text {
+            .empty-title {
+                font-size: 20px;
+                font-weight: 600;
+                color: #f1f5f9;
+                margin: 0 0 8px 0;
+            }
+            
+            .empty-description {
+                font-size: 14px;
+                color: #94a3b8;
+                margin: 0;
+                line-height: 1.5;
+            }
+        }
+    }
+    
+    // Global ion-select dropdown height constraints
+    .select-popover .popover-content {
+        max-height: 200px !important;
+        overflow-y: auto !important;
+    }
+    
+    .action-sheet-group {
+        max-height: 300px !important;
+        overflow-y: auto !important;
+    }
+    
+    .alert-wrapper {
+        max-height: 400px !important;
+        
+        .alert-radio-group {
+            max-height: 250px !important;
+            overflow-y: auto !important;
         }
     }
 }

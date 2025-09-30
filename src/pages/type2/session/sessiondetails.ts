@@ -19,6 +19,7 @@ import { GraphqlService } from '../../../services/graphql.service';
 import { MonthlyAtteandanceDates } from './monthlysession/model/monthly_attendance.model';
 import { GroupSession } from './sessions.model';
 import { AttendanceDatesInfo, SessionAttendanceDates } from '../../../shared/model/attendance.model';
+import { ThemeService } from '../../../services/theme.service';
 
 @IonicPage()
 @Component({
@@ -39,6 +40,7 @@ export class Type2SessionDetails {
     // 
     LangObj: any = {};//by vinod
     themeType: number;
+    isDarkTheme: boolean = true;
     
     parentClubKey: any;
     clubName: any;
@@ -57,8 +59,10 @@ export class Type2SessionDetails {
          public fb: FirebaseService, public navCtrl: NavController, 
          public sharedservice: SharedServices, 
          public popoverCtrl: PopoverController,
-         private graphqlService: GraphqlService,) {
+         private graphqlService: GraphqlService,
+         private themeService: ThemeService) {
         this.themeType = sharedservice.getThemeType();
+        this.loadTheme();
         
        
         
@@ -264,6 +268,24 @@ export class Type2SessionDetails {
         this.events.subscribe('language', (res) => {
             this.getLanguage();
         });
+    }
+    
+    loadTheme() {
+        this.themeService.isDarkTheme$.subscribe(isDark => {
+            this.isDarkTheme = isDark;
+            this.applyTheme();
+        });
+    }
+
+    applyTheme() {
+        const sessionElement = document.querySelector('sessiondetails-page');
+        if (sessionElement) {
+            if (this.isDarkTheme) {
+                sessionElement.classList.remove('light-theme');
+            } else {
+                sessionElement.classList.add('light-theme');
+            }
+        }
     }
     getLanguage() {
         this.storage.get("language").then((res) => {
