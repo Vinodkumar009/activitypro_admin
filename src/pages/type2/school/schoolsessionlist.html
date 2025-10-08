@@ -34,80 +34,77 @@
     </ion-navbar>
 
 </ion-header>
-<ion-content class="cards-bg social-cards" padding>
-    <div class="search_div">
-        <ion-row class="sub-container rows-allign2">
-            <ion-col col-1 style="text-align:center;margin-top:12px;padding:0px">
-                <ion-icon name="ios-search"></ion-icon>
-            </ion-col>
-            <ion-col col-11 class="search-bar">
-                <ion-searchbar placeholder="Search sessions of {{session_count}}" id="customsearchbar" [(ngModel)]="searchInput"
-                    (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
-            </ion-col>
-            <!-- <ion-col col-1 class="margin-auto" style="text-align:center;margin-top:12px;padding:0px">
-                <button style="padding:0px;width:100%" ion-button clear (tap)="clearCache()">
-                    <ion-icon name="md-sync"></ion-icon>
-                </button>
-            </ion-col> -->
-        </ion-row>
+<ion-content class="cards-bg social-cards" padding [ngClass]="isDarkTheme ? 'dark-theme' : 'light-theme'">
+    <!-- Sticky Header Container -->
+    <div class="sticky-header-container">
+        <!-- Compact Filters -->
+        <div class="compact-filter-card themed-card">
+            <ion-select class="compact-select themed-select" [(ngModel)]="selectedSchool" (ionChange)="onChangeOfSchool()" placeholder="School">
+                <ion-option *ngFor="let school of schools" value={{school.id}}>{{school.school_name}}</ion-option>
+                <ion-option value='all'>{{LangObj.scl_ssn_all}}</ion-option>
+            </ion-select>
+        </div>
+        
+        <!-- Compact Search -->
+        <div class="compact-search-card themed-card">
+            <div class="search-content">
+                <ion-searchbar class="sleek-searchbar themed-searchbar" placeholder="Search sessions of {{session_count}}" 
+                    [(ngModel)]="searchInput" (ionInput)="getFilterItems($event)" autocorrect="off" 
+                    showCancelButton="never"></ion-searchbar>
+            </div>
+        </div>
     </div>
 
-    <ion-row>
-        <ion-col col-12 style="padding:5px 10px !important">
-            <ion-item class="margin_bottom school" style="border-bottom: 1px solid #34343442;">
-                <ion-select [(ngModel)]="selectedSchool" (ionChange)="onChangeOfSchool()">
-                    <ion-option *ngFor="let school of schools" value={{school.id}}>{{school.school_name}}</ion-option>
-                    <ion-option value='all'>{{LangObj.scl_ssn_all}}</ion-option>
-                </ion-select>
-            </ion-item>
-        </ion-col>
-    </ion-row>
-
-    <div *ngIf="filter_scl_sessions && filter_scl_sessions.length > 0" style="margin-top: 5px;">
-        <ion-list class="">
-            <ion-card *ngFor="let session of filter_scl_sessions;let i=index;">
-                <ion-card-content no-padding>
-                    <ion-row>
-                        <ion-col col-12 style="padding:5px 10px !important">
-                            <div class="slidingcards">
-                                <div (click)="gotoEachSessionDetails(session)">
-                                    <ion-row style="border-bottom: 1px solid #34343442;">
-                                        <ion-col col-12 class="coach-col" no-padding>
-                                            <p class="session-days para_overflow">{{session.days}} - {{session.start_time}} -
-                                                {{session.duration}} min </p>
-                                        </ion-col>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-col col-10 class="no-padd">
-                                            <p class="session-name elipsesdot" style="font-size: 20px !important;">{{session.school_session_name}}</p>
-                                            <p class="session-name elipsesdot">{{session.coach_names}}</p>
-                                            <p class="school-name elipsesdot">{{session.ParentClubSchool.school.school_name}}</p>
-                                            <p class="end-date">{{LangObj.scl_ssn_EndsOn}}:{{session.end_date}}</p>
-                                        </ion-col>
-                                       
-                                         <ion-col col-2 style="text-align: right;margin: auto;">
-                                            <button ion-button icon-left clear small class="member_btn_sm">
-                                                <!-- <ion-icon name="people"></ion-icon> -->
-                                                <div style="font-size: 20px;font-weight: 500;">{{session.enrolled_count}}</div>
-                                            </button>
-                                        </ion-col>
-                                    </ion-row>
-                                </div>                                                
-                                <!-- <ion-row>
-                                    <ion-col class="ion_cl">
-                                        <button ion-button icon-left clear small class="member_btn_sm"
-                                            (click)="memberDetailsForGroup(i,session)">
-                                            <ion-icon name="people"></ion-icon>
-                                            <div>{{session.enrolled_count}}</div>
-                                        </button>
-                                    </ion-col>
-                                </ion-row>                         -->
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content-area">
+        <!-- No Sessions Message -->
+        <div *ngIf="!filter_scl_sessions || filter_scl_sessions.length == 0" class="no-data-container">
+            <div class="no-data-content">
+                <ion-icon name="school" class="no-data-icon"></ion-icon>
+                <p class="no-data-text">No sessions found</p>
+            </div>
+        </div>
+        
+        <div *ngIf="filter_scl_sessions && filter_scl_sessions.length > 0">
+            <div *ngFor="let session of filter_scl_sessions; let i=index" class="session-container">
+                <div class="modern-card session-card themed-session-card" (click)="gotoEachSessionDetails(session)">
+                    <div class="card-header">
+                        <div class="card-icon-wrapper school-bg">
+                            <ion-icon name="school" class="card-icon"></ion-icon>
+                        </div>
+                        <div class="card-info">
+                            <h3 class="card-title">{{session.school_session_name}}</h3>
+                            <p class="card-subtitle">{{session.ParentClubSchool.school.school_name}}</p>
+                        </div>
+                        <div class="enrollment-badge">
+                            <span class="badge-text">{{session.enrolled_count}}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="session-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <ion-icon name="time" class="detail-icon"></ion-icon>
+                                    <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
+                                </div>
                             </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>            
-        </ion-list>
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <ion-icon name="person" class="detail-icon"></ion-icon>
+                                    <span class="detail-text">{{session.coach_names}}</span>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <ion-icon name="calendar" class="detail-icon"></ion-icon>
+                                    <span class="detail-text">{{LangObj.scl_ssn_EndsOn}}: {{session.end_date}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     

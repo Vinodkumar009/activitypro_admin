@@ -3,7 +3,103 @@
 page-pending-term-sessions {
     @include android-sdk35-fixes;
 
+    background: #0f172a !important;
 
+    // Light Theme Styles
+    &.light-theme {
+        background: #f8fafc !important;
+
+        .modern-navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e2e8f0;
+
+            .navbar-title {
+                color: #1e293b;
+            }
+        }
+
+        ion-content {
+            background: #f8fafc !important;
+
+            .scroll-content {
+                background: #f8fafc !important;
+            }
+        }
+
+        .sub-container {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+
+            ion-icon {
+                color: #64748b !important;
+            }
+
+            .searchbar {
+                background: transparent !important;
+            }
+
+            .searchbar-input {
+                color: #1e293b !important;
+                background: transparent !important;
+
+                &::placeholder {
+                    color: #64748b !important;
+                }
+            }
+
+            .searchbar-search-icon {
+                background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(100, 116, 139, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(100, 116, 139, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
+            }
+
+            .searchbar-clear-icon {
+                background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(100, 116, 139, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
+            }
+
+            span {
+                color: #1e293b !important;
+            }
+        }
+
+        ion-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .campname {
+            color: #1e293b !important;
+        }
+
+        .holidaycampcard_p {
+            color: #64748b !important;
+        }
+
+        .borderleft {
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+    }
+
+    // Dark Theme Styles
+    .modern-navbar {
+        background: #1e293b;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid #334155;
+
+        .navbar-title {
+            font-weight: 600;
+            color: #f1f5f9;
+            font-size: 18px;
+        }
+    }
+
+    ion-content {
+        background: #0f172a !important;
+
+        .scroll-content {
+            background: #0f172a !important;
+        }
+    }
 
     .scroll-content {
         // background-image: url("../assets/images/background/innerbg.png");
@@ -35,10 +131,10 @@ page-pending-term-sessions {
       //   display: none !important;
       // }
       .sub-container {
-        border: 1px solid rgba(0, 0, 0, 0.12);
+        border: 1px solid #334155 !important;
         border-radius: 8px;
         height: 50px;
-        background: #FFFFFF;
+        background: #1e293b !important;
         margin-top: 18px;
         margin-right: 10px;
         margin-bottom: 14px;
@@ -49,9 +145,7 @@ page-pending-term-sessions {
           width: 90%;
           background: transparent !important;
           border-radius: 5px;
-          //color: white;
-          color: rgba(0, 0, 0, 0.64);
-          //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+          color: #94a3b8 !important;
         }
     
         .search-bar {
@@ -60,27 +154,39 @@ page-pending-term-sessions {
     
         .searchbar {
           border: none !important;
-          background: #ffffff !important;
+          background: transparent !important;
           padding: 2px !important;
         }
     
         .searchbar-input {
-          //padding-left: 4px !important;
           padding: 1px 4px !important;
           box-shadow: none !important;
           -webkit-box-shadow: none !important;
-          // margin-left: 20px;
           margin-top: 5px;
-          // color:black;
+          color: #f1f5f9 !important;
+          background: transparent !important;
+
+          &::placeholder {
+            color: #94a3b8 !important;
+          }
         }
     
         .searchbar-search-icon {
+          background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(148, 163, 184, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(148, 163, 184, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
           display: none !important;
+        }
+
+        .searchbar-clear-icon {
+          background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(148, 163, 184, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
         }
     
         ion-icon {
           font-size: 26px;
           padding-left: 5px;
+        }
+
+        span {
+          color: #f1f5f9 !important;
         }
       }
       .search-bar {
@@ -88,8 +194,10 @@ page-pending-term-sessions {
       }
     ion-card {
         width: 94% !important;
-        //margin: 6px 3px 6px 0px !important;
         margin: 3% !important;
+        background: #1e293b !important;
+        border: 1px solid #334155 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
       }
       .mid-col {
         padding-left: 13px !important;
@@ -104,12 +212,11 @@ page-pending-term-sessions {
       }
     
     .borderleft {
-        border-bottom: 1px solid #f5ba63;
-        //border-left: 2px solid #35adff !important;
+        border-bottom: 1px solid #334155;
       }
     
     .campname {
-        color: #726f6f;
+        color: #f1f5f9;
         font-family: "PT Sans", sans-serif;
         font-size: 1em;
         font-weight: 600;
@@ -117,7 +224,7 @@ page-pending-term-sessions {
       }
       .holidaycampcard_p {
         font-family: "PT Sans", sans-serif;
-        color: #746c6c;
+        color: #94a3b8;
         font-size: 13px;
       }
       .elipsesdot {

@@ -20,6 +20,7 @@ import { AppType } from '../../../shared/constants/module.constants';
 import moment from 'moment';
 import { camp_unenrolDTO } from './camprelateddetails';
 import { API } from '../../../shared/constants/api_constants';
+import { ThemeService } from '../../../services/theme.service';
 @IonicPage()
 @Component({
   selector: 'holidaycamp-page',
@@ -72,6 +73,7 @@ export class Type2HolidayCamp {
   searchInput: "";
   searchTerm: any;
   activeIndex: number = 0;
+  isDarkTheme: boolean = true;
 
   eventsDto = {
     parentclubId: "",
@@ -95,7 +97,8 @@ export class Type2HolidayCamp {
      public navCtrl: NavController, public storage: Storage,
       public fb: FirebaseService, public sharedservice: SharedServices, 
       platform: Platform, public popoverCtrl: PopoverController, 
-      private langService: LanguageService,) {
+      private langService: LanguageService,
+      private themeService: ThemeService) {
     this.themeType = sharedservice.getThemeType();
     storage.get('Currency').then((val) => {
       this.currencyDetails = JSON.parse(val);
@@ -141,6 +144,74 @@ export class Type2HolidayCamp {
     this.events.subscribe('language', (res) => {
       this.getLanguage();
     });
+    this.loadTheme();
+  }
+
+  loadTheme() {
+    this.storage
+        .get("dashboardTheme")
+        .then((isDarkTheme) => {
+            console.log(
+                "HolidayCamp page - loaded theme from storage:",
+                isDarkTheme
+            );
+            if (isDarkTheme !== null) {
+                this.isDarkTheme = isDarkTheme;
+            } else {
+                // Default to dark theme if no preference is stored
+                this.isDarkTheme = true;
+            }
+            this.applyTheme();
+        })
+        .catch((error) => {
+            console.log("HolidayCamp page - error loading theme:", error);
+            this.isDarkTheme = true; // Default to dark theme
+            this.applyTheme();
+        });
+
+    // Listen for theme changes from other pages
+    this.events.subscribe("theme:changed", (isDark) => {
+        console.log("HolidayCamp page - received theme change event:", isDark);
+        this.isDarkTheme = isDark;
+        this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const holidayCampElement = document.querySelector("holidaycamp-page");
+    console.log(
+        "HolidayCamp page - applying theme:",
+        this.isDarkTheme ? "dark" : "light"
+    );
+    console.log("HolidayCamp page - element found:", !!holidayCampElement);
+
+    if (holidayCampElement) {
+        if (this.isDarkTheme) {
+            holidayCampElement.classList.remove("light-theme");
+            document.body.classList.remove("light-theme");
+            console.log("HolidayCamp page - applied dark theme");
+        } else {
+            holidayCampElement.classList.add("light-theme");
+            document.body.classList.add("light-theme");
+            console.log("HolidayCamp page - applied light theme");
+        }
+    } else {
+        console.warn("HolidayCamp page - element not found, retrying...");
+        // Retry after a short delay if element not found
+        setTimeout(() => {
+            const retryElement = document.querySelector("holidaycamp-page");
+            if (retryElement) {
+                if (this.isDarkTheme) {
+                    retryElement.classList.remove("light-theme");
+                    document.body.classList.remove("light-theme");
+                } else {
+                    retryElement.classList.add("light-theme");
+                    document.body.classList.add("light-theme");
+                }
+                console.log("HolidayCamp page - theme applied on retry");
+            }
+        }, 100);
+    }
   }
 
   getLanguage() {
@@ -719,6 +790,7 @@ export class Type2HolidayCamp {
 
   //update the subject with empty to avoid any subacriptions gets called
   ionViewWillLeave() {
+    this.events.unsubscribe("theme:changed");
     this.commonService.updateCategory("");
   }
 

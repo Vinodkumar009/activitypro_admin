@@ -11,8 +11,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <div style="background-color: #f2f5fa">
+<ion-content [ngClass]="{'light-theme': !isDarkTheme, 'dark-theme': isDarkTheme}">
+  <div class="top-section">
     <ion-row class="cardrow">
       <ion-col col-8>
         <p class="largetext">
@@ -30,18 +30,18 @@
         </p>
       </ion-col>
       <ion-col col-4 style="margin: auto;">
-        <div style="display: flex; align-items: center;">
+        <div style="display: flex; align-items: center;justify-content: end">
           <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
             [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
           <p class="smalltext">{{match?.MatchVisibility == 0 ? "Public" : "Private"}}</p>
         </div>
-        <div style="display: inline-block;text-align: center" *ngIf="(match) && (!match.Result || !match.Result.CreatedAt)">
+        <div style="display: inline-block;text-align: right" *ngIf="(match) && (!match.Result || !match.Result.CreatedAt)">
           <button ion-button (click)="deleteConfirm()" clear>
             <ion-icon style="" name="trash"></ion-icon>
           </button>
         </div>
         <div>
-          <p style="margin: 5px 0px; color: #2b92bb; font-weight: 600; cursor: pointer;" (tap)="publish()">
+          <p style="margin: 5px 0px; color: #2b92bb; font-weight: 600; cursor: pointer;width: 100%;text-align: right;" (tap)="publish()">
               Publish Result
           </p>
         </div>
@@ -51,16 +51,16 @@
   <!-- middle toggle button -->
   <div>
     <div style="padding-bottom: 10px">
-      <ion-card style="width: 100%; margin: 0px">
+      <ion-card class="team-selection-card" style="width: 100%; margin: 0px">
         <ion-card-content style="padding: 0px">
           <ion-row>
             <ion-col col-6>
-              <button ion-button class="select-type" (click)="changeType(true)" [class.selected]="activeType">
+              <button ion-button class="select-type team-tab" (click)="changeType(true)" [class.selected]="activeType">
                 {{selectedHomeTeamText}}
               </button>
             </ion-col>
             <ion-col col-6>
-              <button ion-button class=" select-type" (click)="changeType(false)" [class.selected]="!activeType">
+              <button ion-button class="select-type team-tab" (click)="changeType(false)" [class.selected]="!activeType">
                 {{selectedAwayTeamText}}
               </button>
             </ion-col>
@@ -113,7 +113,7 @@
                   <ion-col col-7 class="margin_auto">
                     <p class="playerText margin_0 para_overflow" style="font-size:1.6rem">{{item.user.FirstName}}
                       {{item.user.LastName}}({{item.user.AGE}})</p>
-                    <p>{{item.teamrole?.role_name}}</p>
+                    <p class="playerRole">{{item.teamrole?.role_name}}</p>
                   </ion-col>
                   <ion-col col-1 class="margin_auto">
                     <img *ngIf="item.user && item.user.Is_Had_Disease" src="assets/images/protection.svg"

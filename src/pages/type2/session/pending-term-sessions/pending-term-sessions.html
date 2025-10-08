@@ -5,12 +5,12 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title>Pending Payments</ion-title>
+  <ion-navbar class="modern-navbar">
+    <ion-title class="navbar-title">Pending Payments</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content [ngClass]="isDarkTheme ? 'dark-theme' : 'light-theme'" padding>
   <!-- the below code is for pending payment -->
   <ion-row class="sub-container rows-allign2">
     <ion-col col-1 style="text-align:center;margin:auto;">

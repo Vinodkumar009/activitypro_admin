@@ -154,6 +154,7 @@ export class MemberprofilePage implements OnInit {
           medical_condition
           parent_status
           media_consent
+          emergency_number
       }
     }
   `;

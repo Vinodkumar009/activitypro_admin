@@ -1,5 +1,4 @@
 @import '../../../theme/android-sdk35-fixes.scss';
-@import './sessiondetails-modern.scss';
 @import './groupsessiondetails-modern.scss';
 
 page-groupsessiondetails {
@@ -325,8 +324,8 @@ page-groupsessiondetails {
     }
     .cardstyle {
         border-top: 3px solid #FF9800;
-        margin: 0px;
-        width: 100%;
+        margin: 8px 12px;
+        width: calc(100% - 24px);
         color: black;
     }
     .nopad {

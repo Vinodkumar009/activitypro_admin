@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   email_url:"https://modernemailap.activitypro.co.uk/",
   node_url:"https://activitypro-node-admin.appspot.com",
   nest_url:"https://activitypro-nest-261607.appspot.com",

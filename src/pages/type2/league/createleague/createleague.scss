@@ -484,4 +484,24 @@ page-createleague {
     box-shadow: none !important;
   }
 
+  // Light Theme Styles
+  &.light-theme {
+    ion-datetime {
+      color: #1e293b !important;
+
+      .datetime-text {
+        color: #1e293b !important;
+      }
+    }
+  }
+
+  // Dark Theme Styles
+  ion-datetime {
+    color: #f1f5f9 !important;
+
+    .datetime-text {
+      color: #f1f5f9 !important;
+    }
+  }
+
 }

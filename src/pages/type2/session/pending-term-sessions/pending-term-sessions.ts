@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { ActionSheetController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SharedServices } from '../../../services/sharedservice';
 import { Storage } from '@ionic/storage';
@@ -30,6 +30,7 @@ export class PendingTermSessionsPage {
   postgre_parentclub_id:string = ""; 
   pending_payments:PendingTermSessionResDto[] = [];
   filtered_payments:PendingTermSessionResDto[] = [];
+  isDarkTheme: boolean = true;
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public storage: Storage,
@@ -38,12 +39,13 @@ export class PendingTermSessionsPage {
     private httpService: HttpService,
     public actionSheetCtrl: ActionSheetController,
     private graphqlService: GraphqlService,
-
+    private renderer: Renderer2
   ) {
   }
 
   async ionViewDidLoad() {
     console.log('ionViewDidLoad PendingTermSessionsPage');
+    await this.loadTheme();
     this.loggedin_type = this.sharedservice.getLoggedInType();
     if(this.loggedin_type == 4){
         this.can_coach_see_revenue = this.sharedservice.getCanCoachSeeRevenue();
@@ -63,7 +65,24 @@ export class PendingTermSessionsPage {
   }
 
   ionViewWillEnter(){
-         
+    this.loadTheme();
+  }
+
+  async loadTheme() {
+    const theme = await this.storage.get('selectedTheme');
+    this.applyTheme(theme || 'dark');
+  }
+
+  applyTheme(theme: string) {
+    this.isDarkTheme = theme === 'dark';
+    const pageElement = document.querySelector('page-pending-term-sessions');
+    if (pageElement) {
+      if (this.isDarkTheme) {
+        this.renderer.removeClass(pageElement, 'light-theme');
+      } else {
+        this.renderer.addClass(pageElement, 'light-theme');
+      }
+    }
   }   
 
   getPendingSessionUsers() {

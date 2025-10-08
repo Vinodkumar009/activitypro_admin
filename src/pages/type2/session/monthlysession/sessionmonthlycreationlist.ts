@@ -190,39 +190,50 @@ export class SessionMonthlyCreationList {
   }
 
   validateInput() {
-    let isValid: Boolean = true;;
+    let isValid: Boolean = true;
     let message: string = "";
-    switch (this.days.length) {
+    
+    // Check if days are selected
+    if (!this.postgre_session_input.days || this.postgre_session_input.days.length === 0) {
+      this.commonService.toastMessage("Please select at least one day", 2500, ToastMessageType.Error);
+      return false;
+    }
+    
+    // Helper function to validate if value is a valid number
+    const isValidNumber = (value: string): boolean => {
+      return value !== "" && value !== undefined && !isNaN(Number(value)) && Number(value) >= 0;
+    }
+    
+    switch (this.postgre_session_input.days.length) {
       case 1:
         {
-          if (this.feesObject.AmountForOneDayPerWeekForMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
+          if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForMember)) {
             isValid = false;
-            message = "Please enter one day session amount for member";
+            message = "Please enter valid one day session amount for member";
           }
-          else if (this.feesObject.AmountForOneDayPerWeekForNonMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
+          else if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForNonMember)) {
             isValid = false;
-            message = "Please enter one day session amount for non member";
+            message = "Please enter valid one day session amount for non member";
           }
           break;
         }
       case 2:
         {
-
-          if (this.feesObject.AmountForOneDayPerWeekForMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
+          if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForMember)) {
             isValid = false;
-            message = "Please enter one day session amount for member";
+            message = "Please enter valid one day session amount for member";
           }
-          else if (this.feesObject.AmountForOneDayPerWeekForNonMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
+          else if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForNonMember)) {
             isValid = false;
-            message = "Please enter one day session amount for non member";
+            message = "Please enter valid one day session amount for non member";
           }
-          else if (this.feesObject.AmountForTwoDayPerWeekForMember == "" || this.feesObject.AmountForTwoDayPerWeekForMember == undefined) {
+          else if (!isValidNumber(this.feesObject.AmountForTwoDayPerWeekForMember)) {
             isValid = false;
-            message = "Please enter two day session amount for member";
+            message = "Please enter valid two day session amount for member";
           }
-          else if (this.feesObject.AmountForTwoDayPerWeekForNonMember == "" || this.feesObject.AmountForTwoDayPerWeekForNonMember == undefined) {
+          else if (!isValidNumber(this.feesObject.AmountForTwoDayPerWeekForNonMember)) {
             isValid = false;
-            message = "Please enter two day session amount for non member";
+            message = "Please enter valid two day session amount for non member";
           }
           break;
         }
@@ -441,7 +452,11 @@ export class SessionMonthlyCreationList {
           break
         }
     }
-    this.commonService.toastMessage(message,2500,ToastMessageType.Error);
+    
+    if (!isValid) {
+      this.commonService.toastMessage(message, 2500, ToastMessageType.Error);
+    }
+    
     return isValid;
   }
 

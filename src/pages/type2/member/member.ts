@@ -14,7 +14,6 @@ import { GraphqlService } from '../../../services/graphql.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { IClubDetails } from '../../../shared/model/club.model';
-import { ThemeService } from '../../../services/theme.service';
 @IonicPage()
 @Component({
   selector: 'member-page',
@@ -24,7 +23,7 @@ import { ThemeService } from '../../../services/theme.service';
 
 export class Type2Member {
   private searchTerms = new Subject<string>();
-  @ViewChild('fab') fab: FabContainer;
+  // Removed fab reference for modern footer approach
   $MemberSubcriber:Subscription;
   $SchoolMember:Subscription;
   $HolidayCampMember:Subscription;
@@ -35,12 +34,9 @@ export class Type2Member {
   LangObj: any = {};//by vinod
   themeType: number;
   show: boolean;
-  isDarkTheme: boolean = true;
   selectedParentClubKey: string;
   selectedClubKey: string;
   members:VenueUser[] = [];
-  allMembers:VenueUser[] = [];
-  filteredMembers:VenueUser[] = [];
   holidayCampMembers = [];
   schoolMemberList = [];
   allMemebers = [];
@@ -68,14 +64,7 @@ export class Type2Member {
   }
   loggedin_type:number = 2;
   can_coach_see_revenue:boolean = true;
-
-  get activeMembers(): number {
-    return this.members.filter(m => m.is_enable).length;
-  }
-
-  get inactiveMembers(): number {
-    return this.members.filter(m => !m.is_enable).length;
-  }
+  isDarkTheme: boolean = true;
   constructor(public events: Events, 
      private callNumber: CallNumber,
      public commonService: CommonService, 
@@ -84,8 +73,7 @@ export class Type2Member {
      public storage: Storage, public navCtrl: NavController, 
      public sharedservice: SharedServices, 
      public fb: FirebaseService, public popoverCtrl: PopoverController,
-      private graphqlService:GraphqlService,
-      private themeService: ThemeService) {
+      private graphqlService:GraphqlService) {
       this.themeType = sharedservice.getThemeType();
       this.selectedIndex = -1;
       this.selectedIndexOfHolidayCampMember = -1;
@@ -117,44 +105,118 @@ export class Type2Member {
   }
 
   ionViewDidEnter() {
-    this.fab.close();
+    // Remove fab reference as we're using footer now
+  }
+
+  doRefresh(refresher) {
+    this.members = [];
+    this.venus_user_input.offset = 0;
+    this.getParentClubUsers(2);
+    setTimeout(() => {
+      refresher.complete();
+    }, 1000);
+  }
+
+  getTotalMembers(): number {
+    return this.members.length;
+  }
+
+  getActiveMembers(): number {
+    return this.members.filter(member => member.is_enable).length;
+  }
+
+  getMemberCount(): number {
+    return this.members.filter(member => member.is_enable === true).length;
+  }
+
+  getNonMemberCount(): number {
+    return this.members.filter(member => member.is_enable === false).length;
   }
 
   //added by vinod
   ionViewDidLoad() {
     this.getLanguage();
-    this.loadTheme();
     this.events.subscribe('language', (res) => {
       this.getLanguage();
     });
+    this.loadTheme();
     this.members = [];
     this.selectedParentClubKey = this.sharedservice.getParentclubKey();
     this.venus_user_input.parentclub_id = this.sharedservice.getPostgreParentClubId();
     this.getClubDetails();          
-  }
-
-  loadTheme() {
-    this.themeService.isDarkTheme$.subscribe(isDark => {
-      this.isDarkTheme = isDark;
-      this.applyTheme();
-    });
-  }
-
-  applyTheme() {
-    const memberElement = document.querySelector('member-page');
-    if (memberElement) {
-      if (this.isDarkTheme) {
-        memberElement.classList.remove('light-theme');
-      } else {
-        memberElement.classList.add('light-theme');
-      }
-    }
   }
   getLanguage() {
     this.storage.get("language").then((res) => {
       console.log(res["data"]);
       this.LangObj = res.data;
     })
+  }
+
+  loadTheme() {
+    this.storage
+        .get("dashboardTheme")
+        .then((isDarkTheme) => {
+            console.log(
+                "Member page - loaded theme from storage:",
+                isDarkTheme
+            );
+            if (isDarkTheme !== null) {
+                this.isDarkTheme = isDarkTheme;
+            } else {
+                // Default to dark theme if no preference is stored
+                this.isDarkTheme = true;
+            }
+            this.applyTheme();
+        })
+        .catch((error) => {
+            console.log("Member page - error loading theme:", error);
+            this.isDarkTheme = true; // Default to dark theme
+            this.applyTheme();
+        });
+
+    // Listen for theme changes from other pages
+    this.events.subscribe("theme:changed", (isDark) => {
+        console.log("Member page - received theme change event:", isDark);
+        this.isDarkTheme = isDark;
+        this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const memberElement = document.querySelector("member-page");
+    console.log(
+        "Member page - applying theme:",
+        this.isDarkTheme ? "dark" : "light"
+    );
+    console.log("Member page - element found:", !!memberElement);
+
+    if (memberElement) {
+        if (this.isDarkTheme) {
+            memberElement.classList.remove("light-theme");
+            document.body.classList.remove("light-theme");
+            console.log("Member page - applied dark theme");
+        } else {
+            memberElement.classList.add("light-theme");
+            document.body.classList.add("light-theme");
+            console.log("Member page - applied light theme");
+        }
+    } else {
+        console.warn("Member page - element not found, retrying...");
+        // Retry after a short delay if element not found
+        setTimeout(() => {
+            const retryElement = document.querySelector("member-page");
+            if (retryElement) {
+                if (this.isDarkTheme) {
+                    retryElement.classList.remove("light-theme");
+                    document.body.classList.remove("light-theme");
+                } else {
+                    retryElement.classList.add("light-theme");
+                    document.body.classList.add("light-theme");
+                }
+                console.log("Member page - theme applied on retry");
+            }
+        }, 100);
+    }
   }
 
   //added by vinod ends here
@@ -248,13 +310,11 @@ export class Type2Member {
       console.log("time ended")
       //if(data["getAllVenueUsersByFilter"]["venue_users"].length > 0){
         if(type === 2){
-          this.allMembers = [];
-          this.allMembers = data["getAllVenueUsersByFilter"]["venue_users"];
-          this.members = this.allMembers;
+          this.members = [];
+          this.members = data["getAllVenueUsersByFilter"]["venue_users"];
         }else{
           if(data["getAllVenueUsersByFilter"]["venue_users"].length > 0){
-            this.allMembers = [...this.allMembers, ...data["getAllVenueUsersByFilter"]["venue_users"]];
-            this.members = this.allMembers;
+            this.members = [...this.members, ...data["getAllVenueUsersByFilter"]["venue_users"]];
           }
         }
       //}
@@ -298,11 +358,7 @@ export class Type2Member {
   memberTabClick() {
     if (this.selectedTabValue != this.memberType) {
       this.limitToFirst = 0;
-      this.venus_user_input.offset = 0;
-      this.venus_user_input.limit = 8;
-      this.venus_user_input.search_term = '';
-      this.members = [];
-      this.getParentClubUsers(2);
+      //this.callMemberListMethod();
     }
   }
   
@@ -428,16 +484,6 @@ export class Type2Member {
 
   presentActionSheet(member, index, type) {
     this.navCtrl.push('MemberprofilePage', {member_id: member.Id,type: type});
-    this.commonService.updateCategory("user_profile");
-  }
-
-  presentActionSheetForHolidayCampMember(member, index, type) {
-    this.navCtrl.push('MemberprofilePage', {member_id: member.Id || member.$key, type: type});
-    this.commonService.updateCategory("user_profile");
-  }
-
-  presentActionSheetForSchoolMember(member, index, type) {
-    this.navCtrl.push('MemberprofilePage', {member_id: member.Id || member.$key, type: type});
     this.commonService.updateCategory("user_profile");
   }
 
@@ -847,6 +893,7 @@ export class Type2Member {
   }
 
   ionViewWillLeave() { //unsbscribe all subscription to avoid all unnecessary data leaks
+    this.events.unsubscribe("theme:changed");
     //The Subscription object also has a closed property that one can use to check if the stream was already unsubscribed (completed or had an error).
     if(this.$MemberSubcriber && !this.$MemberSubcriber.closed){
       this.$MemberSubcriber.unsubscribe();

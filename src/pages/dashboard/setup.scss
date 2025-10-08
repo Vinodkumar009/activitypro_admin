@@ -23,9 +23,9 @@ setup-page {
                 background: transparent !important;
                 border: none !important;
                 
-                &:hover {
-                    color: #1e293b !important;
-                }
+                // &:hover {
+                //     color: #1e293b !important;
+                // }
             }
         }
         
@@ -79,10 +79,10 @@ setup-page {
             border: none;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
             
-            &:hover {
-                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 6px 16px rgba(0, 0, 0, 0.08);
-                transform: translateY(-4px) scale(1.02);
-            }
+            // &:hover {
+            //     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 6px 16px rgba(0, 0, 0, 0.08);
+            //     transform: translateY(-4px) scale(1.02);
+            // }
             
 
             
@@ -129,9 +129,9 @@ setup-page {
             background: transparent !important;
             border: none !important;
             
-            &:hover {
-                color: #f1f5f9 !important;
-            }
+            // &:hover {
+            //     color: #f1f5f9 !important;
+            // }
         }
     }
     
@@ -243,14 +243,14 @@ setup-page {
         
 
 
-        &:hover {
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 12px 24px rgba(0, 0, 0, 0.3);
+        // &:hover {
+        //     transform: translateY(-6px) scale(1.03);
+        //     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 12px 24px rgba(0, 0, 0, 0.3);
             
-            .card-icon-wrapper {
-                transform: scale(1.15);
-            }
-        }
+        //     .card-icon-wrapper {
+        //         transform: scale(1.15);
+        //     }
+        // }
         
         &:active {
             transform: translateY(-2px) scale(0.98);
@@ -338,9 +338,9 @@ setup-page {
             border-radius: 16px;
         }
         
-        &:hover::after {
-            left: 100%;
-        }
+        // &:hover::after {
+        //     left: 100%;
+        // }
 
     }
     

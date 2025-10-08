@@ -1,8 +1,137 @@
 schoolsessionlist-page {
+    // Default dark theme for the entire page
+    background: #0f172a !important;
+    
+    &.dark-theme {
+        background: #0f172a !important;
+        
+        .scroll-content {
+            background: #0f172a !important;
+            background-image: none !important;
+        }
+
+        ion-content {
+            --background: #0f172a !important;
+            --ion-background-color: #0f172a !important;
+        }
+
+        ion-card {
+            background: #1e293b !important;
+            color: #e2e8f0 !important;
+        }
+
+        ion-item {
+            --background: #1e293b !important;
+            --color: #e2e8f0 !important;
+        }
+    }
+
+    &.light-theme {
+        background: #f8fafc !important;
+        
+        .scroll-content {
+            background: #f8fafc !important;
+            background-image: none !important;
+        }
+
+        ion-content {
+            --background: #f8fafc !important;
+            --ion-background-color: #f8fafc !important;
+        }
+
+        ion-card {
+            background: #ffffff !important;
+            color: #1f2937 !important;
+        }
+
+        ion-item {
+            --background: #ffffff !important;
+            --color: #1f2937 !important;
+        }
+        
+        // Light theme sticky header
+        .sticky-header-container {
+            background: #f8fafc;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        // Light theme compact cards
+        .compact-filter-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            
+            .compact-select {
+                border: 1px solid #d1d5db;
+                color: #1e293b;
+                
+                .select-text {
+                    color: #1e293b !important;
+                }
+            }
+        }
+        
+        .compact-search-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            
+            .sleek-searchbar {
+                .searchbar-input {
+                    color: #1e293b !important;
+                    
+                    &::placeholder {
+                        color: #64748b !important;
+                    }
+                }
+            }
+        }
+        
+        // Light theme modern cards
+        .modern-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            
+            .card-header {
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .card-title {
+                color: #1e293b !important;
+            }
+            
+            .card-subtitle {
+                color: #64748b !important;
+            }
+            
+            .detail-text {
+                color: #1e293b !important;
+            }
+            
+            .detail-icon {
+                color: #64748b !important;
+            }
+        }
+        
+        // Light theme no-data
+        .no-data-container {
+            .no-data-content {
+                .no-data-icon {
+                    color: #64748b;
+                }
+                
+                .no-data-text {
+                    color: #64748b;
+                }
+            }
+        }
+    }
+
     .scroll-content {
         padding: 5px !important;
+        background: #0f172a !important;
         background-image: none !important;
-        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
     }
     .para_overflow{
         overflow: hidden;
@@ -334,5 +463,236 @@ schoolsessionlist-page {
         padding:0px !important
     }
 
+    // Modern card styles matching managesession
+    .sticky-header-container {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #0f172a;
+        padding-bottom: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .compact-filter-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px;
+        margin-bottom: 8px;
+        
+        .compact-select {
+            background: transparent !important;
+            border: 1px solid #475569 !important;
+            border-radius: 6px !important;
+            color: #f1f5f9 !important;
+            font-size: 14px !important;
+            padding: 12px 16px !important;
+            min-height: 44px !important;
+            
+            .select-text {
+                color: #f1f5f9 !important;
+                padding: 10px !important;
+            }
+            
+            .select-icon {
+                background: #475569 !important;
+                color: #f1f5f9 !important;
+            }
+        }
+    }
+
+    .compact-search-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px;
+        
+        .search-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            .sleek-searchbar {
+                flex: 1;
+                background: transparent;
+                border: 1px solid #475569;
+                border-radius: 6px;
+                margin: 0;
+                padding: 0;
+                
+                .searchbar-input {
+                    background: transparent !important;
+                    color: #f1f5f9 !important;
+                    padding: 8px 12px !important;
+                    font-size: 14px !important;
+                    box-shadow: none !important;
+                    -webkit-box-shadow: none !important;
+                    
+                    &::placeholder {
+                        color: #94a3b8 !important;
+                    }
+                }
+                
+                .searchbar-search-icon {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .scrollable-content-area {
+        padding: 8px;
+    }
     
+    // No Data Container
+    .no-data-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 200px;
+        
+        .no-data-content {
+            text-align: center;
+            
+            .no-data-icon {
+                font-size: 48px;
+                color: #64748b;
+                margin-bottom: 16px;
+            }
+            
+            .no-data-text {
+                color: #94a3b8;
+                font-size: 16px;
+                margin: 0;
+            }
+        }
+    }
+    
+    ion-content {
+        --background: #0f172a !important;
+        --ion-background-color: #0f172a !important;
+    }
+
+    .session-container {
+        margin-bottom: 12px;
+    }
+
+    .modern-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease;
+        
+        &:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        position: relative;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -16px;
+            right: -16px;
+            height: 1px;
+            background: #334155;
+        }
+    }
+
+    .card-icon-wrapper {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        
+        &.school-bg {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .card-icon {
+            font-size: 20px;
+            color: #ffffff;
+        }
+    }
+
+    .card-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #f1f5f9;
+        margin: 0 0 4px 0;
+        line-height: 1.3;
+    }
+
+    .card-subtitle {
+        font-size: 13px;
+        color: #94a3b8;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .enrollment-badge {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: #ffffff;
+        padding: 6px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        
+        .badge-text {
+            margin: 0;
+        }
+    }
+
+    .session-details {
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            
+            .detail-icon {
+                font-size: 14px;
+                color: #60a5fa;
+                width: 16px;
+                flex-shrink: 0;
+            }
+            
+            .detail-text {
+                font-size: 13px;
+                color: #cbd5e1;
+                margin: 0;
+                line-height: 1.3;
+            }
+        }
+    }
 }

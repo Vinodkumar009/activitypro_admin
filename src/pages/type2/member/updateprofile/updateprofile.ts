@@ -223,6 +223,7 @@ export class UserUpdateDTO{
     this.Handicap = user.handicap || 1;
     this.IsEnable = true;
     this.MediaConsent = user.media_consent;
+    this.EmergencyNumber = user.emergency_number || "";
     this.MemberType = 1;
   }
 

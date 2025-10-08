@@ -10,10 +10,14 @@ import {
 import { Storage } from "@ionic/storage";
 import { Events } from "ionic-angular";
 import { FirebaseService } from "../../../services/firebase.service";
-import { CommonService, ToastMessageType } from "../../../services/common.service";
+import {
+  CommonService,
+  ToastMessageType,
+} from "../../../services/common.service";
 import moment, { Moment } from "moment";
 import { CommonLeagueService } from "../league/commonleague.service";
 import { LeagueteamlistingPage } from "../league/leagueteamlisting/leagueteamlisting";
+import { ThemeService } from "../../../services/theme.service";
 
 // import { IonicPage } from 'ionic-angular';
 @IonicPage()
@@ -22,7 +26,8 @@ import { LeagueteamlistingPage } from "../league/leagueteamlisting/leagueteamlis
   templateUrl: "tournament.html",
 })
 export class TournamentPage {
-  @ViewChild('leagueTeamListingRef') leagueTeamListingComponent: LeagueteamlistingPage;
+  @ViewChild("leagueTeamListingRef")
+  leagueTeamListingComponent: LeagueteamlistingPage;
 
   Title: string = "Tournament";
   isTab: boolean = false;
@@ -35,7 +40,6 @@ export class TournamentPage {
   pastTournaments = [];
   Tournaments = [];
   currencyDetails: any;
-
 
   Tabmenu: Array<any> = [
     { DisplayName: "Tournament", Icon: "trophy", Index: 0, IsSelect: false },
@@ -55,12 +59,13 @@ export class TournamentPage {
     public fb: FirebaseService,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
-    private leagueService: CommonLeagueService
+    private leagueService: CommonLeagueService,
+    private themeService: ThemeService
   ) {
     this.currentActiveType = this.leagueService.getActiveLeagueType();
 
-    this.leagueService.activeTypeSubject.subscribe(type => {
-      console.log('Tournament page subscription received type:', type);
+    this.leagueService.activeTypeSubject.subscribe((type) => {
+      console.log("Tournament page subscription received type:", type);
       this.currentActiveType = type;
     });
     this.storage.get("userObj").then((val) => {
@@ -73,48 +78,129 @@ export class TournamentPage {
       this.Title = "Competition";
       this.comonService.updateCategory("leagueteamlisting");
     });
-    this.storage.get("Currency").then((val) => {
-      this.currencyDetails = JSON.parse(val);
-    }).catch((error) => { });
+    this.storage
+      .get("Currency")
+      .then((val) => {
+        this.currencyDetails = JSON.parse(val);
+      })
+      .catch((error) => {});
   }
+
+  isDarkTheme: boolean = true;
 
   ionViewWillEnter() {
     this.currentActiveType = this.leagueService.getActiveLeagueType();
-    console.log('Tournament page will enter, current type:', this.currentActiveType);
+    console.log(
+      "Tournament page will enter, current type:",
+      this.currentActiveType
+    );
+
+    // Load theme from storage and listen for changes
+    this.loadTheme();
+  }
+
+  loadTheme() {
+    this.storage
+      .get("dashboardTheme")
+      .then((isDarkTheme) => {
+        console.log(
+          "Tournament page - loaded theme from storage:",
+          isDarkTheme
+        );
+        if (isDarkTheme !== null) {
+          this.isDarkTheme = isDarkTheme;
+        } else {
+          // Default to dark theme if no preference is stored
+          this.isDarkTheme = true;
+        }
+        this.applyTheme();
+      })
+      .catch((error) => {
+        console.log("Tournament page - error loading theme:", error);
+        this.isDarkTheme = true; // Default to dark theme
+        this.applyTheme();
+      });
+
+    // Listen for theme changes from other pages
+    this.events.subscribe("theme:changed", (isDark) => {
+      console.log("Tournament page - received theme change event:", isDark);
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const tournamentElement = document.querySelector("page-tournament");
+    console.log(
+      "Tournament page - applying theme:",
+      this.isDarkTheme ? "dark" : "light"
+    );
+    console.log("Tournament page - element found:", !!tournamentElement);
+
+    if (tournamentElement) {
+      if (this.isDarkTheme) {
+        tournamentElement.classList.remove("light-theme");
+        document.body.classList.remove("light-theme");
+        console.log("Tournament page - applied dark theme");
+      } else {
+        tournamentElement.classList.add("light-theme");
+        document.body.classList.add("light-theme");
+        console.log("Tournament page - applied light theme");
+      }
+    } else {
+      console.warn("Tournament page - element not found, retrying...");
+      // Retry after a short delay if element not found
+      setTimeout(() => {
+        const retryElement = document.querySelector("page-tournament");
+        if (retryElement) {
+          if (this.isDarkTheme) {
+            retryElement.classList.remove("light-theme");
+            document.body.classList.remove("light-theme");
+          } else {
+            retryElement.classList.add("light-theme");
+            document.body.classList.add("light-theme");
+          }
+          console.log("Tournament page - theme applied on retry");
+        }
+      }, 100);
+    }
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("theme:changed");
   }
 
   // 🎯 New improved method using ViewChild
   gotoDifferentTab() {
-    console.log('gotoDifferentTab called');
+    console.log("gotoDifferentTab called");
 
     if (this.leagueTeamListingComponent) {
       // 📞 Call the leagueteamlisting component's createAction method directly
-      console.log('Calling leagueTeamListingComponent.createAction()');
+      console.log("Calling leagueTeamListingComponent.createAction()");
       this.leagueTeamListingComponent.createAction();
     } else {
       // 🔄 Fallback to current logic if ViewChild not available
-      console.log('ViewChild not available, using fallback logic');
-      console.log('gotoDifferentTab - Current type:', this.currentActiveType);
+      console.log("ViewChild not available, using fallback logic");
+      console.log("gotoDifferentTab - Current type:", this.currentActiveType);
 
       switch (this.currentActiveType) {
         case 0:
-          console.log('Going to CreateleaguePage');
+          console.log("Going to CreateleaguePage");
           this.navCtrl.push("CreateleaguePage");
           break;
         case 1:
-          console.log('Going to CreateteamPage');
+          console.log("Going to CreateteamPage");
           this.navCtrl.push("CreateteamPage");
           break;
         case 2:
-          console.log('Going to CreatematchPage');
+          console.log("Going to CreatematchPage");
           this.navCtrl.push("CreatematchPage");
           break;
         default:
-          console.log('Default: Going to CreateleaguePage');
+          console.log("Default: Going to CreateleaguePage");
           this.navCtrl.push("CreateleaguePage");
       }
     }
-
 
     // gotoDifferentTab() {
     //   // ✅ Use component's currentActiveType instead of calling service method
@@ -161,6 +247,7 @@ export class TournamentPage {
 
   ionViewDidLoad() {
     this.getLanguage();
+    this.loadTheme(); // Load theme when page loads
     this.events.subscribe("language", (res) => {
       this.getLanguage();
     });
@@ -173,78 +260,83 @@ export class TournamentPage {
     });
   }
   getTournamentList() {
-    const tournments$ = this.fb.getAllWithQuery("Tournament/" + this.parentClubKey, { orderByChild: "IsActive", equalTo: true }).subscribe((data) => {
-      tournments$.unsubscribe();
-      this.Tournaments = [];
-      this.activeTournament = [];
-      this.pastTournaments = [];
-      this.Tournaments = this.comonService.convertFbObjectToArray(data);
-      let tournamentsBackup = this.comonService.convertFbObjectToArray(data);
+    const tournments$ = this.fb
+      .getAllWithQuery("Tournament/" + this.parentClubKey, {
+        orderByChild: "IsActive",
+        equalTo: true,
+      })
+      .subscribe((data) => {
+        tournments$.unsubscribe();
+        this.Tournaments = [];
+        this.activeTournament = [];
+        this.pastTournaments = [];
+        this.Tournaments = this.comonService.convertFbObjectToArray(data);
+        let tournamentsBackup = this.comonService.convertFbObjectToArray(data);
 
-      tournamentsBackup = this.Tournaments.sort((left, right) => {
-        return moment(left.StartDate).diff(moment(right.StartDate));
-      });
-      tournamentsBackup.forEach((eachTournament) => {
-        eachTournament["TotalAmount"] = 0;
-        eachTournament["AmountRecived"] = 0;
-        eachTournament["TotalMembers"] = 0;
-        eachTournament["PaidMembers"] = 0;
-        eachTournament["backupEndDate"] = eachTournament.EndDate;
-        eachTournament.StartDate = moment(eachTournament.StartDate).format(
-          "DD MMM YYYY"
-        );
-        eachTournament.EndDate = moment(eachTournament.EndDate).format(
-          "DD MMM YYYY"
-        );
+        tournamentsBackup = this.Tournaments.sort((left, right) => {
+          return moment(left.StartDate).diff(moment(right.StartDate));
+        });
+        tournamentsBackup.forEach((eachTournament) => {
+          eachTournament["TotalAmount"] = 0;
+          eachTournament["AmountRecived"] = 0;
+          eachTournament["TotalMembers"] = 0;
+          eachTournament["PaidMembers"] = 0;
+          eachTournament["backupEndDate"] = eachTournament.EndDate;
+          eachTournament.StartDate = moment(eachTournament.StartDate).format(
+            "DD MMM YYYY"
+          );
+          eachTournament.EndDate = moment(eachTournament.EndDate).format(
+            "DD MMM YYYY"
+          );
 
-        this.comonService
-          .convertFbObjectToArray(eachTournament.Group)
-          .forEach((eachGroup) => {
-            // element.Group
-            if (eachGroup.Member)
-              this.comonService
-                .convertFbObjectToArray(eachGroup.Member)
-                .forEach((member) => {
-                  if (member.IsActive) {
-                    eachTournament.TotalAmount =
-                      eachTournament.TotalAmount + member.TotalFeesAmount * 1;
-                    eachTournament.TotalMembers++;
-                    if (
-                      member.AmountPayStatus != "due" &&
-                      member.AmountPayStatus != "Due"
-                    ) {
-                      eachTournament.AmountRecived =
-                        eachTournament.AmountRecived +
-                        member.TotalFeesAmount * 1;
-                      eachTournament.PaidMembers++;
+          this.comonService
+            .convertFbObjectToArray(eachTournament.Group)
+            .forEach((eachGroup) => {
+              // element.Group
+              if (eachGroup.Member)
+                this.comonService
+                  .convertFbObjectToArray(eachGroup.Member)
+                  .forEach((member) => {
+                    if (member.IsActive) {
+                      eachTournament.TotalAmount =
+                        eachTournament.TotalAmount + member.TotalFeesAmount * 1;
+                      eachTournament.TotalMembers++;
+                      if (
+                        member.AmountPayStatus != "due" &&
+                        member.AmountPayStatus != "Due"
+                      ) {
+                        eachTournament.AmountRecived =
+                          eachTournament.AmountRecived +
+                          member.TotalFeesAmount * 1;
+                        eachTournament.PaidMembers++;
+                      }
                     }
-                  }
-                });
-          });
-        // element['TotalAmount'] = totalAmount;
-        // element['AmountRecived'] = amountRecived;
-        // element['TotalMembers'] = totalMembers;
-        // element['PaidMembers'] = paidMembers;
-        //if (eachTournament.IsActive) {
-        if (
-          new Date(eachTournament.backupEndDate).getTime() >=
-          new Date(this.comonService.getTodaysDate()).getTime()
-        ) {
-          this.activeTournament.push(eachTournament);
-        } else {
-          this.pastTournaments.push(eachTournament);
-        }
-        // } else {
-        //   this.pastTournaments.push(eachTournament)
-        //}
+                  });
+            });
+          // element['TotalAmount'] = totalAmount;
+          // element['AmountRecived'] = amountRecived;
+          // element['TotalMembers'] = totalMembers;
+          // element['PaidMembers'] = paidMembers;
+          //if (eachTournament.IsActive) {
+          if (
+            new Date(eachTournament.backupEndDate).getTime() >=
+            new Date(this.comonService.getTodaysDate()).getTime()
+          ) {
+            this.activeTournament.push(eachTournament);
+          } else {
+            this.pastTournaments.push(eachTournament);
+          }
+          // } else {
+          //   this.pastTournaments.push(eachTournament)
+          //}
+        });
+        console.log(this.pastTournaments);
       });
-      console.log(this.pastTournaments);
-    });
   }
   goToDetails(tournamentKey) {
     this.navCtrl.push("TournamentDetailsPage", {
       TournamentKey: tournamentKey,
-      ParentClubKey: this.parentClubKey
+      ParentClubKey: this.parentClubKey,
     });
   }
 
@@ -302,12 +394,12 @@ export class TournamentPage {
                   this.fb.update(
                     tournamentKey,
                     "Member/" +
-                    member.ParentClubKey +
-                    "/" +
-                    member.ClubKey +
-                    "/" +
-                    member.Key +
-                    "/Tournament",
+                      member.ParentClubKey +
+                      "/" +
+                      member.ClubKey +
+                      "/" +
+                      member.Key +
+                      "/Tournament",
                     { IsActive: false }
                   );
                 });
@@ -316,7 +408,10 @@ export class TournamentPage {
           IsActive: false,
         });
         this.comonService.toastMessage(
-          eachTournament.TournamentName + " successfully deleted", 2500, ToastMessageType.Success);
+          eachTournament.TournamentName + " successfully deleted",
+          2500,
+          ToastMessageType.Success
+        );
       }
     });
   }
@@ -364,7 +459,12 @@ export class TournamentPage {
   }
 
   debugCurrentType() {
-    console.log('Current type in component:', this.currentActiveType);
-    console.log('Current type in service:', this.leagueService.getActiveLeagueType());
+    console.log("Current type in component:", this.currentActiveType);
+    console.log(
+      "Current type in service:",
+      this.leagueService.getActiveLeagueType()
+    );
   }
 }
+
+

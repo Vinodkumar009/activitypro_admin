@@ -1,11 +1,182 @@
 holidaycamp-page {
+  // Default dark theme for the entire page
+  background: #0f172a !important;
+  
+  &.dark-theme {
+    background: #0f172a !important;
+    
+    .scroll-content {
+      background: #0f172a !important;
+      background-image: none !important;
+    }
+
+    ion-content {
+      --background: #0f172a !important;
+      --ion-background-color: #0f172a !important;
+    }
+
+    ion-card {
+      background: #1e293b !important;
+      color: #e2e8f0 !important;
+    }
+
+    ion-item {
+      --background: #1e293b !important;
+      --color: #e2e8f0 !important;
+    }
+  }
+
+  &.light-theme {
+    background: #f8fafc !important;
+    
+    .scroll-content {
+      background: #f8fafc !important;
+      background-image: none !important;
+    }
+
+    ion-content {
+      --background: #f8fafc !important;
+      --ion-background-color: #f8fafc !important;
+    }
+
+    ion-card {
+      background: #ffffff !important;
+      color: #1f2937 !important;
+      
+      ion-card-content {
+        background: #ffffff !important;
+        color: #1f2937 !important;
+      }
+    }
+    
+    .ion_card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+      
+      .borderleft {
+        border-bottom: none !important;
+      }
+    }
+    
+    .campname {
+      color: #1e293b !important;
+    }
+    
+    .holidaycampcard_p {
+      color: #64748b !important;
+      
+      ion-icon {
+        color: #3b82f6 !important;
+      }
+    }
+
+    ion-item {
+      --background: #ffffff !important;
+      --color: #1f2937 !important;
+    }
+    
+    // Light theme sticky header
+    .sticky-header-container {
+      background: #f8fafc;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    // Light theme venue dropdown
+    .venue-dropdown {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      
+      ion-select .select-text {
+        color: #1e293b !important;
+      }
+      
+      ion-label {
+        color: #64748b !important;
+      }
+    }
+    
+    // Light theme tabs
+    .choose-row {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      
+      .select-type {
+        color: #64748b !important;
+        
+        &.selected {
+          background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+          color: #ffffff !important;
+        }
+      }
+    }
+    
+    // Light theme search container
+    .sub-container {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      
+      ion-icon {
+        color: #64748b !important;
+      }
+      
+      .searchbar {
+        background: #ffffff !important;
+      }
+      
+      .searchbar-input {
+        color: #1e293b !important;
+        background: #ffffff !important;
+        
+        &::placeholder {
+          color: #64748b !important;
+        }
+      }
+    }
+    
+    // Light theme modern cards
+    .modern-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      
+      .card-title {
+        color: #1e293b !important;
+      }
+      
+      .card-subtitle {
+        color: #64748b !important;
+      }
+      
+      .card-dates {
+        color: #3b82f6 !important;
+      }
+    }
+    
+    // Light theme empty state
+    .modern-empty-state {
+      .empty-text {
+        .empty-title {
+          color: #1e293b !important;
+        }
+        
+        .empty-description {
+          color: #64748b !important;
+        }
+      }
+    }
+  }
+
   .scroll-content {
-    // background-image: url("../assets/images/background/innerbg.png");
+    background: #0f172a !important;
     background-size: 100% 100%;
     padding: 6px;
     background-image: none !important;
-    //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
-    background: #f7f7f7;
+  }
+  
+  ion-content {
+    --background: #0f172a !important;
+    --ion-background-color: #0f172a !important;
   }
   .slider_list_margin {
     margin: -1px 0 8px 0;
@@ -111,9 +282,17 @@ holidaycamp-page {
   .nopad {
     padding: 0px;
   }
+  .pending-payment-container {
+    padding: 8px;
+  }
+
   .ion_card {
-    margin: 6px 0px;
+    margin: 0 0 12px 0;
     width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   }
   .right_box {
     line-height: 69px;
@@ -125,29 +304,27 @@ holidaycamp-page {
     float: right;
     margin-top: -16px;
   }
-  .people_size {
-    // // margin-top: -24px;
-    // margin-top: -97%;
-    // font-size: 17px;
-    // font-weight: bold;
-    // color: #736c6c;
-    margin-top: -47%;
-    font-size: 17px;
-    font-weight: bold;
-    color: #736c6c;
-    text-align: center;
+  .people_icon {
+    font-size: 1.5em !important;
+    color: #3ebbd1;
+    display: block !important;
   }
   .campname {
-    color: #726f6f;
+    color: #f1f5f9;
     font-family: "PT Sans", sans-serif;
-    font-size: 1em;
+    font-size: 16px;
     font-weight: 600;
     margin-top: 9px;
   }
   .holidaycampcard_p {
     font-family: "PT Sans", sans-serif;
-    color: #746c6c;
+    color: #94a3b8;
     font-size: 13px;
+    
+    ion-icon {
+      color: #60a5fa;
+      margin-right: 4px;
+    }
   }
   .elipsesdot {
     white-space: nowrap;
@@ -157,8 +334,7 @@ holidaycamp-page {
     overflow: hidden;
   }
   .borderleft {
-    border-bottom: 1px solid #f5ba63;
-    //border-left: 2px solid #35adff !important;
+    border-bottom: none;
   }
 
   .toggle {
@@ -220,9 +396,9 @@ holidaycamp-page {
   //     color: #b3b3b3;
   //     text-align: center;
   // }
-  ion-card {
+  // Legacy ion-card styles - keeping for old cards
+  .legacy-card {
     box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
-    //box-shadow: none !important;
   }
   .top-row {
     width: 98% !important;
@@ -263,7 +439,8 @@ holidaycamp-page {
       padding: 0px !important;
     }
   }
-  ion-card {
+  // Legacy ion-card width - keeping for old cards only
+  .legacy-card {
     width: 94% !important;
     margin: 6px 3px 6px 0px !important;
     margin-left: 3% !important;
@@ -293,7 +470,7 @@ holidaycamp-page {
     box-shadow: none;
   }
   .choose-row {
-    width: 106%;
+    width: 100%;
     //margin-left: -3%;
 
     ion-col {
@@ -302,28 +479,19 @@ holidaycamp-page {
   }
 
   .sub-container {
-    // border: 1px solid #34343442;
-    // border-radius: 5px;
-    // margin:5px 15px;
-
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid #334155;
     border-radius: 8px;
     height: 50px;
-    background: #FFFFFF;
-
-    margin-top: 18px;
-    margin-right: 10px;
-    margin-bottom: 14px;
-    margin-left: 10px;
-
+    background: #1e293b;
+    margin: 18px 10px 14px 10px;
 
     ion-icon {
       width: 90%;
       background: transparent !important;
       border-radius: 5px;
-      //color: white;
-      color: rgba(0, 0, 0, 0.64);
-      //box-shadow: -2px 4px 28px rgba(250, 170, 40, 0.45);
+      color: #94a3b8;
+      font-size: 26px;
+      padding-left: 5px;
     }
 
     .search-bar {
@@ -332,30 +500,335 @@ holidaycamp-page {
 
     .searchbar {
       border: none !important;
-      background: #ffffff !important;
+      background: #1e293b !important;
       padding: 2px !important;
     }
 
     .searchbar-input {
-      //padding-left: 4px !important;
       padding: 1px 4px !important;
       box-shadow: none !important;
       -webkit-box-shadow: none !important;
-      // margin-left: 20px;
       margin-top: 5px;
-      // color:black;
+      color: #f1f5f9 !important;
+      background: #1e293b !important;
+      
+      &::placeholder {
+        color: #64748b !important;
+      }
     }
 
     .searchbar-search-icon {
       display: none !important;
     }
-
-    ion-icon {
-      font-size: 26px;
-      padding-left: 5px;
-    }
   }
   .search-bar {
     padding: 0px 5px;
+  }
+
+  // Full width venue dropdown
+  .venue-dropdown {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    //margin: 8px !important;
+    
+    .item-inner {
+      padding-right: 16px !important;
+      border-bottom: none !important;
+    }
+    
+    ion-select {
+      width: 100% !important;
+      
+      .select-text {
+        color: #f1f5f9 !important;
+      }
+      
+      .select-icon {
+        color: #f1f5f9 !important;
+        right: 16px !important;
+        position: absolute !important;
+      }
+    }
+    
+    ion-label {
+      color: #94a3b8 !important;
+      font-size: 14px !important;
+    }
+  }
+
+  // Professional tabs styling
+  .choose-row {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    margin: 8px;
+    padding: 4px;
+    
+    .select-type {
+      background: transparent !important;
+      color: #94a3b8 !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      text-transform: capitalize !important;
+      border-radius: 8px !important;
+      margin: 2px !important;
+      box-shadow: none !important;
+      border: none !important;
+      
+      &.selected {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+      }
+    }
+  }
+
+  // Modern card styles matching managesession
+  .sticky-header-container {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0f172a;
+    padding: 8px;
+    border-bottom: 1px solid #334155;
+    
+    .choose-row {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      margin: 8px 0px 0px 0px;
+      padding: 4px;
+      
+      .select-type {
+        background: transparent !important;
+        color: #94a3b8 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-transform: capitalize !important;
+        border-radius: 8px !important;
+        margin: 2px !important;
+        box-shadow: none !important;
+        border: none !important;
+        
+        &.selected {
+          background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+          color: #ffffff !important;
+          font-weight: 600 !important;
+        }
+      }
+    }
+  }
+
+  .compact-filter-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+    
+    .compact-select {
+      background: transparent !important;
+      border: 1px solid #475569 !important;
+      border-radius: 6px !important;
+      color: #f1f5f9 !important;
+      font-size: 14px !important;
+      padding: 12px 16px !important;
+      min-height: 44px !important;
+      
+      .select-text {
+        color: #f1f5f9 !important;
+        padding: 10px !important;
+      }
+      
+      .select-icon {
+        color: #f1f5f9 !important;
+      }
+    }
+  }
+
+  .scrollable-content-area {
+    padding: 8px;
+  }
+
+  .session-container {
+    margin-bottom: 12px;
+  }
+
+  .modern-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    
+    &:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .progress-wrapper {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    text-align: center;
+    position: relative;
+    
+    .circlesvg {
+      width: 100px !important;
+      height: 100px !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-52%, -50%) !important;
+    }
+  }
+
+  .card-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    
+    &.camp-bg {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+    
+    .card-icon {
+      font-size: 20px;
+      color: #ffffff;
+    }
+  }
+
+  .card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+  }
+
+  .card-subtitle {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+
+  .card-dates {
+    font-size: 12px;
+    color: #60a5fa;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .enrollment-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .enrollment-badge {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    
+    .badge-text {
+      margin: 0;
+    }
+  }
+
+  .session-details {
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      
+      .detail-icon {
+        font-size: 14px;
+        color: #60a5fa;
+        width: 16px;
+        flex-shrink: 0;
+      }
+      
+      .detail-text {
+        font-size: 13px;
+        color: #cbd5e1;
+        margin: 0;
+        line-height: 1.3;
+      }
+    }
+  }
+
+  .modern-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    min-height: 300px;
+    
+    .empty-illustration {
+      margin-bottom: 24px;
+      
+      .empty-icon {
+        font-size: 64px;
+        color: #475569;
+        opacity: 0.6;
+      }
+    }
+    
+    .empty-text {
+      .empty-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #f1f5f9;
+        margin: 0 0 8px 0;
+      }
+      
+      .empty-description {
+        font-size: 14px;
+        color: #94a3b8;
+        margin: 0;
+        line-height: 1.5;
+      }
+    }
   }
 }

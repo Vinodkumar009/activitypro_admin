@@ -31,7 +31,7 @@ import { ThemeService } from '../../../../services/theme.service';
 
 @IonicPage()
 @Component({
-  selector: 'page-summary_football',
+  selector: 'page-summary-football',
   templateUrl: 'summary_football.html',
   providers: [HttpService]
 })

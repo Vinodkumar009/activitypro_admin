@@ -1,59 +1,37 @@
 <ion-header>
-
-    <ion-navbar *ngIf="themeType == 2">
-        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+    <ion-navbar class="modern-navbar themed-navbar">
+        <button ion-button menuToggle class="menu-btn themed-btn">
             <ion-icon name="apps"></ion-icon>
         </button>
-        <ion-title>
-            {{LangObj.member_Member}}
+        <ion-title class="navbar-title themed-title">
+            {{LangObj.member_Member || 'Members'}}
         </ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="goToDashboardMenuPage()">
-                 <img src="assets/images/home.svg" class="home_btn">
+            <button ion-button icon-only (click)="goToDashboardMenuPage()" class="home-btn themed-btn">
+                <ion-icon name="home"></ion-icon>
             </button>
-            <button ion-button icon-only (click)="presentPopover($event)">
+            <button ion-button icon-only (click)="presentPopover($event)" class="more-btn themed-btn">
                 <ion-icon name="more"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
-   
-    <!-- <ion-searchbar id="customsearchbar" class="sbar" [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItems($event)"
-        autocorrect="off" placeholder="Search by name"></ion-searchbar> -->
-
-        <!--<ion-toolbar no-border-top no-border>
-                <ion-segment [(ngModel)]="memberType">
-                    <ion-segment-button value="Member" (click)="memberTabClick()">
-                        {{LangObj.member_Member}}
-                    </ion-segment-button>
-                    <ion-segment-button value="Holidaycampmember" (click)="memberTabClick()">
-                        {{LangObj.member_hildycamp}}
-                    </ion-segment-button>
-                    <ion-segment-button value="Schoolmember" (click)="memberTabClick()">
-                        {{LangObj.member_scl}}
-                    </ion-segment-button>
-                </ion-segment>
-        </ion-toolbar> -->
 </ion-header>
 
 
-<ion-content class="member-content">
+<ion-content class="member-content themed-content">
     <!-- Sticky Header Container -->
     <div class="sticky-header-container">
-        <!-- Compact Filters -->
-        <div class="compact-filter-card">
-            <ion-row>
-                <ion-col col-12 style="padding: 4px;">
-                    <ion-select class="compact-select" [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()" placeholder="Club">
-                        <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
-                    </ion-select>
-                </ion-col>
-            </ion-row>
+        <!-- Venue Dropdown -->
+        <div class="compact-filter-card themed-card">
+            <ion-select class="compact-select themed-select" [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()" placeholder="Select Club">
+                <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
+            </ion-select>
         </div>
         
-        <!-- Compact Search -->
-        <div class="compact-search-card">
+        <!-- Search Bar -->
+        <div class="compact-search-card themed-card">
             <div class="search-content">
-                <ion-searchbar class="sleek-searchbar" placeholder="Search by name, phone, email" 
+                <ion-searchbar class="sleek-searchbar themed-searchbar" placeholder="Search by name, vehicle, memberid" 
                     [(ngModel)]="searchText" (ionInput)="getFilterItems($event)" autocorrect="off" 
                     showCancelButton="never"></ion-searchbar>
             </div>
@@ -62,18 +40,12 @@
 
     <!-- Scrollable Content Area -->
     <div class="scrollable-content-area">
+        <ion-refresher (ionRefresh)="doRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
 
-    <div [ngSwitch]="memberType">
-        <ion-list *ngSwitchCase="'Member'">
-            <!-- <ion-item class="venueionitem">
-                
-                <ion-select [(ngModel)]="selectedClubKey" (ionChange)="venueSelected(selectedClubKey)" class="venuedropdown">
-                    <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
-
-                </ion-select>
-                
-            </ion-item> -->
- 
+        <div [ngSwitch]="memberType">
+            <ion-list *ngSwitchCase="'Member'"> 
 
             <!-- <div *ngFor="let member of members;let i = index">
                 <ion-card class="cardStyle" *ngIf="!member.IsChild" (click)="presentActionSheet(member,i,'Member')"  [class.selected]="false === member.IsEnable">
@@ -110,271 +82,129 @@
                     <p class="danger_color2"></p>
                 </ion-card-content>
             </ion-card> -->
-            <!-- Empty State -->
-            <div class="modern-empty-state" *ngIf="members.length === 0">
-                <div class="empty-illustration">
-                    <ion-icon name="people" class="empty-icon"></ion-icon>
-                </div>
-                <div class="empty-text">
-                    <h2 class="empty-title">{{LangObj.member_no_mem_found}}</h2>
-                    <p class="empty-description">Add your first member to get started</p>
-                </div>
-            </div>
-
-            <div class="member-container">
-                <div class="modern-member-card" *ngFor="let member of members;let i = index" (click)="presentActionSheet(member,i,'Member')">
-                    <div class="card-header">
-                        <div class="member-avatar">
-                            <ion-icon name="person"></ion-icon>
-                        </div>
-                        <div class="member-info">
-                            <div class="member-name">{{member.parent_firstname}} {{member.parent_lastname}}</div>
-                        </div>
-                        <div class="member-badges">
-                            <div class="member-badge" *ngIf="member.childcount > 0">
-                                <span class="family-count">+{{member.childcount}}</span>
-                            </div>
-                            <div class="member-status-badge" [class.active]="member.is_enable" [class.inactive]="!member.is_enable">
-                                {{member.is_enable ? 'Member' : 'Non-Member'}}
-                            </div>
-                        </div>
+                <!-- No Members Message -->
+                <div *ngIf="members.length == 0" class="no-data-container">
+                    <div class="no-data-content">
+                        <ion-icon name="people" class="no-data-icon"></ion-icon>
+                        <p class="no-data-text">{{LangObj.member_no_mem_found || 'No members found'}}</p>
                     </div>
-                    <div class="card-body">
-                        <div class="contact-row">
-                            <div class="contact-item">
-                                <ion-icon name="call" class="contact-icon"></ion-icon>
-                                <span class="contact-text">{{member.phone_number}}</span>
+                </div>
+
+                <!-- Member Cards -->
+                <div *ngFor="let member of members; let i = index" class="member-container">
+                    <div class="modern-card member-card themed-member-card" (click)="presentActionSheet(member,i,'Member')">
+                        <div class="card-header">
+                            <div class="card-icon-wrapper member-bg">
+                                <ion-icon name="person" class="card-icon"></ion-icon>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">{{member.parent_firstname}} {{member.parent_lastname}}</h3>
+                            </div>
+                            <div class="family-count-center">
+                                <span class="family-count-chip" *ngIf="member.childcount > 0">+{{member.childcount}}</span>
                             </div>
                         </div>
-                        <div class="contact-row">
-                            <div class="contact-item">
-                                <ion-icon name="mail" class="contact-icon"></ion-icon>
-                                <span class="contact-text">{{member.email}}</span>
+                        <div class="card-body">
+                            <span class="non-member-badge-content" *ngIf="!member.is_enable">Non-member</span>
+                            <div class="member-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="call" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{member.phone_number}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="mail" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{member.email}}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </ion-list>
+            </ion-list>
 
-
-
-
-
-
-
-
-
-        <ion-list *ngSwitchCase="'Holidaycampmember'">
-            <!-- <div *ngFor="let member of holidayCampMembers;let i = index">
-                <ion-card class="cardStyle" *ngIf="!member.IsChild" (click)="presentActionSheetForHolidayCampMember(member,i,'Holidaycampmember')" [class.selected]="false === member.IsEnable">
-                    <ion-card-content > -->
-            <!-- <p>
-                            <ion-icon name="ios-person-outline"></ion-icon> {{member.FirstName}} {{member.MiddleName}} {{member.LastName}} &nbsp;( +{{member.ChildMember.length}}
-                            )
-                        </p> -->
-            <!-- <p class="memberfont"> -->
-            <!-- <ion-icon name="ios-person-outline"></ion-icon>  -->
-            <!-- {{member.FirstName}} {{member.MiddleName}} {{member.LastName}} &nbsp;( +{{member.ChildMember.length}} )
-                        </p>
-                        <span>
-                            <ion-icon name="ios-call-outline"></ion-icon> {{member.PhoneNumber}}</span>
-                        <p>
-                            <ion-icon name="ios-mail-outline"></ion-icon> c</p>
-                    </ion-card-content>
-                </ion-card>
-                <div *ngIf="this.selectedIndexOfHolidayCampMember == i" class="f_member">
-
-                    <ion-card *ngFor="let fm of member.ChildMember">
-                        <ion-card-content [class.selected]="false === member.IsEnable">
-                            <ion-col col-12> {{fm.FirstName}} {{fm.LastName}}</ion-col>
-                        </ion-card-content>
-                    </ion-card>
-
-                    <ion-card class="ion_card" *ngIf="member.ChildMember.length ==0">
-                        <ion-card-content>
-                            <p class="danger_color2">No family member added.</p>
-                        </ion-card-content>
-                    </ion-card>
+            <ion-list *ngSwitchCase="'Holidaycampmember'">
+                <!-- Holiday Camp Members -->
+                <div *ngFor="let member of holidayCampMembers; let i = index" class="member-container">
+                    <div class="modern-card member-card themed-member-card" *ngIf="!member.IsChild" 
+                        (click)="presentActionSheetForHolidayCampMember(member,i,'Holidaycampmember')">
+                        <div class="card-header">
+                            <div class="card-icon-wrapper holiday-bg">
+                                <ion-icon name="sunny" class="card-icon"></ion-icon>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">{{member.FirstName}} {{member.MiddleName}} {{member.LastName}}</h3>
+                            </div>
+                            <div class="family-count-center">
+                                <span class="family-count-chip" *ngIf="member.ChildMember?.length > 0">+{{member.MemberCount}}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="non-member-badge-content" *ngIf="!member.IsEnable">Non-member</span>
+                            <div class="member-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="call" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{member.PhoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="mail" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{member.EmailID}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div> -->
+            </ion-list>
 
-            <ion-row *ngFor="let member of holidayCampMembers;let i = index" style="margin-top: -12px;" class="rows-allign">
-                <ion-col col-1>
-                        <div  [class.selected]="false === member.IsEnable" class="all border-left-style"></div>
-                </ion-col>
-                <ion-col col-11 class="allignment-col">
-                    <ion-card  *ngIf="!member.IsChild" (click)="presentActionSheetForHolidayCampMember(member,i,'Holidaycampmember')"
-                        [class.selected]="false === member.IsEnable">
-                        <ion-card-header>
-                            <ion-row>
-                                <ion-col col-10>
-                                        <span class="name"> {{member.FirstName}} {{member.MiddleName}} {{member.LastName}}</span>
-                                </ion-col>
-                                <ion-col col-2>
-                                    <span class="family" *ngIf="member.ChildMember.length != 0">+{{member.MemberCount}}</span>
-                                </ion-col>
-                            </ion-row>
-                        </ion-card-header>
-                        <ion-card-content style="color: #c5b495">
-                            <ion-row>
-                                <ion-col col-2>
-                                    <img src="assets/imgs/phone.svg" class="icon-img">
-                                </ion-col>
-                                <ion-col col-10>
-                                    {{member.PhoneNumber}}
-                                </ion-col>
-                            </ion-row>
-                            <ion-row>
-                                <ion-col col-2>
-                                    <img src="assets/imgs/message.svg" class="icon-img">
-                                </ion-col>
-                                <ion-col col-10>
-                                    {{member.EmailID}}
-                                </ion-col>
-                            </ion-row>
-                        </ion-card-content>
-
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-
-
-
-
-
-
-
-
-
-
-        </ion-list>
-        <ion-list *ngSwitchCase="'Schoolmember'">
-
-            <!-- <div *ngFor="let member of schoolMemberList;let i = index">
-                <ion-card class="cardStyle" *ngIf="!member.IsChild" (click)="presentActionSheetForSchoolMember(member,i,'Schoolmember')" [class.selected]="false === member.IsEnable">
-                    <ion-card-content> -->
-            <!-- <p>
-                            <ion-icon name="ios-person-outline"></ion-icon> {{member.FirstName}} {{member.MiddleName}} {{member.LastName}} &nbsp;( +{{member.ChildMember.length}}
-                            )
-                        </p> -->
-            <!-- <p class="memberfont"> -->
-            <!-- <ion-icon name="ios-person-outline"></ion-icon>  -->
-            <!-- {{member.FirstName}} {{member.MiddleName}} {{member.LastName}} &nbsp;( +{{member.ChildMember.length}} )
-                        </p>
-                        <span>
-                            <ion-icon name="ios-call-outline"></ion-icon> {{member.PhoneNumber}}</span>
-                        <p>
-                            <ion-icon name="ios-mail-outline"></ion-icon> {{member.EmailID}}</p>
-                    </ion-card-content>
-                </ion-card>
-                <div *ngIf="this.selectedSchoolMemberIndex == i" class="f_member">
-
-                    <ion-card *ngFor="let fm of member.ChildMember">
-                        <ion-card-content>
-                            <ion-col col-12> {{fm.FirstName}} {{fm.LastName}}</ion-col>
-                        </ion-card-content>
-                    </ion-card>
-
-                    <ion-card class="ion_card" *ngIf="member.ChildMember.length ==0">
-                        <ion-card-content>
-                            <p class="danger_color2">No family member added.</p>
-                        </ion-card-content>
-                    </ion-card>
+            <ion-list *ngSwitchCase="'Schoolmember'">
+                <!-- School Members -->
+                <div *ngFor="let member of schoolMemberList; let i = index" class="member-container">
+                    <div class="modern-card member-card themed-member-card" *ngIf="!member.IsChild" 
+                        (click)="presentActionSheetForSchoolMember(member,i,'Schoolmember')">
+                        <div class="card-header">
+                            <div class="card-icon-wrapper school-bg">
+                                <ion-icon name="school" class="card-icon"></ion-icon>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">{{member.FirstName}} {{member.MiddleName}} {{member.LastName}}</h3>
+                            </div>
+                            <div class="family-count-center">
+                                <span class="family-count-chip" *ngIf="member.ChildMember?.length > 0">+{{member.MemberCount}}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="non-member-badge-content" *ngIf="!member.IsEnable">Non-member</span>
+                            <div class="member-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="call" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{member.PhoneNumber}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="mail" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{member.EmailID}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div> -->
-
-
-
-
-
-            <ion-row *ngFor="let member of schoolMemberList;let i = index" style="margin-top: -12px;" class="rows-allign">
-                <ion-col col-1>
-                        <div [ngClass]="{
-                            'selected': member.IsEnable,
-                            'all': member.IsEnable
-                            }" class="border-left-style"></div>
-                </ion-col>
-                <ion-col col-11 class="allignment-col">
-                    <ion-card *ngIf="!member.IsChild" (click)="presentActionSheetForSchoolMember(member,i,'Schoolmember')">
-                        <ion-card-header>
-                            <ion-row>
-                                <ion-col col-10>
-                                   <span class="name"> {{member.FirstName}} {{member.MiddleName}} {{member.LastName}}</span>
-                                </ion-col>
-                                <ion-col col-2>
-                                    <span class="family" *ngIf="member.ChildMember.length != 0">+{{member.MemberCount}}</span>
-                                </ion-col>
-                            </ion-row>
-                        </ion-card-header>
-                        <ion-card-content style="color:#c5b495">
-                            <ion-row>
-                                <ion-col col-2>
-                                    <img src="assets/imgs/phone.svg" class="icon-img">
-                                </ion-col>
-                                <ion-col col-10>
-                                    {{member.PhoneNumber}}
-                                </ion-col>
-                            </ion-row>
-                            <ion-row>
-                                <ion-col col-2>
-                                    <img src="assets/imgs/message.svg" class="icon-img">
-                                </ion-col>
-                                <ion-col col-10>
-                                    {{member.EmailID}}
-                                </ion-col>
-                            </ion-row>
-                        </ion-card-content>
-
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-
-        </ion-list>
+            </ion-list>
+        </div>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </div>
-    
-    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more data..."></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-    </div>
-    <!-- <ion-fab right bottom (click)="addMember()" *ngIf="memberType != 'Schoolmember'">
-        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important">
-            <ion-icon name="add"></ion-icon>
-        </button>
-    </ion-fab> -->
 
-
-
-
-
-
-    <!-- style="margin-top: -32px;"  -->
-    <ion-fab mini right bottom #fab>
-        <!-- <p *ngIf="isShowNewPost" class="newPost">New Post</p> -->
-        <button ion-fab mini style='background-color: #2b92bb;' (click)="showNewPost()">
-            <ion-icon name="add"></ion-icon>
-        </button>
-        <ion-fab-list side="top">
-
-            <p class="fabEmailText" (tap)="addMember()">{{LangObj.member_create}}</p>
-            <button  ion-fab style='background-color: #2b92bb; color:white' class="fabTop" (tap)="addMember()">
-                <ion-icon name="md-person-add"></ion-icon>
-            </button>
-            <p class="fabEmailText" (tap)="gotoSendEmailPage(1)">{{LangObj.member_email}}</p>
-            <button  ion-fab style='background-color: #2b92bb;  color:white' class="fabTop" (tap)="gotoSendEmailPage(1)">
-                <ion-icon name="md-mail"></ion-icon>
-            </button>
-
-            <p class="fabAttendanceText" (tap)="gotoSendNotification(0)">{{LangObj.member_notifification}}</p>
-            <button  ion-fab  style='background-color: #2b92bb;  color:white' class="fabTop" (tap)="gotoSendNotification(0)">
-                <ion-icon name="md-notifications"></ion-icon>
-            </button>
-
-
-        </ion-fab-list>
-
-    </ion-fab>
 
 
 
@@ -392,10 +222,10 @@
 
     <!-- Custom modal -->
     <!-- The Modal -->
-    <div id="customModal1" class="modal" (click)="closeModal()">
+    <div id="customModal1" class="modal themed-modal" (click)="closeModal()">
 
         <!-- Modal content -->
-        <div class="modal-content">
+        <div class="modal-content themed-modal-content">
             <!-- <span class="close">&times;</span> -->
 
             <ion-item>
@@ -437,26 +267,29 @@
 
 <!-- Modern Footer -->
 <ion-footer>
-    <div class="modern-footer">
+    <div class="modern-footer themed-footer">
         <div class="footer-stats">
-            <div class="stat-item">
-                <div class="stat-value">{{members.length}}</div>
-                <div class="stat-label">Total</div>
+            <div class="stat-item themed-stat-item">
+                <span class="stat-value themed-stat-value">{{getTotalMembers()}}</span>
+                <span class="stat-label themed-stat-label">Total</span>
             </div>
-            <div class="stat-item">
-                <div class="stat-value">{{activeMembers}}</div>
-                <div class="stat-label">Active</div>
+            <div class="stat-item themed-stat-item">
+                <span class="stat-value themed-stat-value">{{getMemberCount()}}</span>
+                <span class="stat-label themed-stat-label">Member</span>
             </div>
-
+            <div class="stat-item themed-stat-item">
+                <span class="stat-value themed-stat-value">{{getNonMemberCount()}}</span>
+                <span class="stat-label themed-stat-label">Non-Member</span>
+            </div>
         </div>
         <div class="footer-actions">
-            <button ion-button icon-only class="footer-btn" (click)="addMember()">
+            <button class="footer-btn themed-footer-btn" (click)="addMember()">
                 <ion-icon name="person-add"></ion-icon>
             </button>
-            <button ion-button icon-only class="footer-btn" (click)="gotoSendEmailPage(1)">
+            <button class="footer-btn themed-footer-btn" (click)="gotoSendEmailPage(1)">
                 <ion-icon name="mail"></ion-icon>
             </button>
-            <button ion-button icon-only class="footer-btn" (click)="gotoSendNotification(0)">
+            <button class="footer-btn themed-footer-btn" (click)="gotoSendNotification(0)">
                 <ion-icon name="notifications"></ion-icon>
             </button>
         </div>

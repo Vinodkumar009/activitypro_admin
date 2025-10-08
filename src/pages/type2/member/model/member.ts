@@ -49,6 +49,7 @@ export class UsersListInput{//this one is new for new nextgen backend
     media_consent:boolean;
     SignUpUnder?: number;
     SignedUpType?: number;
+    emergency_number?: string;
   }
   
   //@ObjectType()

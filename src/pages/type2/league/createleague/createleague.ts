@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import {
   IonicPage,
   LoadingController,
@@ -142,7 +142,8 @@ export class CreateleaguePage {
   schools: SchoolList[] = [];
   locations: Locations[];
   leagueCategory: CatandType[];
-  leagueType: CatandType[]
+  leagueType: CatandType[];
+  isDarkTheme: boolean = true;
 
   constructor(
     public navCtrl: NavController,
@@ -155,7 +156,7 @@ export class CreateleaguePage {
     public popoverCtrl: PopoverController,
     private graphqlService: GraphqlService,
     private httpService: HttpService,
-
+    private renderer: Renderer2
   ) {
 
     this.min = new Date().toISOString();
@@ -169,11 +170,13 @@ export class CreateleaguePage {
 
   }
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     console.log("ionViewDidLoad CreateleaguePage");
+    await this.loadTheme();
   }
 
   ionViewWillEnter() {
+    this.loadTheme();
     console.log("ionViewDidLoad CreateleaguePage");
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
@@ -701,6 +704,22 @@ export class CreateleaguePage {
     this.commonService.updateCategory("");
   }
 
+  async loadTheme() {
+    const theme = await this.storage.get('selectedTheme');
+    this.applyTheme(theme || 'dark');
+  }
+
+  applyTheme(theme: string) {
+    this.isDarkTheme = theme === 'dark';
+    const pageElement = document.querySelector('page-createleague');
+    if (pageElement) {
+      if (this.isDarkTheme) {
+        this.renderer.removeClass(pageElement, 'light-theme');
+      } else {
+        this.renderer.addClass(pageElement, 'light-theme');
+      }
+    }
+  }
 
 }
 

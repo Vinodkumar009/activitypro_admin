@@ -15,6 +15,7 @@ import { SchoolSessions, SchoolVenue } from './schoolsession.model';
 import gql from 'graphql-tag';
 import { GraphqlService } from '../../../services/graphql.service';
 import { setDay } from '../../../shared/utility/utility';
+import { ThemeService } from '../../../services/theme.service';
 @IonicPage()
 @Component({
     selector: 'schoolsessionlist-page',
@@ -59,6 +60,7 @@ export class Type2SchoolSessionList {
     }
     loggedin_type:number = 2;
     can_coach_see_revenue:boolean = true;
+    isDarkTheme: boolean = true;
     constructor(public events: Events,
         public toastCtrl:ToastController,
         private graphqlService: GraphqlService,
@@ -69,7 +71,7 @@ export class Type2SchoolSessionList {
         public sharedservice: SharedServices, private platform: Platform, 
         public popoverCtrl: PopoverController, 
         //private langService:LanguageService
-        ) {
+        private themeService: ThemeService) {
 
         this.themeType = sharedservice.getThemeType();
         this.isAndroid = this.platform.is('android');
@@ -108,6 +110,74 @@ export class Type2SchoolSessionList {
         this.events.subscribe('language', (res) => {
             this.getLanguage();
         });
+        this.loadTheme();
+    }
+
+    loadTheme() {
+        this.storage
+            .get("dashboardTheme")
+            .then((isDarkTheme) => {
+                console.log(
+                    "SchoolSessionList page - loaded theme from storage:",
+                    isDarkTheme
+                );
+                if (isDarkTheme !== null) {
+                    this.isDarkTheme = isDarkTheme;
+                } else {
+                    // Default to dark theme if no preference is stored
+                    this.isDarkTheme = true;
+                }
+                this.applyTheme();
+            })
+            .catch((error) => {
+                console.log("SchoolSessionList page - error loading theme:", error);
+                this.isDarkTheme = true; // Default to dark theme
+                this.applyTheme();
+            });
+
+        // Listen for theme changes from other pages
+        this.events.subscribe("theme:changed", (isDark) => {
+            console.log("SchoolSessionList page - received theme change event:", isDark);
+            this.isDarkTheme = isDark;
+            this.applyTheme();
+        });
+    }
+
+    applyTheme() {
+        const schoolSessionListElement = document.querySelector("schoolsessionlist-page");
+        console.log(
+            "SchoolSessionList page - applying theme:",
+            this.isDarkTheme ? "dark" : "light"
+        );
+        console.log("SchoolSessionList page - element found:", !!schoolSessionListElement);
+
+        if (schoolSessionListElement) {
+            if (this.isDarkTheme) {
+                schoolSessionListElement.classList.remove("light-theme");
+                document.body.classList.remove("light-theme");
+                console.log("SchoolSessionList page - applied dark theme");
+            } else {
+                schoolSessionListElement.classList.add("light-theme");
+                document.body.classList.add("light-theme");
+                console.log("SchoolSessionList page - applied light theme");
+            }
+        } else {
+            console.warn("SchoolSessionList page - element not found, retrying...");
+            // Retry after a short delay if element not found
+            setTimeout(() => {
+                const retryElement = document.querySelector("schoolsessionlist-page");
+                if (retryElement) {
+                    if (this.isDarkTheme) {
+                        retryElement.classList.remove("light-theme");
+                        document.body.classList.remove("light-theme");
+                    } else {
+                        retryElement.classList.add("light-theme");
+                        document.body.classList.add("light-theme");
+                    }
+                    console.log("SchoolSessionList page - theme applied on retry");
+                }
+            }, 100);
+        }
     }
 
     getLanguage() {
@@ -800,6 +870,7 @@ export class Type2SchoolSessionList {
  
     //update the subject with empty to avoid any subacriptions gets called
     ionViewWillLeave(){
+        this.events.unsubscribe("theme:changed");
         this.commonService.updateCategory("");
     }
 

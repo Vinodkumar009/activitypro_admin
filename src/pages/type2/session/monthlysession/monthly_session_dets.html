@@ -5,7 +5,7 @@
 </ion-header>
 
 
-<ion-content padding class="padding_content">
+<ion-content padding class="padding_content" [ngClass]="isDarkTheme ? 'dark-theme' : 'light-theme'">
     <div *ngIf="monthly_ses_dets!=undefined">
         <div class="block">
             <p class="session">{{monthly_ses_dets.days}}<br />{{monthly_ses_dets.start_time}} -
@@ -81,7 +81,7 @@
                         <ion-grid style="height: 100%;">
                             <ion-row style="height: 100%;">
                                 <ion-col col-6 class="margin_auto">
-                                    <p style="margin: 0px;">{{session_user.user.FirstName}} {{session_user.user.LastName}}</p>
+                                    <p class="user-name" style="margin: 0px;">{{session_user.user.FirstName}} {{session_user.user.LastName}}</p>
                                     <p class="member_status margin_0" >{{session_user.user.IsEnable ? 'Member':'NonMember'}}</p>
                                     <p [ngClass]="session_user.subscription_status == 2 || session_user.subscription_status == 3 ? 'cancelled' :
                                     session_user.subscription_status == 4 ? 'moved_status' :

@@ -27,7 +27,7 @@ import { ThemeService } from "../../../../services/theme.service";
 
 @IonicPage()
 @Component({
-  selector: "page-match_team_details",
+  selector: "page-match-team-details",
   templateUrl: "match_team_details.html",
   providers: [HttpService]
 
@@ -38,6 +38,7 @@ export class MatchTeamDetailsPage {
   activeType: boolean = true;
   selectedHomeTeamText: string;
   selectedAwayTeamText: string;
+  isDarkTheme: boolean = true;
 
   getIndividualMatchParticipantRes: GetIndividualMatchParticipantModel[] = [];
   allParticipants: GetIndividualMatchParticipantModel[] = []; // 📊 Store all participants for counting
@@ -338,6 +339,7 @@ export class MatchTeamDetailsPage {
   }
 
   private applyTheme(isDark: boolean): void {
+    this.isDarkTheme = isDark;
     const applyThemeToElement = () => {
       const element = document.querySelector("page-match_team_details");
       if (element) {

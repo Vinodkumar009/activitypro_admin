@@ -1,16 +1,404 @@
-@import '../../../theme/android-sdk35-fixes.scss';
-@import './member-modern.scss';
-@import './member-cards.scss';
+// Global searchbar icon override - highest specificity
+member-page .sleek-searchbar .searchbar-search-icon,
+member-page .sleek-searchbar .searchbar-clear-icon {
+    color: #94a3b8 !important;
+    fill: #94a3b8 !important;
+    display: block !important;
+}
 
 member-page {
-    @include android-sdk35-fixes;
-    
     // Default dark theme
     background: #0f172a !important;
+    
+    // Searchbar icon color variables
+    --ion-color-step-600: #94a3b8;
+    --ion-color-medium: #94a3b8;
+    
+    // Modern Navbar
+    .modern-navbar {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        
+        .navbar-title {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        .menu-btn, .home-btn, .more-btn {
+            color: #f1f5f9;
+        }
+    }
+    
+    // Member Content
+    .member-content {
+        background: #0f172a;
+        
+        .scroll-content {
+            background: #0f172a;
+            padding: 0px !important;
+        }
+    }
+    
+    // Sticky Header Container
+    .sticky-header-container {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #0f172a;
+        padding: 8px;
+        border-bottom: 1px solid #334155;
+    }
+    
+    // Compact Filter Card
+    .compact-filter-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px;
+        margin-bottom: 8px;
+        
+        .compact-select {
+            background: transparent !important;
+            border: 1px solid #475569 !important;
+            border-radius: 6px !important;
+            color: #f1f5f9 !important;
+            font-size: 14px !important;
+            padding: 12px 16px !important;
+            min-height: 44px !important;
+            
+            .select-text {
+                color: #f1f5f9 !important;
+                padding: 10px !important;
+            }
+            
+            .select-icon {
+                color: #f1f5f9 !important;
+            }
+        }
+    }
+    
+    // Compact Search Card
+    .compact-search-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px;
+        
+        .search-content {
+            .sleek-searchbar {
+                background: transparent;
+                border: 1px solid #475569;
+                border-radius: 6px;
+                
+                .searchbar-input {
+                    color: #f1f5f9 !important;
+                    background: transparent !important;
+                    
+                    &::placeholder {
+                        color: #64748b !important;
+                    }
+                }
+                
+                .searchbar-search-icon,
+                .searchbar-md .searchbar-search-icon,
+                .searchbar-ios .searchbar-search-icon {
+                    color: #94a3b8 !important;
+                }
+                
+                .searchbar-clear-icon,
+                .searchbar-md .searchbar-clear-icon,
+                .searchbar-ios .searchbar-clear-icon {
+                    color: #94a3b8 !important;
+                }
+            }
+        }
+    }
+    
+    // Scrollable Content Area
+    .scrollable-content-area {
+        padding: 8px;
+        padding-bottom: 80px; // Space for footer
+    }
+    
+    // No Data Container
+    .no-data-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 200px;
+        
+        .no-data-content {
+            text-align: center;
+            
+            .no-data-icon {
+                font-size: 48px;
+                color: #64748b;
+                margin-bottom: 16px;
+            }
+            
+            .no-data-text {
+                color: #94a3b8;
+                font-size: 16px;
+                margin: 0;
+            }
+        }
+    }
+    
+    // Member Container
+    .member-container {
+        margin-bottom: 12px;
+    }
+    
+    // Modern Card Styles
+    .modern-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s ease;
+        
+        &:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            position: relative;
+            padding-bottom: 12px;
+            
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: -16px;
+                right: -16px;
+                height: 1px;
+                background: #334155;
+            }
+            
+            .card-icon-wrapper {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+                flex-shrink: 0;
+                
+                &.member-bg {
+                    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                }
+                
+                &.holiday-bg {
+                    background: linear-gradient(135deg, #f59e0b, #d97706);
+                }
+                
+                &.school-bg {
+                    background: linear-gradient(135deg, #10b981, #059669);
+                }
+                
+                .card-icon {
+                    color: #ffffff;
+                    font-size: 20px;
+                }
+            }
+            
+            .card-info {
+                flex: 1;
+                
+                .card-title {
+                    color: #f1f5f9;
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin: 0 0 4px 0;
+                    line-height: 1.2;
+                }
+                
+                .card-subtitle {
+                    color: #94a3b8;
+                    font-size: 14px;
+                    margin: 0;
+                    line-height: 1.2;
+                }
+            }
+            
+            .non-member-badge-top {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: #ef4444;
+                color: #ffffff;
+                font-size: 10px;
+                font-weight: 500;
+                padding: 2px 6px;
+                border-radius: 8px;
+                text-transform: uppercase;
+                z-index: 2;
+            }
+            
+            .family-count-center {
+                position: absolute;
+                right: 5px;
+                // top: 50%;
+                // transform: translateY(-50%);
+                
+                .family-count-chip {
+                    background: #3b82f6;
+                    color: #ffffff;
+                    font-size: 12px;
+                    font-weight: 600;
+                    border-radius: 50%;
+                    width: 22px;
+                    height: 22px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), 0 0 0 6px rgba(147, 197, 253, 0.2);
+                }
+            }
+        }
+        
+        .card-body {
+            position: relative;
+            
+            .non-member-badge-content {
+                position: absolute;
+                top: 50%;
+                right: 0;
+                transform: translateY(-50%);
+                background: #ef4444;
+                color: #ffffff;
+                font-size: 10px;
+                font-weight: 500;
+                padding: 2px 6px;
+                border-radius: 8px;
+                text-transform: uppercase;
+            }
+            
+            .member-details {
+                .detail-row {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 8px;
+                    
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                    
+                    .detail-item {
+                        display: flex;
+                        align-items: center;
+                        flex: 1;
+                        
+                        .detail-icon {
+                            color: #60a5fa;
+                            font-size: 14px;
+                            margin-right: 8px;
+                            flex-shrink: 0;
+                        }
+                        
+                        .detail-text {
+                            color: #cbd5e1;
+                            font-size: 14px;
+                            line-height: 1.2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Modern Footer
+    .modern-footer {
+        background: #1e293b;
+        border-top: 1px solid #334155;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        .footer-stats {
+            display: flex;
+            gap: 16px;
+            
+            .stat-item {
+                text-align: center;
+                
+                .stat-value {
+                    display: block;
+                    color: #f1f5f9;
+                    font-size: 18px;
+                    font-weight: 600;
+                    line-height: 1;
+                }
+                
+                .stat-label {
+                    display: block;
+                    color: #94a3b8;
+                    font-size: 12px;
+                    margin-top: 2px;
+                }
+            }
+        }
+        
+        .footer-actions {
+            display: flex;
+            gap: 8px;
+            
+            .footer-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                font-size: 18px;
+                transition: all 0.2s ease;
+                
+                &:active {
+                    transform: scale(0.95);
+                    background: rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
+    }
     
     // Light Theme Styles
     &.light-theme {
         background: #f8fafc !important;
+        
+        // Light theme searchbar icon colors
+        --ion-color-step-600: #64748b;
+        --ion-color-medium: #64748b;
+        
+        .searchbar .searchbar-search-icon,
+        .searchbar .searchbar-clear-icon {
+            color: #64748b !important;
+            fill: #64748b !important;
+        }
+        
+        // Modern Navbar (Light)
+        .modern-navbar {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            
+            .navbar-title {
+                color: #1e293b;
+            }
+            
+            .menu-btn, .home-btn, .more-btn {
+                color: #1e293b;
+            }
+        }
         
         .member-content {
             background: #f8fafc !important;
@@ -18,6 +406,15 @@ member-page {
             .scroll-content {
                 background: #f8fafc !important;
             }
+        }
+        
+        .scroll-content {
+            background: #f8fafc !important;
+        }
+        
+        ion-content {
+            --background: #f8fafc !important;
+            --ion-background-color: #f8fafc !important;
         }
         
         // Light theme sticky header
@@ -34,16 +431,13 @@ member-page {
             .compact-select {
                 border: 1px solid #d1d5db;
                 color: #1e293b;
-                padding: 12px 16px;
-                min-height: 44px;
                 
                 .select-text {
-                    color: #1e293b;
-                    padding: 10px !important;
+                    color: #1e293b !important;
                 }
                 
-                .item-inner {
-                    padding-right: 32px !important;
+                .select-icon {
+                    background: #1e293b !important;
                 }
             }
         }
@@ -64,109 +458,75 @@ member-page {
                             color: #64748b;
                         }
                     }
+                    
+                    .searchbar-search-icon,
+                    .searchbar-md .searchbar-search-icon,
+                    .searchbar-ios .searchbar-search-icon {
+                        color: #64748b !important;
+                    }
+                    
+                    .searchbar-clear-icon,
+                    .searchbar-md .searchbar-clear-icon,
+                    .searchbar-ios .searchbar-clear-icon {
+                        color: #64748b !important;
+                    }
                 }
             }
         }
         
-        // Modern Search Card (Light Theme)
-        .modern-search-card {
+        // Light theme modern cards
+        .modern-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             
-            .search-header {
-                background: linear-gradient(135deg, #10b981, #059669);
-                
-                .search-icon ion-icon {
-                    color: #ffffff;
-                }
-                
-                .search-label {
-                    color: #ffffff;
+            .card-header {
+                &::after {
+                    background: #e2e8f0;
                 }
             }
             
-            .search-wrapper {
-                background: #ffffff;
-                
-                .sleek-searchbar {
-                    .searchbar-input {
+            .card-header {
+                .card-info {
+                    .card-title {
                         color: #1e293b;
-                        background: transparent;
-                        
-                        &::placeholder {
-                            color: #64748b;
+                    }
+                    
+                    .card-subtitle {
+                        color: #64748b;
+                    }
+                }
+                
+                .non-member-badge-content {
+                    background: #dc2626;
+                }
+                
+                .family-count-center {
+                    .family-count-chip {
+                        background: #2563eb;
+                        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+                    }
+                }
+            }
+            
+            .card-body {
+                .member-details {
+                    .detail-row {
+                        .detail-item {
+                            .detail-icon {
+                                color: #3b82f6;
+                            }
+                            
+                            .detail-text {
+                                color: #1e293b;
+                            }
                         }
                     }
                 }
             }
         }
         
-        // Modern Dropdown Cards (Light Theme)
-        .modern-dropdown-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            
-            &.club-filter .dropdown-header {
-                background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            }
-            
-            &.member-filter .dropdown-header {
-                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            }
-            
-            .dropdown-header {
-                .dropdown-icon ion-icon {
-                    color: #ffffff;
-                }
-                
-                .dropdown-label {
-                    color: #ffffff;
-                }
-            }
-            
-            .dropdown-wrapper {
-                background: #ffffff;
-                
-                .modern-select {
-                    color: #1e293b;
-                    
-                    .select-text {
-                        color: #1e293b;
-                    }
-                }
-                
-                .dropdown-arrow ion-icon {
-                    color: #64748b;
-                }
-            }
-        }
-        
-        // Member cards (Light Theme)
-        ion-card {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-        }
-        
-        .name {
-            color: #1e293b !important;
-        }
-        
-        .family {
-            color: #059669 !important;
-        }
-        
-        ion-card-content {
-            color: #64748b !important;
-        }
-        
-        .nonmember-style {
-            color: #dc2626 !important;
-        }
-        
-        // Modern Footer (Light Theme)
+        // Light theme footer
         .modern-footer {
             background: #ffffff;
             border-top: 1px solid #e2e8f0;
@@ -185,18 +545,22 @@ member-page {
             
             .footer-actions {
                 .footer-btn {
-                    background: #f1f5f9;
-                    color: #2b92bb;
-                    border: 1px solid #e2e8f0;
+                    background: rgba(0, 0, 0, 0.1);
+                    color: #1e293b;
+                    border: 1px solid rgba(0, 0, 0, 0.1);
                     
-                    &:hover {
-                        background: #e2e8f0;
+                    &:active {
+                        background: rgba(0, 0, 0, 0.2);
                     }
                 }
             }
         }
     }
-
+    
+    .scroll-content {
+        background: #0f172a !important;
+        padding: 0px !important;
+    }
 
     div {
         ion-list {
@@ -250,7 +614,7 @@ member-page {
 
     .member_name,
     .btn_clr {
-        color: #2b92bb;
+        color: $dashoboard-icon-color;
     }
 
     .block {
@@ -362,7 +726,7 @@ member-page {
     }
 
     .memberfont {
-        color: #2b92bb;
+        color: $cardhightlighttextcolor;
         font-size: 17px;
     }
 
@@ -520,8 +884,8 @@ member-page {
     }
 
     .scroll-content {
-        background: #0f172a !important;
-        padding: 0px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+
     }
 
     .allignment-col {
@@ -579,8 +943,7 @@ member-page {
         background: #faae4e !important;
         border-radius: 50% !important;
         color: white !important;
-        left: -5px !important;
-        top: 5px;
+        left: 0px !important;
 
         .select-icon-inner {
             left: 10px !important;

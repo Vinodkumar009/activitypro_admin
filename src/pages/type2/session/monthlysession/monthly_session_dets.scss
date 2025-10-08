@@ -20,6 +20,32 @@ page-monthly-session-dets {
     ion-content {
       --background: #f8fafc !important;
     }
+    
+    ion-card.membercard,
+    .card-ios.membercard {
+      background: #ffffff !important;
+      
+      .user-name {
+        color: #1e293b !important;
+      }
+    }
+    
+    .member_status {
+      color: #64748b !important;
+    }
+    
+    .moved_status {
+      color: #64748b !important;
+    }
+    
+    .cancelled {
+      color: #dc2626 !important;
+    }
+  }
+
+  &.light-theme ion-card.membercard p,
+  &.light-theme .card-ios.membercard p {
+    color: #1e293b !important;
   }
 
   $themelistotheritemcolor1: #7F7F7F;
@@ -89,6 +115,9 @@ page-monthly-session-dets {
         ion-col img{
             width: 20px;
             height: 20px;
+        }
+        .user-name {
+            color: #f1f5f9 !important;
         }
     }
     .checkmark_color {

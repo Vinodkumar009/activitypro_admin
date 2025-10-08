@@ -1,72 +1,234 @@
+@import '../../../theme/android-sdk35-fixes.scss';
 page-tournament {
-  // ion-label {
-  //   color: #faae4e;
-  // }
-  width: 100%;
-  // p{
-  //     color: #949494 ;
-  // }
-  // .scroll-content {
-  //     padding: 6px !important;
-  //     background-image: none !important;
-  //     // background: white !important;
-  //     background:  #f4efef !important;
-  // }
-  // .create-cards-text{
-  //     text-align: left;
-  //     width: 100%;
-  // }
-
-  // .create-cards-img{
-  //     max-height: 5em;
-  //     // filter: grayscale(100%);
-  // }
-  // .create-cards-img:hover{
-  //     filter: grayscale(0%);
-  // }
-  // .cards-name{
-  //     color: #5ea68d;
-  //     font-size: 20px !important;
-  // }
-  // .tournament-header{
-  //     padding: 0 10px;
-  //     margin-bottom: -5px;
-  // }
-  // .location-head{
-  //     padding: 15px 0 0 15px;
-  // }
-  // .location-card{
-  //     box-shadow: 3px 4px 14px rgba(0, 0, 0, 0.3);
-  //     margin-bottom: 20px;
-  // }
+  @include android-sdk35-fixes;
   
+  // Default dark theme for the entire page
+  background: #0f172a !important;
+
+  // Light Theme
+  &.light-theme {
+    background: #f8fafc !important;
+    ion-header {
+      ion-navbar {
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        
+        ion-title {
+          color: #1e293b;
+        }
+        
+        ion-buttons button {
+          color: #64748b;
+        }
+      }
+    }
+
+    ion-content {
+      background: #f8fafc !important;
+      
+      .scroll-content {
+        background: #f8fafc !important;
+      }
+      
+      .fixed-content {
+        background: #f8fafc !important;
+      }
+    }
+
+    .scroll-content {
+      background: #f8fafc !important;
+      padding: 6px !important;
+      margin-bottom: 60px;
+    }
+
+    ion-card, .ion-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+      border-bottom: 1px solid #2b92bb !important;
+      
+      ion-card-content {
+        background: #ffffff !important;
+      }
+    }
+
+    .Location-head {
+      background: #f1f5f9;
+      color: #1e293b;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .name {
+      color: #2b92bb !important;
+    }
+
+    .card-text {
+      color: #64748b !important;
+
+      span {
+        color: #1e293b !important;
+      }
+    }
+
+    .segment-activated {
+      background-color: #2b92bb !important;
+      color: #ffffff !important;
+    }
+
+    ion-segment-button {
+      color: #64748b !important;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+    }
+
+    .footer_div {
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+
+      p {
+        color: #64748b !important;
+      }
+
+      ion-icon {
+        color: #2b92bb !important;
+      }
+    }
+
+    .selected {
+      background-color: rgba(43, 146, 187, 0.15) !important;
+      border-radius: 8px;
+
+      p {
+        color: #2b92bb !important;
+        font-weight: 600;
+      }
+
+      ion-icon {
+        color: #2b92bb !important;
+      }
+    }
+    
+    // Additional light theme styles
+    .location-cards > p {
+      color: #64748b !important;
+    }
+    
+    .location-cards > h3 {
+      color: #2b92bb !important;
+    }
+    
+    .fab_btn {
+      ion-fab-button {
+        background: #2b92bb !important;
+        color: #ffffff !important;
+      }
+    }
+    
+    // List and content styles for light theme
+    ion-list {
+      background: transparent !important;
+    }
+    
+    .margin_bottom {
+      background: transparent !important;
+    }
+    
+    // Ensure all text elements have proper light theme colors
+    .amount {
+      color: #1e293b !important;
+    }
+    
+    // Border and divider styles
+    .all {
+      border-image: linear-gradient(to bottom, #2b92bb, #60a5fa) 1 100% !important;
+    }
+  }
+
+  // Dark Theme (Default)
+  width: 100%;
+  
+  ion-header {
+    ion-navbar {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      
+      ion-title {
+        color: #f1f5f9;
+      }
+      
+      ion-buttons button {
+        color: #cbd5e1;
+        
+        &:hover {
+          color: #f1f5f9;
+        }
+      }
+    }
+  }
+
+  ion-content {
+    background: #0f172a !important;
+    
+    .scroll-content {
+      background: #0f172a !important;
+    }
+    
+    .fixed-content {
+      background: #0f172a !important;
+    }
+  }
+
+  .scroll-content {
+    background: #0f172a !important;
+    padding: 6px !important;
+    margin-bottom: 60px;
+  }
+
   .ion-card {
     margin: 0px !important;
     width: 100% !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    border-bottom: 1px solid #f6ae4d !important;
-    
+    background: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid #2b92bb !important;
+    border-radius: 12px;
+    margin-bottom: 16px;
+
     ion-card-content {
       padding: 0px !important;
     }
   }
 
+  ion-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
 
   .segment-activated {
     color: white !important;
-    background-color: #f6ae4d !important;
+    background-color: #2b92bb !important;
   }
 
   ion-segment-button {
-    color: #aba5a5 !important;
+    color: #94a3b8 !important;
+    background: #334155;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    margin: 0 4px;
   }
 
   .Location-head {
     font-size: 1.6rem;
-    color: #222;
+    color: #f1f5f9;
     padding: 10px;
-    border-bottom: 1px solid #ded8d8 !important;
+    background: #334155;
+    border-bottom: 1px solid #475569 !important;
+    border-radius: 12px 12px 0 0;
   }
 
   .nonmembercard {
@@ -77,21 +239,21 @@ page-tournament {
     padding: 14px 0;
   }
 
-  .scroll-content {
-    padding: 6px !important;
-    background-image: none !important;
-    // background: white !important;
-    background: #f7f7f7 !important;
-    // background: #f4efef !important;
-    margin-bottom: 60px;
-  }
+  // .scroll-content {
+  //   padding: 6px !important;
+  //   background-image: none !important;
+  //   // background: white !important;
+  //   background: #f7f7f7 !important;
+  //   // background: #f4efef !important;
+  //   margin-bottom: 60px;
+  // }
 
-  .location-cards > p {
+  .location-cards>p {
     line-height: 1.1;
     color: #8c8c8c;
   }
 
-  .location-cards > h3 {
+  .location-cards>h3 {
     font-size: 15px;
     color: blue;
     font-weight: 600;
@@ -106,14 +268,11 @@ page-tournament {
     // border-left: 3px solid #35adff;
     border-width: 1px;
     border-style: solid;
-    -webkit-border-image: -webkit-gradient(
-        linear,
+    -webkit-border-image: -webkit-gradient(linear,
         0 0,
         0 100%,
         from(#35adff),
-        to(#7dbce6)
-      )
-      1 100%;
+        to(#7dbce6)) 1 100%;
     -webkit-border-image: -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
     -moz-border-image: -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
     -o-border-image: -o-linear-gradient(#35adff, #7dbce6) 1 100%;
@@ -128,18 +287,20 @@ page-tournament {
   }
 
   .name {
-    color: #5ea68d;
+    color: #2b92bb;
     font-size: 18px !important;
     width: 100%;
+    font-weight: 600;
   }
 
   .card-text {
-    color: #c5b495;
+    color: #94a3b8;
     width: 100%;
+    font-size: 14px;
   }
 
-  .card-text > span {
-    color: gray;
+  .card-text>span {
+    color: #cbd5e1;
   }
 
   .amount {
@@ -148,44 +309,69 @@ page-tournament {
 
   .footer_div {
     position: absolute;
-    background: #fff;
-    //border-top: 1px solid rgba(128, 128, 128, 0.23);
+    background: #1e293b;
+    border-top: 1px solid #334155;
     padding: 0px 0px;
     bottom: 0px;
     width: 100%;
     z-index: 999;
-    box-shadow: 0px 0 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+
     ion-col {
       margin: 0px;
       text-align: center;
       font-size: 13px;
+      padding: 8px 12px;
+      transition: all 0.2s ease;
+
       p {
-        color: rgba(0, 0, 0, 0.65) !important;
-        margin: 0px 0px;
+        color: #94a3b8 !important;
+        margin: 2px 0 0 0;
+        font-weight: 500;
+        font-size: 14px;
       }
     }
+
     ion-icon {
-      font-size: 30px;
-      color: #2292bb !important;
+      font-size: 28px;
+      color: #60a5fa !important;
+      transition: all 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+        color: #3b82f6 !important;
+      }
     }
   }
 
-  .fabs{
+  .fabs {
     position: absolute;
     background: #fff;
     //border-top: 1px solid rgba(128, 128, 128, 0.23);
     padding: 0px 0px;
-   
-   
+
+
     z-index: 999;
   }
-  .fab_btn{
+
+  .fab_btn {
     position: absolute;
     right: 12px;
     float: right;
-    bottom: 80px !important;
+    bottom: 70px !important;
   }
+
   .selected {
-    background-color: rgba($color: #2b92bb, $alpha: 0.15) !important;
+    background-color: rgba(43, 146, 187, 0.15) !important;
+    border-radius: 8px;
+
+    p {
+      color: #60a5fa !important;
+      font-weight: 600;
+    }
+
+    ion-icon {
+      color: #60a5fa !important;
+    }
   }
 }

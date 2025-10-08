@@ -7,13 +7,14 @@ export class ThemeService {
     public isDarkTheme$ = this.isDarkThemeSubject.asObservable();
 
     constructor() {
-        // Initialize theme from system preference or default to light
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        this.isDarkThemeSubject.next(prefersDark);
+        // Initialize theme to dark by default
+        console.log('ThemeService initialized with dark theme');
+        this.isDarkThemeSubject.next(true);
     }
 
     toggleTheme(): void {
         const currentTheme = this.isDarkThemeSubject.value;
+        console.log('Toggling theme from', currentTheme, 'to', !currentTheme);
         this.isDarkThemeSubject.next(!currentTheme);
     }
 
