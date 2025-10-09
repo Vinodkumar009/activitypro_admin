@@ -19,6 +19,18 @@ page-groupsessiondetails {
         ion-content {
             --background: #f8fafc !important;
         }
+        
+        .themeheaderfont {
+            color: #1e293b !important;
+        }
+        
+        .venuename {
+            color: #1e293b !important;
+        }
+        
+        .block {
+            background-color: #ffffff !important;
+        }
     }
 
     $themelistotheritemcolor1: #7F7F7F;
@@ -324,8 +336,8 @@ page-groupsessiondetails {
     }
     .cardstyle {
         border-top: 3px solid #FF9800;
-        margin: 8px 12px;
-        width: calc(100% - 24px);
+        margin: 0px 3%;
+        width: 94%;
         color: black;
     }
     .nopad {
@@ -513,7 +525,7 @@ page-groupsessiondetails {
         font-weight: 500;
     }
     .venuename {
-        color: #2a5168;
+        color: #f1f5f9;
         font-size: 15px;
         font-weight: 500;
     }
@@ -540,7 +552,7 @@ page-groupsessiondetails {
         font-size: 16px;
     }
     .themeheaderfont {
-        color: #021c2e;
+        color: #f1f5f9;
         font-size: 13px;
         margin: -3px 5px 2px 1px;
         font-weight: 500;
@@ -780,7 +792,4 @@ page-groupsessiondetails {
         margin-right: auto;
     }
     
-
-managesession-page {
-}
 }

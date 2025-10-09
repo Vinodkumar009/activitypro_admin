@@ -74,6 +74,27 @@ page-pending-term-sessions {
         .holidaycampcard_p {
             color: #64748b !important;
         }
+        
+        // Fix for the second paragraph (session name) in light theme
+        ion-card-content p:nth-child(2) {
+            color: #1e293b !important;
+        }
+        
+        ion-col.mid-col p:nth-child(2) {
+            color: #1e293b !important;
+        }
+        
+        .campname + p {
+            color: #1e293b !important;
+        }
+        
+        ion-card-content p {
+            color: #1e293b !important;
+        }
+        
+        .mid-col p {
+            color: #1e293b !important;
+        }
 
         .borderleft {
             border-bottom: 1px solid #e2e8f0 !important;
@@ -226,6 +247,27 @@ page-pending-term-sessions {
         font-family: "PT Sans", sans-serif;
         color: #94a3b8;
         font-size: 13px;
+      }
+      
+      // Fix for the second paragraph (session name) in dark theme
+      ion-card-content p:nth-child(2) {
+        color: #f1f5f9 !important;
+      }
+      
+      ion-col.mid-col p:nth-child(2) {
+        color: #f1f5f9 !important;
+      }
+      
+      .campname + p {
+        color: #f1f5f9 !important;
+      }
+      
+      ion-card-content p {
+        color: #f1f5f9 !important;
+      }
+      
+      .mid-col p {
+        color: #f1f5f9 !important;
       }
       .elipsesdot {
         white-space: nowrap;

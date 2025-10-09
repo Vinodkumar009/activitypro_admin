@@ -3,6 +3,10 @@
 memberattendanceforgroupsession-page {
     @include android-sdk35-fixes;
 
+    .cards-bg{
+        padding: 10px !important;
+    }
+
     .ion_list{
             margin-bottom: 3px;
     }
