@@ -21,6 +21,7 @@ export enum ModuleTypes {
 
   ADMIN = 0,
   MEMBER = 1,
+  GENERIC = 0
 }
 export enum NoticationModuleTypes {
   MEMBER_EMAIL = 1,
@@ -44,7 +45,7 @@ export enum AppType {
   MEMBER = 1,
   APPPLUS = 2,
   MEMBER_NXTGEN = 11,
-  MEMBER_NXTGEN_GLOBAL = 999,
+  MEMBER_NXTGEN_GLOBAL = 999
 }
 
 export enum DeviceType {

@@ -1,4 +1,6 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-publishresult {
+  @include android-sdk35-fixes;
     .toolbar-title{
         color:#fff;
     }

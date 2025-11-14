@@ -369,7 +369,7 @@ export class LeagueMatchInfoPage {
     return this.allParticipants.length;
   }
 
-  getAcceptedCount(sectionItems: LeagueMatchParticipantModel[]): number {
+  getAcceptedCount(sectionItems: LeagueMatchParticipantModel[],section_index:number): number {
     return sectionItems.filter(item =>
       item.invite_status === LeaguePlayerInviteStatus.Accepted ||
       item.invite_status === LeaguePlayerInviteStatus.AdminAccepted

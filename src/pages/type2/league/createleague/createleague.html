@@ -12,13 +12,13 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content [ngClass]="isDarkTheme ? 'dark-theme' : 'light-theme'">
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
   <ion-list>
     <ion-item>
       <ion-label fixed>Competition Name</ion-label>
-      <ion-input placeholder="Enter Competition Name" type="text" [(ngModel)]="leagueCreationInput.league.league_name"
-        class="input_txt_right"></ion-input>
+      <ion-input placeholder="Enter Competition Name" type="text" [(ngModel)]="leagueCreationInput.league.league_name"></ion-input>
     </ion-item>
+    
     <ion-item>
       <ion-label>Hosted By</ion-label>
       <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
@@ -26,6 +26,7 @@
           {{club.ClubName}}</ion-option>
       </ion-select>
     </ion-item>
+    
     <ion-item>
       <ion-label>Activity</ion-label>
       <ion-select [(ngModel)]="leagueCreationInput.league.activity_code">
@@ -33,15 +34,13 @@
         </ion-option>
       </ion-select>
     </ion-item>
+    
     <ion-item>
       <ion-label>Competition Type</ion-label>
       <ion-select [(ngModel)]="leagueCreationInput.league.league_type" (ionChange)="onLeagueTypeChange($event)">
         <ion-option *ngFor="let type of leagueType" [value]="type.value">{{type.key}}</ion-option>
       </ion-select>
     </ion-item>
-
-    <!---based on location type -->
-    <!--location-->
 
     <ion-item>
       <ion-label>Location Type</ion-label>
@@ -66,6 +65,7 @@
         <ion-option *ngFor="let location of locations" value="{{location.id}}">{{location.name}}</ion-option>
       </ion-select>
     </ion-item>
+    
     <ion-item *ngIf="leagueCreationInput.league.location_type===3">
       <ion-label>School</ion-label>
       <ion-select [(ngModel)]="selectedSchoolLocation">
@@ -73,11 +73,9 @@
       </ion-select>
     </ion-item>
 
-
-
     <ion-item *ngIf="!isTeamType">
       <ion-label>Category</ion-label>
-      <ion-select [(ngModel)]=" leagueCreationInput.league.league_category">
+      <ion-select [(ngModel)]="leagueCreationInput.league.league_category">
         <ion-option *ngFor="let cat of leagueCategory" [value]="cat.value">{{cat.key}}</ion-option>
       </ion-select>
     </ion-item>
@@ -87,6 +85,7 @@
       <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
         [(ngModel)]="leagueCreationInput.league.start_date"></ion-datetime>
     </ion-item>
+    
     <ion-item>
       <ion-label>End Date</ion-label>
       <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
@@ -144,7 +143,7 @@
       <ion-label>Age Group(Optional)</ion-label>
       <ion-input type="text" [(ngModel)]="leagueCreationInput.league.league_ageGroup" class="textareastyle"></ion-input>
       <button ion-button clear item-right class="help_btn" (click)="ageGroupHint()">
-        <img style="width: 50%;" src="assets/images/info.svg">
+        <img style="width: 70%;" src="assets/images/info.svg">
       </button>
     </ion-item>
 
@@ -152,16 +151,13 @@
       <ion-label>Coach</ion-label>
       <ion-select [(ngModel)]="leagueCreationInput.league.coachId" (ionChange)="updateContactInfo()">
         <ion-option *ngFor="let coach of coaches" [value]=coach.Id>
-          {{coach.first_name}}
-          {{coach.last_name}}</ion-option>
+          {{coach.first_name}} {{coach.last_name}}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item *ngIf="!isTeamType">
       <ion-label fixed>Contact Mail</ion-label>
       <ion-input type="text" [(ngModel)]="leagueCreationInput.league.contact_email" class="input_txt_right"></ion-input>
-      <!-- <ion-input type="text" [disabled]="true" [(ngModel)]="leagueCreationInput.league.contact_email"
-        class="input_txt_right"></ion-input> -->
     </ion-item>
 
     <ion-item *ngIf="!isTeamType">
@@ -203,7 +199,7 @@
           <ion-col col-12 no-padding class="flex_col">
             <p class="toggle_para">Allow Pay Later</p>
             <label class="toggle">
-              <input type="checkbox" [(ngModel)]="leagueCreationInput.league.is_pay_later " />
+              <input type="checkbox" [(ngModel)]="leagueCreationInput.league.is_pay_later" />
               <span data-unchecked="No" data-checked="Yes"></span>
             </label>
           </ion-col>
@@ -215,7 +211,7 @@
           <ion-col col-12 no-padding class="flex_col">
             <p class="toggle_para">Allow BACS</p>
             <label class="toggle">
-              <input type="checkbox" [(ngModel)]="leagueCreationInput.league.allow_bacs " />
+              <input type="checkbox" [(ngModel)]="leagueCreationInput.league.allow_bacs" />
               <span data-unchecked="No" data-checked="Yes"></span>
             </label>
           </ion-col>
@@ -227,19 +223,20 @@
           <ion-col col-12 no-padding class="flex_col">
             <p class="toggle_para">Allow Cash</p>
             <label class="toggle">
-              <input type="checkbox" [(ngModel)]="leagueCreationInput.league.allow_cash " />
+              <input type="checkbox" [(ngModel)]="leagueCreationInput.league.allow_cash" />
               <span data-unchecked="No" data-checked="Yes"></span>
             </label>
           </ion-col>
         </ion-row>
       </ion-item>
     </div>
+
     <ion-item *ngIf="!isTeamType">
       <ion-row>
         <ion-col col-12 no-padding class="flex_col">
           <p class="toggle_para">Show Participants</p>
           <label class="toggle">
-            <input type="checkbox" [(ngModel)]="leagueCreationInput.league.show_participants " />
+            <input type="checkbox" [(ngModel)]="leagueCreationInput.league.show_participants" />
             <span data-unchecked="No" data-checked="Yes"></span>
           </label>
         </ion-col>
@@ -265,21 +262,23 @@
         </ion-col>
       </ion-row>
     </ion-item>
-  </ion-list>
 
-  <ion-item class="comments">
-    <ion-textarea type="text" rows="5" class="textareastyle" [(ngModel)]="leagueCreationInput.league.league_description"
-      placeholder="Description"></ion-textarea>
-  </ion-item>
+    <ion-item>
+      <ion-textarea type="text" rows="5" [(ngModel)]="leagueCreationInput.league.league_description"
+        placeholder="Description"></ion-textarea>
+    </ion-item>
+  </ion-list> 
 
 </ion-content>
 
-<ion-footer>
-  <ion-row>
-    <ion-col col-12>
-      <button ion-button block class="timekare-primary-btn" (click)="createLeagueConfirm()">
-        Create
-      </button>
-    </ion-col>
-  </ion-row>
+<ion-footer [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button block class="timekare-primary-btn" (click)="createLeagueConfirm()">
+          Create
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-footer>

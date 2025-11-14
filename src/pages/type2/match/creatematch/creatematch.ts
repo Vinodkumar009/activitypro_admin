@@ -6,7 +6,9 @@ import {
   NavController,
   NavParams,
   PopoverController,
+  Events
 } from "ionic-angular";
+import { ThemeService } from "../../../../services/theme.service";
 import {
   CommonService,
   ToastMessageType,
@@ -40,6 +42,7 @@ import { CatandType } from "../../league/models/location.model";
   providers: [HttpService]
 })
 export class CreatematchPage {
+  isDarkTheme: boolean = false;
   publicType: boolean = true;
   privateType: boolean = true;
   selectedClub: any;
@@ -75,8 +78,8 @@ export class CreatematchPage {
     MatchStatus: 0,
     MatchDetails: "",
     MatchPaymentType: 0,
-    MemberFees: 0.00,
-    NonMemberFees: 0.00,
+    MemberFees: '0.00',
+    NonMemberFees: '0.00',
     Hosts: {
       UserId: "",
       RoleType: 2,
@@ -131,9 +134,13 @@ export class CreatematchPage {
     public sharedservice: SharedServices,
     public popoverCtrl: PopoverController,
     private graphqlService: GraphqlService,
-    private httpService: HttpService
-
+    private httpService: HttpService,
+    private themeService: ThemeService,
+    private events: Events
   ) {
+    this.events.subscribe('theme:changed', (theme) => {
+      this.isDarkTheme = theme === 'dark';
+    });
     this.startDate = moment().format("YYYY-MM-DD");
     this.startTime = "09:00";
     // this.CreateMatchInput.MatchStartDate = moment((moment().add(1, 'days'))).format("YYYY-MM-DD");
@@ -147,7 +154,14 @@ export class CreatematchPage {
     this.createMatchInput.user_device_metadata.UserActionType = 2
   }
 
-  ionViewDidLoad() { }
+  ionViewDidLoad() {
+    this.storage.get('dashboardTheme').then((theme) => {
+      this.isDarkTheme = theme === 'dark' || theme === true;
+      const themeClass = this.isDarkTheme ? 'dark-theme' : 'light-theme';
+      document.body.classList.remove('dark-theme', 'light-theme');
+      document.body.classList.add(themeClass);
+    });
+  }
 
   ionViewWillEnter() {
     console.log("ionViewDidLoad CreatematchPage");
@@ -293,12 +307,12 @@ export class CreatematchPage {
     //   return false;
     // }
 
-    else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.MemberFees) <= 0 || this.createMatchInput.MemberFees == undefined || this.createMatchInput.MemberFees == 0.00)) {
+    else if ((this.createMatchInput.MatchPaymentType == 1) && (parseFloat(this.createMatchInput.MemberFees) <= 0.00 || this.createMatchInput.MemberFees == undefined)) {
       const message = "Enter member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
-    else if ((this.createMatchInput.MatchPaymentType == 1) && ((+this.createMatchInput.NonMemberFees) <= 0 || this.createMatchInput.NonMemberFees == undefined || this.createMatchInput.NonMemberFees == 0.00)) {
+    else if ((this.createMatchInput.MatchPaymentType == 1) && (parseFloat(this.createMatchInput.NonMemberFees) <= 0.00 || this.createMatchInput.NonMemberFees == undefined)) {
       const message = "Enter non-member fee";
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
@@ -310,7 +324,7 @@ export class CreatematchPage {
   saveMatchDetails() {
     if (this.validateInput()) {
       try {
-        this.commonService.showLoader();
+        this.commonService.showLoader("Please wait...");
         const postgreClub = this.clubs.find(clubName => clubName.Id === this.selectedClub);
         console.log("club", postgreClub);
         this.createMatchInput.MatchVenueKey = postgreClub.FirebaseId;
@@ -423,8 +437,8 @@ export class CreateMatchInput {
   MatchDetails: string;
 
   MatchPaymentType: number;
-  MemberFees: number;
-  NonMemberFees: number;
+  MemberFees: string;
+  NonMemberFees: string;
   user_postgre_metadata: UserPostgreMetadataField
   user_device_metadata: UserDeviceMetadataField;
   location_id: string;

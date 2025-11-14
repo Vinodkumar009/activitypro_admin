@@ -1,7 +1,158 @@
 @import "../../_league-theme.scss";
-
+@import '../../../../../theme/android-sdk35-fixes.scss';
 page-potm {
   @include league-theme-base;
+  @include android-sdk35-fixes;
+
+  // Dark theme
+  &:not(.light-theme) {
+    .scroll-content {
+      background: #1e293b !important;
+    }
+
+    .selection-info {
+      background: #334155 !important;
+      border-bottom-color: #475569 !important;
+
+      .selection-count {
+        color: #2b92bb !important;
+      }
+    }
+
+    .team-header {
+      h4 {
+        color: #fff !important;
+      }
+
+      &.home-team {
+        background: linear-gradient(135deg, #2b92bb, #1e7a8a) !important;
+      }
+
+      &.away-team {
+        background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+      }
+    }
+
+    .player-list {
+      background: #334155 !important;
+    }
+
+    .player-item {
+      background: #334155 !important;
+      border-bottom-color: #475569 !important;
+
+      &.selected {
+        background-color: #1e293b !important;
+
+        .player-label h3 {
+          color: #2b92bb !important;
+        }
+      }
+
+      &.disabled {
+        .player-label h3 {
+          color: #64748b !important;
+        }
+      }
+
+      .player-label {
+        h3 {
+          color: #f1f5f9 !important;
+        }
+
+        &.home-player h3 {
+          color: #2b92bb !important;
+        }
+
+        &.away-player h3 {
+          color: #dc2626 !important;
+        }
+      }
+    }
+
+    .no-players {
+      background: #334155 !important;
+
+      p {
+        color: #94a3b8 !important;
+      }
+    }
+  }
+
+  // Light theme
+  &.light-theme {
+    .scroll-content {
+      background: #f7f7f7 !important;
+    }
+
+    .selection-info {
+      background: #fff !important;
+      border-bottom-color: #e0e0e0 !important;
+
+      .selection-count {
+        color: #2b92bb !important;
+      }
+    }
+
+    .team-header {
+      h4 {
+        color: #fff !important;
+      }
+
+      &.home-team {
+        background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+      }
+
+      &.away-team {
+        background: linear-gradient(135deg, #f44336, #d32f2f) !important;
+      }
+    }
+
+    .player-list {
+      background: #fff !important;
+    }
+
+    .player-item {
+      background: #fff !important;
+      border-bottom-color: #f0f0f0 !important;
+
+      &.selected {
+        background-color: #e8f5e8 !important;
+
+        .player-label h3 {
+          color: #2e7d32 !important;
+        }
+      }
+
+      &.disabled {
+        .player-label h3 {
+          color: #999 !important;
+        }
+      }
+
+      .player-label {
+        h3 {
+          color: #333 !important;
+        }
+
+        &.home-player h3 {
+          color: #2e7d32 !important;
+        }
+
+        &.away-player h3 {
+          color: #c62828 !important;
+        }
+      }
+    }
+
+    .no-players {
+      background: #fff !important;
+
+      p {
+        color: #999 !important;
+      }
+    }
+  }
   .scroll-content {
     background: #f7f7f7 !important;
   }
@@ -149,7 +300,7 @@ page-potm {
   }
 
   .save-btn {
-    background-color: #5be283;
+    //background-color: #5be283;
     height: 3.6rem;
     font-size: 1.4rem;
     color: white;
@@ -157,6 +308,34 @@ page-potm {
     &:disabled {
       background-color: #ccc;
       color: #999;
+    }
+  }
+
+  // Footer styling
+  ion-footer {
+    --background: #ffffff;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0;
+    
+    .timekare-primary-btn {
+      background: #2b92bb;
+      color: white;
+      font-weight: 500;
+    }
+  }
+
+  // Dark theme for footer
+  &:not(.light-theme),
+  .dark-theme {
+    ion-footer {
+      --background: #1e293b !important;
+      background: #1e293b !important;
+      border-top: 1px solid #475569;
+      
+      .timekare-primary-btn {
+        background: #2b92bb;
+        color: white;
+      }
     }
   }
 

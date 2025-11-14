@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Checkbox, IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { Checkbox, IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import gql from 'graphql-tag';
 import { Storage } from "@ionic/storage";
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { SharedServices } from '../../../services/sharedservice';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
 import { LeagueParticipantModel, LeaguesForParentClubModel } from '../models/league.model';
 import { UsersListInput, UsersModel } from '../../../../shared/model/league.model';
+import { ThemeService } from '../../../../services/theme.service';
 
 
 /**
@@ -80,7 +81,9 @@ export class AddingtornamentmemberPage {
     public popoverCtrl: PopoverController,
     private sharedService: SharedServices,
     public storage: Storage,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private themeService: ThemeService,
+    public events: Events
   ) {
     this.themeType = sharedService.getThemeType();
 
@@ -142,7 +145,48 @@ export class AddingtornamentmemberPage {
   }
 
   ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe((isDark) => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe("theme:changed", (isDark) => {
+      this.applyTheme(isDark);
+    });
     this.getMembersData(1);
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("theme:changed");
+  }
+
+  private loadTheme(): void {
+    this.storage.get("dashboardTheme").then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => {
+      this.applyTheme(true);
+    });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    const applyThemeToElement = () => {
+      const element = document.querySelector("page-addingtornamentmember");
+      if (element) {
+        if (isDark) {
+          element.classList.remove("light-theme");
+          document.body.classList.remove("light-theme");
+        } else {
+          element.classList.add("light-theme");
+          document.body.classList.add("light-theme");
+        }
+        return true;
+      }
+      return false;
+    };
+
+    if (!applyThemeToElement()) {
+      setTimeout(() => applyThemeToElement(), 100);
+    }
   }
 
 

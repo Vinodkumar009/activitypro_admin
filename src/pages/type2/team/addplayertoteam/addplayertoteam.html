@@ -10,15 +10,18 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-item class="search_add">
-    <ion-searchbar placeholder="Search Players by Name" class="search" (ionInput)="getFilterItems($event)"
-      autocorrect="off" showCanelButton="shouldShowCancel" animated>
-    </ion-searchbar>
-  </ion-item>
+<ion-content class="cards-bg social-cards" [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <!-- Compact Search -->
+  <div class="compact-search-card">
+    <div class="search-content">
+      <ion-searchbar class="sleek-searchbar" placeholder="Search Players by Name"
+        (ionInput)="getFilterItems($event)" autocorrect="off"
+        showCancelButton="never"></ion-searchbar>
+    </div>
+  </div>
 
   <ion-list class="ion_list">
-    <ion-list-header class="session_header" style="font-size: 18px">
+    <ion-list-header class="session_header" style="font-size: 18px;">
       Players List
     </ion-list-header>
   </ion-list>
@@ -35,7 +38,7 @@
 
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="venus_user_input.search_term==''">
     <ion-infinite-scroll-content loadingSpinner="crescent"
-      loadingText="Loading more data...">></ion-infinite-scroll-content>
+      loadingText="Loading more data..."></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>
 
@@ -43,7 +46,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <button class="foobtn" ion-button block (click)="savePlayers()">Add Player</button>
+        <button class="timekare-primary-btn" ion-button block (click)="savePlayers()">Add Player</button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -3,13 +3,44 @@ dashboard-page {
     // Theme Variables
     @include android-sdk35-fixes;
     &.light-theme {
+        .scroll-content {
+            background: #ffffff !important;
+        }
+        
+        ion-content {
+            background: #ffffff !important;
+        }
+        
         .modern-dashboard {
-            background: #f8fafc;
+            background: #ffffff;
             min-height: 100vh;
             
-            // Fix pull-to-refresh footer overlap
+            // Fix pull-to-refresh footer overlap and icon color
             ion-refresher {
-                z-index: 1000;
+                z-index: 1000 !important;
+                
+                ion-refresher-content {
+                    color: #1e293b !important;
+                    
+                    .refresher-pulling-icon,
+                    .refresher-refreshing-icon,
+                    ion-spinner,
+                    ion-spinner * {
+                        color: #2b92bb !important;
+                        stroke: #2b92bb !important;
+                        fill: #2b92bb !important;
+                    }
+                    
+                    .refresher-pulling-text,
+                    .refresher-refreshing-text {
+                        color: #64748b !important;
+                    }
+                }
+            }
+            
+            ion-refresher ion-spinner {
+                color: #2b92bb !important;
+                stroke: #2b92bb !important;
             }
             
             .scroll-content {
@@ -231,9 +262,32 @@ dashboard-page {
         background: #0f172a;
         min-height: 100vh;
         
-        // Fix pull-to-refresh footer overlap
+        // Fix pull-to-refresh footer overlap and icon color
         ion-refresher {
-            z-index: 1000;
+            z-index: 1000 !important;
+            
+            ion-refresher-content {
+                color: #f1f5f9 !important;
+                
+                .refresher-pulling-icon,
+                .refresher-refreshing-icon,
+                ion-spinner,
+                ion-spinner * {
+                    color: #2b92bb !important;
+                    stroke: #2b92bb !important;
+                    fill: #2b92bb !important;
+                }
+                
+                .refresher-pulling-text,
+                .refresher-refreshing-text {
+                    color: #94a3b8 !important;
+                }
+            }
+        }
+        
+        ion-refresher ion-spinner {
+            color: #2b92bb !important;
+            stroke: #2b92bb !important;
         }
         
         .scroll-content {
@@ -1088,58 +1142,58 @@ dashboard-page {
             .coach-row {
                 display: flex;
                 align-items: center;
-                padding: 16px;
+                padding: 12px;
                 border-bottom: 1px solid #334155;
                 border-radius: 12px;
                 margin-bottom: 12px;
                 background: #334155;
                 border: 1px solid #475569;
                 transition: all 0.2s ease;
-                
-
+                overflow: hidden;
                 
                 &:last-child {
                     border-bottom: none;
                 }
                 
-
-                
                 .coach-profile {
-                    width: 52px;
-                    height: 52px;
+                    width: 48px;
+                    height: 48px;
                     border-radius: 12px;
                     overflow: hidden;
-                    margin-right: 16px;
+                    margin-right: 12px;
                     border: 2px solid #64748b;
+                    flex-shrink: 0;
                     
                     .coach-image {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
+                        display: block;
                     }
                 }
                 
                 .coach-data {
                     flex: 1;
+                    min-width: 0;
                     
                     .coach-name {
                         font-weight: 600;
-                        margin-bottom: 8px;
-                        font-size: 15px;
+                        margin-bottom: 6px;
+                        font-size: 14px;
                         text-transform: capitalize;
                         color: #f1f5f9 !important;
                     }
                     
                     .coach-performance {
                         display: flex;
-                        gap: 16px;
+                        gap: 12px;
                         
                         .performance-item {
                             text-align: center;
                             
                             .performance-value {
                                 display: block;
-                                font-size: 16px;
+                                font-size: 15px;
                                 font-weight: 700;
                                 margin-bottom: 2px;
                                 color: #f1f5f9 !important;
@@ -1148,11 +1202,11 @@ dashboard-page {
                             .performance-label {
                                 font-size: 10px;
                                 text-transform: uppercase;
-                                letter-spacing: 0.5px;
+                                letter-spacing: 0.3px;
                                 font-weight: 500;
                                 color: white;
                                 background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
-                                padding: 2px 6px;
+                                padding: 2px 4px;
                                 border-radius: 4px;
                                 display: inline-block;
                                 margin-top: 2px;
@@ -1358,12 +1412,9 @@ dashboard-page {
     .scroll-content {
         background: #0f172a !important;
         padding: 0px !important;
-        margin-bottom: 80px;
-        
-        // Prevent content showing behind footer during pull-to-refresh
-        &.refresher-active {
-            padding-bottom: 120px !important;
-        }
+        padding-bottom: 100px !important;
+        height: calc(100vh - 120px) !important;
+        overflow-y: auto !important;
     }
     // .footer_bottom_pad{
     //     padding: 0px 0px 10px 0px !important;
@@ -1727,6 +1778,45 @@ dashboard-page {
         bottom: 10% !important;
     }
 
+    // Light Theme Footer Styles
+    &.light-theme {
+        .footer_div {
+            position: fixed;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 0px 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 1001;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            
+            ion-col {
+                margin: 0;
+                text-align: center;
+                font-size: 14px;
+                padding: 8px 12px;
+                
+                p {
+                    color: #64748b !important;
+                    margin: 2px 0 0 0;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+            }
+            
+            ion-icon {
+                font-size: 28px;
+                color: #2b92bb !important;
+                transition: all 0.2s ease;
+                
+                &:active {
+                    transform: scale(0.95);
+                    color: #2b92bb !important;
+                }
+            }
+        }
+    }
+    
     // Dark Theme Footer Styles
     .footer_div {
         position: fixed;
@@ -1754,12 +1844,12 @@ dashboard-page {
         
         ion-icon {
             font-size: 28px;
-            color: #60a5fa !important;
+            color: #2b92bb !important;
             transition: all 0.2s ease;
             
             &:active {
                 transform: scale(0.95);
-                color: #3b82f6 !important;
+                color: #2b92bb !important;
             }
         }
     }

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { LeagueMatch } from '../../models/location.model';
 import { LeagueParticipationForMatchModel } from '../../models/league.model';
+import { ThemeService } from '../../../../../services/theme.service';
 
 @IonicPage({
     name: 'TennisScoreInputPage',
@@ -21,10 +23,15 @@ export class TennisScoreInputPage {
 
     setScores: any[] = [];
 
+    isDarkTheme: boolean = true;
+
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
-        public viewCtrl: ViewController
+        public viewCtrl: ViewController,
+        public events: Events,
+        public storage: Storage,
+        public themeService: ThemeService
     ) {
         this.matchObj = this.navParams.get("matchObj");
         this.leagueId = this.navParams.get("leagueId");
@@ -34,6 +41,43 @@ export class TennisScoreInputPage {
         this.ishome = this.navParams.get("ishome");
 
         this.initializeSetScores();
+    }
+
+    ionViewDidLoad() {
+        this.loadTheme();
+        this.events.subscribe('theme:changed', (isDark) => {
+            this.isDarkTheme = isDark;
+            this.applyTheme();
+        });
+    }
+
+    ionViewWillLeave() {
+        this.events.unsubscribe('theme:changed');
+    }
+
+    loadTheme() {
+        this.storage.get('dashboardTheme').then((isDarkTheme) => {
+            if (isDarkTheme !== null) {
+                this.isDarkTheme = isDarkTheme;
+            } else {
+                this.isDarkTheme = true;
+            }
+            this.applyTheme();
+        }).catch(() => {
+            this.isDarkTheme = true;
+            this.applyTheme();
+        });
+    }
+
+    applyTheme() {
+        const element = document.querySelector('page-tennis-score-input');
+        if (element) {
+            if (this.isDarkTheme) {
+                element.classList.remove('light-theme');
+            } else {
+                element.classList.add('light-theme');
+            }
+        }
     }
 
     initializeSetScores() {

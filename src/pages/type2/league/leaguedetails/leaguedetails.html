@@ -113,7 +113,8 @@
           <tbody class="design">
             <tr *ngFor="let score of leagueStanding">
               <td class="firstcol" style="white-space: nowrap;" (click)="tDetails(score)">
-                {{score.parentclubteam?.teamName}}
+                <span *ngIf="individualLeague.league_type==3">{{score.parentclubteam?.teamName}}</span>
+                <span *ngIf="individualLeague.league_type!=3">{{score.user?.FirstName}} {{score.user?.LastName}}</span>
               </td>
               <td class="otherclumn">{{score.matches}}</td>
               <td class="otherclumn">{{score.wins}}</td>
@@ -214,20 +215,27 @@
     </div>
 
     <div *ngIf="activeIndex == 1" class="matchCard">
-      <div class="modern-match-card" (click)="showMatchActionSheet(mat)" *ngFor="let mat of match">
+      <div class="modern-match-card" 
+           [ngClass]="{
+             'match-completed': mat.ResultStatus == 1,
+             'match-pending': mat.ResultStatus != 1,
+             'match-paid': mat.payment_type == 1,
+             'match-private': mat.match_visibility == 1
+           }"
+           (click)="showMatchActionSheet(mat)" *ngFor="let mat of match">
         <!-- Match Header -->
         <div class="match-card-header">
-          <div class="match-date">
-            <ion-icon name="calendar" color="light"></ion-icon>
-            <span>{{mat.start_date}}</span>
+          <div class="match-info">
+            <div class="match-date">
+              <ion-icon name="calendar"></ion-icon>
+              <span>{{mat.start_date}}</span>
+            </div>
+            <div class="match-title">
+              <h3>{{mat.match_title}}</h3>
+            </div>
           </div>
-          <div class="match-title">
-            <h3>{{mat.match_title}}</h3>
-          </div>
-          <div class="match-round" *ngIf="mat.formatted_round">
-            <span class="round-badge">{{mat.formatted_round}}</span>
-          </div>
-          <div class="payment-type">
+          <div class="match-badges">
+            <span class="round-badge" *ngIf="mat.formatted_round">{{mat.formatted_round}}</span>
             <span class="payment-badge" [ngClass]="mat.payment_type == 1 ? 'paid' : 'free'">
               {{mat.payment_type == 1 ? 'Paid' : 'Free'}}
             </span>
@@ -236,13 +244,11 @@
 
         <!-- Match Content -->
         <div class="match-card-content">
-          <!-- Pre-Match State -->
-          <div class="match-teams" *ngIf="!isPublish">
+          <div class="match-teams">
             <div class="team-section home">
               <div class="team-name" [ngClass]="{'tbd-text': !mat.homeusername || !mat.homeusername.trim()}">
                 {{mat.homeusername && mat.homeusername.trim() ? mat.homeusername : 'TBD'}}
-                <ion-icon name="trophy" style="color:#daa520"
-                  *ngIf="mat.ResultStatus == 1 && mat.is_home_team_winner"></ion-icon>
+                <ion-icon name="trophy" *ngIf="mat.ResultStatus == 1 && mat.is_home_team_winner"></ion-icon>
               </div>
             </div>
             <div class="vs-section">
@@ -251,25 +257,21 @@
             <div class="team-section away">
               <div class="team-name" [ngClass]="{'tbd-text': !mat.awayusername || !mat.awayusername.trim()}">
                 {{mat.awayusername && mat.awayusername.trim() ? mat.awayusername : 'TBD'}}
-                <ion-icon name="trophy" style="color:#daa520"
-                  *ngIf="mat.ResultStatus == 1 && mat.is_away_team_winner"></ion-icon>
+                <ion-icon name="trophy" *ngIf="mat.ResultStatus == 1 && mat.is_away_team_winner"></ion-icon>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Match Footer -->
-          <div class="match-card-footer">
-            <div class="result-status-dropdown">
-              <!-- <ion-icon name="flag" [color]="mat.ResultStatus == 1 ? 'success' : 'warning'"></ion-icon> -->
-              <span class="status-text" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
-                {{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}
-              </span>
-            </div>
-            <div class="visibility-info">
-              <ion-icon [name]="mat.match_visibility==0?'globe':'lock'"
-                [color]="mat.match_visibility==0?'success':'medium'"></ion-icon>
-              <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
-            </div>
+        <!-- Match Footer -->
+        <div class="match-card-footer">
+          <div class="result-status" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
+            <ion-icon [name]="mat.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
+            <span>{{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}</span>
+          </div>
+          <div class="visibility-info">
+            <ion-icon [name]="mat.match_visibility==0?'globe':'lock'"></ion-icon>
+            <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
           </div>
         </div>
       </div>

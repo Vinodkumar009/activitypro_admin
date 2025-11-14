@@ -8,7 +8,9 @@ import {
   Platform,
   ToastController,
   AlertController,
+  Events
 } from "ionic-angular";
+import { ThemeService } from "../../../../services/theme.service";
 import {
   CommonService,
   ToastMessageType,
@@ -38,7 +40,7 @@ import { Role } from "../team.model";
   templateUrl: 'addroleforplayernstaff.html',
 })
 export class AddroleforplayernstaffPage {
-
+  isDarkTheme: boolean = false;
   team: TeamsForParentClubModel;
   parentClubKey: string;
   // teamRoles: [];
@@ -75,9 +77,15 @@ export class AddroleforplayernstaffPage {
     public commonService: CommonService,
     private toastCtrl: ToastController,
     public sharedservice: SharedServices,
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    private themeService: ThemeService,
+    private events: Events) {
 
     this.team = this.navParams.get("team");
+    
+    this.events.subscribe('theme:changed', (theme) => {
+      this.isDarkTheme = theme === 'dark';
+    });
     this.playerId = this.navParams.get("memberId");
     this.currentRole = this.navParams.get("currentRole"); // 🎯 Get current role data
     console.log(this.playerId);
@@ -105,6 +113,12 @@ export class AddroleforplayernstaffPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddroleforplayernstaffPage');
+    this.storage.get('dashboardTheme').then((theme) => {
+      this.isDarkTheme = theme === 'dark' || theme === true;
+      const themeClass = this.isDarkTheme ? 'dark-theme' : 'light-theme';
+      document.body.classList.remove('dark-theme', 'light-theme');
+      document.body.classList.add(themeClass);
+    });
   }
 
   selectRoleToUpdate(role) {

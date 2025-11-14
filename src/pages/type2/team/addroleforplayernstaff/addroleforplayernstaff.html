@@ -10,7 +10,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
   <!-- <div class="block_height" >
     <ion-list class="margin marginleftright">
     
@@ -45,7 +45,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <button class="foobtn" ion-button block (click)="savePlayers()">Update</button>
+        <button class="timekare-primary-btn" ion-button block (click)="savePlayers()">Update</button>
       </ion-col>
 
     </ion-row>

@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-membershipmemberlisting {
+    @include android-sdk35-fixes;
+
+
+
     .toolbar-title{
         color:#FFF !important;
      }
@@ -319,5 +325,4 @@ page-membershipmemberlisting {
     }
  
    
-
 }

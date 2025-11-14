@@ -6,11 +6,14 @@ import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 import { CommonService } from '../../../services/common.service';
 import { ThemeService } from '../../../services/theme.service';
-//import { PopoverPage } from ./popover';
-import * as moment from 'moment';
+import { HttpService } from '../../../services/http.service';
+// import { PopoverPage } from ./popover';
+// import * as moment from 'moment';
 // import { Setup } from './setup';
 import { Slides } from 'ionic-angular';
 import { ViewChild } from '@angular/core';
+import { AppType } from '../../../shared/constants/module.constants';
+import { API } from '../../../shared/constants/api_constants';
 
 
 @IonicPage()
@@ -24,21 +27,16 @@ export class MenupagePage {
   LangObj:any = {};//by vinod
   themeType: number;
   isDarkTheme: boolean = true;
-
+  showAskMeButton: boolean = false;
   menus = [];
   submenus = [];
   unreadNotificationCounts = 0;
-
-
   parentClubKey = "";
   holidayCampList = [];
   currencyDetails: any;
   activeHolidayCampMember = 0;
-
   schoolSessionList = [];
   activeSchoolSessionMember = 0;
-
-
   currentFinancialYear = "";
   // it carries the sessions which are active in the current financial year
   sessionList = [];
@@ -47,33 +45,21 @@ export class MenupagePage {
   activeSessionMember = 0;
   //active due member
   dueMember = 0;
-
   //weekly hours
   weeklyHours = 0;
   isThisCoach = false;
 
   //Amount related variables for financial year
-
   totalRevenueforCurrentFinancialYear = 0;
   totalPaidForCurrentFinancialYear = 0;
   totalDueForCurrentFinancialYear = 0;
-
   totalRev = "0.00";
   totalPaid = "0.00";
   totalDue = "0.00";
-
   totalRevenuePercentage = 0;
   subtitleTotalRevenue = "";
-
   coachKey = "";
-
   allClubDetails = [];
-
-
-
-
-
-
   //active sessions for all the financial year
   allActivesessionweeklyHours = 0;
   allActivesessionLisAcrossTheFinancialYear = [];
@@ -85,16 +71,6 @@ export class MenupagePage {
   subtitleTotalRevenueForAllActiveSession = "";
   totalRevenuePercentageForAllActiveSession = 0;
   totalRevForAllSession = "0";
-
-
-
-
-
-
-
-
-
-
   nodeURl :string;
   userObj: any = {};
   parentClubInfo = {};
@@ -103,7 +79,7 @@ export class MenupagePage {
   daysLeftforMembership: any;
   schooldetails: any;
   allholidaycampdetails: any;
-  constructor(public events: Events,public commonService: CommonService, public storage: Storage, public menuCtrl: MenuController, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController, public fb: FirebaseService, public themeService: ThemeService) {
+  constructor(public events: Events,public commonService: CommonService, public storage: Storage, public menuCtrl: MenuController, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController, public fb: FirebaseService, public themeService: ThemeService, public httpService: HttpService) {
     this.storage.get('userObj').then(async (val) => {
       this.userObj = JSON.parse(val);
       console.log(this.userObj)
@@ -187,8 +163,37 @@ export class MenupagePage {
  ionViewDidLoad() {
   this.getLanguage();
   this.loadTheme();
+  this.getParentClubDetails();
   this.events.subscribe('language', (res) => {
     this.getLanguage();
+  });
+}
+
+getParentClubDetails() {
+  const input = {
+    parentclubId: this.sharedservice.getPostgreParentClubId(),
+    clubId: '',
+    activityId: '',
+    memberId: this.sharedservice.getLoggedInUserId(),
+    action_type: 1,
+    device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
+    app_type: AppType.ADMIN_NEW,
+    device_id: this.sharedservice.getDeviceId() || 'unknown',
+    updated_by: this.sharedservice.getLoggedInUserId(),
+    parentclub_id: this.sharedservice.getPostgreParentClubId(),
+    load_relations:false
+    //firebase_id: this.userObj?.UserInfo?.[0]?.ParentClubKey || ''
+  };
+
+  this.httpService.post(`${API.GET_PARENTCLUB_DETS}`, input).subscribe({
+    next: (res: any) => {
+      if (res && res.data && res.data.enable_ai_assistant) {
+        this.showAskMeButton = true;
+      }
+    },
+    error: (err) => {
+      console.error('Error fetching parentclub details:', err);
+    }
   });
 }
 
@@ -785,6 +790,10 @@ getLabel(label:string){
 //   }
   goToDashboardMenuPage(){
     this.navCtrl.setRoot('Dashboard');
+  }
+
+  goToAskMe() {
+    this.navCtrl.push('AskMePage');
   }
 
   // Method to get data attribute for gradient targeting

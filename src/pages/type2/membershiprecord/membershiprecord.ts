@@ -1,7 +1,8 @@
 import { Component, ViewChildren, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides, AlertController, ActionSheetController, Platform, Label, ModalController, ToastController, FabContainer, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Slides, AlertController, ActionSheetController, Platform, Label, ModalController, ToastController, FabContainer, LoadingController, Events } from 'ionic-angular';
 // import * as moment from 'moment';
 import { Storage } from '@ionic/storage';
+import { FirebaseService } from '../../../services/firebase.service';
 import { SharedServices } from '../../services/sharedservice';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../services/common.service';
 import { HttpClient } from '@angular/common/http';
@@ -38,19 +39,21 @@ export class MembershipRecord {
     postgre_parentclub_id:string = "";
     Memberships:Membership [] = [];
     renewal_count:number = 0;
+    isDarkTheme: boolean = true;
     
     constructor(
         public alertCtrl: AlertController,
         public navCtrl: NavController,
         public modalController: ModalController,
         public actionSheetCtrl: ActionSheetController,
-        public storage: Storage,
         public loadingCtrl : LoadingController,
         public http:  HttpClient,
         public sharedservice: SharedServices,
         public comonService: CommonService,
+        public storage: Storage,
         private graphqlService: GraphqlService,
         private httpService:HttpService,
+        public events_subscription: Events
     ) {
         this.platform = this.sharedservice.getPlatform();
         storage.get('userObj').then((val) => {
@@ -69,6 +72,76 @@ export class MembershipRecord {
         storage.get('Currency').then((val) => {
             this.currencyDetails = JSON.parse(val);
         })
+    }
+
+    ionViewWillEnter() {
+        this.loadTheme();
+    }
+
+    ionViewWillLeave() {
+        this.events_subscription.unsubscribe('theme:changed');
+    }
+
+    loadTheme() {
+        this.storage
+            .get("dashboardTheme")
+            .then((isDarkTheme) => {
+                console.log(
+                    "Membership record page - loaded theme from storage:",
+                    isDarkTheme
+                );
+                if (isDarkTheme !== null) {
+                    this.isDarkTheme = isDarkTheme;
+                } else {
+                    this.isDarkTheme = true;
+                }
+                this.applyTheme();
+            })
+            .catch((error) => {
+                console.log("Membership record page - error loading theme:", error);
+                this.isDarkTheme = true;
+                this.applyTheme();
+            });
+
+        this.events_subscription.subscribe("theme:changed", (isDark) => {
+            console.log("Membership record page - received theme change event:", isDark);
+            this.isDarkTheme = isDark;
+            this.applyTheme();
+        });
+    }
+
+    applyTheme() {
+        const membershipElement = document.querySelector("page-membershiprecord");
+        console.log(
+            "Membership record page - applying theme:",
+            this.isDarkTheme ? "dark" : "light"
+        );
+
+        if (membershipElement) {
+            if (this.isDarkTheme) {
+                membershipElement.classList.remove("light-theme");
+                document.body.classList.remove("light-theme");
+                console.log("Membership record page - applied dark theme");
+            } else {
+                membershipElement.classList.add("light-theme");
+                document.body.classList.add("light-theme");
+                console.log("Membership record page - applied light theme");
+            }
+        } else {
+            setTimeout(() => {
+                const retryElement = document.querySelector("page-membershiprecord");
+                if (retryElement) {
+                    if (this.isDarkTheme) {
+                        retryElement.classList.remove("light-theme");
+                        document.body.classList.remove("light-theme");
+                    } else {
+                        retryElement.classList.add("light-theme");
+                        document.body.classList.add("light-theme");
+                    }
+                    console.log("Membership record page - theme applied on retry");
+                }
+            }, 100);
+        }
     }
 
     getAllVenue() {

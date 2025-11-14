@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">{{getLabel('menu_' +m.DisplayTitle) || m.DisplayTitle}}</h3>
-                            <!-- <p class="card-subtitle"></p> -->
+                            <!-- <p class="card-subtitle">Access module</p> -->
                         </div>
                     </div>
                 </ion-col>
@@ -58,3 +58,9 @@
          'location-color':m.title == 'Locations' 
     }" -->
 </ion-content>
+
+<!-- Floating Ask Me Button -->
+<button class="ask-me-button" *ngIf="showAskMeButton" (click)="goToAskMe()">
+    <ion-icon name="chatbubbles"></ion-icon>
+    <span>Ask Me</span>
+</button>

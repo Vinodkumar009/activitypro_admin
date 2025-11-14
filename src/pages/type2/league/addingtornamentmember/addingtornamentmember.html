@@ -19,10 +19,14 @@
 </ion-header>
 
 <ion-content class="cards-bg social-cards">
-  <ion-item class="search_add">
-    <ion-searchbar [showCancelButton]="shouldShowCancel" (ionInput)="getFilterItems($event)" autocorrect="off"
-      placeholder="Search by name"></ion-searchbar>
-  </ion-item>
+  <!-- Compact Search -->
+  <div class="compact-search-card">
+    <div class="search-content">
+      <ion-searchbar class="sleek-searchbar" placeholder="Search by name"
+        (ionInput)="getFilterItems($event)" autocorrect="off"
+        showCancelButton="never"></ion-searchbar>
+    </div>
+  </div>
 
   <ion-list class="ion_list">
     <ion-list-header class="session_header" style="font-size: 18px;">

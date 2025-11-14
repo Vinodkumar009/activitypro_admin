@@ -12,7 +12,7 @@
 <ion-content class="set-input-content">
   <div class="header-section">
     <div class="team-info">
-      <ion-icon name="trophy" color="primary"></ion-icon>
+      <ion-icon name="trophy" style='color: #2b92bb;'></ion-icon>
       <h3>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}} vs {{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</h3>
     </div>
     <p class="subtitle">Enter set scores for each set played</p>
@@ -26,12 +26,12 @@
       <div class="score-inputs">
         <div class="team-score">
           <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
-          <ion-input type="number" [(ngModel)]="set.SCORE1" placeholder="0" class="score-input"></ion-input>
+          <ion-input type="number" [(ngModel)]="set.SCORE1" placeholder="0" class="score-input" (ionChange)="onScoreChange()"></ion-input>
         </div>
         <div class="vs-divider">-</div>
         <div class="team-score">
           <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
-          <ion-input type="number" [(ngModel)]="set.SCORE2" placeholder="0" class="score-input"></ion-input>
+          <ion-input type="number" [(ngModel)]="set.SCORE2" placeholder="0" class="score-input" (ionChange)="onScoreChange()"></ion-input>
         </div>
       </div>
     </div>
@@ -47,15 +47,58 @@
       Remove Set
     </button>
   </div>
+
+  <!-- Auto-calculated Summary -->
+  <div class="summary-section">
+    <h4>Match Summary</h4>
+    
+    <!-- Sets Won Section -->
+    <div class="summary-card">
+      <div class="summary-header">
+        <ion-icon name="stats" style="color: #2b92bb;"></ion-icon>
+        <span>Sets Won</span>
+      </div>
+      <div class="summary-row">
+        <div class="team-summary">
+          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <span class="summary-value">{{homeSetsWon}}</span>
+        </div>
+        <div class="vs-separator">vs</div>
+        <div class="team-summary">
+          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <span class="summary-value">{{awaySetsWon}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Games Won Section -->
+    <div class="summary-card">
+      <div class="summary-header">
+        <ion-icon name="analytics" style="color: #2b92bb;"></ion-icon>
+        <span>Games Won</span>
+      </div>
+      <div class="summary-row">
+        <div class="team-summary">
+          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <span class="summary-value">{{homeGamesWon}}</span>
+        </div>
+        <div class="vs-separator">vs</div>
+        <div class="team-summary">
+          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <span class="summary-value">{{awayGamesWon}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
 
 <ion-footer class="custom-footer">
   <div class="footer-buttons">
-    <button ion-button large outline (click)="cancel()">
+    <button ion-button class="timekare-primary-btn" large outline (click)="cancel()">
       <ion-icon name="close"></ion-icon>
       Cancel
     </button>
-    <button ion-button large style="background-color: #5be283 !important;" (click)="saveSetScores()">
+    <button ion-button large class="timekare-primary-btn" (click)="saveSetScores()">
       <ion-icon name="checkmark"></ion-icon>
       Save Scores
     </button>

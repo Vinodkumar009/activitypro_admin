@@ -16,39 +16,30 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
 
   <div *ngIf="teamsForParentClub">
-    <div style="background-color: #f2f5fa">
+    <div style="padding:10px;">
       <ion-row row-12>
-        <ion-col col-9>
+        <ion-col col-9 no-padding>
           <ion-row class="cardrow">
-            <p style="font-weight: 600" class="largetext">
-              {{teamsForParentClub.teamName}}
-            </p>
-
-            <p class="largetext"></p>
-          </ion-row>
-          <ion-row class="cardrow">
-            <p class="largetext" *ngIf="teamsForParentClub?.activity">{{teamsForParentClub?.activity?.ActivityName}}
-            </p>
-            <p class="largetext"> </p>
-          </ion-row>
-          <ion-row class="cardrow">
-            <p class="smalltext">Age Group:{{teamsForParentClub.ageGroup}}</p>
-          </ion-row>
-
-          <ion-row class="cardrow">
-            <p class="smalltext">
-              <span><ion-icon class="smalltext" name="pin" style="color: #2b92bb"></ion-icon></span>
-              <span>{{teamsForParentClub.club.ClubName}}</span>
-            </p>
+            <ion-col col-12>
+              <p style="font-weight: 600" class="largetext">
+                {{teamsForParentClub.teamName}}
+              </p>
+              <p class="largetext" *ngIf="teamsForParentClub?.activity">{{teamsForParentClub?.activity?.ActivityName}}</p>
+              <p class="smalltext">Age Group:{{teamsForParentClub.ageGroup}}</p>
+              <p class="smalltext">
+                <span><ion-icon class="smalltext" name="pin" style="color: #2b92bb"></ion-icon></span>
+                <span>{{teamsForParentClub.club.ClubName}}</span>
+              </p>
+            </ion-col>
           </ion-row>
         </ion-col>
 
         <ion-col col-3 text-right>
           <div style="display: flex; align-items: center;justify-content: space-evenly">
-            <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
+            <ion-icon style="color: #2b92bb; font-size: 1.5em"
               [name]="team.teamVisibility==0?'ios-globe':'lock'"></ion-icon>
             <p class="smalltext">{{team?.teamVisibility==0 ? "Public" : "Private"}}</p>
           </div>
@@ -94,17 +85,12 @@
   </div>
 
   <div *ngIf="playerType">
-    <div>
-
-      <ion-row class="sub-container rows-allign2">
-        <ion-col col-1 style="text-align:center;margin:auto;">
-          <ion-icon name="ios-search"></ion-icon>
-        </ion-col>
-        <ion-col col-11 class="search-bar">
-          <ion-searchbar placeholder="Search Players by Name" id="customsearchbar"
-            (ionInput)="getFilteredPlayer($event)" showCanelButton="shouldShowCancel" autocorrect="off"></ion-searchbar>
-        </ion-col>
-      </ion-row>
+    <div class="compact-search-card">
+      <div class="search-content">
+        <ion-searchbar class="sleek-searchbar" placeholder="Search Players by Name"
+          (ionInput)="getFilteredPlayer($event)" autocorrect="off"
+          showCancelButton="never"></ion-searchbar>
+      </div>
     </div>
 
 
@@ -112,7 +98,7 @@
     <ion-card class="cardStyle" (click)="presentActionSheet(player)" *ngFor="let player of filteredParticipant">
       <ion-row style="height: 100%;">
         <ion-col col-7 class="team_left_card">
-          <p class="para_overflow" style="font-weight: 500;">{{player.user.FirstName}} {{player.user.LastName}}</p>
+          <p class="para_overflow" style="font-weight: 500;">{{player.user.FirstName}} {{player.user.LastName}}({{player.user.age}})</p>
           <p class="para_overflow">{{player.teamrole.role_name}}</p>
         </ion-col>
         <ion-col col-5 class="status-col team_right_card">
@@ -142,16 +128,12 @@
   </div>
 
   <div *ngIf="!playerType">
-    <div>
-      <ion-row class="sub-container rows-allign2">
-        <ion-col col-1 style="text-align:center;margin:auto;">
-          <ion-icon name="ios-search"></ion-icon>
-        </ion-col>
-        <ion-col col-11 class="search-bar">
-          <ion-searchbar placeholder="Search Staff by Name" id="customsearchbar" (ionInput)="FilterStaffs($event)"
-            autocorrect="off" showCanelButton="shouldShowCancel"></ion-searchbar>
-        </ion-col>
-      </ion-row>
+    <div class="compact-search-card">
+      <div class="search-content">
+        <ion-searchbar class="sleek-searchbar" placeholder="Search Staff by Name"
+          (ionInput)="FilterStaffs($event)" autocorrect="off"
+          showCancelButton="never"></ion-searchbar>
+      </div>
     </div>
 
 

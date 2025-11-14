@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import {
   IonicPage,
   NavController,
@@ -6,8 +6,10 @@ import {
   ViewController,
   LoadingController,
   AlertController,
-  PopoverController
+  PopoverController,
+  Events
 } from "ionic-angular";
+import { ThemeService } from "../../../../services/theme.service";
 import {
   CommonService,
   ToastMessageType,
@@ -57,8 +59,7 @@ interface StaffDetails {
   templateUrl: 'addstafftoteam.html',
 })
 export class AddstafftoteamPage {
-
-
+  isDarkTheme: boolean = false;
   themeType: number;
   staff: StaffModel[] = [];
   filteredStaff: StaffModel[] = [];
@@ -98,10 +99,16 @@ export class AddstafftoteamPage {
     public viewCtrl: ViewController,
     public popoverCtrl: PopoverController,
     private graphqlService: GraphqlService,
-
+    private themeService: ThemeService,
+    private events: Events,
+    private renderer: Renderer2
   ) {
     this.existedstaff = this.navParams.get("existedstaff")
     this.themeType = sharedservice.getThemeType();
+    
+    this.events.subscribe('theme:changed', (theme) => {
+      this.isDarkTheme = theme === 'dark';
+    });
     console.log("addstafftoteam");
     this.addStaffInput.parentClubteamId = this.navParams.get("teamid")
 
@@ -137,8 +144,25 @@ export class AddstafftoteamPage {
     this.subscriptions.push(searchSubscription);
   }
 
-  ionViewDidLoad() {
-    // Component loaded
+  async ionViewDidLoad() {
+    await this.loadTheme();
+  }
+
+  async loadTheme() {
+    const theme = await this.storage.get('selectedTheme');
+    this.applyTheme(theme || 'dark');
+  }
+
+  applyTheme(theme: string) {
+    this.isDarkTheme = theme === 'dark';
+    const pageElement = document.querySelector('page-addstafftoteam');
+    if (pageElement) {
+      if (this.isDarkTheme) {
+        this.renderer.removeClass(pageElement, 'light-theme');
+      } else {
+        this.renderer.addClass(pageElement, 'light-theme');
+      }
+    }
   }
 
   ionViewWillLeave() {

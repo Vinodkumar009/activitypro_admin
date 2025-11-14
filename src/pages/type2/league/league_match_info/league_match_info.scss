@@ -1,11 +1,11 @@
 @import "../_league-theme.scss";
-
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-league-match-info {
   @include league-theme-base;
-  
+  @include android-sdk35-fixes;
   .league-header-section {
     background-color: #334155 !important; // Dark theme
-    padding: 16px;
+    padding: 10px 5px;
     
     .theme-light & {
       background-color: #f8fafc !important; // Light theme
@@ -52,9 +52,10 @@ page-league-match-info {
 
   .action_btns_div{
     display: flex;
+    align-items: end;
     flex-direction: column;
-    // align-items: center;
     position: relative;
+    padding: 10px 5px 0px 5px;
     // left: 0;
     // top: 50%;
     // left: 50%;
@@ -215,6 +216,12 @@ page-league-match-info {
     font-size: 14px;
   }
 
+  .margin_auto {
+    margin: auto;
+    // display: flex;
+    // align-items: center;
+  }
+
   .custom-add {
     position: absolute;
     right: 5px;
@@ -247,6 +254,95 @@ page-league-match-info {
   .status-other {
     color: grey !important; // grey for other statuses
     font-weight: 500;
+  }
+
+  // 💰 Payment status styles - Maximum specificity
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col.paidBlock p.paid,
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col .paidBlock p.paid,
+  page-league-match-info .paidBlock .paid,
+  page-league-match-info .paid {
+    color: #32db64 !important; // Green for paid
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+  }
+
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col.paidBlock p.pending,
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col .paidBlock p.pending,
+  page-league-match-info .paidBlock .pending,
+  page-league-match-info .pending {
+    color: #f53d3d !important; // Red for pending
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+  }
+
+  // Override any existing p tag styles in paidBlock
+  .paidBlock p {
+    &.paid {
+      color: #32db64 !important;
+      font-weight: 600 !important;
+    }
+    
+    &.pending {
+      color: #f53d3d !important;
+      font-weight: 600 !important;
+    }
+  }
+
+  // Even more specific selectors
+  ion-card-content ion-grid ion-row ion-col.paidBlock p.paid,
+  ion-card-content .paidBlock p.paid,
+  .item-card-content .paidBlock p.paid {
+    color: #32db64 !important;
+    font-weight: 600 !important;
+  }
+
+  ion-card-content ion-grid ion-row ion-col.paidBlock p.pending,
+  ion-card-content .paidBlock p.pending,
+  .item-card-content .paidBlock p.pending {
+    color: #f53d3d !important;
+    font-weight: 600 !important;
+  }
+
+  // Target span elements inside paid/pending paragraphs
+  .paid span,
+  .paidBlock .paid span {
+    color: #32db64 !important;
+    font-weight: 600 !important;
+  }
+
+  .pending span,
+  .paidBlock .pending span {
+    color: #f53d3d !important;
+    font-weight: 600 !important;
+  }
+
+  // 📦 Payment block styling
+  .paidBlock {
+    //display: flex;
+    // flex-direction: column;
+    // align-items: flex-end;
+    // justify-content: center;
+    padding: 8px;
+    
+    div {
+      // display: flex;
+      // align-items: center;
+      // justify-content: flex-end;
+      width: 100%;
+      margin-bottom: 4px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
+    p {
+      margin: 0;
+      text-align: right;
+      white-space: nowrap;
+    }
   }
 }
 

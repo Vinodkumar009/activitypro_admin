@@ -1,5 +1,5 @@
 import { Component, Renderer2, ViewChild } from "@angular/core";
-import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, FabContainer, Events } from "ionic-angular";
+import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, FabContainer, Events } from "ionic-angular";
 import { Storage } from "@ionic/storage";
 import { SharedServices } from "../../../services/sharedservice";
 import { FirebaseService } from "../../../../services/firebase.service";

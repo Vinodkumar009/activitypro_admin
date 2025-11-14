@@ -13,8 +13,8 @@
         </ion-buttons>
     </ion-navbar>
 </ion-header>
-
-<ion-content class="modern-dashboard" [style.top.px]="!isAppAdminLoggedin ? 0 : 55" [style.paddingTop.px]="!isAppAdminLoggedin ? 30 : 0">
+<!-- [style.top.px]="!isAppAdminLoggedin ? 0 : 55" [style.paddingTop.px]="!isAppAdminLoggedin ? 30 : 0" -->
+<ion-content class="modern-dashboard">
     <ion-refresher slot="fixed" pullFactor="0.5" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
@@ -47,7 +47,7 @@
                     <h3 class="card-title">Pending Payments</h3>
                     <p class="card-subtitle">Term Session Payments</p>
                 </div>
-                <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon>
+                <!-- <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon> -->
             </div>
             <div class="card-body">
                 <div class="amount-display">
@@ -404,14 +404,15 @@
     </div>
   
     
-  
-  </ion-content>
   <ion-fab right bottom *ngIf="isChatEnable" class="bottom_10">
     <button ion-fab mini style="background-color: #2b92bb;" (click)="gotoInbox()"
         style="background-color:#2b92bb !important; color: white !important">
         <ion-icon name="chatbubbles"></ion-icon>
     </button>
   </ion-fab>
+  
+  </ion-content>
+  
   
   <ion-footer>
     <div class="footer_div" [ngClass]="{'footer_bottom_pad':isIOS}" *ngIf="footermenu.length > 0">

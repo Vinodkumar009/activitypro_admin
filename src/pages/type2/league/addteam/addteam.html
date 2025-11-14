@@ -11,11 +11,13 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item class="search_add">
-    <ion-searchbar placeholder="Search team by name" class="search" (ionInput)="getFilterItems($event)"
-      autocorrect="off" showCanelButton="shouldShowCancel" animated>
-    </ion-searchbar>
-  </ion-item>
+  <div class="compact-search-card">
+    <div class="search-content">
+      <ion-searchbar class="sleek-searchbar" placeholder="Search team by name"
+        (ionInput)="getFilterItems($event)" autocorrect="off"
+        showCancelButton="never"></ion-searchbar>
+    </div>
+  </div>
 
   <ion-list class="ion_list">
     <ion-list-header class="session_header" style="font-size: 18px">
@@ -42,7 +44,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <button class="foobtn" ion-button block (click)="assignTeams()">Add</button>
+        <button ion-button block class="timekare-primary-btn" (click)="assignTeams()">Add</button>
       </ion-col>
     </ion-row>
   </ion-grid>

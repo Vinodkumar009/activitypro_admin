@@ -1,7 +1,8 @@
 @import "../_league-theme.scss";
-
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-team-formation {
   @include league-theme-base;
+  @include android-sdk35-fixes;
     .ionlist{
         margin:-1px 0px 7px;
       }

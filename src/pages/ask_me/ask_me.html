@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-navbar class="modern-navbar">
+    <ion-title>Ask Me</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="chat-content">
+  <div class="chat-area">
+    <div *ngFor="let msg of messages" class="message-row" [ngClass]="{'user-msg': msg.isUser, 'bot-msg': !msg.isUser}">
+      <img [src]="msg.isUser ? '../../assets/images/dummyCoach.jpg' : 'assets/images/logo.png'" class="profile-img" alt="Avatar">
+      <div class="message-bubble" [ngClass]="{'error-bubble': msg.isError}">
+        <div *ngIf="!msg.isUser" class="markdown-content" [ngClass]="{'error-text': msg.isError}" [innerHTML]="msg.formattedText || msg.text"></div>
+        <p *ngIf="msg.isUser" [ngClass]="{'error-text': msg.isError}">{{msg.text}}</p>
+        <span class="msg-timestamp">{{msg.timestamp}}</span>
+        <div class="message-actions" *ngIf="!msg.isUser && msg.interactionId">
+          <button class="action-btn" [ngClass]="{'active': msg.feedbackGiven === 'like'}" (click)="openFeedbackModal('like', msg.interactionId)">
+            <ion-icon name="thumbs-up"></ion-icon>
+          </button>
+          <button class="action-btn" [ngClass]="{'active': msg.feedbackGiven === 'dislike'}" (click)="openFeedbackModal('dislike', msg.interactionId)">
+            <ion-icon name="thumbs-down"></ion-icon>
+          </button>
+          <button class="action-btn" (click)="copyMessage(msg.text)">
+            <ion-icon name="copy"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="message-row bot-msg" *ngIf="isThinking">
+      <img src="assets/images/logo.png" class="profile-img" alt="Avatar">
+      <div class="message-bubble thinking-bubble">
+        <div class="thinking-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <!-- <span class="thinking-text">Thinking...</span> -->
+      </div>
+    </div>
+    <div class="prompts-section" *ngIf="messages.length === 1 && prompts.length > 0">
+      <div class="prompts-header">
+        <ion-icon name="bulb"></ion-icon>
+        <span>Suggested Prompts</span>
+      </div>
+      <div class="prompt-item" *ngFor="let prompt of prompts; let i = index" (click)="selectPrompt(prompt.prompt)">
+        <div class="prompt-icon">
+          <ion-icon [name]="getPromptIcon(i)"></ion-icon>
+        </div>
+        <span>{{prompt.prompt}}</span>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Feedback Modal -->
+<div class="feedback-modal" *ngIf="showFeedbackModal" (click)="closeFeedbackModal()">
+  <div class="feedback-content" (click)="$event.stopPropagation()">
+    <div class="feedback-header">
+      <h3>{{feedbackType === 'like' ? 'Like' : 'Dislike'}} Feedback</h3>
+      <button class="close-btn" (click)="closeFeedbackModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+    <div class="feedback-body">
+      <ion-textarea [placeholder]="feedbackType === 'like' ? 'What was satisfying about this response?' : 'What was unsatisfying about this response?'" [(ngModel)]="feedbackComment" rows="4"></ion-textarea>
+      <p class="feedback-disclaimer">Submitting this report will send the entire conversation to ActivityPro Ltd. for future improvements to our assistant.</p>
+    </div>
+    <div class="feedback-footer">
+      <button class="cancel-btn" (click)="closeFeedbackModal()">Close</button>
+      <button class="submit-btn" (click)="submitFeedback()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<ion-footer>
+  <div class="input-bar">
+    <ion-input placeholder="Ask me something.." [(ngModel)]="userInput" (keyup.enter)="sendMessage()"></ion-input>
+    <button ion-button clear icon-only (click)="sendMessage()">
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </div>
+</ion-footer>

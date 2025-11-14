@@ -136,11 +136,16 @@
                         [style.color]="getInviteStatusIcon(item.invite_status) === 'checkmark-circle' ? '#32db64' : getInviteStatusIcon(item.invite_status) === 'close-circle' ? '#f53d3d' : getInviteStatusIcon(item.invite_status) === 'help-circle' ? '#b8860b' : '#f76e04'">
                       </ion-icon>
                     </div>
-                    <div *ngIf="match.PaymentType==1"
-                      style="display: flex; align-items: center; justify-content: flex-end;">
-                      <p class="pending" style="margin: 0; padding-right: 2px;">{{item.amount_pay_status_text}}</p>
-                      <p class="pending" style="margin: 0;">
-                        <span style="color: #2b92bb;">{{currencyDetails.CurrencySymbol}}{{item.paid_amount}}</span>
+                    <div style="text-align: right;">
+                      <p [ngClass]="{'paid': item.amount_pay_status=='1','pending': item.amount_pay_status=='0'}" 
+                         [style.color]="item.amount_pay_status=='1' ? '#32db64' : '#f53d3d'"
+                         style="font-weight: 600 !important; margin: 0 !important;">{{item.amount_pay_status_text}}
+                      </p>
+                      <p class="paid" *ngIf="item.amount_pay_status==1" style="color: #32db64 !important; font-weight: 600 !important; margin: 0 !important;">
+                        <span style="color: #32db64 !important; font-weight: 600 !important;">{{currencyDetails.CurrencySymbol}}{{item.paid_amount}}</span>
+                      </p>
+                      <p class="pending" *ngIf="item.amount_pay_status==0" style="color: #f53d3d !important; font-weight: 600 !important; margin: 0 !important;">
+                        <span style="color: #f53d3d !important; font-weight: 600 !important;">{{currencyDetails.CurrencySymbol}}{{item.amount_due}}</span>
                       </p>
                     </div>
                   </ion-col>

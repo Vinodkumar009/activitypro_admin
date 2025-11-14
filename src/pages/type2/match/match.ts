@@ -95,31 +95,29 @@ export class MatchPage {
     public events: Events
   ) {
     this.commonService.category.pipe(first()).subscribe((data) => {
-      if (data == "matchlist") {
+      if(data == "matchlist") {
         // Force theme application when navigating to this page
         setTimeout(() => {
           this.loadTheme();
         }, 100);
-        
-        this.storage.get("userObj").then((val) => {
-          val = JSON.parse(val);
-          if (val.$key != "") {
-            // this.FetchUserInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
-          }
-          // this.getMatches();
-          this.fetchAllMatches();
-        });
+        // this.storage.get("userObj").then((val) => {
+        //   val = JSON.parse(val);
+        //   if (val.$key != "") {
+        //     // this.FetchUserInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
+        //   }
+        // });
+        this.fetchMatchesInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
+        this.fetchAllMatchesInput.parentclubId = this.sharedservice.getPostgreParentClubId();
+        this.fetchAllMatchesInput.memberId = this.sharedservice.getLoggedInId();
+        this.fetchAllMatchesInput.action_type = 0;
+        this.fetchAllMatchesInput.app_type = AppType.ADMIN_NEW;
+        this.fetchAllMatchesInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
+        this.fetchAllMatchesInput.FetchType = 1;
+        this.fetchAllMatches();
       }
     });
 
-    this.fetchMatchesInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
-
-    this.fetchAllMatchesInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-    this.fetchAllMatchesInput.memberId = this.sharedservice.getLoggedInId();
-    this.fetchAllMatchesInput.action_type = 0;
-    this.fetchAllMatchesInput.app_type = AppType.ADMIN_NEW;
-    this.fetchAllMatchesInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
-    this.fetchAllMatchesInput.FetchType = 1;
+    
   }
 
   ionViewWillEnter() {

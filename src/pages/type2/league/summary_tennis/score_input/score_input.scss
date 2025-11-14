@@ -1,6 +1,88 @@
 @import "../../_league-theme.scss";
-
+@import '../../../../../theme/android-sdk35-fixes.scss';
 page-tennis-score-input {
+    @include league-theme-base;
+    @include android-sdk35-fixes;
+
+    // Dark theme
+    &:not(.light-theme) {
+        .scroll-content {
+            background: #1e293b !important;
+        }
+
+        .score-input-container {
+            h3 {
+                color: #f1f5f9 !important;
+            }
+
+            .set-input {
+                background: #334155 !important;
+
+                h4 {
+                    color: #2b92bb !important;
+                }
+
+                ion-item {
+                    --background: #475569 !important;
+                    background: #475569 !important;
+                    --color: #f1f5f9 !important;
+
+                    ion-label {
+                        color: #f1f5f9 !important;
+                    }
+
+                    ion-input {
+                        --color: #f1f5f9 !important;
+                        --placeholder-color: #94a3b8 !important;
+
+                        .text-input {
+                            color: #f1f5f9 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Light theme
+    &.light-theme {
+        .scroll-content {
+            background: #f1f5f9 !important;
+        }
+
+        .score-input-container {
+            h3 {
+                color: #154766 !important;
+            }
+
+            .set-input {
+                background: #f8f8f8 !important;
+
+                h4 {
+                    color: #2b92bb !important;
+                }
+
+                ion-item {
+                    --background: white !important;
+                    background: white !important;
+                    --color: #2c3e50 !important;
+
+                    ion-label {
+                        color: #2c3e50 !important;
+                    }
+
+                    ion-input {
+                        --color: #2c3e50 !important;
+                        --placeholder-color: #7f8c8d !important;
+
+                        .text-input {
+                            color: #2c3e50 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
     .scroll-content {
         background-image: none !important;
     }
@@ -49,4 +131,33 @@ page-tennis-score-input {
             }
         }
     }
+
+    // Footer styling
+  ion-footer {
+    --background: #ffffff;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0;
+    
+    .timekare-primary-btn {
+      background: #2b92bb;
+      color: white;
+      font-weight: 500;
+    }
+  }
+
+  // Dark theme for footer
+  &:not(.light-theme),
+  .dark-theme {
+    ion-footer {
+      --background: #1e293b !important;
+      background: #1e293b !important;
+      border-top: 1px solid #475569;
+      
+      .timekare-primary-btn {
+        background: #2b92bb;
+        color: white;
+      }
+    }
+  }
+
 }

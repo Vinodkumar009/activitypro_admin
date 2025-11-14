@@ -29,6 +29,7 @@ import { GraphqlService } from "../services/graphql.service";
 import { CommonService } from "../services/common.service";
 import { CommonLeagueService } from "../pages/type2/league/commonleague.service";
 import { ThemeService } from "../services/theme.service";
+import { HttpService } from "../services/http.service";
   
        
 
@@ -72,6 +73,7 @@ import { ThemeService } from "../services/theme.service";
     CommonService,
     CommonLeagueService,
     ThemeService,
+    HttpService,
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,

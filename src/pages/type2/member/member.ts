@@ -14,11 +14,14 @@ import { GraphqlService } from '../../../services/graphql.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { IClubDetails } from '../../../shared/model/club.model';
+import { UserCountResponseModel, UserCountModel } from '../../../shared/model/user-count.model';
+import { HttpService } from '../../../services/http.service';
+import { API } from '../../../shared/constants/api_constants';
 @IonicPage()
 @Component({
   selector: 'member-page',
   templateUrl: 'member.html',
-  providers:[GraphqlService]
+  providers:[GraphqlService, HttpService]
 })
 
 export class Type2Member {
@@ -65,6 +68,7 @@ export class Type2Member {
   loggedin_type:number = 2;
   can_coach_see_revenue:boolean = true;
   isDarkTheme: boolean = true;
+  venue_member_stats: UserCountModel = null;
   constructor(public events: Events, 
      private callNumber: CallNumber,
      public commonService: CommonService, 
@@ -73,7 +77,8 @@ export class Type2Member {
      public storage: Storage, public navCtrl: NavController, 
      public sharedservice: SharedServices, 
      public fb: FirebaseService, public popoverCtrl: PopoverController,
-      private graphqlService:GraphqlService) {
+      private graphqlService:GraphqlService,
+      private httpService: HttpService) {
       this.themeType = sharedservice.getThemeType();
       this.selectedIndex = -1;
       this.selectedIndexOfHolidayCampMember = -1;
@@ -118,19 +123,26 @@ export class Type2Member {
   }
 
   getTotalMembers(): number {
-    return this.members.length;
-  }
-
-  getActiveMembers(): number {
-    return this.members.filter(member => member.is_enable).length;
+    if (!this.venue_member_stats || !this.selectedClubKey) return 0;
+    const clubStats = this.venue_member_stats.club.find(club => club.club === this.selectedClubKey);
+    return clubStats ? clubStats.total_count : 0;
   }
 
   getMemberCount(): number {
-    return this.members.filter(member => member.is_enable === true).length;
+    if (!this.venue_member_stats || !this.selectedClubKey) return 0;
+    const clubStats = this.venue_member_stats.club.find(club => club.club === this.selectedClubKey);
+    return clubStats ? clubStats.member_status_count : 0;
   }
 
   getNonMemberCount(): number {
-    return this.members.filter(member => member.is_enable === false).length;
+    if (!this.venue_member_stats || !this.selectedClubKey) return 0;
+    const clubStats = this.venue_member_stats.club.find(club => club.club === this.selectedClubKey);
+    return clubStats ? clubStats.non_member_status_count : 0;
+  }
+
+  getSelectedClubName(): string {
+    const selectedClub = this.clubs.find(club => club.Id === this.selectedClubKey);
+    return selectedClub ? selectedClub.ClubName : '';
   }
 
   //added by vinod
@@ -324,8 +336,6 @@ export class Type2Member {
     });   
   }
 
-
-
   goToDashboardMenuPage() {
     this.navCtrl.setRoot("Dashboard");
   }
@@ -364,35 +374,6 @@ export class Type2Member {
   
   getClubDetails() {
     try{
-    //   const clubQuery = gql`
-    //   query getParentClubVenues($firebase_parentclubId:String!) {
-    //     getParentClubVenues(firebase_parentclubId:$firebase_parentclubId){
-    //       Id
-    //       City
-    //       ClubContactName
-    //       ClubName
-    //       ClubShortName
-    //       CountryName
-    //       PostCode
-    //       ContactPhone
-    //       ClubDescription
-    //       sequence
-    //       FirebaseId
-    //     }
-    //   }
-    // `;
-    // this.graphqlService.query(clubQuery,{firebase_parentclubId:this.selectedParentClubKey},0).subscribe(({data}) => {
-    //     this.clubs = JSON.parse(JSON.stringify(data["getParentClubVenues"] as Club[]));
-    //     console.table('clubs data' + data["getParentClubVenues"]);
-    //     if(this.clubs.length > 0){
-    //       this.selectedClubKey = this.clubs[0].Id;
-    //       this.venus_user_input.club_id = this.selectedClubKey;
-    //       this.members = [];
-    //       this.getParentClubUsers();
-    //     } 
-    //   },(err)=>{
-    //     this.commonService.toastMessage("Clubs fetch failed",3000,ToastMessageType.Error,ToastPlacement.Bottom);
-    //   });  
     const clubs_input = {
       parentclub_id:this.sharedservice.getPostgreParentClubId(),
       user_postgre_metadata:{
@@ -422,6 +403,7 @@ export class Type2Member {
             this.venus_user_input.club_id = this.selectedClubKey;
             this.members = [];
             this.getParentClubUsers(1);
+            this.getUserCount();
           }else{
             this.commonService.toastMessage("No clubs found",3000,ToastMessageType.Error,ToastPlacement.Bottom);
           } 
@@ -438,6 +420,24 @@ export class Type2Member {
 
   }
 
+  getUserCount() {
+    const parentclub = this.sharedservice.getPostgreParentClubId();
+    this.httpService.get<UserCountResponseModel>(`${API.GET_USER_COUNT}/${parentclub}`)
+      .subscribe({
+        next: (res) => {
+          this.venue_member_stats = res.data;
+        },
+        error: (err) => {
+          console.error('Error fetching user count:', err);
+          if (err && err.error && err.error.message) {
+            this.commonService.toastMessage(err.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          } else {
+            this.commonService.toastMessage('Failed to fetch user count', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+        }
+      });
+  }
+
 
   
   venueSelected() {
@@ -448,6 +448,10 @@ export class Type2Member {
     this.venus_user_input.club_id = this.selectedClubKey;
     //this.members = [];
     this.getParentClubUsers(2);
+    // Update stats when venue changes
+    if (!this.venue_member_stats) {
+      this.getUserCount();
+    }
   }
 
 
@@ -473,7 +477,6 @@ export class Type2Member {
   
 
   doInfinite(infiniteScroll) {
-    
     this.venus_user_input.offset+=this.venus_user_input.limit
     //this.venus_user_input.searchterm = "";
     this.getParentClubUsers(1);
@@ -891,6 +894,8 @@ export class Type2Member {
   gotoSendNotification(type:number) {
       this.navCtrl.push("Filternotification");
   }
+
+  
 
   ionViewWillLeave() { //unsbscribe all subscription to avoid all unnecessary data leaks
     this.events.unsubscribe("theme:changed");

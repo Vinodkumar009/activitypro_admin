@@ -189,11 +189,11 @@
   </ion-list>
 </ion-content>
 
-<ion-footer>
+<ion-footer [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <button ion-button large block class="createbutton" (click)="createMatchConfirm()">
+        <button ion-button block class="timekare-primary-btn" (click)="createMatchConfirm()">
           Create
         </button>
       </ion-col>

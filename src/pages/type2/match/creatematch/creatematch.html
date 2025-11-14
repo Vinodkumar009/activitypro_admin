@@ -18,45 +18,41 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
   <ion-list>
     <ion-item>
       <ion-label>Match Title</ion-label>
       <ion-input type="text" [(ngModel)]="createMatchInput.MatchTitle"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label>Venue</ion-label>
       <ion-select (ionChange)="onChangeOfClub()" [(ngModel)]="selectedClub">
         <ion-option *ngFor="let club of clubs" value="{{club.Id}}">{{club.ClubName}}</ion-option>
       </ion-select>
     </ion-item>
+
     <ion-item>
       <ion-label>Activity</ion-label>
       <ion-select [(ngModel)]="activityId">
         <ion-option *ngFor="let type of activities" value="{{type.id}}">{{type.activity_name}}</ion-option>
       </ion-select>
     </ion-item>
-    <!-- <ion-item>
-      <ion-label>Match Type</ion-label>
-      <ion-select [(ngModel)]="createMatchInput.MatchType">
-        <ion-option value="0">Singles</ion-option>
-        <ion-option value="1">Doubles</ion-option>
-        <ion-option value="2">Team</ion-option>
-      </ion-select>
-    </ion-item> -->
+
     <ion-item>
       <ion-label>Match Type</ion-label>
       <ion-select [(ngModel)]="createMatchInput.MatchType">
         <ion-option *ngFor="let type of leagueType" [value]="type.value">{{type.key}}</ion-option>
       </ion-select>
     </ion-item>
+
     <ion-item>
       <ion-label>Round/Stage/Type</ion-label>
       <ion-select [(ngModel)]="createMatchInput.Round">
         <ion-option *ngFor="let roundType of roundTypes" [value]="roundType.id">{{roundType.name}}</ion-option>
       </ion-select>
     </ion-item>
+
     <ion-item>
       <ion-label>Date</ion-label>
       <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="startDate"
@@ -76,7 +72,6 @@
         <ion-option value="1">Ladies</ion-option>
         <ion-option value="2">Boys</ion-option>
         <ion-option value="3">Girls</ion-option>
-        <!-- <ion-option value="hawaii">Ladies</ion-option> -->
       </ion-select>
     </ion-item>
 
@@ -115,36 +110,35 @@
       </ion-row>
     </ion-item>
 
-    <ion-item *ngIf="this.createMatchInput.MatchPaymentType==1" class="allign-right">
+    <ion-item *ngIf="this.createMatchInput.MatchPaymentType==1">
       <ion-label fixed>Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
-        [(ngModel)]="createMatchInput.MemberFees" ></ion-input>
+        [(ngModel)]="createMatchInput.MemberFees"></ion-input>
     </ion-item>
 
-    <ion-item *ngIf="this.createMatchInput.MatchPaymentType==1" class="allign-right">
+    <ion-item *ngIf="this.createMatchInput.MatchPaymentType==1">
       <ion-label>Non Member Fee
         <span *ngIf="currency != undefined">({{currency}})</span>
       </ion-label>
       <ion-input type="number" class="textareastyle" 
         [(ngModel)]="createMatchInput.NonMemberFees"></ion-input>
     </ion-item>
-  </ion-list>
 
-  <ion-item>
-    <!-- <ion-label floating style="padding-left: 10px">Match Description</ion-label> -->
-    <ion-textarea type="text" rows="5" class="textareastyle" [(ngModel)]="createMatchInput.MatchDetails"
-      placeholder="Description"></ion-textarea>
-  </ion-item>
+    <ion-item>
+      <ion-textarea type="text" rows="5" [(ngModel)]="createMatchInput.MatchDetails"
+        placeholder="Description"></ion-textarea>
+    </ion-item>
+  </ion-list>
 
 </ion-content>
 
-<ion-footer>
+<ion-footer [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <button ion-button large block class="createbutton" (click)="saveMatchDetails()">
+        <button ion-button block class="timekare-primary-btn" (click)="saveMatchDetails()">
           Create
         </button>
       </ion-col>

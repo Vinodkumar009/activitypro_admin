@@ -1,8 +1,8 @@
 @import "../_league-theme.scss";
-
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-teamsquad {
   @include league-theme-base;
-
+  @include android-sdk35-fixes;
   // .scroll-content {
   // //  background-color: #f7f7f7;
   //   // background: #F5F5F5;

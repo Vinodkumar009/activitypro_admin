@@ -1,58 +1,90 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Membership</ion-title>
+  <ion-navbar class="modern-navbar">
+    <ion-title class="navbar-title">Membership</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-row [ngStyle]="{'margin-top.px': this.platform=='ios' ? 30 : 0 }">
-    <ion-col col-12 no-padding>
-      <ion-item style="border-bottom: 1px solid #fbc686;">
-        <ion-select class="maxwidthionselect" [(ngModel)]="selectedClubKey" (ionChange)="getSetupByVenue()">
+<ion-content class="membership-page">
+  <div class="page-container">
+    <!-- Sticky Header -->
+    <div class="sticky-header">
+      <!-- Modern Club Selector -->
+      <div class="modern-selector-card">
+        <div class="selector-header">
+          <ion-icon name="business" class="selector-icon"></ion-icon>
+          <span class="selector-label">Select Venue</span>
+        </div>
+        <ion-select class="modern-select" [(ngModel)]="selectedClubKey" (ionChange)="getSetupByVenue()">
           <ion-option *ngFor="let club of Venues" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
         </ion-select>
-      </ion-item>
+      </div>
 
-      <ion-row style="color: rgba(0, 0, 0, 0.65);background: white;border-bottom: 1px solid orange;" (click)="gotoDets(membership,1)">
-        <ion-col col-10 style="margin: auto;">
-          <p style="margin: 12px 10px;">Membership Renewals</p>
-        </ion-col>
-        <ion-col col-2 style="display: flex;align-items: center;justify-content: space-around">
-          <p style="font-size: 1.3em;font-weight: 400;color: rgba(0, 0, 0, 55)">{{renewal_count}}</p>
-          <ion-icon style="font-size: 1.5em;" name="ios-arrow-forward"></ion-icon>
-        </ion-col>
-      </ion-row>
-    
-      <ion-list *ngIf="SetupDisplay">
-        <ion-card class="facilityCard seession-cards" style="border-radius:0px !important;"
-          *ngFor="let membership of SetupDisplay">
-          <ion-card-header style="padding: 0 !important;white-space: normal;">
-            <ion-row style="margin:0px 0px 5px 0px;">
-              <ion-col col-10 class="mar-auto-all pad-left-15" (click)="gotoDets(membership,2)">
-                <p class="mar0 eventname">{{membership.membership_name}}</p>
-              </ion-col>
-              <ion-col col-2>
-                <!-- <ion-icon (click)="gotoHistory(membership)" class="history" name="md-menu"></ion-icon> -->
-              </ion-col>
-            </ion-row>
-          </ion-card-header>
-          <ion-card-content (click)="gotoDets(membership,2)">
-            <ion-row>
-              <ion-col col-8 style="padding-top:0px;">
-                <p class="p1" style="font-size: 15px;color: rgba(0, 0, 0, 0.65);margin-top: 0px;">
-                 <span *ngIf="membership.monthly">{{membership.monthly_price}},</span>
-                 <span *ngIf="membership.yearly">{{membership.yearly_price}}</span>
-                </p>
-              </ion-col>
-              <ion-col col-4 style="padding-top:0px;">
-                <div class="circle" float-right>
-                  <p class="paidmembercount">{{membership.membership_member_count}}</p>
+      <!-- Modern Renewals Card -->
+      <div class="modern-renewal-card" (click)="gotoDets(membership,1); $event.stopPropagation()">
+        <div class="renewal-content">
+          <div class="renewal-info">
+            <div class="renewal-icon-wrapper">
+              <ion-icon name="refresh-circle" class="renewal-icon"></ion-icon>
+            </div>
+            <div class="renewal-text">
+              <h3 class="renewal-title">Membership Renewals</h3>
+              <p class="renewal-subtitle">View pending renewals</p>
+            </div>
+          </div>
+          <div class="renewal-stats">
+            <div class="renewal-count">{{renewal_count}}</div>
+            <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div class="scrollable-content">
+      <!-- Modern Membership Cards -->
+      <div class="memberships-container" *ngIf="SetupDisplay">
+        <div class="modern-membership-card" *ngFor="let membership of SetupDisplay" (click)="gotoDets(membership,2)">
+          <ion-row>
+            <ion-col col-9>
+              <div class="membership-content">
+                <div class="membership-icon-wrapper">
+                  <ion-icon name="card" class="membership-icon"></ion-icon>
                 </div>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-list>
-    </ion-col>
-  </ion-row>
+                <div class="membership-info">
+                  <h3 class="membership-title">{{membership.membership_name}}</h3>
+                  <div class="membership-pricing">
+                    <span class="price-item" *ngIf="membership.monthly">
+                      <ion-icon name="calendar" class="price-icon"></ion-icon>
+                      Monthly: {{membership.monthly_price}}
+                    </span>
+                    <span class="price-item" *ngIf="membership.yearly">
+                      <ion-icon name="calendar" class="price-icon"></ion-icon>
+                      Yearly: {{membership.yearly_price}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+            <ion-col col-3>
+              <div class="membership-stats">
+                <div class="member-count-circle">
+                  <div class="count-number">{{membership.membership_member_count}}</div>
+                  <div class="count-label">Members</div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="!SetupDisplay || SetupDisplay.length === 0">
+        <div class="empty-content">
+          <ion-icon name="card-outline" class="empty-icon"></ion-icon>
+          <h3 class="empty-title">No Memberships Found</h3>
+          <p class="empty-description">No active memberships available for this venue</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

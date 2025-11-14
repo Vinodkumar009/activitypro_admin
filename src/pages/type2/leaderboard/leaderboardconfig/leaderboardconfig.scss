@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-leaderboardconfig {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         background-size: 100% 100%;
         margin-top: 57px;
@@ -28,5 +34,4 @@ page-leaderboardconfig {
             color:#222;
         }
     }
-
 }

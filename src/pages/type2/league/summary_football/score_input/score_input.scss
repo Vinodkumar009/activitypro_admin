@@ -1,6 +1,253 @@
 @import "../../_league-theme.scss";
+@import '../../../../../theme/android-sdk35-fixes.scss';
+page-score-input {
+  @include android-sdk35-fixes;
 
-page-score_input {
+  // Dark theme
+  &:not(.light-theme) {
+    .scroll-content {
+      background: #1e293b !important;
+    }
+
+    .loading-container {
+      color: #94a3b8 !important;
+
+      p {
+        color: #94a3b8 !important;
+      }
+    }
+
+    .no-goals-container {
+      color: #94a3b8 !important;
+
+      .no-goals-icon {
+        color: #64748b !important;
+      }
+
+      h3 {
+        color: #f1f5f9 !important;
+      }
+
+      p {
+        color: #94a3b8 !important;
+      }
+    }
+
+    .team-header {
+      background: #334155 !important;
+      border-color: #475569 !important;
+
+      ion-icon {
+        color: #f1f5f9 !important;
+      }
+
+      h4 {
+        color: #f1f5f9 !important;
+      }
+    }
+
+    .goal-card {
+      background: #334155 !important;
+      border-color: #475569 !important;
+
+      &.completed {
+        border-color: #2b92bb !important;
+        background: #1e293b !important;
+      }
+    }
+
+    .goal-header {
+      border-bottom-color: #475569 !important;
+
+      .goal-number {
+        ion-icon {
+          color: #94a3b8 !important;
+
+          &.completed-icon {
+            color: #2b92bb !important;
+          }
+        }
+
+        span {
+          color: #f1f5f9 !important;
+        }
+      }
+    }
+
+    .input-group {
+      .item-md {
+        background: #475569 !important;
+        border-color: #64748b !important;
+
+        &.item-has-focus {
+          border-color: #2b92bb !important;
+        }
+      }
+
+      ion-label[stacked] {
+        color: #f1f5f9 !important;
+      }
+
+      ion-select,
+      ion-input,
+      ion-datetime {
+        color: #f1f5f9 !important;
+      }
+
+      .select-placeholder {
+        color: #94a3b8 !important;
+      }
+
+      .goal-datetime {
+        .datetime-text {
+          color: #f1f5f9 !important;
+        }
+
+        .datetime-placeholder {
+          color: #94a3b8 !important;
+        }
+
+        &[disabled] {
+          .datetime-text,
+          .datetime-placeholder {
+            color: #64748b !important;
+          }
+        }
+      }
+    }
+
+    .goal-summary {
+      background: #1e293b !important;
+      border-left-color: #2b92bb !important;
+
+      span {
+        color: #f1f5f9 !important;
+      }
+    }
+  }
+
+  // Light theme
+  &.light-theme {
+    .scroll-content {
+      background: #ffffff !important;
+    }
+
+    .loading-container {
+      color: #666 !important;
+
+      p {
+        color: #666 !important;
+      }
+    }
+
+    .no-goals-container {
+      color: #666 !important;
+
+      .no-goals-icon {
+        color: #ccc !important;
+      }
+
+      h3 {
+        color: #333 !important;
+      }
+
+      p {
+        color: #666 !important;
+      }
+    }
+
+    .team-header {
+      background: #f8f9fa !important;
+      border-color: #e9ecef !important;
+
+      ion-icon {
+        color: #495057 !important;
+      }
+
+      h4 {
+        color: #495057 !important;
+      }
+    }
+
+    .goal-card {
+      background: #ffffff !important;
+      border-color: #e9ecef !important;
+
+      &.completed {
+        border-color: #28a745 !important;
+        background: #f8fff9 !important;
+      }
+    }
+
+    .goal-header {
+      border-bottom-color: #e9ecef !important;
+
+      .goal-number {
+        ion-icon {
+          color: #6c757d !important;
+
+          &.completed-icon {
+            color: #28a745 !important;
+          }
+        }
+
+        span {
+          color: #495057 !important;
+        }
+      }
+    }
+
+    .input-group {
+      .item-md {
+        background: #ffffff !important;
+        border-color: #ced4da !important;
+
+        &.item-has-focus {
+          border-color: #495057 !important;
+        }
+      }
+
+      ion-label[stacked] {
+        color: #495057 !important;
+      }
+
+      ion-select,
+      ion-input,
+      ion-datetime {
+        color: #495057 !important;
+      }
+
+      .select-placeholder {
+        color: #6c757d !important;
+      }
+
+      .goal-datetime {
+        .datetime-text {
+          color: #495057 !important;
+        }
+
+        .datetime-placeholder {
+          color: #6c757d !important;
+        }
+
+        &[disabled] {
+          .datetime-text,
+          .datetime-placeholder {
+            color: #adb5bd !important;
+          }
+        }
+      }
+    }
+
+    .goal-summary {
+      background: #d4edda !important;
+      border-left-color: #28a745 !important;
+
+      span {
+        color: #155724 !important;
+      }
+    }
+  }
   .scroll-content {
     background-image: none !important;
   }
@@ -265,11 +512,31 @@ page-score_input {
     }
   }
 
-  // Footer button styles remain unchanged
-  .foobtn {
-    background-color: #5be283;
-    height: 3.6rem;
-    font-size: 1.4rem;
-    color: white;
+ // Footer styling
+  ion-footer {
+    --background: #ffffff;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0;
+    
+    .timekare-primary-btn {
+      background: #2b92bb;
+      color: white;
+      font-weight: 500;
+    }
+  }
+
+  // Dark theme for footer
+  &:not(.light-theme),
+  .dark-theme {
+    ion-footer {
+      --background: #1e293b !important;
+      background: #1e293b !important;
+      border-top: 1px solid #475569;
+      
+      .timekare-primary-btn {
+        background: #2b92bb;
+        color: white;
+      }
+    }
   }
 }

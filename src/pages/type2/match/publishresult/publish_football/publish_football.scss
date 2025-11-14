@@ -1,5 +1,6 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
 page-publish_football {
-
+@include android-sdk35-fixes;
   ion-select {
     max-width: none !important;
   }

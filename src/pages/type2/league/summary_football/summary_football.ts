@@ -1797,10 +1797,14 @@ export class SummaryFootballPage implements AfterViewInit {
     };
   }
 
+  getDefaultTeamLogo(): string {  
+    return 'https://d2ert9om2cv970.cloudfront.net/team/78c25502-a302-4276-9460-2114db73de03/default_team.png';
+  }
+
   onHomePossessionChange(): void {
     const homeValue = parseFloat(this.homePoss);
     if (!isNaN(homeValue) && homeValue >= 0 && homeValue <= 100) {
-      this.awayPoss = (100 - homeValue).toFixed(2);
+      this.awayPoss = Math.round(100 - homeValue).toString();
       if (this.result_json && this.result_json.HOME_TEAM && this.result_json.AWAY_TEAM) {
         this.result_json.HOME_TEAM.BALL_POSSESSION = this.homePoss;
         this.result_json.AWAY_TEAM.BALL_POSSESSION = this.awayPoss;
@@ -1814,7 +1818,7 @@ export class SummaryFootballPage implements AfterViewInit {
   onAwayPossessionChange(): void {
     const awayValue = parseFloat(this.awayPoss);
     if (!isNaN(awayValue) && awayValue >= 0 && awayValue <= 100) {
-      this.homePoss = (100 - awayValue).toFixed(2);
+      this.homePoss = Math.round(100 - awayValue).toString();
       if (this.result_json && this.result_json.HOME_TEAM && this.result_json.AWAY_TEAM) {
         this.result_json.HOME_TEAM.BALL_POSSESSION = this.homePoss;
         this.result_json.AWAY_TEAM.BALL_POSSESSION = this.awayPoss;
@@ -1849,11 +1853,11 @@ export class SummaryFootballPage implements AfterViewInit {
     if (this.isLeague) {
       return (this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.logo_url)
         ? this.homeTeamObj.parentclubteam.logo_url
-        : 'assets/imgs/default-team-logo.png';
+        : this.getDefaultTeamLogo();
     } else {
       return (this.hometeamMatchObj && this.hometeamMatchObj.logo_url)
         ? this.hometeamMatchObj.logo_url
-        : 'assets/imgs/default-team-logo.png';
+        : this.getDefaultTeamLogo();
     }
   }
 
@@ -1861,11 +1865,11 @@ export class SummaryFootballPage implements AfterViewInit {
     if (this.isLeague) {
       return (this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.logo_url)
         ? this.awayTeamObj.parentclubteam.logo_url
-        : 'assets/imgs/default-team-logo.png';
+        : this.getDefaultTeamLogo();;
     } else {
       return (this.awayteamMatchObj && this.awayteamMatchObj.logo_url)
         ? this.awayteamMatchObj.logo_url
-        : 'assets/imgs/default-team-logo.png';
+        : this.getDefaultTeamLogo();;
     }
   }
 

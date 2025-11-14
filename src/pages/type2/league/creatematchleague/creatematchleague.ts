@@ -132,6 +132,7 @@ export class CreatematchleaguePage {
   location_type: number;
   activityId: string;
   postgre_parentclub_id: string;
+  currency: string = '£';
   constructor(
     public alertCtrl: AlertController,
     public navCtrl: NavController,
@@ -170,13 +171,9 @@ export class CreatematchleaguePage {
     this.inputObj.user_device_metadata.UserActionType = 0;
     this.inputObj.user_device_metadata.UserAppType = 0;
     this.inputObj.user_device_metadata.UserDeviceType = this.sharedservice.getPlatform() == "android" ? 1 : 2;
-
-    this.inputObj.CreatedBy = this.sharedservice.getLoggedInId();
-
+    this.inputObj.CreatedBy = this.sharedservice.getLoggedInUserId();
     this.inputObj.LeagueId = this.leagueId;
-
     this.inputObj.match_type = +this.navParams.get("league_type");
-
     const inputFormat = 'DD-MMM-YYYY, ddd';
 
     if (this.leagueStartDate) {
@@ -197,9 +194,10 @@ export class CreatematchleaguePage {
 
 
   async getLoggedInData() {
-    const [login_obj, postgre_parentclub] = await Promise.all([
+    const [login_obj, postgre_parentclub,currency_dets] = await Promise.all([
       this.storage.get('userObj'),
       this.storage.get('postgre_parentclub'),
+      this.storage.get('Currency')
     ])
 
     if (login_obj) {
@@ -221,6 +219,10 @@ export class CreatematchleaguePage {
       this.getClubVenues();
     }
 
+    if(currency_dets){
+      const currencyObj = JSON.parse(currency_dets);
+      this.currency = currencyObj.CurrencySymbol;
+    }
   }
 
   goToDashboardMenuPage() {

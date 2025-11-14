@@ -218,12 +218,7 @@ export class EditleaguePage {
         this.getLeagueType();
       }
     });
-
-
-
   }
-
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditleaguePage');

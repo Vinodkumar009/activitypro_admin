@@ -1,13 +1,25 @@
 @import "../_league-theme.scss";
-
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-leaguedetails {
   @include league-theme-base;
-
+  @include android-sdk35-fixes;
   // Enhanced theme support for specific elements
   &.light-theme {
     .modern-match-card {
       background: #ffffff !important;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+      border-color: #e5e7eb !important;
+    }
+
+    .match-card-header,
+    .match-card-footer {
+      background: #f9fafb !important;
+      border-color: #e5e7eb !important;
+    }
+
+    .team-name {
+      background: #f9fafb !important;
+      border-color: #e5e7eb !important;
+      color: #374151 !important;
     }
 
     .facilityCard {
@@ -61,7 +73,32 @@ page-leaguedetails {
   // Dark theme specific overrides
   .modern-match-card {
     background: #1e293b !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    border-color: #374151 !important;
+  }
+
+  .match-card-header,
+  .match-card-footer {
+    background: #374151 !important;
+    border-color: #475569 !important;
+  }
+
+  .match-card-header .match-title h3 {
+    color: #f1f5f9 !important;
+  }
+
+  .match-card-header .match-date {
+    color: #cbd5e1 !important;
+  }
+
+  .team-name {
+    background: #374151 !important;
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+  }
+
+  .result-status,
+  .visibility-info {
+    color: #cbd5e1 !important;
   }
 
   .facilityCard {
@@ -554,14 +591,14 @@ page-leaguedetails {
   }
 
   .fabEmailText {
-    margin-left: -115px;
+    margin-left: -152px;
     background-color: #2b92bb;
     margin-top: -47px;
     padding: 5px 12px 5px 11px;
     margin-bottom: 5px;
     color: #ffffff;
     border-radius: 3px;
-    margin-right: 36px;
+    margin-right: 50px;
     -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
   }
@@ -701,282 +738,219 @@ page-leaguedetails {
     display: inline;
   }
 
-  //**here styling of match card started
+  // New clean match card design
   .modern-match-card {
-    background: white;
-    border-radius: 16px;
-    margin: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    background: #ffffff;
+    border-radius: 8px;
+    margin: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
+    position: relative;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+    }
+
+    // Different card styles based on status
+    &.match-completed {
+      border-left: 4px solid #10b981;
+      background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    }
+
+    &.match-pending {
+      border-left: 4px solid #f59e0b;
+      background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+    }
+
+    &.match-paid {
+      border-top: 2px solid #2b92bb;
+    }
+
+    &.match-private {
+      background: linear-gradient(135deg, #fef7ff 0%, #ffffff 100%);
+      border-color: #d8b4fe;
     }
   }
 
   .match-card-header {
-    background: linear-gradient(135deg, #3fbcd3 0%, #2b92bb 100%);
-    color: white;
-    padding: 10px 10px;
+    background: #f9fafb;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
+
+    .modern-match-card.match-completed & {
+      background: linear-gradient(135deg, #ecfdf5 0%, #f9fafb 100%);
+    }
+
+    .modern-match-card.match-pending & {
+      background: linear-gradient(135deg, #fffbeb 0%, #f9fafb 100%);
+    }
+
+    .modern-match-card.match-private & {
+      background: linear-gradient(135deg, #faf5ff 0%, #f9fafb 100%);
+    }
 
     .match-date {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      opacity: 0.9;
-      margin-bottom: 8px;
+      gap: 4px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #6b7280;
 
       ion-icon {
-        font-size: 16px;
+        font-size: 14px;
+        color: #2b92bb;
       }
     }
 
     .match-title {
       h3 {
         margin: 0;
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 600;
-        line-height: 1.3;
+        color: #374151;
       }
     }
 
-    .match-round {
-      position: absolute;
-      top: 16px;
-      right: 20px;
+    .match-badges {
+      display: flex;
+      gap: 6px;
 
       .round-badge {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 12px;
+        background: #e5e7eb;
+        color: #374151;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 10px;
         font-weight: 500;
       }
-    }
-
-    .payment-type {
-      position: absolute;
-      top: 45px;
-      right: 20px;
 
       .payment-badge {
-        padding: 4px 8px;
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 500;
 
         &.paid {
-          background: #e8f5e8;
-          color: #2e7d32;
+          background: #2b92bb;
+          color: white;
+          font-weight: 600;
+          box-shadow: 0 1px 2px rgba(43, 146, 187, 0.3);
         }
 
         &.free {
-          background: #fff3e0;
-          color: #f57c00;
+          background: #f59e0b;
+          color: white;
+          font-weight: 600;
+          box-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
         }
       }
     }
-
   }
 
   .match-card-content {
-    padding: 15px 5px;
+    padding: 12px;
   }
 
   .match-teams {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 8px;
+    margin-bottom: 12px;
 
     .team-section {
       flex: 1;
       text-align: center;
 
-      &.home {
-        text-align: right;
-      }
-
-      &.away {
-        text-align: left;
-      }
-
       .team-name {
-        font-size: 16px;
-        font-weight: 600;
-        color: #2c3e50;
-        padding: 12px 12px;
-        background: #f8f9fa;
-        border-radius: 12px;
-        border: 2px solid transparent;
-        transition: all 0.2s ease;
+        font-size: 13px;
+        font-weight: 500;
+        color: #374151;
+        padding: 8px 6px;
+        background: #f9fafb;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
 
         &.tbd-text {
-          color: #f39c12;
-          background: #fff8e1;
-          border-color: #f39c12;
+          color: #d97706;
+          background: #fef3c7;
+          border-color: #fbbf24;
           font-style: italic;
+        }
+
+        ion-icon {
+          font-size: 14px;
+          color: #fbbf24;
         }
       }
     }
 
     .vs-section {
       .vs-text {
-        background: #3fbcd3;
+        background: #2b92bb;
         color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
+        padding: 4px 8px;
+        border-radius: 12px;
         font-weight: 600;
-        font-size: 14px;
-      }
-    }
-  }
-
-  .match-result {
-    .result-teams {
-      margin-bottom: 20px;
-
-      .team-result {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 16px;
-        margin-bottom: 8px;
-        background: #f8f9fa;
-        border-radius: 12px;
-
-        &.winner {
-          background: linear-gradient(135deg, #fff8e1 0%, #ffeaa7 100%);
-          border-left: 4px solid #f39c12;
-        }
-
-        .team-name {
-          font-weight: 600;
-          color: #2c3e50;
-        }
-
-        .winner-trophy {
-          color: #f39c12;
-          font-size: 18px;
-        }
-      }
-
-      .result-divider {
-        height: 1px;
-        background: #e9ecef;
-        margin: 8px 0;
-      }
-    }
-
-    .match-scores {
-      .scores-section {
-        background: #f8f9fa;
-        border-radius: 12px;
-        padding: 16px;
-        text-align: center;
-
-        .score-row {
-          display: flex;
-          justify-content: space-around;
-          margin-bottom: 8px;
-
-          &.away {
-            margin-top: 8px;
-            margin-bottom: 0;
-          }
-
-          .score-item {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 14px;
-            background: white;
-            color: #7f8c8d;
-            min-width: 30px;
-
-            &.highlight {
-              background: #3fbcd3;
-              color: white;
-              font-weight: 600;
-            }
-          }
-        }
-
-        .score-label {
-          font-size: 12px;
-          color: #7f8c8d;
-          margin: 8px 0;
-          font-weight: 500;
-        }
-      }
-    }
-
-    .pending-decision {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 16px;
-      background: #fff8e1;
-      border-radius: 12px;
-      color: #f39c12;
-      font-weight: 500;
-
-      ion-icon {
-        font-size: 18px;
+        font-size: 10px;
+        box-shadow: 0 1px 2px rgba(43, 146, 187, 0.3);
       }
     }
   }
 
   .match-card-footer {
-    padding: 8px 16px;
-    background: #f8f9fa;
-    border-top: 1px solid #e9ecef;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .result-status-dropdown {
+    .result-status {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 8px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid #e9ecef;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 6px;
+      border-radius: 6px;
 
-      ion-icon {
-        font-size: 14px;
+      &.status-published {
+        color: white;
+        background: #10b981;
       }
 
-      .status-text {
+      &.status-pending {
+        color: white;
+        background: #f59e0b;
+      }
+
+      ion-icon {
         font-size: 12px;
-        font-weight: 500;
-
-        &.status-published {
-          color: #2e7d32;
-        }
-
-        &.status-pending {
-          color: #f57c00;
-        }
       }
     }
 
     .visibility-info {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 4px;
-      font-size: 14px;
-      color: #7f8c8d;
+      gap: 3px;
+      font-size: 11px;
+      color: #6b7280;
 
       ion-icon {
-        font-size: 14px;
+        font-size: 12px;
       }
     }
   }

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CommonService, ToastMessageType } from '../../../../../services/common.service';
+import { ThemeService } from '../../../../../services/theme.service';
 import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
 import { AppType } from '../../../../../shared/constants/module.constants';
@@ -15,7 +16,7 @@ import { TeamsForParentClubModel } from '../../models/team.model';
 
 @IonicPage()
 @Component({
-  selector: 'page-score_input',
+  selector: 'page-score-input',
   templateUrl: 'score_input.html',
   providers: [HttpService]
 })
@@ -80,11 +81,51 @@ export class ScoreInputPage {
     leagueTeamPlayerStatusType: 0
   }
 
+  isDarkTheme: boolean = true;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
     public storage: Storage, private httpService: HttpService, public sharedservice: SharedServices,
-    public commonService: CommonService, public alertCtrl: AlertController) {
+    public commonService: CommonService, public alertCtrl: AlertController, public events: Events,
+    public themeService: ThemeService) {
 
     this.initializeComponent();
+  }
+
+  ionViewDidLoad() {
+    this.loadTheme();
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      if (isDarkTheme !== null) {
+        this.isDarkTheme = isDarkTheme;
+      } else {
+        this.isDarkTheme = true;
+      }
+      this.applyTheme();
+    }).catch(() => {
+      this.isDarkTheme = true;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const element = document.querySelector('page-score-input');
+    if (element) {
+      if (this.isDarkTheme) {
+        element.classList.remove('light-theme');
+      } else {
+        element.classList.add('light-theme');
+      }
+    }
   }
 
   private initializeComponent(): void {

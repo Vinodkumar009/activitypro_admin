@@ -860,22 +860,23 @@ export class Dashboard {
     //     }
     //     break;
     //   }
-    //   case "Type2Member": {
-    //     if (parseInt(this.userData.RoleType) == 2) {
-    //       this.navCtrl.push("Type2Member");
-    //     } else if (parseInt(this.userData.RoleType) == 4) {
-    //       this.navCtrl.push("CoachMember");
-    //     }
-    //     break;
-    //   }
-    //   case "Type2Schedule": {
-    //     if (parseInt(this.userData.RoleType) == 2) {
-    //       this.navCtrl.push("Type2Schedule");
-    //     } else if (parseInt(this.userData.RoleType) == 4) {
-    //       this.navCtrl.push("");
-    //     }
-    //     break;
-    //   }
+      case "Type2Member": {
+        if (parseInt(this.userData.RoleType) == 2) {
+          this.navCtrl.push("Type2Member");
+        } else if (parseInt(this.userData.RoleType) == 4) {
+          this.navCtrl.push("CoachMember");
+        }
+        break;
+      }
+      case "Type2Schedule": {
+        // if (parseInt(this.userData.RoleType) == 2) {
+        //   this.navCtrl.push("Type2Schedule");
+        // } else if (parseInt(this.userData.RoleType) == 4) {
+        //   this.navCtrl.push("");
+        // }
+        this.navCtrl.push("Type2Schedule");
+        break;
+      }
     }
     // this.navCtrl.push("MenupagePage")
   }

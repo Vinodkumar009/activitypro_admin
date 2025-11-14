@@ -1,4 +1,6 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-leagueteamlisting {
+  @include android-sdk35-fixes;
   .scroll-content {
     padding: 0 !important;
   }
@@ -14,7 +16,7 @@ page-leagueteamlisting {
   }
   
   .scrollable-content {
-    margin-top: 120px;
+    margin-top: 130px;
     padding: 0 4px 20px 4px;
   }
 
@@ -49,7 +51,6 @@ page-leagueteamlisting {
       .sleek-searchbar {
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 
         .searchbar-input {
           color: #1e293b;
@@ -86,8 +87,15 @@ page-leagueteamlisting {
         border-bottom: 1px solid #e2e8f0;
 
         .card-info {
+          min-width: 0; // Important for flex items to shrink
+          padding-right: 32px; // Space for visibility badge
+          
           .card-title {
             color: #1e293b !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
           }
 
           .card-subtitle {
@@ -304,6 +312,8 @@ page-leagueteamlisting {
 
       .card-info {
         flex: 1;
+        min-width: 0; // Important for flex items to shrink
+        padding-right: 32px; // Space for visibility badge
 
         .card-title {
           font-size: 16px;
@@ -314,6 +324,7 @@ page-leagueteamlisting {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          display: block;
         }
 
         .card-subtitle {
@@ -382,7 +393,7 @@ page-leagueteamlisting {
             }
 
             .detail-text {
-              font-size: 12px;
+              font-size: 14px;
               color: #cbd5e1;
               overflow: hidden;
               text-overflow: ellipsis;

@@ -1,8 +1,8 @@
 @import "../_league-theme.scss";
-
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-summary-football {
   @include league-theme-base;
-  
+  @include android-sdk35-fixes;
   // Card theme support
   .match-header,
   .score-section,
@@ -396,36 +396,44 @@ page-summary-football {
     display: inline-block !important;
   }
 
+  // Dark theme popup (default)
   .custom-popup {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
 
     .popup-container {
-      background: white;
-      border-radius: 8px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
       width: 90%;
       max-width: 400px;
       max-height: 80%;
       overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
       .popup-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 16px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #334155;
 
-        h3 {
+        h3, p {
           margin: 0;
-          color: #333;
+          color: #f1f5f9;
+          font-weight: 600;
+          
+          span {
+            color: #f1f5f9;
+          }
         }
 
         .close-button {
@@ -433,7 +441,11 @@ page-summary-football {
           border: none;
           font-size: 24px;
           cursor: pointer;
-          color: #666;
+          color: #94a3b8;
+          
+          &:hover {
+            color: #f1f5f9;
+          }
         }
       }
 
@@ -442,10 +454,33 @@ page-summary-football {
 
         .input_item {
           margin-bottom: 12px;
+          background: #334155;
+          border-radius: 8px;
+          border: none !important;
+          box-shadow: none !important;
+          
+          ion-label {
+            color: #f1f5f9 !important;
+          }
+          
+          ion-input {
+            color: #f1f5f9 !important;
+            border: none !important;
+            box-shadow: none !important;
+            
+            .text-input {
+              color: #f1f5f9 !important;
+              border: none !important;
+              box-shadow: none !important;
+            }
+          }
 
           .textright {
             .text-input {
               text-align: right !important;
+              color: #f1f5f9 !important;
+              border: none !important;
+              box-shadow: none !important;
             }
           }
         }
@@ -455,11 +490,88 @@ page-summary-football {
         display: flex;
         justify-content: space-between;
         padding: 16px;
-        border-top: 1px solid #eee;
+        border-top: 1px solid #334155;
 
         button {
           flex: 1;
           margin: 0 8px;
+          background: #2b92bb;
+          color: white;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+  
+  // Light theme popup
+  &.light-theme {
+    .custom-popup {
+      background-color: rgba(0, 0, 0, 0.5);
+      
+      .popup-container {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+        .popup-header {
+          border-bottom: 1px solid #e2e8f0;
+
+          h3, p {
+            color: #1e293b;
+            
+            span {
+              color: #1e293b;
+            }
+          }
+
+          .close-button {
+            color: #64748b;
+            
+            &:hover {
+              color: #1e293b;
+            }
+          }
+        }
+
+        .popup-content {
+          .input_item {
+            background: #f8fafc;
+            border: none !important;
+            box-shadow: none !important;
+            
+            ion-label {
+              color: #1e293b !important;
+            }
+            
+            ion-input {
+              color: #1e293b !important;
+              border: none !important;
+              box-shadow: none !important;
+              
+              .text-input {
+                color: #1e293b !important;
+                border: none !important;
+                box-shadow: none !important;
+              }
+            }
+
+            .textright {
+              .text-input {
+                color: #1e293b !important;
+                border: none !important;
+                box-shadow: none !important;
+              }
+            }
+          }
+        }
+
+        .popup-buttons {
+          border-top: 1px solid #e2e8f0;
+
+          button {
+            background: #2b92bb;
+            color: white;
+          }
         }
       }
     }

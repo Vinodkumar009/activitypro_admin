@@ -1,4 +1,6 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-matchhistory {
+  @include android-sdk35-fixes;
   .scroll-content {
     padding: 0 !important;
   }
@@ -404,7 +406,7 @@ page-matchhistory {
             }
 
             .detail-text {
-              font-size: 12px;
+              font-size: 14px;
               color: #cbd5e1;
               overflow: hidden;
               text-overflow: ellipsis;

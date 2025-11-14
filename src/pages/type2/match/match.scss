@@ -1,7 +1,36 @@
+@import '../../../theme/android-sdk35-fixes.scss';
 page-match {
+  @include android-sdk35-fixes;
   .scroll-content {
     padding: 0 !important;
   }
+
+
+  .result-status {
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 6px;
+      border-radius: 6px;
+
+      &.status-published {
+        color: white;
+        background: #10b981;
+      }
+
+      &.status-pending {
+        color: white;
+        background: #f59e0b;
+      }
+
+      ion-icon {
+        font-size: 12px;
+      }
+    }
+
 
   // Light Theme Styles
   &.light-theme {
@@ -28,26 +57,25 @@ page-match {
       }
     }
 
-    .modern-search-card {
-      .sleek-searchbar {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    .compact-search-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
 
+      .sleek-searchbar {
         .searchbar-input {
-          color: #1e293b;
+          color: #1e293b !important;
 
           &::placeholder {
-            color: #64748b;
+            color: #64748b !important;
           }
         }
 
         .searchbar-search-icon {
-          color: #64748b;
+          background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(100, 116, 139, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(100, 116, 139, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
         }
 
         .searchbar-clear-icon {
-          color: #64748b;
+          background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(100, 116, 139, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
         }
       }
     }
@@ -196,36 +224,48 @@ page-match {
     }
   }
 
-  .modern-search-card {
+  .compact-search-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
     margin: 0 4px 12px 4px;
 
+    .search-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .sleek-searchbar {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 8px;
+      flex: 1;
+      padding: 0;
       margin: 0;
+      min-height: 36px;
+      background: transparent;
+      border: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
 
       .searchbar-input {
-        background: transparent;
-        border: none;
-        color: #f1f5f9;
-        padding: 8px 12px 8px 32px;
-        font-size: 14px;
+        color: #f1f5f9 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        border: none !important;
+        border-bottom: none !important;
 
         &::placeholder {
-          color: #94a3b8;
+          color: #94a3b8 !important;
         }
       }
 
       .searchbar-search-icon {
-        color: #94a3b8;
-        left: 8px;
-        font-size: 16px;
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(148, 163, 184, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(148, 163, 184, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
       }
 
       .searchbar-clear-icon {
-        color: #94a3b8;
-        right: 8px;
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(148, 163, 184, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
       }
     }
   }

@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { ThemeService } from '../../../../../services/theme.service';
 import { CommonService, ToastMessageType } from '../../../../../services/common.service';
 import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
@@ -60,6 +61,8 @@ export class PotmPage implements OnInit, OnDestroy {
   // API input
   private baseApiInput: any;
 
+  isDarkTheme: boolean = true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -68,7 +71,9 @@ export class PotmPage implements OnInit, OnDestroy {
     public commonService: CommonService,
     public alertCtrl: AlertController,
     private httpService: HttpService,
-    public sharedservice: SharedServices
+    public sharedservice: SharedServices,
+    public events: Events,
+    public themeService: ThemeService
   ) {
     this.initializeComponent();
   }
@@ -80,10 +85,40 @@ export class PotmPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadTeamParticipants();
+    this.loadTheme();
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
   }
 
   ngOnDestroy() {
-    // Cleanup if needed
+    this.events.unsubscribe('theme:changed');
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      if (isDarkTheme !== null) {
+        this.isDarkTheme = isDarkTheme;
+      } else {
+        this.isDarkTheme = true;
+      }
+      this.applyTheme();
+    }).catch(() => {
+      this.isDarkTheme = true;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const element = document.querySelector('page-potm');
+    if (element) {
+      if (this.isDarkTheme) {
+        element.classList.remove('light-theme');
+      } else {
+        element.classList.add('light-theme');
+      }
+    }
   }
 
   private initializeNavParams(): void {

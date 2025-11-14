@@ -1,5 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-match-team-details {
   // Light Theme Styles
+  @include android-sdk35-fixes;
   &.light-theme {
     .top-section {
       background: #ffffff !important;
@@ -23,9 +25,11 @@ page-match-team-details {
     
     .team-tab {
       color: #64748b !important;
+      background: #ffffff !important;
       
       &.selected {
         color: #2b92bb !important;
+        background: rgba(43, 146, 187, 0.15) !important;
       }
     }
     
@@ -250,10 +254,12 @@ page-match-team-details {
   }
   
   .team-tab {
-    color: #cbd5e1;
+    color: #cbd5e1 !important;
+    background: #334155 !important;
     
     &.selected {
       color: #2b92bb !important;
+      background: rgba(43, 146, 187, 0.15) !important;
     }
   }
 

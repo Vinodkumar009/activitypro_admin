@@ -68,7 +68,7 @@ export class UpdateleaguematchPage {
     member_fees: 0.00,
     non_member_fees: 0.00
   }
-
+  currency: string = '£';
   constructor(
     public alertCtrl: AlertController,
     public navCtrl: NavController,
@@ -90,7 +90,6 @@ export class UpdateleaguematchPage {
 
     console.log("data is:", this.data);
     this.isChecked = this.data.payment_type == 1 ? true : false;
-    this.publicType = this.data.match_visibility == 0 ? true : false;
     this.publicType = this.data.match_visibility == 0 ? true : false;
     // this.inputObj.homeparticipant_id = this.data.home_team_id ? this.data.home_team_id : this.data.home_participant_id;
     // this.inputObj.awayparticipant_id = this.data.away_team_id ? this.data.away_team_id : this.data.away_participant_id;
@@ -120,6 +119,12 @@ export class UpdateleaguematchPage {
     this.getRoundTypes();
     this.getLocationForParentClub();
     this.getParticipants();
+    this.storage.get('Currency').then((currency) => {
+      let currencydets = JSON.parse(currency);
+      //console.log(currencydets);
+      this.currency = currencydets.CurrencySymbol;
+    });
+    this.updateMatchPaymentType(this.isChecked);
   }
 
   ionViewDidLoad() {

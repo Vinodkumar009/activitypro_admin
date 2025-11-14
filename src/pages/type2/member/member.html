@@ -21,12 +21,13 @@
 <ion-content class="member-content themed-content">
     <!-- Sticky Header Container -->
     <div class="sticky-header-container">
-        <!-- Venue Dropdown -->
-        <div class="compact-filter-card themed-card">
-            <ion-select class="compact-select themed-select" [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()" placeholder="Select Club">
+        <!-- Full Width Club Dropdown -->
+        <ion-item class="venue-dropdown">
+            <ion-label>Club</ion-label>
+            <ion-select [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()" class="full-width-select">
                 <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
             </ion-select>
-        </div>
+        </ion-item>
         
         <!-- Search Bar -->
         <div class="compact-search-card themed-card">

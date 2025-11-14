@@ -1,115 +1,248 @@
-// page-teaminvite
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-addplayertoteam {
-  .foobtn {
-    background-color: #5be283;
-    height: 3.6rem;
-    font-size: 1.4rem;
+  @include android-sdk35-fixes;
+  
+  background: #0f172a !important;
+  
+  ion-content {
+    background: #0f172a !important;
   }
-
+  
   .scroll-content {
-    padding: 0px !important;
-    background-image: none !important;
-    // background: white !important;
-    background: #f4efef !important;
-    // margin-bottom: 60px;
+    background: #0f172a !important;
+    padding: 0 !important;
   }
 
-  .searchbar-input {
-    border-bottom: 1px solid #141414;
+  // Compact Search Card (matching addingtornamentmember exactly)
+  .compact-search-card {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    margin: 16px 8px 8px 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+  }
+
+  .search-content {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .sleek-searchbar {
+    flex: 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 36px !important;
+    background: transparent !important;
+    --background: transparent !important;
+    --border-radius: 0 !important;
+    --box-shadow: none !important;
+    --icon-color: #94a3b8 !important;
+    --color: #f1f5f9 !important;
+    --placeholder-color: #94a3b8 !important;
+    --clear-button-color: #94a3b8 !important;
+
+    .searchbar-input {
+      color: #f1f5f9 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      border: none !important;
+
+      &::placeholder {
+        color: #94a3b8 !important;
+      }
+    }
+
+    .searchbar-search-icon {
+      background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(148, 163, 184, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(148, 163, 184, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
+    }
+
+    .searchbar-clear-icon {
+      background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(148, 163, 184, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
+    }
+  }
+
+  ion-list {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  ion-list-header {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    font-weight: 600 !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    border-bottom: 1px solid #334155 !important;
+    --background: #1e293b !important;
+    --color: #f1f5f9 !important;
+    position: sticky !important;
+    top: 60px !important;
+    z-index: 9 !important;
+  }
+
+  ion-item {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border: none !important;
+    border-bottom: 1px solid #334155 !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+    box-shadow: none !important;
+    --background: #1e293b !important;
+    --color: #f1f5f9 !important;
+    --border-color: transparent !important;
+
+    ion-label {
+      color: #f1f5f9 !important;
+      font-weight: 500 !important;
+      font-size: 14px !important;
+    }
+
+    ion-checkbox {
+      --background: #334155 !important;
+      --background-checked: #007bff !important;
+      --border-color: #475569 !important;
+      --border-color-checked: #007bff !important;
+      --checkmark-color: #ffffff !important;
+    }
+  }
+
+  ion-footer {
+    background: #1e293b !important;
+    border-top: 1px solid #334155 !important;
+    --background: #1e293b !important;
+    
+    .timekare-primary-btn {
+      background: #2b92bb !important;
+      color: white !important;
+      font-weight: 500 !important;
+    }
+  }
+
+  // Light theme
+  &.light-theme {
+    background: #f8fafc !important;
+    
+    ion-content {
+      background: #f8fafc !important;
+    }
+    
+    .scroll-content {
+      background: #f8fafc !important;
+    }
+
+    .compact-search-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .sleek-searchbar {
+      --icon-color: #64748b !important;
+      --color: #1e293b !important;
+      --placeholder-color: #64748b !important;
+      --clear-button-color: #64748b !important;
+
+      .searchbar-input {
+        color: #1e293b !important;
+
+        &::placeholder {
+          color: #64748b !important;
+        }
+      }
+
+      .searchbar-search-icon {
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(100, 116, 139, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(100, 116, 139, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
+      }
+
+      .searchbar-clear-icon {
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(100, 116, 139, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
+      }
+    }
+
+    ion-list-header {
+      background: #ffffff !important;
+      color: #1e293b !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+      border: none !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      --background: #ffffff !important;
+      --color: #1e293b !important;
+    }
+
+    ion-item {
+      background: #ffffff !important;
+      color: #1e293b !important;
+      border: none !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      box-shadow: none !important;
+      --background: #ffffff !important;
+      --color: #1e293b !important;
+
+      ion-label {
+        color: #1e293b !important;
+      }
+
+      ion-checkbox {
+        --background: #ffffff !important;
+        --background-checked: #007bff !important;
+        --border-color: #d1d5db !important;
+        --border-color-checked: #007bff !important;
+      }
+    }
+
+    ion-footer {
+      background: #ffffff !important;
+      border-top: 1px solid #e2e8f0 !important;
+      --background: #ffffff !important;
+    }
+  }
+  // Remove all borders and focus states
+  .item-inner {
+    border-bottom: none !important;
+  }
+
+  .item-md.item-input.input-has-focus .item-inner {
+    border-bottom-color: transparent !important;
     box-shadow: none !important;
   }
-
-  .search_add {
-    background-color: transparent;
-    padding-left: 6px;
-  }
-
-  .search_add {
-    .item-inner {
-      border-bottom: 0px !important;
-
-      ion-icon {
-        margin-top: 18px;
-      }
-
-      div {
-        ion-label {
-          //margin-top: 0px;
-          margin-bottom: 0px;
-        }
-      }
+  
+  // Footer styling
+  ion-footer {
+    --background: #ffffff;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0;
+    
+    .timekare-primary-btn {
+      background: #2b92bb !important;
+      color: white;
+      font-weight: 500;
     }
   }
 
-  .btn-clr {
-    color: $dashoboard-icon-color;
-  }
-
-  .button {
-    font-size: 2rem;
-  }
-
-  .align {
-    margin-top: 5px;
-    margin-left: 9px;
-    margin-right: 9px;
-  }
-
-  .label {
-    margin: 0px !important;
-  }
-
-  .session_header,
-  ion-list {
-    margin-bottom: 0px !important;
-    border-bottom: 1px solid #f6ae4d;
-  }
-
-  .timekare-primary-btn {
-    background-color: #f6ae4d !important;
-  }
-
-  .block_height {
-    height: 80%;
-  }
-
-  .block_height1 {
-    margin-top: 5px;
-    height: 90%;
-
-    .margin {
-      padding: 0px 11px 0px 11px;
-    }
-  }
-
-  .block_height2 {
-    height: 32%;
-  }
-
-  .ion_list1 {
-    margin-top: 10px;
-  }
-
-  .p_selected {
-    ion-card-content {
-      border-bottom: 1px solid #d1d1d5;
-      padding: 5px 0px 5px 13px;
-      color: rgba(0, 0, 0, 0.89);
-      font-size: 17px;
-    }
-  }
-
-  .ion-item-lable {
-    div {
-      ion-icon {
-        margin: 0px 0px 9px 0px !important;
-      }
-
-      div {
-        ion-label {
-          margin: 0px 0px 0px 0px;
-        }
+  // Dark theme for footer
+  &:not(.light-theme),
+  .dark-theme {
+    ion-footer {
+      --background: #1e293b !important;
+      background: #1e293b !important;
+      border-top: 1px solid #475569;
+      
+      .timekare-primary-btn {
+        background: #2b92bb !important;
+        color: white;
       }
     }
   }
+
 }

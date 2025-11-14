@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { CommonService, ToastMessageType } from '../../../../../services/common.service';
 import { HttpService } from '../../../../../services/http.service';
 import { SharedServices } from '../../../../services/sharedservice';
+import { ThemeService } from '../../../../../services/theme.service';
 
 @IonicPage()
 @Component({
@@ -17,13 +19,24 @@ export class TennisSetInputPage {
   isHomeTeam: boolean;
   result_json: any;
   setScores: any[] = [];
+  
+  // Auto-calculated values
+  homeSetsWon: number = 0;
+  awaySetsWon: number = 0;
+  homeGamesWon: number = 0;
+  awayGamesWon: number = 0;
+
+  isDarkTheme: boolean = true;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public commonService: CommonService,
     public sharedservice: SharedServices,
-    public viewCtrl: ViewController
+    public viewCtrl: ViewController,
+    public events: Events,
+    public storage: Storage,
+    public themeService: ThemeService
   ) {
     this.matchObj = this.navParams.get('matchObj');
     this.homeTeamObj = this.navParams.get('homeTeamObj');
@@ -34,24 +47,68 @@ export class TennisSetInputPage {
     this.initializeSetScores();
   }
 
-  initializeSetScores() {
-    if (this.result_json.SET_SCORES && this.result_json.SET_SCORES.length > 0) {
-      this.setScores = this.result_json.SET_SCORES.map(set => {
-        const scores = set.SCORE ? set.SCORE.split('-') : ['', ''];
-        return {
-          SET_NUMBER: set.SET_NUMBER,
-          SCORE1: scores[0] || '',
-          SCORE2: scores[1] || '',
-          WINNER_TEAM_ID: set.WINNER_TEAM_ID
-        };
-      });
-    } else {
-      this.setScores = [
-        { SET_NUMBER: 1, SCORE1: "", SCORE2: "", WINNER_TEAM_ID: "" },
-        { SET_NUMBER: 2, SCORE1: "", SCORE2: "", WINNER_TEAM_ID: "" },
-        { SET_NUMBER: 3, SCORE1: "", SCORE2: "", WINNER_TEAM_ID: "" }
-      ];
+  ionViewDidLoad() {
+    this.loadTheme();
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      if (isDarkTheme !== null) {
+        this.isDarkTheme = isDarkTheme;
+      } else {
+        this.isDarkTheme = true;
+      }
+      this.applyTheme();
+    }).catch(() => {
+      this.isDarkTheme = true;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const element = document.querySelector('page-tennis-set-input');
+    if (element) {
+      if (this.isDarkTheme) {
+        element.classList.remove('light-theme');
+      } else {
+        element.classList.add('light-theme');
+      }
     }
+  }
+
+  initializeSetScores() {
+    // Always start with exactly 3 sets
+    this.setScores = [
+      { SET_NUMBER: 1, SCORE1: "", SCORE2: "", WINNER_TEAM_ID: "" },
+      { SET_NUMBER: 2, SCORE1: "", SCORE2: "", WINNER_TEAM_ID: "" },
+      { SET_NUMBER: 3, SCORE1: "", SCORE2: "", WINNER_TEAM_ID: "" }
+    ];
+    
+    // If there's existing data, populate it but keep only 3 sets max
+    if (this.result_json.SET_SCORES && this.result_json.SET_SCORES.length > 0) {
+      const existingSets = this.result_json.SET_SCORES.slice(0, 3); // Take only first 3 sets
+      existingSets.forEach((set, index) => {
+        if (index < 3) {
+          const scores = set.SCORE ? set.SCORE.split('-') : ['', ''];
+          this.setScores[index] = {
+            SET_NUMBER: index + 1,
+            SCORE1: scores[0] || '',
+            SCORE2: scores[1] || '',
+            WINNER_TEAM_ID: set.WINNER_TEAM_ID
+          };
+        }
+      });
+    }
+    
+    this.calculateSummary();
   }
 
   addSet() {
@@ -62,12 +119,14 @@ export class TennisSetInputPage {
         SCORE2: "",
         WINNER_TEAM_ID: ""
       });
+      this.calculateSummary();
     }
   }
 
   removeSet() {
     if (this.setScores.length > 1) {
       this.setScores.pop();
+      this.calculateSummary();
     }
   }
 
@@ -82,8 +141,14 @@ export class TennisSetInputPage {
       WINNER_TEAM_ID: set.WINNER_TEAM_ID
     }));
 
-    //this.commonService.toastMessage("Set scores saved successfully", 2500, ToastMessageType.Success);
-    this.viewCtrl.dismiss({ setScores: setScoresData });
+    // Return both set scores and calculated summary
+    this.viewCtrl.dismiss({ 
+      setScores: setScoresData,
+      homeSetsWon: this.homeSetsWon,
+      awaySetsWon: this.awaySetsWon,
+      homeGamesWon: this.homeGamesWon,
+      awayGamesWon: this.awayGamesWon
+    });
   }
 
   private validateSetScores(): boolean {
@@ -124,6 +189,41 @@ export class TennisSetInputPage {
     }
 
     return true;
+  }
+
+  // Auto-calculate sets won and games won based on set scores
+  calculateSummary() {
+    this.homeSetsWon = 0;
+    this.awaySetsWon = 0;
+    this.homeGamesWon = 0;
+    this.awayGamesWon = 0;
+
+    const filledSets = this.setScores.filter(set => 
+      set.SCORE1 && set.SCORE2 && 
+      set.SCORE1.toString().trim() !== '' && 
+      set.SCORE2.toString().trim() !== ''
+    );
+
+    filledSets.forEach(set => {
+      const score1 = parseInt(set.SCORE1) || 0;
+      const score2 = parseInt(set.SCORE2) || 0;
+
+      // Add to games won
+      this.homeGamesWon += score1;
+      this.awayGamesWon += score2;
+
+      // Determine set winner and increment sets won
+      if (score1 > score2) {
+        this.homeSetsWon++;
+      } else if (score2 > score1) {
+        this.awaySetsWon++;
+      }
+    });
+  }
+
+  // Call calculateSummary when scores change
+  onScoreChange() {
+    this.calculateSummary();
   }
 
   cancel() {

@@ -77,7 +77,6 @@ export class EditteamPage {
     public sharedservice: SharedServices,
     public commonService: CommonService,
     public popoverCtrl: PopoverController,
-    private toastCtrl: ToastController,
     private graphqlService: GraphqlService,
     public actionSheetCtrl: ActionSheetController,
 

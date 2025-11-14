@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
-import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController } from "ionic-angular";
+import { Component, Renderer2 } from "@angular/core";
+import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, Events } from "ionic-angular";
+import { ThemeService } from "../../../../services/theme.service";
 import { Storage } from "@ionic/storage";
 import { SharedServices } from "../../../services/sharedservice";
 import { FirebaseService } from "../../../../services/firebase.service";
@@ -22,6 +23,7 @@ import { AllMatchData } from "../../../../shared/model/match.model";
   templateUrl: "matchdetails.html",
 })
 export class MatchdetailsPage {
+  isDarkTheme: boolean = false;
   activeType: boolean = true;
   invitedType: boolean = true;
   UserInvitationStatus = {
@@ -62,8 +64,14 @@ export class MatchdetailsPage {
     public sharedservice: SharedServices,
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
-    private graphqlService: GraphqlService
+    private graphqlService: GraphqlService,
+    private themeService: ThemeService,
+    private events: Events,
+    private renderer: Renderer2
   ) {
+    this.events.subscribe('theme:changed', (theme) => {
+      this.isDarkTheme = theme === 'dark';
+    });
     console.log(
       `${this.navParams.get("selectedmatchId")}:${this.navParams.get(
         "selectedmemberkey"
@@ -96,9 +104,26 @@ export class MatchdetailsPage {
     });
   }
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     console.log("ionViewDidLoad MatchdetailsPage");
+    await this.loadTheme();
+  }
 
+  async loadTheme() {
+    const theme = await this.storage.get('selectedTheme');
+    this.applyTheme(theme || 'dark');
+  }
+
+  applyTheme(theme: string) {
+    this.isDarkTheme = theme === 'dark';
+    const pageElement = document.querySelector('page-matchdetails');
+    if (pageElement) {
+      if (this.isDarkTheme) {
+        this.renderer.removeClass(pageElement, 'light-theme');
+      } else {
+        this.renderer.addClass(pageElement, 'light-theme');
+      }
+    }
   }
 
   getFormattedDate(date: any) {
@@ -274,10 +299,7 @@ export class MatchdetailsPage {
       if (error.networkError) {
         console.error("Network Error:", error.networkError);
       }
-    }
-    )
-
-
+    })
   };
 
   canEditTeams() {

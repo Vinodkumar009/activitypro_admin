@@ -9,56 +9,41 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-item class="search_add">
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <div class="compact-search-card">
+    <div class="search-content">
+      <ion-searchbar class="sleek-searchbar" placeholder="Search Staffs by Name"
+        (ionInput)="getFilterItems($event)" autocorrect="off"
+        showCancelButton="never"></ion-searchbar>
+    </div>
+  </div>
 
-<ion-searchbar
-  class="search"
-  placeholder="Search Staffs by Name"
-  (ionInput)="getFilterItems($event)"
-  autocorrect="off"
-  showCanelButton="shouldShowCancel"  
-  animated
->
-</ion-searchbar>
-  </ion-item>
+  <div class="list-header">
+    <h3>Coaches List</h3>
+  </div>
 
-  <ion-list class="ion_list">
-    <ion-list-header class="session_header" style="font-size: 18px">
-      Coaches List
-    </ion-list-header>
-  </ion-list>
-
-  <ion-list  *ngIf="filteredStaff.length > 0">
-     <ion-item *ngFor="let person of filteredStaff;let i=index">
-      <ion-label 
-      >{{person.name}} 
-        <p style="display:inline;color:black" 
-        *ngIf="person.role">({{person.role}})</p>
-      </ion-label>
-      <ion-checkbox
-      [(ngModel)]="person.isSelect"
-      [disabled]="person.isAlreadExisted"
-      (ionChange)="selectMembers(person,$event)"
-      ></ion-checkbox>
-     </ion-item>
-     
-  </ion-list>
-  
+  <div class="scrollable-list">
+    <ion-list *ngIf="filteredStaff.length > 0">
+      <ion-item *ngFor="let person of filteredStaff;let i=index">
+        <ion-label>{{person.name}} 
+          <p style="display:inline;" 
+          *ngIf="person.role">({{person.role}})</p>
+        </ion-label>
+        <ion-checkbox
+        [(ngModel)]="person.isSelect"
+        [disabled]="person.isAlreadExisted"
+        (ionChange)="selectMembers(person,$event)"
+        ></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
 
 <ion-footer>
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <button
-          (click)="saveStaff()"
-          ion-button
-          block
-         
-        >
-          Add Staff
-        </button>
+        <button (click)="saveStaff()" class="timekare-primary-btn" ion-button block>Add Staff</button>
       </ion-col>
     </ion-row>
   </ion-grid>

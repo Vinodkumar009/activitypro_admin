@@ -26,16 +26,16 @@ export class CommonIdFields {
 }
 
 export class UserDeviceMetadata {
-  user_device_metadata: {
-    UserActionType?: number;
-    UserAppType: number,
-    UserDeviceType: number //this.sharedservice.getPlatform() == "android" ? 1:2
+  user_device_metadata:{
+    UserActionType?:number;
+    UserAppType:number,
+    UserDeviceType:number //this.sharedservice.getPlatform() == "android" ? 1:2
   }
-  user_postgre_metadata: {
+  user_postgre_metadata:{
     UserParentClubId?: string; //ParentClub Key
     UserClubId?: string; //ParentClub Key
     UserMemberId?: string; //ParentClub Key
-    UserActivityId?: string;
+    UserActivityId?: string; 
   }
 }
 

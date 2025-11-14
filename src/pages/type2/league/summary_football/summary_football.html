@@ -104,12 +104,12 @@
       </div>
       <div class="possession-chart">
         <div class="possession-item" (click)="isHomeStatsPopupVisible = true">
-          <span class="possession-value home">{{homePoss}}%</span>
+          <span class="possession-value home">{{homePoss | number:'1.0-0'}}%</span>
           <ion-icon name="create" class="edit-icon"></ion-icon>
         </div>
         <canvas #doughnutCanvas width="200" height="200"></canvas>
         <div class="possession-item" (click)="isAwayStatsPopupVisible = true">
-          <span class="possession-value away">{{awayPoss}}%</span>
+          <span class="possession-value away">{{awayPoss | number:'1.0-0'}}%</span>
           <ion-icon name="create" class="edit-icon"></ion-icon>
         </div>
       </div>
@@ -367,15 +367,9 @@
 <div class="custom-popup" *ngIf="isAwayStatsPopupVisible && result_json">
   <div class="popup-container">
     <div class="popup-header">
-      <p>
-        <span>Update</span>
-        <span style="font-weight: bold; font-size: 20px;">
-          {{awayTeamName}}
-        </span>
-      </p>
+      <h3>Update {{awayTeamName}} Stats</h3>
       <button class="close-button" (click)="isAwayStatsPopupVisible=false">×</button>
     </div>
-
     <div class="popup-content">
       <ion-item class="input_item">
         <ion-label>Possession</ion-label>

@@ -1,5 +1,6 @@
 
 export const API = {
+    GET_PARENTCLUB_DETS: 'parentclub/get_parentclub_details',
     GET_PARENTCLUB_USER_BY_FIREBASEID: `parentclubuser/by_firebase_loggedinkey`,
     CHECK_PARENTCLUB_EMAIL_EXISTANCE: `parentclubuser/validate_email`,
     CAMP_SESSION_CAPACITY_UPDATE: `holidaycamp/updateSessionCapcity`,
@@ -112,5 +113,10 @@ export const API = {
     UPDATE_RESULT_ENTITY: `LeagueResult/updateResultEntity`,
     GET_RESULT_STATUS_BY_ACTIVITY: `LeagueResult/getResultStatusByActivity`,
     UpdateLeagueMatchInviteStatus: `league/UpdateLeagueMatchInviteStatus`,
-    UPDATE_TEAM_MEMBER_FIELDS: `league/UpdateTeamMemberFields`
+    UPDATE_TEAM_MEMBER_FIELDS: `league/UpdateTeamMemberFields`,
+    GET_USER_COUNT: `user/usercount`,
+    AGENT_CHAT_INVOKE: 'invoke-agentcore',
+    AGENT_CHAT_PROMPTS: 'agentcore/getPromptsByModule',
+    AGENT_CHAT_FEEDBACK:'agentcore/interactions/feedback',
+    AGENT_CHAT_REMOVE_FEEDBACK:'agentcore/interactions/removefeedback'
 }

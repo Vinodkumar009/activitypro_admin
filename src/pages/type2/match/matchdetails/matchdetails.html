@@ -11,7 +11,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
   <div style="background-color: #f2f5fa">
     <ion-row class="cardrow">
       <ion-col col-9>
@@ -38,7 +38,7 @@
       <ion-col col-3 style="margin: auto;">
         <div style="display: flex; align-items: center;">
           <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
-            [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
+            [name]="match?.MatchVisibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
           <p class="smalltext">{{match?.MatchVisibility == 0 ? "Public" : "Private"}}</p>
         </div>
         <div style="display: inline-block;text-align: center">

@@ -1,4 +1,105 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-matchdetails {
+  @include android-sdk35-fixes;
+  
+  .scroll-content {
+    background: #f1f5f9 !important;
+    padding: 0;
+  }
+
+  // Light theme (default)
+  .largetext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 20px;
+    color: #374151;
+  }
+
+  .smalltext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 16px;
+    color: #374151;
+  }
+
+  ion-item {
+    --background: #ffffff;
+    --border-color: transparent;
+    --border-width: 0;
+    --border-style: none;
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --inner-padding-end: 0;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #374151;
+    
+    p {
+      color: #374151;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+
+  ion-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin: 8px;
+  }
+
+  .participant_div {
+    background: #ffffff;
+    margin: 10px 0px 10px 0px;
+    padding: 5px;
+    border-radius: 8px;
+  }
+
+  // Dark theme
+  &:not(.light-theme),
+  .dark-theme {
+    .scroll-content {
+      background: #1e293b !important;
+    }
+    
+    .largetext {
+      color: #f1f5f9 !important;
+    }
+    
+    .smalltext {
+      color: #f1f5f9 !important;
+    }
+    
+    ion-item {
+      --background: #334155 !important;
+      --border-color: transparent !important;
+      --border-width: 0 !important;
+      background: #334155 !important;
+      border: 1px solid #475569 !important;
+      color: #f1f5f9 !important;
+      
+      p {
+        color: #f1f5f9 !important;
+      }
+    }
+    
+    ion-card {
+      background: #334155 !important;
+      border-color: #475569 !important;
+    }
+    
+    .participant_div {
+      background: #334155 !important;
+    }
+    
+    .cardrow {
+      background: #334155 !important;
+    }
+  }
   .toolbar-title{
     color:#fff;
   }
@@ -14,12 +115,7 @@ page-matchdetails {
     }
   }
 
-  .largetext {
-    margin: 5px 0px;
-    padding: 0 0 0 5px;
-    font-size: 20px;
-    color: #154766;
-  }
+
   .deletebtn{
     border-radius: 50%;
     width: 40px;
@@ -33,12 +129,7 @@ page-matchdetails {
     color: white !important;
   }
 
-  .smalltext {
-    margin: 5px 0px;
-    padding: 0 0 0 5px;
-    font-size: 16px;
-    color: #154766;
-  }
+
   //   .cardrow {
   //     margin: 0 0px;
   //     padding: 0 0px;

@@ -1,7 +1,8 @@
 @import "../../_league-theme.scss";
-
+@import '../../../../../theme/android-sdk35-fixes.scss';
 page-tennis-potm {
   @include league-theme-base;
+  @include android-sdk35-fixes;
   .scroll-content {
     background-image: none !important;
   }

@@ -874,20 +874,25 @@ export class LeaguedetailsPage {
     const participantsStatusQuery = gql`
     query getLeagueORTournamentStanding( $leagueStandingInput: LeagueStandingInput! ) {
       getLeagueORTournamentStanding(leagueStandingInput:$leagueStandingInput) {
-        id
-        parentclubteam{      
-               id
-               teamName
-               ageGroup
-                teamVisibility
-                teamDescription
-              }
-              matches
-              wins
-              loss
-              rank
-              total_points
-              draw
+          id
+          parentclubteam{      
+            id
+            teamName
+            ageGroup
+            teamVisibility
+            teamDescription
+          }
+          user{
+            Id
+            FirstName
+            LastName                  
+          }
+          matches
+          wins
+          loss
+          rank
+          total_points
+          draw
       }
     }
   `;

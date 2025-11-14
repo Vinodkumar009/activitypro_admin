@@ -1,0 +1,256 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+page-match-team-details {
+  @include android-sdk35-fixes;
+
+  // Dark Theme (Default)
+  .scroll-content {
+    background: #0f172a !important;
+  }
+
+  ion-content {
+    background: #0f172a !important;
+  }
+
+  .top-section {
+    background: #1e293b !important;
+    padding: 12px;
+  }
+
+  .team-selection-card {
+    background: #334155 !important;
+  }
+
+  .select-type {
+    font-weight: 900;
+    white-space: normal;
+    text-transform: capitalize;
+    background-color: #334155 !important;
+    width: 95%;
+    margin: 0px !important;
+    color: #cbd5e1 !important;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .team-tab {
+    color: #cbd5e1 !important;
+    background: #334155 !important;
+    
+    &.selected {
+      color: #2b92bb !important;
+      background: rgba(43, 146, 187, 0.15) !important;
+    }
+  }
+
+  .selected {
+    background-color: rgba(43, 146, 187, 0.15) !important;
+    color: #2b92bb !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 10px;
+  }
+
+  .largetext,
+  .smalltext,
+  .playerText {
+    color: #f1f5f9 !important;
+  }
+
+  .item {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+  }
+
+  // Light Theme
+  &.light-theme {
+    .scroll-content {
+      background: #f8fafc !important;
+    }
+
+    ion-content {
+      background: #f8fafc !important;
+    }
+
+    .top-section {
+      background: #ffffff !important;
+    }
+
+    .team-selection-card {
+      background: #ffffff !important;
+    }
+
+    .select-type {
+      background-color: #ffffff !important;
+      color: #64748b !important;
+    }
+
+    .team-tab {
+      color: #64748b !important;
+      background: #ffffff !important;
+      
+      &.selected {
+        color: #2b92bb !important;
+        background: rgba(43, 146, 187, 0.15) !important;
+      }
+    }
+
+    .largetext,
+    .smalltext,
+    .playerText {
+      color: #1e293b !important;
+    }
+
+    .item {
+      background: #ffffff !important;
+      color: #1e293b !important;
+    }
+  }
+
+  // Common styles
+  .cardrow {
+    div {
+      display: flex;
+      align-items: baseline;
+      width: 100%;
+    }
+
+    ion-icon {
+      font-size: 1.5em !important;
+      color: #2b92bb !important;
+    }
+  }
+
+  .largetext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 20px;
+  }
+
+  .smalltext {
+    margin: 5px 0px;
+    padding: 0 0 0 5px;
+    font-size: 16px;
+  }
+
+  .playerText {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .playerRole {
+    font-size: 12px;
+    color: #cbd5e1;
+  }
+
+  .section-title {
+    padding-left: 8px !important;
+    color: grey;
+    font-size: 15px;
+  }
+
+  .drop-zone {
+    border: 2px dashed #ccc;
+    padding: 5px;
+    transition: background-color 0.3s;
+  }
+
+  .drop-zone.drag-over {
+    background-color: #f0f0f0;
+  }
+
+  .item {
+    background: #FFFFFF;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.14);
+    border-radius: 6px;
+    margin-top: 5px;
+    margin-right: 10px;
+    margin-bottom: 9px;
+    margin-left: 10px;
+    padding: 0 0px;
+  }
+
+  .status-playing {
+    color: #32db64 !important;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .status-not-playing {
+    color: #f53d3d !important;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .status-maybe {
+    color: #b8860b !important;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .status-other {
+    color: grey !important;
+    font-weight: 500;
+    font-size: 12px;
+  }
+  // 💰 Payment status styles - Maximum specificity
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col.paidBlock p.paid,
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col .paidBlock p.paid,
+  page-league-match-info .paidBlock .paid,
+  page-league-match-info .paid {
+    color: #32db64 !important; // Green for paid
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+  }
+
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col.paidBlock p.pending,
+  page-league-match-info ion-content ion-card ion-card-content ion-grid ion-row ion-col .paidBlock p.pending,
+  page-league-match-info .paidBlock .pending,
+  page-league-match-info .pending {
+    color: #f53d3d !important; // Red for pending
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+  }
+
+  // Override any existing p tag styles in paidBlock
+  .paidBlock p {
+    &.paid {
+      color: #32db64 !important;
+      font-weight: 600 !important;
+    }
+    
+    &.pending {
+      color: #f53d3d !important;
+      font-weight: 600 !important;
+    }
+  }
+
+  // Even more specific selectors
+  ion-card-content ion-grid ion-row ion-col.paidBlock p.paid,
+  ion-card-content .paidBlock p.paid,
+  .item-card-content .paidBlock p.paid {
+    color: #32db64 !important;
+    font-weight: 600 !important;
+  }
+
+  ion-card-content ion-grid ion-row ion-col.paidBlock p.pending,
+  ion-card-content .paidBlock p.pending,
+  .item-card-content .paidBlock p.pending {
+    color: #f53d3d !important;
+    font-weight: 600 !important;
+  }
+
+  // Target span elements inside paid/pending paragraphs
+  .paid span,
+  .paidBlock .paid span {
+    color: #32db64 !important;
+    font-weight: 600 !important;
+  }
+
+  .pending span,
+  .paidBlock .pending span {
+    color: #f53d3d !important;
+    font-weight: 600 !important;
+  }
+}

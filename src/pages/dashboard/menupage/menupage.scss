@@ -235,16 +235,7 @@ menupage-page {
     
     .menu-card-wrapper {
         padding: 10px;
-        animation: fadeInUp 0.6s ease forwards;
-        opacity: 0;
-        transform: translateY(20px);
         display: flex;
-        
-        @for $i from 1 through 12 {
-            &:nth-child(#{$i}) {
-                animation-delay: #{$i * 0.1}s;
-            }
-        }
         
         @media (max-width: 768px) {
             padding: 8px;
@@ -252,13 +243,6 @@ menupage-page {
         
         @media (max-width: 480px) {
             padding: 6px;
-        }
-    }
-    
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
         }
     }
     
@@ -389,9 +373,9 @@ menupage-page {
         }
         
         .card-icon-wrapper {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -404,15 +388,15 @@ menupage-page {
             left: 16px;
             
             .card-icon {
-                font-size: 22px;
+                font-size: 28px;
                 color: #ffffff !important;
                 font-weight: 600;
                 text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             }
             
             .card-image {
-                width: 26px;
-                height: 26px;
+                width: 32px;
+                height: 32px;
                 object-fit: contain;
                 filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
             }
@@ -444,7 +428,7 @@ menupage-page {
             z-index: 2;
             
             .card-title {
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: 600;
                 color: #ffffff;
                 margin: 0 0 4px 0;
@@ -453,7 +437,7 @@ menupage-page {
             }
             
             .card-subtitle {
-                font-size: 13px;
+                font-size: 15px;
                 color: rgba(255, 255, 255, 0.8);
                 margin: 0;
                 opacity: 0.9;
@@ -494,21 +478,21 @@ menupage-page {
             height: 140px;
             
             .card-icon-wrapper {
-                width: 40px;
-                height: 40px;
+                width: 50px;
+                height: 50px;
                 top: 12px;
                 left: 12px;
                 
                 .card-icon {
-                    font-size: 18px;
+                    font-size: 24px;
                     color: #ffffff !important;
                     font-weight: 600;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
                 }
                 
                 .card-image {
-                    width: 22px;
-                    height: 22px;
+                    width: 28px;
+                    height: 28px;
                     filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
                 }
             }
@@ -519,12 +503,12 @@ menupage-page {
                 right: 12px;
                 
                 .card-title {
-                    font-size: 15px;
+                    font-size: 17px;
                     line-height: 1.2;
                 }
                 
                 .card-subtitle {
-                    font-size: 11px;
+                    font-size: 13px;
                 }
             }
         }
@@ -544,22 +528,22 @@ menupage-page {
             border-radius: 12px;
             
             .card-icon-wrapper {
-                width: 36px;
-                height: 36px;
+                width: 44px;
+                height: 44px;
                 top: 10px;
                 left: 10px;
                 border-radius: 10px;
                 
                 .card-icon {
-                    font-size: 16px;
+                    font-size: 20px;
                     color: #ffffff !important;
                     font-weight: 600;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
                 }
                 
                 .card-image {
-                    width: 18px;
-                    height: 18px;
+                    width: 24px;
+                    height: 24px;
                     filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
                 }
                 
@@ -578,13 +562,13 @@ menupage-page {
                 right: 10px;
                 
                 .card-title {
-                    font-size: 13px;
+                    font-size: 15px;
                     line-height: 1.1;
                     margin-bottom: 2px;
                 }
                 
                 .card-subtitle {
-                    font-size: 10px;
+                    font-size: 12px;
                 }
             }
         }
@@ -601,5 +585,52 @@ menupage-page {
     
     .toolbar-title{
         text-align: center !important;
+    }
+
+    // Ask Me Button
+    .ask-me-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(270deg, #2b92bb, #1e7a9a, #2b92bb, #1e7a9a);
+        background-size: 400% 400%;
+        animation: gradientShift 3s ease infinite;
+        color: #ffffff;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 16px rgba(43, 146, 187, 0.4);
+        z-index: 1000;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        
+        ion-icon {
+            font-size: 22px;
+        }
+    }
+
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    &.light-theme {
+        .ask-me-button {
+            background: linear-gradient(270deg, #2b92bb, #1e7a9a, #2b92bb, #1e7a9a);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            box-shadow: 0 4px 16px rgba(43, 146, 187, 0.3);
+        }
     }
 }

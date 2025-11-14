@@ -1,10 +1,60 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
 page-addroleforplayernstaff {
+  @include android-sdk35-fixes;
+  
+  // Light theme styles
+  &.light-theme,
+  .light-theme & {
+    .scroll-content {
+      background: #f4efef !important;
+    }
+    
+    ion-item {
+      background: white;
+      color: #1e293b;
+      
+      ion-label {
+        color: #1e293b;
+      }
+    }
+    
+    ion-list {
+      background: white;
+    }
+  }
+  
+  // Dark theme styles
+  &.dark-theme,
+  .dark-theme & {
+    .scroll-content {
+      background: #1e293b !important;
+    }
+    
+    ion-item {
+      background: #334155;
+      color: #f1f5f9;
+      
+      ion-label {
+        color: #f1f5f9;
+      }
+    }
+    
+    ion-list {
+      background: #1e293b;
+    }
+    
+    ion-navbar {
+      background: #1e293b;
+      
+      .toolbar-title {
+        color: #f1f5f9;
+      }
+    }
+  }
+  
   .scroll-content {
     padding: 0px !important;
     background-image: none !important;
-    // background: white !important;
-    background: #f4efef !important;
-    // margin-bottom: 60px;
   }
 
   .foobtn {
@@ -324,4 +374,27 @@ page-addroleforplayernstaff {
     font-weight: 500;
     margin: 0px;
   }
+
+  ion-footer {
+    --background: #ffffff;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0;
+    
+}
+
+
+&:not(.light-theme),
+  .dark-theme {
+    ion-footer {
+      --background: #1e293b !important;
+      background: #1e293b !important;
+      border-top: 1px solid #475569;
+      
+      .timekare-primary-btn {
+        background: #2b92bb;
+        color: white;
+      }
+    }
+  }
+
 }

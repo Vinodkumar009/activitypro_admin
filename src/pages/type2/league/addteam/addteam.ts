@@ -139,8 +139,8 @@ export class AddteamPage {
         if (this.teamsForParentClub.length > 0) {
           this.teamsForParentClub = this.teamsForParentClub.map(team => ({
             ...team,
-            isSelected: this.selectedTeamsSet.has(team.id),
-            isAlreadyExisted: this.existingTeamsSet.has(team.id)
+            isSelected: false,
+            isAlreadyExisted: false
           }));
         }
 
@@ -169,6 +169,10 @@ export class AddteamPage {
       this.selectedTeamsSet.add(team.id);
       this.leagueParticipantInput.parentclubteamIds.push(team.id);
     }
+    
+    // Update team selection state immediately
+    team.isSelected = this.selectedTeamsSet.has(team.id);
+    this.updateTeamStates();
   }
 
   getFilterItems(ev: any) {
@@ -193,7 +197,7 @@ export class AddteamPage {
     if (!this.filteredteams.length) return;
 
     this.filteredteams.forEach(team => {
-      team.isSelected = this.selectedTeamsSet.has(team.id);
+      team.isSelected = this.selectedTeamsSet.has(team.id) || this.existingTeamsSet.has(team.id);
       team.isAlreadyExisted = this.existingTeamsSet.has(team.id);
     });
   }

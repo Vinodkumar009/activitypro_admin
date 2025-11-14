@@ -1,6 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
 import { Apollo } from "apollo-angular";
-import { HttpLink } from "apollo-angular-link-http";
 import {
   ActionSheetController,
   IonicPage,
@@ -9,6 +8,7 @@ import {
   NavParams,
   PopoverController,
   ToastController,
+  Events
 } from "ionic-angular";
 import {
   CommonService,
@@ -30,6 +30,7 @@ import { NgModel } from "@angular/forms";
 import { TeamImageUploadService } from "../team_image_upload/team_image_upload.service";
 import { Camera, CameraOptions, PictureSourceType } from "@ionic-native/camera";
 
+
 /**
  * Generated class for the CreateteamPage page.
  *
@@ -48,6 +49,7 @@ export class CreateteamPage {
   postgre_parentclubId: string;
   publicType: boolean = true;
   privateType: boolean = true;
+
 
   clubs: IClubDetails[];
   club_activities: Activity[] = [];
@@ -101,20 +103,23 @@ export class CreateteamPage {
     public sharedservice: SharedServices,
     public popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
-    private httpLink: HttpLink,
     private graphqlService: GraphqlService,
     public actionSheetCtrl: ActionSheetController,
     private imageUploadService: TeamImageUploadService,
     private camera: Camera,
     public sharedService: SharedServices,
-  ) { }
+    private events: Events
+    
+  ) {
+
+  }
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad CreateteamPage");
   }
 
   ionViewWillEnter() {
-
+    
     console.log("ionViewDidLoad CreateteamPage");
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
@@ -394,16 +399,9 @@ export class CreateteamPage {
   //shows hint for the age group
   ageGroupHint() {
     let message = "Enter age group separated by comma (,) e.g. 12U, 14U etc.";
-    this.showToast(message, 5000);
+    this.commonService.toastMessage(message, 2500,ToastMessageType.Info);
   }
-  showToast(m: string, dur: number) {
-    let toast = this.toastCtrl.create({
-      message: m,
-      duration: dur,
-      position: "bottom",
-    });
-    toast.present();
-  }
+  
 
   gotoTeamDetails() {
     this.navCtrl.push("TeamdetailsPage");

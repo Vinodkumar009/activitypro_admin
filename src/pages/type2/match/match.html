@@ -15,14 +15,17 @@
   </div>
 
   <!-- Search Card -->
-  <div class="modern-search-card">
-    <ion-searchbar 
-      class="sleek-searchbar"
-      placeholder="Search by Title, Activity, Players"
-      [(ngModel)]="searchInput" 
-      (ionInput)="getFilterEvents($event)"
-      autocorrect="off">
-    </ion-searchbar>
+  <div class="compact-search-card">
+    <div class="search-content">
+      <ion-searchbar 
+        class="sleek-searchbar"
+        placeholder="Search by Title, Activity, Players"
+        [(ngModel)]="searchInput" 
+        (ionInput)="getFilterEvents($event)"
+        autocorrect="off"
+        showCancelButton="never">
+      </ion-searchbar>
+    </div>
   </div>
 
   <!-- Matches Container -->
@@ -60,38 +63,29 @@
           <!-- Players Row -->
           <div class="players-section" *ngIf="match.homeUserName && match.awayUserName">
             <div class="player-vs-container">
-              <div class="player-name">{{match.homeUserName}}</div>
+              <div class="player-name">
+                <span></span>{{match.homeUserName}}
+                <ion-icon name="trophy" style="color:#ffd700 !important" *ngIf="match.ResultStatus == 1 && match.is_home_team_winner"></ion-icon>
+              </div>
               <div class="vs-badge">VS</div>
-              <div class="player-name">{{match.awayUserName}}</div>
-            </div>
-          </div>
-
-          <!-- Result Section -->
-          <div class="result-section" *ngIf="isPublish && !isPending">
-            <div class="score-container">
-              <div class="score-row">
-                <span class="score-item">30</span>
-                <span class="score-item highlight">20</span>
-                <span class="score-item highlight">70</span>
-                <span class="score-item">38</span>
-                <span class="score-item">50</span>
-              </div>
-              <div class="score-label">Points</div>
-              <div class="score-row">
-                <span class="score-item highlight">22</span>
-                <span class="score-item">56</span>
-                <span class="score-item">30</span>
-                <span class="score-item highlight">80</span>
-                <span class="score-item highlight">16</span>
+              <div class="player-name">
+                <span>{{match.awayUserName}}</span>
+                <ion-icon name="trophy" style="color:#ffd700 !important" *ngIf="match.ResultStatus == 1 && match.is_away_team_winner"></ion-icon>
               </div>
             </div>
           </div>
 
-          <!-- Pending Result -->
-          <div class="pending-result" *ngIf="isPending">
-            <ion-icon name="time" class="pending-icon"></ion-icon>
-            <span class="pending-text">Result Pending</span>
+          <div class="result-status">
+            <!-- <div class="pending-result" *ngIf="!match.ResultStatus">
+              <ion-icon name="time" class="pending-icon"></ion-icon>
+              <span class="pending-text">Result Pending</span>
+            </div> -->
+            <div class="result-status" [ngClass]="match.ResultStatus == 1 ? 'status-published' : 'status-pending'">
+              <ion-icon [name]="match.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
+              <span>{{match.ResultStatus == 1 ? match.result_status_text : 'Result Pending'}}</span>
+            </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -9,7 +9,9 @@ import {
   ToastController,
   AlertController,
   ModalController,
+  Events
 } from "ionic-angular";
+import { ThemeService } from "../../../../services/theme.service";
 import {
   CommonService,
   ToastMessageType,
@@ -50,6 +52,7 @@ export class TeamdetailsPage {
   invitedType: boolean = true;
   playerType: boolean = true;
   staffType: boolean = true;
+  isDarkTheme: boolean = false;
   team: TeamsForParentClubModel;
   // team:any;
   parentClubKey: string;
@@ -123,15 +126,19 @@ export class TeamdetailsPage {
     public sharedservice: SharedServices,
     public modalCtrl: ModalController,
     private graphqlService: GraphqlService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private themeService: ThemeService,
+    private events: Events
   ) {
     console.log(
       `${this.navParams.get("selectedteamId")}:${this.navParams.get(
         "selectedmemberkey"
       )}`
     );
-
-
+    
+    this.events.subscribe('theme:changed', (theme) => {
+      this.isDarkTheme = theme === 'dark';
+    });
   }
 
   ionViewDidLoad() {
@@ -140,6 +147,14 @@ export class TeamdetailsPage {
   }
 
   ionViewWillEnter() {
+    // Load theme
+    this.storage.get('dashboardTheme').then((theme) => {
+      this.isDarkTheme = theme === 'dark' || theme === true;
+      const themeClass = this.isDarkTheme ? 'dark-theme' : 'light-theme';
+      document.body.classList.remove('dark-theme', 'light-theme');
+      document.body.classList.add(themeClass);
+    });
+    
     // this.teams=this.navParams.get("team");
 
     this.team = this.navParams.get("team");
@@ -326,6 +341,7 @@ export class TeamdetailsPage {
             FirstName
             LastName
             Gender
+            age
             DOB
             FirebaseKey
             EmailID
