@@ -12,13 +12,14 @@ import { LanguageService } from "../../services/language.service";
 import { Storage } from "@ionic/storage";
 import { BookingMemberType, CommonService } from "../../services/common.service";
 import { HttpClient } from "@angular/common/http";
-import { GoogleAnalytics } from "@ionic-native/google-analytics";
+//import { GoogleAnalytics } from "@ionic-native/google-analytics";
 import moment from "moment";
 //import { Observable } from "rxjs";
 import { Apollo } from "apollo-angular";
 import gql from "graphql-tag";
 //import { of } from 'rxjs/observable/of';
 import { GraphqlService } from "../../services/graphql.service";
+import { ParentClubService } from "../../services/parentclub.service";
 
 @IonicPage()
 @Component({
@@ -125,7 +126,7 @@ export class Dashboard {
     // private cache: CacheService,
     private langService: LanguageService,
     public toastCtrl: ToastController,
-    private ga: GoogleAnalytics,
+    //private ga: GoogleAnalytics,
     public storage: Storage,
     public commonService: CommonService,
     public http: HttpClient,
@@ -136,6 +137,7 @@ export class Dashboard {
     public fb: FirebaseService,
     private apollo: Apollo,
     private graphqlService: GraphqlService,
+    public parentClubService: ParentClubService
   ) {
     this.nestUrl = this.sharedService.getnestURL();
   }
@@ -150,6 +152,7 @@ export class Dashboard {
     this.checkDeviceToken();
     this.commonService.screening("DashBoard");
     this.getCurrencyDetials();
+    this.getPostgreParentclub();
     this.getParentClubDetails();
     this.getFooterMenus();
     this.authenticate();
@@ -173,7 +176,7 @@ export class Dashboard {
       // Handle first login actions
       if (loginWhen === "first" && this.userData) {
         this.getMemberDetails();
-        this.getPostgreParentclub();
+        //this.getPostgreParentclub();
         this.storage.set("LoginWhen", "notFirst");
       }
       
@@ -187,7 +190,7 @@ export class Dashboard {
           this.getSessionDetails();
           this.getTermSessionEnrolDetails();
           this.getMemberDetails();
-          this.getPostgreParentclub();
+          //this.getPostgreParentclub();
           this.getCoachDetails();
           this.getEvents();
         }
@@ -196,7 +199,7 @@ export class Dashboard {
         this.getSessionDetails();
         this.getTermSessionEnrolDetails();
         this.getMemberDetails();
-        this.getPostgreParentclub();
+        //this.getPostgreParentclub();
         this.getCoachDetails();
         this.getEvents();
       }
@@ -376,7 +379,7 @@ export class Dashboard {
     
     // Load all other storage data in parallel
     Promise.all([
-      this.storage.get("postgre_parentclub"),
+      //this.storage.get("postgre_parentclub"),
       this.storage.get("sessionDetails"),
       this.storage.get("session_enroldets"),
       this.storage.get("scl_session_enroldets"),
@@ -388,19 +391,12 @@ export class Dashboard {
       this.storage.get("loggedin_user"),
       this.storage.get("dashboardTheme")
     ])
-    .then(([parentClub, sessionDetails, sessionEnrolDets, sclSessionEnrolDets, 
+    .then(([sessionDetails, sessionEnrolDets, sclSessionEnrolDets, 
            monthlySessionEnrolDets, memberDetails, coachDetails, activeBookings, eventDetails, loggedinuser, isDarkTheme]) => {
       
       if(loggedinuser){
         const loggedin_user_info = JSON.parse(loggedinuser);
         this.sharedService.setLoggedInUserId(loggedin_user_info.id);
-      }
-
-      // Handle parent club data
-      if (parentClub != null && parentClub != undefined) {
-        this.sharedService.setPostgreParentClubId(parentClub.Id);
-      } else {
-        this.getPostgreParentclub();
       }
       
       // Handle session details
@@ -959,41 +955,22 @@ export class Dashboard {
   }
 
   getPostgreParentclub(){
-    const parentclubId = this.userData.UserInfo[0].ParentClubKey;
-    const parentclubQuery = gql`
-    query getParentClubByFireabseId($parentclubId:String!) {
-      getParentClubByFireabseId(parentclubId:$parentclubId){
-        Id
-        FireBaseId
-        ParentClubName
-        ParentClubAdminEmailID
-        ParentClubAppIconURL
-      }
-    }
-  `;
-    this.apollo
-      .query({
-        query: parentclubQuery,
-        fetchPolicy: 'network-only',
-        variables: { parentclubId },
-      })
-      .subscribe(({data}) => {
-        console.log("parentclub_info",data["getParentClubByFireabseId"]);
-        if(data["getParentClubByFireabseId"]){
-          this.sharedService.setPostgreParentClubId(data["getParentClubByFireabseId"]["Id"]);
-          this.storage.set("postgre_parentclub", data["getParentClubByFireabseId"]);
+    this.parentClubService.getParentClubDetails(1,this.userData.UserInfo[0].ParentClubKey).subscribe({
+      next: (res: any) => {
+        if (res && res.data) {
+          this.sharedService.setPostgreParentClubId(res.data["Id"]);
+          this.storage.set("postgre_parentclub", res.data);
           this.getSessionDetails();
           this.getTermSessionEnrolDetails();
-          //this.getHolidayCampDetails();
           this.getSchoolSessionEnrolDets();
           this.getMonthlySessionEnrolDets();
-          //this.getHolidayCampEnrolDets();
-          //this.getactivebookingDetails(); this dependant on this.getParentClubImage()
           this.getCoachDetails();
         }
-      },(err)=>{
-        console.log(JSON.stringify(err));
-      });
+      },
+      error: (err) => {
+        console.error('Error fetching parentclub details:', err);
+      }
+    });
   }
 
   getFooterMenus() {

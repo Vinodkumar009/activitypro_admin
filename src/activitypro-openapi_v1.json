@@ -4140,6 +4140,7 @@
     },
     "/api/school_session/SchoolSessionPendingPayment": {
       "post": {
+        "summary": "Get all pending or due payments of users for school session",
         "operationId": "SchoolSessionController_pendingPaymentSchoolSessionV2",
         "parameters": [
           

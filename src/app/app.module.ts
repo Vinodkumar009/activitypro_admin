@@ -30,6 +30,7 @@ import { CommonService } from "../services/common.service";
 import { CommonLeagueService } from "../pages/type2/league/commonleague.service";
 import { ThemeService } from "../services/theme.service";
 import { HttpService } from "../services/http.service";
+import { ParentClubService } from "../services/parentclub.service";
   
        
 
@@ -74,6 +75,7 @@ import { HttpService } from "../services/http.service";
     CommonLeagueService,
     ThemeService,
     HttpService,
+    ParentClubService,
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,

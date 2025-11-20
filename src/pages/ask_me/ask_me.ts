@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, Content } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 import { CommonRestApiDtoV1 } from '../../shared/model/common.model';
@@ -37,6 +37,7 @@ interface ChatMessage {
   providers: [HttpService]
 })
 export class AskMePage {
+  @ViewChild(Content) content: Content;
   isDarkTheme: boolean = true;
   userInput: string = '';
   prompts: AgentcoreResponse[] = [];
@@ -150,6 +151,7 @@ export class AskMePage {
       });
       this.userInput = '';
       this.sendPromptToAgent(userMsg);
+      this.scrollToBottom();
     }
   }
 
@@ -160,6 +162,7 @@ export class AskMePage {
       timestamp: this._getFormattedTimestamp()
     });
     this.sendPromptToAgent(prompt);
+    this.scrollToBottom();
   }
 
   async sendPromptToAgent(prompt: string): Promise<void> {
@@ -196,6 +199,7 @@ export class AskMePage {
           if (res.sessionId) {
             this.storage.set('agent_session_id', res.sessionId);
           }
+          this.scrollToBottom();
         },
         error: (err) => {
           this.isThinking = false;
@@ -206,8 +210,17 @@ export class AskMePage {
             timestamp: this._getFormattedTimestamp(),
             isError: true
           });
+          this.scrollToBottom();
         }
       });
+  }
+
+  private scrollToBottom(): void {
+    setTimeout(() => {
+      if (this.content) {
+        this.content.scrollToBottom(300);
+      }
+    }, 100);
   }
 
   getPromptIcon(index: number): string {
