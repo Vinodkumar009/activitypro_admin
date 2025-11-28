@@ -8,85 +8,84 @@
   <ion-navbar>
     <ion-title>Events</ion-title>
   </ion-navbar>
+  <!-- Modern Tab Section in Header -->
+  <div class="modern-tabs-container">
+    <div class="tab-wrapper">
+      <button 
+        class="modern-tab" 
+        [class.active]="selectedType" 
+        (click)="changeType(true)">
+        <ion-icon name="calendar" class="tab-icon"></ion-icon>
+        <span class="tab-text">Active Events</span>
+        <div class="tab-indicator"></div>
+      </button>
+      <button 
+        class="modern-tab" 
+        [class.active]="!selectedType" 
+        (click)="changeType(false)">
+        <ion-icon name="archive" class="tab-icon"></ion-icon>
+        <span class="tab-text">Past Events</span>
+        <div class="tab-indicator"></div>
+      </button>
+    </div>
+  </div>
 </ion-header>
 
-<ion-content padding>
-  <!-- <ion-refresher slot="fixed" style="background: #f7f7f7 !important;" pullFactor="0.5" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher> -->
-  <ion-row
-    class="choose-row top-row"
-    [ngStyle]="{'margin-top.px': this.isAndroid ? 0 : 28 }"
-  >
-    <ion-col col-6>
-      <button
-        ion-button
-        class="select-type"
-        (click)="changeType(true)"
-        [class.selected]="selectedType"
-      >
-        ACTIVE
-      </button>
-    </ion-col>
-    <ion-col col-6>
-      <button
-        ion-button
-        class="select-type"
-        (click)="changeType(false)"
-        [class.selected]="!selectedType"
-      >
-        PAST
-      </button>
-    </ion-col>
-  </ion-row>
+<ion-content>
 
-  <ion-list>
-    <ion-card
-      class="facilityCard seession-cards"
-      style="border-radius: 0px !important"
-      *ngFor="let event of events"
-      (click)="GotoDets(event)"
-    >
-      <!-- <img [src]="event.TitleImageUrl" style="height:20vh"> -->
-      <ion-card-content>
-        <ion-row style="margin: 0px 0px 5px 0px">
-          <ion-col col-9 class="mar-auto-all pad-left-15">
-            <p class="mar0 event_date">
-              <span>{{event.event_date}}</span>
-            </p>
-            <p class="mar0 eventname">{{event.event_name}}</p>
-            <p class="p1" style="font-size: 15px; color: #111164; margin-top: 0px" *ngIf="event.is_paid">
-              <span>{{event.min_max_amount}}</span>
-            </p>
-            <p class="p1" *ngIf="!event.is_paid" style="font-size: 15px; color: #111164; margin-top: 0px">
-              <span>Free</span>
-            </p>
-            <p class="event_date">
-              <span>
-                <ion-icon name="ios-pin-outline"></ion-icon>
-              </span>
-              <span>{{event.event_location}}</span>
-          </ion-col>
-          <ion-col col-3 style="padding-top: 0px;margin: auto;">
-            <div><p class="draft" *ngIf="event.status==0">Draft</p></div>
-            <div class="circle" float-right>
-              <p class="paidmembercount">
-                <span>{{event.ticket_count}}</span>
-                <span>/</span>
-                <span>{{event.capacity}}</span>
-              </p>
+  <!-- Enhanced Events List -->
+  <div class="events-container">
+    <div class="modern-event-card" *ngFor="let event of events" (click)="GotoDets(event)">
+      <div class="event-card-content">
+        <div class="event-main-info">
+          <div class="event-header">
+            <div class="event-date-badge">
+              <ion-icon name="calendar-outline" class="date-icon"></ion-icon>
+              <span class="event-date-text">{{event.event_date}}</span>
             </div>
-          </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+          </div>
+          
+          <h3 class="event-title">{{event.event_name}}</h3>
+          
+          <div class="event-details">
+            <div class="price-info">
+              <ion-icon name="pricetags" class="detail-icon"></ion-icon>
+              <span class="price-text" *ngIf="event.is_paid">{{event.min_max_amount}}</span>
+              <span class="price-text free" *ngIf="!event.is_paid">Free</span>
+            </div>
+            
+            <div class="location-info">
+              <ion-icon name="pin" class="detail-icon"></ion-icon>
+              <span class="location-text">{{event.event_location}}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="event-stats">
+          <div class="attendance-circle">
+            <div class="attendance-numbers">
+              <span class="current">{{event.ticket_count}}</span>
+              <span class="separator">/</span>
+              <span class="total">{{event.capacity}}</span>
+            </div>
+            <div class="attendance-label">Registered</div>
+          </div>
+          <div class="draft-status" *ngIf="event.status==0">
+            <span class="draft-badge">Draft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <ion-row *ngIf="!isEventsFound" class="not_found">
-    <ion-col col-12 text-center>
-      <p>No Events Found</p>
-    </ion-col>
-  </ion-row>
+  <!-- Enhanced Empty State -->
+  <div class="empty-state" *ngIf="!isEventsFound">
+    <div class="empty-content">
+      <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
+      <h3 class="empty-title">No Events Found</h3>
+      <p class="empty-description">There are no events to display at the moment</p>
+    </div>
+  </div>
 
   <!-- <page-paymentgatewaysetup
     *ngIf="this.isShowPaymentModal"
@@ -95,25 +94,24 @@
     (navigate)="GotoPaymentSetup()"
   ></page-paymentgatewaysetup> -->
 
-  <ion-fab mini right bottom #fab>
-    <button (click)="isShowPaymentModal=false" ion-fab mini style="background-color: #2b92bb !important; color: white !important" id="fav-ico">
+  <!-- Enhanced FAB -->
+  <ion-fab right bottom class="modern-fab">
+    <button ion-fab class="gradient-fab">
       <ion-icon name="add"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <p class="fabEmailText" style="margin-left: -102px !important" (click)="GotoAdd(fab)">
-        Add Event
-      </p>
-      <button style="background-color: #2b92bb !important ; color: white !important" ion-fab class="fabTop" (tap)="GotoAdd(fab)">
-        <ion-icon name="md-create"></ion-icon>
-      </button>
-      <p class="fabEmailText" style="margin-left: -141px" (click)="GotoAddCaption(fab)">
-        Manage Caption
-      </p>
-      <button
-        style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="GotoAddCaption(fab)"
-      >
-        <ion-icon name="md-create"></ion-icon>
-      </button>
+      <div class="fab-item" (click)="GotoAdd()">
+        <span class="fab-label">Add Event</span>
+        <button ion-fab class="fab-button">
+          <ion-icon name="calendar"></ion-icon>
+        </button>
+      </div>
+      <div class="fab-item" (click)="GotoAddCaption()">
+        <span class="fab-label">Manage Caption</span>
+        <button ion-fab class="fab-button" >
+          <ion-icon name="create"></ion-icon>
+        </button>
+      </div>
     </ion-fab-list>
   </ion-fab>
   

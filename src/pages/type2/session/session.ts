@@ -59,7 +59,7 @@ export class Type2Session {
   ////variables 
   selectedClub: string = "";
   types = [];
-  selectedActivityType:string = "";
+  selectedActivityType:string;
   clubs: IClubDetails[] = [];
   terms:FinancialYearTerms[] = [];
   activitySubCategoryList:ActivitySubCategory[] = [];
@@ -641,7 +641,7 @@ export class Type2Session {
     //     }
     //   }
     // });
-    //this.club_activities = [];
+    this.club_activities = [];
     const club_activity_input:ClubActivityInput = {
       ParentClubKey:this.parentClubKey,
       ClubKey:this.selectedClub,
@@ -678,6 +678,7 @@ export class Type2Session {
                   }
               }
            }
+           //this.selectedActivityType = "";
            if(this.club_activities.length > 0){
               this.selectedActivityType = this.club_activities[0].ActivityKey;
               this.calculateTotFee();

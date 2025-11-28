@@ -69,12 +69,12 @@ export class PendingTermSessionsPage {
   }
 
   async loadTheme() {
-    const theme = await this.storage.get('selectedTheme');
-    this.applyTheme(theme || 'dark');
+    const theme = await this.storage.get('dashboardTheme');
+    this.applyTheme(theme !== false);
   }
 
-  applyTheme(theme: string) {
-    this.isDarkTheme = theme === 'dark';
+  applyTheme(isDark: boolean) {
+    this.isDarkTheme = isDark;
     const pageElement = document.querySelector('page-pending-term-sessions');
     if (pageElement) {
       if (this.isDarkTheme) {

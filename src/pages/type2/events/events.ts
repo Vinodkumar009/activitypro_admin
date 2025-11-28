@@ -7,6 +7,7 @@ import {
   Platform,
   ToastController,
   FabContainer,
+  Events,
 } from "ionic-angular";
 import { Storage } from "@ionic/storage";
 import { HttpClient } from "@angular/common/http";
@@ -19,6 +20,7 @@ import { first } from "rxjs/operators";
 import { HttpService } from "../../../services/http.service";
 import { AppType } from "../../../shared/constants/module.constants";
 import { EventEntity } from "./model/event.model";
+
 /**
  * Generated class for the EventsPage page.
  *
@@ -47,6 +49,7 @@ export class EventsPage {
   IsStorageEvents: boolean = false;
   isAndroid: boolean = true;
   isClearStorage: boolean = false;
+  isDarkTheme: boolean = true;
   //this code for migrating event module in post-gres
   eventsDto = {
     parentclubId: "",
@@ -64,7 +67,9 @@ export class EventsPage {
 
   constructor(public navCtrl: NavController, public platform: Platform, public navParams: NavParams, public toastCtrl: ToastController, public commonService: CommonService, public fb: FirebaseService, public storage: Storage, public sharedService: SharedServices, public http: HttpClient,
     private httpService: HttpService,
+    public events_subscription: Events
     ) {
+    
       this.nestUrl = this.sharedService.getnestURL();
       this.isAndroid = platform.is('android');
      
@@ -79,6 +84,7 @@ export class EventsPage {
 
   ionViewWillEnter() {
     console.log("call view enter method")
+    this.loadTheme();
     this.eventsDto.parentclubId=this.sharedService.getPostgreParentClubId();
     console.log("call view enter parentclub id");
     this.getParentClubEvents();
@@ -89,6 +95,77 @@ export class EventsPage {
     //     this.getData();
     //   }
     // });
+  }
+
+  ionViewWillLeave() {
+    this.events_subscription.unsubscribe('theme:changed');
+  }
+
+  loadTheme() {
+    this.storage
+      .get("dashboardTheme")
+      .then((isDarkTheme) => {
+        console.log(
+          "Events page - loaded theme from storage:",
+          isDarkTheme
+        );
+        if (isDarkTheme !== null) {
+          this.isDarkTheme = isDarkTheme;
+        } else {
+          // Default to dark theme if no preference is stored
+          this.isDarkTheme = true;
+        }
+        this.applyTheme();
+      })
+      .catch((error) => {
+        console.log("Events page - error loading theme:", error);
+        this.isDarkTheme = true; // Default to dark theme
+        this.applyTheme();
+      });
+
+    // Listen for theme changes from other pages
+    this.events_subscription.subscribe("theme:changed", (isDark) => {
+      console.log("Events page - received theme change event:", isDark);
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const eventsElement = document.querySelector("page-events");
+    console.log(
+      "Events page - applying theme:",
+      this.isDarkTheme ? "dark" : "light"
+    );
+    console.log("Events page - element found:", !!eventsElement);
+
+    if (eventsElement) {
+      if (this.isDarkTheme) {
+        eventsElement.classList.remove("light-theme");
+        document.body.classList.remove("light-theme");
+        console.log("Events page - applied dark theme");
+      } else {
+        eventsElement.classList.add("light-theme");
+        document.body.classList.add("light-theme");
+        console.log("Events page - applied light theme");
+      }
+    } else {
+      console.warn("Events page - element not found, retrying...");
+      // Retry after a short delay if element not found
+      setTimeout(() => {
+        const retryElement = document.querySelector("page-events");
+        if (retryElement) {
+          if (this.isDarkTheme) {
+            retryElement.classList.remove("light-theme");
+            document.body.classList.remove("light-theme");
+          } else {
+            retryElement.classList.add("light-theme");
+            document.body.classList.add("light-theme");
+          }
+          console.log("Events page - theme applied on retry");
+        }
+      }, 100);
+    }
   }
 
   getData() {
@@ -359,7 +436,7 @@ export class EventsPage {
     // }else{
     //   this.eventsDto.action_type=0;
     // }
-    if(this.selectedType == true){
+    if(this.selectedType==true){
       this.eventsDto.action_type=1
     }else{
       this.eventsDto.action_type=0
@@ -374,11 +451,12 @@ export class EventsPage {
   }
 
   GotoAdd(fab: FabContainer) {
-    fab.close();
+    //fab.close();
     this.navCtrl.push("AddeventPage");
   }
+
   GotoAddCaption(fab: FabContainer) {
-    fab.close();
+    //fab.close();
     this.navCtrl.push("AddcaptionPage");
   }
 

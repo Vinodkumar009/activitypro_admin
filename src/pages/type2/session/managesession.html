@@ -27,13 +27,13 @@
                 <ion-col col-6 style="padding: 4px;">
                     <ion-select class="compact-select" [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()" placeholder="Club">
                         <ion-option *ngFor="let club of clubs" [value]="club.FirebaseId">{{club.ClubName}}</ion-option>
-                        <ion-option value="All">All</ion-option>
+                        <ion-option value="All">All Venue</ion-option>
                     </ion-select>
                 </ion-col>
                 <ion-col col-6 style="padding: 4px;">
                     <ion-select class="compact-select" [(ngModel)]="selectedCoach" (ionChange)="onChangeOfCoach()" placeholder="Coach">
                         <ion-option *ngFor="let coach of coaches" value={{coach.coach_firebase_id}}>{{coach.first_name}} {{coach.last_name}}</ion-option>
-                        <ion-option value="All">All</ion-option>
+                        <ion-option value="All">All Coach</ion-option>
                     </ion-select>
                 </ion-col>
             </ion-row>
@@ -59,7 +59,7 @@
         </div>
         
         <!-- Pending Payments Button -->
-        <div class="pending-payments-container">
+        <div class="pending-payments-container" *ngIf="this.switchfilterpage == 1">
           <button ion-button clear class="pending-payments-btn" (click)="this.navCtrl.push('PendingTermSessionsPage')">
             <span>Pending Payments</span>
             <ion-icon name="ios-arrow-forward"></ion-icon>
@@ -97,7 +97,7 @@
                             </div>
                             <div class="card-info">
                                 <h3 class="card-title">{{session.session_name}}</h3>
-                                <p class="card-subtitle">{{session.ActivityDetails.ActivityName}}/{{session.activity_category_name}}</p>
+                                <p class="card-subtitle">{{session.ActivityDetails.ActivityName}}/{{session.activity_category_name}}//{{session.activity_subcategory_name}}</p>
                             </div>
                             <div class="session-badge" *ngIf="session.group_status=='0'">
                                 <span class="badge-text private">Private</span>
@@ -129,6 +129,12 @@
                                     <div class="detail-item">
                                         <ion-icon name="calendar" class="detail-icon"></ion-icon>
                                         <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="pin" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.ClubDetails.ClubName}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -173,11 +179,11 @@
                 <div class="modern-card session-card" (click)="goToWeeklySessionDetailsPage(session)">
                     <div class="card-header">
                         <div class="card-icon-wrapper weekly-bg">
-                            <ion-icon name="refresh" class="card-icon"></ion-icon>
+                            <ion-icon name="calendar" class="card-icon"></ion-icon>
                         </div>
                         <div class="card-info">
                             <h3 class="card-title">{{session.session_name}}</h3>
-                            <p class="card-subtitle">{{session.ActivityDetails.ActivityName}}</p>
+                            <p class="card-subtitle">{{session.ActivityDetails.ActivityName}}/{{session.category_name}}/{{session.sub_category_name}}</p>
                         </div>
                         <div class="session-badge" *ngIf="session.private_status=='0'">
                             <span class="badge-text private">Private</span>
@@ -210,6 +216,12 @@
                                     <ion-icon name="calendar" class="detail-icon"></ion-icon>
                                     <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
                                 </div>
+                            </div>
+                            <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="pin" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.club.ClubName}} </span>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -245,7 +257,7 @@
                         </div>
                         <div class="card-info">
                             <h3 class="card-title">{{session.session_name}}</h3>
-                            <p class="card-subtitle" *ngIf="session.ActivityDetails && session.ActivityDetails.ActivityName">{{session.ActivityDetails.ActivityName}}</p>
+                            <p class="card-subtitle" *ngIf="session.ActivityDetails && session.ActivityDetails.ActivityName">{{session.ActivityDetails.ActivityName}}/{{session.activity_category_name}}/{{session.activity_subcategory_name}}</p>
                         </div>
                         <div class="session-badge" *ngIf="session.group_status=='0'">
                             <span class="badge-text private">Private</span>
@@ -279,6 +291,12 @@
                                     <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
                                 </div>
                             </div>
+                            <!-- <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="pin" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.club.ClubName}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
+                                    </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

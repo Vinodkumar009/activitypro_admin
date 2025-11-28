@@ -118,5 +118,8 @@ export const API = {
     AGENT_CHAT_INVOKE: 'invoke-agentcore',
     AGENT_CHAT_PROMPTS: 'agentcore/getPromptsByModule',
     AGENT_CHAT_FEEDBACK:'agentcore/interactions/feedback',
-    AGENT_CHAT_REMOVE_FEEDBACK:'agentcore/interactions/removefeedback'
+    AGENT_CHAT_REMOVE_FEEDBACK:'agentcore/interactions/removefeedback',
+    WAITING_LIST_GET_BY_MODULE: 'session-waiting-list/get-by-module',
+    WAITING_LIST_REMOVE: 'session-waiting-list/remove',
+    WAITING_LIST_UPDATE_STATUS: 'session-waiting-list/update-status'
 }

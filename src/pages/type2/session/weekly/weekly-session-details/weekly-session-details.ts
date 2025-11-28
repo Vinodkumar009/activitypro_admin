@@ -9,7 +9,9 @@ import { WeeklySessionDateDetailsInput, WeeklySessionMember } from '../weeklydat
 import moment from 'moment';
 import * as $ from 'jquery';
 import { FirebaseService } from '../../../../../services/firebase.service';
-import { ModuleTypes } from '../../../../../shared/constants/module.constants';
+import { AppType, ModuleTypes } from '../../../../../shared/constants/module.constants';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 
 /**
  * Generated class for the WeeklySessionDetailsPage page.
@@ -30,6 +32,8 @@ export class WeeklySessionDetailsPage {
   weeklyDets: WeeklySessionDetails;
   individualDetails: WeeklySessionDays[];
   isShowFutureSnsOnly:boolean = true;
+  selectedTab: string = 'sessions';
+  waitingListData: any[] = [];
 
   postgre_parentclub: string;
   cancelReason: string = "";
@@ -77,7 +81,8 @@ export class WeeklySessionDetailsPage {
     public navParams: NavParams, 
     public actionSheetCtrl: ActionSheetController,
     private graphqlService: GraphqlService,
-    private sharedService: SharedServices) {
+    private sharedService: SharedServices,
+    private httpService: HttpService) {
 
   }
 
@@ -855,6 +860,147 @@ export class WeeklySessionDetailsPage {
         return null;
     }
 }
+
+  onTabChange() {
+    if (this.selectedTab.toLowerCase() === 'waitinglist') {
+      this.getWaitingListData();
+    }
+  }
+
+  getWaitingListData() {
+    this.commonService.showLoader("Loading waiting list...");
+    
+    const requestBody = {
+      module_id: this.sessionId,
+      parentclubId: this.sharedService.getPostgreParentClubId() ,
+      //clubId: this.weeklyDets?.club?.Id || '',
+      //activityId: this.weeklyDets?.ActivityDetails?.Id || '',
+      memberId: this.sharedService.getLoggedInUserId(),
+      action_type: 1,
+      app_type: AppType.ADMIN_NEW,
+      device_id: this.sharedService.getDeviceId() || 'unknown',
+      updated_by: this.sharedService.getLoggedInUserId()
+    };
+
+    this.httpService.post(API.WAITING_LIST_GET_BY_MODULE, requestBody)
+      .subscribe({
+        next: (data: any[]) => {
+          this.commonService.hideLoader();
+          this.waitingListData = data.map(item => ({
+            ...item,
+            member_name: (item.member && item.member.FirstName && item.member.LastName) 
+              ? item.member.FirstName + ' ' + item.member.LastName 
+              : 'Unknown Member',
+            individual_session_name: (item.session && item.session.session_name) 
+              ? item.session.session_name 
+              : 'Unknown Session'
+          }));
+          console.log('Waiting list data:', this.waitingListData);
+        },
+        error: (error) => {
+          this.commonService.hideLoader();
+          console.error('Error fetching waiting list:', error);
+          this.commonService.toastMessage("Failed to load waiting list", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
+      });
+  }
+
+  ShowWaitingListActionSheet(waitingItem: any) {
+    if (waitingItem.status === 1) {
+      return;
+    }
+
+    let buttons = [];
+
+    if (waitingItem.status === 0) {
+      buttons.push(
+        {
+          text: 'Confirm',
+          icon: "ios-checkmark",
+          handler: () => {
+            this.updateWaitingListStatus(waitingItem, 1, 'Approving member...');
+          }
+        },
+        {
+          text: 'Reject',
+          icon: "ios-close-circle",
+          handler: () => {
+            this.updateWaitingListStatus(waitingItem, 2, 'Rejecting member...');
+          }
+        }
+      );
+    } else if (waitingItem.status === 2) {
+      buttons.push({
+        text: 'Move Back to Waiting List',
+        icon: "ios-undo",
+        handler: () => {
+          this.updateWaitingListStatus(waitingItem, 0, 'Moving back to waiting list...');
+        }
+      });
+    }
+
+    // buttons.push({
+    //   text: 'Close',
+    //   icon: 'ios-close',
+    //   role: 'cancel',
+    //   handler: () => {}
+    // });
+
+    let actionSheet = this.actionSheetCtrl.create({
+      cssClass: 'action-sheets-basic-page',
+      buttons: buttons
+    });
+    actionSheet.present();
+  }
+
+  updateWaitingListStatus(waitingItem: any, status: number, loaderMessage: string) {
+    this.commonService.showLoader(loaderMessage);
+    
+    const requestBody = {
+      id: waitingItem.id,
+      status: status,
+      parentclubId: this.postgre_parentclub,
+      memberId: this.sharedService.getLoggedInUserId(),
+      action_type: 1,
+      device_type: 3,
+      app_type: 0,
+      device_id: this.sharedService.getDeviceId() || 'unknown',
+      updated_by: this.sharedService.getLoggedInUserId()
+    };
+
+    this.httpService.post(API.WAITING_LIST_UPDATE_STATUS, requestBody)
+      .subscribe({
+        next: (data) => {
+          this.commonService.hideLoader();
+          const successMessage = status === 1 ? 'Member approved successfully' : 
+                                status === 2 ? 'Member rejected successfully' : 
+                                'Moved back to waiting list successfully';
+          this.commonService.toastMessage(successMessage, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+          this.getWaitingListData();
+          if (status === 1) {
+            this.weeklySessionDetails();
+          }
+        },
+        error: (error) => {
+          this.commonService.hideLoader();
+          console.error('Error updating waiting list status:', error);
+          this.commonService.toastMessage("Failed to update status", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
+      });
+  }
+
+
+
+  getStatusText(status: number): string {
+    switch(status) {
+      case 0: return 'Pending';
+      case 1: return 'Confirmed';
+      case 2: return 'Rejected';
+      default: return 'Unknown';
+    }
+  }
+  
+  
 
   ionViewWillLeave(){
     if (this.fab) {

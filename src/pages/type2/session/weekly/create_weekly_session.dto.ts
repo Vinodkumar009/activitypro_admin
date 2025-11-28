@@ -40,6 +40,7 @@ export class CreateWeeklySession {
   advance_bookable_count: number
   advance_visible_sessions: number
   minimum_booking_count: number
+  allow_waitinglist:boolean
   approve_first_booking: boolean
   first_booking_message: string
   fee_for_member: number

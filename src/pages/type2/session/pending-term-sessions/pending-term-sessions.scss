@@ -6,7 +6,8 @@ page-pending-term-sessions {
     background: #0f172a !important;
 
     // Light Theme Styles
-    &.light-theme {
+    &.light-theme,
+    ion-content.light-theme {
         background: #f8fafc !important;
 
         .modern-navbar {
@@ -101,7 +102,23 @@ page-pending-term-sessions {
         }
     }
 
-    // Dark Theme Styles
+    // Dark Theme Styles (Default)
+    &.dark-theme,
+    ion-content.dark-theme,
+    & {
+        .modern-navbar {
+            background: #1e293b;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid #334155;
+
+            .navbar-title {
+                font-weight: 600;
+                color: #f1f5f9;
+                font-size: 18px;
+            }
+        }
+    }
+    
     .modern-navbar {
         background: #1e293b;
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
@@ -114,7 +131,8 @@ page-pending-term-sessions {
         }
     }
 
-    ion-content {
+    ion-content,
+    ion-content.dark-theme {
         background: #0f172a !important;
 
         .scroll-content {
@@ -151,7 +169,8 @@ page-pending-term-sessions {
       // .sub-container .searchbar-search-icon {
       //   display: none !important;
       // }
-      .sub-container {
+      .sub-container,
+      ion-content.dark-theme .sub-container {
         border: 1px solid #334155 !important;
         border-radius: 8px;
         height: 50px;
@@ -213,7 +232,8 @@ page-pending-term-sessions {
       .search-bar {
         padding: 0px 5px;
       }
-    ion-card {
+    ion-card,
+    ion-content.dark-theme ion-card {
         width: 94% !important;
         margin: 3% !important;
         background: #1e293b !important;

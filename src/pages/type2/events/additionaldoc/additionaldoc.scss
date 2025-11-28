@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-additionaldoc {
+    @include android-sdk35-fixes;
+
+
+
     ion-label {
         color: #b5b2ae
     }
@@ -85,5 +91,4 @@ page-additionaldoc {
         margin-top: -3px !important;
         margin-bottom: -8px !important;
     }
-
 }

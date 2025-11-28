@@ -86,7 +86,7 @@ export class EventdetailsPage {
   //rootNavCtrl:any;
   currencycode: string = "";
   isMultiDay: boolean = false;
-  postgre_parentclub_id: string = "";
+  postgre_parentclub_id: string = ""
   event_stats: EventStats;
   eventId: string;
   date: string = "";

@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-addcaption {
+    @include android-sdk35-fixes;
+
+
+
     $toolbar-background-color1: #2b92bb;
     $toolbar-title-color1: #ffffff;
     $toolbar-button-text-color1: #ffffff;
@@ -55,5 +61,4 @@ page-addcaption {
             //box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
         }
     }
-
 }

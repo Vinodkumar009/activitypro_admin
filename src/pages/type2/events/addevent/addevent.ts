@@ -632,7 +632,7 @@ export class AddeventPage {
       
     } catch (error) {
       this.commonService.hideLoader();
-      console.log(`err1:${error}`);
+      console.log(`err1:${JSON.stringify(error)}`);
       this.commonService.toastMessage("Error uploading image", 2500, ToastMessageType.Error);
     } 
   }

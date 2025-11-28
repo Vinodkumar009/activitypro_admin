@@ -239,10 +239,19 @@ managesession-page {
 
       p {
         color: #64748b !important;
+        
+        &.colorselected {
+          color: #2b92bb !important;
+          font-weight: 600 !important;
+        }
       }
 
       ion-icon {
         color: #2b92bb !important;
+        
+        &.colorselected {
+          color: #059669 !important;
+        }
       }
     }
 
@@ -404,9 +413,6 @@ managesession-page {
     font-size: 12px;
     margin: 0px 2px 2px 2px;
   }
-  .colorselected {
-    color: #faae4e !important;
-  }
   .footer_div {
     background: #1e293b;
     border-top: 1px solid #334155;
@@ -429,12 +435,21 @@ managesession-page {
         margin: 2px 0 0 0;
         font-weight: 500;
         font-size: 14px;
+        
+        &.colorselected {
+          color: #2b92bb !important;
+          font-weight: 600 !important;
+        }
       }
     }
     ion-icon {
       font-size: 28px;
-      color: #60a5fa !important;
+      color: #2b92bb !important;
       transition: all 0.2s ease;
+
+      &.colorselected {
+        color: #059669 !important;
+      }
 
       &:active {
         transform: scale(0.95);
@@ -1260,8 +1275,8 @@ managesession-page {
           color: #f1f5f9;
           padding: 0;
           font-size: 14px;
-          box-shadow: none;
-          -webkit-box-shadow: none;
+          box-shadow: none !important;
+          -webkit-box-shadow: none !important;
 
           &::placeholder {
             color: #94a3b8;
@@ -1516,6 +1531,7 @@ managesession-page {
     .select-text {
       color: #f1f5f9 !important;
       width: 100% !important;
+      padding: 2px !important;
     }
 
     .item-inner {
@@ -1540,6 +1556,8 @@ managesession-page {
       .searchbar-input {
         color: #f1f5f9;
         background: transparent;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
 
         &::placeholder {
           color: #94a3b8;
@@ -1686,6 +1704,7 @@ managesession-page {
       padding: 12px;
       border-bottom: 1px solid #334155;
       position: relative;
+      min-width: 0;
 
       .card-icon-wrapper {
         width: 36px;
@@ -1694,7 +1713,8 @@ managesession-page {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 8px;
+        margin-right: 12px;
+        flex-shrink: 0;
 
         .card-icon {
           font-size: 16px;
@@ -1716,6 +1736,8 @@ managesession-page {
 
       .card-info {
         flex: 1;
+        min-width: 0;
+        margin-right: 8px;
 
         .card-title {
           font-size: 16px;
@@ -1726,6 +1748,7 @@ managesession-page {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          width: 100%;
         }
 
         .card-subtitle {
@@ -1735,10 +1758,13 @@ managesession-page {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          width: 100%;
         }
       }
 
       .session-badge {
+        flex-shrink: 0;
+        
         .badge-text {
           padding: 2px 6px;
           border-radius: 4px;
@@ -1774,13 +1800,13 @@ managesession-page {
             flex: 1;
 
             .detail-icon {
-              font-size: 12px;
+              font-size: 14px;
               color: #94a3b8;
               flex-shrink: 0;
             }
 
             .detail-text {
-              font-size: 12px;
+              font-size: 14px;
               color: #cbd5e1;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -1797,7 +1823,7 @@ managesession-page {
                 color: #94a3b8;
                 padding: 2px 6px;
                 border-radius: 4px;
-                font-size: 12px;
+                font-size: 14px;
                 font-weight: 600;
                 border: 1px solid #475569;
               }

@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-addevent {
+    @include android-sdk35-fixes;
     $toolbar-background-color1: #2b92bb;
     $toolbar-title-color1: #ffffff;
     $toolbar-button-text-color1: #ffffff;
@@ -34,7 +37,7 @@ page-addevent {
         white-space: pre-wrap;
     }
     .scroll-content {
-        margin-top: 48px !important;
+        margin-top: 60px !important;
         padding: 3px !important;
         background-image: none !important; // background: white !important;
         background: #f4efef !important;
@@ -358,5 +361,4 @@ page-addevent {
             }
         }
     }
-
 }

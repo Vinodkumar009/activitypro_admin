@@ -796,12 +796,12 @@ export class EditeventPage {
       mediaType: this.camera.MediaType.PICTURE
     }
     try {
-      this.camera.getPicture(options).then((data) => {
+      this.camera.getPicture(options).then((imageData) => {
         this.loading = this.loadingCtrl.create({
           content: 'Image uploading...'
         });
         this.loading.present();
-        let url = "data:image/jpeg;base64," + data;
+        let url = imageData.startsWith('data:image/jpeg;base64,') ? imageData: `data:image/jpeg;base64,${imageData}`;
         let imgObj = {};
         imgObj["url"] = url;
         imgObj["upload_type"] = "events";

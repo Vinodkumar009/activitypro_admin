@@ -237,6 +237,7 @@ export class CreateweeklysessionPage {
     minimum_booking_count: 1,
     is_paid:true,
     approve_first_booking: false,
+    allow_waitinglist:false,
     first_booking_message: '',
     fee_for_member: 10.00,
     fee_for_nonmember:12.00,

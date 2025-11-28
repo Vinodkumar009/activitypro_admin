@@ -1,5 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-eventdetails {
+    @include android-sdk35-fixes;
+
     .scroll-content {
+        margin-top: 56px !important;
         padding: 0px !important;
         background: #FFF !important;
     }
@@ -8,7 +13,6 @@ page-eventdetails {
         color: #FFF !important;
     }
 
-    
 
     .section_row {
         margin-bottom: 10px;
@@ -686,9 +690,9 @@ page-eventdetails {
         object-fit: cover; /* Options: cover, contain, or fill */
         display: block;
     }
-}
 
   
   
   
+}
 }

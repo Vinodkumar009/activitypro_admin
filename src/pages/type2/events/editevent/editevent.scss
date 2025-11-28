@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-editevent {
+    @include android-sdk35-fixes;
+
+
+
     $toolbar-background-color1: #2b92bb;
     $toolbar-title-color1: #ffffff;
     $toolbar-button-text-color1: #ffffff;
@@ -296,5 +302,4 @@ page-editevent {
         border-bottom-color: #dedede !important;
         box-shadow: none !important;
       }
-
 }
