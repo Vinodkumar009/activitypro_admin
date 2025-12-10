@@ -240,6 +240,7 @@ export class EditweeklysessionPage {
     is_paid:false,
     session_status: 0,
     show_in_apkids: false,
+    allow_waitinglist:false,
     description: '',
     number_of_weeks: 0,
     contact_email: '',
@@ -331,7 +332,7 @@ export class EditweeklysessionPage {
     this.editWeeklySession.allow_reward_loyality = this.weeklyData.is_loyalty_allowed;
     this.editWeeklySession.is_fixed_loyalty_allowed = this.weeklyData.is_fixed_loyalty_allowed;
     this.editWeeklySession.fixed_loyalty_points = this.weeklyData.fixed_loyalty_points;
-   
+    this.editWeeklySession.allow_waitinglist = this.weeklyData.allow_waitinglist;
      this.editWeeklySession.number_of_weeks = this.weeklyData.no_of_weeks;
      this.AssistedBy = this.weeklyData.secondaryCoaches[0].coach.coach_firebase_id;
      this.editWeeklySession.session_status=this.weeklyData.private_status;

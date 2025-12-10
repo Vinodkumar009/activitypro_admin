@@ -57,6 +57,7 @@ export interface WeeklySessionDetails {
   ActivityDetails: ActivityDetails
   allow_paylater: boolean;
   allow_bacs_payment: boolean;
+  allow_waitinglist:boolean;
   is_loyalty_allowed: boolean;
   is_fixed_loyalty_allowed:boolean
   fixed_loyalty_points:number;

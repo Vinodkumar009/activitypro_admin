@@ -114,8 +114,9 @@
                   <ion-row>
                     <ion-col col-8>
                       <p class="session_name">{{item.member.FirstName}} {{item.member.LastName}}</p>
-                      <p class="pStyle">{{item.session.individual_session}}</p>
-                      <p class="pStyle">{{item.session.formatted_session_date}}</p>
+                      <p class="pStyle" style="font-weight: 500;">{{item.session.individual_session}}</p>
+                      <p class="pStyle">Session On: {{item.session.formatted_session_date}}</p>
+                      <p class="pStyle">Added On: {{item.created_at}}</p>
                     </ion-col>
                     <ion-col col-4 style="margin:auto; text-align: center;">
                       <span class="status-text" [ngClass]="{'pending': item.status === 0, 'approved': item.status === 1, 'rejected': item.status === 2}">

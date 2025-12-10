@@ -233,10 +233,24 @@
                                         </ion-col>
                                     </ion-row>
                                 </ion-item>
+                                
                                 <ion-item *ngIf="editWeeklySession.apply_capacity_restriction">
                                     <ion-label fixed>Capacity</ion-label>
                                     <ion-input type="number" [(ngModel)]="editWeeklySession.capacity"
                                         class="textareastyle"></ion-input>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-row>
+                                        <ion-col col-12 no-padding class="flex_col">
+                                            <p class="toggle_para">Allow Waitinglist</p>
+                                            <label class="toggle">
+                                                <input type="checkbox"
+                                                    [(ngModel)]="editWeeklySession.allow_waitinglist">
+                                                <span data-unchecked="No" data-checked="Yes"></span>
+                                            </label>
+                                        </ion-col>
+                                    </ion-row>
                                 </ion-item>
                                 
                                 <!-- <ion-item (tap)="AllowAdvanceBooking()" class="adv_ses">

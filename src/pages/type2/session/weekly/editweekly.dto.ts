@@ -22,6 +22,7 @@ export class EditWeeklySession {
     contact_email: string
     contact_phone: string
     apply_capacity_restriction: boolean 
+    allow_waitinglist:boolean
     capacity:number 
     is_paid:boolean
     advance_booking_weeks: number

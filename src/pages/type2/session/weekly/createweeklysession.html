@@ -271,6 +271,13 @@
                                         </ion-col>
                                     </ion-row>
                                 </ion-item>
+                                
+                                <ion-item *ngIf="createSession.apply_capacity_restriction">
+                                    <ion-label fixed>Capacity</ion-label>
+                                    <ion-input type="number" [(ngModel)]="createSession.capacity"
+                                        class="textareastyle"></ion-input>
+                                </ion-item>
+
                                 <ion-item>
                                     <ion-row>
                                         <ion-col col-12 no-padding class="flex_col">
@@ -282,11 +289,6 @@
                                             </label>
                                         </ion-col>
                                     </ion-row>
-                                </ion-item>
-                                <ion-item *ngIf="createSession.apply_capacity_restriction">
-                                    <ion-label fixed>Capacity</ion-label>
-                                    <ion-input type="number" [(ngModel)]="createSession.capacity"
-                                        class="textareastyle"></ion-input>
                                 </ion-item>
                                 <!-- <ion-item (tap)="numberOfMonthMustPay()">
                                     <p style="font-size: 16px;">

@@ -538,6 +538,7 @@ export class WeeklySessionDetailsPage {
         is_fixed_loyalty_allowed
         fixed_loyalty_points
         allow_cash_payment
+        allow_waitinglist
         apply_capacity_restriction
         approve_first_booking
         minimum_booking_count
@@ -983,8 +984,13 @@ export class WeeklySessionDetailsPage {
         },
         error: (error) => {
           this.commonService.hideLoader();
-          console.error('Error updating waiting list status:', error);
-          this.commonService.toastMessage("Failed to update status", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          if(error && error.error && error.error.message){
+            this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            return;
+          }else{
+            console.error('Error updating waiting list status:', error);
+            this.commonService.toastMessage("Failed to update status", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
         }
       });
   }
