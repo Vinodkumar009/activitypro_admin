@@ -7,6 +7,8 @@ import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
+import { API } from '../../../../shared/constants/api_constants';
+import { HttpService } from '../../../../services/http.service';
 
 /**
  * Generated class for the FilterbookingsPage page.
@@ -40,7 +42,7 @@ export class FilterbookingsPage {
   Isgotosession: boolean = false;
   currencyDetails: any;
   constructor(public navCtrl: NavController, 
-    public storage: Storage, public sharedService: SharedServices, public http: HttpClient, public fb: FirebaseService, public commonService: CommonService,  public loadingCtrl: LoadingController,  public navParams: NavParams) {
+    public storage: Storage, public sharedService: SharedServices, public http: HttpClient, public fb: FirebaseService, public commonService: CommonService,  public loadingCtrl: LoadingController,  public navParams: NavParams, private httpService: HttpService) {
     
     this.storage.get('userObj').then((val) => {
       val = JSON.parse(val);
@@ -188,44 +190,41 @@ export class FilterbookingsPage {
     async getBookingHistory(day){       
       return new Promise((res, rej)=>{
         try{
-          let startDate =  new Date(new Date(day.currentDate).setHours(0, 0, 0, 0)).getTime();
-          let lasttDate = new Date(new Date(day.currentDate).setHours(23, 59, 59)).getTime();
+          const startDate = new Date(new Date(day.currentDate).setHours(0, 0, 0, 0)).getTime();
+          const endDate = new Date(new Date(day.currentDate).setHours(23, 59, 59)).getTime();
+          const params = {
+            parentClubKey: this.selectedParentClubKey,
+            courtkey: 'all',
+            activitykey: this.selectedActivity,
+            clubKey: this.selectedClubKey,
+            startDate: startDate,
+            endDate: endDate
+          };
           
-        
-
-          let courtkey= "all";
-          this.http.get(`${this.nestUrl}/courtbooking/bookingHistory?parentClubKey=${this.selectedParentClubKey}&courtkey=${courtkey}&activitykey=${this.selectedActivity}&clubKey=${this.selectedClubKey}&startDate=${startDate}&endDate=${lasttDate}`)
-          .subscribe((data: any) => {
-            
-            //this.Discounts = discountObj.data;
-            res('success')
-            if(data.data){
-              this.allCourtSlots = []
-              this.courts.forEach(async(eachCourt:any)=>{
-                let slot :any = data.data.allCourtSlots[eachCourt.$key]
-                slot.forEach(eachSlot => {
-                  eachSlot['MemberName']  = eachSlot['Member'].find(member => member.IsPrimaryMember)
-                  if(!eachSlot['MemberName']){  
-                    eachSlot['MemberName'] = eachSlot['Member'][0]
-                  }
-                  this.allCourtSlots.push(eachSlot)
-                });
-               
-              })
-          
-              this.slotListing = this.allCourtSlots
-  
+          this.httpService.get(API.COURT_BOOKING_HISTORY, params, null, 1).subscribe({
+            next: (data: any) => {
+              res('success')
+              if(data.data){
+                this.allCourtSlots = []
+                this.courts.forEach((eachCourt:any)=>{
+                  let slot :any = data.data.allCourtSlots[eachCourt.$key]
+                  slot.forEach(eachSlot => {
+                    eachSlot['MemberName'] = eachSlot['Member'].find(member => member.IsPrimaryMember) || eachSlot['Member'][0]
+                    this.allCourtSlots.push(eachSlot)
+                  });
+                })
+                this.slotListing = this.allCourtSlots
+              }
+            },
+            error: (err) => {
+              console.log(JSON.stringify(err));
+              this.loading.dismiss()
+              rej('fail')
             }
-           
-          }, (err) => {
-            console.log(JSON.stringify(err));
-            this.loading.dismiss()
-            rej('fail')
           });
         }catch(err){
           this.loading.dismiss()
         }
-        
       })
     }
     getTime(date) {
@@ -234,31 +233,30 @@ export class FilterbookingsPage {
 
     async getNewSlots(day){
       return new Promise((res, rej)=>{
-        try{       
-      
-      
-          this.http.get(`${this.nestUrl}/courtbooking/activebookinginrangebycourt/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${day.currentDate}/${day.currentDate}/nil`)
-          .subscribe((data: any) => {
-            
-            //this.Discounts = discountObj.data;
-            res('success')
-            this.allCourtSlots = data['data']
-            this.allCourtSlots.forEach(slot => {
-              slot.slot_start_time = moment(slot.slot_start_time, 'HH:mm:ss').format('HH:mm')
-              slot.slot_end_time = moment(slot.slot_end_time, 'HH:mm:ss').format('HH:mm')
-              slot.booking_transaction_time = moment.utc(slot.booking_transaction_time).local().format('DD-MMM-YYYY')
-              slot.booking_date = moment.utc(slot.booking_date).local().format('DD MM YYYY')
-            });
-            this.slotListing = this.allCourtSlots
-          }, (err) => {
-            console.log(JSON.stringify(err));
-            this.loading.dismiss()
-            rej('fail')
+        try{
+          const url = `${API.ACTIVE_BOOKING_IN_RANGE}/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${day.currentDate}/${day.currentDate}/nil`;
+          
+          this.httpService.get(url, null, null, 1).subscribe({
+            next: (data: any) => {
+              res('success')
+              this.allCourtSlots = data['data']
+              this.allCourtSlots.forEach(slot => {
+                slot.slot_start_time = moment(slot.slot_start_time, 'HH:mm:ss').format('HH:mm')
+                slot.slot_end_time = moment(slot.slot_end_time, 'HH:mm:ss').format('HH:mm')
+                slot.booking_transaction_time = moment.utc(slot.booking_transaction_time).local().format('DD-MMM-YYYY')
+                slot.booking_date = moment.utc(slot.booking_date).local().format('DD MM YYYY')
+              });
+              this.slotListing = this.allCourtSlots
+            },
+            error: (err) => {
+              console.log(JSON.stringify(err));
+              this.loading.dismiss()
+              rej('fail')
+            }
           });
         }catch(err){
           this.loading.dismiss()
         }
-        
       })
     }
 

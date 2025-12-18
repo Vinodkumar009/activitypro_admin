@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import { IonicPage } from 'ionic-angular';
 import { CommonService } from '../../../../services/common.service';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 
 
 /**
@@ -91,7 +93,7 @@ export class FacilityReportPage {
   currencyDetails: any = "";
   nestUrl: string;
   constructor(public events: Events, public sharedService: SharedServices, public commonService: CommonService, public loadingCtrl: LoadingController, platform: Platform, public storage: Storage, public fb: FirebaseService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController,
-    private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, public actionSheetCtrl: ActionSheetController, ) {
+    private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, public actionSheetCtrl: ActionSheetController, private httpService: HttpService) {
     
     this.userData = this.sharedService.getUserData();
     this.themeType = sharedservice.getThemeType();
@@ -353,32 +355,25 @@ export class FacilityReportPage {
     this.paidMemberListtemp = [];
     this.TotTrnsAmt = 0.0;
     this.TotTransc = 0;
-    let club = ''
-    if (this.selectedClub.toLowerCase() == "all"){
-      club = 'nil'
-    }else{
-      club = this.selectedClub
-    }
+    const club = this.selectedClub.toLowerCase() == "all" ? 'nil' : this.selectedClub;
+    const url = `${API.ACTIVE_BOOKING_IN_RANGE_BY_CLUB}/${this.userData.UserInfo[0].ParentClubKey}/${club}/${this.paymentObj.startDate}/${this.paymentObj.lasttDate}`;
 
-    this.http.get(`${this.nestUrl}/courtbooking/activebookinginrange/${this.userData.UserInfo[0].ParentClubKey}/${club}/${this.paymentObj.startDate}/${this.paymentObj.lasttDate}`)
-    .subscribe((data: any) => {
-      
-    
-      this.paidMemberListtemp = data['data']
-      this.commonService.hideLoader()
-      this.paidMemberListtemp.forEach(slot => {
-        this.TotTrnsAmt += +slot.price;
-        slot.slot_start_time = moment(slot.slot_start_time, 'HH:mm:ss').format('HH:mm')
-        slot.slot_end_time = moment(slot.slot_end_time,'HH:mm:ss').format('HH:mm')
-        slot.booking_date = moment.utc(slot.booking_date).local().format('DD-MMM-YYYY')
-      });
-      this.TotTransc = this.paidMemberListtemp.length
-    }, (err) => {
-      
-      this.commonService.hideLoader()
-     
+    this.httpService.get(url, null, null, 1).subscribe({
+      next: (data: any) => {
+        this.paidMemberListtemp = data['data']
+        this.commonService.hideLoader()
+        this.paidMemberListtemp.forEach(slot => {
+          this.TotTrnsAmt += +slot.price;
+          slot.slot_start_time = moment(slot.slot_start_time, 'HH:mm:ss').format('HH:mm')
+          slot.slot_end_time = moment(slot.slot_end_time,'HH:mm:ss').format('HH:mm')
+          slot.booking_date = moment.utc(slot.booking_date).local().format('DD-MMM-YYYY')
+        });
+        this.TotTransc = this.paidMemberListtemp.length
+      },
+      error: (err) => {
+        this.commonService.hideLoader()
+      }
     });
-
   }
 
   onChangeOfClub() {

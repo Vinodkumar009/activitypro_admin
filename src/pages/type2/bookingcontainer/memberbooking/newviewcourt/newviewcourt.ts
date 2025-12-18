@@ -12,6 +12,8 @@ import { HttpClient } from '@angular/common/http';
 import { SharedServices } from '../../../../services/sharedservice';
 import * as $ from 'jquery';
 import { dateValueRange } from 'ionic-angular/umd/util/datetime-util';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 /**
  * Generated class for the ViewcourtPage page.
  *
@@ -80,7 +82,7 @@ export class NewViewcourtPage {
   constructor(public sharedService: SharedServices, public events: Events, 
     public ngZone: NgZone, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController,
      public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public fb: FirebaseService, 
-     public storage: Storage, public commonService: CommonService, public http: HttpClient, public loadingCtrl: LoadingController) {
+     public storage: Storage, public commonService: CommonService, public http: HttpClient, public loadingCtrl: LoadingController, private httpService: HttpService) {
     //  this.events.subscribe('updateScreen', () => {
     //    this.ngZone.run(() => {
    
@@ -211,30 +213,42 @@ export class NewViewcourtPage {
     return new Promise((res, rej) => {
       try {
         this.slotofAllCourt = []
-
+        const day = moment(date).format('ddd')
+        const startDate = new Date(new Date(date).setHours(0, 0, 0)).getTime()
+        const endDate = new Date(new Date(date).setHours(23, 59, 59)).getTime()
+        const params = {
+          date: date,
+          activityKey: this.selectedActivity,
+          clubKey: this.selectedClubKey,
+          parentKey: this.parentClubKey,
+          courtKey: this.courtSelected,
+          isMember: this.isMember,
+          day: day,
+          startDate: startDate,
+          endDate: endDate
+        };
         
-        let day = moment(date).format('ddd')
-    
-        let startDate = new Date(new Date(date).setHours(0, 0, 0)).getTime()
-        let endDate = new Date(new Date(date).setHours(23, 59, 59)).getTime()
-        this.http.get(`${this.nestUrl}/courtbooking/getmulticourtslot?date=${date}&activityKey=${this.selectedActivity}&clubKey=${this.selectedClubKey}&parentKey=${this.parentClubKey}&courtKey=${this.courtSelected}&isMember=${this.isMember}&day=${day}&startDate=${startDate}&endDate=${endDate}`).subscribe((res) => {
-          this.loading.dismiss()
-          if (res['data']['bookingDetails']) {
-            this.bookingDetails = res['data']['bookingDetails']
-          }
-          if (res['data']['allCourtSlots']) {
-            this.courts.forEach(court => {
-              if (res['data']['allCourtSlots'][court.$key]) {
-                let slotData = res['data']['allCourtSlots'][court.$key]
-                this.slotofAllCourt.push({ slotData, courtInfo: court })
-              }
-            })
-          }
-        },
-          err => {
+        this.httpService.get(API.GET_MULTI_COURT_SLOT, params, null, 1).subscribe({
+          next: (response) => {
+            this.loading.dismiss()
+            if (response['data']['bookingDetails']) {
+              this.bookingDetails = response['data']['bookingDetails']
+            }
+            if (response['data']['allCourtSlots']) {
+              this.courts.forEach(court => {
+                if (response['data']['allCourtSlots'][court.$key]) {
+                  let slotData = response['data']['allCourtSlots'][court.$key]
+                  this.slotofAllCourt.push({ slotData, courtInfo: court })
+                }
+              })
+            }
+            res('success')
+          },
+          error: (err) => {
             this.loading.dismiss();
-
-          })
+            rej(err)
+          }
+        })
       } catch (err) {
         rej(err)
         this.loading.dismiss();
@@ -417,19 +431,16 @@ export class NewViewcourtPage {
     });
     this.loading.present().then(() => {
       try {
-        let paymentDEtails = {
+        const paymentDEtails = {
           parentClubKey: this.parentClubKey,
           clubKey: this.selectedClubKey,
           courtKey: this.courtSelected,
           activityKey: this.selectedActivity,
-
           description: "booking court",
-
           discount: "0",
           amount: this.totalPrice,
           paymentDescription: "booking court",
           bookingParentMemberKey: 'admin',
-
           setupKey: "blank",
           source: "",
           currency: "blank",
@@ -439,7 +450,7 @@ export class NewViewcourtPage {
           members: []
         }
         let courtKey;
-        let bookingSlots = []
+        const bookingSlots = []
         this.slotofAllCourt.forEach(slot => {
           slot.slotData.slots.forEach(eachSlots => {
             if (eachSlots.IsBooked) {
@@ -449,10 +460,9 @@ export class NewViewcourtPage {
           });
         })
         paymentDEtails.courtKey = courtKey
-        let creatTime = new Date(`${this.dmmmyyyformatDtae} 12:00`).getTime()
+        const creatTime = new Date(`${this.dmmmyyyformatDtae} 12:00`).getTime()
         for (let i = 0; i < bookingSlots.length; i++) {
-          let obj = { Price: "", endHour: "", StartHour: "", blockedKey: "", date: "", StartMin: "", endMin: "" }
-          obj = {
+          const obj = {
             Price: bookingSlots[i].Price,
             endHour: bookingSlots[i].EndHour,
             StartHour: bookingSlots[i].StartHour,
@@ -461,35 +471,31 @@ export class NewViewcourtPage {
             date: creatTime.toString(),
             endMin: bookingSlots[i].EndMin
           }
-
           paymentDEtails.slots.push(obj)
         }
 
-        let obj = {
+        paymentDEtails.members.push({
           memberKey: 'admin',
           amount: this.totalPrice
-        }
-        paymentDEtails.members.push(obj)
+        })
         
-        
-        this.http.post(`${this.nestUrl}/courtbooking/bookforadmin`, paymentDEtails).subscribe((res) => {
-          this.loading.dismiss()
-          if (res['data']) {
-            this.commonService.toastMessage(res['data'], 2500, ToastMessageType.Success)
-            this.navCtrl.pop()
-          }
-
-        },
-          err => {
+        this.httpService.post(API.BOOK_FOR_ADMIN, paymentDEtails, null, 1).subscribe({
+          next: (res) => {
+            this.loading.dismiss()
+            if (res['data']) {
+              this.commonService.toastMessage(res['data'], 2500, ToastMessageType.Success)
+              this.navCtrl.pop()
+            }
+          },
+          error: (err) => {
             this.loading.dismiss();
             this.commonService.toastMessage(err['data'], 2500, ToastMessageType.Success)
-          })
+          }
+        })
       } catch (err) {
-
         this.loading.dismiss();
       }
     })
-
   }
 
   calltobookinginfo(slot, slideInfo) {

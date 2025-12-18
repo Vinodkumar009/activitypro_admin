@@ -9,6 +9,8 @@ import { ToastController } from 'ionic-angular/components/toast/toast-controller
 import { CommonService } from '../../../../services/common.service';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { HttpClient } from '@angular/common/http';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 
 /**
  * Generated class for the RecuringbookingPage page.
@@ -43,7 +45,7 @@ export class RecuringbookingPage {
   is_initial:boolean = true;
   recuringBookDetails:any = [];
   daysDetails = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  constructor(public navCtrl: NavController,public http: HttpClient, public navParams: NavParams,public storage: Storage,public fb: FirebaseService,public commonService: CommonService,public alertCtrl: AlertController,public sharedService: SharedServices,public actionSheetCtrl: ActionSheetController,public toastCtrl:ToastController) {
+  constructor(public navCtrl: NavController,public http: HttpClient, public navParams: NavParams,public storage: Storage,public fb: FirebaseService,public commonService: CommonService,public alertCtrl: AlertController,public sharedService: SharedServices,public actionSheetCtrl: ActionSheetController,public toastCtrl:ToastController, private httpService: HttpService) {
     // this.storage.get('userObj').then((val) => {
     //   val = JSON.parse(val);
     //   this.userKey = val.$key
@@ -160,41 +162,39 @@ export class RecuringbookingPage {
   // }
 
   getrecuringBookDetails(){
-    //return new Promise((resolve, reject) =>{
-      this.commonService.showLoader('Please wait');
-      this.http.get(`${this.nestUrl}/courtbooking/getrecurringlist/${this.selectedParentClubKey}/${this.selectedCourt}`).subscribe((data:any) => {
+    this.commonService.showLoader('Please wait');
+    const url = `${API.GET_RECURRING_LIST}/${this.selectedParentClubKey}/${this.selectedCourt}`;
+    
+    this.httpService.get(url, null, null, 1).subscribe({
+      next: (data:any) => {
         this.recuringBookDetails = []
-        //resolve('success')
         this.commonService.hideLoader()
-        let activityname = this.ActivityList.filter((act) => this.selectedActivity == act.$key)[0].ActivityName
+        const activityname = this.ActivityList.filter((act) => this.selectedActivity == act.$key)[0].ActivityName
 
         for(let i = 0; i <  data.data.length ;i++){
-          
-            if(new Date(data.data[i].enddate).getTime() >= new Date().getTime()){
-              let tempSet:Set<string> = new Set<string>();
-              data.data[i].startdate = moment.utc(data.data[i].startdate).local().format('D-MMM-YY')
-              data.data[i].enddate = moment.utc(data.data[i].enddate).local().format('D-MMM-YY')
-              let dayDetail = data.data[i].bookingdays.split(",");
-              for(let k = 0 ; k < dayDetail.length ; k++){
-                if (dayDetail[k] != " "){
-                  tempSet.add(dayDetail[k]);
-                }
+          if(new Date(data.data[i].enddate).getTime() >= new Date().getTime()){
+            const tempSet:Set<string> = new Set<string>();
+            data.data[i].startdate = moment.utc(data.data[i].startdate).local().format('D-MMM-YY')
+            data.data[i].enddate = moment.utc(data.data[i].enddate).local().format('D-MMM-YY')
+            const dayDetail = data.data[i].bookingdays.split(",");
+            for(let k = 0 ; k < dayDetail.length ; k++){
+              if (dayDetail[k] != " "){
+                tempSet.add(dayDetail[k]);
               }
-              data.data[i]['activityname'] = activityname
-              data.data[i].bookingdays = tempSet;
-              this.recuringBookDetails.push(data.data[i]);
             }
-          
+            data.data[i]['activityname'] = activityname
+            data.data[i].bookingdays = tempSet;
+            this.recuringBookDetails.push(data.data[i]);
+          }
         }
         this.is_initial = false;
       },
-        err => {
-          console.log(err)
-          this.commonService.hideLoader() 
-          this.commonService.toastMessage("Unable to get recurrings", 2000)
-          //reject('fail')
-        })
-    //})
+      error: (err) => {
+        console.log(err)
+        this.commonService.hideLoader() 
+        this.commonService.toastMessage("Unable to get recurrings", 2000)
+      }
+    })
   }
 
 
@@ -284,7 +284,7 @@ export class RecuringbookingPage {
 
   cancelrecurring(recurringkey, parentclubkey, clubkey, activitykey, courtkey, bookingdays, endtime, enddate, starttime, startdate, bookingfor, cancelBy, cancelReason){
     return new Promise((resolve, reject) =>{
-      let data = {
+      const data = {
         recurringkey,
         parentclubkey,
         clubkey,
@@ -300,38 +300,42 @@ export class RecuringbookingPage {
         cancelReason
       }
       
-      this.http.put(`${this.nestUrl}/courtbooking/cancelrecurring_v3`,data).subscribe((res) => {
-        resolve('success')
-        this.commonService.hideLoader()
-      },
-        err => {
+      this.httpService.put(API.CANCEL_RECURRING_V3, data, null, 1).subscribe({
+        next: (res) => {
+          resolve('success')
+          this.commonService.hideLoader()
+        },
+        error: (err) => {
           console.log(err)
           this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to create recurring slot", 2000)
           reject('fail')
-        })
+        }
+      })
     })
   }
 
   cancelrecurring_v2(id,cancelBy, cancelReason){
     return new Promise((resolve, reject) =>{
-      let data = {
+      const data = {
         id,
         cancelBy,
         cancelReason
       }
       
-      this.http.put(`${this.nestUrl}/courtbooking/cancelrecurringbyid`,data).subscribe((res) => {
-        resolve('success')
-        this.commonService.hideLoader()
-        this.navCtrl.pop()
-      },
-        err => {
+      this.httpService.put(API.CANCEL_RECURRING_BY_ID, data, null, 1).subscribe({
+        next: (res) => {
+          resolve('success')
+          this.commonService.hideLoader()
+          this.navCtrl.pop()
+        },
+        error: (err) => {
           console.log(err)
           this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to cancel recurring slot", 2000)
           reject('fail')
-        })
+        }
+      })
     })
   }
 

@@ -20,6 +20,9 @@ import gql from "graphql-tag";
 //import { of } from 'rxjs/observable/of';
 import { GraphqlService } from "../../services/graphql.service";
 import { ParentClubService } from "../../services/parentclub.service";
+import { HttpService } from "../../services/http.service";
+import { API } from "../../shared/constants/api_constants";
+import { AppType } from "../../shared/constants/module.constants";
 
 @IonicPage()
 @Component({
@@ -137,7 +140,8 @@ export class Dashboard {
     public fb: FirebaseService,
     private apollo: Apollo,
     private graphqlService: GraphqlService,
-    public parentClubService: ParentClubService
+    public parentClubService: ParentClubService,
+    private httpService: HttpService
   ) {
     this.nestUrl = this.sharedService.getnestURL();
   }
@@ -1004,36 +1008,38 @@ export class Dashboard {
 
   getactivebookingDetails() {
     let date = moment().format("YYYY-MM-DD");
-    let type =
-    this.parentClubInfo.DashboardView.FacilityBookings && this.parentClubInfo.DashboardView.FacilityBookings!= ""? +this.parentClubInfo.DashboardView.FacilityBookings: 1;
-    this.http
-      .get(
-        `${this.nesturl}/courtbooking/bookingsummary_v2/${this.userData.UserInfo[0].ParentClubKey}/${type}/${date}`
-      )
-      .subscribe((data) => {
-        let activebooking = data["data"];
-        this.bookingInfo.slotListing = [];
-        this.bookingInfo.totalbook = activebooking.totalcount;
-        this.bookingInfo.todaycount = activebooking.todaycount;
-        this.bookingInfo.slotListing = activebooking.totalslot;
-        this.bookingInfo.slotListing.forEach((slot) => {
-          slot.slot_start_time = moment(
-            slot.slot_start_time,
-            "HH:mm:ss"
-          ).format("HH:mm");
-          slot.slot_end_time = moment(slot.slot_end_time, "HH:mm:ss").format(
-            "HH:mm"
-          );
-          slot.booking_transaction_time = moment
-            .utc(slot.booking_transaction_time)
-            .local()
-            .format("DD-MMM-YYYY");
-          slot.booking_date = moment
-            .utc(slot.booking_date)
-            .local()
-            .format("DD MM YYYY");
-        });
-        this.storage.set("activeBookingsCount", this.bookingInfo);
+    const url = `${API.COURT_BOOKING_SUMMARY_V2}/${this.userData.UserInfo[0].ParentClubKey}/${this.type}/${date}`;
+
+    this.httpService.get(url, null, null, 1)
+      .subscribe({
+        next: (response: any) => {
+          let activebooking = response.data;
+          this.bookingInfo.slotListing = [];
+          this.bookingInfo.totalbook = activebooking.totalcount;
+          this.bookingInfo.todaycount = activebooking.todaycount;
+          this.bookingInfo.slotListing = activebooking.totalslot;
+          this.bookingInfo.slotListing.forEach((slot) => {
+            slot.slot_start_time = moment(
+              slot.slot_start_time,
+              "HH:mm:ss"
+            ).format("HH:mm");
+            slot.slot_end_time = moment(slot.slot_end_time, "HH:mm:ss").format(
+              "HH:mm"
+            );
+            slot.booking_transaction_time = moment
+              .utc(slot.booking_transaction_time)
+              .local()
+              .format("DD-MMM-YYYY");
+            slot.booking_date = moment
+              .utc(slot.booking_date)
+              .local()
+              .format("DD MM YYYY");
+          });
+          this.storage.set("activeBookingsCount", this.bookingInfo);
+        },
+        error: (error) => {
+          console.error('Error fetching booking details:', error);
+        }
       });
   }
   getTime(date) {

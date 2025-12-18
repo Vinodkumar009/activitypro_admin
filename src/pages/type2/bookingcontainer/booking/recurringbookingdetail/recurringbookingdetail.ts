@@ -8,6 +8,8 @@ import { SharedServices } from '../../../../services/sharedservice';
 import { FirebaseService } from '../../../../../services/firebase.service';
 import { CommonService, ToastPlacement, ToastMessageType } from '../../../../../services/common.service';
 import { CallNumber } from '@ionic-native/call-number';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 
 
 
@@ -39,7 +41,7 @@ export class RecurringBookingDetail {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public storage: Storage,
     public fb: FirebaseService, public commonService: CommonService,
-    public alertCtrl: AlertController,public events: Events , public loadingCtrl: LoadingController,public callNumber: CallNumber, public sharedService: SharedServices, public http: HttpClient) {
+    public alertCtrl: AlertController,public events: Events , public loadingCtrl: LoadingController,public callNumber: CallNumber, public sharedService: SharedServices, public http: HttpClient, private httpService: HttpService) {
     //this.sharedService.get
       
     this.ParentClubKey  = this.navParams.get('ParentClubKey'),
@@ -138,27 +140,41 @@ export class RecurringBookingDetail {
  
 
   cancelCourt(){
-    //recurringkey: string,@Query('slotDate') slotDate: 
     return new Promise((resolve, reject) =>{
-      let nesturl = this.sharedService.getnestURL()
-  
-     let starttime = this.slotInfo.StartHour.toString().length == 1? "0"+this.slotInfo.StartHour.toString() +":"+this.slotInfo.StartMin : this.slotInfo.StartHour.toString() +":"+this.slotInfo.StartMin
-     let endtime = this.slotInfo.EndHour.toString().length == 1? "0"+this.slotInfo.EndHour.toString() +":"+this.slotInfo.StartMin : this.slotInfo.EndHour.toString() +":"+this.slotInfo.EndMin
-      this.http.put(`${nesturl}/courtbooking/cancelrecurringbooking_v2?recurringSlotKey=${this.slotInfo["RecurringSlotKey"]}&slotDate=${this.slotInfo["Date"]}&activitykey=${this.courtInfoObj.ActivityKey}&clubkey=${this.ClubKey}&parentclubkey=${this.ParentClubKey}&recurringkey=${this.slotInfo.RecurringKey}&booking_date=${this.slotInfo.Date}&slot_start_time=${starttime}&slot_end_time=${endtime}&courtkey=${this.courtInfoObj.$key}&cancelBy=${this.userkey}&cancelReason='n/a'`, null).subscribe((res) => {
-        if (res['status'] == 200) {
-          this.commonService.toastMessage("Booking cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
-          let load =  'cancelled'
-          this.events.publish('reload', load);
-          this.navCtrl.pop()
-        } else {
-          this.commonService.toastMessage("Booking cancellation failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
-      },
-        err => {
+      const starttime = this.slotInfo.StartHour.toString().length == 1? "0"+this.slotInfo.StartHour.toString() +":"+this.slotInfo.StartMin : this.slotInfo.StartHour.toString() +":"+this.slotInfo.StartMin
+      const endtime = this.slotInfo.EndHour.toString().length == 1? "0"+this.slotInfo.EndHour.toString() +":"+this.slotInfo.StartMin : this.slotInfo.EndHour.toString() +":"+this.slotInfo.EndMin
+      
+      const params = {
+        recurringSlotKey: this.slotInfo["RecurringSlotKey"],
+        slotDate: this.slotInfo["Date"],
+        activitykey: this.courtInfoObj.ActivityKey,
+        clubkey: this.ClubKey,
+        parentclubkey: this.ParentClubKey,
+        recurringkey: this.slotInfo.RecurringKey,
+        booking_date: this.slotInfo.Date,
+        slot_start_time: starttime,
+        slot_end_time: endtime,
+        courtkey: this.courtInfoObj.$key,
+        cancelBy: this.userkey,
+        cancelReason: 'n/a'
+      };
+
+      this.httpService.put(API.CANCEL_RECURRING_BOOKING_V2, params,null, 1).subscribe({
+        next: (res) => {
+          if (res['status'] == 200) {
+            this.commonService.toastMessage("Booking cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
+            const load = 'cancelled'
+            this.events.publish('reload', load);
+            this.navCtrl.pop()
+          } else {
+            this.commonService.toastMessage("Booking cancellation failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+        },
+        error: (err) => {
           this.commonService.toastMessage("Unable to cancel recurring slot", 2000)
           reject('fail')
-        })
-
+        }
+      })
     })
   }
 

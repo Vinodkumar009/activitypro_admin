@@ -8,6 +8,8 @@ import { SharedServices } from '../../../../services/sharedservice';
 import { FirebaseService } from '../../../../../services/firebase.service';
 import { CommonService, ToastPlacement, ToastMessageType } from '../../../../../services/common.service';
 import { CallNumber } from '@ionic-native/call-number';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 
 
 
@@ -43,7 +45,7 @@ export class ActiveBookingDetail {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public storage: Storage,
     public fb: FirebaseService, public commonService: CommonService,
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController,public callNumber: CallNumber, public sharedService: SharedServices, public http: HttpClient) {
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController,public callNumber: CallNumber, public sharedService: SharedServices, public http: HttpClient, private httpService: HttpService) {
     //this.sharedService.get
     this.nestUrl = this.sharedService.getnestURL()
     this.ParentClubKey  = this.navParams.get('ParentClubKey'),
@@ -148,95 +150,96 @@ export class ActiveBookingDetail {
  
 
   cancelCourt() {
-    
-    let courtInfoObj = {}
-
-    courtInfoObj["ParentClubKey"] = this.ParentClubKey;
-  
-    courtInfoObj["VanueName"] = this.selectedClub;
-    courtInfoObj["ClubKey"] = this.ClubKey;
-    courtInfoObj["ActivityKey"] =this.courtInfoObj.ActivityKey
-   
-    courtInfoObj["CourtInfo"] = {
+    const courtInfoObj = {
+      ParentClubKey: this.ParentClubKey,
+      VanueName: this.selectedClub,
+      ClubKey: this.ClubKey,
       ActivityKey: this.courtInfoObj.ActivityKey,
-      ClubKey: this.courtInfoObj.ClubKey,
-      CourtName: this.courtInfoObj.CourtName,
-      CourtType: this.courtInfoObj.CourtType,
-      CourtKey :this.courtInfoObj.$key
+      CourtInfo: {
+        ActivityKey: this.courtInfoObj.ActivityKey,
+        ClubKey: this.courtInfoObj.ClubKey,
+        CourtName: this.courtInfoObj.CourtName,
+        CourtType: this.courtInfoObj.CourtType,
+        CourtKey: this.courtInfoObj.$key
+      },
+      DateTime: this.slotInfo.Date,
+      Member: this.slotInfo.Member[0],
+      Time: this.slotInfo.StartHour + ":" + this.slotInfo.StartMin + "-" + this.slotInfo.EndHour + ":" + this.slotInfo.EndMin,
+      BookingDate: moment(Number(this.slotInfo.Date)).format("ddd D MMM"),
+      Price: parseFloat(this.slotInfo.Price).toFixed(2),
+      dateYYYYMMDD: moment(Number(this.slotInfo.Date)).format("YYYY-MM-DD"),
+      cancelBy: this.userkey,
+      cancelReason: this.cancelReason,
+      SlotInfoKey: this.slotInfo.SlotInfoKey,
+      Slotkey: this.slotInfo.Slotkey
     };
- 
   
-    courtInfoObj["DateTime"] = this.slotInfo.Date;
-    courtInfoObj["Member"] = this.slotInfo.Member[0];
-    courtInfoObj["Time"] = this.slotInfo.StartHour + ":" + this.slotInfo.StartMin + "-" + this.slotInfo.EndHour + ":" + this.slotInfo.EndMin;
-    courtInfoObj["BookingDate"] = moment(Number(this.slotInfo.Date)).format("ddd D MMM");// courtInfo.Date;
-    //courtInfoObj["BookingDate"] = moment(Number(courtInfo.Date)).format("ddd D MMM");
-    courtInfoObj["Price"] = parseFloat(this.slotInfo.Price).toFixed(2);
-    courtInfoObj["dateYYYYMMDD"] = moment(Number(this.slotInfo.Date)).format("YYYY-MM-DD")
-    courtInfoObj["cancelBy"] = this.userkey
-    courtInfoObj["cancelReason"] = this.cancelReason
-    courtInfoObj["SlotInfoKey"] = this.slotInfo.SlotInfoKey;
-    courtInfoObj["Slotkey"] = this.slotInfo.Slotkey;
-    //Price
-  
-    this.http.post(`${this.nestUrl}/courtbooking/cancelCourt`, courtInfoObj).subscribe((res: any) => {
-      if (res.status == 200) {
-        this.commonService.toastMessage("Booking cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
-        if(this.fromnewviewpage)
-          this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length()-3));
-        else
-          this.navCtrl.pop();
-      } else {
+    this.httpService.post(API.CANCEL_COURT, courtInfoObj, null, 1).subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
+          this.commonService.toastMessage("Booking cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
+          if(this.fromnewviewpage)
+            this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length()-3));
+          else
+            this.navCtrl.pop();
+        } else {
+          this.commonService.toastMessage("Booking cancellation failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
+      },
+      error: (err) => {
         this.commonService.toastMessage("Booking cancellation failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+        console.log(err);
       }
-    }, (err) => {
-      this.commonService.toastMessage("Booking cancellation failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
-      console.log(err);
     });
   }
 
   cancelCourtv2() {
     return new Promise((resolve, reject) =>{
- 
-      
-      this.http.put(`${this.nestUrl}/courtbooking/cancelslotwithid`,{id:this.slotInfo.Id, cancelby:this.userkey, cancelreason:this.cancelReason}).subscribe((res) => {
-        resolve('success')
-        //this.commonService.hideLoader()
-        this.commonService.toastMessage("Booking cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
-        if(this.fromnewviewpage)
-          this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length()-3));
-        else
-          this.navCtrl.pop();
-      },
-        err => {
+      const body = {
+        id: this.slotInfo.Id,
+        cancelby: this.userkey,
+        cancelreason: this.cancelReason
+      };
+
+      this.httpService.put(API.CANCEL_SLOT_WITH_ID, body, null, 1).subscribe({
+        next: (res) => {
+          resolve('success')
+          this.commonService.toastMessage("Booking cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
+          if(this.fromnewviewpage)
+            this.navCtrl.popTo(this.navCtrl.getByIndex(this.navCtrl.length()-3));
+          else
+            this.navCtrl.pop();
+        },
+        error: (err) => {
           console.log(err)
-          //this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to cancel slot", 2000)
           reject('fail')
-        })
+        }
+      })
     })
   }
 
   getSlotInfoById(id){
     return new Promise((resolve, reject) =>{
-
-      this.http.get(`${this.nestUrl}/courtbooking/getslotbyid/${id}`).subscribe((res) => {
-       
-        resolve('success')
-        this.slotInfo = res["data"]
-        this.slotInfo.slot_start_time = moment(this.slotInfo.slot_start_time, 'HH:mm:ss').format('HH:mm')
-        this.slotInfo.slot_end_time = moment(this.slotInfo.slot_end_time, 'HH:mm:ss').format('HH:mm')
-        this.slotInfo.booking_transaction_time = moment.utc(this.slotInfo.booking_transaction_time).local().format('DD-MMM-YYYY')
-        this.slotInfo.booking_date = moment.utc(this.slotInfo.booking_date).local().format('DD MM YYYY')
-        this.slotInfo.phone_number = this.slotInfo.phone_number == "n/a" ? "" : this.slotInfo.phone_number
-        this.Duration = this.calculateDuration()
-      },
-        err => {
+      const url = `${API.GET_SLOT_BY_ID}/${id}`;
+      
+      this.httpService.get(url, null, null, 1).subscribe({
+        next: (res) => {
+          resolve('success')
+          this.slotInfo = res["data"]
+          this.slotInfo.slot_start_time = moment(this.slotInfo.slot_start_time, 'HH:mm:ss').format('HH:mm')
+          this.slotInfo.slot_end_time = moment(this.slotInfo.slot_end_time, 'HH:mm:ss').format('HH:mm')
+          this.slotInfo.booking_transaction_time = moment.utc(this.slotInfo.booking_transaction_time).local().format('DD-MMM-YYYY')
+          this.slotInfo.booking_date = moment.utc(this.slotInfo.booking_date).local().format('DD MM YYYY')
+          this.slotInfo.phone_number = this.slotInfo.phone_number == "n/a" ? "" : this.slotInfo.phone_number
+          this.Duration = this.calculateDuration()
+        },
+        error: (err) => {
           console.log(err)
-          //this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to get slot info", 2000)
           reject('fail')
-        })
+        }
+      })
     })
   }
 

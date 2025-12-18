@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { SharedServices } from '../../../../../services/sharedservice';
 import { FirebaseService } from '../../../../../../services/firebase.service';
 import { CommonService, ToastPlacement, ToastMessageType } from '../../../../../../services/common.service';
+import { HttpService } from '../../../../../../services/http.service';
+import { API } from '../../../../../../shared/constants/api_constants';
 
 
 
@@ -58,7 +60,7 @@ export class BulkSlotCancellation {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public storage: Storage,
     public fb: FirebaseService, public commonService: CommonService,
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public sharedService: SharedServices, public http: HttpClient) {
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public sharedService: SharedServices, public http: HttpClient, private httpService: HttpService) {
     //this.sharedService.get
   
 
@@ -223,23 +225,30 @@ showConfirm(){
 
 cancelBulk(){
   return new Promise((resolve, reject) =>{
-    let cancelIds = []
+    const cancelIds = []
     this.slotListing.forEach((slot) =>{
       if (slot.IsSelect)
       cancelIds.push(slot.Id)
     })
-    this.http.put(`${this.nestUrl}/courtbooking/bulkcancelrecurringbyid`,{ids:cancelIds, cancelby:this.userkey, cancelreason:this.cancelReason}).subscribe((res) => {
-      resolve('success')
-      //this.commonService.hideLoader()
-      this.commonService.toastMessage("Bookings cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
-      this.navCtrl.pop().then(() => this.navCtrl.pop(). then(() => this.navCtrl.pop()));
-    },
-      err => {
+    
+    const body = {
+      ids: cancelIds,
+      cancelby: this.userkey,
+      cancelreason: this.cancelReason
+    };
+
+    this.httpService.put(API.BULK_CANCEL_RECURRING_BY_ID, body, null, 1).subscribe({
+      next: (res) => {
+        resolve('success')
+        this.commonService.toastMessage("Bookings cancelled successfully", 3000, ToastMessageType.Success, ToastPlacement.Bottom);
+        this.navCtrl.pop().then(() => this.navCtrl.pop(). then(() => this.navCtrl.pop()));
+      },
+      error: (err) => {
         console.log(err)
-        //this.commonService.hideLoader() 
         this.commonService.toastMessage("Unable to cancel slot", 2000)
         reject('fail')
-      })
+      }
+    })
   })
 }
 

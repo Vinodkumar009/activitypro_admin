@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { SharedServices } from '../../../services/sharedservice';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { CommonService, ToastPlacement, ToastMessageType } from '../../../../services/common.service';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 
 
 
@@ -54,7 +56,7 @@ export class BookingPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public storage: Storage,
     public fb: FirebaseService, public commonService: CommonService,
-    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public sharedService: SharedServices, public http: HttpClient) {
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public sharedService: SharedServices, public http: HttpClient, private httpService: HttpService) {
     //this.sharedService.get
 
 
@@ -290,12 +292,11 @@ export class BookingPage {
         content: 'Please wait...'
       });
       this.loading.present();
-      let selectedCourt = this.selectedCourt
-      if (this.selectedCourt.toLowerCase() == 'all') {
-        selectedCourt = 'nil'
-      }
-      this.http.get(`${this.nestUrl}/courtbooking/allactivebookingbycourt/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${selectedCourt}`)
-        .subscribe((data: any) => {
+      const selectedCourt = this.selectedCourt.toLowerCase() == 'all' ? 'nil' : this.selectedCourt;
+      const url = `${API.ALL_ACTIVE_BOOKING_BY_COURT}/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${selectedCourt}`;
+      
+      this.httpService.get(url, null, null, 1).subscribe({
+        next: (data: any) => {
           this.loading.dismiss()
           this.slots = data['data']
           this.slotListing = this.slots
@@ -305,20 +306,19 @@ export class BookingPage {
             slot.booking_transaction_time = moment.utc(slot.booking_transaction_time).local().format('DD-MMM-YYYY')
             slot.booking_date = moment.utc(slot.booking_date).local().format('DD MM YYYY')
           });
-          // this.getSortedSlots();
-          let key = `allday-${this.selectedClubKey}-${this.selectedActivity}-${this.selectedCourt}`;
+          const key = `allday-${this.selectedClubKey}-${this.selectedActivity}-${this.selectedCourt}`;
           const date = new Date();
           date.setDate(date.getDate() + 30);
           const ttl = new Date(date).getTime();
           this.commonService.setDataWithExpiry(key, this.slots, ttl);
-
-        }, (err) => {
+        },
+        error: (err) => {
           console.log(JSON.stringify(err));
           this.loading.dismiss()
-        });
+        }
+      });
     } else {
       this.slots = [];
-      // this.commonService.toastMessage('No Record', 3000)
     }
   }
   getTodayBookings() {
@@ -327,13 +327,12 @@ export class BookingPage {
         content: 'Please wait...'
       });
       this.loading.present();
-      let startDate = moment().format('YYYY-MM-DD')
-      let selectedCourt = this.selectedCourt
-      if (this.selectedCourt.toLowerCase() == 'all') {
-        selectedCourt = 'nil'
-      }
-      this.http.get(`${this.nestUrl}/courtbooking/activebookinginrangebycourt/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${startDate}/${startDate}/${selectedCourt}`)
-        .subscribe((data: any) => {
+      const startDate = moment().format('YYYY-MM-DD')
+      const selectedCourt = this.selectedCourt.toLowerCase() == 'all' ? 'nil' : this.selectedCourt;
+      const url = `${API.ACTIVE_BOOKING_IN_RANGE}/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${startDate}/${startDate}/${selectedCourt}`;
+      
+      this.httpService.get(url, null, null, 1).subscribe({
+        next: (data: any) => {
           this.loading.dismiss()
           this.Todayslots = data['data']
           this.slotListing = this.Todayslots
@@ -343,19 +342,19 @@ export class BookingPage {
             slot.booking_transaction_time = moment.utc(slot.booking_transaction_time).local().format('DD-MMM-YYYY')
             slot.booking_date = moment.utc(slot.booking_date).local().format('DD MM YYYY')
           });
-          let key = `today-${this.selectedClubKey}-${this.selectedActivity}-${this.selectedCourt}`;
+          const key = `today-${this.selectedClubKey}-${this.selectedActivity}-${this.selectedCourt}`;
           const date = new Date();
           date.setDate(date.getDate() + 30);
           const ttl = new Date(date).getTime();
           this.commonService.setDataWithExpiry(key, this.Todayslots, ttl);
-
-        }, (err) => {
+        },
+        error: (err) => {
           console.log(JSON.stringify(err));
           this.loading.dismiss()
-        });
+        }
+      });
     } else {
       this.slots = [];
-      // this.commonService.toastMessage('No Record', 3000)
     }
   }
 

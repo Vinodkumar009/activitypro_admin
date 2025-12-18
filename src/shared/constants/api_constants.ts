@@ -121,5 +121,21 @@ export const API = {
     AGENT_CHAT_REMOVE_FEEDBACK:'agentcore/interactions/removefeedback',
     WAITING_LIST_GET_BY_MODULE: 'session-waiting-list/get-by-module',
     WAITING_LIST_REMOVE: 'session-waiting-list/remove',
-    WAITING_LIST_UPDATE_STATUS: 'session-waiting-list/update-status'
+    WAITING_LIST_UPDATE_STATUS: 'session-waiting-list/update-status',
+    COURT_BOOKING_SUMMARY_V2: 'courtbooking/bookingsummary_v2',
+    COURT_BOOKING_HISTORY: 'courtbooking/bookingHistory',
+    ALL_ACTIVE_BOOKING_BY_COURT: 'courtbooking/allactivebookingbycourt',
+    ACTIVE_BOOKING_IN_RANGE: 'courtbooking/activebookinginrangebycourt',
+    ACTIVE_BOOKING_IN_RANGE_BY_CLUB: 'courtbooking/activebookinginrange',
+    GET_MULTI_COURT_SLOT: 'courtbooking/getmulticourtslot',
+    GET_SLOT_BY_ID: 'courtbooking/getslotbyid',
+    BOOK_FOR_ADMIN: 'courtbooking/bookforadmin',
+    CANCEL_COURT: 'courtbooking/cancelCourt',
+    CREATE_RECURRING_V3: 'courtbooking/createrecurring_v3',
+    GET_RECURRING_LIST: 'courtbooking/getrecurringlist',
+    CANCEL_RECURRING_V3: 'courtbooking/cancelrecurring_v3',
+    CANCEL_RECURRING_BY_ID: 'courtbooking/cancelrecurringbyid',
+    CANCEL_RECURRING_BOOKING_V2: 'courtbooking/cancelrecurringbooking_v2',
+    BULK_CANCEL_RECURRING_BY_ID: 'courtbooking/bulkcancelrecurringbyid',
+    CANCEL_SLOT_WITH_ID: 'courtbooking/cancelslotwithid'
 }

@@ -10,6 +10,8 @@ import { ToastController } from 'ionic-angular/components/toast/toast-controller
 import { SharedServices } from '../../../../services/sharedservice';
 import { FirebaseService } from '../../../../../services/firebase.service';
 import { CommonService } from '../../../../../services/common.service';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 
 
 /**
@@ -81,7 +83,7 @@ export class AddrecuringbookingPage {
   ]
   minuteValues:any = "00,";
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public http: HttpClient,public navParams: NavParams,public storage: Storage,public fb: FirebaseService,public commonService: CommonService,public alertCtrl: AlertController,public sharedService: SharedServices,public toastCtrl:ToastController) {
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public http: HttpClient,public navParams: NavParams,public storage: Storage,public fb: FirebaseService,public commonService: CommonService,public alertCtrl: AlertController,public sharedService: SharedServices,public toastCtrl:ToastController, private httpService: HttpService) {
     this.minDate = (((new Date().getFullYear()))).toString();
     this.maxDate = (((new Date().getFullYear()) + 10) + "-" + 12 + "-" + 31).toString();
     
@@ -347,17 +349,27 @@ export class AddrecuringbookingPage {
 
   createslots(key){
     return new Promise((resolve, reject) =>{
-      this.http.put(`${this.nestUrl}/courtbooking/createrecurring_v3?activitykey=${this.selectedActivity}&clubkey=${this.selectedClubKey}&parentclubkey=${this.selectedParentClubKey}&recurringkey=${key}&userkey=${this.userkey}&membertype=${this.roletype}`, null).subscribe((res) => {
-        resolve('success')
-        this.commonService.hideLoader()
-      },
-        err => {
+      const params = {
+        activitykey: this.selectedActivity,
+        clubkey: this.selectedClubKey,
+        parentclubkey: this.selectedParentClubKey,
+        recurringkey: key,
+        userkey: this.userkey,
+        membertype: this.roletype
+      };
+      
+      this.httpService.put(API.CREATE_RECURRING_V3, params,null, 1).subscribe({
+        next: (res) => {
+          resolve('success')
+          this.commonService.hideLoader()
+        },
+        error: (err) => {
           console.log(err)
           this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to create recurring slot", 2000)
           reject('fail')
-        })
-
+        }
+      })
     })
   }
 

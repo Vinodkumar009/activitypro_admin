@@ -12,6 +12,8 @@ import { HttpClient } from '@angular/common/http';
 import { SharedServices } from '../../../../../services/sharedservice';
 import * as $ from 'jquery';
 import { dateValueRange } from 'ionic-angular/umd/util/datetime-util';
+import { HttpService } from '../../../../../../services/http.service';
+import { API } from '../../../../../../shared/constants/api_constants';
 /**
  * Generated class for the ViewcourtPage page.
  *
@@ -74,7 +76,7 @@ export class BookingCourt {
   userKey: any;
   selectedDate: any;
   roleType: any;
-  constructor(public sharedService: SharedServices, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public fb: FirebaseService, public storage: Storage, public commonService: CommonService, public http: HttpClient, public loadingCtrl: LoadingController) {
+  constructor(public sharedService: SharedServices, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public fb: FirebaseService, public storage: Storage, public commonService: CommonService, public http: HttpClient, public loadingCtrl: LoadingController, private httpService: HttpService) {
    
     this.nestUrl = sharedService.getnestURL();
     
@@ -116,7 +118,6 @@ export class BookingCourt {
     });
     this.loading.present().then(() => {
       try {
-       
         this.paymentDEtails.setupKey = "blank"
         this.paymentDEtails.bookingParentMemberKey = "admin"
         this.paymentDEtails.source = "blank" 
@@ -124,13 +125,9 @@ export class BookingCourt {
         this.paymentDEtails.paymentMode = "blank"
         this.paymentDEtails.purpose = this.purpose
 
-        // var m = moment(+this.dmmmyyyformatDtae).utcOffset(0);
-        // m.set({hour:12,minute:0,second:0,millisecond:0})
-        // let creatTime = m.utc().valueOf()
-        let creatTime = new Date(`${this.dmmmyyyformatDtae} 12:00`).getTime()
+        const creatTime = new Date(`${this.dmmmyyyformatDtae} 12:00`).getTime()
         for (let i = 0; i < this.selectedSlots.length; i++) {
-          let obj = { Price: "", endHour: "", StartHour: "", blockedKey: "", date: "", StartMin: "", endMin: "", courtKey:'' }
-          obj = {
+          const obj = {
             Price: this.selectedSlots[i].Price,
             endHour: this.selectedSlots[i].EndHour,
             StartHour: this.selectedSlots[i].StartHour,
@@ -140,38 +137,36 @@ export class BookingCourt {
             endMin: this.selectedSlots[i].EndMin,
             courtKey: this.selectedSlots[i].courtKey
           }
-         
           this.paymentDEtails.slots.push(obj)
         }
 
-        let obj = {
-          memberKey: 'admin',
-          amount: this.totalPrice
-        }
         this.paymentDEtails.ExtraProperties['LoginEmailId'] = this.Email
         this.paymentDEtails.ExtraProperties['Name'] = this.Name
         this.paymentDEtails.ExtraProperties['Memberkey'] = this.userKey
         this.paymentDEtails.ExtraProperties['date'] = this.selectedDate
         this.paymentDEtails.ExtraProperties['MemberType'] = this.roleType
-        this.paymentDEtails.members.push(obj)
+        this.paymentDEtails.members.push({
+          memberKey: 'admin',
+          amount: this.totalPrice
+        })
 
-        this.http.post(`${this.nestUrl}/courtbooking/bookforadmin`,this.paymentDEtails).subscribe((res) => {
-          this.loading.dismiss()
-          if (res['data']) {
-            this.commonService.toastMessage("Successfully booked...", 5000, ToastMessageType.Success)
-            this.navCtrl.pop().then(()=>{this.navCtrl.pop()})
-          }
-        },
-          err => {
+        this.httpService.post(API.BOOK_FOR_ADMIN, this.paymentDEtails, null, 1).subscribe({
+          next: (res) => {
+            this.loading.dismiss()
+            if (res['data']) {
+              this.commonService.toastMessage("Successfully booked...", 5000, ToastMessageType.Success)
+              this.navCtrl.pop().then(()=>{this.navCtrl.pop()})
+            }
+          },
+          error: (err) => {
             this.loading.dismiss();
             this.commonService.toastMessage(err['data'], 5000, ToastMessageType.Success)
-          })
+          }
+        })
       } catch (err) {
-
         this.loading.dismiss();
       }
     })
-
   }
   //.....................getting Booking releted information........................
 }
