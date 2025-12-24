@@ -139,12 +139,11 @@ export class BulkSlotCancellation {
         content: 'Please wait...'
       });
       this.loading.present();
-      let selectedCourt = this.selectedCourt
-      if (this.selectedCourt.toLowerCase() == 'all'){
-        selectedCourt = 'nil'
-      }
-      this.http.get(`${this.nestUrl}/courtbooking/allbookingbycourt/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${this.type}/${selectedCourt}`)
-        .subscribe((data: any) => {
+      const selectedCourt = this.selectedCourt.toLowerCase() == 'all' ? 'nil' : this.selectedCourt;
+      const url = `${API.ALL_BOOKING_BY_COURT}/${this.selectedParentClubKey}/${this.selectedClubKey}/${this.selectedActivity}/${this.type}/${selectedCourt}`;
+      
+      this.httpService.get(url, null, null, 1).subscribe({
+        next: (data: any) => {
           this.loading.dismiss()
           this.slots = data['data']
          
@@ -157,11 +156,12 @@ export class BulkSlotCancellation {
           });
 
           this.slotListing = this.slots
-  
-        }, (err) => {
+        },
+        error: (err) => {
           console.log(JSON.stringify(err));
           this.loading.dismiss()
-        });
+        }
+      });
     }else{
       this.slots = [];
     }
