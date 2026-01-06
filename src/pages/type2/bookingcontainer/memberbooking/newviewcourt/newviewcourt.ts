@@ -14,6 +14,8 @@ import * as $ from 'jquery';
 import { dateValueRange } from 'ionic-angular/umd/util/datetime-util';
 import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
+import { GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto, ClubVenueDto } from '../../../../../shared/dtos/club.dto';
+import { AppType } from '../../../../../shared/constants/module.constants';
 /**
  * Generated class for the ViewcourtPage page.
  *
@@ -44,7 +46,7 @@ export class NewViewcourtPage {
   parentClubKey: any;
   selectedClub: any;
   currencyDetails: any;
-  clubs: any = [];
+  clubs: ClubVenueDto[] = [];
   selectedClubKey: any;
   ActivityList = [];
   selectedActivity: string;
@@ -289,17 +291,26 @@ export class NewViewcourtPage {
   }
 
   getClubDetails() {
-    this.http.get(`${this.nestUrl}/superadmin/venue?parentKey=${this.parentClubKey}`).subscribe((res) => {
-  
-        //this.commonService.hideLoader()
-        this.clubs = res['data']
-        this.clubs = this.clubs.map((club)=> ({...club, $key:club.ClubKey}))
-        this.selectedClubKey = this.clubs[0].$key;
-        this.getAllActivity()
+    const body: GetParentClubVenuesRequestDto = {
+      parentclub_id: this.sharedService.getPostgreParentClubId(),
+      app_type: AppType.ADMIN_NEW,
+      device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,
+      device_id: this.sharedService.getDeviceId() || 'web',
+      updated_by: this.sharedService.getLoggedInUserId()
+    };
+
+    this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+      next: (res: GetParentClubVenuesResponseDto) => {
+        this.clubs = res.data.map((club: ClubVenueDto) => ({ ...club, $key: club.FirebaseId, ClubKey: club.FirebaseId }));
+        if (this.clubs.length > 0) {
+          this.selectedClubKey = this.clubs[0].FirebaseId;
+          this.getAllActivity();
+        }
       },
-        err => {
-          this.clubs = []
-    })
+      error: (err) => {
+        this.clubs = [];
+      }
+    });
   }
 
 
@@ -499,7 +510,7 @@ export class NewViewcourtPage {
   }
 
   calltobookinginfo(slot, slideInfo) {
-    let clubIndex = this.clubs.findIndex(club => club.$key === this.selectedClubKey);
+    let clubIndex = this.clubs.findIndex(club => club.FirebaseId === this.selectedClubKey);
     let selectedClub = this.clubs[clubIndex].ClubName;
     this.navCtrl.push('ActiveBookingDetail',
     {

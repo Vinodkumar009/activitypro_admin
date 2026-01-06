@@ -32,10 +32,7 @@
 
             <div class="Pointsdiv">
                 <div>
-
                     <img [src]="ParentClubAppIconURL" class="avatar">
-
-
                 </div>
                 <div class="line"></div>
                 <div *ngIf="!isCashView">
@@ -46,7 +43,7 @@
                 </div>
                 <div *ngIf="isCashView && displayPoint == 1" class="pointsbal">
                     <p class="point"><span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{isCashView
-                        ? totalWalletBalance :calculate(totalPointBalance)}}
+                        ? totalWalletBalance :calculate(totalPointBalance) | number: '1.2-2'}}
                     </p>
                 </div>
             </div>
@@ -55,7 +52,7 @@
                 <p class="name">{{member.FirstName}} {{member.LastName}}</p>
                 <div *ngIf="displayPoint == 2 " class="pointsbal">
                     <p class="point"><span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{isCashView
-                        ? totalWalletBalance :calculate(totalPointBalance)}}
+                        ? totalWalletBalance :calculate(totalPointBalance) | number: '1.2-2'}}
                     </p>
                 </div>
             </div>

@@ -10,6 +10,9 @@ import { IonicPage } from 'ionic-angular';
 import { CommonService, ToastMessageType } from '../../../../services/common.service';
 import { HttpClient } from '@angular/common/http';
 import moment from 'moment';
+import { TermSessionDets } from '../model/session_details.model';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 @IonicPage()
 @Component({
   selector: 'sessionloyalty-page',
@@ -61,7 +64,7 @@ export class SessionLoyalty {
       Code: 102
     },
   ]
-  SessionDetials: any;
+  SessionDetials: TermSessionDets;
   Member: any;
   currencyDetails: any;
   loading: any;
@@ -69,7 +72,7 @@ export class SessionLoyalty {
   sessionType = '';
   user: any;
   nestUrl: any;
-  isReview = false;
+  isReview:boolean = false;
   coachInfo: any;
   clubName: any;
   selectedMember = []
@@ -79,7 +82,7 @@ export class SessionLoyalty {
     public cm: CommonService, public navParams: NavParams,
     public navCtrl: NavController, public sharedservice: SharedServices,
     public popoverCtrl: PopoverController,
-    public http: HttpClient, public loadingCtrl: LoadingController) {
+    public http: HttpClient, public loadingCtrl: LoadingController, private httpService: HttpService) {
 
     storage.get('userObj').then((val) => {
       val = JSON.parse(val);
@@ -91,20 +94,21 @@ export class SessionLoyalty {
           this.clubName = this.navParams.get("clubName");   
           this.monthStatus = this.navParams.get('monthStatus');  
           this.monthlyMember = this.navParams.get('monthlyMember')
-          const coach$Obs = this.fb.getAllWithQuery(`Coach/Type2/${this.SessionDetials.ParentClubKey}`, { orderByKey: true, equalTo: this.SessionDetials.CoachKey }).subscribe((data: any) => {
+          const coach$Obs = this.fb.getAllWithQuery(`Coach/Type2/${this.sharedservice.getParentclubKey()}`, { orderByKey: true, equalTo: this.SessionDetials.session.CoachDetails[0].coach_firebase_id }).subscribe((data: any) => {
             coach$Obs.unsubscribe();
             this.coachInfo = data[0];
           })
-          this.sessionType = this.TypeList.filter(type => type.Code == +this.SessionDetials.PaymentOption)[0].Name
+          //this.sessionType = this.TypeList.filter(type => type.Code == +this.SessionDetials.PaymentOption)[0].Name
+          this.sessionType = this.TypeList.filter(type => type.Code == +this.SessionDetials.session.payment_option)[0].Name
         
-          this.Member = this.cm.convertFbObjectToArray(this.SessionDetials.Member).filter(member => member.IsActive && member.AmountPayStatus && member.MonthlySession == undefined)
+          //this.Member = this.cm.convertFbObjectToArray(this.SessionDetials.Member).filter(member => member.IsActive && member.AmountPayStatus && member.MonthlySession == undefined)
           if (this.monthStatus){
             this.monthlyMember.forEach(member => {
               member['IsSelect'] = false
               member['Loyaltyrefund'] = 0
             });
           }
-          this.Member.forEach(member => {
+          this.SessionDetials.session_members.forEach(member => {
             member['IsSelect'] = false
             member['Loyaltyrefund'] = 0
           });   
@@ -140,24 +144,24 @@ export class SessionLoyalty {
   }
 
   getWallet() {
-   const wallet$Obs = this.fb.getAllWithQuery("StandardCode/Wallet/LoyaltyPoint/" + this.SessionDetials.ParentClubKey, { orderByKey: true, equalTo: this.SessionDetials.ClubKey }).subscribe((loyaltySetup) => {
+   const wallet$Obs = this.fb.getAllWithQuery("StandardCode/Wallet/LoyaltyPoint/" + this.sharedservice.getParentclubKey(), { orderByKey: true, equalTo: this.SessionDetials.session.ClubDetails.FirebaseId }).subscribe((loyaltySetup) => {
     wallet$Obs.unsubscribe();
       if (loyaltySetup.length > 0 && loyaltySetup[0].IsEnable) {
         this.loyaltySetup = loyaltySetup[0]
-        if (this.monthStatus){
-          this.monthlyMember.forEach(eachMember => {
-            if(eachMember.MonthlySession[this.monthStatus].AmountPayStatus == 'Paid')
-              eachMember.Loyaltyrefund = this.loyaltySetup['Reward'][this.SessionDetials.ActivityKey][this.sessionType]['StandardPoint'] * eachMember.MonthlySession[this.monthStatus].AmountPaid
-            else
-              eachMember.Loyaltyrefund = 0
-          });
-        }
+        // if (this.monthStatus){
+        //   this.monthlyMember.forEach(eachMember => {
+        //     if(eachMember.MonthlySession[this.monthStatus].AmountPayStatus == 'Paid')
+        //       eachMember.Loyaltyrefund = this.loyaltySetup['Reward'][this.SessionDetials.ActivityKey][this.sessionType]['StandardPoint'] * eachMember.MonthlySession[this.monthStatus].AmountPaid
+        //     else
+        //       eachMember.Loyaltyrefund = 0
+        //   });
+        // }
 
-        this.Member.forEach(eachMember => {
-          if(eachMember.AmountPaid)
-            eachMember.Loyaltyrefund = this.loyaltySetup['Reward'][this.SessionDetials.ActivityKey][this.sessionType]['StandardPoint'] * eachMember.AmountPaid
+        this.SessionDetials.session_members.forEach(eachMember => {
+          if(eachMember.amount_paid)
+            eachMember['Loyaltyrefund'] = this.loyaltySetup['Reward'][this.SessionDetials.session.ActivityDetails.FirebaseActivityKey][this.sessionType]['StandardPoint'] * (+eachMember.amount_paid);
           else
-            eachMember.Loyaltyrefund = 0
+            eachMember['Loyaltyrefund'] = 0
         });
 
       } else {
@@ -198,8 +202,8 @@ export class SessionLoyalty {
         this.loading.present();
         
         this.rewardAPIData.Members = []
-        this.rewardAPIData.ClubKey = this.SessionDetials.ClubKey
-        this.rewardAPIData.ParentClubKey = this.SessionDetials.ParentClubKey
+        this.rewardAPIData.ClubKey = this.SessionDetials.session.ClubDetails.FirebaseId
+        this.rewardAPIData.ParentClubKey = this.sharedservice.getParentclubKey()
         this.rewardAPIData.TransactionDate = new Date().toISOString()
         this.rewardAPIData.Transactionbykey = this.user.$key
         if (this.user.RoleType == "2" && this.user.UserType == "2") {
@@ -207,36 +211,39 @@ export class SessionLoyalty {
         } else if (this.user.RoleType == "4" && this.user.UserType == "2") {
           this.rewardAPIData.Transactionby = 'Coach'
         }
-        this.rewardAPIData.Refference = this.SessionDetials.$key+":"+this.SessionDetials.SessionName
-        this.selectedMember.forEach(eachMember => {
-          if(eachMember.IsSelect){
-            let AmountPaid = this.cm.round(1 / +this.loyaltySetup['PointConversionFactor'] * eachMember.Loyaltyrefund, 2)
-            let obj = {
-              MemberKeys : eachMember.Key,
-              TypeCode : this.SessionDetials.PaymentOption,
-              TypeName : this.sessionType,
-              BonusPoints: 0,
-              BonusType: "",
-              Comments : `Points refunded to ${eachMember.FirstName} ${eachMember.LastName}`,
-              PrimaryMemberKey : eachMember.IsChild ? eachMember.ParentKey : eachMember.Key,
-              TotalPoints : eachMember.Loyaltyrefund,
-              ActualAmount : AmountPaid,
-            }
-            this.rewardAPIData.Members.push(obj)
-          }
-        });
-  
-        
-        this.http.post(`${this.nestUrl}/loyalty/rewardpointsbulk_v2`, this.rewardAPIData)
-          .subscribe((res: any) => {
+        // this.rewardAPIData.Refference = this.SessionDetials.$key+":"+this.SessionDetials.SessionName
+        // this.selectedMember.forEach(eachMember => {
+        //   if(eachMember.IsSelect){
+        //     let AmountPaid = this.cm.round(1 / +this.loyaltySetup['PointConversionFactor'] * eachMember.Loyaltyrefund, 2)
+        //     let obj = {
+        //       MemberKeys : eachMember.Key,
+        //       TypeCode : this.SessionDetials.PaymentOption,
+        //       TypeName : this.sessionType,
+        //       BonusPoints: 0,
+        //       BonusType: "",
+        //       Comments : `Points refunded to ${eachMember.FirstName} ${eachMember.LastName}`,
+        //       PrimaryMemberKey : eachMember.IsChild ? eachMember.ParentKey : eachMember.Key,
+        //       TotalPoints : eachMember.Loyaltyrefund,
+        //       ActualAmount : AmountPaid,
+        //     }
+        //     this.rewardAPIData.Members.push(obj)
+        //   }
+        // });
+
+
+
+        this.httpService.post(API.LOYALTY_REWARD_POINTS_BULK_V2, this.rewardAPIData, null, 1).subscribe({
+          next: (res: any) => {
             this.loading.dismiss()
             if (res) {
               this.cm.toastMessage('Loyalty Points Awarded Successfully', 2000)
               this.navCtrl.pop()
             }
-          }, err => {
+          },
+          error: (err) => {
             this.loading.dismiss()
-          })
+          }
+        })
       })
     }else{
       this.cm.toastMessage('No loyalty setup', 3000, ToastMessageType.Error)

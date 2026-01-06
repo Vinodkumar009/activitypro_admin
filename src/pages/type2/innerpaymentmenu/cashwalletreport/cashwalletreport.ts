@@ -7,6 +7,8 @@ import { SharedServices } from '../../../services/sharedservice';
 import { CommonService } from '../../../../services/common.service';
 import { HttpClient } from '@angular/common/http';
 import moment from 'moment';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 
 
 // import { CommonService } from '../../../services/common.service';
@@ -40,7 +42,8 @@ export class CashWalletReport {
         public loadingCtrl : LoadingController,
         public http:  HttpClient,
         public sharedservice: SharedServices,
-        private toastCtrl: ToastController, public commonService: CommonService
+        private toastCtrl: ToastController, public commonService: CommonService,
+        private httpService: HttpService
     ) {
         this.platform = this.sharedservice.getPlatform();
         storage.get('userObj').then((val) => {
@@ -61,32 +64,34 @@ export class CashWalletReport {
 
 
     getTotalBalance(){
-        this.commonService.showLoader('')
-        //this.memberKey = '-MN2PHs_uXWut_HIIj34'
-        this.http.get(`${this.nestUrl}/wallet/getavailabletotalbalance/${this.ParentClubKey}`).subscribe((res) => {
-          this.commonService.hideLoader();
-          if (res['data']){
-            this.totalParentClubBalance = res['data']['totalparentclubbalance']
-          }
-        },
-          err => {
+        this.commonService.showLoader('Please wait...')
+        const url = `${API.WALLET_TOTAL_BALANCE}/${this.ParentClubKey}`;
+        this.httpService.get(url, null, null, 1).subscribe({
+          next: (res) => {
+            this.commonService.hideLoader();
+            if (res['data']){
+              this.totalParentClubBalance = res['data']['totalparentclubbalance']
+            }
+          },
+          error: (err) => {
             this.commonService.hideLoader()
             this.totalParentClubBalance = 0
-          })
+          }
+        })
     }
 
     getTotalBalanceReport(){
-        
-        //this.memberKey = '-MN2PHs_uXWut_HIIj34'
-        this.http.get(`${this.nestUrl}/wallet/paymentreport/${this.ParentClubKey}`).subscribe((res) => {
-          if (res['data']){
-            this.totalParentClubData = res['data']
-          }
-        },
-          err => {
-            
+        const url = `${API.WALLET_PAYMENT_REPORT}/${this.ParentClubKey}`;
+        this.httpService.get(url, null, null, 1).subscribe({
+          next: (res) => {
+            if (res['data']){
+              this.totalParentClubData = res['data']
+            }
+          },
+          error: (err) => {
             this.totalParentClubData = []
-          })
+          }
+        })
     }
 
     gotoMainReport(){

@@ -44,6 +44,8 @@ export class TermSessionDets {
     term_key:string
     group_status:string;
     halfterm:boolean;
+    session_type:string;
+    payment_option:number
   }
 
   export class TermSessionMembers{

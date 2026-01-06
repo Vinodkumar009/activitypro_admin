@@ -7,6 +7,8 @@ import { SharedServices } from '../../../../services/sharedservice';
 import { CommonService } from '../../../../../services/common.service';
 import { HttpClient } from '@angular/common/http';
 import moment from 'moment';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 
 
 // import { CommonService } from '../../../services/common.service';
@@ -43,7 +45,8 @@ export class MemberWalletReport {
         public http:  HttpClient,
         private navParams : NavParams,
         public sharedservice: SharedServices,
-        private toastCtrl: ToastController, public commonService: CommonService
+        private toastCtrl: ToastController, public commonService: CommonService,
+        private httpService: HttpService
     ) {
         this.platform = this.sharedservice.getPlatform();
         storage.get('userObj').then((val) => {
@@ -72,16 +75,19 @@ export class MemberWalletReport {
     }
 
     getCashTransactionHistory(){
-       this.commonService.showLoader()
-       this.http.get(`${this.nestUrl}/wallet/transactions/${this.memberKey}`).subscribe((res) => {
-        this.commonService.hideLoader()
-         if (res['data']){
-           this.transactionCashHistory = res['data']
+       this.commonService.showLoader("Please wait...")
+       const url = `${API.WALLET_TRANSACTIONS_BY_MEMBER}/${this.memberKey}`;
+       this.httpService.get(url, null, null, 1).subscribe({
+         next: (res) => {
+           this.commonService.hideLoader()
+           if (res['data']){
+             this.transactionCashHistory = res['data']
+           }
+         },
+         error: (err) => {
+           this.commonService.hideLoader()
          }
-       },
-         err => {
-        this.commonService.hideLoader()
-         })
+       })
      }
     
 }

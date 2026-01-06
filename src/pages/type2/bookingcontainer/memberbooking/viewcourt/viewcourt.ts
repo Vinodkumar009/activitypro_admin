@@ -12,6 +12,11 @@ import { HttpClient } from '@angular/common/http';
 import { SharedServices } from '../../../../services/sharedservice';
 import * as $ from 'jquery';
 import { dateValueRange } from 'ionic-angular/umd/util/datetime-util';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../../shared/dtos/club.dto';
+import { AppType } from '../../../../../shared/constants/module.constants';
+import { API } from '../../../../../shared/constants/api_constants';
+import { HttpService } from '../../../../../services/http.service';
+
 /**
  * Generated class for the ViewcourtPage page.
  *
@@ -102,14 +107,19 @@ export class ViewcourtPage {
   indexOfSelectedCourt: any;
   parentClubKey: any;
   selectedClub: any;
-  clubs=[];
-  
+  clubs:ClubVenueDto[] = [];
   ActivityList=[];
   selectedActivity: string;
   courts=[];
 
   courtsList = [];
-  constructor(public sharedService:SharedServices,public alertCtrl:AlertController,public actionSheetCtrl:ActionSheetController,public toastCtrl:ToastController,public navCtrl: NavController, public navParams: NavParams,public fb: FirebaseService,public storage: Storage, public commonService: CommonService,public http: HttpClient,public loadingCtrl: LoadingController) {
+  constructor(public sharedService:SharedServices,public alertCtrl:AlertController,
+    public actionSheetCtrl:ActionSheetController,
+    public toastCtrl:ToastController,public navCtrl: NavController, 
+    public navParams: NavParams,public fb: FirebaseService,
+    public storage: Storage, public commonService: CommonService,
+    public http: HttpClient,public loadingCtrl: LoadingController,
+    private httpService: HttpService) {
    
    this.recurringSubjectArray.forEach((element:String)=>{
      this.recurringSubjectSet.add(element);
@@ -167,14 +177,34 @@ export class ViewcourtPage {
     
   }
   getClubDetails() {
+    // this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
+    //   this.clubs = data;
+    //   if (data.length != 0) {
+    //     this.selectedClubKey = this.clubs[0].$key;
+    //     this.getAllActivity();
+    //   }
+    // });
 
-    this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-      this.clubs = data;
-      if (data.length != 0) {
-        this.selectedClubKey = this.clubs[0].$key;
-        this.getAllActivity();
-      }
-    });
+    const body: GetParentClubVenuesRequestDto = {
+          parentclub_id: this.sharedService.getPostgreParentClubId(),
+          app_type: AppType.ADMIN_NEW,
+          device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,
+          device_id: this.sharedService.getDeviceId() || 'web',
+          updated_by: this.sharedService.getLoggedInUserId()
+        };
+    
+        this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+          next: (res: GetParentClubVenuesResponseDto) => {
+            this.clubs = res.data.map((club: ClubVenueDto) => ({ ...club, $key: club.FirebaseId, ClubKey: club.FirebaseId }));
+            if (this.clubs.length > 0) {
+              this.selectedClubKey = this.clubs[0].FirebaseId;
+              this.getAllActivity();
+            }
+          },
+          error: (err) => {
+            this.clubs = [];
+          }
+        });
   }
   getAllActivity() {
     this.fb.getAll("/Activity/" + this.selectedParentClubKey + "/" + this.selectedClubKey + "/").subscribe((data) => {

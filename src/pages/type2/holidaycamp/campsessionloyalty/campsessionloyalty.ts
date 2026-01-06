@@ -10,6 +10,8 @@ import { IonicPage } from 'ionic-angular';
 import { CommonService, ToastMessageType } from '../../../../services/common.service';
 import { HttpClient } from '@angular/common/http';
 import moment from 'moment';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 @IonicPage()
 @Component({
   selector: 'campsessionloyalty-page',
@@ -67,7 +69,7 @@ export class CampSessionLoyalty {
     public cm: CommonService, public navParams: NavParams,
     public navCtrl: NavController, public sharedservice: SharedServices,
     public popoverCtrl: PopoverController,
-    public http: HttpClient, public loadingCtrl: LoadingController) {
+    public http: HttpClient, public loadingCtrl: LoadingController, private httpService: HttpService) {
 
     storage.get('userObj').then((val) => {
       val = JSON.parse(val);
@@ -133,6 +135,58 @@ export class CampSessionLoyalty {
   }
 
 
+  // callRewardPointApi() {
+  //   if (this.loyaltySetup){
+  //     this.cm.commonAlter('Reward Points', 'Are you sure ?', () => {
+  //       this.loading = this.loadingCtrl.create({
+  //         content: 'Please wait...'
+  //       });
+  //       this.loading.present();
+  //       this.rewardAPIData.Members = []
+  //       this.rewardAPIData.ClubKey = this.campDetails.ClubKey
+  //       this.rewardAPIData.ParentClubKey = this.campDetails.ParentClubKey
+  //       this.rewardAPIData.TransactionDate = new Date().toISOString()
+  //       if (this.user.RoleType == "2" && this.user.UserType == "2") {
+  //         this.rewardAPIData.Transactionby = 'Admin'
+  //       } else if (this.user.RoleType == "4" && this.user.UserType == "2") {
+  //         this.rewardAPIData.Transactionby = 'Coach'
+  //       }
+  //       this.rewardAPIData.Refference = this.SessionDetials.Key+":"+this.SessionDetials.SessionName
+  //       this.selectedMember.forEach(eachMember => {
+  //         if(eachMember.IsSelect){
+  //           let obj = {
+  //             MemberKeys : eachMember.Key, 
+  //             TypeCode :  103,
+  //             TypeName : this.sessionType,
+  //             BonusPoints: 0,
+  //             BonusType: "",
+  //             Comments : `Points refunded to ${eachMember.FirstName} ${eachMember.LastName}`,
+  //             PrimaryMemberKey : eachMember.IsChild ? eachMember.ParentKey : eachMember.Key,
+  //             TotalPoints : eachMember.Loyaltyrefund,
+  //             ActualAmount : eachMember.AmountPaid,
+  //           }
+  //           this.rewardAPIData.Members.push(obj)
+  //         }
+  //       });
+  
+  //       //this.nestUrl = "https://activitypro-nest.appspot.com"
+  //       this.http.post(`${this.nestUrl}/loyalty/rewardpointsbulk`, this.rewardAPIData)
+  //         .subscribe((res: any) => {
+  //           this.loading.dismiss()
+  //           if (res) {
+  //             this.cm.toastMessage('Loyalty Points Awarded Successfully', 2000)
+  //             this.navCtrl.pop()
+  //           }
+  //         }, err => {
+  //           this.loading.dismiss()
+  //         })
+  //     })
+  //   }else{
+  //     this.cm.toastMessage('No loyalty setup', 3000, ToastMessageType.Error)
+  //   }
+  // }
+
+
   callRewardPointApi() {
     if (this.loyaltySetup){
       this.cm.commonAlter('Reward Points', 'Are you sure ?', () => {
@@ -167,17 +221,18 @@ export class CampSessionLoyalty {
           }
         });
   
-        //this.nestUrl = "https://activitypro-nest.appspot.com"
-        this.http.post(`${this.nestUrl}/loyalty/rewardpointsbulk`, this.rewardAPIData)
-          .subscribe((res: any) => {
+        this.httpService.post(API.LOYALTY_REWARD_POINTS_BULK, this.rewardAPIData, null, 1).subscribe({
+          next: (res: any) => {
             this.loading.dismiss()
             if (res) {
               this.cm.toastMessage('Loyalty Points Awarded Successfully', 2000)
               this.navCtrl.pop()
             }
-          }, err => {
+          },
+          error: (err) => {
             this.loading.dismiss()
-          })
+          }
+        })
       })
     }else{
       this.cm.toastMessage('No loyalty setup', 3000, ToastMessageType.Error)

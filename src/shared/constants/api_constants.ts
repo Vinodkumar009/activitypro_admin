@@ -137,5 +137,20 @@ export const API = {
     CANCEL_RECURRING_BY_ID: 'courtbooking/cancelrecurringbyid',
     CANCEL_RECURRING_BOOKING_V2: 'courtbooking/cancelrecurringbooking_v2',
     BULK_CANCEL_RECURRING_BY_ID: 'courtbooking/bulkcancelrecurringbyid',
-    CANCEL_SLOT_WITH_ID: 'courtbooking/cancelslotwithid'
+    CANCEL_SLOT_WITH_ID: 'courtbooking/cancelslotwithid',
+    ALL_BOOKING_BY_COURT: 'courtbooking/allbookingbycourt',
+    LOYALTY_REWARD_POINTS: 'loyalty/rewardpoints',
+    LOYALTY_REWARD_POINTS_V2: 'loyalty/rewardpoints_v2',
+    LOYALTY_REWARD_POINTS_BULK: 'loyalty/rewardpointsbulk',
+    LOYALTY_REWARD_POINTS_BULK_V2: 'loyalty/rewardpointsbulk_v2',
+    LOYALTY_DEBIT_POINTS: 'loyalty/debitpoints',
+    LOYALTY_GET_BY_MEMBER: 'loyalty',
+    LOYALTY_TRANSACTIONS_BY_MEMBER: 'loyalty/transactions',
+    WALLET_GET_BY_MEMBER: 'wallet',
+    WALLET_TRANSACTIONS_BY_MEMBER: 'wallet/transactions',
+    WALLET_SPEND_POINTS: 'wallet/spendWalletPoints',
+    WALLET_PAYMENT_REPORT: 'wallet/paymentreport',
+    WALLET_PAYMENT_REPORT_BY_DATE: 'wallet/paymentreportbydate',
+    WALLET_TOTAL_BALANCE: 'wallet/getavailabletotalbalance',
+    GET_PARENT_CLUB_VENUES: 'club/GetParentClubVenues'
 }

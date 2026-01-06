@@ -8,6 +8,8 @@ import moment from 'moment';
 import { FirebaseService } from '../../../../../services/firebase.service';
 import { SharedServices } from '../../../../services/sharedservice';
 import { CommonService, ToastMessageType } from '../../../../../services/common.service';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 @IonicPage()
 @Component({
   selector: 'sessionweeklyloyalty-page',
@@ -79,7 +81,7 @@ export class SessionWeeklyLoyalty {
     public cm: CommonService, public navParams: NavParams,
     public navCtrl: NavController, public sharedservice: SharedServices,
     public popoverCtrl: PopoverController,
-    public http: HttpClient, public loadingCtrl: LoadingController) {
+    public http: HttpClient, public loadingCtrl: LoadingController, private httpService: HttpService) {
 
     storage.get('userObj').then((val) => {
       val = JSON.parse(val);
@@ -209,16 +211,18 @@ export class SessionWeeklyLoyalty {
           }
         });
   
-        this.http.post(`${this.nestUrl}/loyalty/rewardpointsbulk_v2`, this.rewardAPIData)
-          .subscribe((res: any) => {
+        this.httpService.post(API.LOYALTY_REWARD_POINTS_BULK_V2, this.rewardAPIData, null, 1).subscribe({
+          next: (res: any) => {
             this.loading.dismiss()
             if (res) {
               this.cm.toastMessage('Loyalty Points Awarded Successfully', 2000)
               this.navCtrl.pop()
             }
-          }, err => {
+          },
+          error: (err) => {
             this.loading.dismiss()
-          })
+          }
+        })
       })
     }else{
       this.cm.toastMessage('No loyalty setup', 3000, ToastMessageType.Error)

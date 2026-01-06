@@ -209,6 +209,7 @@ getSession(){
                 duration
                 days
                 group_size
+                session_type
                 halfterm
                 activity_category_name
                 activity_subcategory_name
@@ -263,6 +264,7 @@ getSession(){
                 tot_paid_amount
                 tot_unpaid_amount
                 financial_year_key
+                payment_option
             }
             
             session_members{
@@ -824,10 +826,12 @@ async getProfile(session_member:TermSessionMembers) {
     }
 
     loyaltypoints() {
-        if (this.sessionDetails.PaymentOption == '100')
-            this.navCtrl.push('SessionLoyalty', { sessionDetails: this.sessionDetails, clubName: this.clubName })
-        if (this.sessionDetails.PaymentOption == '101')
-            this.navCtrl.push('SessionLoyalty', { sessionDetails: this.sessionDetails, clubName: this.clubName, monthStatus: this.selectedMonthKey, monthlyMember: ""})
+        this.navCtrl.push('SessionLoyalty', { sessionDetails: this.term_ses_dets, clubName: this.term_ses_dets.session.ClubDetails.ClubName });
+
+        // if (this.sessionDetails.PaymentOption == '100')
+        //     this.navCtrl.push('SessionLoyalty', { sessionDetails: this.sessionDetails, clubName: this.clubName })
+        // if (this.sessionDetails.PaymentOption == '101')
+        //     this.navCtrl.push('SessionLoyalty', { sessionDetails: this.sessionDetails, clubName: this.clubName, monthStatus: this.selectedMonthKey, monthlyMember: ""})
     }
 
     ionViewWillLeave(){

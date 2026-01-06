@@ -17,7 +17,7 @@
                     <ion-col col-7 >
                         <ion-item style="background-color: #efefefd9;" class="headitem">
                             <ion-select [selectOptions]="{title:'Select Club',mode:'ios'}" [(ngModel)]="selectedClubKey" interface="action-sheet">
-                                <ion-option *ngFor="let club of clubs" value={{club.$key}} (ionSelect)="onClubChange($event)">{{club.ClubName}}</ion-option>
+                                <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}} (ionSelect)="onClubChange($event)">{{club.ClubName}}</ion-option>
                             </ion-select>
                         </ion-item>
                     </ion-col>

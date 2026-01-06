@@ -41,7 +41,7 @@
       </ion-col>
       <ion-col  *ngIf="clubs.length > 1" col-5 text-left>
         <ion-select [(ngModel)]="selectedClubKey" (ionChange)="getAllActivity()">
-          <ion-option *ngFor="let club of clubs" value={{club.$key}}>{{club.ClubName}}</ion-option>
+          <ion-option *ngFor="let club of clubs" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
         </ion-select>
       </ion-col>
       <ion-col *ngIf="ActivityList.length > 1" col-1 text-center>

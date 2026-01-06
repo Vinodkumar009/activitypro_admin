@@ -7,6 +7,8 @@ import { SharedServices } from '../../../../services/sharedservice';
 import { CommonService } from '../../../../../services/common.service';
 import { HttpClient } from '@angular/common/http';
 import moment from 'moment';
+import { HttpService } from '../../../../../services/http.service';
+import { API } from '../../../../../shared/constants/api_constants';
 
 
 // import { CommonService } from '../../../services/common.service';
@@ -42,14 +44,14 @@ export class WalletReportByDate {
         public navCtrl: NavController,
         public navParam: NavParams,
         public modalController: ModalController,
-        private fb: FirebaseService,
         public actionSheetCtrl: ActionSheetController,
         public storage: Storage,
         public loadingCtrl : LoadingController,
         public http:  HttpClient,
         public sharedservice: SharedServices,
         platform: Platform,
-        private toastCtrl: ToastController, public commonService: CommonService
+        public commonService: CommonService,
+        private httpService: HttpService
     ) {
        
         this.isAndroid = platform.is('android');
@@ -130,25 +132,23 @@ export class WalletReportByDate {
   }
 
     getTotalBalanceReportByDate(){
-        
-        this.http.get(`${this.nestUrl}/wallet/paymentreportbydate/${this.ParentClubKey}/${this.startDate}/${this.lastDate}`).subscribe((res) => {
-          if (res['data']){
-            
+        const url = `${API.WALLET_PAYMENT_REPORT_BY_DATE}/${this.ParentClubKey}/${this.startDate}/${this.lastDate}`;
+        this.httpService.get(url, null, null, 1).subscribe({
+          next: (res) => {
+            if (res['data']){
               res['data'].forEach(each => {
                 each['transactionTypeText'] = this.WalletTransactionType[each['transactionType']-1]
                 each['date'] = moment(each['CreatedAt']).format('DD-MMM-YYYY')
-                let amount = each['transactionType'] == 1 ? -each['amount'] : each['amount']
+                const amount = each['transactionType'] == 1 ? -each['amount'] : each['amount']
                 this.TotTrnsAmt = this.TotTrnsAmt + amount
               });
-              
-            
-            this.paidMemberListtemp = res['data']
-          }
-        },
-          err => {
-            
+              this.paidMemberListtemp = res['data']
+            }
+          },
+          error: (err) => {
             this.paidMemberListtemp = []
-          })
+          }
+        })
     }
     
 }

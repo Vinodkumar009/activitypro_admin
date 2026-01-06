@@ -8,6 +8,8 @@ import * as moment from 'moment';
 import { HttpClient } from '@angular/common/http';
 import { SharedServices } from '../../../services/sharedservice';
 import { VenueUser } from '../model/member';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 
 /**
  * Generated class for the MemberprofilePage page.
@@ -173,7 +175,7 @@ export class LoyaltyProfile {
     public sharedModule: SharedServices, public storage: Storage,
      public fb: FirebaseService, public toastCtrl: ToastController, 
      public alertCtrl: AlertController, public commonService: CommonService,
-      public navCtrl: NavController, public navParams: NavParams
+      public navCtrl: NavController, public navParams: NavParams, private httpService: HttpService
     ) {
     this.member = this.navParams.get('member');
     storage.get('userObj').then((val) => {
@@ -338,8 +340,8 @@ export class LoyaltyProfile {
         } else if (this.user.RoleType == "4" && this.user.UserType == "2") {
           this.rewardAPIData.Transactionby = 'Coach'
         }
-        this.http.post(`${this.nestUrl}/loyalty/rewardpoints_v2`, this.rewardAPIData)
-          .subscribe((res: any) => {
+        this.httpService.post(API.LOYALTY_REWARD_POINTS_V2, this.rewardAPIData, null, 1).subscribe({
+          next: (res: any) => {
             this.commonService.hideLoader();
             if (res) {
               this.commonService.toastMessage('Loyalty Point Awarded Successfully', 2000)
@@ -347,9 +349,11 @@ export class LoyaltyProfile {
               this.getLoyaltyTransactionHistory()
               this.openReward = false
             }
-          }, err => {
+          },
+          error: (err) => {
             this.commonService.hideLoader();
-          })
+          }
+        })
       })
     } else if (!this.reward.Type) {
       this.commonService.toastMessage('Select Type', 2000, ToastMessageType.Error);
@@ -363,14 +367,16 @@ export class LoyaltyProfile {
   }
 
   getLoyaltyTransactionHistory() {
-    // this.memberKey = '-MN2PHs_uXWut_HIIj34'
-    this.http.get(`${this.nestUrl}/loyalty/transactions/${this.member.parentFirebaseKey}`).subscribe((res) => {
-      if (res['data']) {
-        this.transactionHistory = res['data']
+    const url = `${API.LOYALTY_TRANSACTIONS_BY_MEMBER}/${this.member.parentFirebaseKey}`;
+    this.httpService.get(url, null, null, 1).subscribe({
+      next: (res) => {
+        if (res['data']) {
+          this.transactionHistory = res['data']
+        }
+      },
+      error: (err) => {
       }
-      },err => {
-
-      })
+    })
   }
   getCashDate(date) {
     return moment.utc(date).local().format('DD-MMM-YYYY hh:mm a')
@@ -378,20 +384,20 @@ export class LoyaltyProfile {
 
   getLoyaltyBalance() {
     this.commonService.showLoader('Please wait');
-    //this.memberKey = '-MN2PHs_uXWut_HIIj34'
-    this.http.get(`${this.nestUrl}/loyalty/${this.member.parentFirebaseKey}`).subscribe((res) => {
-      this.commonService.hideLoader();
-      if (res['data']) {
-        this.totalPointBalance = +res['data']['updatedBalance']
-      }
-    },
-      err => {
+    const url = `${API.LOYALTY_GET_BY_MEMBER}/${this.member.parentFirebaseKey}`;
+    this.httpService.get(url, null, null, 1).subscribe({
+      next: (res) => {
+        this.commonService.hideLoader();
+        if (res['data']) {
+          this.totalPointBalance = +res['data']['updatedBalance']
+        }
+      },
+      error: (err) => {
         this.commonService.hideLoader()
         this.totalPointBalance = 0
-
         console.log("total balance for user:", this.totalPointBalance)
-        // this.cashLastUpdated = "N/A"
-      })
+      }
+    })
   }
 
   // getWalletBalance() {
@@ -414,10 +420,10 @@ export class LoyaltyProfile {
 
   async checkWalletForUser() {
     try {
-      const response = await this.http.get(`${this.nestUrl}/wallet/${this.member.parentFirebaseKey}`).toPromise();
+      const url = `${API.WALLET_GET_BY_MEMBER}/${this.member.parentFirebaseKey}`;
+      const response = await this.httpService.get(url, null, null, 1).toPromise();
       const data = response['data'];
       if (data) {
-        // this.totalWalletBalance = +data.updatedBalance;
         this.totalWalletBalance = parseFloat(data.updatedBalance);
         this.totalWalletBalance = Number(this.totalWalletBalance.toFixed(2));
         this.checkWalletTransactionForUser();
@@ -428,7 +434,6 @@ export class LoyaltyProfile {
       console.log("Total wallet balance for user:", this.totalWalletBalance);
     } catch (error) {
       this.totalWalletBalance = 0;
-      //console.error("Error fetching wallet balance:", error);
       if(error.status === 404)this.commonService.toastMessage("Wallet not found for user",2500,ToastMessageType.Error,ToastPlacement.Bottom);
     }
   }
@@ -436,17 +441,17 @@ export class LoyaltyProfile {
   txHistoryForWallet: any[];
   async checkWalletTransactionForUser() {
     try {
-      const response = await this.http.get(`${this.nestUrl}/wallet/transactions/${this.member.parentFirebaseKey}`).toPromise();
+      const url = `${API.WALLET_TRANSACTIONS_BY_MEMBER}/${this.member.parentFirebaseKey}`;
+      const response = await this.httpService.get(url, null, null, 1).toPromise();
       const data = response['data'];
       if (Array.isArray(data)) {
-        this.txHistoryForWallet = data; // Save the transaction data to the variable 'transaction'
+        this.txHistoryForWallet = data;
         console.log("data of wallet transaction of users:", this.txHistoryForWallet)
         console.log("Number of transactions for user:", this.txHistoryForWallet.length);
       } else {
         console.error("Invalid response format: Expected an array");
       }
     } catch (error) {
-      // Handle error gracefully
       console.error("Error fetching  user transaction:", error);
     }
   }
@@ -481,8 +486,8 @@ export class LoyaltyProfile {
       } else if (this.user.RoleType == "4" && this.user.UserType == "2") {
         this.rewardAPIData.Transactionby = 'Coach'
       }
-      this.http.post(`${this.nestUrl}/loyalty/debitpoints`, this.rewardAPIData)
-        .subscribe((res: any) => {
+      this.httpService.post(API.LOYALTY_DEBIT_POINTS, this.rewardAPIData, null, 1).subscribe({
+        next: (res: any) => {
           this.commonService.hideLoader();
           if (res) {
             this.commonService.toastMessage('Loyalty Point Debited Successfully', 2000)
@@ -490,9 +495,11 @@ export class LoyaltyProfile {
             this.getLoyaltyTransactionHistory()
             this.openReward = false
           }
-        }, err => {
+        },
+        error: (err) => {
           this.commonService.hideLoader();
-        })
+        }
+      })
 
     } else if (!this.reward.Point) {
       this.commonService.toastMessage('Select Point', 2000, ToastMessageType.Error);
@@ -602,24 +609,22 @@ export class LoyaltyProfile {
       this.ajdustCashInput.memberId = this.member.parentFirebaseKey;
       this.ajdustCashInput.comments = this.cash.Comment;
 
-      //Now after giving all relevant input,we are sending http post request
-      this.http.post(`${this.nestUrl}/wallet/spendWalletPoints`, this.ajdustCashInput).subscribe(
-        (response: any) => {
+      this.httpService.post(API.WALLET_SPEND_POINTS, this.ajdustCashInput, null, 1).subscribe({
+        next: (response: any) => {
           this.commonService.hideLoader();
           if (response) {
             this.commonService.toastMessage('Wallet cash spent successfully', 2500);
-            
             this.checkWalletForUser();
             this.openReward = false
             console.log('Response:', response);
           }
         },
-        (error) => {
+        error: (error) => {
           this.commonService.hideLoader();
           console.error('Error:', error);
           this.commonService.toastMessage('Wallet cash spent failed', 2500);
         }
-      );
+      });
     }
   }
 

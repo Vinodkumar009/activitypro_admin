@@ -220,6 +220,9 @@ export class Type2AddMemberHolidayCamp {
       },
         (error) => {
           this.comonService.hideLoader();
+          if(error.message){
+            this.comonService.toastMessage(error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
           console.error("Error in fetching:", error);
         })
   }

@@ -12,6 +12,8 @@ import { FirebaseService } from '../../../../../services/firebase.service';
 import { CommonService } from '../../../../../services/common.service';
 import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../../shared/dtos/club.dto';
+import { AppType } from '../../../../../shared/constants/module.constants';
 
 
 /**
@@ -37,7 +39,7 @@ export class AddrecuringbookingPage {
   nestUrl: any;
   roletype: any;
 ;
-  clubs = [];
+  clubs:ClubVenueDto[] = [];
   courts = [];
   ActivityList = [];
   selectedActivity = "";
@@ -130,24 +132,43 @@ export class AddrecuringbookingPage {
   }
 
   getClubDetails() {
+    // this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
+    //   this.clubs = data;
+    //   if (data.length != 0) {
+    //     this.selectedClubKey = this.clubs[0].$key;
+    //     this.getAllActivity();
+    //     try {
+    //     }
+    //     catch (ex) {
 
-    this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-      this.clubs = data;
-      if (data.length != 0) {
-        this.selectedClubKey = this.clubs[0].$key;
-        this.getAllActivity();
-        try {
-
-
-         // this.getClubMmebers(this.selectedClubKey);
-        }
-        catch (ex) {
-
-        } finally {
-          //this.loading.dismiss().catch(() => { });
-        }
-      }
-    });
+    //     } finally {
+          
+    //     }
+    //   }
+    // });
+const body: GetParentClubVenuesRequestDto = {
+              parentclub_id: this.sharedService.getPostgreParentClubId(),
+              app_type: AppType.ADMIN_NEW,
+              device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,
+              device_id: this.sharedService.getDeviceId() || 'web',
+              updated_by: this.sharedService.getLoggedInUserId()
+            };
+        
+            this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+              next: (res: GetParentClubVenuesResponseDto) => {
+                this.clubs = res.data.map((club: ClubVenueDto) => ({ ...club, $key: club.FirebaseId, ClubKey: club.FirebaseId }));
+                if (this.clubs.length > 0) {
+                  this.selectedClubKey = this.clubs[0].FirebaseId;
+                  this.getAllActivity();
+                }else{
+                  this.ActivityList = [];
+                  this.selectedActivity = "";
+                }
+              },
+              error: (err) => {
+                this.clubs = [];
+              }
+            });    
   }
   getAllActivity() {
     this.fb.getAll("/Activity/" + this.selectedParentClubKey + "/" + this.selectedClubKey + "/").subscribe((data) => {
@@ -258,7 +279,7 @@ export class AddrecuringbookingPage {
       }
     }
       for(let i = 0; i < this.clubs.length;i++){
-        if(this.clubs[i].$key == this.recuringObj.ClubKey){
+        if(this.clubs[i].FirebaseId == this.recuringObj.ClubKey){
           this.recuringObj.ClubName = this.clubs[i].ClubName;
         }
       }
@@ -285,7 +306,7 @@ export class AddrecuringbookingPage {
       }
     }
     for(let i = 0; i < this.clubs.length;i++){
-      if(this.clubs[i].$key == this.recuringObj.ClubKey){
+      if(this.clubs[i].FirebaseId == this.recuringObj.ClubKey){
         this.recuringObj.ClubName = this.clubs[i].ClubName;
       }
     }
@@ -371,6 +392,19 @@ export class AddrecuringbookingPage {
         }
       })
     })
+    // return new Promise((resolve, reject) =>{
+    //   this.http.put(`${this.nestUrl}/courtbooking/createrecurring_v3?activitykey=${this.selectedActivity}&clubkey=${this.selectedClubKey}&parentclubkey=${this.selectedParentClubKey}&recurringkey=${key}&userkey=${this.userkey}&membertype=${this.roletype}`, null).subscribe((res) => {
+    //     resolve('success')
+    //     this.commonService.hideLoader()
+    //   },
+    //     err => {
+    //       console.log(err)
+    //       this.commonService.hideLoader() 
+    //       this.commonService.toastMessage("Unable to create recurring slot", 2000)
+    //       reject('fail')
+    //     })
+
+    // })
   }
 
   getSortedSlots(){
