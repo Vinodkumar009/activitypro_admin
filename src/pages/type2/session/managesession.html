@@ -104,40 +104,40 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="session-details">
-                                <div class="detail-row">
-                                    <div class="detail-item">
-                                        <ion-icon name="time" class="detail-icon"></ion-icon>
-                                        <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
+                            <ion-row no-padding>
+                                <ion-col col-9>
+                                    <div class="session-details-left">
+                                        <div class="detail-item">
+                                            <ion-icon name="time" class="detail-icon"></ion-icon>
+                                            <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
+                                        </div>
+                                        <div class="detail-item" *ngIf="session.Coach">
+                                            <ion-icon name="person" class="detail-icon"></ion-icon>
+                                            <span class="detail-text">{{session.Coach.first_name}} {{session.Coach.last_name}}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <ion-icon name="calendar" class="detail-icon"></ion-icon>
+                                            <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <ion-icon name="pin" class="detail-icon"></ion-icon>
+                                            <span class="detail-text">{{session.ClubDetails.ClubName}}</span>
+                                        </div>
                                     </div>
-                                    <div class="detail-item enrollment-badge">
-                                        <span class="badge-text">{{session.paid_count}}/{{session.tot_enrol_count}}</span>
+                                </ion-col>
+                                <ion-col col-3>
+                                    <div class="session-details-right">
+                                        <div class="detail-item enrollment-badge">
+                                            <span class="badge-text">{{session.paid_count}}/{{session.tot_enrol_count}}</span>
+                                        </div>
+                                        <div class="detail-item price-badge" *ngIf="can_coach_see_revenue">
+                                            <span class="badge-text">
+                                                <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.session_fee | number: '1.2-2'}}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-item" *ngIf="session.Coach">
-                                        <ion-icon name="person" class="detail-icon"></ion-icon>
-                                        <span class="detail-text">{{session.Coach.first_name}} {{session.Coach.last_name}}</span>
-                                    </div>
-                                    <div class="detail-item price-badge" *ngIf="can_coach_see_revenue">
-                                        <span class="badge-text">
-                                            <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.session_fee | number: '1.2-2'}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-item">
-                                        <ion-icon name="calendar" class="detail-icon"></ion-icon>
-                                        <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
-                                    </div>
-                                </div>
-                                <div class="detail-row">
-                                    <div class="detail-item">
-                                        <ion-icon name="pin" class="detail-icon"></ion-icon>
-                                        <span class="detail-text">{{session.ClubDetails.ClubName}}</span>
-                                    </div>
-                                </div>
-                            </div>
+                                </ion-col>
+                            </ion-row>
                         </div>
                     </div>
                 </div>
@@ -190,40 +190,40 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="session-details">
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="time" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
-                                </div>
-                                <div class="detail-item enrollment-badge">
-                                    <span class="badge-text">{{session.booking_count}}/{{session.enrol_count}}</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="person" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.coach_names}}</span>
-                                </div>
-                                <div class="detail-item price-badge" *ngIf="can_coach_see_revenue">
-                                    <span class="badge-text">
-                                        <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.fee_for_member | number: '1.2-2'}}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="calendar" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
+                        <ion-row no-padding>
+                            <ion-col col-9>
+                                <div class="session-details-left">
+                                    <div class="detail-item">
+                                        <ion-icon name="time" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <ion-icon name="person" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.coach_names}}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <ion-icon name="calendar" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
+                                    </div>
                                     <div class="detail-item">
                                         <ion-icon name="pin" class="detail-icon"></ion-icon>
                                         <span class="detail-text">{{session.club.ClubName}} </span>
                                     </div>
-                            </div>
-                        </div>
+                                </div>
+                            </ion-col>
+                            <ion-col col-3>
+                                <div class="session-details-right">
+                                    <div class="detail-item enrollment-badge">
+                                        <span class="badge-text">{{session.booking_count}}/{{session.enrol_count}}</span>
+                                    </div>
+                                    <div class="detail-item price-badge" *ngIf="can_coach_see_revenue">
+                                        <span class="badge-text">
+                                            <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.fee_for_member | number: '1.2-2'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </ion-col>
+                        </ion-row>
                     </div>
                 </div>
             </div>
@@ -264,40 +264,36 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="session-details">
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="time" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
-                                </div>
-                                <div class="detail-item enrollment-badge">
-                                    <span class="badge-text">{{session.session_stats.paid_count}}/{{session.session_stats.enrolled_member_count}}</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="person" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.coach_names}}</span>
-                                </div>
-                                <div class="detail-item price-badge" *ngIf="can_coach_see_revenue">
-                                    <span class="badge-text">
-                                        <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.one_day_price | number:'1.2-2'}}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="calendar" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
-                                </div>
-                            </div>
-                            <!-- <div class="detail-row">
+                        <ion-row no-padding>
+                            <ion-col col-9>
+                                <div class="session-details-left">
                                     <div class="detail-item">
-                                        <ion-icon name="pin" class="detail-icon"></ion-icon>
-                                        <span class="detail-text">{{session.club.ClubName}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
+                                        <ion-icon name="time" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
                                     </div>
-                            </div> -->
-                        </div>
+                                    <div class="detail-item">
+                                        <ion-icon name="person" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.coach_names}}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <ion-icon name="calendar" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.start_date}} <ion-icon name="ios-arrow-round-forward-outline"></ion-icon> {{session.end_date}}</span>
+                                    </div>
+                                </div>
+                            </ion-col>
+                            <ion-col col-3>
+                                <div class="session-details-right">
+                                    <div class="detail-item enrollment-badge">
+                                        <span class="badge-text">{{session.session_stats.paid_count}}/{{session.session_stats.enrolled_member_count}}</span>
+                                    </div>
+                                    <div class="detail-item price-badge" *ngIf="can_coach_see_revenue">
+                                        <span class="badge-text">
+                                            <span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{session.one_day_price | number:'1.2-2'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </ion-col>
+                        </ion-row>
                     </div>
                 </div>
             </div>

@@ -28,8 +28,6 @@
 <ion-content>
     <div *ngIf="!openReward">
         <ion-card [ngStyle]="{'background-color': loyaltycardcolor}" class="walletCard">
-
-
             <div class="Pointsdiv">
                 <div>
                     <img [src]="ParentClubAppIconURL" class="avatar">
@@ -37,22 +35,22 @@
                 <div class="line"></div>
                 <div *ngIf="!isCashView">
                     <div *ngIf="(displayPoint == 0 || displayPoint == 2)" class="pointsbal">
-                        <p class="point">{{totalPointBalance}}</p>
+                        <p class="point">{{totalPointBalance | number: '1.2-2'}}</p>
                         <p class="pointText">{{loyaltySetup['LoyaltyPointName']}}</p>
                     </div>
                 </div>
                 <div *ngIf="isCashView && displayPoint == 1" class="pointsbal">
                     <p class="point"><span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{isCashView
-                        ? totalWalletBalance :calculate(totalPointBalance) | number: '1.2-2'}}
+                        ? (totalWalletBalance | number: '1.2-2') :calculate(totalPointBalance) | number: '1.2-2'}}
                     </p>
                 </div>
             </div>
             <div style="display: flex;
             justify-content: space-between;">
-                <p class="name">{{member.FirstName}} {{member.LastName}}</p>
+                <p class="name">{{member.parent_firstname}} {{member.parent_lastname}}</p>
                 <div *ngIf="displayPoint == 2 " class="pointsbal">
                     <p class="point"><span *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{isCashView
-                        ? totalWalletBalance :calculate(totalPointBalance) | number: '1.2-2'}}
+                        ? (totalWalletBalance | number: '1.2-2') :calculate(totalPointBalance) | number: '1.2-2'}}
                     </p>
                 </div>
             </div>
@@ -169,10 +167,7 @@
     </div>
     <div *ngIf="openReward ">
         <div *ngIf="adjustCashPointsOpened ">
-
             <ion-card [ngStyle]="{'background-color': loyaltycardcolor}" class="walletCard">
-
-
                 <!-- <div class="Pointsdiv">
                     <div>
 
@@ -196,7 +191,7 @@
                     <p class="name">Available Balance</p>
                     <div *ngIf="displayPoint == 2 " class="pointsbal">
                         <p class="point"><span
-                                *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{cash.Available_Balance}}
+                                *ngIf="currencyDetails">{{currencyDetails.CurrencySymbol}}</span>{{cash.Available_Balance | number: '1.2-2'}}
                         </p>
                     </div>
                 </div>

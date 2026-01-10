@@ -553,16 +553,16 @@ export class LoyaltyProfile {
 
 
   checkWalletForParentClub() {
-    const url = `${this.nestUrl}/wallet/checkwallet/${this.selectedParentClubKey}`;
-    this.http.get<WalletApiResponse>(url).subscribe(
-      (response) => {
+    const url = `${API.CHECK_WALLET_FOR_PARENT_CLUB}/${this.selectedParentClubKey}`;
+    this.httpService.get(url, null, null, 1).subscribe({
+      next: (response) => {
         console.log('GET request successful for ', response);
       },
-      (error) => {
+      error: (error) => {
         console.log('Error checking parent club wallet:', error);
         this.commonService.toastMessage('Wallet is not available,Please enable wallet from setup',2500,ToastMessageType.Error,ToastPlacement.Bottom);
       }
-    );
+    });
   }
 
   openAdjustCashPoints(totalWalletBalance: number) {
@@ -579,16 +579,14 @@ export class LoyaltyProfile {
   }
 
   checkWalletForMember() {
-    const url = `${this.nestUrl}/wallet/${this.member.parentFirebaseKey}`
-    this.http.get(url).subscribe(
-      (response) => {
-        //   this.walletExists = true;
+    const url = `${API.WALLET_GET_BY_MEMBER}/${this.member.parentFirebaseKey}`;
+    this.httpService.get(url, null, null, 1).subscribe({
+      next: (response) => {
       },
-      (error) => {
+      error: (error) => {
         console.error(error);
       }
-    );
-
+    });
   }
 
 
