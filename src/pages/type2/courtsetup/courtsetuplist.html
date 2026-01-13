@@ -32,7 +32,7 @@
   <ion-item>
     <ion-label>{{LangObj.bkg_court_venue}}</ion-label>
     <ion-select [(ngModel)]="selectedClubKey" (ionChange)="onClubChange()">
-      <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+      <ion-option *ngFor="let club of allClub" value={{club.FirebaseId}}>{{club.ClubName}}</ion-option>
     </ion-select>
   </ion-item>
   <ion-item class="margin">

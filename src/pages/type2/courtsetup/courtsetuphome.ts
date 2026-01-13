@@ -7,6 +7,11 @@ import { Storage } from '@ionic/storage';
 // import { Dashboard } from './../../dashboard/dashboard';
 import { ToastController } from 'ionic-angular';
 import { IonicPage } from 'ionic-angular';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../shared/dtos/club.dto';
+import { AppType } from '../../../shared/constants/module.constants';
+import { API } from '../../../shared/constants/api_constants';
+import { CommonService } from '../../../services/common.service';
+import { HttpService } from '../../../services/http.service';
 @IonicPage()
 @Component({
   selector: 'courtsetuphome-page',
@@ -34,7 +39,7 @@ export class Type2CourtSetupHome {
   responseDetails: any;
   responseDetails1: any;
   selectedClub: any;
-  allClub: any;
+  allClub:ClubVenueDto[] = [];
   allActivityArr = [];
   courtDetails = {
     CourtName: '',
@@ -123,7 +128,9 @@ export class Type2CourtSetupHome {
   flooddata: any[];
   constructor(public toastCtrl: ToastController, public loadingCtrl: LoadingController, storage: Storage,
     public navCtrl: NavController, public sharedservice: SharedServices,
-    public fb: FirebaseService, public popoverCtrl: PopoverController, public navParams: NavParams) {
+    public fb: FirebaseService, public popoverCtrl: PopoverController, public navParams: NavParams, 
+    public commonService: CommonService,
+    private httpService: HttpService) {
     let min = 0
     while(min < 60){
       this.minValues.push(min)
@@ -218,22 +225,47 @@ export class Type2CourtSetupHome {
   }
 
   getClubList() {
-
-    this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-      //alert();
-      if (data.length > 0) {
-        this.allClub = data;
-        let key = data[0].$key;
-        if(this.Isupdatecome){
-          this.selectedClub = this.courtDetails.ClubKey
-        }else{
-          this.selectedClub = key;
-        }
+    // this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
+    //   //alert();
+    //   if (data.length > 0) {
+    //     this.allClub = data;
+    //     let key = data[0].$key;
+    //     if(this.Isupdatecome){
+    //       this.selectedClub = this.courtDetails.ClubKey
+    //     }else{
+    //       this.selectedClub = key;
+    //     }
    
-        this.getAllActivity();
-        //this.getAllMemberCategory();
+    //     this.getAllActivity();
+    //     //this.getAllMemberCategory();
+    //   }
+    // })
+    const body: GetParentClubVenuesRequestDto = {
+      parentclub_id: this.sharedservice.getPostgreParentClubId(),
+      app_type: AppType.ADMIN_NEW,
+      device_type: this.sharedservice.getPlatform() == 'android' ? 1 : 2,
+      device_id: this.sharedservice.getDeviceId() || 'web',
+      updated_by: this.sharedservice.getLoggedInUserId()
+    };
+
+    this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+      next: (res: GetParentClubVenuesResponseDto) => {
+        this.allClub = res.data as ClubVenueDto[];
+        console.table(`all_clubs:${JSON.stringify(this.allClub)}`);
+        if (this.allClub.length > 0) {
+          let key = this.allClub[0].FirebaseId;
+          if(this.Isupdatecome){
+            this.selectedClub = this.courtDetails.ClubKey
+          }else{
+            this.selectedClub = key;
+          }
+          this.getAllActivity();
+        }
+      },
+      error: (err) => {
+        this.allClub = [];
       }
-    })
+    });
   }
 
 
@@ -334,7 +366,7 @@ export class Type2CourtSetupHome {
       }
     }
     for (let i = 0; i < this.allClub.length; i++) {
-      if (this.allClub[i].$key == this.courtDetails.ClubKey) {
+      if (this.allClub[i].FirebaseId == this.courtDetails.ClubKey) {
         this.courtDetails.ClubName = this.allClub[i].ClubName;
       }
     }
@@ -494,7 +526,7 @@ export class Type2CourtSetupHome {
       }
     }
     for (let i = 0; i < this.allClub.length; i++) {
-      if (this.allClub[i].$key == this.courtDetails.ClubKey) {
+      if (this.allClub[i].FirebaseId == this.courtDetails.ClubKey) {
         this.courtDetails.ClubName = this.allClub[i].ClubName;
       }
     }

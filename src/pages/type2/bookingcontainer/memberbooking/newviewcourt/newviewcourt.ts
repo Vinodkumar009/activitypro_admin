@@ -81,6 +81,7 @@ export class NewViewcourtPage {
   Name: any;
   userKey: any;
   roleType:number;
+  private isLoadingSlots: boolean = false; // Flag to prevent multiple simultaneous calls
   constructor(public sharedService: SharedServices, public events: Events, 
     public ngZone: NgZone, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController,
      public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public fb: FirebaseService, 
@@ -204,11 +205,18 @@ export class NewViewcourtPage {
   }
 
   async getCourtSlots(date, courtKey) {
+    // Prevent multiple simultaneous calls
+    if (this.isLoadingSlots) {
+      return;
+    }
+    
+    this.isLoadingSlots = true;
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
     this.loading.present();
-    const courtwiseSlots = await this.getSlotsbyAPi(date, courtKey)
+    const courtwiseSlots = await this.getSlotsbyAPi(date, courtKey);
+    this.isLoadingSlots = false;
   }
 
   getSlotsbyAPi(date, courtKey) {
@@ -232,7 +240,9 @@ export class NewViewcourtPage {
         
         this.httpService.get(API.GET_MULTI_COURT_SLOT, params, null, 1).subscribe({
           next: (response) => {
-            this.loading.dismiss()
+            if (this.loading) {
+              this.loading.dismiss().catch(() => {});
+            }
             if (response['data']['bookingDetails']) {
               this.bookingDetails = response['data']['bookingDetails']
             }
@@ -247,13 +257,17 @@ export class NewViewcourtPage {
             res('success')
           },
           error: (err) => {
-            this.loading.dismiss();
+            if (this.loading) {
+              this.loading.dismiss().catch(() => {});
+            }
             rej(err)
           }
         })
       } catch (err) {
         rej(err)
-        this.loading.dismiss();
+        if (this.loading) {
+          this.loading.dismiss().catch(() => {});
+        }
       }
     })
   }

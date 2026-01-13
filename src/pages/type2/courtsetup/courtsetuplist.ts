@@ -7,9 +7,13 @@ import { CommonService } from '../../../services/common.service';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 import { LanguageService } from '../../../services/language.service';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../shared/dtos/club.dto';
+import { AppType } from '../../../shared/constants/module.constants';
+import { API } from '../../../shared/constants/api_constants';
 // import { Type2CourtSetupHome } from './courtsetuphome';
 // import { Dashboard } from './../../dashboard/dashboard';
 import {IonicPage } from 'ionic-angular';
+import { HttpService } from '../../../services/http.service';
 @IonicPage()
 @Component({
   selector: 'courtsetuplist-page',
@@ -21,7 +25,7 @@ export class Type2CourtSetupList {
   isShowPaymentModal:boolean = false;
   themeType: number;
   parentClubKey: string;
-  allClub = [];
+  allClub:ClubVenueDto[] = [];
   selectedClubKey: any;
   allCourtSetup = [];
   menus: Array<{ DisplayTitle: string; 
@@ -46,7 +50,8 @@ export class Type2CourtSetupList {
 
   constructor(public events: Events,public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public loadingCtrl: LoadingController, public storage: Storage,
     public navCtrl: NavController, public sharedservice: SharedServices,private langService:LanguageService,
-    public fb: FirebaseService, public popoverCtrl: PopoverController,public commonService: CommonService,) {
+    public fb: FirebaseService, public popoverCtrl: PopoverController,public commonService: CommonService,
+    private httpService: HttpService) {
 
     this.themeType = sharedservice.getThemeType();
     this.menus = sharedservice.getMenuList();
@@ -114,14 +119,35 @@ export class Type2CourtSetupList {
     }
 
   getAllClub() {
-    this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data4) => {
-      if (data4.length > 0) {
-        this.allClub = data4;
-        this.selectedClubKey = this.allClub[0].$key;
-        this.checkPaymentSetup();
-        this.getAllActivity();
+    // this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data4) => {
+    //   if (data4.length > 0) {
+    //     this.allClub = data4;
+    //     this.selectedClubKey = this.allClub[0].$key;
+    //     this.checkPaymentSetup();
+    //     this.getAllActivity();
+    //   }
+    // })
+    const body: GetParentClubVenuesRequestDto = {
+      parentclub_id: this.sharedservice.getPostgreParentClubId(),
+      app_type: AppType.ADMIN_NEW,
+      device_type: this.sharedservice.getPlatform() == 'android' ? 1 : 2,
+      device_id: this.sharedservice.getDeviceId() || 'web',
+      updated_by: this.sharedservice.getLoggedInUserId()
+    };
+
+    this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+      next: (res: GetParentClubVenuesResponseDto) => {
+        this.allClub = res.data.map((club: ClubVenueDto) => ({ ...club, $key: club.FirebaseId, ClubKey: club.FirebaseId }));
+        if (this.allClub.length > 0) {
+          this.selectedClubKey = this.allClub[0].FirebaseId;
+          this.checkPaymentSetup();
+          this.getAllActivity();
+        }
+      },
+      error: (err) => {
+        this.allClub = [];
       }
-    })
+    });
   }
 
   //payment activity details
@@ -131,7 +157,7 @@ checkPaymentSetup() {
     let showmodal:boolean = true;
     for (let i = 0; i < this.allClub.length; i++) {
       for (let j = 0; j < res.length; j++) {
-        if (this.allClub[i].$key === res[j].$key) {
+        if (this.allClub[i].FirebaseId === res[j].$key) {
           for (let key in res[j]) {
             if (key != "$key") {
                 res[j][key].PaymentSetup = this.commonService.convertFbObjectToArray(res[j][key].PaymentSetup);
