@@ -311,37 +311,25 @@
             </ion-row>
 
         </div>
-        <ion-row style="
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-    " *ngIf="!debitPageOpened">
-            <ion-col col-12>
-                <button ion-button block class="timekare-primary-btn" (click)="callRewardPointApi()">Reward</button>
-            </ion-col>
-        </ion-row>
-        <ion-row style="
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-    " *ngIf="debitPageOpened">
-            <ion-col col-12>
-                <button ion-button block class="timekare-primary-btn" (click)="callDebitPointApi()">Debit</button>
-            </ion-col>
-        </ion-row>
-
-        <ion-row style="
-        position: absolute;
-        bottom: 0;
-        width: 100%;" *ngIf="adjustCashPointsOpened">
-
-            <ion-col col-12>
-                <button ion-button block class="timekare-primary-btn" (click)="callAdjustCashPoint()">Adjust
-                    Cash</button>
-            </ion-col>
-        </ion-row>
     </div>
 
-
-
 </ion-content>
+
+<ion-footer *ngIf="openReward">
+    <ion-row *ngIf="!debitPageOpened && !adjustCashPointsOpened">
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" (click)="callRewardPointApi()">Reward</button>
+        </ion-col>
+        </ion-row>
+    <ion-row *ngIf="debitPageOpened && !adjustCashPointsOpened">
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" (click)="callDebitPointApi()">Debit</button>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="adjustCashPointsOpened">
+        <ion-col col-12>
+            <button ion-button block class="timekare-primary-btn" (click)="callAdjustCashPoint()">Adjust
+                        Cash</button>
+         </ion-col>
+    </ion-row>        
+</ion-footer>
