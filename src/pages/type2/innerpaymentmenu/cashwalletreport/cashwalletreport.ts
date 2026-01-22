@@ -64,18 +64,14 @@ export class CashWalletReport {
 
 
     getTotalBalance(){
-        this.commonService.showLoader('Please wait...')
         const url = `${API.WALLET_TOTAL_BALANCE}/${this.ParentClubKey}`;
         this.httpService.get(url, null, null, 1).subscribe({
           next: (res) => {
-            this.commonService.hideLoader();
             if (res['data']){
               this.totalParentClubBalance = res['data']['totalparentclubbalance']
+            } else {
+              this.totalParentClubBalance = 0
             }
-          },
-          error: (err) => {
-            this.commonService.hideLoader()
-            this.totalParentClubBalance = 0
           }
         })
     }
@@ -86,10 +82,9 @@ export class CashWalletReport {
           next: (res) => {
             if (res['data']){
               this.totalParentClubData = res['data']
+            } else {
+              this.totalParentClubData = []
             }
-          },
-          error: (err) => {
-            this.totalParentClubData = []
           }
         })
     }

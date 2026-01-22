@@ -1,0 +1,13 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+editterm-page {
+    @include android-sdk35-fixes;
+
+add-term-page{
+    .scroll-content{
+        background-image: none !important;
+        background-color: #f4efef !important;
+        padding: 6px !important;
+    }
+}
+}

@@ -1,0 +1,92 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+term-page {
+    @include android-sdk35-fixes;
+    .scroll-content {
+        background-image: none !important;
+        background-size: 100% 100%;
+        padding: 10px!important;
+        background-color: #f4efef !important;
+    }
+    .slider_list_margin {
+        //margin: -1px 0 8px 0;
+        border-left: 3px solid $themecardleftbordercolor;
+        // margin: 6px 10px;
+        border-radius: 2px;
+        width: calc(100%);
+        font-size: 1.4rem;
+        background: #fff;
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+    .btn-clr {
+        color: $dashoboard-icon-color;
+    }
+    .btn-edit {
+        color: red;
+    }
+    ion-item h2 {
+        color: $dashoboard-icon-color !important;
+    }
+    .cross {
+        background-color: white;
+    }
+    .right {
+        float: right; //background-color: $dashoboard-icon-color;
+    }
+    .search_add {
+        .item-inner {
+            border-bottom: 0px !important;
+            ion-icon {
+                margin-top: 18px;
+            }
+            div {
+                ion-label {
+                    //margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+    .block_height {
+        height: 75%;
+    }
+    .div-box-margin {
+        margin-top: 10px;
+    }
+    .text-color {
+        color: red;
+    }
+    .cardstyle {
+        // margin: 6px 10px;
+        // border-radius: 2px;
+        // width: calc(100% - 20px);
+        // font-size: 1.4rem;
+        // background: #fff;
+        // -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        // box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+    ion-card{
+        margin:0px !important;
+        width:100% !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid #f6ae4d !important; .nonlocationcard  {
+          padding: 14px 0;
+      }
+    }
+    ion-card-content{
+        padding: 0px !important;
+    }
+    .nonmembercard {
+        margin-top: 30px !important;
+
+    }
+    .nonlocationcard {
+        padding: 14px 0;
+        color:#aba5a5 !important;
+    }
+    ion-list{
+        margin: -1px 0 5px !important;
+    }
+}

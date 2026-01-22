@@ -418,20 +418,19 @@ export class EditleaguePage {
   }
 
   getLeagueCategory() {
-    this.httpService.post(`${API.GET_LEAGUE_CATEGORIES}`, this.commonInput).subscribe((res: any) => {
-      this.leagueCategory = res["data"]
-    }, (error) => {
-      this.commonService.toastMessage("category fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
-    })
+    this.httpService.post(`${API.GET_LEAGUE_CATEGORIES}`, this.commonInput).subscribe({
+      next: (res: any) => {
+        this.leagueCategory = res["data"]
+      }
+    });
   }
 
   getLeagueType() {
-    this.httpService.post(`${API.GET_LEAGUE_OR_MATCH_TYPES}`, this.commonInput).subscribe((res: any) => {
-      this.leagueType = res["data"]
-    }, (error) => {
-      this.commonService.toastMessage("type fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
-    }
-    )
+    this.httpService.post(`${API.GET_LEAGUE_OR_MATCH_TYPES}`, this.commonInput).subscribe({
+      next: (res: any) => {
+        this.leagueType = res["data"]
+      }
+    });
   }
 
   changeDate() {

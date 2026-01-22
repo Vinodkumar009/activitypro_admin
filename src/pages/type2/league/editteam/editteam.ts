@@ -260,9 +260,6 @@ export class EditteamPage {
           this.getActivity();
         }
         console.log("activity", this.clubVenues);
-      }, (error) => {
-        this.commonService.toastMessage("No venues found", 2500, ToastMessageType.Error)
-        console.error("Error in fetching:", error);
       });
   }
 

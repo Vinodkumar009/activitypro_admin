@@ -254,7 +254,6 @@ export class AddstafftoteamPage {
     const staffLength = this.addStaffInput.staffDetails.length;
     if (staffLength > 0) {
       try {
-        this.commonService.showLoader("Please wait...");
         console.log(JSON.stringify(this.addStaffInput));
 
         const addStaff = gql`
@@ -275,20 +274,17 @@ export class AddstafftoteamPage {
           .mutate(addStaff, mutationVariables, 0)
           .subscribe(
             (res: any) => {
-              this.commonService.hideLoader();
               const message = "Staff Added Successfully";
               this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
               this.viewCtrl.dismiss({ canRefreshData: true });
             },
             (error) => {
-              this.commonService.hideLoader();
               this.handleError(error, "Failed to save staff");
             }
           );
 
         this.subscriptions.push(saveSubscription);
       } catch (error) {
-        this.commonService.hideLoader();
         this.handleError(error, "Failed to save staff");
       }
     } else {

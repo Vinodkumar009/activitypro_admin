@@ -385,14 +385,11 @@ export class MatchhistoryPage {
   };
 
   fetchAllMatches() {
-    this.commonService.showLoader("Fetching matches...");
-
     this.httpService
       .post(`${API.FetchAllMatches}`, this.fetchAllMatchesInput)
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next: (res: any) => {
           if (res) {
-            this.commonService.hideLoader();
             this.fetchAllMatchesRes = res.data;
             this.matchlist = this.fetchAllMatchesRes.AllMatches;
             console.log("FetchAllMatches RESPONSE", JSON.stringify(res.data));
@@ -401,15 +398,14 @@ export class MatchhistoryPage {
             console.log("error in fetching");
           }
         },
-        (error) => {
-          this.commonService.hideLoader();
+        error: (error) => {
           this.commonService.toastMessage(
             error.error.message,
             3000,
             ToastMessageType.Error
           );
         }
-      );
+      });
   }
 
   gotoLeaguedetailsPage(league: LeaguesForParentClubModel) {

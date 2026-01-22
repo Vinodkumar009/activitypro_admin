@@ -820,9 +820,6 @@ export class Payment {
           this.TotTrnsAmt = this.paidMemberList.reduce((accumulator,item) => {return accumulator +=parseFloat(item.amount_paid)},0);
           this.TotTransc = this.paidMemberList.length;
           if(this.clubs.length == 0)this.getClubList();
-        },
-        error: () => {
-          this.commonService.toastMessage('Failed to fetch payment',2500,ToastMessageType.Error,ToastPlacement.Bottom);
         }
       });
   }

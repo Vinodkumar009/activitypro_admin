@@ -379,8 +379,6 @@ export class Addplayertoteam {
     const memberlength = this.teamMembersInput.members.length;
     if (memberlength > 0) {
       try {
-        this.commonService.showLoader("Please wait...");
-
         const addPlayer = gql`
     mutation addPlayerToTeam($addPlayer: TeamMembersInput!){
       addPlayerToTeam(addPlayer:$addPlayer)
@@ -392,7 +390,6 @@ export class Addplayertoteam {
         const mutationVariables = { addPlayer: this.teamMembersInput }
 
         const saveSubscription = this.graphqlService.mutate(addPlayer, mutationVariables, 0).subscribe((res: any) => {
-          this.commonService.hideLoader();
           const message = "Player Added Successfully";
 
           this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
@@ -401,7 +398,6 @@ export class Addplayertoteam {
 
         },
           (error) => {
-            this.commonService.hideLoader();
             this.handleError(error, "Failed to save player");
           }
         );
@@ -409,7 +405,6 @@ export class Addplayertoteam {
         this.subscriptions.push(saveSubscription);
 
       } catch (error) {
-        this.commonService.hideLoader();
         this.handleError(error, "Failed to save player");
       }
     }

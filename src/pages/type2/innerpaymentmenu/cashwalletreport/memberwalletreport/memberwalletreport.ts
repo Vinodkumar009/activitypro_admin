@@ -75,17 +75,12 @@ export class MemberWalletReport {
     }
 
     getCashTransactionHistory(){
-       this.commonService.showLoader("Please wait...")
        const url = `${API.WALLET_TRANSACTIONS_BY_MEMBER}/${this.memberKey}`;
        this.httpService.get(url, null, null, 1).subscribe({
          next: (res) => {
-           this.commonService.hideLoader()
            if (res['data']){
              this.transactionCashHistory = res['data']
            }
-         },
-         error: (err) => {
-           this.commonService.hideLoader()
          }
        })
      }

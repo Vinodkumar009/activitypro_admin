@@ -799,23 +799,12 @@ export class Type2HolidayCamp {
   getUserWithPendingPayment() {
     this.eventsDto.parentclubId = this.sharedservice.getPostgreParentClubId();
     this.httpService.post(`${API.EnrolmentDetails}`, this.eventsDto)
-      .subscribe((res: any) => {
-        this.pendingUsers = res;
-        this.filteredUsers = JSON.parse(JSON.stringify(this.pendingUsers))
-        // if (this.filteredUsers.length > 0) {
-        //   this.filteredUsers.map((item, index) => {
-        //     item.is_selected = false;
-        //   })
-        // }
-      },
-      (err) => {
-          console.error("Error fetching camp payments:", err);
-          if((err && err.error && err.error.message) || (err && err.message)){
-            this.commonService.toastMessage(err.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom)
-          }else{
-            this.commonService.toastMessage('Failed to fetch data', 2500, ToastMessageType.Error, ToastPlacement.Bottom)
-          }
-      })
+      .subscribe({
+        next: (res: any) => {
+          this.pendingUsers = res;
+          this.filteredUsers = JSON.parse(JSON.stringify(this.pendingUsers))
+        }
+      });
   }
 
   toggleCardOptions(index: number): void {

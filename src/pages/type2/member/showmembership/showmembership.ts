@@ -169,23 +169,22 @@ export class ShowmembershipPage {
     //getting user memberships
     getUserMemberships() {
         this.ActiveSetups = [];
-        this.httpService.post(`${API.MEMBERSHIP_USER}`, this.inputObj).subscribe((res: any) => {
-            this.userMemberShip = res["data"];
-            console.log("active memberships data", this.userMemberShip);
-        }, (error) => {
-            this.comonService.toastMessage("User memberships fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        })
+        this.httpService.post(`${API.MEMBERSHIP_USER}`, this.inputObj).subscribe({
+            next: (res: any) => {
+                this.userMemberShip = res["data"];
+                console.log("active memberships data", this.userMemberShip);
+            }
+        });
     }
 
     //getting parentclub -> venue memberships available
     getMemberShipForParentClub() {
-        // this.inputObj.memberId = this.ActiveSetups[0].id
-        this.httpService.post(`${API.MEMBERSHIP_PARENT_CLUB}`, this.inputObj).subscribe((res: any) => {
-            this.parentClubMemberShip = res["data"];
-            console.log("membership for parentclub", JSON.stringify(res));
-        }, (error) => {
-            this.comonService.toastMessage("Member Fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        })
+        this.httpService.post(`${API.MEMBERSHIP_PARENT_CLUB}`, this.inputObj).subscribe({
+            next: (res: any) => {
+                this.parentClubMemberShip = res["data"];
+                console.log("membership for parentclub", JSON.stringify(res));
+            }
+        });
     }
 
     formatMatchStartDate(date) {

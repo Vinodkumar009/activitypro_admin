@@ -945,19 +945,19 @@ export class TeamdetailsPage {
     this.updateTeamMemberFieldsInput.inviteStatus = inviteStatus;
     this.updateTeamMemberFieldsInput.inviteUpdatedBy = teamMemberId;
 
-    this.httpService.post(`${API.UPDATE_TEAM_MEMBER_FIELDS}`, this.updateTeamMemberFieldsInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage(res.message, 3000, ToastMessageType.Success);
-        this.updateTeamMemberFieldsRes = res;
-        this.getInvitedPlayers();
-      } else {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage("Failed to update team member fields", 3000, ToastMessageType.Error);
+    this.httpService.post(`${API.UPDATE_TEAM_MEMBER_FIELDS}`, this.updateTeamMemberFieldsInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.commonService.toastMessage(res.message, 3000, ToastMessageType.Success);
+          this.updateTeamMemberFieldsRes = res;
+          this.getInvitedPlayers();
+        } else {
+          this.commonService.toastMessage("Failed to update team member fields", 3000, ToastMessageType.Error);
+        }
+      },
+      error: (err) => {
+        this.commonService.toastMessage(err.error.message, 3000, ToastMessageType.Error);
       }
-    }, (err) => {
-      this.commonService.hideLoader();
-      this.commonService.toastMessage(err.error.message, 3000, ToastMessageType.Error);
     });
   }
 

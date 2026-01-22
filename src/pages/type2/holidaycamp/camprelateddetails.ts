@@ -547,15 +547,13 @@ export class CampRelatedDetailsPage {
       updated_by:this.sharedservice.getLoggedInId()                 
     }
     
-    this.httpService.post(API.CAMP_SESSION_CAPACITY_UPDATE,groupSizeInput).subscribe((res: any) => {
-      this.selectedSessionObj.capacity = res.data.updated_capacity;
-      const message = "Capacity updated successfully";
-      this.commonService.toastMessage(message, 2500, ToastMessageType.Success,ToastPlacement.Bottom);
-   },
-   (error) => {
-    console.error("Error in fetching:", error);
-    this.commonService.toastMessage("Capacity updation failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
-   }) 
+    this.httpService.post(API.CAMP_SESSION_CAPACITY_UPDATE,groupSizeInput).subscribe({
+      next: (res: any) => {
+        this.selectedSessionObj.capacity = res.data.updated_capacity;
+        const message = "Capacity updated successfully";
+        this.commonService.toastMessage(message, 2500, ToastMessageType.Success,ToastPlacement.Bottom);
+      }
+    }) 
 
   }
 

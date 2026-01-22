@@ -194,9 +194,9 @@ export class EventdetailsPage {
     })
     const eventDetsDTO = new GetEventDetsInputDTO(update_input);
     console.log("Input for events:", JSON.stringify(this.eventsDto));
-    this.httpService.post(`${API.GET_EVENT_DETAILS}`, eventDetsDTO).subscribe((res: any) => {
-      this.commonService.hideLoader();
-      if (res && res.data && res.data.event_info) {
+    this.httpService.post(`${API.GET_EVENT_DETAILS}`, eventDetsDTO).subscribe({
+      next: (res: any) => {
+        if (res && res.data && res.data.event_info) {
         try {
           this.eventDetails = res.data.event_info;
           this.selectedAccount = this.eventDetails.payment_method_id || "";
@@ -241,9 +241,11 @@ export class EventdetailsPage {
         console.error("event info not found", res);
         this.commonService.toastMessage("Event info not found", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
-    }, error => {
+    },
+    error: (error) => {
       this.commonService.hideLoader();
       this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+    }
     });
   }
 
@@ -283,12 +285,14 @@ export class EventdetailsPage {
 
   getEventLocations() {
     console.log("event location api called");
-    this.httpService.post(`${API.GET_EVENT_LOCATIONS}`, this.eventsDto).subscribe((res: any) => {
-      if (res) {
-        this.eventLocation = res.data;
-        console.log("res for event location", JSON.stringify(res.data));
-      } else {
-        console.log("error in fetching",)
+    this.httpService.post(`${API.GET_EVENT_LOCATIONS}`, this.eventsDto).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.eventLocation = res.data;
+          console.log("res for event location", JSON.stringify(res.data));
+        } else {
+          console.log("error in fetching",)
+        }
       }
     })
   }
@@ -438,12 +442,14 @@ export class EventdetailsPage {
 
   getEventTypes() {
     console.log("input for events", this.eventsDto)
-    this.httpService.post(`${API.GET_EVENTS_TYPES}`, this.eventsDto).subscribe((res: any) => {
-      if (res) {
-        this.eventTypes = res.data;
-        console.log("res for event type", JSON.stringify(res.data));
-      } else {
-        console.log("error in fetching",)
+    this.httpService.post(`${API.GET_EVENTS_TYPES}`, this.eventsDto).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.eventTypes = res.data;
+          console.log("res for event type", JSON.stringify(res.data));
+        } else {
+          console.log("error in fetching",)
+        }
       }
     })
   }

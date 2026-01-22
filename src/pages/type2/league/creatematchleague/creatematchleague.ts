@@ -536,19 +536,16 @@ export class CreatematchleaguePage {
   }
 
   getRoundTypes() {
-    this.commonService.showLoader("Fetching info ...");
-
-    this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        this.roundTypes = res.data || [];
-        console.log("Get_Round_Types RESPONSE", JSON.stringify(res.data));
-
-      } else {
-        this.commonService.hideLoader();
-        console.log("error in fetching",)
+    this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.roundTypes = res.data || [];
+          console.log("Get_Round_Types RESPONSE", JSON.stringify(res.data));
+        } else {
+          console.log("error in fetching")
+        }
       }
-    })
+    });
   }
 
 

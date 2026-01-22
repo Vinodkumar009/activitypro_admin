@@ -1,0 +1,139 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Add Term</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Add Term
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+    <!--<ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select [(ngModel)]="selectedType" (ionChange)="getParentClub()">
+            <ion-option value="Type1">Type 1</ion-option>
+            <ion-option value="Type2">Type 2</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Parent Club</ion-label>
+        <ion-select [(ngModel)]="selectedParentClubKey" (ionChange)="getClubList()">
+            <ion-option *ngFor="let parentClub of allParentClubDataArr" value={{parentClub.$key}}>{{parentClub.ParentClubName}}</ion-option>
+        </ion-select>
+    </ion-item>-->
+
+    <ion-item class="bordermodi">
+        <ion-label>Venue</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeClub()">
+                <ion-option  value="All">All</ion-option>
+            <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Term Name</ion-label>
+        <ion-input type="text" [(ngModel)]="termObj.TermName" (keyup)="termObj.TermComments = termObj.TermName"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="termObj.TermStartDate" [min]="minDate" max="2028-12-31" (ionChange)="dateChanged(termObj.TermStartDate)"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="termObj.TermEndDate" [min]="minDate" max="2028-12-31" (ionChange)="onEndDateChange()"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Early Payment Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="termObj.TermPayByDate" [min]="minDate" max="2028-12-31"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Half Term Start Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="termObj.HalfTermStartDate" (ionChange)="calculateHalfEnd(termObj.HalfTermStartDate)" [min]="minDate" max="2028-12-31"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>Half Term End Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YY" pickerFormat="DD MM YYYY" [(ngModel)]="termObj.HalfTermEndDate" [min]="minDate" max="2028-12-31"></ion-datetime>
+    </ion-item>
+    <!--<ion-item>
+        <ion-label>Discount Till</ion-label>
+        <ion-input type="text" [(ngModel)]="termObj.TermPayByDate"></ion-input>
+    </ion-item>-->
+    <!--<ion-item>
+        <ion-label>Comments</ion-label>
+        <ion-input type="text" [(ngModel)]="termObj.TermComments"></ion-input>
+    </ion-item>-->
+    <ion-item>
+        <ion-label>Comments</ion-label>
+        <ion-textarea [(ngModel)]="termObj.TermComments" ></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label>All Activity</ion-label>
+        <ion-checkbox checked="true" [(ngModel)]="termObj.isForAllActivity" (ionChange)="allActivityChange()"></ion-checkbox>
+    </ion-item>
+
+
+    <!-- <div *ngIf="!termObj.isForAllActivity"> -->
+    <div>
+        <ion-card *ngFor="let item of desiredActivity">
+            <ion-card-content>
+                <ion-item>
+                    <ion-label>{{item.ActivityName}}</ion-label>
+                    <ion-checkbox color="blue" checked="item.IsSelected" [(ngModel)]="item.IsSelected" (ionChange)="toggolSelectionActivity(item)"></ion-checkbox>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="activity.length == 0">
+            <ion-card-content>
+                <p class="text-color">No activity found</p>
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+    <!-- Please ensure that you have selected the right Term Year: <> -->
+    <!-- Yes - Looks Good!
+    No - Cancel -->
+    <!-- Please select the correct Term Year tab before creating -->
+
+    
+
+
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelTerm()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="showalert()">Create</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

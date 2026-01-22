@@ -833,26 +833,30 @@ export class AddeventPage {
 
   getEventType() {
     console.log("input for events", this.eventsDto)
-    this.httpService.post(`${API.GET_EVENTS_TYPES}`, this.eventsDto).subscribe((res: any) => {
-      if (res) {
-        this.eventTypes = res.data;
-        if(this.eventTypes.length > 0) this.eventsDto.event_type_id = this.eventTypes[0].id;
-        console.log("res for event type", JSON.stringify(res.data));
-      } else {
-        console.log("error in fetching",)
+    this.httpService.post(`${API.GET_EVENTS_TYPES}`, this.eventsDto).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.eventTypes = res.data;
+          if(this.eventTypes.length > 0) this.eventsDto.event_type_id = this.eventTypes[0].id;
+          console.log("res for event type", JSON.stringify(res.data));
+        } else {
+          console.log("error in fetching",)
+        }
       }
     })
   }
 
   getEventLocation() {
     console.log("event location api called");
-    this.httpService.post(`${API.GET_EVENT_LOCATIONS}`, this.eventsDto).subscribe((res: any) => {
-      if (res) {
-        this.eventLocation = res.data;
-        if(this.eventLocation.length > 0) this.eventsDto.location_id = this.eventLocation[0].id;
-        console.log("res for event location", JSON.stringify(res.data));
-      } else {
-        console.log("error in fetching",)
+    this.httpService.post(`${API.GET_EVENT_LOCATIONS}`, this.eventsDto).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.eventLocation = res.data;
+          if(this.eventLocation.length > 0) this.eventsDto.location_id = this.eventLocation[0].id;
+          console.log("res for event location", JSON.stringify(res.data));
+        } else {
+          console.log("error in fetching",)
+        }
       }
     })
   }
@@ -937,14 +941,12 @@ export class AddeventPage {
         console.log("input giving for create event", JSON.stringify(this.eventsDto));
         this.httpService.post(`${API.CREATE_EVENT}`, this.eventsDto).subscribe(
           (response) => {
-            this.commonService.hideLoader();
             console.log("Event created successfully:", response);
             const message = "Event created in ‘DRAFT’ mode. Please add ticket information along with the pricing and change the status to LIVE mode.";
             this.commonService.alertWithText('',message, "Okay, got it!")
             this.navCtrl.pop();
           },
           (err) => {
-            this.commonService.hideLoader();
             if(err.error.message){
               this.commonService.toastMessage(err.error.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
             }else{
@@ -953,7 +955,6 @@ export class AddeventPage {
           }
         ); 
       }catch(err){
-        this.commonService.hideLoader();
         if(err.error.message){
           this.commonService.toastMessage(err.error.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
         }else{

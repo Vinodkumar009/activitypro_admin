@@ -719,14 +719,6 @@ export class Type2EditGroupSessionMonthly {
             this.postgre_session_input.EndDate = end_date;
             this.commonService.toastMessage("End date updated successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
             console.log("resonse for stats", JSON.stringify(res.data));
-          },
-          error: (err) => {
-            console.error("Error fetching events:", err);
-            if(err.error && err.error.message){
-              this.commonService.toastMessage(err.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-            }else{
-              this.commonService.toastMessage('Failed to update end date', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-            }
           }
         });
   }

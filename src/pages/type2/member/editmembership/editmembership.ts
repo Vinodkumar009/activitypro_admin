@@ -167,81 +167,57 @@ export class EditmembershipPage {
   }
 
   async getActiveMemberShipDetails(isEditMode: boolean = false) {
-    this.commonService.showLoader("Please wait...");
     this.isEditing = isEditMode;
-    // this.commonService.showLoader("Please wait...");
-    this.httpService.post(`${API.ACTIVE_MEMBERSHIP_DETAILS}`, this.inputObj).subscribe((res: any) => {
-      this.commonService.hideLoader();
-      console.log(res.data);
-      if (res && res.data) {
-        this.memberShipData = res.data;
-        this.minMember = res.data.min_member;
-        this.maxMember = res.data.max_member;
+    this.httpService.post(`${API.ACTIVE_MEMBERSHIP_DETAILS}`, this.inputObj).subscribe({
+      next: (res: any) => {
+        console.log(res.data);
+        if (res && res.data) {
+          this.memberShipData = res.data;
+          this.minMember = res.data.min_member;
+          this.maxMember = res.data.max_member;
 
-        if (this.memberShipData.plan.plan_name == 'Monthly') {
-          this.Duration = 'monthly';
-          this.monthly = true;
-        } else if (this.memberShipData.plan.plan_name == 'Yearly') {
-          this.Duration = 'yearly';
-          this.yearly = true;
+          if (this.memberShipData.plan.plan_name == 'Monthly') {
+            this.Duration = 'monthly';
+            this.monthly = true;
+          } else if (this.memberShipData.plan.plan_name == 'Yearly') {
+            this.Duration = 'yearly';
+            this.yearly = true;
+          }
         }
-
       }
-
-    }, (error) => {
-      this.commonService.toastMessage("Membership dets fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-      // this.commonService.hideLoader();
-    })
+    });
   }
 
   async familyMemberDetails() {
-   // this.commonService.showLoader("Please wait...")
-    this.httpService.post(`${API.GET_FAMILY_MEMBER}`, this.inputObj).subscribe((res: any) => {
-      //this.commonService.hideLoader();
-      if(res.data.length > 0){
-        this.familyMemberInfo = res.data.map((family_member)=>{
-          return{
-            ...family_member,
-            IsSelect: family_member.member_enrolled
-          }
-        })
-        console.log("family member");
-        console.table(this.familyMemberInfo);
-        this.initial_enrol_count = res.data.filter(family_member => family_member.member_enrolled).length;
-        this.all_family_enrolled = res.data.every(family_member => family_member.member_enrolled);
-      }
-     
-      this.getEnrolledUserInMemberShip();
-    },
-      (error) => {
-        if (error) {
-          this.commonService.hideLoader();
+    this.httpService.post(`${API.GET_FAMILY_MEMBER}`, this.inputObj).subscribe({
+      next: (res: any) => {
+        if(res.data.length > 0){
+          this.familyMemberInfo = res.data.map((family_member)=>{
+            return{
+              ...family_member,
+              IsSelect: family_member.member_enrolled
+            }
+          })
+          console.log("family member");
+          console.table(this.familyMemberInfo);
+          this.initial_enrol_count = res.data.filter(family_member => family_member.member_enrolled).length;
+          this.all_family_enrolled = res.data.every(family_member => family_member.member_enrolled);
         }
+       
+        this.getEnrolledUserInMemberShip();
       }
-    )
+    });
   }
 
 
   async getEnrolledUserInMemberShip() {
-    //this.commonService.showLoader("Please wait")
-    this.httpService.post(`${API.GET_ENROLLED_USER_INTO_MEMBERSHIP}`, this.inputObj).subscribe((res: any) => {
-      // this.commonService.hideLoader();
-      this.enrolledMembers = res.data;
-      this.isAssigned = true;
-      this.enrolInput.user_ids = [];
-      // // console.log("get enrolled member", JSON.stringify(this.enrolledMembers));
-      // // console.log("get family member", JSON.stringify(this.familyMemberInfo));
-      // this.familyMemberInfo.forEach(familyMember => {
-      //   // Check if this family member is in the list of enrolled members
-      //   const isEnrolled = this.enrolledMembers.some(enrolledMember => enrolledMember.family_member.Id === familyMember.Id);
-      //   familyMember.IsSelect = isEnrolled;  // Set the checkbox to checked if enrolled
-      //   if (isEnrolled) {
-      //     this.enrolInput.user_ids.push(familyMember.Id);
-      //   }
-      // });
-    }, (error) => {
-      this.commonService.toastMessage("Enrolled member(s) fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
-    })
+    this.httpService.post(`${API.GET_ENROLLED_USER_INTO_MEMBERSHIP}`, this.inputObj).subscribe({
+      next: (res: any) => {
+        this.enrolledMembers = res.data;
+        this.isAssigned = true;
+        this.enrolInput.user_ids = [];
+      }
+    });
   }
 
 

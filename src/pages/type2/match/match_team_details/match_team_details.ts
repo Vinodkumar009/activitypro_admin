@@ -553,78 +553,63 @@ export class MatchTeamDetailsPage {
   }
 
   updatePlayerRole(member: GetIndividualMatchParticipantModel) {
-    this.commonService.showLoader("Updating Role...");
     this.updateMatchParticipantRoleInput.match_participation_id = member.id;
 
-    this.httpService.post(`${API.Update_League_Match_Participantipation_Role}`, this.updateMatchParticipantRoleInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        var response = res.message;
-        this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
-        // Refresh the participant data
-        this.loadAllParticipantsForCounts().then(() => {
-          this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.All);
-        });
-      } else {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage("Failed to update role", 3000, ToastMessageType.Error);
+    this.httpService.post(`${API.Update_League_Match_Participantipation_Role}`, this.updateMatchParticipantRoleInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          var response = res.message;
+          this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
+          // Refresh the participant data
+          this.loadAllParticipantsForCounts().then(() => {
+            this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.All);
+          });
+        } else {
+          this.commonService.toastMessage("Failed to update role", 3000, ToastMessageType.Error);
+        }
       }
-    },
-      (err) => {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage(err.error.message, 3000, ToastMessageType.Error);
-      });
+    });
   }
 
   updateLeagueMatchInviteStatus(member: GetIndividualMatchParticipantModel, inviteStatus: LeaguePlayerInviteStatus) {
-    this.commonService.showLoader("Please wait...");
     this.updateLeagueMatchInviteStatusInput.ParticipationId = member.id;
     this.updateLeagueMatchInviteStatusInput.InviteStatus = inviteStatus;
 
-    this.httpService.post(`${API.UpdateLeagueMatchInviteStatus}`, this.updateLeagueMatchInviteStatusInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        var response = res.message;
-        this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
-        // Refresh the participant data
-        this.loadAllParticipantsForCounts().then(() => {
-          this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.All);
-        });
-      } else {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage("Failed to update Invitation status", 3000, ToastMessageType.Error);
+    this.httpService.post(`${API.UpdateLeagueMatchInviteStatus}`, this.updateLeagueMatchInviteStatusInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          var response = res.message;
+          this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
+          // Refresh the participant data
+          this.loadAllParticipantsForCounts().then(() => {
+            this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.All);
+          });
+        } else {
+          this.commonService.toastMessage("Failed to update Invitation status", 3000, ToastMessageType.Error);
+        }
       }
-    },
-      (err) => {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage(err.error.message, 3000, ToastMessageType.Error);
-      });
+    });
   }
 
   //called when we use drag and drop to change the status of the player
   updateMatchParticipationStatus(participantStatus, newParticipantStatus: LeagueParticipationStatus, { participationId }: { participationId: string }) {
-    this.commonService.showLoader("Adding...");
     this.updateMatchParticipationStatusInput.ParticipationId = participationId;
     this.updateMatchParticipationStatusInput.ParticipationStatus = newParticipantStatus;
 
-    this.httpService.post(`${API.Update_League_Match_Participation_Status}`, this.updateMatchParticipationStatusInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        var response = res.message;
-        this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
-        // Refresh the participant data
-        this.loadAllParticipantsForCounts().then(() => {
-          this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.All);
-        });
-      } else {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage("Failed to update participation status", 3000, ToastMessageType.Error);
+    this.httpService.post(`${API.Update_League_Match_Participation_Status}`, this.updateMatchParticipationStatusInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          var response = res.message;
+          this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
+          // Refresh the participant data
+          this.loadAllParticipantsForCounts().then(() => {
+            this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.All);
+          });
+        } else {
+          this.commonService.toastMessage("Failed to update participation status", 3000, ToastMessageType.Error);
+        }
       }
-    },
-      (err) => {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage(err.error.message, 3000, ToastMessageType.Error);
-      });
+    });
   }
 
   getFilteredSections(): { title: string; items: GetIndividualMatchParticipantModel[] }[] {
@@ -745,24 +730,25 @@ export class MatchTeamDetailsPage {
       input.TeamId = teamId;
       input.leagueTeamPlayerStatusType = LeagueTeamPlayerStatusType.All;
 
-      this.httpService.post(`${API.GetIndividualMatchParticipant}`, input).subscribe((res: any) => {
-        if (res) {
-          this.allParticipants = res.data || [];
+      this.httpService.post(`${API.GetIndividualMatchParticipant}`, input).subscribe({
+        next: (res: any) => {
+          if (res) {
+            this.allParticipants = res.data || [];
+          }
+          resolve();
+        },
+        error: () => {
+          resolve();
         }
-        resolve();
-      }, () => {
-        resolve();
       });
     });
   }
 
   //to fetch list of avilable players of both home & away teams
   getIndividualMatchParticipant(par?: LeagueTeamPlayerStatusType) {
-    this.commonService.showLoader("Fetching info ...");
     const teamId = this.activeType ? this.match.homeUserId : this.match.awayUserId;
 
     if (!teamId) {
-      this.commonService.hideLoader();
       this.getIndividualMatchParticipantRes = [];
       this.sections.forEach(section => section.items = []);
       return;
@@ -771,25 +757,19 @@ export class MatchTeamDetailsPage {
     this.getIndividualMatchParticipantInput.TeamId = teamId;
     this.getIndividualMatchParticipantInput.leagueTeamPlayerStatusType = par !== undefined ? par : LeagueTeamPlayerStatusType.All;
 
-    this.httpService.post(`${API.GetIndividualMatchParticipant}`, this.getIndividualMatchParticipantInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        this.getIndividualMatchParticipantRes = res.data || [];
+    this.httpService.post(`${API.GetIndividualMatchParticipant}`, this.getIndividualMatchParticipantInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.getIndividualMatchParticipantRes = res.data || [];
 
-        // 📊 Update allParticipants only when fetching all data
-        if (this.getIndividualMatchParticipantInput.leagueTeamPlayerStatusType === LeagueTeamPlayerStatusType.All) {
-          this.allParticipants = res.data || [];
+          // 📊 Update allParticipants only when fetching all data
+          if (this.getIndividualMatchParticipantInput.leagueTeamPlayerStatusType === LeagueTeamPlayerStatusType.All) {
+            this.allParticipants = res.data || [];
+          }
+
+          this.sections.forEach(section => section.items = []); // Clear the sections array
+          this.populateSections(); // Call populateSections after data is fetched
         }
-
-        this.sections.forEach(section => section.items = []); // Clear the sections array
-        this.populateSections(); // Call populateSections after data is fetched
-      }
-    }, error => {
-      this.commonService.hideLoader();
-      if (error.error && error.error.message) {
-        this.commonService.toastMessage(error.error.message, 3000, ToastMessageType.Error);
-      } else {
-        this.commonService.toastMessage("Failed to fetch participants details", 3000, ToastMessageType.Error);
       }
     });
   }
@@ -813,57 +793,46 @@ export class MatchTeamDetailsPage {
 
   //to fetch list of avilable teams
   getActivitySpecificTeam() {
-    this.httpService.post(`${API.GET_ACTIVIY_SPECIFIC_TEAM}`, this.getActivitySpecificTeamInput).subscribe((res: any) => {
-      if (res) {
-        this.activitySpecificTeamsRes = res.data;
+    this.httpService.post(`${API.GET_ACTIVIY_SPECIFIC_TEAM}`, this.getActivitySpecificTeamInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.activitySpecificTeamsRes = res.data;
+        }
       }
-    }, error => {
-      this.commonService.toastMessage(error.error.message, 3000, ToastMessageType.Error,);
     });
   }
 
   updateTeam(isHomeTeam?: boolean, teamName?: string) {
-    this.commonService.showLoader("Updating...");
-    this.httpService.post(`${API.Update_League_Fixture}`, this.updateTeamInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        var res = res.message;
+    this.httpService.post(`${API.Update_League_Fixture}`, this.updateTeamInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          var res = res.message;
 
-        // Update frontend variables and match data on successful API call
-        if (isHomeTeam !== undefined && teamName) {
-          if (isHomeTeam) {
-            this.selectedHomeTeamText = teamName;
-            this.match.homeUserId = this.selectedTeam.id; // Update match data
-          } else {
-            this.selectedAwayTeamText = teamName;
-            this.match.awayUserId = this.selectedTeam.id; // Update match data
+          // Update frontend variables and match data on successful API call
+          if (isHomeTeam !== undefined && teamName) {
+            if (isHomeTeam) {
+              this.selectedHomeTeamText = teamName;
+              this.match.homeUserId = this.selectedTeam.id; // Update match data
+            } else {
+              this.selectedAwayTeamText = teamName;
+              this.match.awayUserId = this.selectedTeam.id; // Update match data
+            }
           }
-        }
 
-        this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
+          this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
 
-        // Only refresh data if we're on the tab that was just updated
-        const shouldRefresh = (isHomeTeam && this.activeType) || (!isHomeTeam && !this.activeType);
-        if (shouldRefresh) {
-          this.loadAllParticipantsForCounts().then(() => {
-            this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
-          });
-        }
-      } else {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error);
-      }
-    },
-      (err) => {
-        this.commonService.hideLoader();
-        if (err.error && err.error.message) {
-          this.commonService.toastMessage(err.error.message, 3000, ToastMessageType.Error,);
+          // Only refresh data if we're on the tab that was just updated
+          const shouldRefresh = (isHomeTeam && this.activeType) || (!isHomeTeam && !this.activeType);
+          if (shouldRefresh) {
+            this.loadAllParticipantsForCounts().then(() => {
+              this.getIndividualMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
+            });
+          }
         } else {
-          this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error,);
+          this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error);
         }
-        // Frontend variables are NOT updated on API failure
       }
-    );
+    });
   }
 
 

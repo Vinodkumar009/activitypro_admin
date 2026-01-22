@@ -350,7 +350,6 @@ export class FacilityReportPage {
   // }
 
   getactivebookingDetails(){
-    this.commonService.showLoader('Please wait...')
     this.paidMemberList = [];
     this.paidMemberListtemp = [];
     this.TotTrnsAmt = 0.0;
@@ -361,7 +360,6 @@ export class FacilityReportPage {
     this.httpService.get(url, null, null, 1).subscribe({
       next: (data: any) => {
         this.paidMemberListtemp = data['data']
-        this.commonService.hideLoader()
         this.paidMemberListtemp.forEach(slot => {
           this.TotTrnsAmt += +slot.price;
           slot.slot_start_time = moment(slot.slot_start_time, 'HH:mm:ss').format('HH:mm')
@@ -369,9 +367,6 @@ export class FacilityReportPage {
           slot.booking_date = moment.utc(slot.booking_date).local().format('DD-MMM-YYYY')
         });
         this.TotTransc = this.paidMemberListtemp.length
-      },
-      error: (err) => {
-        this.commonService.hideLoader()
       }
     });
   }

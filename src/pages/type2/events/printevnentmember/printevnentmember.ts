@@ -229,17 +229,13 @@ export class PrintevnentmemberPage {
       })
       const eventDetsDTO = new ReportModel(this.report_obj);
       eventDetsDTO.memer_list = this.report_obj.memer_list;
-      this.httpService.post(`${API.EVENT_PRINT_REPORT}`, eventDetsDTO).subscribe((res: any) => {
-        this.commonService.hideLoader();
-        this.commonService.toastMessage("Report sent successfully",2500,ToastMessageType.Success, ToastPlacement.Bottom);
-        this.navCtrl.pop();
-        //this.navCtrl.remove(this.navCtrl.getActive().index - 1, 2);
-      },(err)=>{
-        this.commonService.hideLoader();
-        this.commonService.toastMessage("Report sent failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+      this.httpService.post(`${API.EVENT_PRINT_REPORT}`, eventDetsDTO).subscribe({
+        next: (res: any) => {
+          this.commonService.toastMessage("Report sent successfully",2500,ToastMessageType.Success, ToastPlacement.Bottom);
+          this.navCtrl.pop();
+        }
       });  
     }catch(err){
-      this.commonService.hideLoader();
       this.commonService.toastMessage("Report sent failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
     }
   }

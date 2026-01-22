@@ -130,17 +130,6 @@ export default class MembershipRenewalPage {
   
 
   getRenewalInfo() {
-    // this.fb.getAll("Membership/MembershipSetup/" + this.ParentClubKey + "/" + this.selectedClubKey +  "/MembershipRenewal").subscribe((data) => {
-    //   if(data.length > 0){
-    //     console.log(data)
-    //     this.IsAlreadyAdded = true;
-    //     this.Renewal.Email = data[0].Email
-    //     this.Renewal.NoOfDays = data[0].NoOfDays
-    //     this.Renewal.Notification = data[0].Notification
-    //     this.RenewalKey = data[0].$key
-    //     this.Renewal.Popup = data[0].Popup
-    //   }
-    // })
     const get_memberships_payload = {
       parentclubId:this.postgre_parentclub_id,
       clubId:this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
@@ -150,20 +139,16 @@ export default class MembershipRenewalPage {
       app_type:AppType.ADMIN_NEW,
       updated_by:this.sharedservice.getLoggedInId()
     }
-    this.httpService.post(API.GET_MEMBERSHIP_RENEWEAL_SETUP,get_memberships_payload).subscribe((res: any) => {
-      if(res.data && res.data.renewal_setup){
-        this.renewal_setup = res.data.renewal_setup;
-        this.IsAlreadyAdded = true;
-        this.populateExistedRewal();
+    this.httpService.post(API.GET_MEMBERSHIP_RENEWEAL_SETUP,get_memberships_payload).subscribe({
+      next: (res: any) => {
+        if(res.data && res.data.renewal_setup){
+          this.renewal_setup = res.data.renewal_setup;
+          this.IsAlreadyAdded = true;
+          this.populateExistedRewal();
+        }
+       this.IsAlreadyAdded = true; 
       }
-     this.IsAlreadyAdded = true; 
-    },
-   (error) => {
-        //this.commonService.hideLoader();
-        console.error("Error in fetching:", error);
-        this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
-       // Handle the error here, you can display an error message or take appropriate action.
-   })
+    });
   }
 
   populateExistedRewal() {
@@ -208,15 +193,12 @@ export default class MembershipRenewalPage {
             create_renewal_payload.clubId = this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
             create_renewal_payload.device_id = this.sharedservice.getDeviceId(),
             create_renewal_payload.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2,
-            this.httpService.post(API.CREATE_MEMBERSHIP_RENEWEAL_SETUP,create_renewal_payload).subscribe((res: any) => {
-              this.comonService.toastMessage("Renewal setup added successfully", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-              this.navCtrl.pop();
-            },
-          (error) => {
-                //this.commonService.hideLoader();
-                console.error("Error in fetching:", error);
-                this.comonService.toastMessage("Setup creation failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
-          })
+            this.httpService.post(API.CREATE_MEMBERSHIP_RENEWEAL_SETUP,create_renewal_payload).subscribe({
+              next: (res: any) => {
+                this.comonService.toastMessage("Renewal setup added successfully", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+                this.navCtrl.pop();
+              }
+            });
         })
       }catch(err){
         this.comonService.toastMessage("Setup creation failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
@@ -234,15 +216,12 @@ export default class MembershipRenewalPage {
             update_renewal_payload.clubId = this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
             update_renewal_payload.device_id = this.sharedservice.getDeviceId(),
             update_renewal_payload.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2,
-          this.httpService.post(API.UPDATE_MEMBERSHIP_RENEWEAL_SETUP,update_renewal_payload).subscribe((res: any) => {
-            this.comonService.toastMessage("Renewal information updated", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-            this.navCtrl.pop();
-          },
-         (error) => {
-              //this.commonService.hideLoader();
-              console.error("Error in fetching:", error);
-              this.comonService.toastMessage("Setup updation failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
-         })
+          this.httpService.post(API.UPDATE_MEMBERSHIP_RENEWEAL_SETUP,update_renewal_payload).subscribe({
+            next: (res: any) => {
+              this.comonService.toastMessage("Renewal information updated", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+              this.navCtrl.pop();
+            }
+          });
         })
       }catch(err){
         this.comonService.toastMessage("Setup updation failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);

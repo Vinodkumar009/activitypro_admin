@@ -223,14 +223,10 @@ export class CampSessionLoyalty {
   
         this.httpService.post(API.LOYALTY_REWARD_POINTS_BULK, this.rewardAPIData, null, 1).subscribe({
           next: (res: any) => {
-            this.loading.dismiss()
             if (res) {
               this.cm.toastMessage('Loyalty Points Awarded Successfully', 2000)
               this.navCtrl.pop()
             }
-          },
-          error: (err) => {
-            this.loading.dismiss()
           }
         })
       })

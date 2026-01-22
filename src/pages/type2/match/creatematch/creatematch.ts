@@ -196,25 +196,24 @@ export class CreatematchPage {
   }
 
   getMatchTypes() {
-    this.httpService.post(`${API.GET_LEAGUE_OR_MATCH_TYPES}`, this.commonInput).subscribe((res: any) => {
-      this.leagueType = res["data"]
-    }, (error) => {
-      this.commonService.toastMessage("type fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    })
+    this.httpService.post(`${API.GET_LEAGUE_OR_MATCH_TYPES}`, this.commonInput).subscribe({
+      next: (res: any) => {
+        this.leagueType = res["data"]
+      }
+    });
   }
   
   getRoundTypes() {
-    this.commonService.showLoader("Fetching info ...");
-    this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        this.roundTypes = res.data || [];
-        console.log("Get_Round_Types RESPONSE", JSON.stringify(res.data));
-      } else {
-        this.commonService.hideLoader();
-        console.log("error in fetching",)
+    this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.roundTypes = res.data || [];
+          console.log("Get_Round_Types RESPONSE", JSON.stringify(res.data));
+        } else {
+          console.log("error in fetching")
+        }
       }
-    })
+    });
   }
 
   changeType(val) {
@@ -278,16 +277,16 @@ export class CreatematchPage {
   getClubActivity() {
     this.commonInput.parentclubId = this.sharedservice.getPostgreParentClubId();
     this.commonInput.clubId = this.selectedClub;
-    this.httpService.post(`${API.CLUB_ACTIVITIES}`, this.commonInput).subscribe((res: any) => {
-      console.log("club activities", JSON.stringify(res.data.club_activities));
-      if (res.data.club_activities.length > 0) {
-        this.activities = res.data.club_activities;
-        this.activityId = this.activities[0].id;
-        console.log("activity", this.activityId);
+    this.httpService.post(`${API.CLUB_ACTIVITIES}`, this.commonInput).subscribe({
+      next: (res: any) => {
+        console.log("club activities", JSON.stringify(res.data.club_activities));
+        if (res.data.club_activities.length > 0) {
+          this.activities = res.data.club_activities;
+          this.activityId = this.activities[0].id;
+          console.log("activity", this.activityId);
+        }
       }
-    }, (error) => {
-      this.commonService.toastMessage("activity fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    })
+    });
   }
 
   validateInput() {

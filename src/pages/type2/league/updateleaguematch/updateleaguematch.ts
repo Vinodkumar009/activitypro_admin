@@ -132,20 +132,19 @@ export class UpdateleaguematchPage {
   }
 
   getRoundTypes() {
-    //this.commonService.showLoader("Fetching info ...");
-    this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        this.roundTypes = res.data || [];
-        if( this.roundTypes.length > 0) {
-          this.inputObj.round = this.data.round; // Set default round type
+    this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.roundTypes = res.data || [];
+          if( this.roundTypes.length > 0) {
+            this.inputObj.round = this.data.round; // Set default round type
+          }
+          console.log("Get_Round_Types RESPONSE", JSON.stringify(res.data));
+        } else {
+          console.log("error in fetching",)
         }
-        console.log("Get_Round_Types RESPONSE", JSON.stringify(res.data));
-      } else {
-        //this.commonService.hideLoader();
-        console.log("error in fetching",)
       }
-    })
+    });
   }
 
   updateMatchPaymentType(isChecked: boolean): void {
@@ -342,13 +341,12 @@ export class UpdateleaguematchPage {
 
       this.inputObj.start_date = moment(new Date(this.start_date + " " + this.start_time).getTime()).format("YYYY-MM-DD HH:mm")
 
-      this.httpService.post('league/updateLeagueMatch', this.inputObj).subscribe((res: any) => {
-        console.log(res);
-        this.navCtrl.pop();
-      }, (error) => {
-        this.commonService.toastMessage("match updation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-      }
-      )
+      this.httpService.post('league/updateLeagueMatch', this.inputObj).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.navCtrl.pop();
+        }
+      });
     }
   }
 }

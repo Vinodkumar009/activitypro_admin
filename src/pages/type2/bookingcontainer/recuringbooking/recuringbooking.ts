@@ -187,13 +187,11 @@ export class RecuringbookingPage {
   // }
 
   getrecuringBookDetails(){
-    this.commonService.showLoader('Please wait');
     const url = `${API.GET_RECURRING_LIST}/${this.selectedParentClubKey}/${this.selectedCourt}`;
     
     this.httpService.get(url, null, null, 1).subscribe({
       next: (data:any) => {
         this.recuringBookDetails = []
-        this.commonService.hideLoader()
         const activityname = this.ActivityList.filter((act) => this.selectedActivity == act.$key)[0].ActivityName
 
         for(let i = 0; i <  data.data.length ;i++){
@@ -328,11 +326,9 @@ export class RecuringbookingPage {
       this.httpService.put(API.CANCEL_RECURRING_V3, data, null, 1).subscribe({
         next: (res) => {
           resolve('success')
-          this.commonService.hideLoader()
         },
         error: (err) => {
           console.log(err)
-          this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to create recurring slot", 2000)
           reject('fail')
         }
@@ -351,12 +347,10 @@ export class RecuringbookingPage {
       this.httpService.put(API.CANCEL_RECURRING_BY_ID, data, null, 1).subscribe({
         next: (res) => {
           resolve('success')
-          this.commonService.hideLoader()
           this.navCtrl.pop()
         },
         error: (err) => {
           console.log(err)
-          this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to cancel recurring slot", 2000)
           reject('fail')
         }

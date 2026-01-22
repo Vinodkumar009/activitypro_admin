@@ -1,0 +1,19 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+add-term-page {
+    @include android-sdk35-fixes;
+.text-color{
+        color: red;
+    }
+    .scroll-content{
+        background-image: none !important;
+        background-color: #f4efef !important;
+        padding: 6px !important;
+    }
+    .bordermodi{
+        border-bottom: 1px solid orange !important;
+    }
+    ion-item{
+        padding-left: none !important
+    }
+}

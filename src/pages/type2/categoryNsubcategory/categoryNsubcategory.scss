@@ -1,4 +1,6 @@
+@import '../../../theme/android-sdk35-fixes.scss';
 categoryNsubcategory-page{
+   @include android-sdk35-fixes;
     .scroll-content{
         background-image: none !important;
         background-color: #f7f7f7 !important;

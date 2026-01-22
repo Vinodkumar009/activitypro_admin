@@ -112,11 +112,6 @@ export class EditeventandnewsPage {
            }else{  
              this.commonService.toastMessage("No activities found",2500,ToastMessageType.Error)
            }
-         },
-        (error) => {
-         this.commonService.toastMessage("Activities fetch failed",2500,ToastMessageType.Error);
-             console.error("Error in fetching:", error);
-            // Handle the error here, you can display an error message or take appropriate action.
          }) 
    }
 
@@ -252,12 +247,10 @@ export class EditeventandnewsPage {
       
       this.camera.getPicture(options).then((data) => {
         this.title_url = "data:image/jpeg;base64," + data;
-        console.log(1)
       });
     } catch (e) {
-      console.log(e.message);
-      let message = "Image capture failed";
-      this.commonService.toastMessage(message,2500,ToastMessageType.Error);
+      console.error('Image capture error:', e);
+      this.commonService.toastMessage("Image capture failed", 2500, ToastMessageType.Error);
     }
   }
 
@@ -292,20 +285,18 @@ export class EditeventandnewsPage {
       return new Promise(async(res,rej)=>{
         let is_uploaded:boolean = false
         try{
-          this.commonService.showLoader("Please wait")
           if(this.title_url!=undefined){
+            this.commonService.showLoader("Uploading image...");
             const base64Image = this.title_url;
             const image_url = this.title_url.split(/[\s/]+/);
             const image_name = image_url[image_url.length - 1];
             
             const parse_url = `${this.sharedService.getPostgreParentClubId()}/${image_name.charAt(0)}${image_name.charAt(1)}${this.commonService.randomString(6, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ')}.jpeg`;
             const presigned_urls = await this.imageUploadService.getPresignedUrl(parse_url);
-            //Upload image using the presigned URL and base64 data
             is_uploaded = await this.imageUploadService.uploadImage(presigned_urls[0].url, base64Image); 
             this.inputObj.image_url = `https://d1ybtjfafmsyx2.cloudfront.net/news/${parse_url}`;
             this.commonService.hideLoader();
           }else{
-            this.commonService.hideLoader();
             is_uploaded = true
             this.inputObj.image_url = this.ImageObj.image_url;
           }
@@ -317,12 +308,13 @@ export class EditeventandnewsPage {
         }catch(err){
           this.commonService.hideLoader();
           this.commonService.toastMessage(`Error uploading image:${JSON.stringify(err)}`, 2500, ToastMessageType.Error);
+          rej(err);
         }
         
       }) 
     }catch(err){
-      this.commonService.hideLoader();
       this.commonService.toastMessage(`Error uploading image:${JSON.stringify(err)}`, 2500, ToastMessageType.Error);
+      throw err;
     }
   }
 
@@ -337,12 +329,10 @@ export class EditeventandnewsPage {
       this.inputObj.image_description = this.ImageObj.image_description;
       this.inputObj.image_tag = this.ImageObj.image_tag;
       this.inputObj.image_title = this.ImageObj.image_title;
-      //this.newsImageInput.id = this.ImageObj.images[0].id;
-      //this.inputObj.photos.push(this.newsImageInput);
       this.inputObj.is_show_applus = this.ImageObj.is_show_applus;
       this.inputObj.associatedActivity = this.ImageObj.associated_activity;
       this.inputObj.category_name = Listname.getListName();
-      //alert(`giving data to update:${JSON.stringify(this.inputObj)}`);
+      
     if(this.validate()) {
       if(await this.prepareAndUpload()){
         const updateNewsPhotos = gql`
@@ -362,7 +352,6 @@ export class EditeventandnewsPage {
           this.commonService.updateCategory("refresh_news");
           this.navCtrl.pop();
         }, (err) => {
-          //  this.commonService.toastMessage("video creation  failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
           console.error("GraphQL mutation error:", err);
           if (err.error && err.error.errors) {
             const errorMessage = err.error.errors[0].message;
@@ -372,16 +361,13 @@ export class EditeventandnewsPage {
           }
         });
       }else{
-        this.commonService.toastMessage("Image upload failed:", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        this.commonService.toastMessage("Image upload failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
     }
   } catch (error) {
     console.error("Error uploading images:", error);
     this.commonService.toastMessage(`Image upload failed:${JSON.stringify(error)}`, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    return; // Abort mutation if image upload fails
   }
-
-
   }
   
 

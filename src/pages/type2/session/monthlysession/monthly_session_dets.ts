@@ -366,13 +366,6 @@ export class MonthlySessionDetails {
           next: (res) => {
               console.log("pause subscription months", JSON.stringify(res));
               this.pause_subscription_months = res.data;
-          },
-          error: (err) => {
-              if (err.error.message) {
-                this.commonService.toastMessage(err.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              } else {
-                this.commonService.toastMessage('Failed to fetch months', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              }
           }
       });                
   }
@@ -409,7 +402,6 @@ export class MonthlySessionDetails {
 
   PauseSubscriptions(months_selected:number,enrolment_id?:string){
     try{
-      this.commonService.showLoader("Please wait");
       const pauseSubscribeInput = {
           resume_for_months:months_selected,
           enrolments_ids:enrolment_id ? [enrolment_id] : this.session_users.filter(member=>member.subscription_status == 1).map(member => member.enrolled_id),
@@ -417,21 +409,11 @@ export class MonthlySessionDetails {
         
     this.httpService.post(`${API.PAUSE_MONTHLY_SUBSCRIPTION}`, pauseSubscribeInput,null,3).subscribe({
          next: (res) => {
-              this.commonService.hideLoader();
               console.log("pause request submitted", JSON.stringify(res));
               this.commonService.toastMessage("Pause request submitted successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-          },
-          error: (err) => {
-             this.commonService.hideLoader();
-              if (err.message) {
-                this.commonService.toastMessage(err.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              } else {
-                this.commonService.toastMessage('Pause request failed', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-              }
           }
       });  
     }catch(err){
-      this.commonService.hideLoader();
       this.commonService.toastMessage('Pause request failed', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     }
                     

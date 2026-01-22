@@ -382,11 +382,9 @@ const body: GetParentClubVenuesRequestDto = {
       this.httpService.put(API.CREATE_RECURRING_V3, params,null, 1).subscribe({
         next: (res) => {
           resolve('success')
-          this.commonService.hideLoader()
         },
         error: (err) => {
           console.log(err)
-          this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to create recurring slot", 2000)
           reject('fail')
         }

@@ -114,7 +114,6 @@ export class MonthlyMemberMovePage {
   }
 
   selectSession(session_id:string) {
-    this.commonService.showLoader("Please wait");
     const monthly_session_query = gql`
     query getMonthlySessionDetails($input: MonthlySessionDetailsInput!) {
         getMonthlySessionDetails(monthlySessionInput: $input) {
@@ -179,7 +178,6 @@ export class MonthlyMemberMovePage {
         AppType:0
     }
     this.graphqlService.query(monthly_session_query, { input: session_dets_input},0).subscribe((res: any) => {
-        this.commonService.hideLoader();
         this.monthlySession.days = this.monthlySession.Days.map(session_day => session_day.day).join(",")
         res.data.getMonthlySessionDetails.days = res.data.getMonthlySessionDetails.Days.map(session_day => session_day.day).join(",")
         this.navCtrl.push("ConfirmmonthlyPage",{
@@ -188,7 +186,6 @@ export class MonthlyMemberMovePage {
           existing_subscription_info:this.user_subscription
         });
     },(error) => {
-          this.commonService.hideLoader();
           this.commonService.toastMessage("Failed to fetch session",2500,ToastMessageType.Error,ToastPlacement.Bottom);
           console.error("Error in fetching:", error);
           if (error.graphQLErrors) {

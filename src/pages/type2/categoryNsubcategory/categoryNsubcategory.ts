@@ -4,13 +4,12 @@ import { SharedServices } from '../../services/sharedservice';
 // import { PopoverPage } from '../../popover/popover';
 import { FirebaseService } from '../../../services/firebase.service';
 import { Storage } from '@ionic/storage';
-// import { Type2AssignDiscountList } from './assigndiscountlist';
-// import { Dashboard } from './../../dashboard/dashboard';
-// import { Type2AssignDiscountListClub } from './assigndiscountlistclub';
-// import { Type2AssignChargeListClub } from './assignchargelistclub';
-
 import { IonicPage } from 'ionic-angular';
 import { CommonService } from '../../../services/common.service';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../shared/dtos/club.dto';
+import { AppType } from '../../../shared/constants/module.constants';
+import { HttpService } from '../../../services/http.service';
+import { API } from '../../../shared/constants/api_constants';
 @IonicPage()
 @Component({
   selector: 'categoryNsubcategory-page',
@@ -22,7 +21,7 @@ export class CategoryNsubcategory {
   parentClubKey: string;
   selectedClub: any;
 
-  allClub = [];
+  allClub:ClubVenueDto[] = [];
   selectedActivity: any;
   activity = [];
   selectedClubKey: any;
@@ -41,12 +40,13 @@ export class CategoryNsubcategory {
   name: string;
   selectedClubs="";
   categorykeys;
-  map
+  clubmap: Map<string, string[]> = new Map();
   constructor(public commonService: CommonService, public toastCtrl: ToastController, public loadingCtrl: LoadingController, storage: Storage,
     public navCtrl: NavController, public sharedservice: SharedServices,
-    public fb: FirebaseService, public popoverCtrl: PopoverController, public actionSheetCtrl: ActionSheetController) {
-
-    this.map = new Map()
+    public fb: FirebaseService, public popoverCtrl: PopoverController, 
+    public actionSheetCtrl: ActionSheetController,
+    public sharedService: SharedServices,
+    private httpService: HttpService) {
     storage.get('Currency').then((val) => {
       this.currencyDetails = JSON.parse(val);
     })
@@ -56,28 +56,40 @@ export class CategoryNsubcategory {
       for (let club of val.UserInfo)
         if (val.$key != "") {
           this.parentClubKey = club.ParentClubKey;
-          
           this.getAllClub();
         }
     })
   }
 
   getAllClub() {
-    let x = this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data4) => {
-      if (data4.length > 0) {
-        this.allClub = []
-        this.allClub = data4;
-        this.selectedClubs="";
-        this.selectedClubKey = this.allClub[0].$key;
-        this.activity = [];
+    const body: GetParentClubVenuesRequestDto = {
+      parentclub_id: this.sharedService.getPostgreParentClubId(),
+      app_type: AppType.ADMIN_NEW,
+      device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,
+      device_id: this.sharedService.getDeviceId() || 'web',
+      updated_by: this.sharedService.getLoggedInUserId()
+    };
 
-        this.allClub.forEach(club => {
-          this.selectedClubs =  this.selectedClubs+ club.$key +" "
-          this.getAllActivity(club.$key);
-        })
-        x.unsubscribe()
+    this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+      next: (res: GetParentClubVenuesResponseDto) => {
+        this.allClub = res.data;
+        if (this.allClub.length > 0) {
+          this.selectedClubKey = this.allClub[0].FirebaseId;
+          this.selectedClubs = "";
+          this.activity = [];
+          
+          // Loop through all clubs and get activities for each
+          this.allClub.forEach(club => {
+            this.selectedClubs = this.selectedClubs + club.FirebaseId + " ";
+            this.getAllActivity(club.FirebaseId);
+          });
+        }
+      },
+      error: (err) => {
+        this.allClub = [];
+        console.error('Error fetching clubs:', err);
       }
-    })
+    });
   }
 
   addcategory(cat, category?) {
@@ -95,17 +107,16 @@ export class CategoryNsubcategory {
 
   getAllActivity(selectedClubKey) {
     let x = this.fb.getAll("/Activity/" + this.parentClubKey + "/" + selectedClubKey + "/").subscribe((data) => {
-
       this.selectedActivity = "";
       if (data.length > 0) {
         data.forEach(activity => {
           let categorylist = []
           let subCategory = []
           let category = this.commonService.convertFbObjectToArray(activity.ActivityCategory).filter(cat => cat.IsActive)
-          if (this.map.get(activity.$key)){
-            this.map.get(activity.$key).push(selectedClubKey)
+          if (this.clubmap.get(activity.$key)){
+            this.clubmap.get(activity.$key).push(selectedClubKey)
           }else{
-            this.map.set(activity.$key, [selectedClubKey])
+            this.clubmap.set(activity.$key, [selectedClubKey])
           }
           category.forEach(cat => {
             if (cat.ActivitySubCategory) {
@@ -175,66 +186,163 @@ export class CategoryNsubcategory {
     this.myModal2 = false
   }
 
-  save() {
-    if (this.validate()) {
+  async save() {
+    if (!this.validate()) {
+      return;
+    }
 
-      if (this.catType == 'Category') {
-    
-          this.catDetailsObj.ActivityCategoryCode = '99999'
-        this.catDetailsObj.ActivityCategoryName = this.name
-        const clubkeys = this.map.get(this.selectedactivityObj.ActivityKey)
-        if (this.selectedactivityObj['IsExistActivityCategory'] == false) {
-          this.fb.update(this.selectedactivityObj.ActivityKey, "Activity/" + this.parentClubKey + "/" + clubkeys[0], { IsExistActivityCategory: true });
-        }
-        this.catDetailsObj.CreatedDate = new Date().getTime();
-        const key:any = this.fb.saveReturningKey("Activity/" + this.parentClubKey + "/" + clubkeys[0] + "/" + this.selectedactivityObj.ActivityKey + "/ActivityCategory/", this.catDetailsObj);
-        for(let i = 1; i<clubkeys.length; i++){
-          if (clubkeys[i]) {
-            // let x = this.fb.getAll("/Activity/" + this.parentClubKey + "/" + clubkeys[i] + "/").subscribe((data) => {
+    try {
+      const clubkeys = this.clubmap.get(this.selectedactivityObj.ActivityKey);
+      
+      if (!clubkeys || clubkeys.length === 0) {
+        this.commonService.toastMessage('No clubs found for this activity', 3000);
+        return;
+      }
 
-            // })
-            if (this.selectedactivityObj['IsExistActivityCategory'] == false) {
-              this.fb.update(this.selectedactivityObj.ActivityKey, "Activity/" + this.parentClubKey + "/" + clubkeys[i], { IsExistActivityCategory: true });
-            }
-            this.catDetailsObj.CreatedDate = new Date().getTime();
-            this.fb.update(key,"Activity/" + this.parentClubKey + "/" + clubkeys[i] + "/" + this.selectedactivityObj.ActivityKey + "/ActivityCategory/", this.catDetailsObj);
-          }
-        }
-        this.myModal2 = false
-        this.code = ''
-        this.name = ''
-        this.commonService.toastMessage('Saved Successfully!!!', 2000)
-        this.catDetailsObj = { ActivityCategoryName: "", ActivityCategoryCode: "", IsExistActivitySubCategory: false, IsActive: true, IsEnable: true, CreatedDate: 0, CreatedBy: 'Admin' }
-        this.getAllClub() 
+      if (this.catType === 'Category') {
+        await this.saveCategory(clubkeys);
       } else {
-        this.subCatObj.CreatedDate = new Date().getTime();
-        this.subCatObj.ActivitySubCategoryCode = '999999'   
-        this.subCatObj.ActivitySubCategoryName = this.name
-        const clubkeys = this.map.get(this.selectedactivityObj.ActivityKey)
-        const sckey:any = this.fb.saveReturningKey("Activity/" + this.parentClubKey + "/" + clubkeys[0] + "/" + this.selectedactivityObj.ActivityKey + "/ActivityCategory/" + this.selectedcategory.ActivityCategorykey + "/ActivitySubCategory/", this.subCatObj);
+        await this.saveSubCategory(clubkeys);
+      }
 
-            if (this.selectedcategory.IsExistActivitySubCategory == false) {
-              this.fb.update(this.selectedcategory.ActivityCategorykey, "Activity/" + this.parentClubKey + "/" + clubkeys[0] + "/" + this.selectedActivity + "/ActivityCategory/", { IsExistActivitySubCategory: true });
-            }
-        for(let i = 1; i<clubkeys.length; i++){
-          if (clubkeys[i]) {
-            this.fb.update(sckey, "Activity/" + this.parentClubKey + "/" + clubkeys[i] + "/" + this.selectedactivityObj.ActivityKey + "/ActivityCategory/" + this.selectedcategory.ActivityCategorykey + "/ActivitySubCategory/", this.subCatObj);
+      this.resetFormAndRefresh();
+      this.commonService.toastMessage('Saved Successfully!!!', 2500);
+    } catch (error) {
+      console.error('Error saving:', error);
+      this.commonService.toastMessage('Failed to save. Please try again.', 2500);
+    }
+  }
 
-            if (this.selectedcategory.IsExistActivitySubCategory == false) {
-              this.fb.update(this.selectedcategory.ActivityCategorykey, "Activity/" + this.parentClubKey + "/" + clubkeys[i] + "/" + this.selectedActivity + "/ActivityCategory/", { IsExistActivitySubCategory: true });
-            }
-          }
-        }
-        this.myModal2 = false
-        this.code = ''
-        this.name = ''
-        
-        this.commonService.toastMessage('Saved Successfully!!!', 2000)
-        this.subCatObj = { ActivitySubCategoryName: "", ActivitySubCategoryCode: "", IsActive: true, IsEnable: true, CreatedDate: 0, CreatedBy: 'Admin' };
+  private async saveCategory(clubkeys: string[]): Promise<void> {
+    this.catDetailsObj.ActivityCategoryCode = '99999';
+    this.catDetailsObj.ActivityCategoryName = this.name;
+    this.catDetailsObj.CreatedDate = new Date().getTime();
 
-        this.getAllClub()
+    const basePath = `Activity/${this.parentClubKey}`;
+    const activityKey = this.selectedactivityObj.ActivityKey;
+    const shouldUpdateFlag = this.selectedactivityObj['IsExistActivityCategory'] === false;
+
+    // Save to first club and get the key
+    const categoryPath = `${basePath}/${clubkeys[0]}/${activityKey}/ActivityCategory/`;
+    const key: any = this.fb.saveReturningKey(categoryPath, this.catDetailsObj);
+
+    // Update flag for first club if needed
+    if (shouldUpdateFlag) {
+      await this.fb.update(activityKey, `${basePath}/${clubkeys[0]}`, { IsExistActivityCategory: true });
+    }
+
+    // Batch updates for remaining clubs - all operations run in parallel
+    const updatePromises: Promise<any>[] = [];
+    
+    for (let i = 1; i < clubkeys.length; i++) {
+      const clubKey = clubkeys[i];
+      if (!clubKey) continue;
+
+      const clubBasePath = `${basePath}/${clubKey}`;
+      
+      // Add category update
+      updatePromises.push(
+        this.fb.update(key, `${clubBasePath}/${activityKey}/ActivityCategory/`, this.catDetailsObj)
+      );
+
+      // Add flag update if needed
+      if (shouldUpdateFlag) {
+        updatePromises.push(
+          this.fb.update(activityKey, clubBasePath, { IsExistActivityCategory: true })
+        );
       }
     }
+
+    await Promise.all(updatePromises);
+  }
+
+  private async saveSubCategory(clubkeys: string[]): Promise<void> {
+    if (!this.selectedcategory) {
+      throw new Error('No category selected');
+    }
+
+    this.subCatObj.ActivitySubCategoryCode = '999999';
+    this.subCatObj.ActivitySubCategoryName = this.name;
+    this.subCatObj.CreatedDate = new Date().getTime();
+
+    const basePath = `Activity/${this.parentClubKey}`;
+    const activityKey = this.selectedactivityObj.ActivityKey;
+    const categoryKey = this.selectedcategory.ActivityCategorykey;
+    const shouldUpdateFlag = this.selectedcategory.IsExistActivitySubCategory === false;
+
+    // Save to first club and get the key
+    const subCategoryPath = `${basePath}/${clubkeys[0]}/${activityKey}/ActivityCategory/${categoryKey}/ActivitySubCategory/`;
+    const sckey: any = this.fb.saveReturningKey(subCategoryPath, this.subCatObj);
+
+    // Update flag for first club if needed
+    if (shouldUpdateFlag) {
+      await this.fb.update(
+        categoryKey,
+        `${basePath}/${clubkeys[0]}/${this.selectedActivity}/ActivityCategory/`,
+        { IsExistActivitySubCategory: true }
+      );
+    }
+
+    // Batch updates for remaining clubs - all operations run in parallel
+    const updatePromises: Promise<any>[] = [];
+    
+    for (let i = 1; i < clubkeys.length; i++) {
+      const clubKey = clubkeys[i];
+      if (!clubKey) continue;
+
+      const clubBasePath = `${basePath}/${clubKey}`;
+      
+      // Add subcategory update
+      updatePromises.push(
+        this.fb.update(
+          sckey,
+          `${clubBasePath}/${activityKey}/ActivityCategory/${categoryKey}/ActivitySubCategory/`,
+          this.subCatObj
+        )
+      );
+
+      // Add flag update if needed
+      if (shouldUpdateFlag) {
+        updatePromises.push(
+          this.fb.update(
+            categoryKey,
+            `${clubBasePath}/${this.selectedActivity}/ActivityCategory/`,
+            { IsExistActivitySubCategory: true }
+          )
+        );
+      }
+    }
+
+    await Promise.all(updatePromises);
+  }
+
+  private resetFormAndRefresh(): void {
+    this.myModal2 = false;
+    this.code = '';
+    this.name = '';
+
+    if (this.catType === 'Category') {
+      this.catDetailsObj = {
+        ActivityCategoryName: "",
+        ActivityCategoryCode: "",
+        IsExistActivitySubCategory: false,
+        IsActive: true,
+        IsEnable: true,
+        CreatedDate: 0,
+        CreatedBy: 'Admin'
+      };
+    } else {
+      this.subCatObj = {
+        ActivitySubCategoryName: "",
+        ActivitySubCategoryCode: "",
+        IsActive: true,
+        IsEnable: true,
+        CreatedDate: 0,
+        CreatedBy: 'Admin'
+      };
+    }
+
+    this.getAllClub();
   }
 
   validate() {
@@ -298,12 +406,7 @@ export class CategoryNsubcategory {
     }
   }
 
-  showToast(message) {
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 3000
-    });
-    toast.present();
-  }
+  
 
 }
+ 

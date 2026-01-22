@@ -143,10 +143,9 @@ export class WalletReportByDate {
                 this.TotTrnsAmt = this.TotTrnsAmt + amount
               });
               this.paidMemberListtemp = res['data']
+            } else {
+              this.paidMemberListtemp = []
             }
-          },
-          error: (err) => {
-            this.paidMemberListtemp = []
           }
         })
     }

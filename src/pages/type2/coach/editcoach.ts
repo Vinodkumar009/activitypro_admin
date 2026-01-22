@@ -329,7 +329,6 @@ export class Type2EditCoach {
 
   //checking for the coach email across all the parentclubs
   checkCoachExistance = (emailid) => {
-    //this.commonService.showLoader("Checking coach...");
     const validate_email = new CheckParentclubEmailExistance();
     validate_email.parentclub_id = this.sharedservice.getPostgreParentClubId();
     validate_email.device_id = this.sharedservice.getDeviceId() || 'web';

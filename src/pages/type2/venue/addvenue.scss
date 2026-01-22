@@ -1,11 +1,12 @@
+@import '../../../theme/android-sdk35-fixes.scss';
 addvenue-page{
+    @include android-sdk35-fixes;
     .list{
     margin:0px;
 }
 .list-header-md {
      margin-bottom: 0px; 
-   
-    margin-top: 3px;
+        margin-top: 3px;
 }
 .sub-container {
     button {
@@ -74,7 +75,6 @@ addvenue-page{
     padding-left: 6px;
 }
 .scroll-content {
-    margin-top: 44px !important; 
     //padding: 6px !important;
     overflow: hidden;
     background-image: none !important; // background: white !important;

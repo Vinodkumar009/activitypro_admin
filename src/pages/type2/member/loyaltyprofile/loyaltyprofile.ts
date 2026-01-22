@@ -342,16 +342,12 @@ export class LoyaltyProfile {
         }
         this.httpService.post(API.LOYALTY_REWARD_POINTS_V2, this.rewardAPIData, null, 1).subscribe({
           next: (res: any) => {
-            this.commonService.hideLoader();
             if (res) {
               this.commonService.toastMessage('Loyalty Point Awarded Successfully', 2000)
               this.getLoyaltyBalance()
               this.getLoyaltyTransactionHistory()
               this.openReward = false
             }
-          },
-          error: (err) => {
-            this.commonService.hideLoader();
           }
         })
       })
@@ -383,17 +379,14 @@ export class LoyaltyProfile {
   }
 
   getLoyaltyBalance() {
-    this.commonService.showLoader('Please wait');
     const url = `${API.LOYALTY_GET_BY_MEMBER}/${this.member.parentFirebaseKey}`;
     this.httpService.get(url, null, null, 1).subscribe({
       next: (res) => {
-        this.commonService.hideLoader();
         if (res['data']) {
           this.totalPointBalance = +res['data']['updatedBalance']
         }
       },
       error: (err) => {
-        this.commonService.hideLoader()
         this.totalPointBalance = 0
         console.log("total balance for user:", this.totalPointBalance)
       }
@@ -488,16 +481,12 @@ export class LoyaltyProfile {
       }
       this.httpService.post(API.LOYALTY_DEBIT_POINTS, this.rewardAPIData, null, 1).subscribe({
         next: (res: any) => {
-          this.commonService.hideLoader();
           if (res) {
             this.commonService.toastMessage('Loyalty Point Debited Successfully', 2000)
             this.getLoyaltyBalance()
             this.getLoyaltyTransactionHistory()
             this.openReward = false
           }
-        },
-        error: (err) => {
-          this.commonService.hideLoader();
         }
       })
 
@@ -609,7 +598,6 @@ export class LoyaltyProfile {
 
       this.httpService.post(API.WALLET_SPEND_POINTS, this.ajdustCashInput, null, 1).subscribe({
         next: (response: any) => {
-          this.commonService.hideLoader();
           if (response) {
             this.commonService.toastMessage('Wallet cash spent successfully', 2500);
             this.checkWalletForUser();
@@ -618,7 +606,6 @@ export class LoyaltyProfile {
           }
         },
         error: (error) => {
-          this.commonService.hideLoader();
           console.error('Error:', error);
           this.commonService.toastMessage('Wallet cash spent failed', 2500);
         }

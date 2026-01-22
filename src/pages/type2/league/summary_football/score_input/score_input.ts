@@ -422,13 +422,11 @@ export class ScoreInputPage {
   }
 
   getLeagueMatchParticipant() {
-    this.commonService.showLoader("Loading players...");
     this.leagueMatchParticipantInput.TeamId = this.teamObj.parentclubteam.id;
     this.leagueMatchParticipantInput.leagueTeamPlayerStatusType = LeagueTeamPlayerStatusType.PLAYINGPLUSBENCH;
 
-    this.httpService.post(`${API.Get_League_Match_Participant}`, this.leagueMatchParticipantInput).subscribe(
-      (res: any) => {
-        this.commonService.hideLoader();
+    this.httpService.post(`${API.Get_League_Match_Participant}`, this.leagueMatchParticipantInput).subscribe({
+      next: (res: any) => {
         if (res && res.data) {
           this.leagueMatchParticipantRes = res.data;
           this.isDataLoaded = true;
@@ -439,21 +437,18 @@ export class ScoreInputPage {
           this.handleApiError("No player data received");
         }
       },
-      (error) => {
-        this.commonService.hideLoader();
+      error: (error) => {
         this.handleApiError("Failed to load players");
       }
-    );
+    });
   }
 
   getIndividualMatchParticipant(): void {
-    this.commonService.showLoader("Loading players...");
     this.getIndividualMatchParticipantInput.TeamId = this.teamMatchObj.id;
     this.getIndividualMatchParticipantInput.leagueTeamPlayerStatusType = LeagueTeamPlayerStatusType.PLAYINGPLUSBENCH;
 
-    this.httpService.post(`${API.GetIndividualMatchParticipant}`, this.getIndividualMatchParticipantInput).subscribe(
-      (res: any) => {
-        this.commonService.hideLoader();
+    this.httpService.post(`${API.GetIndividualMatchParticipant}`, this.getIndividualMatchParticipantInput).subscribe({
+      next: (res: any) => {
         if (res && res.data) {
           this.getIndividualMatchParticipantRes = res.data;
           this.isDataLoaded = true;
@@ -464,11 +459,10 @@ export class ScoreInputPage {
           this.handleApiError("No player data received");
         }
       },
-      (error) => {
-        this.commonService.hideLoader();
+      error: (error) => {
         this.handleApiError("Failed to load players");
       }
-    );
+    });
   }
 
   private handleApiError(message: string): void {

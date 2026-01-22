@@ -86,10 +86,9 @@ export class AddcaptionPage {
     console.log("Input for fetching parent club captions:", this.eventsDto);
 
     // Make the HTTP POST request
-    this.httpService.post('events/caption/get_parentclub_captions', this.eventsDto).subscribe(
-      (res: GetCaption) => {
+    this.httpService.post('events/caption/get_parentclub_captions', this.eventsDto).subscribe({
+      next: (res: GetCaption) => {
         // Hide loader once response is received
-        this.commonService.hideLoader();
         console.log("Response received:", res);
 
         // Check if the response has expected data
@@ -99,14 +98,11 @@ export class AddcaptionPage {
           console.error("Unexpected response structure or missing 'caption':", res);
         }
       },
-      (error) => {
-        // Hide loader on error
-        this.commonService.hideLoader();
-
+      error: (error) => {
         // Log error details for debugging
         console.error("Error fetching parent club captions:", error);
       }
-    );
+    });
   }
 
 
@@ -123,9 +119,8 @@ export class AddcaptionPage {
     this.eventsDto.caption_header=this.caption.caption_header;
     this.eventsDto.caption_url=this.caption.caption_img_url;
     console.log("input for update",this.eventsDto);
-    this.httpService.put(`events/caption/update_caption/${captionId}`, this.eventsDto).subscribe(
-      (response) => {
-        this.commonService.hideLoader();
+    this.httpService.put(`events/caption/update_caption/${captionId}`, this.eventsDto).subscribe({
+      next: (response) => {
         console.log("Caption updated successfully:", response);
         let msg = "Caption updated successfully" ;
         this.commonService.toastMessage(msg, 3000, ToastMessageType.Success, ToastPlacement.Bottom);
@@ -133,12 +128,11 @@ export class AddcaptionPage {
 
         // Handle successful update (e.g., show a success message or navigate to another page)
       },
-      (error) => {
-        this.commonService.hideLoader();
+      error: (error) => {
         console.error("Error updating caption:", error);
         // Handle error (e.g., display an error message to the user)
       }
-    );
+    });
   }
 
 

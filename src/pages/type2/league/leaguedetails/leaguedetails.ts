@@ -512,15 +512,14 @@ export class LeaguedetailsPage {
       leagueFixtureId: ""
     }
     commonInput.leagueFixtureId = mat.fixture_id;
-    this.httpService.post(API.DELETE_LEAGUE_MATCHES, commonInput).subscribe((res: any) => {
-      const message = "Match deleted successfully";
-      this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-      console.log("match deleted", res);
-      this.getLeagueMatches();
-    }, (error) => {
-      this.commonService.toastMessage("Match fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    }
-    )
+    this.httpService.post(API.DELETE_LEAGUE_MATCHES, commonInput).subscribe({
+      next: (res: any) => {
+        const message = "Match deleted successfully";
+        this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+        console.log("match deleted", res);
+        this.getLeagueMatches();
+      }
+    });
   }
 
   updateResult(match: LeagueMatch) {
@@ -1130,23 +1129,12 @@ export class LeaguedetailsPage {
   getLeagueMatches() {
     this.commonInput.league_id = this.league_id;
 
-    this.httpService.post(API.GET_LEAGUE_MATCHES, this.commonInput).subscribe((res: any) => {
-      // this.match = res["data"];
-      // console.log("match data is:", this.match);
-
-      // for(let i=0;i<this.match.length;i++){
-      //   [this.startDate,this.startTime]=this.match[i].start_date.split(' ');
-      // }
-      this.match = res.data;
-      // this.match = res.data.map(match => ({
-      //   ...match,
-      //   start_date: this.datePipe.transform(match.start_date, 'dd-MMM-yyyy,HH:mm') || 'Invalid date'
-      // }));
-      this.matchesLength = this.match.length;
-    }, (error) => {
-      this.commonService.toastMessage("match fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    }
-    )
+    this.httpService.post(API.GET_LEAGUE_MATCHES, this.commonInput).subscribe({
+      next: (res: any) => {
+        this.match = res.data;
+        this.matchesLength = this.match.length;
+      }
+    });
   }
 
   showMatchActionSheet(match: LeagueMatch) {

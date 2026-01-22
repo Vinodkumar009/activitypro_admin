@@ -324,29 +324,26 @@ export class MatchPage {
 
 
   fetchAllMatches() {
-    this.commonService.showLoader("Fetching matches...");
-    this.httpService.post(`${API.FetchAllMatches}`, this.fetchAllMatchesInput).subscribe((res: any) => {
-      if (res) {
-        this.commonService.hideLoader();
-        this.fetchAllMatchesRes = res.data;
-        this.matchlist = this.fetchAllMatchesRes.AllMatches;
-        console.log("FetchAllMatches RESPONSE", JSON.stringify(res.data));
-        this.filteredMatchlist = JSON.parse(JSON.stringify(this.matchlist));
-        let today = moment().format("YYYY-MM-DD");
-        this.Today = this.matchlist.filter((match) => {
-          let match_createdAt = moment(
-            match.MatchStartDate,
-            "YYYY-MM-DD"
-          ).format("YYYY-MM-DD");
+    this.httpService.post(`${API.FetchAllMatches}`, this.fetchAllMatchesInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.fetchAllMatchesRes = res.data;
+          this.matchlist = this.fetchAllMatchesRes.AllMatches;
+          console.log("FetchAllMatches RESPONSE", JSON.stringify(res.data));
+          this.filteredMatchlist = JSON.parse(JSON.stringify(this.matchlist));
+          let today = moment().format("YYYY-MM-DD");
+          this.Today = this.matchlist.filter((match) => {
+            let match_createdAt = moment(
+              match.MatchStartDate,
+              "YYYY-MM-DD"
+            ).format("YYYY-MM-DD");
 
-          return moment(today).isSame(match_createdAt);
-        }).length;
-      } else {
-        console.log("error in fetching",)
+            return moment(today).isSame(match_createdAt);
+          }).length;
+        } else {
+          console.log("error in fetching",)
+        }
       }
-    }, error => {
-      this.commonService.hideLoader();
-      this.commonService.toastMessage(error.error.message, 3000, ToastMessageType.Error,);
     });
   }
 

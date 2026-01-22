@@ -280,13 +280,10 @@ export class AssignActivityPage {
             
             console.table(assign_activity_payload);
             
-            this.httpService.post(API.ASSIGN_CLUB_ACTIVITIES,assign_activity_payload).subscribe((res: any) => {
-              //this.navCtrl.pop();
-            },
-            (error) => {
-                //this.commonService.hideLoader();
-                console.error("Error in assigning activity:", error.message);
-                //this.comonService.toastMessage("Activity assign failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+            this.httpService.post(API.ASSIGN_CLUB_ACTIVITIES,assign_activity_payload).subscribe({
+              next: (res: any) => {
+                //this.navCtrl.pop();
+              }
             })
         }catch(err){
           this.comonService.toastMessage(err.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
