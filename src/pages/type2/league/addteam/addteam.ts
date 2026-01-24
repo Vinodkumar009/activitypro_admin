@@ -129,8 +129,11 @@ export class AddteamPage {
 
 
   getTeam() {
+    this.commonService.showLoader("Fetching teams...");
+
     const teamSubscription = this.httpService.post('league/getActivitySpecificTeam', this.inputObj).subscribe({
       next: (res: any) => {
+        this.commonService.hideLoader();
         this.teamsForParentClub = res.data;
 
         if (this.teamsForParentClub.length > 0) {
@@ -143,6 +146,10 @@ export class AddteamPage {
 
         this.filteredteams = [...this.teamsForParentClub];
         this.updateTeamStates();
+      },
+      error: (error) => {
+        this.commonService.hideLoader();
+        this.handleError(error, "Failed to fetch teams");
       }
     });
 
