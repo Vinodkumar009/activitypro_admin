@@ -1213,8 +1213,10 @@ export class TennisSummaryTennisPage {
   }
 
   PublishLeagueResultWithRollback(result_input: any, team: 'HOME' | 'AWAY'): void {
+    this.commonService.showLoader("Updating result");
     this.httpService.post(`${API.Publish_League_Result_For_Activities}`, result_input).subscribe(
       (res: any) => {
+        this.commonService.hideLoader();
         // Close popup immediately on API success
         if (this.isHomeStatsPopupVisible) this.isHomeStatsPopupVisible = false;
         if (this.isAwayStatsPopupVisible) this.isAwayStatsPopupVisible = false;
@@ -1230,6 +1232,14 @@ export class TennisSummaryTennisPage {
           console.log("No data received from PublishLeagueResult");
           this.rollbackStats(team);
         }
+      },
+      (error) => {
+        this.commonService.hideLoader();
+        console.error("Error publishing result:", error);
+        this.commonService.toastMessage("Failed to update stats. Reverted to previous values.", 3000, ToastMessageType.Error);
+        if (this.isHomeStatsPopupVisible) this.isHomeStatsPopupVisible = false;
+        if (this.isAwayStatsPopupVisible) this.isAwayStatsPopupVisible = false;
+        this.rollbackStats(team);
       }
     );
   }
@@ -1283,8 +1293,11 @@ export class TennisSummaryTennisPage {
         return;
       }
 
-      this.httpService.post(`${API.Get_League_Match_Participant}`, this.leagueMatchParticipantInput).subscribe({
-        next: (res: any) => {
+      this.commonService.showLoader("Fetching participants...");
+
+      this.httpService.post(`${API.Get_League_Match_Participant}`, this.leagueMatchParticipantInput).subscribe(
+        (res: any) => {
+          this.commonService.hideLoader();
           try {
             if (res && res.data) {
               this.leagueMatchParticipantRes = Array.isArray(res.data) ? res.data : [];
@@ -1296,12 +1309,14 @@ export class TennisSummaryTennisPage {
             this.leagueMatchParticipantRes = [];
           }
         },
-        error: (error) => {
+        (error) => {
+          this.commonService.hideLoader();
           console.error("Error fetching league match participants:", error);
           this.leagueMatchParticipantRes = [];
         }
-      });
+      );
     } catch (error) {
+      this.commonService.hideLoader();
       this.leagueMatchParticipantRes = [];
     }
   }
@@ -1340,12 +1355,13 @@ export class TennisSummaryTennisPage {
 
       const homeTeamInput = { ...this.getIndividualMatchParticipantInput, TeamId: homeTeamId };
 
-      this.httpService.post(`${API.GetIndividualMatchParticipant}`, homeTeamInput).subscribe({
-        next: (homeRes: any) => {
+      this.httpService.post(`${API.GetIndividualMatchParticipant}`, homeTeamInput).subscribe(
+        (homeRes: any) => {
           const awayTeamInput = { ...this.getIndividualMatchParticipantInput, TeamId: awayTeamId };
 
-          this.httpService.post(`${API.GetIndividualMatchParticipant}`, awayTeamInput).subscribe({
-            next: (awayRes: any) => {
+          this.httpService.post(`${API.GetIndividualMatchParticipant}`, awayTeamInput).subscribe(
+            (awayRes: any) => {
+              this.commonService.hideLoader();
               try {
                 const homeParticipants = (homeRes && homeRes.data && Array.isArray(homeRes.data)) ? homeRes.data : [];
                 const awayParticipants = (awayRes && awayRes.data && Array.isArray(awayRes.data)) ? awayRes.data : [];
@@ -1355,17 +1371,20 @@ export class TennisSummaryTennisPage {
                 this.getIndividualMatchParticipantRes = [];
               }
             },
-            error: (error) => {
+            (error) => {
+              this.commonService.hideLoader();
               this.getIndividualMatchParticipantRes = [];
             }
-          });
+          );
         },
-        error: (error) => {
+        (error) => {
+          this.commonService.hideLoader();
           this.getIndividualMatchParticipantRes = [];
         }
-      });
+      );
     } catch (error) {
       console.error('Error in getIndividualMatchParticipant:', error);
+      this.commonService.hideLoader();
       this.getIndividualMatchParticipantRes = [];
     }
   }

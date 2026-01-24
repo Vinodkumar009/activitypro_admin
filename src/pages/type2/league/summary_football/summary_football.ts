@@ -938,8 +938,11 @@ export class SummaryFootballPage implements AfterViewInit {
         return;
       }
 
-      this.httpService.post(`${API.Get_League_Match_Participant}`, this.leagueMatchParticipantInput).subscribe({
-        next: (res: any) => {
+      this.commonService.showLoader("Fetching participants...");
+
+      this.httpService.post(`${API.Get_League_Match_Participant}`, this.leagueMatchParticipantInput).subscribe(
+        (res: any) => {
+          this.commonService.hideLoader();
           try {
             if (res && res.data) {
               this.leagueMatchParticipantRes = Array.isArray(res.data) ? res.data : [];
@@ -957,7 +960,9 @@ export class SummaryFootballPage implements AfterViewInit {
             this.leagueMatchParticipantRes = [];
           }
         },
-        error: (error) => {
+        (error) => {
+          this.commonService.hideLoader();
+
           let errorMessage = "Error fetching participants";
           if (error.status === 0) {
             errorMessage = "Network connection error. Please check your internet connection.";
@@ -972,8 +977,9 @@ export class SummaryFootballPage implements AfterViewInit {
           this.commonService.toastMessage(errorMessage, 3000, ToastMessageType.Error);
           this.leagueMatchParticipantRes = [];
         }
-      });
+      );
     } catch (error) {
+      this.commonService.hideLoader();
       this.commonService.toastMessage("Error initializing participant request", 3000, ToastMessageType.Error);
       this.leagueMatchParticipantRes = [];
     }
@@ -1007,13 +1013,14 @@ export class SummaryFootballPage implements AfterViewInit {
       // Fetch participants for home team first
       const homeTeamInput = { ...this.getIndividualMatchParticipantInput, TeamId: homeTeamId };
 
-      this.httpService.post(`${API.GetIndividualMatchParticipant}`, homeTeamInput).subscribe({
-        next: (homeRes: any) => {
+      this.httpService.post(`${API.GetIndividualMatchParticipant}`, homeTeamInput).subscribe(
+        (homeRes: any) => {
           // Fetch participants for away team
           const awayTeamInput = { ...this.getIndividualMatchParticipantInput, TeamId: awayTeamId };
 
-          this.httpService.post(`${API.GetIndividualMatchParticipant}`, awayTeamInput).subscribe({
-            next: (awayRes: any) => {
+          this.httpService.post(`${API.GetIndividualMatchParticipant}`, awayTeamInput).subscribe(
+            (awayRes: any) => {
+              this.commonService.hideLoader();
               try {
                 const homeParticipants = (homeRes && homeRes.data && Array.isArray(homeRes.data)) ? homeRes.data : [];
                 const awayParticipants = (awayRes && awayRes.data && Array.isArray(awayRes.data)) ? awayRes.data : [];
@@ -1030,16 +1037,19 @@ export class SummaryFootballPage implements AfterViewInit {
                 this.getIndividualMatchParticipantRes = [];
               }
             },
-            error: (error) => {
+            (error) => {
+              this.commonService.hideLoader();
               this.handleParticipantError(error);
             }
-          });
+          );
         },
-        error: (error) => {
+        (error) => {
+          this.commonService.hideLoader();
           this.handleParticipantError(error);
         }
-      });
+      );
     } catch (error) {
+      this.commonService.hideLoader();
       this.commonService.toastMessage("Error initializing participant request", 3000, ToastMessageType.Error);
       this.getIndividualMatchParticipantRes = [];
     }

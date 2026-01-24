@@ -188,11 +188,12 @@ export class LeaguepaymentPage {
   }
 
   getPaymentMode() {
-    this.httpService.post(`league/getPaymentMethods`, this.commonInput).subscribe({
-      next: (res: any) => {
-        this.paymentMode = res["data"];
-      }
-    });
+    this.httpService.post(`league/getPaymentMethods`, this.commonInput).subscribe((res: any) => {
+      this.paymentMode = res["data"];
+    }, (error) => {
+      this.commonService.toastMessage("Payment mode fetch failed", 2500, ToastMessageType.Error)
+    }
+    )
   }
 
 

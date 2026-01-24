@@ -639,7 +639,11 @@ export class MatchdetailsPage {
 
 
   delete() {
+
+    this.commonService.showLoader("Please wait...");
     try {
+
+
       const delete_Match = gql`
        mutation deleteMatch($deleteMatchInput: DeleteMatchInput!) {
         deleteMatch(deleteMatchInput: $deleteMatchInput)
@@ -648,18 +652,22 @@ export class MatchdetailsPage {
       const deleteVariable = { deleteMatchInput: { ParentClubKey: this.parentClubKey, MatchId: this.match.MatchId } }
 
       this.graphqlService.mutate(delete_Match, deleteVariable, 1).subscribe((response) => {
+        this.commonService.hideLoader();
         const message = "match deleted successfully";
         this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
         this.commonService.updateCategory("matchlist");
         this.navCtrl.pop().then(() => this.navCtrl.pop().then());
 
       }, (err) => {
+        this.commonService.hideLoader();
         console.error("GraphQL mutation error:", err);
         this.commonService.toastMessage("match deletion failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
       )
     } catch (error) {
+
       console.error("An error occurred:", error);
+
     }
   }
 

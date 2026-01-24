@@ -93,7 +93,7 @@ export const API = {
     Update_League_Match_Participation_Status: `league/UpdateLeagueMatchParticipationStatus`,
     Update_League_Match_Participantipation_Role: `league/update_league_match_participant_role`,
     GET_LEAGUE_OR_MATCH_TYPES: `league/getTypes`,
-    GET_LEAGUE_CATEGORIES:`league/getCategories`,
+    GET_LEAGUE_CATEGORIES: `league/getCategories`,
     Get_Round_Types: `league/getRoundTypes`,
     GENERATE_MATCHES: `league/generate-matches`,
     Get_League_Match_Result: `LeagueResult/getLeagueMatchResult`,
@@ -117,8 +117,8 @@ export const API = {
     GET_USER_COUNT: `user/usercount`,
     AGENT_CHAT_INVOKE: 'invoke-agentcore',
     AGENT_CHAT_PROMPTS: 'agentcore/getPromptsByModule',
-    AGENT_CHAT_FEEDBACK:'agentcore/interactions/feedback',
-    AGENT_CHAT_REMOVE_FEEDBACK:'agentcore/interactions/removefeedback',
+    AGENT_CHAT_FEEDBACK: 'agentcore/interactions/feedback',
+    AGENT_CHAT_REMOVE_FEEDBACK: 'agentcore/interactions/removefeedback',
     WAITING_LIST_GET_BY_MODULE: 'session-waiting-list/get-by-module',
     WAITING_LIST_REMOVE: 'session-waiting-list/remove',
     WAITING_LIST_UPDATE_STATUS: 'session-waiting-list/update-status',
@@ -153,5 +153,9 @@ export const API = {
     WALLET_PAYMENT_REPORT_BY_DATE: 'wallet/paymentreportbydate',
     WALLET_TOTAL_BALANCE: 'wallet/getavailabletotalbalance',
     GET_PARENT_CLUB_VENUES: 'club/GetParentClubVenues',
-    CHECK_WALLET_FOR_PARENT_CLUB: 'wallet/checkwallet'
+    CHECK_WALLET_FOR_PARENT_CLUB: 'wallet/checkwallet',
+    GET_TEAM_FORMATIONS: 'league/lineup/getTeamFormations',
+    SAVE_TEAM_FORMATION: 'league/lineup/saveTeamFormation',
+    DELETE_TEAM_FORMATION: 'league/lineup/deleteTeamFormation',
+    GET_SAVED_FORMATIONS: 'league/lineup/getSavedFormationsForMatch'
 }

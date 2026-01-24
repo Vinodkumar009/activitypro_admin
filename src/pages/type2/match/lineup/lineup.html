@@ -1,0 +1,271 @@
+<!--
+  LineupPage - Football Formation Creator
+  Displays a pitch with player positions based on selected team size and formation
+-->
+
+<ion-header>
+    <ion-navbar class="lineup-navbar">
+        <ion-title>
+            <div class="header-title">
+                <span class="main-title">Create line-up</span>
+                <span class="sub-title">Team Lineup</span>
+            </div>
+        </ion-title>
+        <ion-buttons right>
+            <button ion-button clear class="save-btn" (click)="save()">Save</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme" (click)="closeAllDropdowns()">
+    <!-- Match Info Header -->
+    <div class="match-info-header" *ngIf="match">
+        <div class="match-activity-badge">{{ match.ActivityName }}</div>
+        <div class="match-title-text" *ngIf="match.MatchTitle">{{ match.MatchTitle }}</div>
+        <div class="match-main-info">
+            <div class="match-teams-row">
+                <span class="team-name">{{ match.homeUserName }}</span>
+                <span class="vs-label">VS</span>
+                <span class="team-name">{{ match.awayUserName }}</span>
+            </div>
+            <div class="match-meta-info">
+                <div class="meta-item">
+                    <ion-icon name="calendar" class="meta-icon"></ion-icon>
+                    <span>{{ match.Date }} • {{ match.Time }}</span>
+                </div>
+                <div class="meta-item">
+                    <ion-icon name="pin" class="meta-icon"></ion-icon>
+                    <span class="venue-text">{{ match.VenueName }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lineup-container">
+        <!-- Lineup Name Input -->
+        <div class="lineup-name-section">
+            <ion-input [(ngModel)]="lineupName" placeholder="Enter lineup name" class="lineup-name-input"></ion-input>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="settings-section">
+            <!-- Team Selection -->
+            <div class="setting-row" (click)="toggleTeamDropdown(); $event.stopPropagation()">
+                <div class="setting-left">
+                    <div class="team-logo-container">
+                        <img [src]="selectedTeamLogo" class="setting-team-logo">
+                    </div>
+                    <span class="setting-label">Team</span>
+                </div>
+                <div class="setting-right">
+                    <span class="setting-value">{{ selectedTeam }}</span>
+                    <ion-icon name="ios-arrow-down" class="dropdown-arrow"></ion-icon>
+                </div>
+                <!-- Inline Dropdown -->
+                <div class="dropdown-menu" *ngIf="showTeamDropdown" (click)="$event.stopPropagation()">
+                    <div class="dropdown-item" *ngFor="let team of teams" [class.selected]="team.name === selectedTeam"
+                        (click)="onTeamChange(team)">
+                        <div class="dropdown-team-info">
+                            <img [src]="team.logo" class="dropdown-team-logo">
+                            <span>{{ team.name }}</span>
+                        </div>
+                        <ion-icon name="checkmark" class="check-icon"
+                            [style.visibility]="team.name === selectedTeam ? 'visible' : 'hidden'"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visibility -->
+            <div class="setting-row" (click)="toggleVisibilityDropdown(); $event.stopPropagation()">
+                <div class="setting-left">
+                    <ion-icon name="eye" class="setting-icon"></ion-icon>
+                    <span class="setting-label">Visibility</span>
+                </div>
+                <div class="setting-right">
+                    <span class="setting-value">{{ visibilityLabel }}</span>
+                    <ion-icon name="ios-arrow-down" class="dropdown-arrow"></ion-icon>
+                </div>
+                <!-- Inline Dropdown -->
+                <div class="dropdown-menu" *ngIf="showVisibilityDropdown" (click)="$event.stopPropagation()">
+                    <div class="dropdown-item" *ngFor="let option of visibilityOptions"
+                        [class.selected]="option.value === visibility" (click)="onVisibilityChange(option.value)">
+                        <ion-icon name="checkmark" class="check-icon"
+                            [style.visibility]="option.value === visibility ? 'visible' : 'hidden'"></ion-icon>
+                        <span>{{ option.label }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Size -->
+            <div class="setting-row" (click)="toggleTeamSizeDropdown(); $event.stopPropagation()">
+                <div class="setting-left">
+                    <ion-icon name="people" class="setting-icon"></ion-icon>
+                    <span class="setting-label">Team size</span>
+                </div>
+                <div class="setting-right">
+                    <span class="setting-value">{{ selectedTeamSize }}</span>
+                    <ion-icon name="ios-arrow-down" class="dropdown-arrow"></ion-icon>
+                </div>
+                <!-- Inline Dropdown -->
+                <div class="dropdown-menu" *ngIf="showTeamSizeDropdown" (click)="$event.stopPropagation()">
+                    <div class="dropdown-item" *ngFor="let size of teamSizes"
+                        [class.selected]="size === selectedTeamSize" (click)="onTeamSizeChange(size)">
+                        <ion-icon name="checkmark" class="check-icon"
+                            [style.visibility]="size === selectedTeamSize ? 'visible' : 'hidden'"></ion-icon>
+                        <span>{{ size }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formation -->
+            <div class="setting-row" (click)="toggleFormationDropdown(); $event.stopPropagation()">
+                <div class="setting-left">
+                    <ion-icon name="grid" class="setting-icon"></ion-icon>
+                    <span class="setting-label">Formation</span>
+                </div>
+                <div class="setting-right">
+                    <span class="setting-value">{{ selectedFormationName }}</span>
+                    <ion-icon name="ios-arrow-down" class="dropdown-arrow"></ion-icon>
+                </div>
+                <!-- Inline Dropdown -->
+                <div class="dropdown-menu" *ngIf="showFormationDropdown" (click)="$event.stopPropagation()">
+                    <div class="dropdown-item" *ngFor="let formation of getAvailableFormations()"
+                        [class.selected]="formation.id === selectedFormation" (click)="onFormationChange(formation.id)">
+                        <ion-icon name="checkmark" class="check-icon"
+                            [style.visibility]="formation.id === selectedFormation ? 'visible' : 'hidden'"></ion-icon>
+                        <span>{{ formation.formation_name }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Football Pitch -->
+        <div class="pitch-container">
+            <div class="pitch">
+                <!-- Pitch markings -->
+                <div class="pitch-markings">
+                    <div class="center-circle"></div>
+                    <div class="center-line"></div>
+                    <div class="penalty-area top"></div>
+                    <div class="penalty-area bottom"></div>
+                    <div class="goal-area top"></div>
+                    <div class="goal-area bottom"></div>
+                </div>
+
+                <!-- Player Nodes -->
+                <div class="player-node" *ngFor="let position of currentPositions" [style.left.%]="position.x"
+                    [style.top.%]="position.y" (click)="onPlayerNodeClick(position); $event.stopPropagation()"
+                    [class.has-player]="position.player">
+
+                    <div class="node-content" *ngIf="!position.player">
+                        <div class="node-circle">
+                            <ion-icon name="add" class="node-icon"></ion-icon>
+                        </div>
+                    </div>
+
+                    <div class="player-avatar-container" *ngIf="position.player">
+                        <div class="player-image-wrapper">
+                            <img [src]="position.player.image || 'assets/images/user.png'" class="player-avatar">
+                        </div>
+                        <div class="player-name-badge">
+                            <span>{{ position.player.name.split(' ')[0] }}...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Substitutes Section -->
+        <div class="substitutes-section">
+            <h2 class="section-title">
+                SUBSTITUTES
+                <span class="deselect-action" *ngIf="selectedSubstitute"
+                    (click)="selectedSubstitute = null; $event.stopPropagation()">
+                    Deselect
+                </span>
+            </h2>
+            <div class="substitutes-container">
+                <div class="substitutes-scroll">
+                    <div class="sub-item" *ngFor="let player of getFilteredSubstitutes()"
+                        [class.selected]="selectedSubstitute && selectedSubstitute.playerid === player.playerid"
+                        (click)="onSubstituteClick(player, $event)">
+                        <div class="player-avatar-container">
+                            <div class="player-image-wrapper">
+                                <img [src]="player.image || 'assets/images/user.png'" class="player-avatar">
+                            </div>
+                            <div class="player-name-badge">
+                                <span>{{ player.name.split(' ')[0] }}...</span>
+                            </div>
+                            <!-- Deselect button -->
+                            <div class="remove-sub-btn"
+                                *ngIf="selectedSubstitute && selectedSubstitute.playerid === player.playerid"
+                                (click)="onSubstituteClick(player, $event)">
+                                <ion-icon name="close"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add Substitute Button -->
+                    <div class="sub-item add-sub" (click)="onAddSubstituteClick(); $event.stopPropagation()">
+                        <div class="node-circle">
+                            <ion-icon name="add" class="node-icon"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lineup Options -->
+        <div class="danger-zone" *ngIf="!isCreateNew">
+            <h2 class="section-title">MORE OPTIONS</h2>
+            <div class="delete-card" (click)="deleteLineup()">
+                <div class="delete-content">
+                    <ion-icon name="trash" class="delete-icon"></ion-icon>
+                    <div class="delete-text">
+                        <span class="main-text">Delete Lineup</span>
+                        <span class="sub-text">This will permanently remove this formation</span>
+                    </div>
+                </div>
+                <ion-icon name="arrow-forward" class="forward-icon"></ion-icon>
+            </div>
+        </div>
+    </div>
+
+</ion-content>
+
+<!-- Modals Overlay Section -->
+<div class="modals-overlay" *ngIf="showPlayerSelection || showPlayerOptions" (click)="closeAllDropdowns()">
+
+    <!-- Player Selection Modal -->
+    <div class="modal-card player-selection-card" *ngIf="showPlayerSelection" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Select Player</h3>
+        </div>
+        <div class="player-list">
+            <div class="player-selection-item" *ngFor="let player of getFilteredPlayers()"
+                (click)="assignPlayer(player)">
+                <img [src]="player.image || 'assets/images/user.png'" class="item-avatar">
+                <span class="item-name">{{ player.name }}</span>
+            </div>
+            <div class="no-players" *ngIf="getFilteredPlayers().length === 0">
+                No more players available
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Options Menu (From Screenshot) -->
+    <div class="modal-card player-options-card" *ngIf="showPlayerOptions" (click)="$event.stopPropagation()">
+        <div class="options-header">
+            <span class="player-full-name">{{ activePosition?.player?.name }}</span>
+        </div>
+        <div class="options-list">
+            <button class="option-btn" (click)="replacePlayer()">
+                <span>Replace</span>
+            </button>
+            <button class="option-btn" (click)="moveToSubstitutes()">
+                <span>Move to substitutes</span>
+            </button>
+            <button class="option-btn remove-btn" (click)="removePlayer()">
+                <span>Remove</span>
+            </button>
+        </div>
+    </div>
+</div>
