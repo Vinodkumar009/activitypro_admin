@@ -1,21 +1,21 @@
 import { Injectable,} from "@angular/core";
 import { AlertController, Events  } from 'ionic-angular';
-import moment, { Moment } from 'moment';
-import * as $ from 'jquery';
 import { Storage } from '@ionic/storage';
-import { Observable } from "rxjs";
-import { observeOn } from "rxjs/operator/observeOn";
 //import { BehaviorSubject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { SharedServices } from "../pages/services/sharedservice";
-
+import { HttpService } from "./http.service";
+import { API } from "../shared/constants/api_constants";
+import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class LanguageService{
     languages: Array<any> = [];
     private AllLabels:Object = {};
     nodeUrl:string="";
     //public observeableObj:BehaviorSubject<any>;
-    constructor(public events: Events, private alertCtrl: AlertController, private http:HttpClient,private sharedservice:SharedServices,private storage:Storage){
+    constructor(public events: Events, private alertCtrl: AlertController,
+      private sharedservice:SharedServices,private storage:Storage,
+      public httpService: HttpService,
+      public http: HttpClient,){
         
     this.languages = [
       
@@ -56,8 +56,8 @@ export class LanguageService{
     }
 
     getLanguage(reqObj:any){
-        this.nodeUrl = this.sharedservice.getnodeURL();
-        //https://activitypro-node.appspot.com/app/language
+        // this.nodeUrl = this.sharedservice.getnodeURL();
+        // //https://activitypro-node.appspot.com/app/language
         this.http.post(`https://activitypro-node-admin.appspot.com/app/language`,reqObj).subscribe((res) => {
             let langObj = {};
             langObj["lang"] = reqObj.language;
@@ -67,6 +67,22 @@ export class LanguageService{
             });
             //this.observeableObj.next(res["data"]);
         }); 
+        // this.httpService.post(`${API.APP_LANGUAGE}`, reqObj)
+        //     .subscribe({
+        //       next: (res:any) => {
+        //         const langObj = {};
+        //         langObj["lang"] = reqObj.language;
+        //         langObj["data"] = res.data.data;
+        //         this.storage.set('language',langObj).then(()=>{
+        //           this.events.publish('language', res.data.data);
+        //         });
+        //         //this.observeableObj.next(res["data"]);   
+        //       },
+        //       error: (err) => {
+        //         console.error("Error fetching menus:", err);
+        //         //this.commonService.toastMessage("Failed to load menus",2500,ToastMessageType.Error, ToastPlacement.Bottom);
+        //       }
+        // });
     }
 
 

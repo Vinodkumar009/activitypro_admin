@@ -303,6 +303,7 @@ export class Login {
 
   }
 
+  //"{\"id\":\"476fd04d-4d42-42d4-865d-331c12a2a418\",\"created_at\":\"2021-09-29T05:06:19.577Z\",\"email_id\":\"demo@activitypro.app\",\"name\":\"ActivityPro Demo\",\"roletype\":2,\"role_type_name\":\"Admin\",\"usertype\":2,\"postgres_parentclubkey\":\"78c25502-a302-4276-9460-2114db73de03\",\"firebase_coachkey\":\"\",\"firebase_loggedinkey\":\"-KuAlAXTl7UQ2hFp4ljQ\"}"
 
   private handleLogin(userData: any, memberType: any, userType: string, firebase_loggedinkey:string) {
     this.httpService.get<{message: string,data: ParentClubUserResponseDto}>(`${API.GET_PARENTCLUB_USER_BY_FIREBASEID}/${firebase_loggedinkey}`)
@@ -319,6 +320,7 @@ export class Login {
                 
                 this.sharedservice.setLoggedInType(memberType);
                 this.sharedservice.setUserData(userData);
+                this.storage.set('loggedin_user', JSON.stringify(res.data));
                 this.events.publish('user:loginsuccessfully', userData, Date.now());
                 
                 if (this.sharedservice.getDeviceToken()) {
@@ -329,7 +331,7 @@ export class Login {
                   this.navCtrl.setRoot("Dashboard");
                   this.commonService.toastMessage("Logged in successfully...", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
                 }
-               this.storage.set('loggedin_user', JSON.stringify(res.data));
+               
             },
             error: (err) => {
               console.error("Error fetching events:", err);

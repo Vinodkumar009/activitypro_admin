@@ -869,7 +869,7 @@ export class WeeklySessionDetailsPage {
   }
 
   getWaitingListData() {
-    this.commonService.showLoader("Loading waiting list...");
+    //this.commonService.showLoader("Loading waiting list...");
     
     const requestBody = {
       module_id: this.sessionId,

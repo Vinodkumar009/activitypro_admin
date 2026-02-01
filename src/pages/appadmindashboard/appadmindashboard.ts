@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { NavController, PopoverController, LoadingController, IonicPage, ToastController, NavParams } from 'ionic-angular';
 import { SharedServices } from '../services/sharedservice';
 import { HttpClient } from '@angular/common/http';
-import { LanguageService } from '../../services/language.service';
 import { Storage } from '@ionic/storage';
-import { BookingMemberType, CommonService } from '../../services/common.service';
+import { BookingMemberType, CommonService, ToastMessageType, ToastPlacement } from '../../services/common.service';
 import { FirebaseService } from '../../services/firebase.service';
+import { HttpService } from '../../services/http.service';
+import { API } from '../../shared/constants/api_constants';
 
 
 
@@ -34,7 +35,8 @@ export class AppadmindashboardPage {
     public commonService: CommonService,
     public fb: FirebaseService,
     public sharedService: SharedServices,
-    public popoverCtrl: PopoverController,) {
+    public popoverCtrl: PopoverController,
+    private httpService: HttpService) {
 
   }
 
@@ -73,19 +75,9 @@ export class AppadmindashboardPage {
 
   }
 
-  showLoader(){
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    this.loading.present();
-  }
-
-  hideLoader(){
-    this.loading.dismiss().catch(() => { });
-  }
+  
 
   refreshList() {
-    
     this.getParentClubs();
   }
 
@@ -101,11 +93,27 @@ export class AppadmindashboardPage {
         date.setDate(date.getDate() + 30);
         const ttl = new Date(date).getTime();
         this.commonService.setDataWithExpiry('AllParentClubs', this.parentclubs, ttl);
-
       }
     },(err) => {
       console.log("There is some problem while fetching")
     })
+    // this.httpService.get<ParentClubsResponseDto>(`${API.GET_ALL_PARENTCLUBS_LIST}/1`)
+    //     .subscribe({
+    //       next: (response) => {
+    //         this.parentclubs = [];
+    //         this.parentclubs = response.data;
+    //         //console.log(this.parentclubs);
+    //         this.TempParentClubs = JSON.parse(JSON.stringify(this.parentclubs));
+    //         const date = new Date();
+    //         date.setDate(date.getDate() + 30);
+    //         const ttl = new Date(date).getTime();
+    //         this.commonService.setDataWithExpiry('AllParentClubs', this.parentclubs, ttl);
+    //       },
+    //       error: (err) => {
+    //         console.error("Error fetching menus:", err);
+    //         this.commonService.toastMessage("Failed to load menus",2500,ToastMessageType.Error, ToastPlacement.Bottom);
+    //       }
+    //   });
   }
 
   
@@ -175,4 +183,11 @@ export class AppadmindashboardPage {
     this.navCtrl.push('SuperuserPromotion', { parentclubs: this.parentclubs })
   }
 
+}
+
+
+export class ParentClubsResponseDto {
+    message: string;
+    data: any[]; // Will be replaced with ParentClubEntity[] when imported
+    total_count: number;
 }

@@ -127,7 +127,6 @@ export class Dashboard {
   constructor(
     public events: Events,
     // private cache: CacheService,
-    private langService: LanguageService,
     public toastCtrl: ToastController,
     //private ga: GoogleAnalytics,
     public storage: Storage,

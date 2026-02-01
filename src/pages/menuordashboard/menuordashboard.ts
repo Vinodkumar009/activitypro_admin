@@ -7,7 +7,9 @@ import { Storage } from '@ionic/storage';
 import { FirebaseService } from '../../services/firebase.service';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../services/common.service';
 import { LanguageService } from '../../services/language.service';
-import { HttpClient } from '@angular/common/http';
+import { API } from '../../shared/constants/api_constants';
+import { HttpService } from '../../services/http.service';
+import { AppType } from '../../shared/constants/module.constants';
 @IonicPage()
 @Component({
   templateUrl: "menuordashboard.html",
@@ -41,8 +43,8 @@ export class MenuOrDashboard {
     public storage: Storage,
     public fb: FirebaseService,
     public commonService: CommonService,
-    public http: HttpClient,
-    private langService: LanguageService
+    private langService: LanguageService,
+    private httpService: HttpService,
   ) {
     this.sharedservice.setThemeType(2);
     this.nestUrl = sharedservice.getnestURL();
@@ -80,6 +82,7 @@ export class MenuOrDashboard {
         this.rootPage = "Login";
       }
     });
+    // Commented out Firebase implementation - replaced with REST API
     this.events.subscribe("user:loginsuccessfully", (user, time) => {
       let menuDataObs$ = this.fb
         .getAllWithQuery(`UserMenus/${user.UserInfo[0].ParentClubKey}`, {
@@ -97,7 +100,38 @@ export class MenuOrDashboard {
           menuDataObs$.unsubscribe();
         });
     });
-  }
+
+    // New REST API implementation
+  //   this.events.subscribe("user:loginsuccessfully", async(user, time) => {
+  //     const loggedin_user_info = JSON.parse(await this.storage.get("loggedin_user"));
+  //     //const loggedin_user_info = JSON.parse(loggedinuser);
+  //     const requestPayload: GetUserMenusRequestDto = {
+  //       //parentClubKey: user.UserInfo[0].ParentClubKey,
+  //       parentclub_id:loggedin_user_info.postgres_parentclubkey,
+  //       member_id: loggedin_user_info.id,
+  //       action_type: 1,
+  //       device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
+  //       app_type: AppType.ADMIN_NEW,
+  //       device_id: this.sharedservice.getDeviceId() || 'unknown',
+  //       updated_by: loggedin_user_info.id || 'admin' ,
+  //     };
+      
+  //     this.httpService.post<GetUserMenusResponseDto>(`${API.GET_PARENTCLUB_USER_MENUS}`, requestPayload)
+  //       .subscribe({
+  //         next: (response) => {
+  //           this.sharedservice.setThemeType(2);
+  //           this.storage.remove("Menus");
+  //           const menus = response.data || [];
+  //           this.updateMenu(user, menus);
+  //           this.storage.set("Menus", JSON.stringify(menus));
+  //         },
+  //         error: (err) => {
+  //           console.error("Error fetching menus:", err);
+  //           this.commonService.toastMessage("Failed to load menus",2500,ToastMessageType.Error, ToastPlacement.Bottom);
+  //         }
+  //       });
+  //   });
+   }
 
   getMenus() {
     // const nestUrl = "https://activitypro-nest-261607.appspot.com";
@@ -525,4 +559,40 @@ export class MenuOrDashboard {
 
     return activeMenues;
   }
+}
+
+// DTOs for User Menus API
+export class GetUserMenusRequestDto {
+  parentclub_id?: string;
+  club_id?: string;
+  activity_id?: string;
+  member_id?: string;
+  action_type?: number;
+  device_type?: number;
+  app_type?: number;
+  device_id?: string;
+  updated_by?: string;
+}
+
+export interface MenuItemDto {
+  DisplayTitle: string;
+  OriginalTitle: string;
+  MobComponent: string;
+  WebComponent: string;
+  MobIcon: string;
+  MobLocalImage: string;
+  MobCloudImage: string;
+  WebIcon: string;
+  WebLocalImage: string;
+  WebCloudImage: string;
+  MobileAccess: boolean;
+  WebAccess: boolean;
+  Role: number;
+  Type: number;
+  Level: number;
+}
+
+export class GetUserMenusResponseDto {
+  message: string;
+  data: MenuItemDto[];
 }

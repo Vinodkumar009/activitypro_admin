@@ -1,7 +1,10 @@
 
 export const API = {
+    APP_LANGUAGE:'language/getLanguage',
     GET_PARENTCLUB_DETS: 'parentclub/get_parentclub_details',
     GET_PARENTCLUB_USER_BY_FIREBASEID: `parentclubuser/by_firebase_loggedinkey`,
+    GET_PARENTCLUB_USER_MENUS: `parentclubuser/user_menus`,
+    GET_ALL_PARENTCLUBS_LIST:`parentclub/get_all_parentclubs`,
     CHECK_PARENTCLUB_EMAIL_EXISTANCE: `parentclubuser/validate_email`,
     CAMP_SESSION_CAPACITY_UPDATE: `holidaycamp/updateSessionCapcity`,
     CHECK_STRIPE_AVAILABILITY: `payment/stripe_availability`,
