@@ -154,11 +154,11 @@ export class HttpService {
           customErrorMessage: 'Failed to fetch data'
         };
         const opts = { ...defaultOptions, ...options };
-        const loaderId = `get_${Date.now()}_${Math.random()}`;
+        // const loaderId = `get_${Date.now()}_${Math.random()}`;
         
-        if (opts.showLoader) {
-          this.showLoader(loaderId, opts.loaderMessage);
-        }
+        // if (opts.showLoader) {
+        //   this.showLoader(loaderId, opts.loaderMessage);
+        // }
         
         const headers = input_headers || this.getDefaultHeaders();
         const url = type === 1 ? this.env_const.new_http_url : this.env_const.nest_url;
@@ -168,7 +168,7 @@ export class HttpService {
             catchError((error) => this.handleError(error, opts.customErrorMessage, opts.showErrorToast)),
             finalize(() => {
               if (opts.showLoader) {
-                this.hideLoader(loaderId);
+                //this.hideLoader(loaderId);
               }
             })
           );
@@ -193,11 +193,11 @@ export class HttpService {
           customErrorMessage: 'Failed to save data'
         };
         const opts = { ...defaultOptions, ...options };
-        const loaderId = `post_${Date.now()}_${Math.random()}`;
+        // const loaderId = `post_${Date.now()}_${Math.random()}`;
         
-        if (opts.showLoader) {
-          this.showLoader(loaderId, opts.loaderMessage);
-        }
+        // if (opts.showLoader) {
+        //   this.showLoader(loaderId, opts.loaderMessage);
+        // }
         
         const headers = input_headers || this.getDefaultHeaders();
         const url = this.getApiUrlEndPoint(type);
@@ -206,9 +206,9 @@ export class HttpService {
           .pipe(
             catchError((error) => this.handleError(error, opts.customErrorMessage, opts.showErrorToast)),
             finalize(() => {
-              if (opts.showLoader) {
-                this.hideLoader(loaderId);
-              }
+              // if (opts.showLoader) {
+              //   this.hideLoader(loaderId);
+              // }
             })
           );
       }
