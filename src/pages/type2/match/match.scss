@@ -8,26 +8,42 @@ page-match {
 
   .result-status {
       margin: auto;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 6px;
-      border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 6px;
+    border-radius: 6px;
 
       &.status-published {
-        color: white;
-        background: #10b981;
-      }
+      color: white;
+      background: #10b981;
+    }
 
-      &.status-pending {
-        color: white;
-        background: #f59e0b;
-      }
+     &.status-pending {
+      color: white;
+      background: #f59e0b;
+    }
 
       ion-icon {
         font-size: 12px;
+      }
+      .lineup-btn {
+        margin: 0 0 0 8px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-radius: 4px;
+        padding: 0 6px;
+        min-width: unset;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.4);
+        }
       }
     }
 
@@ -515,6 +531,96 @@ page-match {
         font-size: 13px;
         color: #94a3b8;
         margin: 0;
+      }
+    }
+  }
+}
+
+
+// Global ActionSheet Styles for Lineup Selection
+.lineup-action-sheet {
+  .action-sheet-title {
+    text-align: left !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    font-size: 16px !important;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 15px !important;
+  }
+
+  .action-sheet-button {
+    color: #475569 !important;
+    font-size: 15px !important;
+    padding-left: 16px !important;
+
+    .button-inner {
+      justify-content: flex-start !important;
+    }
+
+    .action-sheet-icon {
+      margin-right: 12px !important;
+      color: #64748b !important;
+      font-size: 22px !important;
+    }
+
+    // 🏆 Option 1, 2, 4: Primary Action Style, Icon Emphasis, Typography Weight
+    &.create-new-button {
+      background-color: #f8fafc !important;
+      color: #2b92bb !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+
+      // Icon Emphasis
+      .action-sheet-icon {
+        color: #2b92bb !important;
+        font-size: 26px !important;
+        transform: scale(1.1);
+      }
+
+      // 🏆 Option 3: Separation via Spacing
+      margin-top: 10px !important;
+      border-top: 2px dashed #e2e8f0 !important;
+
+      &:active,
+      &.activated {
+        background-color: #f1f5f9 !important;
+      }
+    }
+
+    &.saved-formation-row {
+      .button-inner {
+        display: block !important;
+        text-align: left !important;
+        width: 100% !important;
+        padding-right: 20px !important;
+
+        // Ellipsis handling for the entire line
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+
+        .l-part {
+          color: #f59e0b !important;
+          // color: #2b92bb !important;
+          font-weight: 700 !important;
+          font-size: 15px !important;
+        }
+
+        .t-part {
+          color: #1e293b !important;
+          font-weight: 500 !important;
+          font-size: 14px !important;
+          opacity: 0.7;
+        }
+      }
+    }
+
+    &.action-sheet-cancel {
+      color: #ef4444 !important;
+
+      .action-sheet-icon {
+        color: #ef4444 !important;
       }
     }
   }

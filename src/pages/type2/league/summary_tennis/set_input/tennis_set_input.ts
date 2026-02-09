@@ -20,6 +20,15 @@ export class TennisSetInputPage {
   result_json: any;
   setScores: any[] = [];
   
+  // DTO for template binding - simplified team data
+  teamData: {
+    homeTeamName: string;
+    awayTeamName: string;
+  } = {
+    homeTeamName: "",
+    awayTeamName: ""
+  };
+  
   // Auto-calculated values
   homeSetsWon: number = 0;
   awaySetsWon: number = 0;
@@ -44,6 +53,7 @@ export class TennisSetInputPage {
     this.isHomeTeam = this.navParams.get('isHomeTeam');
     this.result_json = this.navParams.get('result_json') || {};
     
+    this.initializeTeamData();
     this.initializeSetScores();
   }
 
@@ -82,6 +92,32 @@ export class TennisSetInputPage {
         element.classList.add('light-theme');
       }
     }
+  }
+
+  initializeTeamData() {
+    // Handle home team
+    if (this.homeTeamObj) {
+      if (this.homeTeamObj.parentclubteam) {
+        // Old structure with parentclubteam
+        this.teamData.homeTeamName = this.homeTeamObj.parentclubteam.teamName || "";
+      } else {
+        // New structure - direct properties
+        this.teamData.homeTeamName = this.homeTeamObj.teamName || "";
+      }
+    }
+
+    // Handle away team
+    if (this.awayTeamObj) {
+      if (this.awayTeamObj.parentclubteam) {
+        // Old structure with parentclubteam
+        this.teamData.awayTeamName = this.awayTeamObj.parentclubteam.teamName || "";
+      } else {
+        // New structure - direct properties
+        this.teamData.awayTeamName = this.awayTeamObj.teamName || "";
+      }
+    }
+
+    console.log('Initialized team data:', this.teamData);
   }
 
   initializeSetScores() {

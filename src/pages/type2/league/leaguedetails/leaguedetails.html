@@ -215,14 +215,12 @@
     </div>
 
     <div *ngIf="activeIndex == 1" class="matchCard">
-      <div class="modern-match-card" 
-           [ngClass]="{
+      <div class="modern-match-card" [ngClass]="{
              'match-completed': mat.ResultStatus == 1,
              'match-pending': mat.ResultStatus != 1,
              'match-paid': mat.payment_type == 1,
              'match-private': mat.match_visibility == 1
-           }"
-           (click)="showMatchActionSheet(mat)" *ngFor="let mat of match">
+           }" (click)="gotoLeagueMatchInfoPage(mat)" *ngFor="let mat of match">
         <!-- Match Header -->
         <div class="match-card-header">
           <div class="match-info">
@@ -268,6 +266,10 @@
           <div class="result-status" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
             <ion-icon [name]="mat.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
             <span>{{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}</span>
+            <button ion-button small clear class="lineup-btn" *ngIf="individualLeague?.league_type === 3"
+              (click)="goToLineup(mat); $event.stopPropagation()">
+              Lineup
+            </button>
           </div>
           <div class="visibility-info">
             <ion-icon [name]="mat.match_visibility==0?'globe':'lock'"></ion-icon>

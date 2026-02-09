@@ -17,13 +17,8 @@
   <!-- Search Card -->
   <div class="compact-search-card">
     <div class="search-content">
-      <ion-searchbar 
-        class="sleek-searchbar"
-        placeholder="Search by Title, Activity, Players"
-        [(ngModel)]="searchInput" 
-        (ionInput)="getFilterEvents($event)"
-        autocorrect="off"
-        showCancelButton="never">
+      <ion-searchbar class="sleek-searchbar" placeholder="Search by Title, Activity, Players" [(ngModel)]="searchInput"
+        (ionInput)="getFilterEvents($event)" autocorrect="off" showCancelButton="never">
       </ion-searchbar>
     </div>
   </div>
@@ -41,7 +36,8 @@
           <div class="card-subtitle">{{formatMatchStartDate(match.MatchStartDate)}}</div>
         </div>
         <div class="match-type-badge">
-          <span class="badge-text" [style.background-color]="getMatchTypeColorByName(getMatchTypeName(match.MatchType))" style="color: white !important;">{{getMatchTypeName(match.MatchType)}}</span>
+          <span class="badge-text" [style.background-color]="getMatchTypeColorByName(getMatchTypeName(match.MatchType))"
+            style="color: white !important;">{{getMatchTypeName(match.MatchType)}}</span>
         </div>
       </div>
 
@@ -65,12 +61,14 @@
             <div class="player-vs-container">
               <div class="player-name">
                 <span></span>{{match.homeUserName}}
-                <ion-icon name="trophy" style="color:#ffd700 !important" *ngIf="match.ResultStatus == 1 && match.is_home_team_winner"></ion-icon>
+                <ion-icon name="trophy" style="color:#ffd700 !important"
+                  *ngIf="match.ResultStatus == 1 && match.is_home_team_winner"></ion-icon>
               </div>
               <div class="vs-badge">VS</div>
               <div class="player-name">
                 <span>{{match.awayUserName}}</span>
-                <ion-icon name="trophy" style="color:#ffd700 !important" *ngIf="match.ResultStatus == 1 && match.is_away_team_winner"></ion-icon>
+                <ion-icon name="trophy" style="color:#ffd700 !important"
+                  *ngIf="match.ResultStatus == 1 && match.is_away_team_winner"></ion-icon>
               </div>
             </div>
           </div>
@@ -83,6 +81,10 @@
             <div class="result-status" [ngClass]="match.ResultStatus == 1 ? 'status-published' : 'status-pending'">
               <ion-icon [name]="match.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
               <span>{{match.ResultStatus == 1 ? match.result_status_text : 'Result Pending'}}</span>
+              <button ion-button small clear class="lineup-btn" *ngIf="match.MatchType === 3"
+                (click)="goToLineup(match); $event.stopPropagation()">
+                Lineup
+              </button>
             </div>
           </div>
 

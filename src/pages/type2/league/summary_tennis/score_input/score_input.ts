@@ -17,11 +17,18 @@ export class TennisScoreInputPage {
     matchObj: LeagueMatch;
     leagueId: string;
     activityId: string;
-    teamObj: LeagueParticipationForMatchModel;
+    teamObj: any;
     setsWon: number;
     ishome: boolean;
 
     setScores: any[] = [];
+
+    // DTO for template binding
+    teamData: {
+        teamName: string;
+    } = {
+        teamName: ""
+    };
 
     isDarkTheme: boolean = true;
 
@@ -40,6 +47,7 @@ export class TennisScoreInputPage {
         this.setsWon = this.navParams.get("setsWon") || 0;
         this.ishome = this.navParams.get("ishome");
 
+        this.initializeTeamData();
         this.initializeSetScores();
     }
 
@@ -78,6 +86,20 @@ export class TennisScoreInputPage {
                 element.classList.add('light-theme');
             }
         }
+    }
+
+    initializeTeamData() {
+        if (this.teamObj) {
+            // Handle different data structures
+            if (this.teamObj.parentclubteam) {
+                // Old structure with parentclubteam
+                this.teamData.teamName = this.teamObj.parentclubteam.teamName || "";
+            } else {
+                // New structure - direct properties
+                this.teamData.teamName = this.teamObj.teamName || "";
+            }
+        }
+        console.log('Initialized team data:', this.teamData);
     }
 
     initializeSetScores() {

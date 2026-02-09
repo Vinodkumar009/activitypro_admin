@@ -3,9 +3,10 @@ import gql from "graphql-tag";
 import {
   IonicPage,
   LoadingController,
-  NavController,
-  NavParams,
   Events,
+  ActionSheetController,
+  NavParams,
+  NavController,
 } from "ionic-angular";
 import { type } from "os";
 import {
@@ -25,6 +26,7 @@ import { API } from "../../../shared/constants/api_constants";
 import { AllMatchData, MatchModelV3 } from "../../../shared/model/match.model";
 import { AppType } from "../../../shared/constants/module.constants";
 import { ThemeService } from "../../../services/theme.service";
+import { SavedFormation } from "../league/models/lineup.model";
 /**
  * Generated class for the MatchPage page.
  *
@@ -92,7 +94,8 @@ export class MatchPage {
     private graphqlService: GraphqlService,
     private httpService: HttpService,
     private themeService: ThemeService,
-    public events: Events
+    public events: Events,
+    public actionSheetCtrl: ActionSheetController
   ) {
     this.commonService.category.pipe(first()).subscribe((data) => {
       if(data == "matchlist") {
@@ -320,6 +323,137 @@ export class MatchPage {
         // selectedmatchId: match.Id,
         // selectedmemberkey: this.FetchMatchesInput.MemberKey,
       });
+  }
+
+  goToLineup(match) {
+    this.fetchSavedFormations(match);
+  }
+
+  private fetchSavedFormations(match) {
+    const deviceType = this.sharedservice.getPlatform() === "android" ? 1 : 2;
+    const payload = {
+      parentclubId: this.sharedservice.getPostgreParentClubId(),
+      clubId: "",
+      activityId: match.activityId || "",
+      memberId: this.sharedservice.getLoggedInId(),
+      action_type: 0,
+      device_type: deviceType,
+      app_type: AppType.ADMIN_NEW,
+      device_id: "",
+      updated_by: this.sharedservice.getLoggedInId(),
+      matchId: match.MatchId
+    };
+
+    this.httpService.post(API.GET_SAVED_FORMATIONS, payload)
+      .subscribe(
+        (res: any) => {
+          const savedFormations: SavedFormation[] = res.data || [];
+          this.presentLineupActionSheet(match, savedFormations);
+        },
+        (error) => {
+          console.error("Error fetching saved formations:", error);
+          // Still show the action sheet with the "Create New" option even if fetch fails
+          this.presentLineupActionSheet(match, []);
+        }
+      );
+  }
+
+  private presentLineupActionSheet(match, savedFormations: SavedFormation[]) {
+    if (!match.homeUserName || !match.awayUserName) {
+      this.commonService.toastMessage('Please assign teams first', 2500, ToastMessageType.Error);
+      return;
+    }
+    const buttons: any[] = [];
+
+    if (savedFormations.length === 0) {
+      buttons.push({
+        text: 'No saved lineups available',
+        icon: 'information-circle',
+        cssClass: 'no-lineups-text',
+        handler: () => {
+          // Do nothing, just informational
+          return false;
+        }
+      });
+    } else {
+      savedFormations.forEach((formation: SavedFormation) => {
+        // Use a separator that we can split later in the injection script
+        const lineupLabel = `${formation.lineup_name || 'Lineup'} (${formation.formation_name})`;
+        const displayText = formation.team_name
+          ? `${lineupLabel}|${formation.team_name}`
+          : lineupLabel;
+
+        buttons.push({
+          text: displayText,
+          icon: 'grid',
+          cssClass: 'saved-formation-row',
+          handler: () => {
+            this.navigateToLineup(match, formation.lineup_name, false, formation.formation_setup_id, formation.team_id, formation.team_size);
+          }
+        });
+      });
+    }
+
+    // Always add Create New Formation button
+    buttons.push({
+      text: 'Create New Formation',
+      icon: 'add-circle',
+      cssClass: 'create-new-button',
+      handler: () => {
+        this.navigateToLineup(match, '', true);
+      }
+    });
+
+    // Add Cancel button
+    buttons.push({
+      text: 'Cancel',
+      role: 'cancel',
+      icon: 'close',
+      cssClass: 'action-sheet-cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    });
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: 'Select Lineup',
+      cssClass: 'lineup-action-sheet',
+      buttons: buttons
+    });
+
+    actionSheet.present().then(() => {
+      // Small delay to ensure the DOM is ready
+      setTimeout(() => {
+        const buttonElements = document.querySelectorAll('.saved-formation-row .button-inner');
+        buttonElements.forEach((btn: any) => {
+          const content = btn.innerHTML;
+          if (content.includes('|')) {
+            const parts = content.split('|');
+            // Reconstruct the HTML with styled spans for different colors
+            btn.innerHTML = `<span class="l-part">${parts[0]}</span><span class="t-part"> - ${parts[1]}</span>`;
+          }
+        });
+      }, 50);
+    });
+  }
+
+  private navigateToLineup(match, lineupName: string = '', isCreateNew: boolean = false, formationSetupId: string = '', teamId: string = '', teamSize: number = 0) {
+    this.navCtrl.push("LineupPage", {
+      match: match,
+      matchId: match.MatchId,
+      activityId: match.activityId,
+      homeUserId: match.homeUserId,
+      awayUserId: match.awayUserId,
+      homeUserName: match.homeUserName,
+      awayUserName: match.awayUserName,
+      lineupName: lineupName || (isCreateNew ? 'New Formation' : 'Starting line-up'),
+      isCreateNew: isCreateNew,
+      formationSetupId: formationSetupId,
+      teamId: teamId,
+      teamSize: teamSize,
+      isLeague: false,  // False when navigating from match page
+      leagueId: ""      // Empty string for non-league context
+    });
   }
 
 

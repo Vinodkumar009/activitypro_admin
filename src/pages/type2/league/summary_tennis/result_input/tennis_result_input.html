@@ -14,7 +14,7 @@
   <div class="header-section">
     <div class="match-info">
       <ion-icon name="trophy" style="color: #2b92bb;"></ion-icon>
-      <h3>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}} vs {{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</h3>
+      <h3>{{teamData.homeTeamName}} vs {{teamData.awayTeamName}}</h3>
     </div>
     <p class="subtitle">Enter match result details</p>
   </div>
@@ -27,17 +27,17 @@
         <span>Match Winner</span>
       </div>
       <div class="winner-options">
-        <div class="team-option" [class.selected]="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)" 
+        <div class="team-option" [class.selected]="selectedWinner === teamData.homeTeamId" 
              [class.disabled]="!isEditable"
-             (click)="isEditable && (selectedWinner = homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id); $event.stopPropagation()">
-          <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.id)"></ion-icon>
-          <span>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</span>
+             (click)="isEditable && selectWinner(teamData.homeTeamId)">
+          <ion-icon name="checkmark-circle" *ngIf="selectedWinner === teamData.homeTeamId"></ion-icon>
+          <span>{{teamData.homeTeamName}}</span>
         </div>
-        <div class="team-option" [class.selected]="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)" 
+        <div class="team-option" [class.selected]="selectedWinner === teamData.awayTeamId" 
              [class.disabled]="!isEditable"
-             (click)="isEditable && (selectedWinner = awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id); $event.stopPropagation()">
-          <ion-icon name="checkmark-circle" *ngIf="selectedWinner === (awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.id)"></ion-icon>
-          <span>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</span>
+             (click)="isEditable && selectWinner(teamData.awayTeamId)">
+          <ion-icon name="checkmark-circle" *ngIf="selectedWinner === teamData.awayTeamId"></ion-icon>
+          <span>{{teamData.awayTeamName}}</span>
         </div>
       </div>
     </div>

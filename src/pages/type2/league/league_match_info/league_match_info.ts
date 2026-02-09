@@ -646,7 +646,7 @@ export class LeagueMatchInfoPage {
   }
 
   updateLeagueMatchInviteStatus(member: LeagueMatchParticipantModel, inviteStatus: LeaguePlayerInviteStatus) {
-    this.commonService.showLoader("Please wait...");
+    //this.commonService.showLoader("Please wait...");
     this.updateLeagueMatchInviteStatusInput.ParticipationId = member.id;
     this.updateLeagueMatchInviteStatusInput.InviteStatus = inviteStatus;
 
@@ -860,7 +860,7 @@ export class LeagueMatchInfoPage {
 
   //fetch api for teams and corresponding player details
   getLeagueMatchParticipant(par: LeagueTeamPlayerStatusType) {
-    this.commonService.showLoader("Fetching info ...");
+    //this.commonService.showLoader("Fetching info ...");
     let teamId: string | null = null;
     if (this.selectedTeam) {
       teamId = this.selectedTeam.parentclubteam.id;
@@ -918,7 +918,7 @@ export class LeagueMatchInfoPage {
 
   //called when we use drag and drop to change the status of the player
   updateLeagueMatchParticipationStatus(participantStatus, newParticipantStatus: LeagueParticipationStatus, { participationId }: { participationId: string }) {
-    this.commonService.showLoader("Adding...");
+    //this.commonService.showLoader("Adding...");
     this.updateLeagueMatchParticipationStatusInput.ParticipationId = participationId;
     this.updateLeagueMatchParticipationStatusInput.ParticipationStatus = newParticipantStatus;
     this.httpService.post(`${API.Update_League_Match_Participation_Status}`, this.updateLeagueMatchParticipationStatusInput).subscribe({

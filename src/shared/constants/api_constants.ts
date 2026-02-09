@@ -156,5 +156,9 @@ export const API = {
     WALLET_PAYMENT_REPORT_BY_DATE: 'wallet/paymentreportbydate',
     WALLET_TOTAL_BALANCE: 'wallet/getavailabletotalbalance',
     GET_PARENT_CLUB_VENUES: 'club/GetParentClubVenues',
-    CHECK_WALLET_FOR_PARENT_CLUB: 'wallet/checkwallet'
+    CHECK_WALLET_FOR_PARENT_CLUB: 'wallet/checkwallet',
+    GET_TEAM_FORMATIONS: 'league/lineup/getTeamFormations',
+    SAVE_TEAM_FORMATION: 'league/lineup/saveTeamFormation',
+    DELETE_TEAM_FORMATION: 'league/lineup/deleteTeamFormation',
+    GET_SAVED_FORMATIONS: 'league/lineup/getSavedFormationsForMatch'
 }

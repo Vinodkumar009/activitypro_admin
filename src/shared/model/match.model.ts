@@ -201,6 +201,8 @@ export interface ParticipantUserData {
     FirebaseKey: string; // 🔥 Firebase key
     media_consent: boolean; // 📸 Media consent status
     profile_status: string; // 👁️ Profile visibility status
+    AGE?: number; // 👶 Age (optional)
+    profile_image_url: string;
 }
 
 // 🏈 Interface for the Team details within a participant entry

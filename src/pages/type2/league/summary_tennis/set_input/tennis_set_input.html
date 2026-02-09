@@ -13,7 +13,7 @@
   <div class="header-section">
     <div class="team-info">
       <ion-icon name="trophy" style='color: #2b92bb;'></ion-icon>
-      <h3>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}} vs {{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</h3>
+      <h3>{{teamData.homeTeamName}} vs {{teamData.awayTeamName}}</h3>
     </div>
     <p class="subtitle">Enter set scores for each set played</p>
   </div>
@@ -25,12 +25,12 @@
       </div>
       <div class="score-inputs">
         <div class="team-score">
-          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <label>{{teamData.homeTeamName}}</label>
           <ion-input type="number" [(ngModel)]="set.SCORE1" placeholder="0" class="score-input" (ionChange)="onScoreChange()"></ion-input>
         </div>
         <div class="vs-divider">-</div>
         <div class="team-score">
-          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <label>{{teamData.awayTeamName}}</label>
           <ion-input type="number" [(ngModel)]="set.SCORE2" placeholder="0" class="score-input" (ionChange)="onScoreChange()"></ion-input>
         </div>
       </div>
@@ -60,12 +60,12 @@
       </div>
       <div class="summary-row">
         <div class="team-summary">
-          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <label>{{teamData.homeTeamName}}</label>
           <span class="summary-value">{{homeSetsWon}}</span>
         </div>
         <div class="vs-separator">vs</div>
         <div class="team-summary">
-          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <label>{{teamData.awayTeamName}}</label>
           <span class="summary-value">{{awaySetsWon}}</span>
         </div>
       </div>
@@ -79,12 +79,12 @@
       </div>
       <div class="summary-row">
         <div class="team-summary">
-          <label>{{homeTeamObj && homeTeamObj.parentclubteam && homeTeamObj.parentclubteam.teamName}}</label>
+          <label>{{teamData.homeTeamName}}</label>
           <span class="summary-value">{{homeGamesWon}}</span>
         </div>
         <div class="vs-separator">vs</div>
         <div class="team-summary">
-          <label>{{awayTeamObj && awayTeamObj.parentclubteam && awayTeamObj.parentclubteam.teamName}}</label>
+          <label>{{teamData.awayTeamName}}</label>
           <span class="summary-value">{{awayGamesWon}}</span>
         </div>
       </div>

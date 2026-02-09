@@ -24,20 +24,27 @@ export class TennisResultInputPage {
   isLeague: boolean = false;
   isEditable: boolean = true;
   // League flow properties
-  homeTeamObj: LeagueParticipationForMatchModel;
-  awayTeamObj: LeagueParticipationForMatchModel;
-  matchObj: LeagueMatch;
+  homeTeamObj: any;
+  awayTeamObj: any;
+  matchObj: any;
 
   // Non-League flow properties
   matchTeamObj: AllMatchData;
   hometeamMatchObj: TeamsForParentClubModel;
   awayteamMatchObj: TeamsForParentClubModel;
 
-  // Optimized team properties for template binding
-  homeTeamId: string = "";
-  awayTeamId: string = "";
-  homeTeamName: string = "";
-  awayTeamName: string = "";
+  // DTO for template binding - simplified team data
+  teamData: {
+    homeTeamId: string;
+    awayTeamId: string;
+    homeTeamName: string;
+    awayTeamName: string;
+  } = {
+    homeTeamId: "",
+    awayTeamId: "",
+    homeTeamName: "",
+    awayTeamName: ""
+  };
 
   // Result properties
   result_json: TennisResultModel;
@@ -122,20 +129,43 @@ export class TennisResultInputPage {
       this.homeTeamObj = this.navParams.get("homeTeamObj");
       this.awayTeamObj = this.navParams.get("awayTeamObj");
 
-      this.homeTeamId = this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.id || "";
-      this.awayTeamId = this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.id || "";
-      this.homeTeamName = this.homeTeamObj && this.homeTeamObj.parentclubteam && this.homeTeamObj.parentclubteam.teamName || "";
-      this.awayTeamName = this.awayTeamObj && this.awayTeamObj.parentclubteam && this.awayTeamObj.parentclubteam.teamName || "";
+      // Handle different data structures for league flow
+      // Check if data is in parentclubteam structure or direct structure
+      if (this.homeTeamObj) {
+        if (this.homeTeamObj.parentclubteam) {
+          // Old structure with parentclubteam
+          this.teamData.homeTeamId = this.homeTeamObj.parentclubteam.id || "";
+          this.teamData.homeTeamName = this.homeTeamObj.parentclubteam.teamName || "";
+        } else {
+          // New structure - direct properties
+          this.teamData.homeTeamId = this.homeTeamObj.id || "";
+          this.teamData.homeTeamName = this.homeTeamObj.teamName || "";
+        }
+      }
+
+      if (this.awayTeamObj) {
+        if (this.awayTeamObj.parentclubteam) {
+          // Old structure with parentclubteam
+          this.teamData.awayTeamId = this.awayTeamObj.parentclubteam.id || "";
+          this.teamData.awayTeamName = this.awayTeamObj.parentclubteam.teamName || "";
+        } else {
+          // New structure - direct properties
+          this.teamData.awayTeamId = this.awayTeamObj.id || "";
+          this.teamData.awayTeamName = this.awayTeamObj.teamName || "";
+        }
+      }
     } else {
       this.matchTeamObj = this.navParams.get("matchObj");
       this.hometeamMatchObj = this.navParams.get("homeTeamObj");
       this.awayteamMatchObj = this.navParams.get("awayTeamObj");
 
-      this.homeTeamId = this.hometeamMatchObj && this.hometeamMatchObj.id || "";
-      this.awayTeamId = this.awayteamMatchObj && this.awayteamMatchObj.id || "";
-      this.homeTeamName = this.hometeamMatchObj && this.hometeamMatchObj.teamName || "";
-      this.awayTeamName = this.awayteamMatchObj && this.awayteamMatchObj.teamName || "";
+      this.teamData.homeTeamId = this.hometeamMatchObj && this.hometeamMatchObj.id || "";
+      this.teamData.awayTeamId = this.awayteamMatchObj && this.awayteamMatchObj.id || "";
+      this.teamData.homeTeamName = this.hometeamMatchObj && this.hometeamMatchObj.teamName || "";
+      this.teamData.awayTeamName = this.awayteamMatchObj && this.awayteamMatchObj.teamName || "";
     }
+
+    console.log('Initialized team data:', this.teamData);
   }
 
   initializeValues() {
@@ -269,8 +299,8 @@ export class TennisResultInputPage {
         return false;
       }
 
-      const winnerSets = this.selectedWinner === this.homeTeamId ? homeSetsWon : awaySetsWon;
-      const loserSets = this.selectedWinner === this.homeTeamId ? awaySetsWon : homeSetsWon;
+      const winnerSets = this.selectedWinner === this.teamData.homeTeamId ? homeSetsWon : awaySetsWon;
+      const loserSets = this.selectedWinner === this.teamData.homeTeamId ? awaySetsWon : homeSetsWon;
 
       if (winnerSets <= loserSets) {
         this.commonService.toastMessage('Winner must have won more sets than the loser', 3000, ToastMessageType.Error);

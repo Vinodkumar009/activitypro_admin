@@ -55,3 +55,9 @@ export enum PaymentStatusEnum {
     PendingVerification = 3,
     Failed = 4,
 }
+
+export enum LineupVisibility {
+    ALL_INVITEES = 1,
+    TEAM_ONLY = 2,
+    COACHES_ONLY = 3
+}

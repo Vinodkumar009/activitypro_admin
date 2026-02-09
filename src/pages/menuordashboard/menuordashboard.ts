@@ -83,54 +83,54 @@ export class MenuOrDashboard {
       }
     });
     // Commented out Firebase implementation - replaced with REST API
-    this.events.subscribe("user:loginsuccessfully", (user, time) => {
-      let menuDataObs$ = this.fb
-        .getAllWithQuery(`UserMenus/${user.UserInfo[0].ParentClubKey}`, {
-          orderByKey: true,
-          equalTo: user.$key,
-        })
-        .subscribe((menuData) => {
-          this.sharedservice.setThemeType(2);
-          this.storage.remove("Menus");
-          const menus = this.commonService.convertFbObjectToArray(
-            menuData[0].Menu
-          );
-          this.updateMenu(user, menus);
-          this.storage.set("Menus", JSON.stringify(menus));
-          menuDataObs$.unsubscribe();
-        });
-    });
+    // this.events.subscribe("user:loginsuccessfully", (user, time) => {
+    //   let menuDataObs$ = this.fb
+    //     .getAllWithQuery(`UserMenus/${user.UserInfo[0].ParentClubKey}`, {
+    //       orderByKey: true,
+    //       equalTo: user.$key,
+    //     })
+    //     .subscribe((menuData) => {
+    //       this.sharedservice.setThemeType(2);
+    //       this.storage.remove("Menus");
+    //       const menus = this.commonService.convertFbObjectToArray(
+    //         menuData[0].Menu
+    //       );
+    //       this.updateMenu(user, menus);
+    //       this.storage.set("Menus", JSON.stringify(menus));
+    //       menuDataObs$.unsubscribe();
+    //     });
+    // });
 
     // New REST API implementation
-  //   this.events.subscribe("user:loginsuccessfully", async(user, time) => {
-  //     const loggedin_user_info = JSON.parse(await this.storage.get("loggedin_user"));
-  //     //const loggedin_user_info = JSON.parse(loggedinuser);
-  //     const requestPayload: GetUserMenusRequestDto = {
-  //       //parentClubKey: user.UserInfo[0].ParentClubKey,
-  //       parentclub_id:loggedin_user_info.postgres_parentclubkey,
-  //       member_id: loggedin_user_info.id,
-  //       action_type: 1,
-  //       device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
-  //       app_type: AppType.ADMIN_NEW,
-  //       device_id: this.sharedservice.getDeviceId() || 'unknown',
-  //       updated_by: loggedin_user_info.id || 'admin' ,
-  //     };
+    this.events.subscribe("user:loginsuccessfully", async(user, time) => {
+      const loggedin_user_info = JSON.parse(await this.storage.get("loggedin_user"));
+      //const loggedin_user_info = JSON.parse(loggedinuser);
+      const requestPayload: GetUserMenusRequestDto = {
+        //parentClubKey: user.UserInfo[0].ParentClubKey,
+        parentclub_id:loggedin_user_info.postgres_parentclubkey,
+        member_id: loggedin_user_info.id,
+        action_type: 1,
+        device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
+        app_type: AppType.ADMIN_NEW,
+        device_id: this.sharedservice.getDeviceId() || 'unknown',
+        updated_by: loggedin_user_info.id || 'admin' ,
+      };
       
-  //     this.httpService.post<GetUserMenusResponseDto>(`${API.GET_PARENTCLUB_USER_MENUS}`, requestPayload)
-  //       .subscribe({
-  //         next: (response) => {
-  //           this.sharedservice.setThemeType(2);
-  //           this.storage.remove("Menus");
-  //           const menus = response.data || [];
-  //           this.updateMenu(user, menus);
-  //           this.storage.set("Menus", JSON.stringify(menus));
-  //         },
-  //         error: (err) => {
-  //           console.error("Error fetching menus:", err);
-  //           this.commonService.toastMessage("Failed to load menus",2500,ToastMessageType.Error, ToastPlacement.Bottom);
-  //         }
-  //       });
-  //   });
+      this.httpService.post<GetUserMenusResponseDto>(`${API.GET_PARENTCLUB_USER_MENUS}`, requestPayload)
+        .subscribe({
+          next: (response) => {
+            this.sharedservice.setThemeType(2);
+            this.storage.remove("Menus");
+            const menus = response.data || [];
+            this.updateMenu(user, menus);
+            this.storage.set("Menus", JSON.stringify(menus));
+          },
+          error: (err) => {
+            console.error("Error fetching menus:", err);
+            this.commonService.toastMessage("Failed to load menus",2500,ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+        });
+    });
    }
 
   getMenus() {
