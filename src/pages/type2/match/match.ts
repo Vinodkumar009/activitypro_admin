@@ -363,6 +363,10 @@ export class MatchPage {
       this.commonService.toastMessage('Please assign teams first', 2500, ToastMessageType.Error);
       return;
     }
+    if (match.activityId !== 'd47c2ac4-e571-488f-a895-c1940726900f') {
+      this.commonService.toastMessage('Team lineup data is not available for this activity', 2500, ToastMessageType.Info);
+      return;
+    }
     const buttons: any[] = [];
 
     if (savedFormations.length === 0) {

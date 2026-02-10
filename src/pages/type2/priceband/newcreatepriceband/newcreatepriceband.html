@@ -38,12 +38,11 @@
 <ion-content padding>
     <ion-item>
         <ion-label>Name</ion-label>
-        <ion-input type="text" [(ngModel)]="PriceBand.PriceBandName" placeholder="Name"></ion-input>
+        <ion-input type="text" [(ngModel)]="PriceBand.PriceBandName"></ion-input>
     </ion-item>
     <ion-row>
         <ion-col col-6 class="padding-0">
             <ion-item>
-
                 <ion-select [(ngModel)]="selectedClub" [disabled]="Isupdatecome" (ionChange)="getAllActivity()">
                     <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
                 </ion-select>   
@@ -51,7 +50,7 @@
         </ion-col>
         <ion-col col-6 class="padding-0">
             <ion-item>
-
+            <ion-label>Activity</ion-label>
                 <ion-select [(ngModel)]="selectedActivity" [disabled]="Isupdatecome" class="pad-right"
                     (ionChange)="checkAvailability()">
                     <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}
@@ -82,8 +81,8 @@
     <ion-row>
         <ion-col col-12 class="padding-0">
             <ion-item>
-                <ion-select style="max-width: 100% !important;
-                width: 100vw;" [(ngModel)]="selectedOption" (ngModelChange)="getcourts($event)" [disabled]="Isupdatecome">
+                <ion-label>Courts</ion-label>
+                <ion-select style="" [(ngModel)]="selectedOption" (ngModelChange)="getcourts($event)" [disabled]="Isupdatecome">
                     <ion-option *ngFor="let court of courtselectionlist; let i = index" value={{i}}>{{court}}</ion-option>
                 </ion-select>
             </ion-item>
@@ -92,8 +91,10 @@
     <ion-row *ngIf="selectedOption == 3">
         <ion-col col-12 class="padding-0">
             <ion-item>
-                <ion-select style="max-width: 100% !important;
-                width: 100vw;" [(ngModel)]="courtArray" multiple="true" (ngModelChange)="courtChange($event)" [disabled]="Isupdatecome">
+                <ion-label>Courts</ion-label>
+                <ion-select style="" [(ngModel)]="courtArray" multiple="true" (ngModelChange)="courtChange($event)" [disabled]="Isupdatecome">
+                <!-- <ion-select style="max-width: 100% !important;
+                width: 100vw;" [(ngModel)]="courtArray" multiple="true" (ngModelChange)="courtChange($event)" [disabled]="Isupdatecome"> -->
                     <ion-option *ngFor="let court of courtSetup" value={{court.$key}}>{{court.CourtName}}</ion-option>
                 </ion-select>
             </ion-item>
