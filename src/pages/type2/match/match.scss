@@ -1,51 +1,68 @@
 @import '../../../theme/android-sdk35-fixes.scss';
+
 page-match {
   @include android-sdk35-fixes;
+
   .scroll-content {
     padding: 0 !important;
   }
 
-
-  .result-status {
-      margin: auto;
+  .result-status-lineup-container {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 6px;
-    border-radius: 6px;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+
+    .result-status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
 
       &.status-published {
-      color: white;
-      background: #10b981;
-    }
+        color: white;
+        background: #10b981;
+      }
 
-     &.status-pending {
-      color: white;
-      background: #f59e0b;
-    }
+      &.status-pending {
+        color: white;
+        background: #f59e0b;
+      }
 
       ion-icon {
         font-size: 12px;
       }
-      .lineup-btn {
-        margin: 0 0 0 8px;
-        height: 20px;
-        background: rgba(255, 255, 255, 0.3);
-        color: white;
-        font-size: 9px;
-        font-weight: 700;
-        text-transform: uppercase;
-        border-radius: 4px;
-        padding: 0 6px;
-        min-width: unset;
+    }
 
-        &:hover {
-          background: rgba(255, 255, 255, 0.4);
-        }
+    .lineup-action-btn {
+      margin: 0;
+      height: 24px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #2b92bb 0%, #1e6c8c 100%);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 6px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      ion-icon {
+        font-size: 12px;
+      }
+
+      &:hover {
+        background: linear-gradient(135deg, #1e6c8c 0%, #154c63 100%);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
       }
     }
+  }
 
 
   // Light Theme Styles
@@ -116,12 +133,6 @@ page-match {
 
           .card-subtitle {
             color: #64748b !important;
-          }
-        }
-
-        .match-type-badge {
-          .badge-text {
-            // Dynamic colors applied via inline styles
           }
         }
       }
@@ -535,7 +546,6 @@ page-match {
     }
   }
 }
-
 
 // Global ActionSheet Styles for Lineup Selection
 .lineup-action-sheet {

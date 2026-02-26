@@ -410,3 +410,37 @@ export class CategoryNsubcategory {
 
 }
  
+
+/*
+ * ======================== PAGE FLOW SUMMARY ========================
+ *
+ * 1. getAllClub() — Fetches all venues/clubs under the parent club via API.
+ *    For each club returned, it calls getAllActivity(clubKey).
+ *
+ * 2. getAllActivity(clubKey) — Subscribes to Firebase at /Activity/{parentClubKey}/{clubKey}/.
+ *    Collects all active activities into this.activity (deduped by ActivityKey).
+ *    Merges categories from multiple clubs into the same activity object.
+ *    Builds a clubmap (Map<activityKey, clubKey[]>) to track which clubs share which activity.
+ *    Auto-selects the first activity via changeActivity() at the end of each call.
+ *
+ * 3. changeActivity(activityKey) — Finds the matching activity object and sets it as selectedactivityObj.
+ *    Used both for auto-selection and when the user picks a different activity from the UI.
+ *
+ * 4. addcategory(catType, category?) — Opens the modal for adding a Category or SubCategory.
+ *    Sets catType ("Category" or "SubCategory") which determines the save path.
+ *    selectedcategory is set when adding a subcategory (stores the parent category).
+ *
+ * 5. save() — Validates the form, looks up clubmap for the selected activity's clubs,
+ *    then routes to saveCategory() or saveSubCategory() based on catType.
+ *
+ * 6. saveCategory(clubkeys) — Saves the new category to Firebase under:
+ *      Activity/{parentClubKey}/{clubKey}/{activityKey}/ActivityCategory/
+ *    First club: uses saveReturningKey() to create the entry and get a Firebase key.
+ *    Remaining clubs: uses update() with the same key to replicate the category.
+ *    Also flips IsExistActivityCategory to true if it was false.
+ *
+ * CONCLUSION:
+ * The clubmap determines which clubs share the selected activity.
+ * When a new category/subcategory is created, it gets saved across ALL clubs
+ * that have that activity — using the same Firebase key for consistency.
+ */

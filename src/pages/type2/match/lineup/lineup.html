@@ -67,7 +67,8 @@
     <div class="lineup-container">
         <!-- Lineup Name Input -->
         <div class="lineup-name-section">
-            <ion-input [(ngModel)]="lineupName" placeholder="Enter lineup name" class="lineup-name-input"></ion-input>
+            <ion-input [(ngModel)]="lineupName" [placeholder]="isCreateNew ? 'Enter lineup name here' : ''"
+                class="lineup-name-input"></ion-input>
         </div>
 
         <!-- Settings Section -->

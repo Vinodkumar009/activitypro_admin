@@ -1,8 +1,10 @@
 @import "../_league-theme.scss";
 @import '../../../../theme/android-sdk35-fixes.scss';
+
 page-leaguedetails {
   @include league-theme-base;
   @include android-sdk35-fixes;
+
   // Enhanced theme support for specific elements
   &.light-theme {
     .modern-match-card {
@@ -190,6 +192,7 @@ page-leaguedetails {
     background-color: #334155 !important;
     padding: 16px;
   }
+
   .teamName {
     color: #154766;
     font-size: 18px;
@@ -242,7 +245,7 @@ page-leaguedetails {
     color: #154766;
   }
 
-  .action_btns_div{
+  .action_btns_div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -251,11 +254,13 @@ page-leaguedetails {
     top: 50%;
     left: 50%;
     transform: translate(-40%, -20%);
-    button{
+
+    button {
       height: 2em;
-      ion-icon{
-       color: #2b92bb !important;
-       font-size: 1.5em !important;
+
+      ion-icon {
+        color: #2b92bb !important;
+        font-size: 1.5em !important;
       }
     }
   }
@@ -591,14 +596,14 @@ page-leaguedetails {
   }
 
   .fabEmailText {
-    margin-left: -152px;
+    margin-left: -115px;
     background-color: #2b92bb;
     margin-top: -47px;
     padding: 5px 12px 5px 11px;
     margin-bottom: 5px;
     color: #ffffff;
     border-radius: 3px;
-    margin-right: 50px;
+    margin-right: 36px;
     -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
   }
@@ -800,8 +805,7 @@ page-leaguedetails {
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 12px;
       color: #6b7280;
 
       ion-icon {
@@ -918,27 +922,58 @@ page-leaguedetails {
     justify-content: space-between;
     align-items: center;
 
-    .result-status {
+    .result-status-lineup-container {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 6px;
-      border-radius: 6px;
+      gap: 12px;
 
-      &.status-published {
-        color: white;
-        background: #10b981;
+      .result-status {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 8px;
+        border-radius: 6px;
+
+        &.status-published {
+          color: white;
+          background: #10b981;
+        }
+
+        &.status-pending {
+          color: white;
+          background: #f59e0b;
+        }
+
+        ion-icon {
+          font-size: 12px;
+        }
       }
 
-      &.status-pending {
-        color: white;
-        background: #f59e0b;
-      }
+      .lineup-action-btn {
+        margin: 0;
+        height: 24px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #2b92bb 0%, #1e6c8c 100%);
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-radius: 6px;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-      ion-icon {
-        font-size: 12px;
+        ion-icon {
+          font-size: 12px;
+        }
+
+        &:hover {
+          background: linear-gradient(135deg, #1e6c8c 0%, #154c63 100%);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
       }
     }
 

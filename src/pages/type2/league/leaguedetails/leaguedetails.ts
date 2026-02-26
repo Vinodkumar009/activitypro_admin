@@ -510,7 +510,7 @@ export class LeaguedetailsPage {
 
     // Always add Create New Formation button
     buttons.push({
-      text: 'Create New Formation',
+      text: 'Create New Lineup',
       icon: 'add-circle',
       cssClass: 'create-new-button',
       handler: () => {
@@ -519,15 +519,15 @@ export class LeaguedetailsPage {
     });
 
     // Add Cancel button
-    buttons.push({
-      text: 'Cancel',
-      role: 'cancel',
-      icon: 'close',
-      cssClass: 'action-sheet-cancel',
-      handler: () => {
-        console.log('Cancel clicked');
-      }
-    });
+    // buttons.push({
+    //   text: 'Cancel',
+    //   role: 'cancel',
+    //   icon: 'close',
+    //   cssClass: 'action-sheet-cancel',
+    //   handler: () => {
+    //     console.log('Cancel clicked');
+    //   }
+    // });
 
     const actionSheet = this.actionSheetCtrl.create({
       title: 'Select Lineup',
@@ -560,7 +560,7 @@ export class LeaguedetailsPage {
       awayUserId: match.away_team_id,      // Map from LeagueMatch property
       homeUserName: match.homeusername, // Use lowercase
       awayUserName: match.awayusername, // Use lowercase
-      lineupName: lineupName || (isCreateNew ? 'New Formation' : 'Starting line-up'),
+      lineupName: isCreateNew ? '' : (lineupName || 'Starting line-up'),
       isCreateNew: isCreateNew,
       formationSetupId: formationSetupId,
       teamId: teamId,

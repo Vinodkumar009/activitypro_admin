@@ -262,12 +262,15 @@
         </div>
 
         <!-- Match Footer -->
-        <div class="match-card-footer">
-          <div class="result-status" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
-            <ion-icon [name]="mat.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
-            <span>{{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}</span>
-            <button ion-button small clear class="lineup-btn" *ngIf="individualLeague?.league_type === 3"
+         <div class="match-card-footer">
+          <div class="result-status-lineup-container">
+            <div class="result-status" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
+              <ion-icon [name]="mat.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
+              <span>{{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}</span>
+            </div>
+            <button ion-button small class="lineup-action-btn" *ngIf="individualLeague?.league_type === 3"
               (click)="goToLineup(mat); $event.stopPropagation()">
+              <ion-icon name="football"></ion-icon>&nbsp;
               Lineup
             </button>
           </div>
