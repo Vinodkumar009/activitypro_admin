@@ -11,6 +11,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs'
 import { UsersListInput } from '../../../member/model/member';
 import { UsersModel } from '../../../holidaycamp/addmembertocamp';
+import { AppType } from '../../../../../shared/constants/module.constants';
 /**
  * Generated class for the AddmembertoweeklyPage page.
  *
@@ -51,7 +52,11 @@ export class AddmembertoweeklyPage {
   createEnrollment: CreateEnrollment = {
     weekly_session_days: [],
     weekly_session_id: '',
-    MemberIds: []
+    MemberIds: [],
+    ParentClubId: '', //ParentClub Id
+    MemberId:'',
+    AppType:AppType.ADMIN_NEW,
+    DeviceType:1
   }
   private searchTerms = new Subject<string>();
   existedPlayer: WeeklySessionMember[] = []
@@ -79,6 +84,10 @@ export class AddmembertoweeklyPage {
     console.log("parentclub Id:", this.parentClubId)
     this.createEnrollment.weekly_session_id = this.weeklySessionId; //this is the complete weeklysessionid
     this.createEnrollment.weekly_session_days.push(this.individualSessionId)
+    this.createEnrollment.ParentClubId = this.sharedService.getPostgreParentClubId();
+    this.createEnrollment.AppType = AppType.ADMIN_NEW;
+    this.createEnrollment.MemberId = this.sharedService.getLoggedInUserId();
+    this.createEnrollment.DeviceType = this.sharedService.getPlatform() === 'android' ? 1 : 2;
     this.venus_user_input.parentclub_id = this.sharedService.getPostgreParentClubId();
     // Fetch members data
     this.weeklySessionDateDetails();
@@ -329,7 +338,7 @@ checkForExistingUsers(){
   // Function to submit selected members
   submitMembers() {
     this.commonService.showLoader("Please wait");
-    this.createEnrollment.MemberIds = this.selectedMembers.map(member => member.Id);
+    this.createEnrollment.MemberIds = Array.from(new Set(this.selectedMembers.map(member => member.Id)));
     console.log('input giving for adding members:', this.createEnrollment);
     const submitMembersMutation = gql`
         mutation createWeeklySessionEnrollment($input: CreateEnrollment!) {
@@ -363,9 +372,9 @@ checkForExistingUsers(){
         console.error("GraphQL mutation error:", err);
         this.commonService.toastMessage("User enrol failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       });
-
-
   }
+
+
 }
 
 
@@ -396,4 +405,8 @@ export class CreateEnrollment {
   weekly_session_days: string[]
   weekly_session_id: string
   MemberIds: string[]
+  ParentClubId?: string; //ParentClub Id
+  MemberId?:string
+  AppType?:number
+  DeviceType?:number
 }

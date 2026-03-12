@@ -308,20 +308,20 @@ export class Login {
   private handleLogin(userData: any, memberType: any, userType: string, firebase_loggedinkey:string) {
     this.httpService.get<{message: string,data: ParentClubUserResponseDto}>(`${API.GET_PARENTCLUB_USER_BY_FIREBASEID}/${firebase_loggedinkey}`)
         .subscribe({
-            next: (res) => {
+            next: async (res) => {
                 const userinfo = this.commonService.convertFbObjectToArray(userData.UserInfo);
                 userData.UserInfo = userinfo;
                 
-                this.storage.set('isLogin', true);
-                this.storage.set('LoginWhen', 'first');
-                this.storage.set('userObj', JSON.stringify(userData));
-                this.storage.set('memberType', memberType);
-                this.storage.set('UserKey', JSON.stringify(userData.$key));
+                await this.storage.set('isLogin', true);
+                await this.storage.set('LoginWhen', 'first');
+                await this.storage.set('userObj', JSON.stringify(userData));
+                await this.storage.set('memberType', memberType);
+                await this.storage.set('UserKey', JSON.stringify(userData.$key));
                 
                 this.sharedservice.setLoggedInType(memberType);
                 this.sharedservice.setUserData(userData);
-                this.storage.set('loggedin_user', JSON.stringify(res.data));
-                this.events.publish('user:loginsuccessfully', userData, Date.now());
+                await this.storage.set('loggedin_user', JSON.stringify(res.data));
+                this.events.publish('user:loginsuccessfully', userData, res.data);
                 
                 if (this.sharedservice.getDeviceToken()) {
                   this.checkAndStoreDeviceToken(this.sharedservice.getDeviceToken(), userinfo[0], userType);

@@ -990,7 +990,10 @@ export class Type2CampDetails {
             this.navCtrl.push("Type2NotificationSession",{
                 users:member_ids,
                 type:ModuleTypes.HOLIDAYCAMP,
-                heading:`Enrolment:${this.holidayCampDetails.camp_name}`
+                heading:`Enrolment:${this.holidayCampDetails.camp_name}`,
+                module_id:this.campDetails.id,
+                //sub_module_id:this.input.SessionDateId,
+                page_id:"HOLIDAYCAMP_DETS"
         }); 
       } else {
         this.commonService.hideLoader();

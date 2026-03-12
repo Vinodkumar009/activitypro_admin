@@ -17,7 +17,8 @@ export enum ModuleTypes {
   Challenges = 117,
   Playground = 118,
   Match = 119,
-  league = 121,
+  LEAGUE = 700,
+  LEAGUE_TEAM = 125,
 
   ADMIN = 0,
   MEMBER = 1,

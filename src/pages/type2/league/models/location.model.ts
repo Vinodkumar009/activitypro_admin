@@ -25,6 +25,8 @@ export interface CatandType {
 }
 
 export class LeagueMatch {
+    home_team_score:string
+    away_team_score:string
     fixture_id: string
     location_id: string
     club_id?:string

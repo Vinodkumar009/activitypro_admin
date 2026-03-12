@@ -1193,10 +1193,23 @@ export class LeaguedetailsPage {
   }
 
   updatePayment(participant: LeagueParticipantModel) {
-
     this.navCtrl.push("LeaguepaymentPage", { SelectedMember: participant, SessionDetails: this.individualLeague })
+  }
 
 
+  sendEmailToGroup(){
+    const member_list = this.partcipantData.map(participant => this.prepareParticipantData(participant));
+    if (member_list.length > 0) {
+      const session = this.prepareSessionDetails();
+      const email_modal = {
+        module_info: session,
+        email_users: member_list,
+        type: 600
+      };
+      this.navCtrl.push("MailToMemberByAdminPage", { email_modal });
+    } else {
+      this.commonService.toastMessage("No participant(s) found", 2500, ToastMessageType.Error);
+    }
   }
 
   sendEmailToMember(participant: LeagueParticipantModel) {

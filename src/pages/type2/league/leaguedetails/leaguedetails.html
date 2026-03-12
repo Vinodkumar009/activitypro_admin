@@ -48,10 +48,12 @@
         </div>
 
         <div class="action_btns_div">
-          <button ion-button clear (click)="gotoEditLeague()">
+          <button ion-button clear (tap)="sendEmailToGroup()">
+            <ion-icon name="md-mail"></ion-icon>
+          </button>
+          <button ion-button clear  (click)="gotoEditLeague()">
             <ion-icon name="create"></ion-icon>
           </button>
-
           <button ion-button clear (click)="removeLeague()">
             <ion-icon name="trash"></ion-icon>
           </button>
@@ -267,6 +269,9 @@
             <div class="result-status" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
               <ion-icon [name]="mat.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
               <span>{{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}</span>
+            </div>
+            <div class="score-display" *ngIf="mat.ResultStatus == 1 && (mat.home_team_score != null || mat.away_team_score != null)">
+              <span class="score-value">{{mat.home_team_score || '-'}} : {{mat.away_team_score || '-'}}</span>
             </div>
             <button ion-button small class="lineup-action-btn" *ngIf="individualLeague?.league_type === 3"
               (click)="goToLineup(mat); $event.stopPropagation()">

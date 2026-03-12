@@ -604,7 +604,7 @@ export class CampRelatedDetailsPage {
           },
         },
         {
-          text: "Notification",
+          text: "Notify",
           icon: "ios-notifications",
           handler: () => {
             this.sendNotification(enrol_user);
@@ -862,7 +862,10 @@ export class CampRelatedDetailsPage {
       this.navCtrl.push("Type2NotificationSession",{
           users:member_ids,
           type:ModuleTypes.HOLIDAYCAMP,
-          heading:`Enrolment:${this.holidayCampDetails.camp_name}(${this.selectedSessionObj.session_name})`
+          heading:`Enrolment:${this.holidayCampDetails.camp_name}(${this.selectedSessionObj.session_name})`,
+          module_id:this.campDetails.id,
+          sub_module_id:this.selectedSessionObj.id,
+          page_id:"HOLIDAYCAMP_INDIVIDUAL_DETS"
       }); 
   }
 

@@ -190,15 +190,9 @@ export class Type2VenueAssignCoach {
         });
     }
 
-    showToast(m: string, howLongShow: number) {
-        let toast = this.toastCtrl.create({
-            message: m,
-            duration: howLongShow,
-            position: 'bottom'
-        });
-        toast.present();
-    }
+   
     assignVenueToCoach() {
+        try {
         this.act.unsubscribe();
         this.clubcall.unsubscribe();
         this.coachObj.ParentClubKey = this.selectedParentclubKey;
@@ -233,14 +227,6 @@ export class Type2VenueAssignCoach {
         for (let i = 0; i < this.clubs.length; i++) {
             if (this.clubs[i].IsChecked == true) {
 
-                // if (this.clubs[i].Activities != undefined) {
-                //     this.clubs[i].TempActivities = [];
-                //     for (let index = 0; index < this.clubs[i].Activities.length; index++) {
-                //         this.clubs[i].TempActivities.push(this.clubs[i].Activities[index]);
-                //     }
-                // }
-
-
                 this.clubObj.City = this.clubs[i].City;
                 this.clubObj.ClubAdminEmailID = this.clubs[i].ClubAdminEmailID;
                 this.clubObj.ClubContactName = this.clubs[i].ClubContactName;
@@ -261,9 +247,6 @@ export class Type2VenueAssignCoach {
 
                 this.clubupadefinished = this.fb.update(this.clubs[i].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Club/", this.clubObj);
 
-
-
-
                 this.fb.update(this.coachObj.CoachKey, "/Club/Type2/" + this.selectedParentclubKey + "/" + this.clubs[i].$key + "/Coach/", this.coachObj);
                 this.fb.update(this.coachObj.CoachKey, "/Coach/Type2/" + this.selectedParentclubKey + "/", { IsVenueAssigned: true });
 
@@ -282,64 +265,24 @@ export class Type2VenueAssignCoach {
                                 AliasName: ""
                             }
                         }
-
                     }
                 }
-
-                // if (this.clubs[i].TempActivities != undefined) {
-                //     for (let k = 0; k < this.clubs[i].TempActivities.length; k++) {
-                //         if (this.clubs[i].TempActivities[k].IsSelected == true) {
-                //             this.activityObj.ActivityCode = this.clubs[i].TempActivities[k].ActivityCode;
-                //             this.activityObj.ActivityName = this.clubs[i].TempActivities[k].ActivityName;
-                //             this.activityObj.AliasName = this.clubs[i].TempActivities[k].AliasName;
-                //             this.clubupadefinished = this.fb.update(this.clubs[i].TempActivities[k].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Club/" + this.clubs[i].$key + "/Activity/", this.activityObj);
-                //             this.fb.update(this.clubs[i].TempActivities[k].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Activity/", this.activityObj);
-                //             this.fb.update(this.coachObj.CoachKey, "/Activity/" + this.selectedParentclubKey + "/" + this.clubs[i].$key + "/" + this.clubs[i].TempActivities[k].$key + "/Coach/", this.coachObj);
-
-                //         }
-
-                //     }
-                // }
-
-
-
-
-
             }
         }
-       
+
         if (this.clubupadefinished != undefined) {
-            let message = "Saved successfully";
-            this.comonService.toastMessage(message, 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+            this.comonService.toastMessage("Saved successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
             this.comonService.updateCategory("coach_list");
             this.navCtrl.pop();
+        } else {
+            this.comonService.toastMessage("Please select at least one venue", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         }
-        // if (this.clubupadefinished1 != undefined) {
-        //     var message = "Selected activity saved successfully";
-        //     this.showToast(message, 5000);
-        // }
-        // for (let j = 0; j < this.clubs.length; j++) {
-        //     if (this.clubs[j].IsSelected == true) {
-        //         for (let k = 0; k < this.clubs[j].Activities.length; k++) {
-        //             if (this.clubs[j].Activities[k].IsSelected == true) {
-        //                 this.activityObj.ActivityCode = this.clubs[j].Activities[k].ActivityCode;
-        //                 this.activityObj.ActivityName = this.clubs[j].Activities[k].ActivityName;
-        //                 this.activityObj.AliasName = this.clubs[j].Activities[k].AliasName;
-
-        //                 this.fb.update(this.clubs[j].Activities[k].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Activity/", this.activityObj);
-        //                 this.fb.update(this.coachObj.CoachKey, "/Activity/" + this.selectedParentclubKey + "/" + this.clubs[j].$key +"/"+ this.clubs[j].Activities[k].$key + "/Coach/", this.coachObj);
-
-        //             }
-
-        //         }
-        //     }
-        // }
+        } catch (error) {
+            console.error("Error assigning venue to coach:", error);
+            this.comonService.toastMessage("Failed to save. Please try again.", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
     }
-    saveCoach() {
-
-
-    }
-
+    
     cancelVenueToCoach() {
         this.navCtrl.pop();
     }

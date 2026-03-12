@@ -951,6 +951,22 @@ page-leaguedetails {
         }
       }
 
+      .score-display {
+        display: flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 6px;
+        background: rgba(43, 146, 187, 0.12);
+        border: 1px solid rgba(43, 146, 187, 0.3);
+
+        .score-value {
+          font-size: 12px;
+          font-weight: 700;
+          color: #2b92bb;
+          letter-spacing: 1px;
+        }
+      }
+
       .lineup-action-btn {
         margin: 0;
         height: 24px;

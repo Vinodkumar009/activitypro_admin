@@ -538,7 +538,8 @@ export class MemberprofilePage implements OnInit {
     this.navCtrl.push("Type2NotificationSession",{
       users:[this.memberInfo.Id],
       type:ModuleTypes.MEMBER,
-      heading:`Hey:${this.memberInfo.parent_firstname} ${this.memberInfo.parent_lastname}`
+      heading:`Hey:${this.memberInfo.parent_firstname} ${this.memberInfo.parent_lastname}`,
+      page_id:"MEMBER_PROFILE_NOTIFY"
     });            
   }
 

@@ -380,7 +380,9 @@ getSession(){
             this.navCtrl.push("Type2NotificationSession",{
                 users:member_ids,
                 type:ModuleTypes.TERMSESSION,
-                heading:`Enrolment:${this.term_ses_dets.session.session_name}`
+                heading:`Enrolment:${this.term_ses_dets.session.session_name}`,
+                module_id:this.term_ses_dets.session.id,
+                page_id:"TERMSESSION-DETS"
             }); 
         } else {
             this.commonService.toastMessage("No member(s) found in current session",2500,ToastMessageType.Error);

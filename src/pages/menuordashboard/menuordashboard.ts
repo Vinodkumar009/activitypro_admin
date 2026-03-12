@@ -102,8 +102,8 @@ export class MenuOrDashboard {
     // });
 
     // New REST API implementation
-    this.events.subscribe("user:loginsuccessfully", async(user, time) => {
-      const loggedin_user_info = JSON.parse(await this.storage.get("loggedin_user"));
+    this.events.subscribe("user:loginsuccessfully", async(user, loggedin_user) => {
+      const loggedin_user_info = loggedin_user;
       //const loggedin_user_info = JSON.parse(loggedinuser);
       const requestPayload: GetUserMenusRequestDto = {
         //parentClubKey: user.UserInfo[0].ParentClubKey,

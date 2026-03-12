@@ -78,6 +78,9 @@
               <ion-icon [name]="match.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
               <span>{{match.ResultStatus == 1 ? match.result_status_text : 'Result Pending'}}</span>
             </div>
+            <div class="score-display" *ngIf="match.ResultStatus == 1 && (match.home_team_score != null || match.away_team_score != null)">
+              <span class="score-value">{{match.home_team_score || '-'}} : {{match.away_team_score || '-'}}</span>
+            </div>
             <button ion-button small class="lineup-action-btn" *ngIf="match.MatchType === 3"
               (click)="goToLineup(match); $event.stopPropagation()">
               <ion-icon name="football"></ion-icon>&nbsp;

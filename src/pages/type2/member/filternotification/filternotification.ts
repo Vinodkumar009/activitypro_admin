@@ -13,7 +13,9 @@ import { GraphqlService } from '../../../../services/graphql.service';
 import { IClubDetails } from '../../../../shared/model/club.model';
 import { UsersModel } from '../../../../shared/model/users_list.model';
 import { UsersListInput } from '../model/member';
-import { ModuleTypes } from '../../../../shared/constants/module.constants';
+import { AppType, ModuleTypes } from '../../../../shared/constants/module.constants';
+import { HttpService } from '../../../../services/http.service';
+import { API } from '../../../../shared/constants/api_constants';
 /**
  * Generated class for the FilternotificationPage page.
  *
@@ -72,7 +74,8 @@ export class Filternotification {
       private graphqlService: GraphqlService, 
       public fb: FirebaseService, private storage: Storage,
       public navCtrl: NavController, public sharedservice: SharedServices, 
-      public popoverCtrl: PopoverController) {
+      public popoverCtrl: PopoverController,
+      private httpService: HttpService) {
 
     this.themeType = sharedservice.getThemeType();
     this.parentClubKey = this.sharedservice.getParentclubKey();
@@ -283,24 +286,34 @@ export class Filternotification {
 
 
   notify() {
-    try {
-      const notify_mutation = gql`
-      mutation notifyGroupUsers($notifyInput: GroupUserNotify!) {
-        notifyGroupUsers(input: $notifyInput)
-      }` 
-
-      const notifiy_variable = { notifyInput: this.notification_input };
-
-      this.graphqlService.mutate(notify_mutation,notifiy_variable,0).subscribe((response)=>{
-          const message = "Notification sent successfully.";
-          this.commonService.toastMessage(message, 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-          this.navCtrl.pop();
-      },(err)=>{
-          this.commonService.toastMessage("Notification sent failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
-      });
-    }catch(err){
-      this.commonService.toastMessage("Notification sent failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+    if(this.notification_input.message === ""){
+      this.commonService.toastMessage("Please enter the notification message", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      return false;
     }
+
+    const body = {
+      parentclub_id: this.sharedservice.getPostgreParentClubId(),
+      device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
+      app_type: AppType.ADMIN_NEW,
+      device_id: this.sharedservice.getDeviceId() || 'web',
+      updated_by: this.sharedservice.getLoggedInUserId(),
+      subject: this.notification_input.heading,
+      message: this.notification_input.message,
+      user_ids: this.notification_input.userIds,
+      module_type: this.notification_input.moduleId,
+      page_id:"MEMBERLIST_NOTIFY"
+    };
+
+    this.httpService.post(API.SEND_PUSH_NOTIFICATION, body, null, 1).subscribe({
+      next: (res: any) => {
+        this.commonService.toastMessage("Notification sent successfully.", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+        this.navCtrl.pop();
+      },
+      error: (err) => {
+        console.error('Error sending notification:', err);
+        this.commonService.toastMessage("Notification sent failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
   }
 
 

@@ -522,7 +522,10 @@ export class WeeklysessiondetsPage {
     this.navCtrl.push("Type2NotificationSession",{
       users:member_ids,
       type:ModuleTypes.WEEKLYSESSION,
-      heading:`Enrolment:${this.weeklyData.session_name}`
+      heading:`Enrolment:${this.weeklyData.session_name}`,
+      module_id:this.weeklySession.id,
+      sub_module_id:this.input.SessionDateId,
+      page_id:"WEEKLYSESSION_INDIVIDUAL_DETS"
     })            
   }
 

@@ -318,7 +318,10 @@ export class WeeklySessionDetailsPage {
         this.navCtrl.push("Type2NotificationSession",{
             users:member_ids,
             type:ModuleTypes.WEEKLYSESSION,
-            heading:`Enrolment:${this.weeklyDets.session_name}(${sesData.session_name},${sesData.session_date})`
+            heading:`Enrolment:${this.weeklyDets.session_name}(${sesData.session_name},${sesData.session_date})`,
+            module_id:this.weeklyDets.id,
+            page_id:"WEEKLYSESSION_DETS",
+            //sub_module_id:this.sessionId
         }); 
       } else {
           this.commonService.toastMessage("No member(s) found for the current session",2500,ToastMessageType.Error);

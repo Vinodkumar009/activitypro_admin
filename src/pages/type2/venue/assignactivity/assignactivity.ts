@@ -10,6 +10,8 @@ import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
 import { CommonRestApiDto } from '../../../../shared/model/common.model';
 import { AppType } from '../../../../shared/constants/module.constants';
+import { take } from 'rxjs/operators';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../shared/dtos/club.dto';
 
 @IonicPage()
 @Component({
@@ -187,71 +189,124 @@ export class AssignActivityPage {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
-   save(){
+   async save(){
+       this.comonService.showLoader("Please wait");
        try{
         let activityObj = { ActivityCode: '', ActivityName: '', AliasName: '', IsActive: '', IsEnable: '', IsExistActivityCategory: '', BaseFees: 0, ActivityImageURL:'' };
-        let activityCategoryObj = { ActivityCategoryCode: '', ActivityCategoryName: '', IsActive: '', IsEnable: '', IsExistActivitySubCategory: '' }
     
-        let activitySubCategoryObj = { ActivitySubCategoryCode: '', ActivitySubCategoryName: '', IsActive: '', IsEnable: ''}
-        
-        
-            for (let activityIndex = 0; activityIndex < this.selectedActivity.length; activityIndex++) {
-                activityObj.ActivityCode = this.selectedActivity[activityIndex].ActivityCode;
-                activityObj.ActivityName = this.selectedActivity[activityIndex].ActivityName;
-                activityObj.AliasName = this.selectedActivity[activityIndex].AliasName;
-                activityObj.IsActive = this.selectedActivity[activityIndex].IsActive;
-                activityObj.IsEnable = this.selectedActivity[activityIndex].IsEnable;
-                activityObj.IsExistActivityCategory = this.selectedActivity[activityIndex].IsExistActivityCategory;
-                activityObj.BaseFees = parseInt((this.selectedActivity[activityIndex].BaseFees));
-                if( this.selectedActivity[activityIndex].ActivityImageURL){
-                    activityObj.ActivityImageURL = this.selectedActivity[activityIndex].ActivityImageURL
-                }else{
-                    activityObj.ActivityImageURL = "https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FVenueTab%2Fimage.png?alt=media&token=06632505-8a36-4c3f-9bde-ff9f3fcab722"
-                }
-              
-    
-                
-                    if (this.selectedActivity[activityIndex].isSelect && !this.selectedActivity[activityIndex].isForUpdate) {
-                        this.activityName = this.selectedActivity[activityIndex].ActivityName
-                        this.fb.update(this.selectedActivity[activityIndex].$key, "Activity/" + this.selectedParentClub + "/" + this.selectedVenue.$key + "/", activityObj);
-                        let ActivityCategory = this.comonService.convertFbObjectToArray(this.selectedActivity[activityIndex].ActivityCategory);
-                        for (let ActivityCategoryIndex = 0; ActivityCategoryIndex < ActivityCategory.length; ActivityCategoryIndex++) {
-                            activityCategoryObj.ActivityCategoryCode = ActivityCategory[ActivityCategoryIndex].ActivityCategoryCode;
-                            activityCategoryObj.ActivityCategoryName = ActivityCategory[ActivityCategoryIndex].ActivityCategoryName;
-                            activityCategoryObj.IsActive = ActivityCategory[ActivityCategoryIndex].IsActive;
-                            activityCategoryObj.IsEnable = ActivityCategory[ActivityCategoryIndex].IsEnable;
-                            activityCategoryObj.IsExistActivitySubCategory = ActivityCategory[ActivityCategoryIndex].IsExistActivitySubCategory;
-    
-                            this.fb.update(ActivityCategory[ActivityCategoryIndex].Key, "Activity/" + this.selectedParentClub + "/" + this.selectedVenue.$key + "/" + this.selectedActivity[activityIndex].$key + "/ActivityCategory/", activityCategoryObj);
-    
-                            if(ActivityCategory[ActivityCategoryIndex].IsExistActivitySubCategory){
-                                let ActivitySubCategory = this.comonService.convertFbObjectToArray(ActivityCategory[ActivityCategoryIndex].ActivitySubCategory);
-                                for(let ActivitySubCategoryIndex = 0; ActivitySubCategoryIndex < ActivitySubCategory.length; ActivitySubCategoryIndex++){
-                                    activitySubCategoryObj.ActivitySubCategoryCode = ActivitySubCategory[ActivitySubCategoryIndex].ActivitySubCategoryCode;
-                                    activitySubCategoryObj.ActivitySubCategoryName = ActivitySubCategory[ActivitySubCategoryIndex].ActivitySubCategoryName;
-                                    activitySubCategoryObj.IsActive = ActivitySubCategory[ActivitySubCategoryIndex].IsActive;
-                                    activitySubCategoryObj.IsEnable = ActivitySubCategory[ActivitySubCategoryIndex].IsEnable;
-    
-                                    this.fb.update(ActivitySubCategory[ActivitySubCategoryIndex].Key, "Activity/" + this.selectedParentClub + "/" + this.selectedVenue.$key + "/" + this.selectedActivity[activityIndex].$key + "/ActivityCategory/" +   ActivityCategory[ActivityCategoryIndex].Key   + "/ActivitySubCategory/", activitySubCategoryObj);
-                                }
-                            }
-    
-                            
-    
-                            
-                        }
-                        this.assignActivityInPostgre();
-                        this.Emailsetup(this.selectedActivity[activityIndex].$key)
+        for (let activityIndex = 0; activityIndex < this.selectedActivity.length; activityIndex++) {
+            const act = this.selectedActivity[activityIndex];
+            if (!act.isSelect || act.isForUpdate) continue;
 
-                          
-                        
-            }
+            activityObj.ActivityCode = act.ActivityCode;
+            activityObj.ActivityName = act.ActivityName;
+            activityObj.AliasName = act.AliasName;
+            activityObj.IsActive = act.IsActive;
+            activityObj.IsEnable = act.IsEnable;
+            activityObj.IsExistActivityCategory = act.IsExistActivityCategory;
+            activityObj.BaseFees = parseInt(act.BaseFees);
+            activityObj.ActivityImageURL = act.ActivityImageURL ||
+                "https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FVenueTab%2Fimage.png?alt=media&token=06632505-8a36-4c3f-9bde-ff9f3fcab722";
+
+            this.activityName = act.ActivityName;
+            this.fb.update(act.$key, "Activity/" + this.selectedParentClub + "/" + this.selectedVenue.$key + "/", activityObj);
+
+            // Fetch categories from all other venues for this activity and deduplicate
+            await this.saveCategoriesFromAllVenues(act.$key);
+
+            this.assignActivityInPostgre();
+            this.Emailsetup(act.$key);
         }
+        this.comonService.hideLoader();
         this.navCtrl.pop();
-       }catch(error){
-
+       } catch(error) {
+           this.comonService.hideLoader();
+           console.error('Error in save:', error);
        }
-    
+   }
+
+   private async saveCategoriesFromAllVenues(activityKey: string): Promise<void> {
+       // Get all venues from API (source of truth) — same as categoryNsubcategory.ts
+       const body: GetParentClubVenuesRequestDto = {
+           parentclub_id: this.postgre_parentclub_id,
+           app_type: AppType.ADMIN_NEW,
+           device_type: this.sharedservice.getPlatform() == 'android' ? 1 : 2,
+           device_id: this.sharedservice.getDeviceId() || 'web',
+           updated_by: this.sharedservice.getLoggedInUserId()
+       };
+
+       const res = await this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).pipe(take(1)).toPromise() as GetParentClubVenuesResponseDto;
+       const otherVenues = res.data.filter((club: ClubVenueDto) => club.FirebaseId !== this.selectedVenue.$key);
+
+       // Dedup by Firebase Key — same key is shared across venues (see saveCategory in categoryNsubcategory.ts)
+       const categoryMap: Map<string, any> = new Map();
+
+       for (const venue of otherVenues) {
+           const venueActivities: any[] = await this.fb.getAll(
+               "/Activity/" + this.selectedParentClub + "/" + venue.FirebaseId + "/"
+           ).pipe(take(1)).toPromise();
+
+           const matchedActivity = venueActivities.find(a => a.$key === activityKey);
+           if (!matchedActivity || !matchedActivity.ActivityCategory) continue;
+
+           const categories = this.comonService.convertFbObjectToArray(matchedActivity.ActivityCategory).filter(cat => cat.IsActive);
+
+           for (const cat of categories) {
+               if (!cat || !cat.Key) continue;
+
+               if (!categoryMap.has(cat.Key)) {
+                   categoryMap.set(cat.Key, cat);
+               } else {
+                   // Same Firebase key — merge subcategories
+                   const existing = categoryMap.get(cat.Key);
+                   if (cat.ActivitySubCategory) {
+                       const existingSubcats = this.comonService.convertFbObjectToArray(existing.ActivitySubCategory || {});
+                       const newSubcats = this.comonService.convertFbObjectToArray(cat.ActivitySubCategory).filter(s => s.IsActive);
+                       const subcatMap: Map<string, any> = new Map();
+                       existingSubcats.forEach(s => subcatMap.set(s.Key, s));
+                       newSubcats.forEach(s => {
+                           if (s.Key && !subcatMap.has(s.Key)) subcatMap.set(s.Key, s);
+                       });
+                       existing.ActivitySubCategory = Array.from(subcatMap.values()).reduce((acc, s) => {
+                           acc[s.Key] = s;
+                           return acc;
+                       }, {});
+                   }
+               }
+           }
+       }
+
+       if (categoryMap.size === 0) return;
+
+       const baseCatPath = "Activity/" + this.selectedParentClub + "/" + this.selectedVenue.$key + "/" + activityKey + "/ActivityCategory/";
+
+       for (const cat of Array.from(categoryMap.values())) {
+           const catObj = {
+               ActivityCategoryCode: cat.ActivityCategoryCode,
+               ActivityCategoryName: cat.ActivityCategoryName,
+               IsActive: cat.IsActive,
+               IsEnable: cat.IsEnable,
+               IsExistActivitySubCategory: cat.IsExistActivitySubCategory || false
+           };
+           this.fb.update(cat.Key, baseCatPath, catObj);
+
+           if (cat.IsExistActivitySubCategory && cat.ActivitySubCategory) {
+               const subcats = this.comonService.convertFbObjectToArray(cat.ActivitySubCategory).filter(s => s.IsActive);
+               for (const subcat of subcats) {
+                   if (!subcat || !subcat.Key) continue;
+                   const subcatObj = {
+                       ActivitySubCategoryCode: subcat.ActivitySubCategoryCode,
+                       ActivitySubCategoryName: subcat.ActivitySubCategoryName,
+                       IsActive: subcat.IsActive,
+                       IsEnable: subcat.IsEnable
+                   };
+                   this.fb.update(subcat.Key, baseCatPath + cat.Key + "/ActivitySubCategory/", subcatObj);
+               }
+           }
+       }
+
+       // Mark activity as having categories
+       this.fb.update(activityKey, "Activity/" + this.selectedParentClub + "/" + this.selectedVenue.$key + "/", { IsExistActivityCategory: true });
    }
 
    Emailsetup(activityKey){

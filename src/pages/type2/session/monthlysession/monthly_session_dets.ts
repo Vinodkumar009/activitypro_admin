@@ -642,7 +642,10 @@ export class MonthlySessionDetails {
         this.navCtrl.push("Type2NotificationSession",{
             users:member_ids,
             type:ModuleTypes.MONTHLYSESSION,
-            heading:`Enrolment:${this.monthly_ses_dets.session_name}`
+            heading:`Enrolment:${this.monthly_ses_dets.session_name}`,
+            module_id:this.monthly_ses_dets.id,
+            //sub_module_id:this.input.SessionDateId,
+            page_id:"MONTHLYSESSION_DETS"
         }); 
     } else {
         this.commonService.toastMessage("No member(s) found in current month",2500,ToastMessageType.Error);

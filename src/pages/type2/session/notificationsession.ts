@@ -7,9 +7,9 @@ import { SharedServices } from '../../services/sharedservice';
 import { FirebaseService } from '../../../services/firebase.service';
 import { IonicPage } from 'ionic-angular';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../services/common.service';
-import { ModuleTypes } from '../../../shared/constants/module.constants';
-import gql from "graphql-tag";
-import { GraphqlService } from '../../../services/graphql.service';
+import { AppType, ModuleTypes } from '../../../shared/constants/module.constants';
+import { HttpService } from '../../../services/http.service';
+import { API } from '../../../shared/constants/api_constants';
 
 
 @IonicPage()
@@ -34,7 +34,7 @@ export class Type2NotificationSession {
       userIds: [],
       heading: "",
       message: "",
-      moduleId: ModuleTypes.TERMSESSION
+      module_type: ModuleTypes.TERMSESSION
   }
 
   constructor(
@@ -47,14 +47,14 @@ export class Type2NotificationSession {
       public sharedservice: SharedServices, 
       platform: Platform, 
       public popoverCtrl: PopoverController,
-      private graphqlService: GraphqlService
+      private httpService: HttpService
     ) {
 
     this.themeType = sharedservice.getThemeType();
     this.isAndroid = platform.is('android');
 
     const user_ids = navParams.get('users');
-    this.notification_input.moduleId = navParams.get('type');
+    this.notification_input.module_type = navParams.get('type');
     this.notification_input.heading = navParams.get('heading');
     this.notification_input.parentClubId = this.sharedservice.getPostgreParentClubId();
     //this.session = navParams.get('SessionDetails');
@@ -108,19 +108,31 @@ export class Type2NotificationSession {
         this.commonService.toastMessage("Please enter the notification message",2500,ToastMessageType.Error,ToastPlacement.Bottom);
         return false;
       }
-      const notify_mutation = gql`
-      mutation notifyGroupUsers($notifyInput: GroupUserNotify!) {
-        notifyGroupUsers(input: $notifyInput)
-      }` 
 
-      const notifiy_variable = { notifyInput: this.notification_input };
+      const body = {
+        parentclub_id: this.sharedservice.getPostgreParentClubId(),
+        device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
+        app_type: AppType.ADMIN_NEW,
+        device_id: this.sharedservice.getDeviceId() || 'web',
+        updated_by: this.sharedservice.getLoggedInUserId(),
+        subject: this.notification_input.heading,
+        message: this.notification_input.message,
+        user_ids: this.notification_input.userIds,
+        module_type: this.notification_input.module_type,
+        module_id:this.navParams.get('module_id'),
+        sub_module_id:this.navParams.get('sub_module_id') || null,
+        page_id:this.navParams.get('page_id'),
+      };
 
-      this.graphqlService.mutate(notify_mutation,notifiy_variable,0).subscribe((response)=>{
-          const message = "Notification sent successfully.";
-          this.commonService.toastMessage(message, 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+      this.httpService.post(API.SEND_PUSH_NOTIFICATION, body, null, 1).subscribe({
+        next: (res: any) => {
+          this.commonService.toastMessage("Notification sent successfully.", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
           this.navCtrl.pop();
-      },(err)=>{
-          this.commonService.toastMessage("Notification sent failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+        },
+        error: (err) => {
+          console.error('Error sending notification:', err);
+          this.commonService.toastMessage("Notification sent failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
       });
   }
 }

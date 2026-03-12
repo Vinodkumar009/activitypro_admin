@@ -333,6 +333,8 @@ export interface AllMatchData {
     homeUserName: string; // 👤 Home user name (if applicable)
     awayUserName: string; // 👤 Away user name (if applicable)
     LeagueFixtureId: string; // 🏟️ League fixture ID
+    home_team_score:string;
+    away_team_score:string;
 }
 
 // 📄 Export class to hold the entire All Matches response data structure
