@@ -8,7 +8,6 @@ import {
   NavParams,
   NavController,
 } from "ionic-angular";
-import { type } from "os";
 import {
   CommonService,
   ToastMessageType,
