@@ -59,5 +59,5 @@ export enum PaymentStatusEnum {
 export enum LineupVisibility {
     ALL_INVITEES = 1,
     TEAM_ONLY = 2,
-    ADMIN_COACH = 3,
+    COACHES_ONLY = 3
 }

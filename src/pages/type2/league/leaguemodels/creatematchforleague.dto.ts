@@ -24,6 +24,11 @@ export interface CreateLeagueMatchInput {
     user_device_metadata: UserDeviceMetadataField,
     Member_Fee: string;
     Non_Member_Fee: string;
+    Hosts: {
+        UserId: string;
+        RoleType: number;
+        UserType: number;
+    };
 }
 
 export class CreateLeagueMatchInputV1 extends CommonRestApiDtoV1 {

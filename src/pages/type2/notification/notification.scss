@@ -1,0 +1,427 @@
+notification-page {
+    // Variables for sleek theming
+    --card-bg-dark: #1e293b;
+    --card-border-dark: #334155;
+    --card-bg-light: #ffffff;
+    --card-border-light: #f0f0f0;
+
+    --text-primary-dark: #f8fafc;
+    --text-secondary-dark: #94a3b8;
+    --text-primary-light: #1f2937;
+    --text-secondary-light: #6b7280;
+
+    --accent-color: #3b82f6;
+    --danger-color: #ef4444;
+    --danger-btn-color: #dc2626;
+
+    // Status colors
+    --unread-color: #ef4444; // Red
+    --read-color: #10b981; // Green
+
+    --icon-bg-dark: rgba(59, 130, 246, 0.15);
+    --icon-bg-light: rgba(59, 130, 246, 0.1);
+
+    .scroll-content {
+        background: #0f172a !important;
+        padding: 0 !important; // Edge to edge design
+    }
+
+    .modern-notifications {
+
+        // Loading State
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+
+            ion-spinner * {
+                stroke: var(--accent-color);
+            }
+        }
+
+        // Empty State
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 65vh;
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+
+            .empty-icon-wrapper {
+                width: 80px;
+                height: 80px;
+                background: var(--icon-bg-dark);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 24px;
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+
+                ion-icon {
+                    font-size: 40px;
+                    color: var(--accent-color);
+                }
+            }
+
+            h2 {
+                color: var(--text-primary-dark);
+                font-size: 22px;
+                font-weight: 700;
+                margin-top: 0;
+                margin-bottom: 8px;
+            }
+
+            p {
+                margin: 0;
+                color: var(--text-secondary-dark);
+                font-size: 16px;
+                line-height: 1.5;
+            }
+        }
+
+        // List & Items
+        .notification-list {
+            margin: 0;
+            padding: 0;
+            contain: none;
+            border-radius: 0; // Flat list look
+            background: var(--card-bg-dark);
+            border-top: 1px solid var(--card-border-dark);
+            border-bottom: 1px solid var(--card-border-dark);
+        }
+
+        .notification-wrapper {
+            margin-bottom: 0;
+            background: transparent;
+            border-bottom: 1px solid var(--card-border-dark);
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        ion-item-sliding {
+            background: transparent !important;
+        }
+
+        ion-item.notification-item {
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            contain: none;
+
+            .item-inner {
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            // Stripping native ionic label margins to allow edge-to-edge bar height
+            ion-label {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        // --- RIPPLE WAVE PHYSICS ---
+        & .notification-list.ripple-active {
+            .notification-wrapper {
+                animation: rippleWave 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+            }
+
+            // Generate delays for each item downward 
+            @for $i from 1 through 25 {
+                .notification-wrapper:nth-child(#{$i}) {
+                    animation-delay: #{$i * 0.04}s !important;
+                }
+            }
+        }
+
+        .notification-card {
+            background: var(--card-bg-dark); // Opaque background to avoid transparent color bleeding when swiping
+            border: none;
+            border-radius: 0;
+            padding: 14px 16px 14px 20px; // Snug padding
+            transition: all 0.2s ease-in-out;
+            margin: 0;
+            height: 100%; // ensures it spans full label height
+
+            &:active {
+                background: #273549; // gentle highlight
+            }
+
+            &.expanded {
+                background: #273549;
+            }
+
+            // Status Bars (Red / Green)
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 4px;
+                z-index: 2;
+            }
+
+            &.status-red::before {
+                background: var(--unread-color);
+            }
+
+            &.status-green::before {
+                background: var(--read-color);
+            }
+        }
+
+        .card-main {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-container {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px; // Tighter gap
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+
+            .notification-title {
+                margin: 0;
+                font-size: 15px; // Reduced slightly for density
+                font-weight: 600;
+                color: var(--text-primary-dark);
+                line-height: 1.3;
+            }
+
+            .notification-time {
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--text-secondary-dark);
+                white-space: nowrap;
+                flex-shrink: 0;
+                padding-top: 2px;
+            }
+        }
+
+        .notification-preview {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-secondary-dark);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; // Better wrapping behavior
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .expanded-details {
+            animation: fadeIn 0.2s ease-in-out;
+
+            .full-message {
+                margin: 8px 0 12px 0;
+                font-size: 14px;
+                line-height: 1.5;
+                color: var(--text-primary-dark);
+                white-space: pre-wrap;
+            }
+
+            .action-footer {
+                display: flex;
+                justify-content: flex-end;
+
+                .action-btn {
+                    margin: 0;
+                    height: 32px;
+                    padding: 0 12px;
+                    border-radius: 6px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-transform: none;
+                    box-shadow: none;
+
+                    &.copy-btn {
+                        color: var(--accent-color);
+                        background: var(--icon-bg-dark);
+
+                        &:active {
+                            background: rgba(59, 130, 246, 0.25);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Swipe Item styling
+        ion-item-options {
+            border-bottom: 0 !important;
+            margin: 0;
+            padding: 0;
+            background: #d93025; // Exact Google Material Red
+            border-bottom: 1px solid var(--card-border-dark); // Continues divider
+        }
+
+        .swipe-delete-btn {
+            background-color: #d93025 !important;
+            border-radius: 0;
+            margin: 0;
+            padding: 0;
+            width: 80px;
+            height: 100%;
+            transition: all 0.2s ease-in-out;
+            box-shadow: none !important;
+
+            .button-inner {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .delete-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &:active {
+                background-color: #b91c1c !important;
+            }
+
+            ion-icon {
+                font-size: 24px;
+                color: #ffffff;
+                margin-bottom: 4px;
+            }
+
+            span {
+                font-size: 13px;
+                font-weight: 500;
+                color: #ffffff;
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    // Light Theme Overrides
+    &.light-theme {
+        .scroll-content {
+            background: #f3f4f6 !important; // Slight gray bg above list
+        }
+
+        .modern-notifications {
+            padding-top: 10px; // Small gap from header
+
+            .empty-state {
+                .empty-icon-wrapper {
+                    background: var(--icon-bg-light);
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+                }
+
+                h2 {
+                    color: var(--text-primary-light);
+                }
+
+                p {
+                    color: var(--text-secondary-light);
+                }
+            }
+
+            .notification-list {
+                border-color: var(--card-border-light);
+                background: var(--card-bg-light);
+                border-top: 1px solid var(--card-border-light);
+                border-bottom: 1px solid var(--card-border-light);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            }
+
+            .notification-wrapper {
+                border-color: var(--card-border-light);
+            }
+
+            .notification-card {
+                background: var(--card-bg-light); // Keep it opaque!
+
+                &:active {
+                    background: #f1f5f9;
+                }
+
+                &.expanded {
+                    background: #f8fafc;
+                }
+            }
+
+            .header-row .notification-title {
+                color: var(--text-primary-light);
+            }
+
+            .notification-preview {
+                color: var(--text-secondary-light);
+            }
+
+            .expanded-details .full-message {
+                color: var(--text-primary-light);
+            }
+
+            .header-row .notification-time {
+                color: #9ca3af; // Lighter gray for time
+            }
+
+            .expanded-details .action-footer .copy-btn {
+                background: var(--icon-bg-light);
+                color: var(--accent-color);
+
+                &:active {
+                    background: rgba(59, 130, 246, 0.2);
+                }
+            }
+        }
+    }
+
+    // Common Keyframes
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-2px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes rippleWave {
+        0% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(12px);
+        }
+
+        75% {
+            transform: translateY(-4px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+}

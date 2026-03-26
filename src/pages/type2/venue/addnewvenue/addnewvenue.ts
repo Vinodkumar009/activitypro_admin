@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, PopoverController, NavParams } from 'ionic-angular';
 import { SharedServices } from '../../../services/sharedservice';
-// import { PopoverPage } from '../../popover/popover';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { Storage } from '@ionic/storage';
-// import { Type2Venue } from '../venue/venue';
-// import { Dashboard } from './../../dashboard/dashboard';
-
 import {IonicPage } from 'ionic-angular';
 import { CommonService, ToastMessageType } from '../../../../services/common.service';
 import { ReportModel_V1 } from '../../../../shared/model/report.model';

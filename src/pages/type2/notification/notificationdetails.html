@@ -1,0 +1,57 @@
+<ion-header>
+    <ion-toolbar class="toolbarheader">
+        <ion-title>
+            Notification Details
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <span ion-text color="primary" showWhen="ios">Cancel</span>
+                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+    <ion-card>
+
+        <ion-card-header>
+            {{notificationDetails.Purpose}}
+        </ion-card-header>
+
+        <ion-card-content>
+            <!--           
+            <h3 style="margin-bottom: 9px;">
+                <span *ngIf="item.Purpose != '' && item.Purpose != undefined" style="font-size: 16px;font-weight: 400;">{{item.Purpose}}</span>
+                <span *ngIf="item.Purpose == ''|| item.Purpose == undefined" style="font-size: 16px;font-weight: 400;">Info</span>
+                <span style="float:right;">{{item.ComposeOn}}</span>
+            </h3> -->
+
+            <p *ngIf="notificationDetails.Member != undefined" style="color: #126eab;font-size: 14px;font-family: 'Mukta Mahee', sans-serif;">
+                To:
+                <span *ngFor="let item1 of notificationDetails.Member">
+                    {{item1.Name}}
+                    <span *ngIf="notificationDetails.Member.length >1">, </span>
+                </span>
+            </p>
+            <p style="margin-top: 5px;white-space:pre-wrap">{{notificationDetails.Message}}</p>
+            <!-- <ion-row>
+
+                <ion-col>
+                    <button ion-button icon-left clear small>
+                        <ion-icon name="time"></ion-icon>
+                        <div>{{notificationDetails.ComposeOn}}</div>
+                    </button>
+                </ion-col>
+                <ion-col center text-center>
+                    <ion-note>
+                        <p>{{notificationDetails.TimesAgo}} ago</p>
+                    </ion-note>
+                </ion-col>
+                
+            </ion-row> -->
+        </ion-card-content>
+
+    </ion-card>
+
+</ion-content>

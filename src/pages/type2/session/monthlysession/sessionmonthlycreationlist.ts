@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController, Platform } from 'ionic-angular';
-import moment, { Moment } from 'moment';
+import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { SharedServices } from '../../../services/sharedservice';
 import { CommonService, ToastPlacement, ToastMessageType } from '../../../../services/common.service';
@@ -190,274 +189,40 @@ export class SessionMonthlyCreationList {
   }
 
   validateInput() {
-    let isValid: Boolean = true;
-    let message: string = "";
-    
-    // Check if days are selected
     if (!this.postgre_session_input.days || this.postgre_session_input.days.length === 0) {
       this.commonService.toastMessage("Please select at least one day", 2500, ToastMessageType.Error);
       return false;
     }
-    
-    // Helper function to validate if value is a valid number
+
     const isValidNumber = (value: string): boolean => {
-      return value !== "" && value !== undefined && !isNaN(Number(value)) && Number(value) >= 0;
+      return value !== "" && value !== undefined && !isNaN(Number(value)) && Number(value) > 0;
+    };
+
+    const dayLabels = ['one', 'two', 'three', 'four', 'five', 'six', 'seven'];
+    const dayFields = [
+      { member: 'AmountForOneDayPerWeekForMember', nonMember: 'AmountForOneDayPerWeekForNonMember' },
+      { member: 'AmountForTwoDayPerWeekForMember', nonMember: 'AmountForTwoDayPerWeekForNonMember' },
+      { member: 'AmountForThreeDayPerWeekForMember', nonMember: 'AmountForThreeDayPerWeekForNonMember' },
+      { member: 'AmountForFourDayPerWeekForMember', nonMember: 'AmountForFourDayPerWeekForNonMember' },
+      { member: 'AmountForFiveDayPerWeekForMember', nonMember: 'AmountForFiveDayPerWeekForNonMember' },
+      { member: 'AmountForSixDayPerWeekForMember', nonMember: 'AmountForSixDayPerWeekForNonMember' },
+      { member: 'AmountForSevenDayPerWeekForMember', nonMember: 'AmountForSevenDayPerWeekForNonMember' },
+    ];
+
+    const numDays = this.postgre_session_input.days.length;
+
+    for (let i = 0; i < numDays; i++) {
+      if (!isValidNumber(this.feesObject[dayFields[i].member])) {
+        this.commonService.toastMessage(`Please enter valid ${dayLabels[i]} day(s) session amount for member`, 2500, ToastMessageType.Error);
+        return false;
+      }
+      if (!isValidNumber(this.feesObject[dayFields[i].nonMember])) {
+        this.commonService.toastMessage(`Please enter valid ${dayLabels[i]} day(s) session amount for non member`, 2500, ToastMessageType.Error);
+        return false;
+      }
     }
-    
-    switch (this.postgre_session_input.days.length) {
-      case 1:
-        {
-          if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForMember)) {
-            isValid = false;
-            message = "Please enter valid one day session amount for member";
-          }
-          else if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForNonMember)) {
-            isValid = false;
-            message = "Please enter valid one day session amount for non member";
-          }
-          break;
-        }
-      case 2:
-        {
-          if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForMember)) {
-            isValid = false;
-            message = "Please enter valid one day session amount for member";
-          }
-          else if (!isValidNumber(this.feesObject.AmountForOneDayPerWeekForNonMember)) {
-            isValid = false;
-            message = "Please enter valid one day session amount for non member";
-          }
-          else if (!isValidNumber(this.feesObject.AmountForTwoDayPerWeekForMember)) {
-            isValid = false;
-            message = "Please enter valid two day session amount for member";
-          }
-          else if (!isValidNumber(this.feesObject.AmountForTwoDayPerWeekForNonMember)) {
-            isValid = false;
-            message = "Please enter valid two day session amount for non member";
-          }
-          break;
-        }
-      case 3:
-        {
-          if (this.feesObject.AmountForOneDayPerWeekForMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for member";
-          }
-          else if (this.feesObject.AmountForOneDayPerWeekForNonMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for non member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForMember == "" || this.feesObject.AmountForTwoDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForNonMember == "" || this.feesObject.AmountForTwoDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for non member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForMember == "" || this.feesObject.AmountForThreeDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForNonMember == "" || this.feesObject.AmountForThreeDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for non member";
-          }
-          break;
-        }
-      case 4:
-        {
-          if (this.feesObject.AmountForOneDayPerWeekForMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for member";
-          }
-          else if (this.feesObject.AmountForOneDayPerWeekForNonMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for non member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForMember == "" || this.feesObject.AmountForTwoDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForNonMember == "" || this.feesObject.AmountForTwoDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for non member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForMember == "" || this.feesObject.AmountForThreeDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForNonMember == "" || this.feesObject.AmountForThreeDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for non member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForMember == "" || this.feesObject.AmountForFourDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForNonMember == "" || this.feesObject.AmountForFourDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for non member";
-          }
-          break;
-        }
-      case 5:
-        {
-          if (this.feesObject.AmountForOneDayPerWeekForMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for member";
-          }
-          else if (this.feesObject.AmountForOneDayPerWeekForNonMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for non member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForMember == "" || this.feesObject.AmountForTwoDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForNonMember == "" || this.feesObject.AmountForTwoDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for non member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForMember == "" || this.feesObject.AmountForThreeDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForNonMember == "" || this.feesObject.AmountForThreeDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for non member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForMember == "" || this.feesObject.AmountForFourDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForNonMember == "" || this.feesObject.AmountForFourDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for non member";
-          }else if (this.feesObject.AmountForFiveDayPerWeekForMember == "" || this.feesObject.AmountForFiveDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter five day session amount for member";
-          }
-          else if (this.feesObject.AmountForFiveDayPerWeekForNonMember == "" || this.feesObject.AmountForFiveDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter five day session amount for non member";
-          }
-          break
-        }
-      case 6:
-        {
-          if (this.feesObject.AmountForOneDayPerWeekForMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for member";
-          }
-          else if (this.feesObject.AmountForOneDayPerWeekForNonMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for non member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForMember == "" || this.feesObject.AmountForTwoDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForNonMember == "" || this.feesObject.AmountForTwoDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for non member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForMember == "" || this.feesObject.AmountForThreeDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForNonMember == "" || this.feesObject.AmountForThreeDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for non member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForMember == "" || this.feesObject.AmountForFourDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForNonMember == "" || this.feesObject.AmountForFourDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for non member";
-          }else if (this.feesObject.AmountForFiveDayPerWeekForMember == "" || this.feesObject.AmountForFiveDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter five day session amount for member";
-          }
-          else if (this.feesObject.AmountForFiveDayPerWeekForNonMember == "" || this.feesObject.AmountForFiveDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter five day session amount for non member";
-          }else if (this.feesObject.AmountForSixDayPerWeekForMember == "" || this.feesObject.AmountForSixDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter six day session amount for member";
-          }
-          else if (this.feesObject.AmountForSixDayPerWeekForNonMember == "" || this.feesObject.AmountForSixDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter six day session amount for non member";
-          }
-          break
-        }
-      case 7:
-        {
-          if (this.feesObject.AmountForOneDayPerWeekForMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for member";
-          }
-          else if (this.feesObject.AmountForOneDayPerWeekForNonMember == "" || this.feesObject.AmountForOneDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter one day session amount for non member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForMember == "" || this.feesObject.AmountForTwoDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for member";
-          }
-          else if (this.feesObject.AmountForTwoDayPerWeekForNonMember == "" || this.feesObject.AmountForTwoDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter two day session amount for non member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForMember == "" || this.feesObject.AmountForThreeDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for member";
-          }
-          else if (this.feesObject.AmountForThreeDayPerWeekForNonMember == "" || this.feesObject.AmountForThreeDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter three day session amount for non member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForMember == "" || this.feesObject.AmountForFourDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for member";
-          }
-          else if (this.feesObject.AmountForFourDayPerWeekForNonMember == "" || this.feesObject.AmountForFourDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter four day session amount for non member";
-          }else if (this.feesObject.AmountForFiveDayPerWeekForMember == "" || this.feesObject.AmountForFiveDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter five day session amount for member";
-          }
-          else if (this.feesObject.AmountForFiveDayPerWeekForNonMember == "" || this.feesObject.AmountForFiveDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter five day session amount for non member";
-          }else if (this.feesObject.AmountForSixDayPerWeekForMember == "" || this.feesObject.AmountForSixDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter six day session amount for member";
-          }
-          else if (this.feesObject.AmountForSixDayPerWeekForNonMember == "" || this.feesObject.AmountForSixDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter six day session amount for non member";
-          }else if (this.feesObject.AmountForSevenDayPerWeekForMember == "" || this.feesObject.AmountForSevenDayPerWeekForMember == undefined) {
-            isValid = false;
-            message = "Please enter seven day session amount for member";
-          }
-          else if (this.feesObject.AmountForSevenDayPerWeekForNonMember == "" || this.feesObject.AmountForSevenDayPerWeekForNonMember == undefined) {
-            isValid = false;
-            message = "Please enter seven day session amount for non member";
-          }
-          break
-        }
-    }
-    
-    if (!isValid) {
-      this.commonService.toastMessage(message, 2500, ToastMessageType.Error);
-    }
-    
-    return isValid;
+
+    return true;
   }
 
 

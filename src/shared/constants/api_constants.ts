@@ -161,5 +161,7 @@ export const API = {
     SAVE_TEAM_FORMATION: 'league/lineup/saveTeamFormation',
     DELETE_TEAM_FORMATION: 'league/lineup/deleteTeamFormation',
     GET_SAVED_FORMATIONS: 'league/lineup/getSavedFormationsForMatch',
-    SEND_PUSH_NOTIFICATION: 'notifications/send-push-notification'
+    SEND_PUSH_NOTIFICATION: 'notifications/send-push-notification',
+    GET_NOTIFICATIONS: 'notifications/get-notifications',
+    DELETE_NOTIFICATION: 'notifications/delete-notification'
 }
