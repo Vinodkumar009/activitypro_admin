@@ -1,5 +1,8 @@
-activityfeeslist-page{
-    .scroll-content {
+@import '../../../theme/android-sdk35-fixes.scss';
+
+activityfeeslist-page {
+    @include android-sdk35-fixes;
+.scroll-content {
         background-image: none !important;
         padding: 16px 9px !important;
         background-color: #f7f7f7;

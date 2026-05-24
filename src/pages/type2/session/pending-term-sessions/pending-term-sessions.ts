@@ -106,6 +106,14 @@ export class PendingTermSessionsPage {
             console.log("updated event", JSON.stringify(res.data));
             const msg = this.pending_payments.length > 0 ? `${this.pending_payments.length} Pending payments found`:`No Pending payments found`
             this.commonService.toastMessage(msg, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+          },
+          error: (err) => {
+            console.error("Ticket info update:", err);
+            if (err.error.message) {
+              this.commonService.toastMessage(err.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            } else {
+              this.commonService.toastMessage('Pending payments fetch failed', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            }
           }
         });
     } catch (err) {

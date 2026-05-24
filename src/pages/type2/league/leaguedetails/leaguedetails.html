@@ -1,9 +1,3 @@
-<!--
-  Generated template for the LeaguedetailsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <ion-title>Competition Details</ion-title>
@@ -17,304 +11,860 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 <ion-content>
-  <div class="league-header-section">
-    <ion-row *ngIf="individualLeague">
-      <ion-col col-9>
-        <ion-row class="cardrow">
-          <p style="font-weight: 600" class="largetext">
-            {{individualLeague?.league_name}}
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <!-- League Header -->
+      <app-detail-header *ngIf="individualLeague"
+        [title]="individualLeague?.league_name"
+        [subtitle]="(individualLeague?.activity?.ActivityName || '') + ' · ' + (individualLeague?.league_type_text || '')"
+        [detailRows]="headerDetailRows"
+        [accentColor]="headerAccentColor"
+        [visibilityIcon]="individualLeague?.league_visibility==0?'globe':'lock'">
+        <div header-actions>
+          <button class="action-btn" (click)="gotoEditLeague()"><ion-icon name="create"></ion-icon></button>
+          <button class="action-btn danger" (click)="removeLeague()"><ion-icon name="trash"></ion-icon></button>
+          <button *ngIf="individualLeague?.league_type_text !== 'Team'"class="action-btn danger" (click)="sendEmailToGroup()">
+            <ion-icon name="mail"></ion-icon>
+          </button>
+        </div>
+      </app-detail-header>
+
+      <!-- Pill Tabs -->
+      <app-pill-tabs *ngIf="individualLeague?.league_type_text === 'Team'"
+        leftLabel="Participants" rightLabel="Matches" [rightCount]="matchesLength"
+        [(activeIndex)]="activeIndex" (activeIndexChange)="changeType($event)">
+      </app-pill-tabs>
+      <!-- Non-Team tabs: always show Groups tab -->
+      <div class="four-tabs" *ngIf="individualLeague?.league_type_text !== 'Team'">
+        <button class="four-tab-btn" [class.active]="activeIndex === 0" (click)="changeType(0)">Players</button>
+        <button class="four-tab-btn" [class.active]="activeIndex === 1" (click)="changeType(1)">Groups</button>
+        <button class="four-tab-btn" [class.active]="activeIndex === 2" (click)="changeType(2)">Matches</button>
+        <button class="four-tab-btn" [class.active]="activeIndex === 3" (click)="changeType(3)">Box League</button>
+        <button class="four-tab-btn" [class.active]="activeIndex === 4" (click)="changeType(4)">Stats</button>
+      </div>
+    </div>
+
+    <div class="page-scroll-area">
+
+      <!-- Groups Tab (index 1 for non-Team) -->
+      <div *ngIf="activeIndex === 1 && individualLeague?.league_type_text !== 'Team'" class="tab-content groups-tab">
+        <div class="gm-header">
+          <span class="gm-title">Group Management</span>
+          <button class="tr-add-set-btn" (click)="showCreateGroupDialog = true" *ngIf="groups.length === 0">
+            <ion-icon name="add"></ion-icon> Create Groups
+          </button>
+          <button class="tr-add-set-btn" (click)="addGroup()" *ngIf="groups.length > 0">
+            <ion-icon name="add"></ion-icon> Add Group
+          </button>
+        </div>
+
+        <!-- Empty state -->
+        <div class="gm-empty-state" *ngIf="groups.length === 0 && partcipantData?.length === 0">
+          <ion-icon name="git-network"></ion-icon>
+          <p class="gm-empty-title">No groups created yet</p>
+          <p class="gm-empty-sub">Create groups to split players into boxes for round-robin play.</p>
+        </div>
+
+        <!-- Groups content (always show - unassigned players visible even without groups) -->
+        <div>
+          <p class="gm-hint" *ngIf="!selectedGroupPlayer">
+            <ion-icon name="swap"></ion-icon> Tap a player to select, then tap a group to move them.
           </p>
-        </ion-row>
-        <ion-row class="cardrow">
-          <p class="largetext">{{individualLeague?.activity?.ActivityName}},{{individualLeague?.league_type_text}}</p>
-        </ion-row>
-        <ion-row class="cardrow">
-          <p class="smalltext">Start:{{individualLeague?.start_date}}</p>
-          <p class="smalltext">End:{{individualLeague?.end_date}}</p>
-        </ion-row>
-        <ion-row class="cardrow nowrap-text">
-          <div style="display: flex; align-items: center;">
-            <ion-icon class="smalltext" name="pin" style="color: #2b92bb"></ion-icon>
-            <p class="smalltext">{{individualLeague?.club?.ClubName}}</p>
+          <div class="gm-selection-bar" *ngIf="selectedGroupPlayer">
+            <ion-icon name="move" class="gm-sel-icon"></ion-icon>
+            <span>Moving: <strong>{{selectedGroupPlayer.participant_name}}</strong></span>
+            <button class="gm-cancel-btn" (click)="selectedGroupPlayer = null">Cancel</button>
           </div>
-        </ion-row>
-      </ion-col>
-      <ion-col col-3 text-right>
-        <div style="display: flex; align-items: center;">
-          <ion-icon style="padding-left: 20px; color: #2b92bb; font-size: 1.5em"
-            [name]="individualLeague?.league_visibility==0?'ios-globe':'ios-lock-outline'"></ion-icon>
-          <p class="smalltext">{{individualLeague?.league_visibility == 0 ? "Public" : "Private"}}</p>
+
+          <div class="gm-group" *ngFor="let group of getGroupedPlayersForDisplay()"
+            [class.drop-active]="selectedGroupPlayer && selectedGroupPlayer._groupId !== group.id && group.id !== '__unassigned__'"
+            [class.gm-unassigned]="group.id === '__unassigned__'"
+            (click)="movePlayerToGroup(group.id)">
+            <div class="gm-group-header">
+              <span class="gm-group-name">{{group.name}}</span>
+              <button class="gm-action-btn" *ngIf="group.id !== '__unassigned__'" (click)="startRenameGroup(group, $event)" title="Rename">
+                <ion-icon name="create"></ion-icon>
+              </button>
+              <button class="gm-action-btn gm-delete-btn" *ngIf="group.id !== '__unassigned__' && group.players.length === 0" (click)="deleteGroup(group.id, $event)" title="Delete">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+              <span class="gm-group-count">{{group.players.length}}</span>
+              <span class="gm-move-here" *ngIf="selectedGroupPlayer && group.id !== '__unassigned__' && selectedGroupPlayer._groupId !== group.id">Move here</span>
+            </div>
+            <app-list-card *ngFor="let player of group.players"
+              [accentColor]="selectedGroupPlayer && selectedGroupPlayer.id === player.id ? '#3fbcd3' : '#475569'"
+              (cardClick)="selectGroupPlayer(player); $event.stopPropagation()">
+              <div class="gm-player">
+                <ion-icon name="swap" class="gm-drag-handle"></ion-icon>
+                <div class="gm-player-avatar">{{player.participant_name?.charAt(0)}}</div>
+                <span class="gm-player-name">{{player.participant_name}}</span>
+              </div>
+            </app-list-card>
+            <div class="gm-empty" *ngIf="group.players.length === 0">
+              No players in this group
+            </div>
+          </div>
         </div>
 
-        <div class="action_btns_div">
-          <button ion-button clear (tap)="sendEmailToGroup()">
-            <ion-icon name="md-mail"></ion-icon>
-          </button>
-          <button ion-button clear  (click)="gotoEditLeague()">
-            <ion-icon name="create"></ion-icon>
-          </button>
-          <button ion-button clear (click)="removeLeague()">
-            <ion-icon name="trash"></ion-icon>
+        <!-- Create Groups Dialog -->
+        <div class="result-dialog-overlay" *ngIf="showCreateGroupDialog" (click)="showCreateGroupDialog = false">
+          <div class="result-dialog" (click)="$event.stopPropagation()">
+            <div class="result-dialog-header">
+              <span class="result-dialog-title">Create Groups</span>
+              <button class="result-dialog-close" (click)="showCreateGroupDialog = false">
+                <ion-icon name="close"></ion-icon>
+              </button>
+            </div>
+            <div class="tr-section">
+              <label class="tr-label">Number of Groups</label>
+              <select class="tr-select" [(ngModel)]="numberOfGroups">
+                <option [ngValue]="2">2 Groups</option>
+                <option [ngValue]="3">3 Groups</option>
+                <option [ngValue]="4">4 Groups</option>
+                <option [ngValue]="5">5 Groups</option>
+                <option [ngValue]="6">6 Groups</option>
+              </select>
+              <p class="gm-form-note">Players will be auto-distributed alphabetically.</p>
+            </div>
+            <div class="gm-dialog-actions">
+              <button class="gm-btn-cancel" (click)="showCreateGroupDialog = false">Cancel</button>
+              <button class="tr-publish-btn" (click)="createGroups()">
+                <ion-icon name="checkmark-circle"></ion-icon> Create
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rename Group Dialog -->
+        <div class="result-dialog-overlay" *ngIf="showRenameGroupDialog" (click)="showRenameGroupDialog = false">
+          <div class="result-dialog" (click)="$event.stopPropagation()">
+            <div class="result-dialog-header">
+              <span class="result-dialog-title">Rename Group</span>
+              <button class="result-dialog-close" (click)="showRenameGroupDialog = false">
+                <ion-icon name="close"></ion-icon>
+              </button>
+            </div>
+            <div class="tr-section">
+              <label class="tr-label">Group Name</label>
+              <input type="text" class="tr-input full-width" [(ngModel)]="renameGroupValue" placeholder="Enter group name">
+            </div>
+            <div class="gm-dialog-actions">
+              <button class="gm-btn-cancel" (click)="showRenameGroupDialog = false">Cancel</button>
+              <button class="tr-publish-btn" (click)="confirmRenameGroup()" [disabled]="!renameGroupValue">
+                <ion-icon name="checkmark-circle"></ion-icon> Save
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Group Confirm Dialog -->
+        <div class="result-dialog-overlay" *ngIf="showDeleteGroupConfirm" (click)="showDeleteGroupConfirm = false">
+          <div class="result-dialog" (click)="$event.stopPropagation()">
+            <div class="result-dialog-header">
+              <span class="result-dialog-title">Delete Group</span>
+              <button class="result-dialog-close" (click)="showDeleteGroupConfirm = false">
+                <ion-icon name="close"></ion-icon>
+              </button>
+            </div>
+            <p class="gm-confirm-msg">Are you sure you want to delete this group? This action cannot be undone.</p>
+            <div class="gm-dialog-actions">
+              <button class="gm-btn-cancel" (click)="showDeleteGroupConfirm = false">Cancel</button>
+              <button class="tr-publish-btn gm-btn-danger" (click)="confirmDeleteGroup()">
+                <ion-icon name="trash"></ion-icon> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Points/Stats Tab (non-Team, index 2) -->
+      <div *ngIf="activeIndex === statsTabIndex && individualLeague?.league_type_text !== 'Team'" class="tab-content">
+
+        <!-- No stats available -->
+        <div class="stats-empty" *ngIf="statsData.length === 0 && (!leagueStanding || leagueStanding.length === 0)">
+          <ion-icon name="stats"></ion-icon>
+          <p>No stats available yet</p>
+          <p class="stats-empty-sub">Player statistics will appear here once match results are published.</p>
+        </div>
+
+        <!-- Overall Stats Table -->
+        <div *ngIf="statsData.length > 0">
+          <h4 class="stats-group-header" *ngIf="groups.length > 0">Overall</h4>
+          <div class="revamp-card standings-card">
+            <div class="card-accent" style="background: linear-gradient(180deg, #2b92bb, #1e6c8c)"></div>
+            <div class="card-content">
+              <div class="standings-table-wrap">
+                <table class="standings-table stats-table">
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th>P</th>
+                      <th>W</th>
+                      <th>L</th>
+                      <th>SW</th>
+                      <th>SL</th>
+                      <th>PW</th>
+                      <th>PL</th>
+                      <th>Win%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let stat of statsData; let i = index" [class.stat-first]="i === 0" [class.stat-second]="i === 1">
+                      <td class="team-col">{{stat.name}}</td>
+                      <td>{{stat.played}}</td>
+                      <td class="stat-won">{{stat.won}}</td>
+                      <td class="stat-lost">{{stat.lost}}</td>
+                      <td>{{stat.setsWon}}</td>
+                      <td>{{stat.setsLost}}</td>
+                      <td>{{stat.ptsWon}}</td>
+                      <td>{{stat.ptsLost}}</td>
+                      <td class="stat-pct">{{stat.winPct}}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Per-Group Stats Tables -->
+          <div *ngFor="let group of getGroupedParticipants()">
+            <h4 class="stats-group-header">{{group.name}}</h4>
+            <div class="revamp-card standings-card" *ngIf="getGroupStats(group.playerNames).length > 0">
+              <div class="card-accent" style="background: linear-gradient(180deg, #8b5cf6, #7c3aed)"></div>
+              <div class="card-content">
+                <div class="standings-table-wrap">
+                  <table class="standings-table stats-table">
+                    <thead>
+                      <tr>
+                        <th>Player</th>
+                        <th>P</th>
+                        <th>W</th>
+                        <th>L</th>
+                        <th>SW</th>
+                        <th>SL</th>
+                        <th>PW</th>
+                        <th>PL</th>
+                        <th>Win%</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let stat of getGroupStats(group.playerNames); let i = index" [class.stat-first]="i === 0" [class.stat-second]="i === 1">
+                        <td class="team-col">{{stat.name}}</td>
+                        <td>{{stat.played}}</td>
+                        <td class="stat-won">{{stat.won}}</td>
+                        <td class="stat-lost">{{stat.lost}}</td>
+                        <td>{{stat.setsWon}}</td>
+                        <td>{{stat.setsLost}}</td>
+                        <td>{{stat.ptsWon}}</td>
+                        <td>{{stat.ptsLost}}</td>
+                        <td class="stat-pct">{{stat.winPct}}%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="stats-empty-sm" *ngIf="getGroupStats(group.playerNames).length === 0">
+              No results yet for this group
+            </div>
+          </div>
+        </div>
+
+        <!-- Fallback to league standing if no result_json data -->
+        <div *ngIf="statsData.length === 0 && leagueStanding && leagueStanding.length > 0">
+          <div class="revamp-card standings-card">
+            <div class="card-accent" style="background: linear-gradient(180deg, #2b92bb, #1e6c8c)"></div>
+            <div class="card-content">
+              <div class="standings-table-wrap">
+                <table class="standings-table">
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th>M</th>
+                      <th>W</th>
+                      <th>L</th>
+                      <th>T</th>
+                      <th>Pts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let score of leagueStanding">
+                      <td class="team-col">{{score.user?.FirstName}} {{score.user?.LastName}}</td>
+                      <td>{{score.matches}}</td>
+                      <td>{{score.wins}}</td>
+                      <td>{{score.loss}}</td>
+                      <td>{{score.draw}}</td>
+                      <td>{{score.total_points}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participants Tab (index 0) -->
+      <div *ngIf="activeIndex === 0" class="tab-content">
+        <!-- Team type: standings table -->
+        <div *ngIf="individualLeague?.league_type_text === 'Team'">
+          <div class="revamp-card standings-card">
+            <div class="card-accent" style="background: linear-gradient(180deg, #8b5cf6, #7c3aed)"></div>
+            <div class="card-content">
+              <div class="standings-table-wrap">
+                <table class="standings-table">
+                  <thead>
+                    <tr>
+                      <th>Teams</th>
+                      <th>M</th>
+                      <th>W</th>
+                      <th>L</th>
+                      <th>T</th>
+                      <th>Pts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let score of leagueStanding">
+                      <td class="team-col" (click)="openTeamActions(score)">
+                        {{score?.parentclubteam?.teamName}}
+                      </td>
+                      <td>{{score.matches}}</td>
+                      <td>{{score.wins}}</td>
+                      <td>{{score.loss}}</td>
+                      <td>{{score.draw}}</td>
+                      <td>{{score.total_points}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Non-Team type: participant cards -->
+        <div *ngIf="individualLeague?.league_type_text !== 'Team'" class="participants-container">
+          <!-- Pairs Section (Doubles only) -->
+          <div *ngIf="individualLeague?.league_type === 2 && pairs.length > 0" class="pairs-section">
+            <h4 class="section-label">Pairs ({{pairs.length}})</h4>
+            <div class="pair-card" *ngFor="let pair of pairs">
+              <div class="pair-players">
+                <span class="pair-avatar" *ngFor="let player of pair.players">{{player.name?.charAt(0)}}</span>
+                <span class="pair-names">
+                  <span *ngFor="let player of pair.players; let last = last">{{player.name}}<span *ngIf="!last"> / </span></span>
+                </span>
+              </div>
+              <span class="pair-name-label">{{pair.pair_name}}</span>
+              <button class="pair-remove-btn" (click)="removePair(pair.pair_id)"><ion-icon name="close"></ion-icon></button>
+            </div>
+          </div>
+
+          <h4 class="section-label" *ngIf="pairs.length > 0 || groups.length > 0">All Players ({{partcipantData?.length}})</h4>
+
+          <!-- Group-wise display when groups exist -->
+          <div *ngIf="groups.length > 0">
+            <div *ngFor="let group of getGroupedPlayersForDisplay()">
+              <h4 class="section-label group-label">{{group.name}} ({{group.players.length}})</h4>
+              <app-list-card *ngFor="let participant of group.players"
+                [accentColor]="participant.participant_details?.is_enable ? '#10b981' : '#ef4444'"
+                (cardClick)="ActionSheet(participant)">
+            <div class="participant-card">
+              <div class="p-top-row">
+                <div class="p-avatar" [class.non-member]="!participant.participant_details.is_enable">
+                  {{participant.participant_name?.charAt(0)}}
+                </div>
+                <div class="p-info">
+                  <p class="p-name">{{participant.participant_name}}</p>
+                  <div class="p-tags">
+                    <span class="p-tag member-tag" *ngIf="participant.participant_details.is_enable">Member</span>
+                    <span class="p-tag non-member-tag" *ngIf="!participant.participant_details.is_enable">Non Member</span>
+                    <span class="p-tag status-tag"
+                      [class.status-ok]="participant.participant_status_text === 'Paid' || participant.participant_status_text === 'Enrolled'"
+                      [class.status-withdrawn]="participant.participant_status_text !== 'Paid' && participant.participant_status_text !== 'Enrolled'">
+                      {{participant.participant_status_text}}
+                    </span>
+                    <span class="p-tag pair-tag" *ngIf="individualLeague?.league_type === 2 && getPlayerPairName(participant.id)">
+                      {{getPlayerPairName(participant.id)}}
+                    </span>
+                  </div>
+                </div>
+                <div class="p-payment-badge">
+                  <div *ngIf="participant.amount_pay_status == 1 && participant.amount_pay_status != undefined">
+                    <p class="payment-paid">
+                      <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{participant.paid_amount | number: '1.2-2'}}
+                    </p>
+                    <p class="payment-date">{{participant?.paid_on}}</p>
+                    <p class="payment-date">{{participant.paidby_text}}</p>
+                  </div>
+                  <div *ngIf="participant.amount_pay_status == 3">
+                    <img src="assets/images/acknowledgment.png" class="ack-icon">
+                  </div>
+                  <div *ngIf="participant.amount_pay_status == 0">
+                    <p class="payment-pending">
+                      <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}{{participant.amount_due | number: '1.2-2'}}</span>
+                    </p>
+                    <p class="payment-pending-label">{{participant.amount_pay_status_text}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="p-detail-row">
+                <span class="p-detail"><ion-icon name="calendar"></ion-icon> {{calculateAge(participant.participant_details.dob)}} Yrs</span>
+                <img src="assets/images/protection.svg" class="medical-icon"
+                  *ngIf="!this.inclusionSet.has(participant.participant_details.medical_condition)">
+                <img src="assets/images/no_camere2.jpeg" class="media-icon"
+                  *ngIf="participant.participant_details.media_consent != undefined && participant.participant_details.media_consent == false">
+              </div>
+            </div>
+          </app-list-card>
+            </div>
+          </div>
+
+          <!-- Flat list when no groups -->
+          <div *ngIf="groups.length === 0">
+            <app-list-card *ngFor="let participant of partcipantData"
+              [accentColor]="participant.participant_details?.is_enable ? '#10b981' : '#ef4444'"
+              (cardClick)="ActionSheet(participant)">
+            <div class="participant-card">
+              <div class="p-top-row">
+                <div class="p-avatar" [class.non-member]="!participant.participant_details.is_enable">
+                  {{participant.participant_name?.charAt(0)}}
+                </div>
+                <div class="p-info">
+                  <p class="p-name">{{participant.participant_name}}</p>
+                  <div class="p-tags">
+                    <span class="p-tag member-tag" *ngIf="participant.participant_details.is_enable">Member</span>
+                    <span class="p-tag non-member-tag" *ngIf="!participant.participant_details.is_enable">Non Member</span>
+                    <span class="p-tag status-tag"
+                      [class.status-ok]="participant.participant_status_text === 'Paid' || participant.participant_status_text === 'Enrolled'"
+                      [class.status-withdrawn]="participant.participant_status_text !== 'Paid' && participant.participant_status_text !== 'Enrolled'">
+                      {{participant.participant_status_text}}
+                    </span>
+                    <span class="p-tag pair-tag" *ngIf="individualLeague?.league_type === 2 && getPlayerPairName(participant.id)">
+                      {{getPlayerPairName(participant.id)}}
+                    </span>
+                  </div>
+                </div>
+                <div class="p-payment-badge">
+                  <div *ngIf="participant.amount_pay_status == 1 && participant.amount_pay_status != undefined">
+                    <p class="payment-paid">
+                      <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{participant.paid_amount | number: '1.2-2'}}
+                    </p>
+                    <p class="payment-date">{{participant?.paid_on}}</p>
+                    <p class="payment-date">{{participant.paidby_text}}</p>
+                  </div>
+                  <div *ngIf="participant.amount_pay_status == 3">
+                    <img src="assets/images/acknowledgment.png" class="ack-icon">
+                  </div>
+                  <div *ngIf="participant.amount_pay_status == 0">
+                    <p class="payment-pending">
+                      <span *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}{{participant.amount_due | number: '1.2-2'}}</span>
+                    </p>
+                    <p class="payment-pending-label">{{participant.amount_pay_status_text}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="p-detail-row">
+                <span class="p-detail"><ion-icon name="calendar"></ion-icon> {{calculateAge(participant.participant_details.dob)}} Yrs</span>
+                <img src="assets/images/protection.svg" class="medical-icon"
+                  *ngIf="!this.inclusionSet.has(participant.participant_details.medical_condition)">
+                <img src="assets/images/no_camere2.jpeg" class="media-icon"
+                  *ngIf="participant.participant_details.media_consent != undefined && participant.participant_details.media_consent == false">
+              </div>
+            </div>
+            </app-list-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matches Tab (index 1) -->
+      <div *ngIf="activeIndex === matchesTabIndex" class="tab-content matches-container">
+        <div class="revamp-card" (click)="onMatchCardClick(mat)" *ngFor="let mat of match">
+          <div class="card-accent" [style.background]="mat.ResultStatus == 1 ? 'linear-gradient(180deg, #10b981, #059669)' : 'linear-gradient(180deg, #f59e0b, #d97706)'"></div>
+          <div class="card-content">
+            <div class="corner-ribbon" [class.private]="mat.match_visibility==1">
+              <ion-icon [name]="mat.match_visibility==0?'globe':'lock'"></ion-icon>
+            </div>
+            <div class="card-top-row">
+              <div class="card-info">
+                <h3 class="card-title">{{mat.start_date}}</h3>
+                <p class="card-subtitle">{{mat.match_title}}</p>
+                <p class="card-activity">{{individualLeague?.activity?.ActivityName}} <span class="round-type-text" *ngIf="mat.formatted_round">{{mat.formatted_round}}</span></p>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="scoreboard">
+              <div class="sb-team sb-home">
+                <span class="sb-label">HOME</span>
+                <span class="sb-name" [class.tbd]="!mat.homeusername || !mat.homeusername.trim()">
+                  {{mat.homeusername && mat.homeusername.trim() ? mat.homeusername : 'TBD'}}
+                  <ion-icon name="trophy" class="winner-icon" *ngIf="mat.ResultStatus == 1 && mat.is_home_team_winner"></ion-icon>
+                </span>
+              </div>
+              <div class="sb-center">
+                <span class="sb-score" *ngIf="mat.ResultStatus == 1 && (mat.home_team_score != null || mat.away_team_score != null)">{{mat.home_team_score || '-'}} : {{mat.away_team_score || '-'}}</span>
+                <span class="sb-vs" *ngIf="mat.ResultStatus != 1 || (mat.home_team_score == null && mat.away_team_score == null)">VS</span>
+              </div>
+              <div class="sb-team sb-away">
+                <span class="sb-label">AWAY</span>
+                <span class="sb-name" [class.tbd]="!mat.awayusername || !mat.awayusername.trim()">
+                  {{mat.awayusername && mat.awayusername.trim() ? mat.awayusername : 'TBD'}}
+                  <ion-icon name="trophy" class="winner-icon" *ngIf="mat.ResultStatus == 1 && mat.is_away_team_winner"></ion-icon>
+                </span>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-footer">
+              <!-- <span class="tag type-tag" [style.background]="mat.ResultStatus == 1 ? '#10b981' : '#f59e0b'">
+                {{mat.ResultStatus == 1 ? 'Completed' : 'Upcoming'}}
+              </span> -->
+              <!-- <span class="round-badge" *ngIf="mat.formatted_round">{{mat.formatted_round}}</span> -->
+              <span class="footer-status" [class.published]="mat.ResultStatus == 1">
+                <ion-icon [name]="mat.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
+                {{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}
+              </span>
+              <button ion-button small class="lineup-btn" *ngIf="individualLeague?.league_type === 3"
+                (click)="goToLineup(mat); $event.stopPropagation()">
+                <ion-icon name="football"></ion-icon> Lineup
+              </button>
+            </div>
+            <div class="card-venue-footer" *ngIf="mat.club_name">
+              <ion-icon name="pin" class="venue-icon"></ion-icon>
+              <span class="venue-text">{{mat.club_name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Box League Tab -->
+      <div *ngIf="activeIndex === boxLeagueTabIndex && individualLeague?.league_type_text !== 'Team'" class="tab-content box-league-tab">
+        <!-- Group pills when groups exist (singles only) -->
+        <div *ngIf="individualLeague?.league_type !== 2 && partcipantData?.length >= 2 && groups.length > 1" class="bl-group-pills">
+          <button *ngFor="let group of groups; let i = index" class="bl-group-pill"
+            [class.active]="activeBoxGroup === i" (click)="activeBoxGroup = i">
+            {{group.name}}
           </button>
         </div>
-      </ion-col>
-    </ion-row>
+
+        <!-- Singles Box League -->
+        <div *ngIf="individualLeague?.league_type !== 2">
+          <div *ngIf="getBoxParticipants()?.length < 2" class="bl-empty">
+            <ion-icon name="grid"></ion-icon>
+            <p class="bl-empty-title">Not enough players</p>
+            <p class="bl-empty-sub">No players in this group. Assign players to see the box league grid.</p>
+          </div>
+
+          <div *ngIf="getBoxParticipants()?.length >= 2" class="bl-grid-wrap">
+            <table class="bl-grid">
+              <thead>
+                <tr>
+                  <th class="bl-pos">#</th>
+                  <th class="bl-name">Player</th>
+                  <th *ngFor="let p of getBoxParticipants()" class="bl-col-header">{{p.participant_name?.split(' ')[0]}}</th>
+                  <th class="bl-pts">Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of getBoxParticipants(); let i = index">
+                  <td class="bl-pos">{{i + 1}}</td>
+                  <td class="bl-name">{{row.participant_name}}</td>
+                  <td *ngFor="let col of getBoxParticipants(); let j = index"
+                    class="bl-cell" [class.bl-self]="i === j"
+                    (click)="i !== j && onBoxCellClick(i, j)">
+                    <span *ngIf="i !== j" class="bl-score">{{getBoxScore(i, j)}}</span>
+                  </td>
+                  <td class="bl-pts-val">{{getBoxPoints(i)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Doubles Box League (pairs) -->
+        <div *ngIf="individualLeague?.league_type === 2">
+          <div *ngIf="pairs?.length < 2" class="bl-empty">
+            <ion-icon name="people"></ion-icon>
+            <p class="bl-empty-title">Not enough pairs</p>
+            <p class="bl-empty-sub">Create at least 2 pairs to use Box League.</p>
+          </div>
+
+          <div *ngIf="pairs?.length >= 2" class="bl-grid-wrap">
+            <table class="bl-grid">
+              <thead>
+                <tr>
+                  <th class="bl-pos">#</th>
+                  <th class="bl-name">Pair</th>
+                  <th *ngFor="let p of pairs" class="bl-col-header">{{p.pair_name}}</th>
+                  <th class="bl-pts">Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of pairs; let i = index">
+                  <td class="bl-pos">{{i + 1}}</td>
+                  <td class="bl-name">{{row.pair_name}}</td>
+                  <td *ngFor="let col of pairs; let j = index"
+                    class="bl-cell" [class.bl-self]="i === j"
+                    (click)="i !== j && onDoublesBoxCellClick(i, j)">
+                    <span *ngIf="i !== j" class="bl-score">{{getDoublesBoxScore(i, j)}}</span>
+                  </td>
+                  <td class="bl-pts-val">{{getDoublesBoxPoints(i)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div>
-    <div style="padding-bottom: 10px">
-      <ion-card style="width: 100%; margin: 0px">
-        <ion-card-content style="padding: 0px">
-          <ion-row>
-            <ion-col *ngIf="individualLeague?.league_type_text === 'Team'" col-6>
-              <button ion-button class="select-type" (click)="changeType(0)" [class.selected]="activeIndex == 0">
-                Participants
-              </button>
-            </ion-col>
-            <ion-col *ngIf="individualLeague?.league_type_text !== 'Team'" col-4>
-              <button ion-button class="select-type" (click)="changeType(0)" [class.selected]="activeIndex == 0">
-                Participants({{partcipantDataCount}})
-              </button>
-            </ion-col>
 
-            <ion-col *ngIf="individualLeague?.league_type_text === 'Team'" col-6>
-              <button ion-button class="select-type" (click)="changeType(1)" [class.selected]="activeIndex == 1">
-                Matches({{matchesLength}})
-              </button>
-            </ion-col>
-            <ion-col *ngIf="individualLeague?.league_type_text !== 'Team'" col-4>
-              <button ion-button class="select-type" (click)="changeType(1)" [class.selected]="activeIndex == 1">
-                Matches({{matchesLength}})
-              </button>
-            </ion-col>
-
-            <ion-col *ngIf="individualLeague?.league_type_text !== 'Team'" col-4>
-              <button ion-button class="select-type" (click)="changeType(2)" [class.selected]="activeIndex == 2">
-                Points
-              </button>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
+  <app-bottom-sheet [(visible)]="showLineupSheet" title="Select Lineup" [bottomOffset]="30">
+    <div class="sheet-empty" *ngIf="lineupFormations.length === 0">
+      <ion-icon name="information-circle"></ion-icon>
+      <span>No saved lineups available</span>
     </div>
-
-    <!-- not teams then showing POINTS TAB -->
-    <div *ngIf="activeIndex == 2 && individualLeague?.league_type_text !== 'Team'">
-      <div class="tableFixHead">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Teams</th>
-              <th scope="col">M</th>
-              <th scope="col">W</th>
-              <th scope="col">L</th>
-              <th scope="col">T</th>
-              <th scope="col">Pts</th>
-            </tr>
-          </thead>
-          <tbody class="design">
-            <tr *ngFor="let score of leagueStanding">
-              <td class="firstcol" style="white-space: nowrap;" (click)="tDetails(score)">
-                <span *ngIf="individualLeague.league_type==3">{{score.parentclubteam?.teamName}}</span>
-                <span *ngIf="individualLeague.league_type!=3">{{score.user?.FirstName}} {{score.user?.LastName}}</span>
-              </td>
-              <td class="otherclumn">{{score.matches}}</td>
-              <td class="otherclumn">{{score.wins}}</td>
-              <td class="otherclumn">{{score.loss}}</td>
-              <td class="otherclumn">{{score.draw}}</td>
-              <td class="otherclumn">{{score.total_points}}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="sheet-item" *ngFor="let f of lineupFormations" (click)="selectFormation(f)">
+      <ion-icon name="grid" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info">
+        <span class="sheet-item-name">{{f.lineup_name || 'Lineup'}} ({{f.formation_name}})</span>
+        <span class="sheet-item-team" *ngIf="f.team_name">{{f.team_name}}</span>
       </div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
     </div>
+    <button class="sheet-create-btn" (click)="createNewLineup()">
+      <ion-icon name="add-circle"></ion-icon> Create New Lineup
+    </button>
+  </app-bottom-sheet>
 
-    <div *ngIf="activeIndex == 0">
-      <!-- TEAM is true -->
-      <div *ngIf="individualLeague?.league_type_text === 'Team'">
-        <div class="tableFixHead">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Teams</th>
-                <th scope="col">M</th>
-                <th scope="col">W</th>
-                <th scope="col">L</th>
-                <th scope="col">T</th>
-                <th scope="col">Pts</th>
-              </tr>
-            </thead>
-            <tbody class="design">
-              <tr *ngFor="let score of leagueStanding">
-                <td class="firstcol" style="white-space: nowrap;" (click)="openTeamActions(score)">
-                  {{score?.parentclubteam?.teamName}}
-                </td>
-                <td class="otherclumn">{{score.matches}}</td>
-                <td class="otherclumn">{{score.wins}}</td>
-                <td class="otherclumn">{{score.loss}}</td>
-                <td class="otherclumn">{{score.draw}}</td>
-                <td class="otherclumn">{{score.total_points}}</td>
-              </tr>
-            </tbody>
-          </table>
+  <app-bottom-sheet [(visible)]="showParticipantSheet" [title]="selectedParticipant?.participant_name" [bottomOffset]="30">
+    <div class="sheet-item" (click)="onParticipantAction('payment')">
+      <ion-icon name="card" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Update Payment</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item" (click)="onParticipantAction('profile')">
+      <ion-icon name="person" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Profile</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item" (click)="onParticipantAction('email')">
+      <ion-icon name="mail" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Send Email</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item danger-item" (click)="onParticipantAction('remove')"
+      *ngIf="selectedParticipant?.participant_status_text !== 'Withdrawn'">
+      <ion-icon [name]="selectedParticipant?.amount_pay_status === 0 ? 'remove-circle' : 'log-out'" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info">
+        <span class="sheet-item-name">{{selectedParticipant?.amount_pay_status === 0 ? 'Remove' : 'Withdraw'}}</span>
+      </div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+  </app-bottom-sheet>
+
+  <app-bottom-sheet [(visible)]="showTeamSheet" [title]="selectedTeam?.parentclubteam?.teamName" [bottomOffset]="30">
+    <div class="sheet-item" (click)="onTeamAction('view')">
+      <ion-icon name="eye" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">View Team</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item danger-item" (click)="onTeamAction('remove')">
+      <ion-icon name="remove-circle" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Remove Team</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+  </app-bottom-sheet>
+
+  <!-- Singles/Doubles Match Action Sheet -->
+  <app-bottom-sheet [(visible)]="showMatchSheet" [title]="selectedMatchForAction?.homeusername + ' vs ' + selectedMatchForAction?.awayusername" [bottomOffset]="30">
+    <div class="sheet-item confirmed-item" (click)="onMatchAction('result')" *ngIf="selectedMatchForAction?.ResultStatus !== 1">
+      <ion-icon name="trophy" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Publish Result</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item" (click)="onMatchAction('view')" *ngIf="selectedMatchForAction?.ResultStatus === 1">
+      <ion-icon name="eye" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">View Result</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item" (click)="onMatchAction('edit')">
+      <ion-icon name="create" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Edit Match</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item danger-item" (click)="onMatchAction('delete')">
+      <ion-icon name="trash" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Delete Match</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+  </app-bottom-sheet>
+
+  <!-- Publish Result Dialog (Singles/Doubles) -->
+  <div class="result-dialog-overlay" *ngIf="showResultDialog" (click)="showResultDialog = false">
+    <div class="result-dialog" (click)="$event.stopPropagation()">
+      <div class="result-dialog-header">
+        <span class="result-dialog-title">Publish Result</span>
+        <button class="result-dialog-close" (click)="showResultDialog = false">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Scoreboard -->
+      <div class="tr-scoreboard">
+        <div class="tr-player">
+          <div class="tr-avatar">{{selectedMatchForAction?.homeusername?.charAt(0)}}</div>
+          <span class="tr-name">{{selectedMatchForAction?.homeusername}}</span>
+          <span class="tr-sets-won">{{getHomeSets()}}</span>
+        </div>
+        <div class="tr-vs">VS</div>
+        <div class="tr-player">
+          <div class="tr-avatar away">{{selectedMatchForAction?.awayusername?.charAt(0)}}</div>
+          <span class="tr-name">{{selectedMatchForAction?.awayusername}}</span>
+          <span class="tr-sets-won">{{getAwaySets()}}</span>
         </div>
       </div>
 
-      <div *ngIf="individualLeague?.league_type_text !== 'Team'">
-        <ion-card class="membercard" *ngFor="let participant of partcipantData" (click)="ActionSheet(participant)">
-          <ion-card-content no-padding>
-            <ion-grid>
-              <ion-row>
-                <ion-col col-5 class="margin_auto">
-                  <p class="margin_0 para_overflow" style="font-size: 1.6rem">{{participant.participant_name}}</p>
-                  <p class="member_status margin_0" *ngIf="participant.participant_details.is_enable">Member</p>
-                  <p class="member_status margin_0" *ngIf="!participant.participant_details.is_enable">Non Member</p>
-                  <p class="margin_0"
-                    [ngClass]="(participant.participant_status_text === 'Paid' || participant.participant_status_text === 'Enrolled') ? 'member_status' : 'withdrawled'">
-                    {{participant.participant_status_text}}
-                  </p>
-                </ion-col>
-                <ion-col col-1 class="margin_auto">
-                  <img src="assets/images/protection.svg" class="medical_img"
-                    *ngIf="!this.inclusionSet.has(participant.participant_details.medical_condition)"
-                    style="margin-left: 5px">
-                </ion-col>
-                <ion-col col-2 class="margin_auto" style="padding: 7px 0px 0px 0px; line-height: 1;" text-center>
-                  {{calculateAge(participant.participant_details.dob)}} Yrs
-                </ion-col>
-                <ion-col col-1 class="margin_auto">
-                  <img src="assets/images/no_camere2.jpeg" class="margin_auto"
-                    *ngIf="participant.participant_details.media_consent != undefined && participant.participant_details.media_consent == false">
-                </ion-col>
-                <ion-col col-3 class="paidBlock margin_auto">
-                  <div *ngIf="participant.amount_pay_status == 1 && participant.amount_pay_status != undefined"
-                    style="float: right; margin-top: 0px;">
-                    <p class="moneypaid">
-                      <span
-                        *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}</span>{{participant.paid_amount
-                      | number: '1.2-2'}}
-                    </p>
-                    <p class="transactiondate">{{participant?.paid_on}}</p>
-                    <p class="transactiondate">{{participant.paidby_text}}</p>
-                  </div>
-                  <div *ngIf="participant.amount_pay_status == 3" style="float: right; margin-top: 0px;">
-                    <img src="assets/images/acknowledgment.png" class="dueimage" style="margin-top: 3px; height: 13px;">
-                  </div>
-                  <div *ngIf="participant.amount_pay_status == 0" style="float: right; margin-top: 0px;">
-                    <p class="pending">
-                      <span
-                        *ngIf="currencyDetails != undefined">{{currencyDetails.CurrencySymbol}}{{participant.amount_due
-                        | number: '1.2-2'}}</span>
-                    </p>
-                    <p class="pending" style="margin-top: -10px">{{participant.amount_pay_status_text}}</p>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
+      <!-- Score Display -->
+      <div class="tr-score-display" *ngIf="getScoreText()">{{getScoreText()}}</div>
+
+      <!-- Winner -->
+      <div class="tr-winner" *ngIf="getWinner()">
+        <ion-icon name="trophy"></ion-icon> {{getWinner()}} wins
       </div>
-    </div>
 
-    <div *ngIf="activeIndex == 1" class="matchCard">
-      <div class="modern-match-card" [ngClass]="{
-             'match-completed': mat.ResultStatus == 1,
-             'match-pending': mat.ResultStatus != 1,
-             'match-paid': mat.payment_type == 1,
-             'match-private': mat.match_visibility == 1
-           }" (click)="gotoLeagueMatchInfoPage(mat)" *ngFor="let mat of match">
-        <!-- Match Header -->
-        <div class="match-card-header">
-          <div class="match-info">
-            <div class="match-date">
-              <ion-icon name="calendar"></ion-icon>
-              <span>{{mat.start_date}}</span>
-            </div>
-            <div class="match-title">
-              <h3>{{mat.match_title}}</h3>
-            </div>
-          </div>
-          <div class="match-badges">
-            <span class="round-badge" *ngIf="mat.formatted_round">{{mat.formatted_round}}</span>
-            <span class="payment-badge" [ngClass]="mat.payment_type == 1 ? 'paid' : 'free'">
-              {{mat.payment_type == 1 ? 'Paid' : 'Free'}}
-            </span>
-          </div>
-        </div>
+      <!-- Result Type -->
+      <div class="tr-section">
+        <label class="tr-label">Result Type</label>
+        <select class="tr-select" [(ngModel)]="resultType" (ngModelChange)="onResultTypeChange()">
+          <option value="normal">Completed</option>
+          <option value="retired">Retired Hurt</option>
+          <option value="walkover">Walkover</option>
+        </select>
+      </div>
 
-        <!-- Match Content -->
-        <div class="match-card-content">
-          <div class="match-teams">
-            <div class="team-section home">
-              <div class="team-name" [ngClass]="{'tbd-text': !mat.homeusername || !mat.homeusername.trim()}">
-                {{mat.homeusername && mat.homeusername.trim() ? mat.homeusername : 'TBD'}}
-                <ion-icon name="trophy" *ngIf="mat.ResultStatus == 1 && mat.is_home_team_winner"></ion-icon>
-              </div>
-            </div>
-            <div class="vs-section">
-              <span class="vs-text">VS</span>
-            </div>
-            <div class="team-section away">
-              <div class="team-name" [ngClass]="{'tbd-text': !mat.awayusername || !mat.awayusername.trim()}">
-                {{mat.awayusername && mat.awayusername.trim() ? mat.awayusername : 'TBD'}}
-                <ion-icon name="trophy" *ngIf="mat.ResultStatus == 1 && mat.is_away_team_winner"></ion-icon>
-              </div>
-            </div>
+      <!-- Retired/Walkover Player -->
+      <div class="tr-section" *ngIf="resultType === 'retired' || resultType === 'walkover'">
+        <label class="tr-label">{{resultType === 'retired' ? 'Who retired?' : 'Who withdrew?'}}</label>
+        <select class="tr-select" [(ngModel)]="retiredPlayer">
+          <option value="home">{{selectedMatchForAction?.homeusername}}</option>
+          <option value="away">{{selectedMatchForAction?.awayusername}}</option>
+        </select>
+      </div>
+
+      <!-- Match Format & Set Scores -->
+      <div *ngIf="resultType !== 'walkover'">
+        <div class="tr-section">
+          <div class="tr-section-header">
+            <label class="tr-label">Match Format</label>
+            <select class="tr-select small" [(ngModel)]="matchFormat" (ngModelChange)="onFormatChange()">
+              <option value="1">Best of 1</option>
+              <option value="3">Best of 3</option>
+              <option value="5">Best of 5</option>
+            </select>
           </div>
         </div>
 
-        <!-- Match Footer -->
-         <div class="match-card-footer">
-          <div class="result-status-lineup-container">
-            <div class="result-status" [ngClass]="mat.ResultStatus == 1 ? 'status-published' : 'status-pending'">
-              <ion-icon [name]="mat.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
-              <span>{{mat.ResultStatus == 1 ? mat.result_status_text : 'Result Pending'}}</span>
-            </div>
-            <div class="score-display" *ngIf="mat.ResultStatus == 1 && (mat.home_team_score != null || mat.away_team_score != null)">
-              <span class="score-value">{{mat.home_team_score || '-'}} : {{mat.away_team_score || '-'}}</span>
-            </div>
-            <button ion-button small class="lineup-action-btn" *ngIf="individualLeague?.league_type === 3"
-              (click)="goToLineup(mat); $event.stopPropagation()">
-              <ion-icon name="football"></ion-icon>&nbsp;
-              Lineup
+        <div class="tr-section">
+          <div class="tr-section-header">
+            <label class="tr-label">Set Scores</label>
+            <button class="tr-add-set-btn" *ngIf="!isMatchDecided() && sets.length < +matchFormat" (click)="addSet()">
+              <ion-icon name="add"></ion-icon> Add Set
             </button>
           </div>
-          <div class="visibility-info">
-            <ion-icon [name]="mat.match_visibility==0?'globe':'lock'"></ion-icon>
-            <span>{{mat.match_visibility == 0 ? 'Public' : 'Private'}}</span>
+          <div class="tr-set-row" *ngFor="let set of sets; let i = index">
+            <span class="tr-set-num">Set {{i + 1}}</span>
+            <input type="number" min="0" max="7" [(ngModel)]="set.home"
+              (input)="onScoreInput(i, 'home', $event.target.value)" class="tr-input">
+            <span class="tr-dash">–</span>
+            <input type="number" min="0" max="7" [(ngModel)]="set.away"
+              (input)="onScoreInput(i, 'away', $event.target.value)" class="tr-input">
+            <ng-container *ngIf="needsTiebreak(set)">
+              <span class="tr-tb-label">TB</span>
+              <input type="number" min="0" [(ngModel)]="set.tbHome" class="tr-input sm">
+              <span class="tr-dash">–</span>
+              <input type="number" min="0" [(ngModel)]="set.tbAway" class="tr-input sm">
+            </ng-container>
+            <button class="tr-remove" *ngIf="sets.length > 1" (click)="removeSet(i)">
+              <ion-icon name="close"></ion-icon>
+            </button>
           </div>
         </div>
       </div>
-    </div>
 
+      <!-- Publish Button -->
+      <button class="tr-publish-btn" (click)="publishResult()" [disabled]="publishing">
+        <ion-icon name="checkmark-circle" *ngIf="!publishing"></ion-icon>
+        <ion-spinner *ngIf="publishing" name="crescent"></ion-spinner>
+        {{publishing ? 'Publishing...' : 'Publish Result'}}
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Pair Dialog (Doubles) -->
+  <div class="result-dialog-overlay" *ngIf="showCreatePairDialog" (click)="showCreatePairDialog = false">
+    <div class="result-dialog" (click)="$event.stopPropagation()" style="max-height: 80vh; overflow-y: auto;">
+      <div class="result-dialog-header">
+        <span class="result-dialog-title">Create Pair</span>
+        <button class="result-dialog-close" (click)="showCreatePairDialog = false"><ion-icon name="close"></ion-icon></button>
+      </div>
+      <!-- Selected pair preview -->
+      <div class="pair-select-preview">
+        <div class="pair-slot" [class.filled]="pairPlayer1">
+          <span *ngIf="pairPlayer1" class="pair-chip">{{pairPlayer1.participant_name}}</span>
+          <span *ngIf="!pairPlayer1" class="pair-placeholder">Player 1</span>
+        </div>
+        <span class="pair-plus">+</span>
+        <div class="pair-slot" [class.filled]="pairPlayer2">
+          <span *ngIf="pairPlayer2" class="pair-chip">{{pairPlayer2.participant_name}}</span>
+          <span *ngIf="!pairPlayer2" class="pair-placeholder">Player 2</span>
+        </div>
+      </div>
+      <p class="gm-form-note" *ngIf="!pairPlayer1">Tap a player to select as Player 1</p>
+      <p class="gm-form-note" *ngIf="pairPlayer1 && !pairPlayer2">Tap a player to select as Player 2</p>
+      <!-- Player grid -->
+      <div class="pair-player-grid">
+        <div *ngFor="let p of partcipantData" class="pair-player-item"
+          [class.selected]="pairPlayer1?.id === p.id || pairPlayer2?.id === p.id"
+          [class.disabled]="pairPlayer1 && pairPlayer2 && pairPlayer1.id !== p.id && pairPlayer2.id !== p.id"
+          (click)="selectPairPlayer(p)">
+          <div class="pair-player-avatar">{{p.participant_name?.charAt(0)}}</div>
+          <span class="pair-player-name">{{p.participant_name}}</span>
+        </div>
+      </div>
+      <div class="gm-dialog-actions">
+        <button class="gm-btn-cancel" (click)="resetPairSelection()" *ngIf="pairPlayer1">Reset</button>
+        <button class="tr-publish-btn" (click)="createPair()" [disabled]="!pairPlayer1 || !pairPlayer2">Create Pair</button>
+      </div>
+    </div>
   </div>
 </ion-content>
 
-
-
-<ion-fab mini right bottom #fab>
-  <button style="background-color: #2b92bb !important; color: white !important" ion-fab mini>
+<ion-fab mini right bottom #fab *ngIf="!showLineupSheet && !showParticipantSheet && !showTeamSheet">
+  <button class="fab-main" ion-fab mini>
     <ion-icon name="add"></ion-icon>
   </button>
   <ion-fab-list side="top">
-    <p class="fabEmailText" (tap)="gotoAddteamtoleaguePage()" style="margin-right: 46px"
+    <p class="fab-label" (tap)="gotoAddteamtoleaguePage()"
       *ngIf="individualLeague?.league_type_text === 'Team'">Add Teams</p>
-    <p class="fabEmailText" (tap)="gotoAddteamtoleaguePage()" style="margin-right: 46px"
+    <p class="fab-label" (tap)="gotoAddteamtoleaguePage()"
       *ngIf="individualLeague?.league_type_text !== 'Team'">Add Member</p>
-    <button style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop"
-      (tap)="gotoAddteamtoleaguePage()">
+    <button class="fab-main" ion-fab class="fabTop" (tap)="gotoAddteamtoleaguePage()">
       <ion-icon *ngIf="individualLeague?.league_type_text === 'Team'" name="people"></ion-icon>
       <ion-icon *ngIf="individualLeague?.league_type_text !== 'Team'" name="md-person-add"></ion-icon>
     </button>
-    <p class="fabEmailText" (tap)="creatematchleaguePage()">Create Match</p>
-    <button style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop"
-      (tap)="creatematchleaguePage()">
+    <p class="fab-label" (tap)="creatematchleaguePage()">Create Match</p>
+    <button class="fab-main" ion-fab class="fabTop" (tap)="creatematchleaguePage()">
       <ion-icon name="md-create"></ion-icon>
     </button>
-    <p class="fabEmailText" (tap)="autoCreateMatch()"
+    <p class="fab-label" (tap)="openCreatePair()"
+      *ngIf="individualLeague && individualLeague.league_type === 2">Create Pair</p>
+    <button class="fab-main" ion-fab class="fabTop" (tap)="openCreatePair()"
+      *ngIf="individualLeague && individualLeague.league_type === 2">
+      <ion-icon name="people"></ion-icon>
+    </button>
+    <p class="fab-label" (tap)="autoCreateMatch()"
       *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">
       Auto Create Match</p>
-    <button style="background-color: #2b92bb !important; color: white !important" ion-fab class="fabTop"
+    <button class="fab-main" ion-fab class="fabTop"
       *ngIf="individualLeague && (individualLeague.league_type_text == 'Singles' || individualLeague.league_type_text == 'Doubles')">
       <ion-icon name="md-create"></ion-icon>
     </button>

@@ -21,7 +21,6 @@ import { ReportMembers, ReportModel_V1 } from '../../../../shared/model/report.m
 })
 export class SessionmembersheetPage {
   sessionInfo: any = "";
-  nestUrl = "";
   actionSheet: any = {
     StartDate: '',
     EndDate: '',
@@ -78,7 +77,6 @@ export class SessionmembersheetPage {
     public navParams: NavParams,public storage:Storage, 
     public commonService: CommonService,
     private graphqlService:GraphqlService) {
-    this.nestUrl = this.sharedservice.getnestURL();
     
     this.checkedFilterBoxes.add('FirstName');
     this.checkedFilterBoxes.add('LastName');

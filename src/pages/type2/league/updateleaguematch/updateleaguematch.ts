@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { Component, Renderer2 } from '@angular/core';
+import { AlertController, IonicPage, LoadingController, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
 import { SharedServices } from '../../../services/sharedservice';
 import { GraphqlService } from '../../../../services/graphql.service';
@@ -11,6 +11,7 @@ import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
 import { RoundTypeInput, RoundTypesModel } from '../../../../shared/model/league.model';
 import { AppType } from '../../../../shared/constants/module.constants';
+import { ThemeService } from '../../../../services/theme.service';
 
 import moment from 'moment';
 /**
@@ -36,11 +37,15 @@ export class UpdateleaguematchPage {
   participantData: LeagueParticipantModel[];
   filteredPrimaryParticipants: LeagueParticipantModel[];
   filteredSecondaryParticipants: LeagueParticipantModel[];
+  pairs: any[] = [];
+  selectedHomePairId: string = '';
+  selectedAwayPairId: string = '';
   isChecked:boolean = false;
   match: string;
   data: LeagueMatch;
   start_date: string;
   start_time: string;
+  isDarkTheme: boolean = true;
   roundTypes: RoundTypesModel[] = [];
   roundTypeInput: RoundTypeInput = {
     parentclubId: '',
@@ -80,7 +85,10 @@ export class UpdateleaguematchPage {
     public popoverCtrl: PopoverController,
     private graphqlService: GraphqlService,
     private sharedService: SharedServices,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private renderer: Renderer2,
+    private themeService: ThemeService,
+    private events: Events
   ) {
     this.min = new Date().toISOString();
     this.max = "2049-12-31";
@@ -119,6 +127,21 @@ export class UpdateleaguematchPage {
     this.getRoundTypes();
     this.getLocationForParentClub();
     this.getParticipants();
+    if (this.data.league_type === 2) {
+      this.httpService.post(API.GET_PAIRS, { league_id: this.data.league_id }).subscribe({
+        next: (res: any) => {
+          this.pairs = res.data || [];
+          // Pre-select pairs based on current participant IDs
+          var homeId = this.data.home_participant_id;
+          var awayId = this.data.away_participant_id;
+          var homePair = this.pairs.find(function(p) { return p.players && p.players.some(function(pl) { return pl.id === homeId; }); });
+          var awayPair = this.pairs.find(function(p) { return p.players && p.players.some(function(pl) { return pl.id === awayId; }); });
+          if (homePair) this.selectedHomePairId = homePair.pair_id;
+          if (awayPair) this.selectedAwayPairId = awayPair.pair_id;
+        },
+        error: () => {}
+      });
+    }
     this.storage.get('Currency').then((currency) => {
       let currencydets = JSON.parse(currency);
       //console.log(currencydets);
@@ -129,6 +152,37 @@ export class UpdateleaguematchPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UpdateleaguematchPage');
+    this.loadTheme();
+  }
+
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.applyTheme(isDark);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private async loadTheme() {
+    const isDarkTheme = await this.storage.get('dashboardTheme');
+    const isDark = isDarkTheme !== null ? isDarkTheme : true;
+    this.isDarkTheme = isDark;
+    this.applyTheme(isDark);
+  }
+
+  private applyTheme(isDark: boolean) {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-updateleaguematch');
+    if (el) {
+      isDark ? this.renderer.removeClass(el, 'light-theme')
+             : this.renderer.addClass(el, 'light-theme');
+    }
   }
 
   getRoundTypes() {
@@ -347,6 +401,20 @@ export class UpdateleaguematchPage {
           this.navCtrl.pop();
         }
       });
+    }
+  }
+
+  onHomePairSelect(pairId: string) {
+    var pair = this.pairs.find(function(p) { return p.pair_id === pairId; });
+    if (pair && pair.players && pair.players.length >= 2) {
+      this.inputObj.homeparticipant_id = pair.players[0].id;
+    }
+  }
+
+  onAwayPairSelect(pairId: string) {
+    var pair = this.pairs.find(function(p) { return p.pair_id === pairId; });
+    if (pair && pair.players && pair.players.length >= 2) {
+      this.inputObj.awayparticipant_id = pair.players[0].id;
     }
   }
 }

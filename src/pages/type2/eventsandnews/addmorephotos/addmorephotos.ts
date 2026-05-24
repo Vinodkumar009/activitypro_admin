@@ -197,7 +197,7 @@ export class AddMorePhotosPage {
       }
 
       const imageData = await this.camera.getPicture(options);
-      this.TitleUrl = "data:image/jpeg;base64," + imageData;
+      this.TitleUrl = imageData.startsWith('data:image/jpeg;base64,') ? imageData: `data:image/jpeg;base64,${imageData}`;
       
     } catch (e) {
       console.log(e.message);

@@ -1,14 +1,17 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
 page-admingroupchatinfo {
-  .session_header,
-  ion-list {
-    margin-bottom: 0px !important;
-    border-bottom: 1px solid #f6ae4d;
-  }
-  .block_height1 {
-    margin-top: 5px;
-    height: 90%;
-    .margin {
-      padding: 0px 11px 0px 11px;
+    @include android-sdk35-fixes;
+    .session_header,
+    ion-list {
+        margin-bottom: 0px !important;
+        border-bottom: 1px solid #f6ae4d;
     }
-  }
+    .block_height1 {
+        margin-top: 5px;
+        height: 90%;
+        .margin {
+        padding: 0px 11px 0px 11px;
+        }
+    }
 }

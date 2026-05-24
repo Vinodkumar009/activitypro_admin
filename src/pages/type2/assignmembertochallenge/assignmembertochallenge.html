@@ -1,0 +1,68 @@
+<!--
+  Generated template for the AssignmembertochallengePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Assign Players</ion-title>
+  </ion-navbar>
+
+</ion-header> 
+
+
+<ion-content>
+  <ion-item *ngIf="Challenge">
+    <ion-label>Frequency</ion-label>
+    <ion-select [(ngModel)]="frequency">
+      <ion-option *ngFor="let freq of frequencyList" value={{freq.id}}>{{freq.name}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-row *ngIf="Challenge">
+    <ion-col col-6 style="padding:0;">
+      <ion-item>
+        <ion-label>Start</ion-label>
+        <ion-datetime [(ngModel)]="Date.startDate" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="2020-01-01" max="2028-12-31"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col col-6 style="padding:0;">
+      <ion-item>
+        <ion-label>Until</ion-label>
+        <ion-datetime [(ngModel)]="Date.endDate" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="2020-01-01" max="2028-12-31"></ion-datetime>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row class="sub-container ">
+    <ion-col col-2 style="text-align: -webkit-right;">
+        <button>
+            <ion-icon name="ios-search"></ion-icon>
+        </button>
+    </ion-col>
+    <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+        <ion-searchbar placeholder="Search" id="customsearchbar" (ionInput)="getFilterItems($event)"
+            autocorrect="off"></ion-searchbar>
+    </ion-col>
+  </ion-row>
+  <p style="margin-left: 18px !important;
+  color: rgba(0,0,0,0.65);
+  font-size: 14px;" >Select Player</p>
+  <ion-list style="overflow-y: scroll;">
+  <ion-row *ngFor="let player of backupList">
+  
+    <ion-item>
+      <ion-label>{{player.FirstName}} {{player.LastName}}</ion-label>
+      <ion-checkbox style="margin: 9px 20px 9px 4px;" [(ngModel)]="player.IsSelect"></ion-checkbox>
+    </ion-item>
+
+  </ion-row>
+</ion-list>
+</ion-content>
+<ion-footer>
+  <ion-row>
+      <ion-col col-12>
+          <button ion-button block class="timekare-primary-btn" (click)="Challenge ? assign() : gotonext()">{{Challenge ? 'Assign' : 'Next'}}</button>
+      </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-createvideomenu {
+    @include android-sdk35-fixes;
+
+
+
     // ion-textarea,ion-input{
     //     background-color: white;
        
@@ -36,7 +42,6 @@ page-createvideomenu {
         margin-top: 15px !important;
     }
 
-}
 
 .label[floating],
 .label[stacked],
@@ -74,5 +79,6 @@ page-createvideomenu {
     //   / margin: -1px !important;
        margin-left: -2px !important;
     }
+}
 }
 }

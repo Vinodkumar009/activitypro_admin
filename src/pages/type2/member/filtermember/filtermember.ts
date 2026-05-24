@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, Checkbox } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Checkbox, Events } from 'ionic-angular';
 import { JsonPipe } from '@angular/common';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { CommonService,ToastPlacement, ToastMessageType } from '../../../../services/common.service';
+import { Storage } from '@ionic/storage';
+import { ThemeService } from '../../../../services/theme.service';
 /**
  * Generated class for the FiltermemberPage page.
  *
@@ -17,6 +19,7 @@ import { CommonService,ToastPlacement, ToastMessageType } from '../../../../serv
   providers:[FirebaseService,CommonService]
 })
 export class FiltermemberPage {
+  isDarkTheme: boolean = true;
   filteredMember: Array<any> = [];
   unmutated_memblist: Array<any> = [];
   members: Array<any> = [];
@@ -24,9 +27,9 @@ export class FiltermemberPage {
   selectedClub:string = "";
   constructor(public commonService: CommonService,
     public navCtrl: NavController, public navParams: NavParams,
-     public viewCtrl: ViewController, public fb: FirebaseService, ) {
-    
-    
+     public viewCtrl: ViewController, public fb: FirebaseService,
+     private storage: Storage, private events: Events, private themeService: ThemeService) {
+    this.loadTheme();
   }
 
   ionViewDidLoad() {
@@ -90,6 +93,21 @@ export class FiltermemberPage {
       })
     }else{
       this.members = this.unmutated_memblist
+    }
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('page-filtermember');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
     }
   }
 

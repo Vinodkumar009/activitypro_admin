@@ -1,4 +1,8 @@
-helpconfig-page {
+@import '../../../theme/android-sdk35-fixes.scss';
+
+edithelpconfig-page {
+    @include android-sdk35-fixes;
+
     .scroll-content {
         padding: 16px 0px !important;
         background-color: rgb(234, 243, 248) !important;

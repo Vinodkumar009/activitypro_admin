@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, PopoverController, LoadingController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, PopoverController, LoadingController, NavParams } from 'ionic-angular';
 import { SharedServices } from '../../services/sharedservice';
 import { Storage } from '@ionic/storage';
 import { FirebaseService } from '../../../services/firebase.service';
@@ -72,7 +72,7 @@ export class Type2VenueAssignCoach {
     act: any;
     clubcall: any;
     //TempActivities = [];
-    constructor(private toastCtrl: ToastController,
+    constructor(
          public navParams: NavParams, 
          public loadingCtrl: LoadingController,
           storage: Storage, public fb: FirebaseService, 
@@ -190,99 +190,102 @@ export class Type2VenueAssignCoach {
         });
     }
 
-   
     assignVenueToCoach() {
         try {
-        this.act.unsubscribe();
-        this.clubcall.unsubscribe();
-        this.coachObj.ParentClubKey = this.selectedParentclubKey;
-        this.coachObj.FirstName = this.tempCoachObj.FirstName;
-        this.coachObj.MiddleName = this.tempCoachObj.MiddleName || "";
-        this.coachObj.LastName = this.tempCoachObj.LastName;
-        this.coachObj.Gender = this.tempCoachObj.Gender;
-        this.coachObj.EmailID = this.tempCoachObj.EmailID;
-        this.coachObj.PhoneNumber = this.tempCoachObj.PhoneNumber;
-        this.coachObj.DOB = this.tempCoachObj.DOB;
-        this.coachObj.DBSNumber = this.tempCoachObj.DBSNumber;
-        this.coachObj.RegistrationNumber = this.tempCoachObj.RegistrationNumber;
-        this.coachObj.Recognition = this.tempCoachObj.Recognition;
-        this.coachObj.ShortDescription = this.tempCoachObj.ShortDescription ? this.tempCoachObj.ShortDescription:"";
-        this.coachObj.DetailDescription = this.tempCoachObj.DetailDescription ? this.tempCoachObj.DetailDescription :"";
-        this.coachObj.IsActive = this.tempCoachObj.IsActive;
-        this.coachObj.IsEnabled = this.tempCoachObj.IsEnabled;
-        this.coachObj.IsVenueAssigned = true;
-        this.coachObj.CoachKey = this.tempCoachObj.$key;
+            this.act.unsubscribe();
+            this.clubcall.unsubscribe();
+            this.coachObj.ParentClubKey = this.selectedParentclubKey;
+            this.coachObj.FirstName = this.tempCoachObj.FirstName;
+            this.coachObj.MiddleName = this.tempCoachObj.MiddleName || "";
+            this.coachObj.LastName = this.tempCoachObj.LastName;
+            this.coachObj.Gender = this.tempCoachObj.Gender;
+            this.coachObj.EmailID = this.tempCoachObj.EmailID;
+            this.coachObj.PhoneNumber = this.tempCoachObj.PhoneNumber;
+            this.coachObj.DOB = this.tempCoachObj.DOB;
+            this.coachObj.DBSNumber = this.tempCoachObj.DBSNumber;
+            this.coachObj.RegistrationNumber = this.tempCoachObj.RegistrationNumber;
+            this.coachObj.Recognition = this.tempCoachObj.Recognition;
+            this.coachObj.ShortDescription = this.tempCoachObj.ShortDescription ? this.tempCoachObj.ShortDescription:"";
+            this.coachObj.DetailDescription = this.tempCoachObj.DetailDescription ? this.tempCoachObj.DetailDescription :"";
+            this.coachObj.IsActive = this.tempCoachObj.IsActive;
+            this.coachObj.IsEnabled = this.tempCoachObj.IsEnabled;
+            this.coachObj.IsVenueAssigned = true;
+            this.coachObj.CoachKey = this.tempCoachObj.$key;
 
-        for (let i = 0; i < this.clubs.length; i++) {
-            if (this.clubs[i].IsSelected == true) {
-                this.clubs[i].IsChecked = true;
-                for (let k = 0; k < this.clubs[i].Activities.length; k++) {
-                    if (this.clubs[i].Activities[k].IsSelected == true) {
-                        this.clubs[i].Activities[k].IsChecked = true;
+            for (let i = 0; i < this.clubs.length; i++) {
+                if (this.clubs[i].IsSelected == true) {
+                    this.clubs[i].IsChecked = true;
+                    for (let k = 0; k < this.clubs[i].Activities.length; k++) {
+                        if (this.clubs[i].Activities[k].IsSelected == true) {
+                            this.clubs[i].Activities[k].IsChecked = true;
+                        }
+
                     }
-
                 }
             }
-        }
-        for (let i = 0; i < this.clubs.length; i++) {
-            if (this.clubs[i].IsChecked == true) {
+            for (let i = 0; i < this.clubs.length; i++) {
+                if (this.clubs[i].IsChecked == true) {
 
-                this.clubObj.City = this.clubs[i].City;
-                this.clubObj.ClubAdminEmailID = this.clubs[i].ClubAdminEmailID;
-                this.clubObj.ClubContactName = this.clubs[i].ClubContactName;
-                this.clubObj.ClubDescription = this.clubs[i].ClubDescription ? this.clubs[i].ClubDescription:"";
-                this.clubObj.ClubName = this.clubs[i].ClubName;
-                this.clubObj.ClubShortName = this.clubs[i].ClubShortName;
-                this.clubObj.ContactPhone = this.clubs[i].ContactPhone ? this.clubs[i].ContactPhone : "";
-                this.clubObj.FirstLineAddress = this.clubs[i].FirstLineAddress;
-                this.clubObj.IsActive = true;
-                this.clubObj.IsEnable = true;
-                this.clubObj.OriginalClubKey = this.clubs[i].OriginalClubKey;
-                this.clubObj.PostCode = this.clubs[i].PostCode;
-                this.clubObj.SecondLineAddress = this.clubs[i].SecondLineAddress ? this.clubs[i].SecondLineAddress:"";
-                this.clubObj.State = this.clubs[i].City;
-                this.clubObj.Type = this.clubs[i].Type;
-                this.clubObj.ParentClubKey = this.selectedParentclubKey;
-                this.clubObj.ClubKey = this.clubs[i].$key;
+                    this.clubObj.City = this.clubs[i].City;
+                    this.clubObj.ClubAdminEmailID = this.clubs[i].ClubAdminEmailID;
+                    this.clubObj.ClubContactName = this.clubs[i].ClubContactName;
+                    this.clubObj.ClubDescription = this.clubs[i].ClubDescription ? this.clubs[i].ClubDescription:"";
+                    this.clubObj.ClubName = this.clubs[i].ClubName;
+                    this.clubObj.ClubShortName = this.clubs[i].ClubShortName;
+                    this.clubObj.ContactPhone = this.clubs[i].ContactPhone ? this.clubs[i].ContactPhone : "";
+                    this.clubObj.FirstLineAddress = this.clubs[i].FirstLineAddress;
+                    this.clubObj.IsActive = true;
+                    this.clubObj.IsEnable = true;
+                    this.clubObj.OriginalClubKey = this.clubs[i].OriginalClubKey;
+                    this.clubObj.PostCode = this.clubs[i].PostCode;
+                    this.clubObj.SecondLineAddress = this.clubs[i].SecondLineAddress ? this.clubs[i].SecondLineAddress:"";
+                    this.clubObj.State = this.clubs[i].City;
+                    this.clubObj.Type = this.clubs[i].Type;
+                    this.clubObj.ParentClubKey = this.selectedParentclubKey;
+                    this.clubObj.ClubKey = this.clubs[i].$key;
 
-                this.clubupadefinished = this.fb.update(this.clubs[i].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Club/", this.clubObj);
+                    this.clubupadefinished = this.fb.update(this.clubs[i].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Club/", this.clubObj);
 
-                this.fb.update(this.coachObj.CoachKey, "/Club/Type2/" + this.selectedParentclubKey + "/" + this.clubs[i].$key + "/Coach/", this.coachObj);
-                this.fb.update(this.coachObj.CoachKey, "/Coach/Type2/" + this.selectedParentclubKey + "/", { IsVenueAssigned: true });
+                    this.fb.update(this.coachObj.CoachKey, "/Club/Type2/" + this.selectedParentclubKey + "/" + this.clubs[i].$key + "/Coach/", this.coachObj);
+                    this.fb.update(this.coachObj.CoachKey, "/Coach/Type2/" + this.selectedParentclubKey + "/", { IsVenueAssigned: true });
 
-                if (this.clubs[i].Activities != undefined) {
-                    for (let k = 0; k < this.clubs[i].Activities.length; k++) {
-                        if (this.clubs[i].Activities[k].IsChecked == true) {
-                            this.activityObj.ActivityCode = this.clubs[i].Activities[k].ActivityCode;
-                            this.activityObj.ActivityName = this.clubs[i].Activities[k].ActivityName;
-                            this.activityObj.AliasName = this.clubs[i].Activities[k].AliasName;
-                            this.clubupadefinished = this.fb.update(this.clubs[i].Activities[k].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Club/" + this.clubs[i].$key + "/Activity/", this.activityObj);
-                            this.fb.update(this.clubs[i].Activities[k].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Activity/", this.activityObj);
-                            this.fb.update(this.coachObj.CoachKey, "/Activity/" + this.selectedParentclubKey + "/" + this.clubs[i].$key + "/" + this.clubs[i].Activities[k].$key + "/Coach/", this.coachObj);
-                            this.activityObj = {
-                                ActivityCode: "",
-                                ActivityName: "",
-                                AliasName: ""
+                    if (this.clubs[i].Activities != undefined) {
+                        for (let k = 0; k < this.clubs[i].Activities.length; k++) {
+                            if (this.clubs[i].Activities[k].IsChecked == true) {
+                                this.activityObj.ActivityCode = this.clubs[i].Activities[k].ActivityCode;
+                                this.activityObj.ActivityName = this.clubs[i].Activities[k].ActivityName;
+                                this.activityObj.AliasName = this.clubs[i].Activities[k].AliasName;
+                                this.clubupadefinished = this.fb.update(this.clubs[i].Activities[k].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Club/" + this.clubs[i].$key + "/Activity/", this.activityObj);
+                                this.fb.update(this.clubs[i].Activities[k].$key, "/Coach/Type2/" + this.selectedParentclubKey + "/" + this.coachObj.CoachKey + "/Activity/", this.activityObj);
+                                this.fb.update(this.coachObj.CoachKey, "/Activity/" + this.selectedParentclubKey + "/" + this.clubs[i].$key + "/" + this.clubs[i].Activities[k].$key + "/Coach/", this.coachObj);
+                                this.activityObj = {
+                                    ActivityCode: "",
+                                    ActivityName: "",
+                                    AliasName: ""
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        if (this.clubupadefinished != undefined) {
-            this.comonService.toastMessage("Saved successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-            this.comonService.updateCategory("coach_list");
-            this.navCtrl.pop();
-        } else {
-            this.comonService.toastMessage("Please select at least one venue", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
-        } catch (error) {
+            if (this.clubupadefinished != undefined) {
+                this.comonService.toastMessage("Saved successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+                this.comonService.updateCategory("coach_list");
+                this.navCtrl.pop();
+            } else {
+                this.comonService.toastMessage("Please select at least one venue", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            }
+        }catch (error) {
             console.error("Error assigning venue to coach:", error);
             this.comonService.toastMessage("Failed to save. Please try again.", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         }
     }
-    
+    saveCoach() {
+
+
+    }
+
     cancelVenueToCoach() {
         this.navCtrl.pop();
     }

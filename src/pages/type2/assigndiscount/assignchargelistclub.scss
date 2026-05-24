@@ -1,5 +1,8 @@
-assignchargelistclub-page{
-    .text-color{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+assignchargelistclub-page {
+    @include android-sdk35-fixes;
+.text-color{
         color:red;
     }
      .scroll-content{

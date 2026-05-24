@@ -22,7 +22,6 @@ import { SharedServices } from '../../../services/sharedservice';
 export class CreateSuperPromotion {
   TempParentClubs=[];
   totalmembercount: any;
-  nestUrl: any;
   countparentClubs = []
   promotion = {
     Title:'',
@@ -47,7 +46,6 @@ export class CreateSuperPromotion {
     public navParams: NavParams,
     public sharedService:SharedServices) {
 
-    this.nestUrl = this.sharedService.getnestURL();
     this.ParentClubKey = this.navParams.get('ClubKey')
     this.promotionDefault = this.navParams.get('prmotion')
     if (this.promotionDefault){

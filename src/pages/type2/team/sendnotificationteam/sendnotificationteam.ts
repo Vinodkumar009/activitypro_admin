@@ -33,16 +33,16 @@ export class SendnotificationteamPage {
   sendTo = [];
   deviceTokens = [];
   parentClubDetails: any;
-  mlist:GetPlayerModel;
-  themeType:number;
-  isAndroid:boolean;
-  parentClubKey:any;
-  loading:any;
+  mlist: GetPlayerModel;
+  themeType: number;
+  isAndroid: boolean;
+  parentClubKey: any;
+  loading: any;
   tournamentKey: string;
   popoverCtrl: any;
 
-  
-  constructor(  public navCtrl: NavController,
+
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private apollo: Apollo,
     private httpLink: HttpLink,
@@ -56,23 +56,23 @@ export class SendnotificationteamPage {
     private toastCtrl: ToastController,
     public sharedservice: SharedServices,
     public modalCtrl: ModalController,
-    popoverCtrl:PopoverController) {
-    
-     
-  
-     this.mlist=this.navParams.get("mlist");
-     console.log('data for notification:',this.mlist);    
-     this.notificationObj.Message = "Hi "+ this.mlist.user.FirstName +" "+ this.mlist.user.LastName   +" ",
-    console.log("notification message:",  this.notificationObj.Message);
+    popoverCtrl: PopoverController) {
 
 
-     this.parentClubKey = navParams.get('ParentClubKey');
-     console.log("Parent Club Id is:",typeof this.parentClubKey)
+
+    this.mlist = this.navParams.get("mlist");
+    console.log('data for notification:', this.mlist);
+    this.notificationObj.Message = "Hi " + this.mlist.user.FirstName + " " + this.mlist.user.LastName + " ",
+      console.log("notification message:", this.notificationObj.Message);
+
+
+    this.parentClubKey = navParams.get('ParentClubKey');
+    console.log("Parent Club Id is:", typeof this.parentClubKey)
     //  this.deviceTokens = [];
     //  let x = { MobileDeviceId: "", ConsumerID: "", PlatformArn: "" }
   }
 
-  
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SendnotificationteamPage');
@@ -119,29 +119,29 @@ export class SendnotificationteamPage {
     this.navCtrl.pop();
   }
   sendNotification() {
-  
-      let alert = this.alertCtrl.create({
-        subTitle: 'Send notification',
-        message: 'Are you sure want to send notification ?',
-        buttons: [
-          {
-            text: "Don't send",
-            role: 'cancel',
-            handler: () => {
 
-            }
-          },
-          {
-            text: 'Send',
-            handler: () => {
-              this.notify();
-            }
+    let alert = this.alertCtrl.create({
+      subTitle: 'Send notification',
+      message: 'Are you sure want to send notification ?',
+      buttons: [
+        {
+          text: "Don't send",
+          role: 'cancel',
+          handler: () => {
+
           }
-        ]
-      });
-      alert.present();
-    } 
-  
+        },
+        {
+          text: 'Send',
+          handler: () => {
+            this.notify();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   // getAlertMessage(): string {
   //   if (this.mlist.length == 1) {
   //     return "Are you sure you want to send the notification to "+this.mlist[0].user.FirstName+ this.mlist[0].user.LastName+" for this Tournament?"
@@ -151,8 +151,8 @@ export class SendnotificationteamPage {
   // }
 
 
-  
-  
+
+
   // goToDashboardMenuPage() {
   //   this.navCtrl.setRoot("Dashboard");
   // }
@@ -200,11 +200,11 @@ export class SendnotificationteamPage {
   //       userFirebaseId:"-MP3ld83zU7MCJjU0JQy"
   //     }
   //   })
-    
-   
+
+
   // }
 
-  notify(){
+  notify() {
     const notifyUser = gql`
     query notifyUser($parentClub: String!, $heading:String!, $message:String! , $userFirebaseId:String!) {
       notifyUser(parentClub:$parentClub, heading:$heading ,message:$message, userFirebaseId:$userFirebaseId) 
@@ -213,47 +213,47 @@ export class SendnotificationteamPage {
       }
 
   `;
-  this.apollo
-    .query({
-      query: notifyUser,
-      fetchPolicy: "network-only",
-      variables: {
-        parentClub:this.parentClubKey,
-        heading:"",
-        message:this.notificationObj.Message,
-        userFirebaseId:"-MP3ld83zU7MCJjU0JQy"
+    this.apollo
+      .query({
+        query: notifyUser,
+        fetchPolicy: "network-only",
+        variables: {
+          parentClub: this.parentClubKey,
+          heading: "",
+          message: this.notificationObj.Message,
+          userFirebaseId: "-MP3ld83zU7MCJjU0JQy"
 
 
-      },
-    })
-    .subscribe(({ data }) => {
-      this.commonService.hideLoader();
+        },
+      })
+      .subscribe(({ data }) => {
+        this.commonService.hideLoader();
         this.commonService.toastMessage(
           "Notification Send Successfully",
           2500,
           ToastMessageType.Success,
           ToastPlacement.Bottom
         );
-        console.log("Notification Data:" +data[notifyUser]);
+        // console.log("Notification Data:" +data[notifyUser]);
 
         this.navCtrl.pop();
 
 
-     
-    });
-  (err) => {
-    // this.commonService.hideLoader();
-    console.log(JSON.stringify(err));
-    this.commonService.toastMessage(
-      "Notification failed",
-      2500,
-      ToastMessageType.Error,
-      ToastPlacement.Bottom
-    );
-  };
+
+      });
+    (err) => {
+      // this.commonService.hideLoader();
+      console.log(JSON.stringify(err));
+      this.commonService.toastMessage(
+        "Notification failed",
+        2500,
+        ToastMessageType.Error,
+        ToastPlacement.Bottom
+      );
+    };
   }
 
-  
+
 
   // sendNotification() {
   //   this.notify();
@@ -370,8 +370,8 @@ export class SendnotificationteamPage {
   //   // this.androidDeviceTokens = [];
   //   this.deviceTokens = [];
 
-   
-    
+
+
   //   let isPresent = false;
   //   let sendTo = [];
 

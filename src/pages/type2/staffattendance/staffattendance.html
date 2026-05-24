@@ -1,0 +1,75 @@
+<!--
+  Generated template for the StaffattendancePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>staffattendance</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content  >
+  <div *ngIf=" coachAttendanceSetupInfo != ''">
+      <div class="mar-top-10">
+          <ion-slides  (ionSlideDidChange)="monthChanged()"  class="color-white-background">
+              <ion-slide *ngFor="let item of month" class="calender-slide">
+                <p class="margin-0 month-name">{{getFullNonthName(item)}}</p>
+              </ion-slide>
+            </ion-slides>
+      </div>
+      <div class="mar-top-4">
+          <ion-slides slidesPerView="7" class="color-white-background align">
+              <ion-slide *ngFor="let item of selectedDays" class="calender-slide" (click)="changeDate(item)">
+                <p class="margin-0 font-size-14" >{{item.day}}</p>
+                <p class="margin-0 date">{{item.date}}</p>
+              </ion-slide>
+            </ion-slides>
+      </div>
+      <div>
+        <p class="label-date">{{selectedLabel}}</p>
+      </div>
+      <div >
+          <ion-slides  slidesPerView="2.5"> 
+              <ion-slide *ngFor="let item of coachList" class="coach-slide"  (click)="coachNameChanged(item)">
+                <p class="margin-0 coach-name">{{item.FirstName}} {{item.LastName}}</p>
+              </ion-slide>
+            </ion-slides>
+      </div>
+      <div>
+        <ion-row  *ngFor="let item of selectedCoach.Club">
+          <ion-col col-8>
+              <p class="club-names">{{item.ClubName}}</p>
+          </ion-col>
+          <ion-col col-4>
+            <button ion-button (click)="showAttendance(item)">In</button>
+            <button ion-button>Out</button>
+          </ion-col >
+          <ion-col *ngIf="item.showAttnd == true" col-12 class="padding-0"></ion-col>
+         <ion-col *ngFor="let obj of attendanceMap.get(item.CoachKey+item.ClubKey)">
+          <ion-row>
+            <ion-col col-4 class="padding-0 padd-both">
+              <ion-datetime displayFormat="hh:mm" pickerFormat="hh-mm" [(ngModel)]="obj.InTime" placeholder="Start Time" class="border-bottm" (ionChange)="inputChange('in',obj)"></ion-datetime>
+            </ion-col>
+            <ion-col col-4 class="padding-0 padd-both">
+              <ion-datetime displayFormat="hh:mm" pickerFormat="hh-mm" [(ngModel)]="obj.OutTime" placeholder="End Time"  class="border-bottm" (ionChange)="inputChange('out',obj)"></ion-datetime>
+            </ion-col>
+            <ion-col col-4 class="padding-0 padd-both">
+              <ion-input type="number" placeholder="Duration(hrs)"  class="border-bottm" (ionChange)="inputChange('dura',obj)"></ion-input>
+            </ion-col>
+          </ion-row>
+         </ion-col>
+        </ion-row>
+    </div>
+  </div>
+  <div  *ngIf=" coachAttendanceSetupInfo == '' ">
+    <p>
+      No Staffsetup Found
+    </p>
+  </div>
+  
+</ion-content>

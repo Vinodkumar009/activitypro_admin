@@ -1,3 +1,8 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+notificationtournament-page {
+    @include android-sdk35-fixes;
+
 notificationtournamnet-page{
     .margin_top{
         margin-top: 10px;
@@ -34,4 +39,5 @@ notificationtournamnet-page{
     ion-card-content{
         padding:0px !important;
     }
+}
 }

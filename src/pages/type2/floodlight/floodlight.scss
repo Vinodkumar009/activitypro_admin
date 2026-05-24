@@ -1,0 +1,152 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-floodlight {
+    @include android-sdk35-fixes;
+    .segment-button
+    {
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
+        border-bottom-left-radius: 10px !important;
+        border: 1px !important;
+        margin-right: 5px !important;
+        margin: 0 5px;
+        background-color: white !important;
+        color:rgba(43, 146, 187, 0.48) !important;
+    }
+
+    .ioninput{
+        input{
+            text-align: center !important;
+        }   
+       
+    }
+    .pmargin{
+       
+            margin: 0 0 10px 0px !important;
+        
+    }
+    .dropdownrow{
+        margin: 1px 0px 14px 0;
+        border-radius: 6px;
+        border: 1px solid #FFB74D;
+        background: transparent;
+        width: 98%;
+        /* margin: auto; */
+        margin-left: auto;
+        margin-right: auto;
+        ion-item{
+            width: 50%;
+            font-size: 16px;
+            color: rgba(0,0,0,0.65);
+            /* border-radius: 6px; */
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+            .item-inner{
+                border-bottom: none;
+            }
+        }
+        ion-select{
+            max-width: 100%;
+            padding: 7px;
+        }
+
+    }
+
+    .ptext{
+        font-size: 14px;
+    color: grey;
+    text-align: center;
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    padding: 10px;
+    }
+    .tit-row{
+        border-bottom: 1px solid rgba(128, 128, 128, 0.20);
+        ion-col{
+            margin: auto;
+            p{
+                margin-top: auto;
+                margin-bottom: auto;
+                font-size: 14px;
+                color: rgba(0,0,0,0.65);
+            }
+            ion-input{
+                color: rgba(0,0,0,0.85);
+                font-size: 14px;
+                input{
+                    text-align: right;
+                    margin: 0;
+                    margin-right: 2px;
+                }
+            }
+           
+           
+        }
+        .datetimecol{     
+            padding: 5px 0;
+            text-align: right;
+            ion-datetime{
+                font-size: 14px;
+                padding:0 !important;
+            }
+        }
+    }
+    .flood-card{
+        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.07);
+        margin: 6px 4px;
+        width: calc(100% - 8px);
+        border-bottom: 1px solid #FFC107;
+        ion-card-content{
+            padding: 0px 4px 4px;
+        }
+        .tit-row{
+            border-bottom: 1px solid rgba(128, 128, 128, 0.20);
+            ion-col{
+                margin: auto;
+                p{
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    font-size: 14px;
+                    color: rgba(0,0,0,0.65);
+                }
+                ion-input{
+                    color: rgba(0,0,0,0.85);
+                    font-size: 14px;
+                    input{
+                        text-align: right;
+                        margin: 0;
+                        margin-right: 2px;
+                    }
+                }
+               
+               
+            }
+            .datetimecol{     
+                padding: 5px 0;
+                ion-datetime{
+                    font-size: 14px;
+                    padding:0 !important;
+                }
+            }
+        }
+        .btn-row{
+           // display: flex;
+            // justify-content: flex-end;
+            .button1{
+                margin: 8px;
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                background-color: #2b92bb;
+                box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.14);
+                //background-color: rgba(43, 146, 187 , 0.27) !important;
+            }
+        }
+    }
+    .selected
+    {
+        background-color: rgba(43, 146, 187, 0.48) !important;
+        color:white !important;
+        
+    }
+}

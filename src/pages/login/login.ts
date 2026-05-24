@@ -30,6 +30,7 @@ export class Login {
     emailID: '',
     password: ''
   };
+  showPassword: boolean = false;
 
 
   isExist: boolean = false;

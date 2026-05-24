@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 updateholidaycamppaymentdetails-page {
+    @include android-sdk35-fixes;
 
     .main_card{
         //margin-left: 0px !important;

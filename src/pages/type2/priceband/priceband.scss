@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-priceband {
+    @include android-sdk35-fixes;
+
+
+
     ion-card{
       
     }

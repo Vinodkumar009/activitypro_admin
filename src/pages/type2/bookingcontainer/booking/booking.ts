@@ -11,9 +11,6 @@ import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
 import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../shared/dtos/club.dto';
 import { AppType } from '../../../../shared/constants/module.constants';
-
-
-
 /**
  * Generated class for the BookingPage page.
  *
@@ -40,7 +37,6 @@ export class BookingPage {
   currencyDetails: any = "";
   slotsType: boolean = false;
   slotListing = [];
-
   slots = [];
   pastSlots = [];
   upCommingSlots = [];
@@ -50,7 +46,6 @@ export class BookingPage {
   selectedActivity = "";
   selectedCourt = "all";
   loading: any;
-  nestUrl: string = "";
   selectedTabInd = 0;
   Todayslots: any[];
   isClearStorage = false;
@@ -67,7 +62,6 @@ export class BookingPage {
 
 
   ionViewWillEnter() {
-    this.nestUrl = this.sharedService.getnestURL();
     this.storage.get('userObj').then((val) => {
       val = JSON.parse(val);
 
@@ -89,14 +83,7 @@ export class BookingPage {
   }
 
   getClubDetails() {
-    // this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-    //   this.clubs = data;
-    //   if (data.length != 0) {
-    //     this.selectedClubKey = this.clubs[0].$key;
-    //     this.getAllActivity();
-    //   }
-    // });
-       const body: GetParentClubVenuesRequestDto = {
+    const body: GetParentClubVenuesRequestDto = {
           parentclub_id: this.sharedService.getPostgreParentClubId(),
           app_type: AppType.ADMIN_NEW,
           device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,
@@ -189,7 +176,6 @@ export class BookingPage {
   //     this.loading.present();
   //     let startDate = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
   //     let lasttDate = new Date(new Date().setHours(23, 59, 59)).getTime();
-  //     this.http.get(`${this.nestUrl}/courtbooking/bookingHistory?parentClubKey=${this.selectedParentClubKey}&activitykey=${this.selectedActivity}&courtkey=${this.selectedCourt}&clubKey=${this.selectedClubKey}&startDate=${startDate}&endDate=${lasttDate}`)
   //       .subscribe(async (data: any) => {
   //         this.loading.dismiss()
   //         if(this.selectedCourt == 'all'){
@@ -253,7 +239,6 @@ export class BookingPage {
   //     let startDate = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
   //     let tempDate: any = moment().add(30, 'days');
   //     let lasttDate = new Date(new Date(tempDate).setHours(23, 59, 59)).getTime();
-  //     this.http.get(`${this.nestUrl}/courtbooking/bookingHistory?parentClubKey=${this.selectedParentClubKey}&activitykey=${this.selectedActivity}&courtkey=${this.selectedCourt}&clubKey=${this.selectedClubKey}&startDate=${startDate}&endDate=${lasttDate}`)
   //       .subscribe((data: any) => {
   //         this.loading.dismiss()
   //         if(this.selectedCourt == 'all'){
@@ -344,6 +329,7 @@ export class BookingPage {
       this.slots = [];
     }
   }
+  
   getTodayBookings() {
     if (this.selectedCourt) {
       this.loading = this.loadingCtrl.create({

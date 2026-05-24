@@ -1,0 +1,140 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
+page-schoolesessiondetailsforattendance {
+    @include android-sdk35-fixes;
+    .right{
+        float: right;
+    }
+  .dotted{
+        width : 100%;
+        overflow:hidden;
+        display:inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 20px;
+        color: white;
+    }
+    .card_list{
+        margin: 3px !important;
+        width: 98%;
+        border-bottom: 2px solid #faa928d3;
+      //  box-shadow: none !important;
+    }
+    .textcenter{
+        text-align:center;
+    }
+    .cardlist{
+        width:90%;
+        margin:0px !important;
+        background-color:white;
+        border-top: 17px solid gray;
+        box-shadow: none !important;
+        border-radius: 17px;
+        box-shadow: 13px 10px 11px -12px grey !important;
+    }
+    .content_height{
+        height: 74px;
+        text-align: -webkit-center;
+    }
+    .month_block{
+        text-align: center;
+        text-align: center;
+       // line-height: 44px;
+        color: #767677 !important;
+        font-size: 18px;
+    }
+    ion-card{
+        margin:0px;
+    }
+    .row_class{
+        margin-top: 6px;
+        height: 73%;
+           overflow-y: scroll;
+        ion-col{
+          padding: 3px;
+        }
+    }
+    .pendingBox {
+       display: inline-block;
+        width: 18px;
+        background-color: #fab754;
+    }
+    .takenBox{
+        display: inline-block;
+        width: 18px;
+    }
+ .cancelBox{
+        display: inline-block;
+        width: 18px;
+            background-color: rgba(246, 0, 0, 0.8);
+    }
+    .left_1{
+        margin-left: 11px;
+        margin-top: 4px;
+    }
+    .right_align{
+            float: right ;
+    }
+    .cancelSession{
+      border-top: 17px solid rgba(246, 0, 0, 0.8);
+    }
+    .margintop{
+        margin-top: 5px;
+    }
+        .contentwrapper {
+        display: inline-block;
+        width: 70px;
+    }
+    .dotted1{
+        width : 100%;
+        overflow:hidden;
+        display:inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px;
+        color: white;
+    }
+    // .scroll-content{
+    //     background-image: none !important;
+    //     background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+    // }
+    .scroll-content {
+      background-image: none !important;
+      padding: 0px !important;
+      background-color: #f7f7f7;
+  }
+    .timekare-primary-btn{
+        background-color: green !important;
+        h2{
+            color:white !important;
+        }
+    }
+    .border-green{
+      border-top: 17px solid green;
+    }
+    .align-center{
+      text-align: -webkit-center;
+    }
+    .day{
+      color: #a3a0a0;
+      margin-top: -3px;
+      width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .pending{
+      border-top: 17px solid #fab754;
+    }
+    .hadder-card{
+      text-align: -webkit-center;
+      background: #6fb754;
+      box-shadow: 0px -1px 31px 4px #8db07c;
+    }
+    .bottom-border-style{
+      width: 80% !important;
+      border-bottom: 2px solid #fab754 !important;
+      font-size: 18px !important;
+    }
+  
+}

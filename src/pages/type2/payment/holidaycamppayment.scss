@@ -1,5 +1,8 @@
-holidaycamppayment-page{
-    .social-cards ion-col {
+@import '../../../theme/android-sdk35-fixes.scss';
+
+holidaycamppayment-page {
+    @include android-sdk35-fixes;
+.social-cards ion-col {
         padding: 8px;
      }
      .right{
@@ -88,5 +91,4 @@ holidaycamppayment-page{
     .marg_top{
     margin-top: 0rem;
     }
-
 }

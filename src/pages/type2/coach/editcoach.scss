@@ -1,5 +1,8 @@
-editcoach-page{
-     .right{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+editcoach-page {
+    @include android-sdk35-fixes;
+.right{
          float: right;
      }
      .scroll-content {

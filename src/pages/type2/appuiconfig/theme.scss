@@ -1,0 +1,119 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-theme {
+    @include android-sdk35-fixes;
+
+
+
+    .tab_row{
+        ion-col{
+            //height:40px;
+            p{
+                margin:8px 0px;
+                //color: #fff;
+            }
+        }
+    }
+    
+
+    .input_div{
+      ion-row{
+        background: #fff;
+        margin-bottom:5px;
+        ion-col:nth-child(even) {
+          color: #777;
+          padding-left:15px;
+        }
+        ion-col:nth-child(odd) {
+          padding-left:15px;
+        }
+      }
+      
+      // ion-item{
+      //   margin-bottom:5px;
+      //   .text-input{
+      //     text-align: right;
+      //   }
+      // }
+    }
+    .note_div{
+      text-align: center;
+      font-style: italic;
+      font-size: 14px;
+      margin-top:15%;
+    }
+
+    
+
+    .modal {
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+
+      //color picker dialogue style
+      .color-picker {
+          display: block !important;
+          visibility: visible !important;
+          width: 65% !important;
+          height: 54% !important;
+          top: 20% !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          position: fixed !important;
+      }
+      
+      
+      /* Modal Content/Box */
+      .headerText {
+        //background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        width: 80%; /* Could be more or less, depending on screen size */
+      }
+      .btn-primary{
+        height: 28px;
+        text-align: center; 
+        width: 80px;
+        //margin-right: 23%;
+        background: #5be283;
+        color: #fff;
+      }
+      .btn_cancel{
+        height: 28px;
+        background-color:#bc2219;
+        width: 80px;
+        color: #fff;
+      }
+      .color-picker .button-area {
+        padding: 0 16px 16px;
+        text-align: center;
+      }
+ 
+      //To remove item highlight border bottom colors
+    .item-md.item-input.input-has-focus .item-inner {
+      border-bottom-color: #dedede !important;
+      box-shadow: none !important;
+    }
+    
+    .list-md .item-input.input-has-focus:last-child {
+      border-bottom-color: #dedede !important;
+      box-shadow: none !important;
+    }
+    
+    .list-md .item-input.input-has-focus:last-child .item-inner {
+      box-shadow: none;
+    }
+    
+    .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+      border-bottom-color: #dedede !important;
+      box-shadow: none !important;
+    }
+    
+}

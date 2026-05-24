@@ -1,5 +1,5 @@
-import { Component, Renderer2 } from "@angular/core";
-import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, Events } from "ionic-angular";
+import { Component, Renderer2, ViewChild } from "@angular/core";
+import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, Events, FabContainer } from "ionic-angular";
 import { ThemeService } from "../../../../services/theme.service";
 import { Storage } from "@ionic/storage";
 import { SharedServices } from "../../../services/sharedservice";
@@ -9,7 +9,13 @@ import { Apollo } from "apollo-angular";
 import moment from "moment";
 import gql from "graphql-tag";
 import { GraphqlService } from "../../../../services/graphql.service";
+import { HttpService } from "../../../../services/http.service";
+import { API } from "../../../../shared/constants/api_constants";
+import { AppType } from "../../../../shared/constants/module.constants";
 import { AllMatchData } from "../../../../shared/model/match.model";
+import { DetailHeaderRow } from "../../../../shared/components/detail-header/detail-header.component";
+import { ModuleTypeForEmail } from "../../mailtomemberbyadmin/mailtomemberbyadmin";
+import { ModuleTypes } from "../../../../shared/constants/module.constants";
 /**
  * Generated class for the MatchdetailsPage page.
  *
@@ -21,8 +27,10 @@ import { AllMatchData } from "../../../../shared/model/match.model";
 @Component({
   selector: "page-matchdetails",
   templateUrl: "matchdetails.html",
+  providers: [HttpService]
 })
 export class MatchdetailsPage {
+  @ViewChild('fab') fab: FabContainer;
   isDarkTheme: boolean = false;
   activeType: boolean = true;
   invitedType: boolean = true;
@@ -52,6 +60,27 @@ export class MatchdetailsPage {
   isTeamParticipantsAvail: boolean = true;
   isHistory = false;
 
+  // Match Players (REST-based)
+  homePlayers: any[] = [];
+  awayPlayers: any[] = [];
+  showAddPlayerDialog: boolean = false;
+  addPlayerSide: string = 'home';
+  searchResults: any[] = [];
+  playerSearchTerm: string = '';
+  get confirmedCount(): number { return [...this.homePlayers, ...this.awayPlayers].filter(p => p.ParticipationStatus === 1).length; }
+  get maxConfirmed(): number { return this.match && this.match.MatchType === 2 ? 4 : 2; }
+
+  // Publish Result Dialog
+  showResultDialog: boolean = false;
+  resultType: string = 'normal';
+  retiredPlayer: string = '';
+  matchFormat: string = '3';
+  sets: { home: string; away: string; tbHome: string; tbAway: string }[] = [
+    { home: '', away: '', tbHome: '', tbAway: '' },
+    { home: '', away: '', tbHome: '', tbAway: '' }
+  ];
+  publishing: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -65,13 +94,11 @@ export class MatchdetailsPage {
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
     private graphqlService: GraphqlService,
+    private httpService: HttpService,
     private themeService: ThemeService,
     private events: Events,
     private renderer: Renderer2
   ) {
-    this.events.subscribe('theme:changed', (theme) => {
-      this.isDarkTheme = theme === 'dark';
-    });
     console.log(
       `${this.navParams.get("selectedmatchId")}:${this.navParams.get(
         "selectedmemberkey"
@@ -94,37 +121,53 @@ export class MatchdetailsPage {
     console.log(this.UserInvitationStatus);
     this.getActiveTeams();
     this.getInvitedPlayers();
+    this.loadMatchParticipants();
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
       if (val.$key != "") {
         this.parentClubKey = val.UserInfo[0].ParentClubKey
-        //this.UserInvitationStatus.MemberKey = val.UserInfo[0].ParentClubKey;
-        this.UserInvitationStatus.MemberId = "476fd04d-4d42-42d4-865d-331c12a2a418";
+        this.UserInvitationStatus.MemberId = this.sharedservice.getLoggedInUserId();
+        this.isCanEditTeams = true;
       }
     });
   }
 
   async ionViewDidLoad() {
-    console.log("ionViewDidLoad MatchdetailsPage");
-    await this.loadTheme();
+    this.loadTheme();
   }
 
-  async loadTheme() {
-    const theme = await this.storage.get('selectedTheme');
-    this.applyTheme(theme || 'dark');
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => { this.applyTheme(isDark); });
+    this.events.subscribe('theme:changed', (isDark) => { this.applyTheme(isDark); });
   }
 
-  applyTheme(theme: string) {
-    this.isDarkTheme = theme === 'dark';
-    const pageElement = document.querySelector('page-matchdetails');
-    if (pageElement) {
-      if (this.isDarkTheme) {
-        this.renderer.removeClass(pageElement, 'light-theme');
-      } else {
-        this.renderer.addClass(pageElement, 'light-theme');
-      }
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => { this.applyTheme(true); });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-matchdetails');
+    if (el) {
+      isDark ? this.renderer.removeClass(el, 'light-theme') : this.renderer.addClass(el, 'light-theme');
+    } else {
+      setTimeout(() => {
+        const el2 = document.querySelector('page-matchdetails');
+        if (el2) { isDark ? this.renderer.removeClass(el2, 'light-theme') : this.renderer.addClass(el2, 'light-theme'); }
+      }, 100);
     }
   }
+
+  get activeTabIndex(): number { return this.activeType ? 0 : 1; }
+  onTabChange(index: number) { this.changeType(index === 0); }
 
   getFormattedDate(date: any) {
     return moment(+date).format("DD MMM YYYY, hh:mm A");
@@ -138,7 +181,10 @@ export class MatchdetailsPage {
     });
     profileModal.onDidDismiss(data => {
       console.log(data);
-      if (data.canRefreshData) this.getInvitedPlayers();
+      if (data && data.canRefreshData) {
+        this.getInvitedPlayers();
+        this.loadMatchParticipants();
+      }
     });
     profileModal.present();
 
@@ -146,6 +192,17 @@ export class MatchdetailsPage {
 
   formatMatchStartDate(date) {
     return moment(date, "YYYY-MM-DD HH:mm").local().format("DD-MMM-YYYY hh:mm A");
+  }
+
+  get headerAccentColor(): string {
+    return this.commonService.getTypeAccentColor(this.match ? this.match.MatchType : undefined);
+  }
+
+  get headerDetailRows(): DetailHeaderRow[] {
+    const rows: DetailHeaderRow[] = [];
+    if (this.match && this.match.MatchStartDate) rows.push({ icon: 'calendar', text: this.formatMatchStartDate(this.match.MatchStartDate) });
+    if (this.match && this.match.VenueName) rows.push({ icon: 'pin', text: (this.match as any).location && (this.match as any).location !== '' ? (this.match as any).location : this.match.VenueName });
+    return rows;
   }
 
   getColor(index: number) {
@@ -601,15 +658,218 @@ export class MatchdetailsPage {
 
 
   goto_publishresult() {
-    const todays_date = moment().format("YYYY-MM-DD hh:mm A");
-    // if (moment(this.match.MatchStartDate, "YYYY-MM-DD hh:mm A").isAfter(todays_date)) {
-    //   this.commonService.toastMessage("cannot publish future match", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-    //   return false;
-    // }
-    const teams = JSON.parse(JSON.stringify(this.teams));
-    this.navCtrl.push("PublishresultPage", { matchId: this.match.MatchId, teams: teams });
+    this.resultType = 'normal';
+    this.retiredPlayer = '';
+    this.matchFormat = '3';
+    this.sets = [
+      { home: '', away: '', tbHome: '', tbAway: '' },
+      { home: '', away: '', tbHome: '', tbAway: '' }
+    ];
+    this.showResultDialog = true;
   }
 
+  onResultTypeChange() {
+    if (this.resultType === 'walkover') {
+      this.sets = [{ home: '', away: '', tbHome: '', tbAway: '' }];
+    }
+  }
+
+  onFormatChange() {
+    var max = parseInt(this.matchFormat);
+    this.sets = max === 1
+      ? [{ home: '', away: '', tbHome: '', tbAway: '' }]
+      : [{ home: '', away: '', tbHome: '', tbAway: '' }, { home: '', away: '', tbHome: '', tbAway: '' }];
+  }
+
+  addSet() {
+    if (this.sets.length < parseInt(this.matchFormat)) {
+      this.sets.push({ home: '', away: '', tbHome: '', tbAway: '' });
+    }
+  }
+
+  removeSet(i: number) {
+    if (this.sets.length > 1) this.sets.splice(i, 1);
+  }
+
+  onScoreInput(i: number, field: string, val: string) {
+    this.sets[i][field] = val;
+    var v = parseInt(val);
+    if (isNaN(v)) return;
+    var other = field === 'home' ? 'away' : 'home';
+    if (!this.sets[i][other]) {
+      if (v >= 0 && v <= 4) this.sets[i][other] = '6';
+      else if (v === 5) this.sets[i][other] = '7';
+    }
+    if (this.sets[i].home && this.sets[i].away && !this.isMatchDecided() && i === this.sets.length - 1 && this.sets.length < parseInt(this.matchFormat)) {
+      this.sets.push({ home: '', away: '', tbHome: '', tbAway: '' });
+    }
+  }
+
+  needsTiebreak(set: any): boolean {
+    return (set.home == '7' && set.away == '6') || (set.home == '6' && set.away == '7');
+  }
+
+  getHomeSets(): number { return this.sets.filter(s => parseInt(s.home) > parseInt(s.away)).length; }
+  getAwaySets(): number { return this.sets.filter(s => parseInt(s.away) > parseInt(s.home)).length; }
+
+  isMatchDecided(): boolean {
+    var setsToWin = Math.ceil(parseInt(this.matchFormat) / 2);
+    return this.getHomeSets() >= setsToWin || this.getAwaySets() >= setsToWin;
+  }
+
+  getScoreText(): string {
+    return this.sets.filter(s => s.home && s.away).map(s => {
+      var base = s.home + '-' + s.away;
+      return this.needsTiebreak(s) && s.tbHome && s.tbAway ? base + '(' + s.tbHome + '-' + s.tbAway + ')' : base;
+    }).join('  ');
+  }
+
+  getWinner(): string {
+    var homeName = (this.homePlayers[0] ? this.homePlayers[0].name : this.match.homeUserName) || '';
+    var awayName = (this.awayPlayers[0] ? this.awayPlayers[0].name : this.match.awayUserName) || '';
+    if (this.resultType === 'walkover' || this.resultType === 'retired') {
+      return this.retiredPlayer === 'home' ? awayName : homeName;
+    }
+    var h = this.getHomeSets(), a = this.getAwaySets();
+    return h > a ? homeName : a > h ? awayName : '';
+  }
+
+  publishResult() {
+    this.publishing = true;
+    var homeSets = this.getHomeSets();
+    var awaySets = this.getAwaySets();
+
+    // Get player IDs from loaded participants
+    var homePlayer = this.homePlayers.find(function(p) { return p.ParticipationStatus === 1; }) || this.homePlayers[0];
+    var awayPlayer = this.awayPlayers.find(function(p) { return p.ParticipationStatus === 1; }) || this.awayPlayers[0];
+    var homeId = homePlayer ? homePlayer.userId : (this.match.homeUserId || '');
+    var awayId = awayPlayer ? awayPlayer.userId : (this.match.awayUserId || '');
+    var homeName = homePlayer ? homePlayer.name : (this.match.homeUserName || '');
+    var awayName = awayPlayer ? awayPlayer.name : (this.match.awayUserName || '');
+
+    var winner = this.getWinner();
+    var winnerId = winner === homeName ? homeId : awayId;
+    var loserId = winnerId === homeId ? awayId : homeId;
+    var resultStatus = this.resultType === 'walkover' ? 4 : this.resultType === 'retired' ? 5 : 1;
+
+    var setScores = this.sets.filter(s => s.home && s.away).map(function(s, i) {
+      var homeWon = parseInt(s.home) > parseInt(s.away);
+      return { SET_NUMBER: String(i + 1), SCORE: s.home + '-' + s.away, WINNER: homeWon ? homeName : awayName };
+    });
+
+    var resultJson = {
+      RESULT: {
+        RESULT_STATUS: String(resultStatus),
+        LOSER_ID: loserId,
+        DESCRIPTION: this.resultType === 'retired'
+          ? (this.retiredPlayer === 'home' ? homeName : awayName) + ' retired'
+          : this.resultType === 'walkover'
+            ? (this.retiredPlayer === 'home' ? homeName : awayName) + ' withdrew'
+            : ''
+      },
+      HOME_TEAM: {
+        TEAM_NAME: homeName, TEAM_ID: homeId,
+        SETS_WON: String(homeSets), GAMES_WON: '0', ACES: '0',
+        DOUBLE_FAULTS: '0', FIRST_SERVE_PERCENTAGE: '0', UNFORCED_ERRORS: '0', BREAK_POINTS_WON: '0'
+      },
+      AWAY_TEAM: {
+        TEAM_NAME: awayName,
+        SETS_WON: String(awaySets), GAMES_WON: '0', ACES: '0',
+        DOUBLE_FAULTS: '0', FIRST_SERVE_PERCENTAGE: '0', UNFORCED_ERRORS: '0', BREAK_POINTS_WON: '0'
+      },
+      SET_SCORES: setScores
+    };
+
+    var payload = {
+      MatchId: this.match.MatchId,
+      WinnerId: winnerId,
+      CreatedBy: this.sharedservice.getLoggedInUserId(),
+      PublishedBy: this.sharedservice.getLoggedInUserId(),
+      ResultStatus: resultStatus,
+      ResultDetails: JSON.stringify(resultJson),
+      resultDescription: '',
+      app_type: AppType.ADMIN_NEW,
+      device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
+      parentclubId: this.sharedservice.getPostgreParentClubId()
+    };
+
+    this.httpService.post(API.PUBLISH_RESULT_STANDALONE, payload).subscribe({
+      next: () => {
+        this.publishing = false;
+        this.showResultDialog = false;
+        this.commonService.toastMessage('Result published successfully', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+        this.events.publish('match:refresh');
+      },
+      error: () => {
+        this.publishing = false;
+        this.commonService.toastMessage('Failed to publish result', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+
+  gotoViewCoaches() {
+    this.navCtrl.push('ViewCoachesPage', { match_id: this.match.MatchId });
+  }
+
+  gotoEditMatch() {
+    this.navCtrl.push('EditmatchPage', { match: this.match });
+  }
+
+  closeFab() {
+    if (this.fab) this.fab.close();
+  }
+
+  gotoRecurringMatches() {
+    this.closeFab();
+    this.navCtrl.push('AddrecurringmatchesPage', { match: JSON.stringify(this.match) });
+  }
+
+  gotoEmailPage() {
+    if (this.participants.length > 0) {
+      const member_list = this.participants.map(p => ({
+        IsChild: (p.User as any).IsChild || false,
+        ParentId: (p.User as any).IsChild ? ((p.User as any).ParentId || "") : "",
+        MemberId: p.User.Id,
+        MemberEmail: (p.User as any).EmailID && (p.User as any).EmailID !== "" && (p.User as any).EmailID !== "-" && (p.User as any).EmailID !== "n/a"
+          ? (p.User as any).EmailID
+          : ((p.User as any).IsChild ? ((p.User as any).ParentEmailID || "") : ""),
+        MemberName: p.User.FirstName + " " + p.User.LastName
+      }));
+      const email_modal = {
+        module_info: {
+          module_id: this.match.MatchId,
+          module_booking_club_name: this.match.VenueName,
+          module_booking_name: this.match.MatchTitle,
+          module_booking_start_date: this.match.MatchStartDate,
+        },
+        email_users: member_list,
+        type: ModuleTypeForEmail.MEMBER
+      };
+      this.navCtrl.push("MailToMemberByAdminPage", { email_modal });
+    } else {
+      this.commonService.toastMessage("No participant(s) found", 2500, ToastMessageType.Error);
+    }
+  }
+
+  gotoNotificationPage() {
+    if (this.participants.length > 0) {
+      const user_ids = this.participants.map(p =>
+        (p.User as any).IsChild ? ((p.User as any).ParentId || p.User.Id) : p.User.Id
+      );
+      const user_names = this.participants.map(p => p.User.FirstName + ' ' + p.User.LastName);
+      this.navCtrl.push("NotificationsPage", {
+        users: user_ids,
+        user_names: user_names,
+        type: ModuleTypes.Match,
+        heading: `Match: ${this.match.MatchTitle}`,
+        module_id: this.match.MatchId,
+        page_id: "MATCHDETAILS"
+      });
+    } else {
+      this.commonService.toastMessage("No participant(s) found", 2500, ToastMessageType.Error);
+    }
+  }
 
   deleteConfirm() {
     let match_delete_alert = this.alertCtrl.create({
@@ -650,8 +910,9 @@ export class MatchdetailsPage {
       this.graphqlService.mutate(delete_Match, deleteVariable, 1).subscribe((response) => {
         const message = "match deleted successfully";
         this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-        this.commonService.updateCategory("matchlist");
-        this.navCtrl.pop().then(() => this.navCtrl.pop().then());
+        this.commonService.updateCategory("match");
+        this.events.publish('match:refresh');
+        this.navCtrl.pop();
 
       }, (err) => {
         console.error("GraphQL mutation error:", err);
@@ -661,6 +922,95 @@ export class MatchdetailsPage {
     } catch (error) {
       console.error("An error occurred:", error);
     }
+  }
+
+  // ─── REST-based Match Players (HOME/AWAY) ───
+  loadMatchParticipants() {
+    this.httpService.post(API.GET_MATCH_PARTICIPANTS, { MatchId: this.match.MatchId }).subscribe({
+      next: (res: any) => {
+        var data = (res && res.data) ? res.data : [];
+        // Collect unique team_ids to determine home (first) vs away (second)
+        var teamIds = [];
+        data.forEach(function(p) {
+          if (p.team_id && teamIds.indexOf(p.team_id) === -1) teamIds.push(p.team_id);
+        });
+        var homeTeamId = this.match.TeamId || this.match.homeUserId || teamIds[1] || '';
+        var mapped = data.map(function(p) {
+          var side = 'away';
+          if (p.team_type === 'home' || p.team_type === 'Home') { side = 'home'; }
+          else if (p.team_type === 'away' || p.team_type === 'Away') { side = 'away'; }
+          else if (p.team_id === homeTeamId) { side = 'home'; }
+          return {
+            id: p.participationid || p.id,
+            ParticipationId: p.participationid || p.id,
+            ParticipationStatus: p.participation_status || 0,
+            team_type: side,
+            name: (p.first_name ? (p.first_name + ' ' + (p.last_name || '')).trim() : (p.FirstName ? (p.FirstName + ' ' + (p.LastName || '')).trim() : 'Unknown')),
+            userId: p.user_id || p.UserId || ''
+          };
+        });
+        this.homePlayers = mapped.filter(function(p) { return p.team_type === 'home'; });
+        this.awayPlayers = mapped.filter(function(p) { return p.team_type === 'away'; });
+      },
+      error: () => { this.homePlayers = []; this.awayPlayers = []; }
+    });
+  }
+
+  openAddPlayer(side: string) {
+    this.addPlayerSide = side;
+    this.playerSearchTerm = '';
+    this.searchResults = [];
+    this.showAddPlayerDialog = true;
+  }
+
+  private searchTimeout: any;
+  onPlayerSearch(ev: any) {
+    var val = ev && ev.target && ev.target.value ? ev.target.value : '';
+    this.playerSearchTerm = val;
+    clearTimeout(this.searchTimeout);
+    if (val.length < 2) { this.searchResults = []; return; }
+    this.searchTimeout = setTimeout(() => {
+      var parentClubId = this.sharedservice.getPostgreParentClubId();
+      var existingIds = [...this.homePlayers, ...this.awayPlayers].map(function(p) { return p.userId; });
+      var searchQuery = gql`
+        query getAllMembersByParentClubNMemberType($input: GetAllMembersByParentClubNMemberTypeInput!) {
+          getAllMembersByParentClubNMemberType(input: $input) { Id FirstName LastName }
+        }
+      `;
+      this.graphqlService.query(searchQuery, {
+        input: { parentclub_id: parentClubId, club_id: '', search_term: val, member_type: 0, limit: 20, offset: 0 }
+      }, 0).subscribe(
+        (res: any) => {
+          var members = res.data.getAllMembersByParentClubNMemberType || [];
+          this.searchResults = members.filter(function(m) { return existingIds.indexOf(m.Id) === -1; });
+        },
+        () => { this.searchResults = []; }
+      );
+    }, 400);
+  }
+
+  addPlayerToMatch(member: any) {
+    var payload: any = { matchId: this.match.MatchId, homePlayers: [], awayPlayers: [], autoConfirm: false };
+    if (this.addPlayerSide === 'home') payload.homePlayers = [member.Id];
+    else payload.awayPlayers = [member.Id];
+    this.httpService.post(API.ADD_PLAYERS_TO_MATCH, payload).subscribe({
+      next: () => {
+        this.showAddPlayerDialog = false;
+        this.loadMatchParticipants();
+        this.commonService.toastMessage('Player added', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: () => { this.commonService.toastMessage('Failed to add player', 2500, ToastMessageType.Error, ToastPlacement.Bottom); }
+    });
+  }
+
+  updatePlayerStatus(player: any, status: number) {
+    this.httpService.post(API.UPDATE_STANDALONE_PARTICIPATION_STATUS, {
+      ParticipationId: player.ParticipationId || player.id,
+      ParticipationStatus: status
+    }).subscribe({
+      next: () => { this.loadMatchParticipants(); },
+      error: () => { this.commonService.toastMessage('Failed to update status', 2500, ToastMessageType.Error, ToastPlacement.Bottom); }
+    });
   }
 
 }

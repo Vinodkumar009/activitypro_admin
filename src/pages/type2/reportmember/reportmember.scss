@@ -1,10 +1,8 @@
-reportmember-page{
-   //.scroll-content{
-        //background-image: url("../assets/images/background/innerbg.png");
-        //background-size: 100% 100%;
-        
-    //}
-    .scroll-content{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+reportmember-page {
+    @include android-sdk35-fixes;
+.scroll-content{
         padding: 16px 9px !important;
     }
     .social-cards ion-col {

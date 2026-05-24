@@ -73,7 +73,7 @@
 
 <ion-footer>
   <div class="input-bar">
-    <ion-input placeholder="Ask me something.." [(ngModel)]="userInput" (keyup.enter)="sendMessage()"></ion-input>
+    <ion-textarea placeholder="Ask me something.." [(ngModel)]="userInput" rows="3" autosize (keyup.enter)="sendMessage()"></ion-textarea>
     <button ion-button clear icon-only (click)="sendMessage()">
       <ion-icon name="send"></ion-icon>
     </button>

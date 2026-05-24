@@ -1,8 +1,15 @@
-managecoach-page{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+managecoach-page {
+    @include android-sdk35-fixes;
     .scroll-content{
         background-image: none !important;
         background-color: #f4efef !important;
         padding: 6px !important;
+    }
+    .coach_clubs{
+        overflow: hidden;
+        white-space: normal;
     }
      .dropdown{
          padding: 5px 7px 0px 7px;
@@ -125,5 +132,4 @@ managecoach-page{
         -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
         box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
      }
-     
- }
+}

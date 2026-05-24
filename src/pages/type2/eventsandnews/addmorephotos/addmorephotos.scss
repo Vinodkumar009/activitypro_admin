@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-addmorephotos {
+    @include android-sdk35-fixes;
+
+
+
    
     ion-label {
         color: #b5b2ae

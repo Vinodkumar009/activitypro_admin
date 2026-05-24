@@ -1,5 +1,8 @@
-addactivityemailsetup-page{
-    .image-div{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+addactivityemailsetup-page {
+    @include android-sdk35-fixes;
+.image-div{
             border: 1px solid gray;
     padding: 0px 2px 1px 0px;
     }

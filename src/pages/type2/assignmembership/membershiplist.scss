@@ -1,0 +1,37 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+membershiplist-page {
+    @include android-sdk35-fixes;
+.box{
+       border: 1px solid #6fa3ac;
+    margin: 5px;
+    padding: 10px;
+    }
+    .text-color{
+        color:red;
+    }
+    .scroll-content{
+        padding: 16px 9px !important;
+    }
+    .card-view{
+        margin:0px;
+        width:100%;
+        margin-top: 7px;
+        box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+    }
+    .slidingcards {
+    // margin-bottom: 5px;
+    // border-top: 6px solid rgba(94, 199, 130, 0.79);
+    // margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // margin-bottom: 4px;
+    // border-top: 7px solid rgba(236, 117, 21, 0.63);
+    // border-bottom: 2px solid rgba(180, 24, 148, 0.73);
+    //  margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // border-bottom: 2px solid rgba(236, 117, 21, 0.63);
+    //box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+    margin-bottom: 7px;
+    border-top: 5px solid rgba(25, 92, 170, 0.79);
+  }
+}

@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 applydiscount-page {
+    @include android-sdk35-fixes;
     .scroll-content {
         padding: 9px 7px 7px 7px;
         // margin-top: 41px !important;

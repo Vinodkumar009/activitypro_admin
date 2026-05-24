@@ -12,6 +12,7 @@ import {
   Events
 } from "ionic-angular";
 import { ThemeService } from "../../../../services/theme.service";
+import { DetailHeaderRow } from "../../../../shared/components/detail-header/detail-header.component";
 import {
   CommonService,
   ToastMessageType,
@@ -22,6 +23,7 @@ import { FirebaseService } from "../../../../services/firebase.service";
 import gql from "graphql-tag";
 import { SharedServices } from "../../../services/sharedservice";
 import { GetPlayerModel, GetStaffModel, MembersModel, TeamsForParentClubModel } from "../models/team.model";
+import { TeamDetail } from "../../league/models/team.model";
 // import { teaminLeagueModel } from "../../league/models/league.model";
 import { GraphqlService } from "../../../../services/graphql.service";
 import { HttpService } from "../../../../services/http.service";
@@ -53,7 +55,11 @@ export class TeamdetailsPage {
   playerType: boolean = true;
   staffType: boolean = true;
   isDarkTheme: boolean = false;
-  team: TeamsForParentClubModel;
+  showPlayerSheet: boolean = false;
+  selectedPlayer: GetPlayerModel = null;
+  showStaffSheet: boolean = false;
+  selectedStaff: GetStaffModel = null;
+  team: TeamDetail;
   // team:any;
   parentClubKey: string;
   teamRoles: GetRoles[];
@@ -136,8 +142,8 @@ export class TeamdetailsPage {
       )}`
     );
     
-    this.events.subscribe('theme:changed', (theme) => {
-      this.isDarkTheme = theme === 'dark';
+    this.events.subscribe('theme:changed', () => {
+      // handled in ionViewWillEnter
     });
   }
 
@@ -146,16 +152,22 @@ export class TeamdetailsPage {
     // this.getInvitedStaff();
   }
 
+  get headerDetailRows(): DetailHeaderRow[] {
+    const rows: DetailHeaderRow[] = [];
+    const t = this.teamsForParentClub;
+    if (t && t.ageGroup) rows.push({ icon: 'people', text: 'Age Group: ' + t.ageGroup });
+    if (t && t.club && t.club.ClubName) rows.push({ icon: 'pin', text: t.club.ClubName });
+    return rows;
+  }
+
   ionViewWillEnter() {
-    // Load theme
-    this.storage.get('dashboardTheme').then((theme) => {
-      this.isDarkTheme = theme === 'dark' || theme === true;
-      const themeClass = this.isDarkTheme ? 'dark-theme' : 'light-theme';
-      document.body.classList.remove('dark-theme', 'light-theme');
-      document.body.classList.add(themeClass);
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.applyTheme(isDark);
     });
-    
-    // this.teams=this.navParams.get("team");
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.applyTheme(isDark);
+    });
 
     this.team = this.navParams.get("team");
     console.log("team are", this.team);
@@ -166,7 +178,7 @@ export class TeamdetailsPage {
         this.getStaffInput.ParentClubKey = val.UserInfo[0].ParentClubKey;
         this.getStaffInput.MemberKey = val.$key;
 
-        this.getStaffInput.parentClubteamId = String(this.team.id);
+        this.getStaffInput.parentClubteamId = String(this.team.Id);
         console.log("team id is:", this.getStaffInput.parentClubteamId)
 
         // Initialize updateTeamMemberFieldsInput
@@ -186,6 +198,30 @@ export class TeamdetailsPage {
       this.getTeamDetails();
     });
 
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => { this.applyTheme(true); });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-teamdetails');
+    if (el) {
+      isDark ? el.classList.remove('light-theme') : el.classList.add('light-theme');
+    } else {
+      setTimeout(() => {
+        const el2 = document.querySelector('page-teamdetails');
+        if (el2) { isDark ? el2.classList.remove('light-theme') : el2.classList.add('light-theme'); }
+      }, 100);
+    }
   }
 
   getTeamDetails() {
@@ -222,7 +258,7 @@ export class TeamdetailsPage {
         }
       }
     `;
-    this.graphqlService.query(leaguesforparentclubQuery, { teamId: this.team.id }, 0).subscribe((res: any) => {
+    this.graphqlService.query(leaguesforparentclubQuery, { teamId: this.team.Id }, 0).subscribe((res: any) => {
       this.commonService.hideLoader();
       this.teamsForParentClub = res.data.getTeamsById;
     },
@@ -259,6 +295,10 @@ export class TeamdetailsPage {
     this.navCtrl.push("MultiplayeremailPage", { "players": this.participants })
   }
 
+  get activeTabIndex(): number { return this.playerType ? 0 : 1; }
+
+  onTabChange(index: number) { this.changeType(index === 0); }
+
   //Change Type for selecting the tab
 
   changeType(val) {
@@ -272,59 +312,22 @@ export class TeamdetailsPage {
 
   //ActionSheet Controller
   presentActionSheet(member: GetPlayerModel) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: `${member.user.FirstName} ${member.user.LastName}`,
-      buttons: [
+    this.selectedPlayer = member;
+    this.showPlayerSheet = true;
+  }
 
-        {
-          text: 'Confirmed',
-          icon: 'checkmark-circle',
-          cssClass: 'action-sheet-confirmed',
-          handler: () => {
-            this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminAccepted);
-          }
-        },
-        {
-          text: 'Maybe',
-          icon: 'help-circle',
-          cssClass: 'action-sheet-maybe',
-          handler: () => {
-            this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminMaybe);
-          }
-        },
-        {
-          text: 'Declined',
-          icon: 'close-circle',
-          cssClass: 'action-sheet-declined',
-          handler: () => {
-            this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminDeclined);
-          }
-        },
-        {
-          text: 'Update Role',
-          icon: 'people',
-          handler: () => {
-            //for updating roles
-            this.addRoleforPlayerandStaff(member)
-          }
-        },
-        {
-          text: 'Send Notification',
-          icon: 'notifications',
-          handler: () => {
-            this.sendNotificationToPlayer(member)
-          }
-        },
-        {
-          text: 'Remove Player',
-          icon: 'ios-trash',
-          handler: () => {
-            this.removePlayer(member);
-          }
-        },
-      ]
-    });
-    actionSheet.present();
+  onPlayerAction(action: string) {
+    this.showPlayerSheet = false;
+    const member = this.selectedPlayer;
+    if (!member) return;
+    switch (action) {
+      case 'confirmed': this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminAccepted); break;
+      case 'maybe': this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminMaybe); break;
+      case 'declined': this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminDeclined); break;
+      case 'role': this.addRoleforPlayerandStaff(member); break;
+      case 'notify': this.sendNotificationToPlayer(member); break;
+      case 'remove': this.removePlayer(member); break;
+    }
   }
 
 
@@ -362,7 +365,7 @@ export class TeamdetailsPage {
         }
       }
     `;
-    this.graphqlService.query(participantsStatusQuery, { teamId: this.team.id, roleType: 1 }, 0).subscribe((res: any) => {
+    this.graphqlService.query(participantsStatusQuery, { teamId: this.team.Id, roleType: 1 }, 0).subscribe((res: any) => {
       this.participants = res.data["getParentClubTeamMembers"] as GetPlayerModel[];
 
       if (this.participants != null) this.participantCount = this.participants.length;
@@ -393,7 +396,7 @@ export class TeamdetailsPage {
   //a.this will goto (Add Players to team) Page
 
   gotoAddPlayer() {
-    this.navCtrl.push("Addplayertoteam", { "teamid": this.team.id, "existedPlayer": this.participants });
+    this.navCtrl.push("Addplayertoteam", { "teamid": this.team.Id, "existedPlayer": this.participants });
   }
 
   sendMailToPlayer(member) {
@@ -491,7 +494,7 @@ export class TeamdetailsPage {
   }
 
   gotoDeleteteam() {
-    this.navCtrl.push("DeleteteamPage", { "teamid": this.team.id });
+    this.navCtrl.push("DeleteteamPage", { "teamid": this.team.Id });
   }
 
   //this function is for deleting the team
@@ -531,7 +534,7 @@ export class TeamdetailsPage {
             
         }`;
 
-      const delete_team_variable = { teamEditInput: this.team.id };
+      const delete_team_variable = { teamEditInput: this.team.Id };
 
       this.graphqlService.mutate(
         delete_Team,
@@ -540,6 +543,7 @@ export class TeamdetailsPage {
       ).subscribe((response) => {
         const message = "team deleted successfully";
         this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+        this.events.publish('team:refresh');
         this.navCtrl.pop();
         // this.navCtrl.pop().then(() => this.navCtrl.pop().then());
       }, (err) => {
@@ -562,48 +566,19 @@ export class TeamdetailsPage {
   //*** 2.Here started Staff Part  ***/
 
   actionSheetforStaff(staff) {
-    let actionSheet = this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Update Role',
-          icon: 'female',
-          handler: () => {
-            //for updating roles
-            this.updateroleforstaffPage(staff)
-          }
-        },
-        // {
-        //   text: 'Profile',
-        //   icon: 'ios-contact',
-        //   handler: () => {
-        //     this.getProfile();
-        //   }
-        // },
+    this.selectedStaff = staff;
+    this.showStaffSheet = true;
+  }
 
-        {
-          text: 'Send Email',
-          icon: 'md-mail',
-          handler: () => {
-            this.sendMailToStaff(staff)
-          }
-        },
-        // {
-        //   text: 'Send Notification',
-        //   icon: 'notifications',
-        //   handler: () => {
-        //     this.sendNotificationToStaff(staff)
-        //   }
-        // },
-        {
-          text: 'Remove Staff',
-          icon: 'ios-trash',
-          handler: () => {
-            this.removeStaff(staff.id);
-          }
-        },
-      ]
-    });
-    actionSheet.present();
+  onStaffAction(action: string) {
+    this.showStaffSheet = false;
+    const staff = this.selectedStaff;
+    if (!staff) return;
+    switch (action) {
+      case 'role': this.updateroleforstaffPage(staff); break;
+      case 'email': this.sendMailToStaff(staff); break;
+      case 'remove': this.removeStaff(staff.id); break;
+    }
   }
 
   sendNotificationToStaff(staff) {
@@ -670,8 +645,8 @@ export class TeamdetailsPage {
 
   //**a.Add Staff */
   gotoAddStaff() {
-    this.navCtrl.push("AddstafftoteamPage", { "teamid": this.team.id, "existedstaff": this.staffs });
-    console.log("id is:", this.team.id)
+    this.navCtrl.push("AddstafftoteamPage", { "teamid": this.team.Id, "existedstaff": this.staffs });
+    console.log("id is:", this.team.Id)
   }
 
   FilterStaffs(ev: any) {
@@ -764,7 +739,7 @@ export class TeamdetailsPage {
 
   updateroleforstaffPage(staff) {
     this.navCtrl.push("UpdateroleforstaffPage", {
-      "team": this.team,
+      "team": this.teamsForParentClub,
       "staffId": staff.id,
       "currentRole": staff.role
     });
@@ -861,7 +836,7 @@ export class TeamdetailsPage {
 
   //mail to staff
   sendMailToStaff(staff) {
-    this.navCtrl.push("SenmailtostaffPage", { "staff": staff, "teamid": this.team.id });
+    this.navCtrl.push("SenmailtostaffPage", { "staff": staff, "teamid": this.team.Id });
     console.log(staff)
   }
 
@@ -947,6 +922,7 @@ export class TeamdetailsPage {
 
     this.httpService.post(`${API.UPDATE_TEAM_MEMBER_FIELDS}`, this.updateTeamMemberFieldsInput).subscribe({
       next: (res: any) => {
+        this.commonService.hideLoader();
         if (res) {
           this.commonService.toastMessage(res.message, 3000, ToastMessageType.Success);
           this.updateTeamMemberFieldsRes = res;
@@ -956,6 +932,7 @@ export class TeamdetailsPage {
         }
       },
       error: (err) => {
+        this.commonService.hideLoader();
         this.commonService.toastMessage(err.error.message, 3000, ToastMessageType.Error);
       }
     });

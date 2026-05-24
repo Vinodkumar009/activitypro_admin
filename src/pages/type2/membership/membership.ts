@@ -117,8 +117,10 @@ export class MembershipPage {
             }
         },
         (error) => {
+                //this.commonService.hideLoader();
                 console.error("Error in fetching:", error);
                 this.comonService.toastMessage(error.message, 2500,ToastMessageType.Error, ToastPlacement.Bottom);
+            // Handle the error here, you can display an error message or take appropriate action.
         }) 
     }
 
@@ -130,16 +132,20 @@ export class MembershipPage {
             device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
             app_type:AppType.ADMIN_NEW
           }
-          this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe({
-            next: (res: any) => {
-                if(res.length == 0 || !res[0].hasOwnProperty('admin_fees')) {
-                    this.fab.close();
-                    this.comonService.commonAlert_V4('No membership year setup', 'Membership year setup is mandatory, Want to create a setup?', "Yes:Create","Cancel",()=>{
-                        this.goToMembershipYear();
-                    })
-                }
+          this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe((res: any) => {
+            if(res.length == 0 || !res[0].hasOwnProperty('admin_fees')) {
+                this.fab.close();
+                this.comonService.commonAlert_V4('No membership year setup', 'Membership year setup is mandatory, Want to create a setup?', "Yes:Create","Cancel",()=>{
+                    this.goToMembershipYear();
+                })
             }
-          });
+          },
+         (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         })        
     }
     
     
@@ -155,14 +161,18 @@ export class MembershipPage {
             device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
             app_type:AppType.ADMIN_NEW
           }
-          this.httpService.post(API.MEMBERSHIP_ACTIVE_LIST,get_memberships_payload).subscribe({
-            next: (res: any) => {
-                if(res && res.data && res.data.memberships.length > 0) {
-                    this.Memberships = res.data && res.data.memberships ? res.data.memberships : [];
-                    this.SetupDisplay = JSON.parse(JSON.stringify(this.Memberships));
-                }
+          this.httpService.post(API.MEMBERSHIP_ACTIVE_LIST,get_memberships_payload).subscribe((res: any) => {
+            if(res && res.data && res.data.memberships.length > 0) {
+                this.Memberships = res.data && res.data.memberships ? res.data.memberships : [];
+                this.SetupDisplay = JSON.parse(JSON.stringify(this.Memberships));
             }
-          });
+          },
+         (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         })
     }
     
     //search membership
@@ -241,12 +251,16 @@ export class MembershipPage {
                 membership_id:setup.id,
                 updated_by:this.sharedservice.getLoggedInId()
               }
-              this.httpService.post(API.MEMBERSHIP_DELETE,get_memberships_payload).subscribe({
-                next: (res: any) => {
-                    this.comonService.toastMessage("Setup deleted successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-                    this.getSetupByVenue();
-                }
-              });
+              this.httpService.post(API.MEMBERSHIP_DELETE,get_memberships_payload).subscribe((res: any) => {
+                this.comonService.toastMessage("Setup deleted successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+                this.getSetupByVenue();
+              },
+             (error) => {
+                  //this.commonService.hideLoader();
+                  console.error("Error in fetching:", error);
+                  this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+                 // Handle the error here, you can display an error message or take appropriate action.
+             })
         })                
     }
 

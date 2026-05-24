@@ -1,482 +1,101 @@
-@import "../../_league-theme.scss";
 @import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-tennis-result-input {
-  @include league-theme-base;
   @include android-sdk35-fixes;
 
-  // Dark theme
-  &:not(.light-theme) {
-    .scroll-content {
-      background: #1e293b !important;
-    }
+  .scroll-content { padding: 0 !important; overflow: hidden !important; background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
 
-    .header-section {
-      .match-info h3 {
-        color: #f1f5f9 !important;
-      }
-      .subtitle {
-        color: #94a3b8 !important;
-      }
-    }
+  ion-navbar { background: #0f172a !important;
+    .toolbar-background { background: #0f172a !important; }
+    .toolbar-title { color: #f1f5f9 !important; }
+    .bar-button { color: #f1f5f9 !important; }
+  }
 
-    .result-card {
-      background: #334155 !important;
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-fixed-header { flex-shrink: 0; background: #0f172a; z-index: 10; }
+  .page-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 12px 80px; }
 
-      .card-header span {
-        color: #f1f5f9 !important;
-      }
-    }
+  .match-badge {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 16px; margin: 8px 12px;
+    background: rgba(43, 146, 187, 0.15); border: 1px solid rgba(43, 146, 187, 0.3);
+    border-radius: 10px; color: #3fbcd3; font-size: 14px; font-weight: 700;
+    .badge-icon { font-size: 18px; }
+  }
 
-    .team-option {
-      border-color: #64748b !important;
-      background: #475569 !important;
+  // Result cards
+  .result-card {
+    background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(71, 85, 105, 0.4);
+    border-radius: 12px; padding: 16px; margin-bottom: 12px;
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  }
+  .card-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 12px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    ion-icon { font-size: 14px; color: #2b92bb; }
+  }
 
-      &.selected {
-        border-color: #2b92bb !important;
-        background: #1e293b !important;
-      }
+  // Winner options
+  .winner-options { display: flex; flex-direction: column; gap: 8px; }
+  .winner-option {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s;
+    ion-icon { font-size: 20px; color: #64748b; &.checked { color: #10b981; } }
+    span { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+    &.selected { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+    &.disabled { opacity: 0.4; cursor: not-allowed; }
+  }
 
-      span {
-        color: #f1f5f9 !important;
-      }
-    }
-
-    .custom-dropdown {
-      .dropdown-trigger {
-        border-color: #64748b !important;
-        background: #475569 !important;
-
-        &:hover {
-          border-color: #2b92bb !important;
-        }
-
-        .selected-text {
-          color: #f1f5f9 !important;
-        }
-      }
-
-      .dropdown-options {
-        background: #334155 !important;
-        border-color: #64748b !important;
-
-        .dropdown-option {
-          &:hover {
-            background: #475569 !important;
-          }
-
-          &.selected {
-            background: #1e293b !important;
-            color: #2b92bb !important;
-          }
-
-          span {
-            color: #f1f5f9 !important;
-          }
-        }
-      }
-    }
-
-    .score-inputs .team-input {
-      label {
-        color: #94a3b8 !important;
-      }
-
-      .score-field {
-        background: #475569 !important;
-        border-color: #64748b !important;
-        color: #f1f5f9 !important;
-
-        .text-input {
-          color: #f1f5f9 !important;
-        }
-
-        &:focus {
-          border-color: #2b92bb !important;
-        }
-      }
-    }
-
-    .vs-separator {
-      color: #94a3b8 !important;
-    }
-
-    .custom-footer {
-      background: #1e293b !important;
-    }
+  // Dropdown
+  .dropdown-trigger {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; background: #1e293b; border: 1px solid #334155;
+    border-radius: 10px; cursor: pointer;
+    ion-icon { font-size: 16px; color: #64748b; transition: transform 0.2s; &.rotated { transform: rotate(180deg); } }
+    &.disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+  .dropdown-text { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+  .dropdown-list {
+    margin-top: 6px; background: #1e293b; border: 1px solid #334155;
+    border-radius: 10px; overflow: hidden;
+  }
+  .dropdown-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; cursor: pointer; border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+    span { font-size: 14px; font-weight: 600; color: #cbd5e1; }
+    ion-icon { font-size: 16px; color: #10b981; }
+    &:last-child { border-bottom: none; }
+    &.active { background: rgba(43, 146, 187, 0.1); span { color: #2b92bb; } }
+    &:active { background: rgba(255, 255, 255, 0.05); }
   }
 
   // Light theme
   &.light-theme {
-    .scroll-content {
-      background: #f1f5f9 !important;
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .page-fixed-header { background: #f8fafc; }
+    ion-navbar { background: #f8fafc !important;
+      .toolbar-background { background: #f8fafc !important; }
+      .toolbar-title { color: #1e293b !important; }
+      .bar-button { color: #1e293b !important; }
     }
-
-    .header-section {
-      .match-info h3 {
-        color: #2c3e50 !important;
-      }
-      .subtitle {
-        color: #7f8c8d !important;
-      }
+    .match-badge { background: rgba(43, 146, 187, 0.1); border-color: rgba(43, 146, 187, 0.2); }
+    .result-card { background: rgba(255, 255, 255, 0.55); border-color: rgba(226, 232, 240, 0.6); }
+    .card-label { color: #64748b; }
+    .winner-option {
+      background: #fff; border-color: #e2e8f0;
+      span { color: #1e293b; }
+      &.selected { border-color: #10b981; background: rgba(16, 185, 129, 0.05); }
     }
-
-    .result-card {
-      background: white !important;
-
-      .card-header span {
-        color: #2c3e50 !important;
-      }
-    }
-
-    .team-option {
-      border-color: #e9ecef !important;
-      background: white !important;
-
-      &.selected {
-        border-color: #3498db !important;
-        background: #f8f9ff !important;
-      }
-
-      span {
-        color: #2c3e50 !important;
-      }
-    }
-
-    .custom-dropdown {
-      .dropdown-trigger {
-        border-color: #e9ecef !important;
-        background: #f8f9fa !important;
-
-        &:hover {
-          border-color: #3498db !important;
-        }
-
-        .selected-text {
-          color: #2c3e50 !important;
-        }
-      }
-
-      .dropdown-options {
-        background: white !important;
-        border-color: #e9ecef !important;
-
-        .dropdown-option {
-          &:hover {
-            background: #f8f9fa !important;
-          }
-
-          &.selected {
-            background: #f8f9ff !important;
-            color: #3498db !important;
-          }
-
-          span {
-            color: #2c3e50 !important;
-          }
-        }
-      }
-    }
-
-    .score-inputs .team-input {
-      label {
-        color: #7f8c8d !important;
-      }
-
-      .score-field {
-        background: #f8f9fa !important;
-        border-color: #e9ecef !important;
-        color: #2c3e50 !important;
-
-        .text-input {
-          color: #2c3e50 !important;
-        }
-
-        &:focus {
-          border-color: #3498db !important;
-        }
-      }
-    }
-
-    .vs-separator {
-      color: #7f8c8d !important;
-    }
-
-    .custom-footer {
-      background: white !important;
+    .dropdown-trigger { background: #fff; border-color: #e2e8f0; }
+    .dropdown-text { color: #1e293b; }
+    .dropdown-list { background: #fff; border-color: #e2e8f0; }
+    .dropdown-item { border-bottom-color: rgba(226, 232, 240, 0.6);
+      span { color: #334155; }
+      &.active { background: rgba(43, 146, 187, 0.05); }
     }
   }
-  .scroll-content {
-    background-image: none !important;
-    padding: 10px !important;
-  }
-
-  ion-buttons {
-    button {
-      color: #fff !important;
-    }
-  }
-
-  ion-title {
-    background-color: #2b92bb !important;
-
-    div {
-      color: #fff !important;
-    }
-  }
-
-  .toolbar-background-md {
-    background-color: #2b92bb;
-  }
-
-  .result-content {
-    padding: 16px;
-  }
-
-  .header-section {
-    text-align: center;
-    margin-bottom: 24px;
-
-    .match-info {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 8px;
-
-      h3 {
-        margin: 0;
-        font-weight: 600;
-        color: #2c3e50;
-      }
-    }
-
-    .subtitle {
-      margin: 0;
-      font-size: 14px;
-      color: #7f8c8d;
-    }
-  }
-
-  .result-sections {
-    margin-bottom: 24px;
-  }
-
-  .result-card {
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    ion-icon {
-      color: #2b92bb;
-    }
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-
-      span {
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 16px;
-      }
-    }
-  }
-
-  .winner-options{
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .team-option{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &.selected {
-      border-color: #3498db;
-      background: #f8f9ff;
-    }
-
-    span {
-      font-weight: 500;
-      color: #2c3e50;
-    }
-  }
-
-  .custom-dropdown {
-    position: relative;
-    
-    .dropdown-trigger {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px;
-      border: 2px solid #e9ecef;
-      border-radius: 12px;
-      background: #f8f9fa;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        border-color: #3498db;
-      }
-      
-      &.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-      
-      .selected-text {
-        font-weight: 500;
-        color: #2c3e50;
-      }
-      
-      ion-icon {
-        transition: transform 0.3s ease;
-        
-        &.rotated {
-          transform: rotate(180deg);
-        }
-      }
-    }
-    
-    .dropdown-options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border: 2px solid #e9ecef;
-      border-top: none;
-      border-radius: 0 0 12px 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-      max-height: 200px;
-      overflow-y: auto;
-      
-      .dropdown-option {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 16px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-        
-        &:hover {
-          background: #f8f9fa;
-        }
-        
-        &.selected {
-          background: #f8f9ff;
-          color: #3498db;
-        }
-        
-        span {
-          font-weight: 500;
-        }
-      }
-    }
-  }
-
-  .score-inputs {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-
-    .team-input {
-      flex: 1;
-      text-align: center;
-
-      label {
-        display: block;
-        font-size: 12px;
-        color: #7f8c8d;
-        margin-bottom: 8px;
-        font-weight: 500;
-      }
-
-      .score-field {
-        background: #f8f9fa;
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        text-align: center;
-        font-size: 20px;
-        font-weight: 600;
-        height: 60px;
-
-        .text-input {
-          text-align: center !important;
-        }
-
-        &:focus {
-          border-color: #3498db;
-        }
-      }
-    }
-
-    .vs-separator {
-      font-size: 14px;
-      font-weight: 600;
-      color: #7f8c8d;
-      padding: 8px;
-    }
-  }
-
-  .custom-footer {
-    padding: 10px 16px;
-
-    .footer-buttons {
-      display: flex;
-      gap: 12px;
-
-      ion-icon {
-        padding: 0px 5px !important;
-        font-size: 1.5em !important;
-      }
-
-      button {
-        padding: 5px;
-        font-size: 1em !important;
-        flex: 1;
-        height: 40px;
-      }
-    }
-  }
-
-  // Footer styling
-  ion-footer {
-    --background: #ffffff;
-    background: #ffffff !important;
-    border-top: 1px solid #e2e8f0;
-    
-    .timekare-primary-btn {
-      background: #2b92bb;
-      color: white;
-      font-weight: 500;
-    }
-  }
-
-  // Dark theme for footer
-  &:not(.light-theme),
-  .dark-theme {
-    ion-footer {
-      --background: #1e293b !important;
-      background: #1e293b !important;
-      border-top: 1px solid #475569;
-      
-      .timekare-primary-btn {
-        background: #2b92bb;
-        color: white;
-      }
-    }
-  }
-
 }

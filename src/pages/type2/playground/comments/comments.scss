@@ -1,0 +1,6 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+
+page-comments {
+    @include android-sdk35-fixes;
+}

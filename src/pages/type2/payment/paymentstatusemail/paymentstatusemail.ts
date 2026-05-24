@@ -56,12 +56,12 @@ export class PaymentstatusemailPage {
     // console.log(this.selectedMembersType);
     this.module_obj = this.navParams.get("email_modal");
     //console.log(this.sessionDetails);
-    if (this.module_obj.type == ModuleReportTypeForEmail.TERMSESSION_REPORT) {
+    //if (this.module_obj.type == ModuleReportTypeForEmail.TERMSESSION_REPORT) {
       this.emailObj.Message = "Dear All,";
       if (this.module_obj.email_users.length > 0) {
         this.numberOfPeople = this.module_obj.email_users.length + " recipients";
       }
-    }
+    //}
     
     this.emailObj.Message = "Dear All,";
     this.emailObj.Subject = "Payment Reminder";

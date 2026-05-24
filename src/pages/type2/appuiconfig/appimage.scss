@@ -1,0 +1,26 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-appimage {
+    @include android-sdk35-fixes;
+    .landimg_setup{
+        position: absolute;
+        top:0px;
+        left:0px;
+        //background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4);
+        p{
+            margin:10px;
+            color:#fff;
+            display: flex;
+            align-items: center;
+            ion-icon{
+                font-size: 1.6em;
+            }
+        }
+    }
+    .img_hint_para{
+        margin:5px 0px;
+        font-style: italic;
+        font-size: 12px;
+    }
+}

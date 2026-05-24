@@ -4,6 +4,11 @@ import { FirebaseService } from '../../../../services/firebase.service';
 //import { Type2AssignMembershipSubCategory } from '../../assignmembership/assignmembershipsubcategory';
 import moment from 'moment'
 import { CommonService } from '../../../../services/common.service';
+import { AppType } from '../../../../shared/constants/module.constants';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../shared/dtos/club.dto';
+import { HttpService } from '../../../../services/http.service';
+import { SharedServices } from '../../../services/sharedservice';
+import { API } from '../../../../shared/constants/api_constants';
 
 
 @IonicPage()
@@ -74,7 +79,11 @@ export class EditbookingPage {
   }
 
   deletedCodeList = []
-  constructor(public navCtrl: NavController,public alertCtrl: AlertController, public toastCtrl : ToastController, public navParams: NavParams,public commonservices: CommonService ,public fb:FirebaseService) {
+  constructor(public navCtrl: NavController,public alertCtrl: AlertController, 
+    public toastCtrl : ToastController, public navParams: NavParams,
+    public commonservices: CommonService ,public fb:FirebaseService,
+    private httpService: HttpService, 
+    private sharedservice: SharedServices) {
     this.BookingSetup = this.navParams.get('setupDetails');
     if(this.BookingSetup.AllowCashPayment == undefined){
       this.BookingSetup["AllowCashPayment"] = false;
@@ -121,13 +130,34 @@ export class EditbookingPage {
   }
 
   getAllClub() {
-    this.fb.getAllWithQuery("/Club/Type2/" + this.BookingSetup.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data4) => {
-    if (data4.length > 0) {
-      this.allClub = data4;
-      this.selectedClubKey  = this.BookingSetup.ClubKey;
-      this.getAllActivity();
-    }
-    })
+    // this.fb.getAllWithQuery("/Club/Type2/" + this.BookingSetup.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data4) => {
+    // if (data4.length > 0) {
+    //   this.allClub = data4;
+    //   this.selectedClubKey  = this.BookingSetup.ClubKey;
+    //   this.getAllActivity();
+    // }
+    // })
+     const body: GetParentClubVenuesRequestDto = {
+        parentclub_id: this.sharedservice.getPostgreParentClubId(),
+        app_type: AppType.ADMIN_NEW,
+        device_type: this.sharedservice.getPlatform() == 'android' ? 1 : 2,
+        device_id: this.sharedservice.getDeviceId() || 'web',
+        updated_by: this.sharedservice.getLoggedInUserId()
+      };
+    
+      this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+        next: (res: GetParentClubVenuesResponseDto) => {
+          this.allClub = res.data.map((club: ClubVenueDto) => ({ ...club, $key: club.FirebaseId, ClubKey: club.FirebaseId }));
+          if (this.allClub.length > 0) {
+            this.selectedClubKey = this.BookingSetup.ClubKey//this.allClub[0].FirebaseId;
+            this.getAllActivity();
+          }
+        },
+        error: (err) => {
+          this.allClub = [];
+          console.error('Error fetching clubs:', err);
+        }
+      });
   }
   getAllActivity() {
       this.fb.getAll("/Activity/" + this.BookingSetup.parentClubKey + "/" + this.selectedClubKey + "/").subscribe((data) => {

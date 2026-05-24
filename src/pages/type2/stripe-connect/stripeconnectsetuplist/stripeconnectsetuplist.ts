@@ -151,12 +151,16 @@ export class StripeconnectsetuplistPage {
       module:this.setupDetails.type,
       account_type:ParentclubAccountType.SESSION_MANAGEMENT
     }
-    this.httpService.post(API.GET_PARENTCLUB_STRIPES,stripeacc_payload).subscribe({
-      next: (res: any) => {
-        console.table(res.data);
-        this.connectSetupDetails = res.data as ParentclubStripeAccounts[];
-      }
-    }) 
+    this.httpService.post(API.GET_PARENTCLUB_STRIPES,stripeacc_payload).subscribe((res: any) => {
+      console.table(res.data);
+      this.connectSetupDetails = res.data as ParentclubStripeAccounts[];
+    },
+   (ex) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", ex);
+        this.commonService.toastMessage(ex.error.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   }) 
   }
 
   presentActionSheet(eachSetup: ParentclubStripeAccounts) {
@@ -194,13 +198,17 @@ export class StripeconnectsetuplistPage {
       module:ModuleTypes.TERMSESSION,
       account_type:ParentclubAccountType.SESSION_MANAGEMENT
     }
-    this.httpService.post(API.UPDATE_STRIPE_STATUS,stripeacc_payload).subscribe({
-      next: (res: any) => {
-        console.table(res.data);
-        this.getStripeAccounts();
-        this.commonService.toastMessage(res.messege, 2500, ToastMessageType.Success, ToastPlacement.Bottom)
-      }
-    }) 
+    this.httpService.post(API.UPDATE_STRIPE_STATUS,stripeacc_payload).subscribe((res: any) => {
+      console.table(res.data);
+      this.getStripeAccounts();
+      this.commonService.toastMessage(res.messege, 2500, ToastMessageType.Success, ToastPlacement.Bottom)
+    },
+   (ex) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", ex);
+        this.commonService.toastMessage(ex.error.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   }) 
   }
 
   getFormattedAccId(card){

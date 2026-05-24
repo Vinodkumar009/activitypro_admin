@@ -130,7 +130,7 @@ export class MenuOrDashboard {
             this.commonService.toastMessage("Failed to load menus",2500,ToastMessageType.Error, ToastPlacement.Bottom);
           }
         });
-    });
+      });
    }
 
   getMenus() {

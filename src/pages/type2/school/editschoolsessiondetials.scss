@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 editschoolsessiondetials-page {
+    @include android-sdk35-fixes;
     .scroll-content {
         margin-top: 56px;
         padding: 6px !important;

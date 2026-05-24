@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title text-center>NotificationCenter</ion-title>
+        <ion-buttons end>
+
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button icon-only>
+               <ion-icon name="md-notifications"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+          <ion-icon name="md-more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="card-background-page">
+
+    <ion-grid style="margin-top:3px;" *ngIf="parentClubDetails.length>0">
+        <ion-row>
+            <ion-col col-12 text-center> <img src={{parentClubDetails[0].ParentClubAppIconURL}} class="parentimg"></ion-col>
+            <!-- <ion-col col-10>
+                <p class="p_clubName">{{parentClubDetails[0].ParentClubName}}</p>
+            </ion-col> -->
+
+        </ion-row>
+    </ion-grid>
+
+
+
+    <ion-item style="margin-top:3px;">
+        <ion-label *ngIf="!toggleAll">Off</ion-label>
+        <ion-label *ngIf="toggleAll">On </ion-label>
+        <ion-toggle checked="{{toggleAll}}" [(ngModel)]="toggleAll" (tap)="changeNotificationToggleAll()"></ion-toggle>
+    </ion-item>
+
+    <p style="margin-top:-11px;"></p>
+
+    <ion-item *ngFor="let notificationItem of notificationList;let i=index" style="border-bottom: .01em solid #ccd3d4;">
+        <ion-label (click)="saveText(notificationItem)">
+            {{notificationItem.Label}}
+            <p>{{notificationItem.NotificationText}}</p>
+        </ion-label>
+        <ion-toggle [(ngModel)]="notificationItem.IsAllowNotification" checked="{{notificationItem.IsAllowNotification}}" (tap)="changeNotificationToggle(notificationItem,i)"></ion-toggle>
+    </ion-item>
+
+
+    <p style="margin-bottom:50px;"></p>
+
+    <!--<ion-item>
+        <ion-label floating>Message</ion-label>
+        <ion-input type="text" value="asdfs asdfdfa asdfasdf asdfasdf "></ion-input>
+    </ion-item>-->
+
+    <!--<ion-fab right bottom>
+        <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="createNotification()" style="background-color:#2b92bb !important; color: white !important">
+                <ion-icon name="add"></ion-icon>
+            </button>
+    </ion-fab>
+-->
+
+
+</ion-content>

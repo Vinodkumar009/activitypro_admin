@@ -1,0 +1,49 @@
+<!--
+  Generated template for the StaffattendancesetupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Attendance Setup</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+  <ion-item>
+    <ion-label fixed>Hours/Day</ion-label>
+    <ion-input type="number" [(ngModel)]="attendanceObj.HoursPerDay"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label fixed>Hours/Week</ion-label>
+    <ion-input type="number" [(ngModel)]="attendanceObj.HoursPerWeek"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label fixed>Allow Edit In Days</ion-label>
+    <ion-input type="number" [(ngModel)]="attendanceObj.HllowDaysForEdit"></ion-input>
+  </ion-item>
+  <ion-row>
+    <ion-col col-6>
+      <ion-label >Capture In/Out Time </ion-label>
+    </ion-col>
+    <ion-col col-6 style=" text-align: right;">   
+      <button [class.selected]="isCaptureInOutTime === true" class="customRadiobtn" (click)="isCaptureInOutTime = true">Yes</button>
+      <button [class.selected]="isCaptureInOutTime === false" class="customRadiobtn" style="margin-left: -4px !important;"  (click)="isCaptureInOutTime = false">No</button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
+      <ion-label >Closed On</ion-label>
+    </ion-col>
+    <ion-col col-12>
+      <button *ngFor="let day of days" class="day-btn" (click)="add(day)" [class.selectedDays]="daysSet.has(day)">{{day}}</button>
+    </ion-col>
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <button ion-button block class="save-btn" (click)="saveData()">Save</button>
+</ion-footer>

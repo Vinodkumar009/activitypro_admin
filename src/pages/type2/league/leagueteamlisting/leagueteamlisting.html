@@ -1,145 +1,110 @@
 <ion-content class="modern-competition">
-  <!-- Sticky Header -->
-  <div class="sticky-header">
-    <!-- Modern Tab Selector -->
-    <div class="modern-tab-selector">
-      <button class="modern-tab" [class.active]="activeIndex==0" (click)="changeType(0)">
-        <div class="tab-icon-wrapper">
-          <ion-icon name="trophy"></ion-icon>
-        </div>
-        <span>Competitions</span>
-      </button>
-      <button class="modern-tab" [class.active]="activeIndex==1" (click)="changeType(1)">
-        <div class="tab-icon-wrapper">
-          <ion-icon name="people"></ion-icon>
-        </div>
-        <span>Teams</span>
-      </button>
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <app-pill-tabs
+        leftLabel="Competitions" rightLabel="Teams"
+        leftIcon="trophy" rightIcon="people"
+        [(activeIndex)]="activeIndex"
+        (activeIndexChange)="changeType($event)">
+      </app-pill-tabs>
+      <app-search-bar
+        [placeholder]="activeIndex==0 ? 'Search competitions...' : 'Search teams...'"
+        [(value)]="searchInput"
+        [count]="activeIndex==0 ? filteredleagues.length : filteredteams.length"
+        (search)="activeIndex==0 ? getLeagueSearch($event) : getTeamItems($event)">
+      </app-search-bar>
     </div>
-    
-    <!-- Modern Search Card -->
-    <div class="modern-search-card">
-      <ion-searchbar class="sleek-searchbar" 
-        [placeholder]="activeIndex==0 ? 'Search competitions, activities, venues...' : 'Search teams, activities...'"
-        [(ngModel)]="searchInput" 
-        (ionInput)="activeIndex==0 ? getLeagueSearch($event) : getTeamItems($event)" 
-        autocorrect="off" showCancelButton="focus"></ion-searchbar>
-    </div>
-  </div>
 
-  <!-- Scrollable Content -->
-  <div class="scrollable-content">
-    <!-- Competitions Tab Content -->
-    <div *ngIf="activeIndex==0" class="tab-content">
-
-    <!-- Competitions Grid -->
-    <div class="competitions-container" *ngIf="filteredleagues.length > 0">
-      <div class="modern-card competition-card" *ngFor="let league of filteredleagues"
-        (click)="gotoLeaguedetailsPage(league)">
-        <div class="card-header">
-          <div class="card-icon-wrapper competition-bg">
-            <ion-icon name="trophy" class="card-icon"></ion-icon>
-          </div>
-          <div class="card-info">
-            <h3 class="card-title">{{league.league_name | titlecase}}</h3>
-            <p class="card-subtitle">{{league.activity.ActivityName}}</p>
-          </div>
-          <div class="visibility-badge" [class.private]="league.league_visibility==1">
-            <ion-icon [name]="league.league_visibility==0 ? 'globe' : 'lock'"></ion-icon>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="competition-details">
-            <div class="detail-row">
-              <div class="detail-item">
-                <ion-icon name="calendar" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{league.start_date}}</span>
+    <div class="page-scroll-area">
+      <!-- Competitions Tab -->
+      <div *ngIf="activeIndex==0" class="tab-content">
+        <div class="competitions-container" *ngIf="filteredleagues.length > 0">
+          <div class="revamp-card" *ngFor="let league of filteredleagues"
+            (click)="gotoLeaguedetailsPage(league)">
+            <div class="card-accent" [class.team-accent]="league.league_type_text?.toLowerCase().includes('team')" [style.background]="league.league_type_text?.toLowerCase().includes('team') ? null : getLeagueTypeColor(league.league_type_text)"></div>
+            <div class="card-content">
+              <div class="corner-ribbon" [class.private]="league.league_visibility==1">
+                <ion-icon [name]="league.league_visibility==0 ? 'globe' : 'lock'"></ion-icon>
               </div>
-              <div class="detail-item type-badge">
-                <span class="badge-text" [style.background-color]="getLeagueTypeColor(league.league_type_text)" style="color: white;">{{league.league_type_text}}</span>
+              <div class="card-top-row">
+                <div class="card-icon-wrapper competition-bg">
+                  <ion-icon [name]="getActivityIcon(league.activity.ActivityName)" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-title">{{league.start_date}}</h3>
+                  <p class="card-subtitle">{{league.league_name | titlecase}}</p>
+                  <p class="card-activity">{{league.activity.ActivityName}}</p>
+                </div>
               </div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-item">
-                <ion-icon name="pin" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{league.club.ClubName}}</span>
+              <div class="card-divider"></div>
+              <div class="card-tags">
+                <span class="tag type-tag" [style.background-color]="getLeagueTypeColor(league.league_type_text)">{{league.league_type_text}}</span>
+                <span class="tag category-tag" *ngIf="league.league_category_text">{{league.league_category_text}}<span *ngIf="league.league_age_group">/{{league.league_age_group}}</span></span>
+                <span class="tag grade-tag" *ngIf="league.grade">Grade {{league.grade}}</span>
               </div>
-              <div class="detail-item category-badge" *ngIf="league.league_category_text">
-                <span class="badge-text">{{league.league_category_text}}<span
-                    *ngIf="league.league_age_group">/{{league.league_age_group}}</span></span>
+              <div class="card-venue-footer" (click)="$event.stopPropagation()">
+                <ion-icon name="pin" class="venue-icon"></ion-icon>
+                <span class="venue-text">{{league.club.ClubName}}</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Empty State -->
-    <div class="modern-empty-state" *ngIf="filteredleagues.length === 0">
-      <div class="empty-illustration">
-        <ion-icon name="trophy" class="empty-icon"></ion-icon>
-      </div>
-      <div class="empty-text">
-        <h2 class="empty-title">No Competitions Found</h2>
-        <p class="empty-description">Create your first competition to get started</p>
-      </div>
-    </div>
-  </div>
-
-    <!-- Teams Tab Content -->
-    <div *ngIf="activeIndex==1" class="tab-content">
-
-    <!-- Teams Grid -->
-    <div class="teams-container" *ngIf="filteredteams.length > 0">
-      <div class="modern-card team-card" *ngFor="let team of filteredteams" (click)="gotoTeamdetailsPage(team)">
-        <div class="card-header">
-          <div class="team-avatar" *ngIf="team.logo_url">
-            <img [src]="team.logo_url" alt="{{team.teamName}} Logo" class="team-logo">
-          </div>
-          <div class="card-icon-wrapper teams-bg" *ngIf="!team.logo_url">
-            <ion-icon name="people" class="card-icon"></ion-icon>
-          </div>
-          <div class="card-info">
-            <h3 class="card-title">{{team.teamName | titlecase}}</h3>
-            <p class="card-subtitle">{{team.activity.ActivityName}}</p>
-          </div>
-          <div class="visibility-badge" [class.private]="team.teamVisibility==1">
-            <ion-icon [name]="team.teamVisibility==0 ? 'globe' : 'lock'"></ion-icon>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="team-details">
-            <div class="detail-row">
-              <div class="detail-item" *ngIf="team.ageGroup">
-                <ion-icon name="people" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{team.ageGroup}}</span>
-              </div>
-              <div class="detail-item club-name-right">
-                <ion-icon name="pin" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{team.club.ClubName}}</span>
-              </div>
-            </div>
-            <div class="detail-row" *ngIf="team.teamDescription">
-              <div class="detail-item description">
-                <span class="detail-text">{{team.teamDescription}}</span>
-              </div>
-            </div>
+        <div class="modern-empty-state" *ngIf="filteredleagues.length === 0">
+          <div class="empty-illustration"><ion-icon name="trophy" class="empty-icon"></ion-icon></div>
+          <div class="empty-text">
+            <h2 class="empty-title">No Competitions Found</h2>
+            <p class="empty-description">Create your first competition to get started</p>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Empty State -->
-    <div class="modern-empty-state" *ngIf="filteredteams.length === 0">
-      <div class="empty-illustration">
-        <ion-icon name="people" class="empty-icon"></ion-icon>
-      </div>
-      <div class="empty-text">
-        <h2 class="empty-title">No Teams Found</h2>
-        <p class="empty-description">Create your first team to get started</p>
+      <!-- Teams Tab -->
+      <div *ngIf="activeIndex==1" class="tab-content">
+        <div class="external-toggle">
+          <span class="external-label">External</span>
+          <label class="toggle-switch">
+            <input type="checkbox" [(ngModel)]="isExternalTeams" (ngModelChange)="getTeamsForParentClub()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="teams-container" *ngIf="filteredteams.length > 0">
+          <div class="revamp-card" *ngFor="let team of filteredteams" (click)="gotoTeamdetailsPage(team)">
+            <div class="card-accent team-accent"></div>
+            <div class="card-content">
+              <div class="corner-ribbon" [class.private]="team.teamVisibility==1">
+                <ion-icon [name]="team.teamVisibility==0 ? 'globe' : 'lock'"></ion-icon>
+              </div>
+              <div class="card-top-row">
+                <div class="team-avatar" *ngIf="team.logo_url">
+                  <img [src]="team.logo_url" alt="{{team.TeamName}} Logo" class="team-logo">
+                </div>
+                <div class="card-icon-wrapper teams-bg" *ngIf="!team.logo_url">
+                  <ion-icon name="people" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-title">{{team.TeamName | titlecase}}</h3>
+                  <p class="card-subtitle">{{team.ActivityName}}</p>
+                </div>
+              </div>
+              <div class="team-meta-row">
+                <span class="meta-age" *ngIf="team.ageGroup"><ion-icon name="people"></ion-icon> {{team.ageGroup}}</span>
+                <span class="meta-count"><ion-icon name="person"></ion-icon> {{team.NoOfPlayers}} Members</span>
+              </div>
+              <div class="card-venue-footer">
+                <ion-icon name="pin" class="venue-icon"></ion-icon>
+                <span class="venue-text">{{team.club?.ClubName}}</span>
+              </div>
+              </div>
+          </div>
+        </div>
+        <div class="modern-empty-state" *ngIf="filteredteams.length === 0">
+          <div class="empty-illustration"><ion-icon name="people" class="empty-icon"></ion-icon></div>
+          <div class="empty-text">
+            <h2 class="empty-title">No Teams Found</h2>
+            <p class="empty-description">Create your first team to get started</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-
 </ion-content>

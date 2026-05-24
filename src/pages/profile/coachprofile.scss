@@ -1,4 +1,7 @@
-coachprofile-page{
+@import '../../theme/android-sdk35-fixes.scss';
+
+coachprofile-page {
+    @include android-sdk35-fixes;
     .prifile-card{
        color: #ffffff;
        padding-left: 0px !important; 

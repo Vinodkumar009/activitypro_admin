@@ -1019,10 +1019,12 @@ export class Type2Session {
       let message = "Please choose session end date.";
       this.commonService.toastMessage(message,2500,ToastMessageType.Error,ToastPlacement.Bottom);
       return false;
-    } else if(new Date(this.sessionDetails.StartDate).getTime() > new Date(this.sessionDetails.EndDate).getTime()) {
+    } 
+    else if(new Date(this.sessionDetails.StartDate).getTime() > new Date(this.sessionDetails.EndDate).getTime()) {
       this.commonService.toastMessage("Session start date should not be greater than end date.", 2500,ToastMessageType.Error);
       return false;
-    } else if (this.sessionDetails.PayByDate == "" || this.sessionDetails.PayByDate == undefined) {
+    } 
+    else if (this.sessionDetails.PayByDate == "" || this.sessionDetails.PayByDate == undefined) {
       let message = "Please choose session pay by date.";
       this.commonService.toastMessage(message,2500,ToastMessageType.Error,ToastPlacement.Bottom);
       return false;

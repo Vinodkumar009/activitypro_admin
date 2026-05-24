@@ -1,0 +1,297 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-match-team-details {
+  @include android-sdk35-fixes;
+
+  .scroll-content { padding: 0 !important; overflow: hidden !important; }
+
+  // ── Layout ──
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-fixed-header { flex-shrink: 0; background: #0f172a; z-index: 10; }
+  .page-scroll-area {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 0 8px 80px;
+    max-width: 900px; margin: 0 auto; width: 100%; box-sizing: border-box;
+  }
+  .scroll-content { background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
+
+  // ── Header (uses app-detail-header) ──
+  .header-badge {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(16, 185, 129, 0.15); color: #10b981;
+    ion-icon { font-size: 24px; }
+    &.private { background: rgba(247, 110, 4, 0.15); color: #f76e04; }
+  }
+  .action-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px; border: none;
+    background: rgba(43, 146, 187, 0.12); color: #3fbcd3;
+    cursor: pointer; transition: background 0.2s ease;
+    ion-icon { font-size: 24px; }
+    &:active { background: rgba(43, 146, 187, 0.25); }
+    &.danger { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+    &.publish-btn { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+  }
+
+  // ── Coaches Banner ──
+  .coaches-banner {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #2b92bb, #35adff);
+    color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+    cursor: pointer;
+    ion-icon { font-size: 16px; }
+    .banner-arrow { font-size: 14px; opacity: 0.7; }
+    &:active { opacity: 0.9; }
+  }
+
+  // ── Publish Banner ──
+  .publish-banner {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 16px; margin: 0; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #10b981, #0d9488, #059669, #2b92bb);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    background-size: 200% 200%;
+    animation: bannerGradient 4s ease infinite;
+    color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+    cursor: pointer;
+    ion-icon { font-size: 16px; }
+    .banner-arrow { font-size: 14px; opacity: 0.7; }
+    &:active { opacity: 0.9; }
+    &::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: bannerShimmer 3s ease-in-out infinite;
+    }
+  }
+  @keyframes bannerShimmer {
+    0% { left: -100%; } 50% { left: 150%; } 100% { left: 150%; }
+  }
+  @keyframes bannerGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  // ── Filter Pills ──
+  .filter-row { display: flex; align-items: center; gap: 6px; padding: 8px 4px 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+  .filter-pill {
+    padding: 6px 14px; border-radius: 20px; border: none;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.2px;
+    cursor: pointer; transition: opacity 0.2s ease, background 0.2s ease;
+    white-space: nowrap; flex-shrink: 0;
+    &.playing { background: rgba(16, 185, 129, 0.15); color: #10b981; opacity: 0.5;
+      &.active { background: #10b981; color: #fff; opacity: 1; }
+    }
+    &.bench { background: rgba(245, 158, 11, 0.15); color: #f59e0b; opacity: 0.5;
+      &.active { background: #f59e0b; color: #fff; opacity: 1; }
+    }
+    &.all { background: rgba(43, 146, 187, 0.15); color: #3fbcd3; opacity: 0.5;
+      &.active { background: #2b92bb; color: #fff; opacity: 1; }
+    }
+  }
+
+  // ── Sections ──
+  .section-block { margin-bottom: 8px; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 4px 6px; }
+  .section-title { font-size: 13px; font-weight: 600; color: #94a3b8; letter-spacing: 0.1px; }
+  .section-count { font-size: 12px; font-weight: 700; color: #10b981; }
+
+  // ── Drop Zone ──
+  .drop-zone {
+    border: 2px dashed rgba(43, 146, 187, 0.2); border-radius: 12px;
+    padding: 4px; min-height: 60px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    overflow-y: auto;
+    &.drag-over { background: rgba(43, 146, 187, 0.08); border-color: rgba(43, 146, 187, 0.5); }
+  }
+
+  // ── Empty State ──
+  .empty-card {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 16px; color: #64748b; font-size: 13px;
+    .empty-icon { font-size: 18px; }
+  }
+
+  // ── Player Cards ──
+  app-list-card { margin-bottom: 6px; display: block; }
+  .player-card {
+    padding: 10px 12px; display: flex; flex-direction: column; gap: 8px;
+    background: linear-gradient(145deg, rgba(43, 146, 187, 0.3) 0%, rgba(53, 173, 255, 0.12) 40%, transparent 75%);
+  }
+  .player-top-row { display: flex; align-items: center; gap: 10px; }
+  .player-avatar {
+    width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(43, 146, 187, 0.15); color: #3fbcd3;
+    font-size: 14px; font-weight: 700; text-transform: uppercase;
+  }
+  .player-info { flex: 1; min-width: 0; }
+  .player-name {
+    font-size: 13px; font-weight: 700; color: #f1f5f9; margin: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .player-role { font-size: 11px; color: #94a3b8; margin: 2px 0 0; }
+  .player-icons { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .medical-icon { width: 16px; height: 16px; }
+  .media-icon { width: 16px; height: 16px; }
+  .player-detail-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 6px; border-top: 1px solid rgba(71, 85, 105, 0.2);
+    flex-wrap: wrap; gap: 4px;
+  }
+  .player-status-left {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2px;
+    padding: 3px 8px; border-radius: 20px;
+    ion-icon { font-size: 13px; }
+    &.status-playing-bg { background: rgba(16, 185, 129, 0.15); }
+    &.status-not-playing-bg { background: rgba(239, 68, 68, 0.15); }
+    &.status-maybe-bg { background: rgba(245, 158, 11, 0.15); }
+    &.status-other-bg { background: rgba(100, 116, 139, 0.15); }
+  }
+  .player-payment-right {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2px;
+    padding: 3px 8px; border-radius: 20px;
+    &.pay-paid-bg { background: rgba(16, 185, 129, 0.15); }
+    &.pay-pending-bg { background: rgba(239, 68, 68, 0.15); }
+  }
+  .pay-paid { color: #10b981 !important; }
+  .pay-pending { color: #ef4444 !important; }
+  .pay-amount { font-weight: 700; }
+
+  // ── Invite Status Colors ──
+  .status-playing { color: #10b981 !important; }
+  .status-not-playing { color: #ef4444 !important; }
+  .status-maybe { color: #f59e0b !important; }
+  .status-other { color: #64748b !important; }
+
+  // ── Bottom Sheet Content ──
+  .sheet-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px; cursor: pointer;
+    transition: background 0.15s ease;
+    border-bottom: 1px solid rgba(71, 85, 105, 0.15);
+    &:active { background: rgba(255, 255, 255, 0.05); }
+  }
+  .sheet-item-icon { font-size: 20px; color: #94a3b8; flex-shrink: 0; }
+  .sheet-item-info {
+    flex: 1; min-width: 0;
+    .sheet-item-name { font-size: 15px; font-weight: 600; color: #f1f5f9; }
+  }
+  .sheet-item-chevron { font-size: 14px; color: #475569; flex-shrink: 0; }
+  .confirmed-item .sheet-item-icon { color: #10b981; }
+  .maybe-item .sheet-item-icon { color: #f59e0b; }
+  .danger-item {
+    .sheet-item-icon { color: #ef4444; }
+    .sheet-item-name { color: #ef4444; }
+  }
+
+  // ── Team Sheet Radio ──
+  .team-radio {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+    border: 2px solid #475569; transition: all 0.2s ease;
+  }
+  .team-sheet-item.selected {
+    .team-radio { border-color: #2b92bb; background: #2b92bb; box-shadow: inset 0 0 0 3px #0f172a; }
+    .sheet-item-name { color: #2b92bb; }
+  }
+
+  // ── FAB ──
+  ion-fab {
+    .fab-main, [ion-fab] {
+      background: rgba(43, 146, 187, 0.35) !important;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      color: #fff !important; border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    }
+    .fabTop { margin-bottom: 13px; }
+    .fab-label {
+      margin-left: -115px; margin-top: -47px; margin-bottom: 5px; margin-right: 36px;
+      padding: 5px 12px; color: #fff; font-size: 13px; font-weight: 600;
+      background: rgba(43, 146, 187, 0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-radius: 8px; white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  // ── Light Theme ──
+  &.light-theme {
+    .page-fixed-header { background: #f8fafc; }
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .header-badge { background: rgba(16, 185, 129, 0.1); &.private { background: rgba(247, 110, 4, 0.1); } }
+    .coaches-banner { background: linear-gradient(135deg, #2b92bb, #35adff); }
+    .publish-banner { background: linear-gradient(135deg, #10b981, #0d9488, #059669, #2b92bb); }
+    .filter-pill {
+      &.playing { background: rgba(16, 185, 129, 0.1); color: #059669; &.active { background: #10b981; color: #fff; } }
+      &.bench { background: rgba(245, 158, 11, 0.1); color: #d97706; &.active { background: #f59e0b; color: #fff; } }
+      &.all { background: rgba(43, 146, 187, 0.1); color: #2b92bb; &.active { background: #2b92bb; color: #fff; } }
+    }
+    .section-title { color: #64748b; }
+    .drop-zone { border-color: rgba(43, 146, 187, 0.15);
+      &.drag-over { background: rgba(43, 146, 187, 0.05); border-color: rgba(43, 146, 187, 0.3); }
+    }
+    .player-card { background: linear-gradient(145deg, rgba(43, 146, 187, 0.25) 0%, rgba(53, 173, 255, 0.1) 40%, transparent 75%); }
+    .player-name { color: #1e293b; }
+    .player-role { color: #64748b; }
+    .player-detail-row { border-top-color: rgba(226, 232, 240, 0.6); }
+    .empty-card { color: #94a3b8; }
+    .sheet-item { border-bottom-color: rgba(226, 232, 240, 0.4); &:active { background: rgba(0, 0, 0, 0.03); } }
+    .sheet-item-info .sheet-item-name { color: #1e293b; }
+    .sheet-item-chevron { color: #cbd5e1; }
+    .team-radio { border-color: #cbd5e1; }
+    .team-sheet-item.selected .team-radio { border-color: #2b92bb; background: #2b92bb; box-shadow: inset 0 0 0 3px #ffffff; }
+    ion-fab {
+      .fab-main, [ion-fab] { background: rgba(43, 146, 187, 0.3) !important; border-color: rgba(255, 255, 255, 0.25); }
+      .fab-label { background: rgba(43, 146, 187, 0.9); }
+    }
+  }
+
+  // ── Responsive ──
+  @media (max-width: 359px) {
+    .player-name { font-size: 12px; }
+    .player-role { font-size: 10px; }
+    .player-avatar { width: 28px; height: 28px; font-size: 12px; border-radius: 6px; }
+    .player-card { padding: 8px 10px; gap: 6px; }
+    .player-detail-row { font-size: 10px; }
+    .pay-amount { font-size: 11px; }
+    .filter-pill { font-size: 10px; padding: 5px 8px; }
+    .filter-row { gap: 4px; padding: 6px 4px 8px; }
+    .section-title { font-size: 12px; }
+    .section-count { font-size: 11px; }
+    .page-scroll-area { padding: 0 4px 80px; }
+    .medical-icon, .media-icon { width: 14px; height: 14px; }
+    .empty-card { font-size: 12px; padding: 12px; }
+  }
+  @media (min-width: 360px) and (max-width: 399px) {
+    .player-card { padding: 10px 12px; }
+    .player-name { font-size: 13px; }
+    .filter-pill { font-size: 11px; padding: 5px 10px; }
+  }
+  @media (min-width: 768px) {
+    .action-btn { width: 32px; height: 32px; ion-icon { font-size: 16px; } }
+    .header-badge { width: 32px; height: 32px; ion-icon { font-size: 16px; } }
+    .page-scroll-area { padding: 0 16px 80px; }
+    .filter-pill { font-size: 13px; padding: 8px 18px; }
+    .filter-row { gap: 8px; padding: 10px 8px 14px; }
+    .section-title { font-size: 14px; }
+    .player-card { padding: 14px 16px; gap: 10px; }
+    .player-name { font-size: 15px; }
+    .player-role { font-size: 12px; }
+    .player-avatar { width: 40px; height: 40px; font-size: 16px; border-radius: 10px; }
+    .player-detail-row { font-size: 13px; }
+    .medical-icon, .media-icon { width: 18px; height: 18px; }
+    .drop-zone { padding: 6px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .empty-card { grid-column: 1 / -1; }
+    .coaches-banner, .publish-banner { font-size: 14px; padding: 14px 20px; }
+  }
+  @media (min-width: 1024px) {
+    .page-scroll-area { padding: 0 24px 80px; }
+    .drop-zone { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  }
+}

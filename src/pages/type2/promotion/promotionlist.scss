@@ -1,0 +1,112 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+promotionlist-page {
+    @include android-sdk35-fixes;
+.padding-div{
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: 7px;
+    }
+    .text-color{
+        color:red;
+    }
+    .item-inner{
+        border-bottom: none !important;
+    }
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+        left: 8px !important;
+    }
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        //text-align: right;
+        padding-right: 5px;
+        right: 5px !important;
+    }
+    .segment-activated {
+        color: white !important;
+        background-color: #f6ae4d !important;
+    }
+    ion-segment-button {
+        color: #aba5a5 !important;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+    .ionselect{
+        max-width: none !important;
+        padding: 2px 8px 4px 4px !important;
+        width: 100%;
+    }
+    .scroll-content {
+        //margin-top: 45px !important;
+        padding: 0px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+    .nonmembercard {
+        margin-top: 30px !important;
+
+    }
+    .nonlocationcard {
+        padding: 14px 0;
+        color:#aba5a5 !important;
+    }
+
+    .venuedropdown {
+        padding: 0px 3px 3px 0px;
+        max-width: none;
+        font-size: larger;
+        margin: auto;
+    }
+    ion-card {
+        margin: 0px !important;
+        width: 100% !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid #f6ae4d !important;
+    }
+
+    .margin{
+        //margin: 20px 0 0 0;
+        color:  #aba5a5;
+        padding: 0!important;
+        border-bottom: 1px solid #f6ae4d;
+    } 
+    .card-view{
+        margin-top: 7px;
+        box-shadow:-3px 3px 5px #d0ccc8;
+    }
+    .slidingcards {
+    // margin-bottom: 5px;
+    // border-top: 6px solid rgba(94, 199, 130, 0.79);
+    // margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // margin-bottom: 4px;
+    // border-top: 7px solid rgba(236, 117, 21, 0.63);
+    // border-bottom: 2px solid rgba(180, 24, 148, 0.73);
+    //  margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // border-bottom: 2px solid rgba(236, 117, 21, 0.63);
+    //box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+    margin-bottom: 7px;
+    border-top: 5px solid rgb(241, 218, 187);
+    text-align: center;
+  }
+  .card-view1{
+        margin-top: 7px;
+      //  box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+        margin:0px;
+        width:100%;
+    }
+}

@@ -3,6 +3,7 @@ import { CommonService } from './../../../../services/common.service';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { MatchinviteplayersPage } from './matchinviteplayers';
+import { SharedComponentsModule } from '../../../../shared/components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { MatchinviteplayersPage } from './matchinviteplayers';
   ],
   imports: [
     IonicPageModule.forChild(MatchinviteplayersPage),
+    SharedComponentsModule
   ],
   providers:[
     CommonService,

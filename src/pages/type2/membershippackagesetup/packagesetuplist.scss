@@ -1,0 +1,6 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+packagesetuplist-page {
+    @include android-sdk35-fixes;
+
+}

@@ -9,7 +9,6 @@ import { FirebaseService } from '../../../../services/firebase.service';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
 import { API } from '../../../../shared/constants/api_constants';
 import { HttpService } from '../../../../services/http.service';
-
 /**
  * Generated class for the FilterbookingsPage page.
  *
@@ -30,7 +29,6 @@ export class FilterbookingsPage {
   currentmonth: string;
   showCalender = false;
   loading: any;
-  nestUrl: any;
   selectedParentClubKey: any;
   selectedClubKey: any;
   clubs: any[];
@@ -42,13 +40,16 @@ export class FilterbookingsPage {
   Isgotosession: boolean = false;
   currencyDetails: any;
   constructor(public navCtrl: NavController, 
-    public storage: Storage, public sharedService: SharedServices, public http: HttpClient, public fb: FirebaseService, public commonService: CommonService,  public loadingCtrl: LoadingController,  public navParams: NavParams, private httpService: HttpService) {
+    public storage: Storage, public sharedService: SharedServices,
+     public http: HttpClient, 
+    public fb: FirebaseService, public commonService: CommonService,  
+    public loadingCtrl: LoadingController,  public navParams: NavParams,
+    private httpService: HttpService) {
     
     this.storage.get('userObj').then((val) => {
       val = JSON.parse(val);
       for (let user of val.UserInfo) {
         this.selectedParentClubKey = user.ParentClubKey;
-        this.nestUrl = this.sharedService.getnestURL()
       
        
        
@@ -227,6 +228,7 @@ export class FilterbookingsPage {
         }
       })
     }
+    
     getTime(date) {
       return moment(date, 'DD MM YYYY').format('D-MMM');
     }

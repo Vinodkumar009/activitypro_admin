@@ -1,0 +1,79 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-upgradedowngradelevel {
+    @include android-sdk35-fixes;
+
+
+
+    .scroll-content {
+        background-size: 100% 100%;
+        margin-top: 57px;
+        padding: 14px 8px 8px 8px !important;
+        background: linear-gradient(to bottom left,
+                #f7f7f7,
+                #f1f1f1,
+                #efefef) !important;
+    }
+
+    .innercard_style {
+        height: 9vh;
+        border-left: 2px solid #35adff;
+        padding: 3px 5px 0px 0px;
+        margin: 0px 10px 4px 0px;
+        width: 100%;
+        background: #fff;
+        -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0);
+        // border-bottom: 1px solid orange;
+    }
+
+    .mem_col {
+        padding: 5px 0px 0px 0px;
+
+        p {
+            margin: 0px 0px 3px 0px;
+        }
+    }
+
+    .mem_card {
+        display: flex;
+    }
+
+    .grid {
+        height: 50px;
+    }
+
+    .menu-icon {
+        color: #00000099;
+        font-size: 20px;
+        float: right;
+        font-size: 25px;
+
+        transform: translateY(-20%);
+    }
+
+    .member_name {
+        font-size: 18px;
+    }
+
+    .blurred-card {
+        filter: blur(1px);
+        opacity: 0.5;
+
+        div {
+            border-left: 2px solid #faae4e !important;
+        }
+    }
+
+    .ion_input {
+        border: 1px solid rgba(0, 0, 0, 0.34902);
+        padding: 4px 8px;
+        border-radius: 5px;
+        width: 85%;
+        margin: auto;
+    }
+
+    .radioo {
+        --color-checked: #2b92bb;
+    }
+}

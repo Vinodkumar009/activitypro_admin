@@ -1,5 +1,8 @@
-editvenue-page{
-    .list{
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+editvenue-page {
+    @include android-sdk35-fixes;
+.list{
     margin:0px;
 }
 .list-header-md {

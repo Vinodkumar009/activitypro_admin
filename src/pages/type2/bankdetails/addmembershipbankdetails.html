@@ -1,0 +1,78 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Membership Bank Details</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Membership Bank Details
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-list no-border *ngFor="let item of clubs">
+
+        <ion-list-header class="list-modifier">
+            <ion-label>{{item.ClubName}}</ion-label>
+            <ion-checkbox [(ngModel)]="item.IsSelected" [checked]="item.IsSelected"></ion-checkbox>
+        </ion-list-header>
+
+        <ion-item *ngFor="let inneritem of item.Activities">
+            <ion-label>{{inneritem.ActivityName}}</ion-label>
+            <ion-checkbox [(ngModel)]="inneritem.IsSelected"></ion-checkbox>
+        </ion-item>
+
+    </ion-list>
+    <ion-item>
+        <ion-label floating>Bank Name</ion-label>
+        <ion-input type="text" [(ngModel)]="bankDetailsObj.BankName"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Bank Address</ion-label>
+        <ion-input type="text" [(ngModel)]="bankDetailsObj.BankAddress"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Sort Code</ion-label>
+        <ion-input type="text" [(ngModel)]="bankDetailsObj.SortCode"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Account Number</ion-label>
+        <ion-input type="text" [(ngModel)]="bankDetailsObj.AccountNumber"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Instruction For Members</ion-label>
+        <ion-input type="text" [(ngModel)]="bankDetailsObj.InstructionForMembers"></ion-input>
+    </ion-item>
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelBankDetails()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="saveBankDetails()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

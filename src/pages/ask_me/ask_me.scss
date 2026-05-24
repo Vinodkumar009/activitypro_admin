@@ -1,4 +1,6 @@
+@import '../../theme/android-sdk35-fixes.scss';
 page-ask_me {
+  @include android-sdk35-fixes;
   // Dark Theme (Default)
   background: #0f172a;
 
@@ -207,13 +209,14 @@ page-ask_me {
     padding: 12px;
     background: #1e293b;
 
-    ion-input {
+    ion-input, ion-textarea {
       flex: 1;
       font-size: 15px;
       background: #0f172a;
-      border-radius: 24px;
-      padding: 0 16px !important;
-      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 12px 16px !important;
+      border: 2px solid #334155;
+      color: #e2e8f0;
 
       .text-input {
         color: #e2e8f0;

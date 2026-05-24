@@ -1,4 +1,10 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-addrecuringbooking {
+    @include android-sdk35-fixes;
+
+
+
     .rows-allign{
         margin-top: -8px !important;
         margin-left: -6px !important;

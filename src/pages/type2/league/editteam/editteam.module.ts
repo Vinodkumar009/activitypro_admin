@@ -4,6 +4,7 @@ import { EditteamPage } from './editteam';
 import { TeamImageUploadService } from '../../team/team_image_upload/team_image_upload.service';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
+import { SharedComponentsModule } from '../../../../shared/components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { File } from '@ionic-native/file';
   ],
   imports: [
     IonicPageModule.forChild(EditteamPage),
+    SharedComponentsModule
   ],
   providers: [TeamImageUploadService, Camera, File]
 })

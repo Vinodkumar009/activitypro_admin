@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>Player of the Match</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()" style="color:#fff">
+      <button ion-button icon-only (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
@@ -10,76 +10,60 @@
 </ion-header>
 
 <ion-content>
-  <!-- Selection info -->
-  <div *ngIf="isDataReady" class="selection-info">
-    <p class="selection-count">
-      Selected: {{selectedPlayerIds.size}}/{{maxSelections}} players
-    </p>
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <div class="selection-badge" *ngIf="isDataReady">
+        <ion-icon name="trophy" class="badge-icon"></ion-icon>
+        <span>Selected: {{selectedPlayerIds.size}}/{{maxSelections}}</span>
+      </div>
+    </div>
+
+    <div class="page-scroll-area" *ngIf="isDataReady">
+      <ion-row>
+        <!-- Home Team -->
+        <ion-col col-6 class="team-col">
+          <div class="team-header home">
+            <span class="team-name">{{homeTeamName}}</span>
+          </div>
+          <app-list-card *ngFor="let player of homePlayersData; trackBy: trackByPlayerId"
+            [accentColor]="player.user.selected ? '#10b981' : '#10b981'"
+            (cardClick)="!isPlayerDisabled(player) && togglePlayerSelection(player)">
+            <div class="player-row" [class.selected]="player.user.selected" [class.disabled]="isPlayerDisabled(player)">
+              <div class="player-avatar">{{player.user?.FirstName?.charAt(0) || '?'}}</div>
+              <div class="player-info">
+                <p class="player-name">{{player.user.FirstName}} {{player.user.LastName}}</p>
+              </div>
+              <ion-icon *ngIf="player.user.selected" name="checkmark-circle" class="check-icon"></ion-icon>
+            </div>
+          </app-list-card>
+          <div class="empty-state" *ngIf="homePlayersData.length === 0">
+            <p class="empty-text">No players</p>
+          </div>
+        </ion-col>
+
+        <!-- Away Team -->
+        <ion-col col-6 class="team-col">
+          <div class="team-header away">
+            <span class="team-name">{{awayTeamName}}</span>
+          </div>
+          <app-list-card *ngFor="let player of awayPlayersData; trackBy: trackByPlayerId"
+            [accentColor]="player.user.selected ? '#10b981' : '#ef4444'"
+            (cardClick)="!isPlayerDisabled(player) && togglePlayerSelection(player)">
+            <div class="player-row" [class.selected]="player.user.selected" [class.disabled]="isPlayerDisabled(player)">
+              <div class="player-avatar away">{{player.user?.FirstName?.charAt(0) || '?'}}</div>
+              <div class="player-info">
+                <p class="player-name">{{player.user.FirstName}} {{player.user.LastName}}</p>
+              </div>
+              <ion-icon *ngIf="player.user.selected" name="checkmark-circle" class="check-icon"></ion-icon>
+            </div>
+          </app-list-card>
+          <div class="empty-state" *ngIf="awayPlayersData.length === 0">
+            <p class="empty-text">No players</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
   </div>
 
-  <!-- Teams container -->
-  <div *ngIf="isDataReady" class="teams-container">
-    <ion-row>
-      <!-- Home Team -->
-      <ion-col col-6 class="team-column">
-        <div class="team-header home-team">
-          <h4>{{homeTeamName}}</h4>
-        </div>
-
-        <ion-list class="player-list" *ngIf="homePlayersData.length > 0">
-          <ion-item *ngFor="let player of homePlayersData; trackBy: trackByPlayerId" class="player-item"
-            [class.selected]="player.user.selected" [class.disabled]="isPlayerDisabled(player)">
-
-            <ion-label class="player-label home-player">
-              <h3>{{player.user.FirstName}} {{player.user.LastName}}</h3>
-            </ion-label>
-
-            <ion-checkbox [checked]="player.user.selected" [disabled]="isPlayerDisabled(player)"
-              (ionChange)="togglePlayerSelection(player)" color="secondary">
-            </ion-checkbox>
-          </ion-item>
-        </ion-list>
-
-        <div *ngIf="homePlayersData.length === 0 && isDataReady" class="no-players">
-          <p>No players available</p>
-        </div>
-      </ion-col>
-
-      <!-- Away Team -->
-      <ion-col col-6 class="team-column">
-        <div class="team-header away-team">
-          <h4>{{awayTeamName}}</h4>
-        </div>
-
-        <ion-list class="player-list" *ngIf="awayPlayersData.length > 0">
-          <ion-item *ngFor="let player of awayPlayersData; trackBy: trackByPlayerId" class="player-item"
-            [class.selected]="player.user.selected" [class.disabled]="isPlayerDisabled(player)">
-
-            <ion-label class="player-label away-player">
-              <h3>{{player.user.FirstName}} {{player.user.LastName}}</h3>
-            </ion-label>
-
-            <ion-checkbox [checked]="player.user.selected" [disabled]="isPlayerDisabled(player)"
-              (ionChange)="togglePlayerSelection(player)" color="danger">
-            </ion-checkbox>
-          </ion-item>
-        </ion-list>
-
-        <div *ngIf="awayPlayersData.length === 0 && isDataReady" class="no-players">
-          <p>No players available</p>
-        </div>
-      </ion-col>
-    </ion-row>
-  </div>
+  <app-glass-button [label]="'Save (' + selectedPlayerIds.size + ')'" (btnClick)="save()"></app-glass-button>
 </ion-content>
-
-<ion-footer>
-
-  <ion-row>
-    <ion-col col-12>
-      <button class="timekare-primary-btn" ion-button block [disabled]="!canSave" (click)="save()"> Save
-        ({{selectedPlayerIds.size}})</button>
-    </ion-col>
-  </ion-row>
-
-</ion-footer>

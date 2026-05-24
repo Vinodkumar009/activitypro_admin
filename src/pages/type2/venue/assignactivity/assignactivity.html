@@ -87,17 +87,17 @@
             </ion-col>
         </ion-row>
     </div>
+</ion-content>
 
-    <ion-grid style="position: absolute;
-    bottom: 0;">
+<ion-footer>
+    <ion-grid>
         <ion-row>
-
             <ion-col col-6>
-                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelVenue()">Cancel</button>
+                <button ion-button block class="timekare-primary-btn" (click)="cancelVenue()">Cancel</button>
             </ion-col>
             <ion-col col-6>
                 <button ion-button block class="timekare-primary-btn" (click)="prompt()">Save</button>
             </ion-col>
         </ion-row>
     </ion-grid>
-</ion-content>
+</ion-footer>

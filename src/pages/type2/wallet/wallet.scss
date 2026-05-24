@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-wallet {
+    @include android-sdk35-fixes;
+
+
+
     .marginauto{
         margin-top: auto;
         margin-bottom: auto;

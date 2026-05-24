@@ -1,51 +1,46 @@
-<!--
-  Generated template for the AddteamPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <ion-title>Add Team To League</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div class="compact-search-card">
-    <div class="search-content">
-      <ion-searchbar class="sleek-searchbar" placeholder="Search team by name"
-        (ionInput)="getFilterItems($event)" autocorrect="off"
-        showCancelButton="never"></ion-searchbar>
+<ion-content>
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <app-search-bar placeholder="Search team by name"
+        [count]="filteredteams?.length"
+        (search)="getFilterItems($event)">
+      </app-search-bar>
+      <div class="section-header">
+        <span class="section-title">Team List</span>
+      </div>
+    </div>
+
+    <div class="page-scroll-area">
+      <app-list-card *ngFor="let team of filteredteams; let i = index"
+        [accentColor]="team.isAlreadyExisted ? '#64748b' : (team.isSelected ? '#10b981' : '#2b92bb')">
+        <div class="team-row" (click)="!team.isAlreadyExisted && selectTeam(team)">
+          <div class="team-avatar">{{team.teamName?.charAt(0)}}</div>
+          <div class="team-info">
+            <p class="team-name">{{team.teamName}}</p>
+            <span class="team-tag existing" *ngIf="team.isAlreadyExisted">Already Added</span>
+          </div>
+          <ion-checkbox
+            [(ngModel)]="team.isSelected"
+            [disabled]="team.isAlreadyExisted"
+            (ionChange)="selectTeam(team)">
+          </ion-checkbox>
+        </div>
+      </app-list-card>
+
+      <div class="empty-state" *ngIf="filteredteams?.length === 0">
+        <ion-icon name="people" class="empty-icon"></ion-icon>
+        <p class="empty-text">No teams found</p>
+      </div>
     </div>
   </div>
-
-  <ion-list class="ion_list">
-    <ion-list-header class="session_header" style="font-size: 18px">
-      Team List
-    </ion-list-header>
-  </ion-list>
-
-  <ion-list *ngIf="filteredteams.length > 0">
-    <ion-item *ngFor="let team of filteredteams;let i = index">
-      <ion-label>{{team.teamName}}</ion-label>
-      <ion-checkbox [(ngModel)]="team.isSelected" [disabled]="team.isAlreadyExisted"
-        (ionChange)="selectTeam(team)"></ion-checkbox>
-    </ion-item>
-  </ion-list>
-
-  <ion-item *ngIf="filteredteams.length === 0" class="no-data">
-    <ion-label>No teams found</ion-label>
-  </ion-item>
-
-
 </ion-content>
 
-<ion-footer>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-12>
-        <button ion-button block class="timekare-primary-btn" (click)="assignTeams()">Add</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-footer no-border [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <app-glass-button label="Add" (btnClick)="assignTeams()"></app-glass-button>
 </ion-footer>

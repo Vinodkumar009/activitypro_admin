@@ -1,0 +1,262 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-memberdetails {
+    @include android-sdk35-fixes;
+
+
+
+
+
+    .mar_auto {
+        margin: auto;
+    }
+
+
+
+    .circle {
+        // margin-top: -3px;
+        width: 50px;
+        float: right;
+        height: 50px;
+        border: 4px solid #e4e4e4;
+        border-radius: 50%;
+        padding: 8px 4px;
+        text-align: center;
+        // color: #000000;
+    }
+
+    .activity {
+        padding: 0px 3px 3px 0px;
+        max-width: 100% !important;
+        text-align: RIGHT;
+        width: 100%;
+    }
+
+
+    ion-card {
+        margin: 0px 0px 10px 0px !important;
+        width: 100% !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border-left: 2px solid #f6ae4d !important;
+    }
+
+    .nopad {
+        padding: 0px;
+        margin: 6px;
+    }
+
+    .border-bottom-2px {
+        border-bottom: 1px solid #faae4e !important;
+    }
+
+    .venuedropdown {
+        padding: 0px 3px 3px 0px;
+        max-width: none;
+        font-size: 18px;
+        //margin: auto;
+        width: -webkit-fill-available;
+    }
+
+    .list-md {
+        margin: -1px 0 16px;
+    }
+
+    ion-list {
+        margin: 0;
+        padding: 0;
+        display: block;
+        list-style-type: none;
+    }
+
+    ion-card-content {
+        padding: 0px !important;
+        border-left: 3px solid #35adff;
+    }
+
+    .Location-head {
+        font-size: 1.6rem;
+        color: #222;
+        padding: 5px;
+        padding-top: 10px;
+        border-bottom: 1px solid #c4b8b8 !important;
+    }
+
+    .nonmembercard {
+        margin-top: 30px !important;
+        padding: 14px 0;
+    }
+
+    .fabTop {
+        margin-bottom: 13px;
+    }
+
+    .fabEmailText {
+
+        margin-left: -144px;
+        background-color: #2b92bb !important;
+        margin-top: -47px;
+        padding: 5px 12px 5px 11px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        border-radius: 3px;
+        margin-right: 36px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nonmemcard {
+        padding: 14px 0;
+    }
+
+    .iosMargin {
+        margin-top: 88px !important;
+    }
+
+    .androidMargin {
+        margin-top: 44px !important;
+    }
+
+    .scroll-content {
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f7f7f7 !important;
+    }
+
+    .location-cards>p {
+        line-height: 1.1;
+        color: #8c8c8c;
+    }
+
+    .location-cards>h3 {
+        font-size: 15px;
+        color: blue;
+        font-weight: 600;
+    }
+
+    .location-cards {
+        padding: 10px 10px;
+        border-bottom: yellow;
+    }
+
+    .pricespace {
+        padding-left: 3px;
+    }
+
+    .border-left-style {
+        height: 59px;
+        position: absolute;
+        bottom: 6px;
+        left: 7px;
+    }
+
+    .name {
+        color: rgba(0, 0, 0, 0.85) !important;
+        font-size: 22px !important;
+        padding-left: 10px;
+    }
+
+    .topborder {
+        border-top: #8c8c8c;
+    }
+
+    .card-text {
+        //color: #c5b495;
+        width: 100%;
+        font-size: 16px !important;
+        color: rgba(0, 0, 0, 0.65);
+    }
+
+    .card-text>span {
+        //   color: gray;
+    }
+
+    .select-icon {
+        position: relative !important;
+        width: 25px !important;
+        height: 25px !important;
+        background: #faae4e !important;
+        border-radius: 50% !important;
+        color: white !important;
+        // left: 3px !important;
+    }
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        // text-align: right;
+        padding-right: 5px;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    .search_add {
+        background-color: transparent;
+        padding-left: 6px;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .item-inner {
+        border-bottom: none !important;
+    }
+
+    .sub-container {
+        button {
+            width: 80%;
+            height: 76%;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 73% !important;
+            margin-top: 4px !important;
+            padding: 2px 0px
+        }
+
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+
+        .searchbar-search-icon {
+            display: none !important;
+        }
+
+        ion-icon {
+            font-size: 20px;
+        }
+
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow: none
+        }
+    }
+
+    .eventname {
+        padding-top: 8px;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .approve {
+        padding-left: 10px;
+        font-size: 15px;
+        color: #2b92bb;
+    }
+}

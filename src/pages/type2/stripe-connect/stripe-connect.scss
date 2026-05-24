@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-stripe-connect {
+    @include android-sdk35-fixes;
+
+
+
     // ion-row {
     //     ion-label {
     //         color: #b5b2ae !important;

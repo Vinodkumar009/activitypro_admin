@@ -136,22 +136,21 @@ export class EditFeesMembershipPage {
     }
 
     getBookingSummary() {
-        this.httpService.post(`${API.GET_BOOKING_SUMMARY}`, this.bookingSummaryInput).subscribe({
-            next: (res: any) => {
-                this.bookingDetails = res["data"];
-                this.membershipAmount = parseFloat(this.bookingDetails.booking_payment_summary.total_membership_amount) || 0;
-                this.membership_amt_with_currency = this.bookingDetails.booking_payment_summary.total_membership_amount_currency;
-                this.adminFees = parseFloat(this.bookingDetails.booking_payment_summary.admin_fees) || 0;
+        this.httpService.post(`${API.GET_BOOKING_SUMMARY}`, this.bookingSummaryInput).subscribe((res: any) => {
+            this.bookingDetails = res["data"];
+            this.membershipAmount = parseFloat(this.bookingDetails.booking_payment_summary.total_membership_amount) || 0;
+            this.membership_amt_with_currency = this.bookingDetails.booking_payment_summary.total_membership_amount_currency;
+            this.adminFees = parseFloat(this.bookingDetails.booking_payment_summary.admin_fees) || 0;
 
-                // Add other fields if necessary, following the same conversion pattern
-                this.subtotalAmount = this.membershipAmount + this.adminFees;
-                this.oneTimeDiscount = parseFloat(this.bookingDetails.booking_payment_summary.one_time_discount_fee);
-                this.totalAmount = parseFloat(this.bookingDetails.booking_payment_summary.total_net_payment_amount);
-            },
-            error: (error) => {
+            // Add other fields if necessary, following the same conversion pattern
+            this.subtotalAmount = this.membershipAmount + this.adminFees;
+            this.oneTimeDiscount = parseFloat(this.bookingDetails.booking_payment_summary.one_time_discount_fee);
+            this.totalAmount = parseFloat(this.bookingDetails.booking_payment_summary.total_net_payment_amount);
+        },
+        (error) => {
                 this.comonService.toastMessage("Booking summary fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-            }
-        });
+                //this.comonService.hideLoader();
+        })
     }
 
     getFormattedDate(date) {

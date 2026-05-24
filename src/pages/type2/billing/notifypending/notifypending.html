@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-toolbar class="toolbarheader">
+        <button ion-button icon-only menuToggle (click)="dismiss()">
+            <ion-icon name="md-close"></ion-icon>
+        </button>
+
+        <ion-title>
+            Send Email
+        </ion-title>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <!-- <ion-item>
+        <ion-label color="primary" stacked>To</ion-label>
+        <ion-input type="text"  [(ngModel)]="numberOfPeople" placeholder="Number of people"  readonly="true"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label color="primary" stacked>Subject</ion-label>
+        <ion-input type="text" [(ngModel)]="emailObj.Subject" placeholder="Subject"></ion-input>
+    </ion-item> -->
+    <ion-item style="border: 1px solid #d6cbbe;">
+        <ion-label stacked>Add Your Message</ion-label>
+        <ion-textarea rows="20" type="text" style="white-space:pre-wrap;" [(ngModel)]="emailObj.Message" placeholder="Type a message here..."></ion-textarea>
+    </ion-item>
+
+    <ion-row class="allign-assist">
+        <ion-col col-6>
+            <button ion-button block class="timekare-primary-btn" type="submit" (click)="sendEmailToMembers()">Send
+                Mail</button>
+        </ion-col>
+        <ion-col col-6>
+            <button ion-button block class="timekare-primary-btn" type="submit" (click)="sendNotificationToMembers()">Send
+                Notification</button>
+        </ion-col>
+    </ion-row>
+
+</ion-content>

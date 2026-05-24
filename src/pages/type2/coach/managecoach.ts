@@ -467,66 +467,50 @@ updateImgaePostgres(id, url) {
 
   async canRemoveCoach(coach){
     try{
-      const coach_term_sessions:ICoachSessions[] = await this.getCoachTermSessions(coach.Id);
-      const coach_monthly_sessions:ICoachSessions[] = await this.getCoachMonthlySessions(coach.Id);
-      if((coach_term_sessions.length > 0 && coach_term_sessions[0] && +coach_term_sessions[0].sessions > 0) || (coach_monthly_sessions.length > 0 && coach_monthly_sessions[0] && +coach_monthly_sessions[0].sessions > 0)){
-        let sub_title = `${coach.FirstName} ${coach.LastName} is already part of `;
-  
-        if (coach_term_sessions[0] && +coach_term_sessions[0].sessions > 0) {
-          sub_title += `${coach_term_sessions[0].sessions} term session(s) and `;
-        }
+      // Run both queries in parallel for better performance
+      const [termSessions, monthlySessions] = await Promise.all([
+        this.getCoachSessions(coach.Id, 'term'),
+        this.getCoachSessions(coach.Id, 'monthly')
+      ]);
+      
+      const termCount = termSessions && termSessions[0] && +termSessions[0].sessions || 0;
+      const monthlyCount = monthlySessions && monthlySessions[0] && +monthlySessions[0].sessions || 0;
+      
+      if (termCount > 0 || monthlyCount > 0) {
+        let subTitle = `${coach.FirstName} ${coach.LastName} is already part of `;
         
-        if (coach_monthly_sessions[0] && +coach_monthly_sessions[0].sessions > 0) {
-          sub_title += `${coach_monthly_sessions[0].sessions} monthly session(s).`;
-        }
+        if (termCount > 0) subTitle += `${termCount} term session(s)`;
+        if (termCount > 0 && monthlyCount > 0) subTitle += ' and ';
+        if (monthlyCount > 0) subTitle += `${monthlyCount} monthly session(s)`;
         
-        sub_title += 'Please remove from those sessions and delete the coach.';
+        subTitle += '. Please remove from those sessions and delete the coach.';
       
         const alert = this.alertCtrl.create({
-          title: 'Remove Coach',
-          subTitle: sub_title,
-          buttons: ['OK']
+          title: 'Remove Coach?',
+          subTitle,
+          buttons: ['Ok']
         });
         alert.present();
-      }else{
-        this.removeCoach(coach)
+      } else {
+        this.removeCoach(coach);
       }
-    }catch(err){
+    } catch(err) {
       console.log(err);
     }
   }
 
 
-  async getCoachTermSessions(coachId:string): Promise<ICoachSessions[]> {
-    return new Promise((res,rej)=>{
-      try{
-        const templateQuery = gql`
-        query getCoachSessionSummary($coachSummaryInput: SessionSummaryInput!) {
+  private async getCoachSessions(coachId: string, type: 'term' | 'monthly'): Promise<ICoachSessions[]> {
+    const query = type === 'term' ? 
+      gql`query getCoachSessionSummary($coachSummaryInput: SessionSummaryInput!) {
           getCoachSessionSummary(coachSessionSummaryInput: $coachSummaryInput){
-            id
             first_name
             last_name
             total_hours
             sessions
           }
-        }
-      `;
-    
-        this.graphqlService.query(templateQuery, {
-          coachSummaryInput: {ParentClubKey:this.parentClubKey,Date:new Date(),coach_id:coachId}
-        }, 0)
-        .subscribe((session_summary) => res(session_summary["data"]["getCoachSessionSummary"]));
-      }catch(err){
-        rej(err);
-      }
-    });
-  }
-
-  async getCoachMonthlySessions(coachId:string): Promise<ICoachSessions[]> {
-    return new Promise((res,rej)=>{
-      try{
-        const templateQuery = gql`
-        query getMontlyCoachSessionSummary($coachSummaryInput: MonthlySessionSummaryInput!) {
+        }` :
+      gql`query getMontlyCoachSessionSummary($coachSummaryInput: MonthlySessionSummaryInput!) {
           getMontlyCoachSessionSummary(coachSessionSummaryInput: $coachSummaryInput){
             id
             first_name
@@ -534,17 +518,17 @@ updateImgaePostgres(id, url) {
             total_hours
             sessions
           }
-        }
-      `;
-        
-        this.graphqlService.query(templateQuery, {
-          coachSummaryInput: {ParentClubKey:this.parentClubKey,Date:new Date(),coach_id:coachId}
-        }, 0)
-        .subscribe((session_summary) => res(session_summary["data"]["getMontlyCoachSessionSummary"]));
-      }catch(err){
-        rej(err);
-      }
-    })
+        }`;
+    
+    const coachSummaryInput = type === 'term' ? 
+      { parentclub_id: this.parentClubKey, coach_id: coachId, date: new Date() } :
+      { ParentClubKey: this.parentClubKey, Date: new Date(), coach_id: coachId };
+    
+    return this.graphqlService.query(query, {
+      coachSummaryInput
+    }, type === 'term' ? 0:1).toPromise().then(result => 
+      result.data[type === 'term' ? 'getCoachSessionSummary' : 'getMontlyCoachSessionSummary']
+    );
   }
 
   removeCoach(item) {

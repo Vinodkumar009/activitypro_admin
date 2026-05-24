@@ -1,117 +1,358 @@
 @import '../../../../theme/android-sdk35-fixes.scss';
-// Clean minimal UI matching createleague.html
+
 page-creatematch {
   @include android-sdk35-fixes;
+
+  .optional-tag {
+    font-size: 9px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0.2px;
+    color: #64748b;
+    opacity: 0.8;
+  }
+
   .scroll-content {
-    background: #f1f5f9 !important;
-    padding: 0;
+    background-color: #f8fafc !important;
   }
 
   ion-list {
-    background: transparent;
-    padding: 8px;
-    margin: 0;
+    margin: 12px !important;
+    background: transparent !important;
+  }
+
+  .item,
+  .item-inner,
+  .item-block {
+    background-color: transparent !important;
+    border: none !important;
   }
 
   ion-item {
-    --background: #ffffff;
-    --border-color: transparent;
-    --border-width: 0;
-    --border-style: none;
-    --border-radius: 8px;
-    --padding-start: 12px;
-    --padding-end: 12px;
-    --inner-padding-end: 0;
-    margin-bottom: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
+    background-color: #ffffff !important;
+    border-radius: 12px !important;
+    margin-bottom: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    padding-left: 16px;
+    align-items: center;
 
-    ion-label {
-      color: #374151;
-      font-weight: 500;
-      font-size: 14px;
-      margin-right: 12px;
-      white-space: normal !important;
-      overflow: visible !important;
-      flex-shrink: 0;
-      width: auto;
+    .item-inner {
+      border-bottom: none !important;
+      padding-right: 16px;
+      box-shadow: none !important;
+      padding-top: 6px;
+      padding-bottom: 6px;
     }
 
-    ion-input {
-      --color: #1f2937 !important;
-      --placeholder-color: #9ca3af !important;
-      font-size: 14px;
-      
-      .text-input {
-        color: #1f2937 !important;
-        font-size: 14px;
-      }
-      
-      .text-input::placeholder {
-        color: #9ca3af !important;
-      }
+    // ITEM TITLE (LABEL) - Muted, Uppercase, Small
+    ion-label {
+      color: #64748b !important;
+      font-weight: 700 !important;
+      font-size: 11px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.6px !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      margin-right: 12px;
+    }
+
+    .select-text {
+      max-width: none !important;
     }
 
     ion-select {
-      --color: #1f2937;
-      font-size: 14px;
+      max-width: 70% !important;
     }
 
+    ion-select .select-icon {
+      margin-left: 2px !important;
+    }
+
+    // ITEM VALUE - Large, Bold, Dark
+    ion-input,
+    ion-select,
     ion-datetime {
-      --color: #1f2937;
-      font-size: 14px;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      text-align: right !important;
+    }
+
+    .text-input {
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      text-align: right !important;
+    }
+
+    .select-text {
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      text-align: right !important;
+    }
+
+    .datetime-text {
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      text-align: right !important;
     }
   }
 
-  // Dark theme
+  // DESCRIPTION TEXTAREA — GLASSMORPHISM
+  .description-item {
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 12px;
+    padding-bottom: 16px;
+
+    ion-label {
+      margin-bottom: 10px !important;
+      display: block;
+    }
+
+    ion-textarea {
+      background: rgba(255, 255, 255, 0.45) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.6) !important;
+      border-radius: 12px !important;
+      padding: 12px !important;
+      margin: 0 !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
+      transition: all 0.3s ease;
+
+      .text-input {
+        color: #0f172a !important;
+        margin: 0 !important;
+        width: 100% !important;
+        font-weight: 500 !important;
+        font-size: 15px !important;
+        line-height: 1.5;
+        text-align: left !important;
+
+        &::placeholder {
+          color: #94a3b8 !important;
+          font-weight: 400 !important;
+        }
+      }
+
+      &.input-has-focus {
+        border-color: rgba(43, 146, 187, 0.5) !important;
+        background: rgba(255, 255, 255, 0.6) !important;
+        box-shadow: 0 8px 32px rgba(43, 146, 187, 0.12) !important;
+      }
+    }
+  }
+
+  // COMPACT PAID TOGGLE
+  .paid-compact-item {
+    .sleed-toggle {
+      margin: 0 !important;
+    }
+  }
+
+  .fee-sub-fields {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 3px solid #2b92bb;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease 0.1s;
+
+    &.expanded {
+      max-height: 600px;
+      opacity: 1;
+    }
+
+    ion-item {
+      margin-left: 0 !important;
+      border-radius: 0 12px 12px 0 !important;
+      border-left: none !important;
+    }
+  }
+
+  // DAY CHIPS
+  .day-chips {
+    display: flex; gap: 8px; padding: 12px 16px; flex-wrap: wrap;
+  }
+  .day-chip {
+    padding: 8px 14px; border-radius: 20px; border: 1px solid #e2e8f0;
+    background: transparent; font-size: 13px; font-weight: 600;
+    color: #64748b; cursor: pointer; transition: all 0.2s ease;
+    &.selected { background: #2b92bb; color: #fff; border-color: #2b92bb; }
+  }
+
+  .recurring-hint {
+    padding: 8px 16px; margin: 0; font-size: 12px; color: #94a3b8; font-weight: 400;
+    strong { font-weight: 700; color: #3fbcd3; }
+  }
+
+  // DARK THEME
   &:not(.light-theme),
   .dark-theme {
     .scroll-content {
-      background: #1e293b !important;
+      background-color: #0f172a !important;
     }
-    
+
     ion-item {
-      --background: #334155 !important;
-      --border-color: transparent !important;
-      --border-width: 0 !important;
-      background: #334155 !important;
-      border: 1px solid #475569 !important;
+      background-color: #1e293b !important;
+      border-color: #334155 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 
       ion-label {
-        color: #f1f5f9 !important;
+        color: #94a3b8 !important;
       }
 
-      ion-input {
-        --color: #f1f5f9 !important;
-        --placeholder-color: #64748b !important;
-        
-        .text-input {
-          color: #f1f5f9 !important;
-        }
-        
-        .text-input::placeholder {
+      ion-input,
+      ion-select,
+      ion-datetime {
+        color: #ffffff !important;
+      }
+
+      .text-input,
+      .datetime-text,
+      .select-text {
+        color: #ffffff !important;
+      }
+    }
+
+    .description-item ion-textarea {
+      background: rgba(30, 41, 59, 0.6) !important;
+      border-color: rgba(71, 85, 105, 0.5) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+
+      .text-input {
+        color: #f8fafc !important;
+
+        &::placeholder {
           color: #64748b !important;
         }
       }
 
-      ion-select {
-        --color: #f1f5f9 !important;
-        color: #f1f5f9 !important;
+      &.input-has-focus {
+        border-color: rgba(43, 146, 187, 0.5) !important;
+        background: rgba(30, 41, 59, 0.8) !important;
+        box-shadow: 0 8px 32px rgba(43, 146, 187, 0.15) !important;
       }
+    }
 
-      ion-datetime {
-        --color: #f1f5f9 !important;
-        color: #f1f5f9 !important;
+    .toggle_para {
+      color: #94a3b8 !important;
+    }
+
+    .day-chip { border-color: #334155; color: #94a3b8;
+      &.selected { background: #2b92bb; color: #fff; border-color: #2b92bb; }
+    }
+
+    ion-footer {
+      background: #0f172a !important;
+
+      .toolbar, .toolbar-background, .toolbar-background-md, .toolbar-background-ios {
+        background: #0f172a !important;
       }
+    }
+
+    .access-pill {
+      background-color: #334155;
+    }
+
+    .access-pill-slider {
+      box-shadow: 0 2px 6px rgba(43, 146, 187, 0.4);
+    }
+
+    .access-pill-btn {
+      color: #94a3b8;
+
+      &.active {
+        color: #ffffff;
+      }
+    }
+
+  }
+
+  // COMMON HELPERS
+  .toggle_para {
+    margin: 0;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    color: #64748b;
+  }
+
+  .textareastyle {
+    .text-input {
+      text-align: right !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+    }
+
+    .text-input::placeholder {
+      text-align: left !important;
     }
   }
 
-  // Toggle switch
+  // MATCH ACCESS — SEGMENTED PILL TOGGLE
+  .access-pill {
+    position: relative;
+    display: flex;
+    background-color: #f1f5f9;
+    border-radius: 10px;
+    padding: 3px;
+    height: 38px;
+  }
+
+  .access-pill-slider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    height: calc(100% - 6px);
+    background-color: #2b92bb;
+    border-radius: 8px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(43, 146, 187, 0.3);
+
+    &.slide-right {
+      transform: translateX(100%);
+    }
+  }
+
+  .access-pill-btn {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    ion-icon {
+      font-size: 15px;
+    }
+
+    &.active {
+      color: #ffffff;
+    }
+  }
+
   .toggle {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 24px;
+    width: 54px;
+    height: 28px;
 
     input {
       opacity: 0;
@@ -126,206 +367,55 @@ page-creatematch {
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #d1d5db;
-      transition: 0.2s;
-      border-radius: 24px;
+      background-color: #cbd5e1;
+      transition: 0.3s;
+      border-radius: 28px;
 
       &:before {
         position: absolute;
         content: "";
-        height: 18px;
-        width: 18px;
+        height: 22px;
+        width: 22px;
         left: 3px;
         bottom: 3px;
         background-color: white;
-        transition: 0.2s;
+        transition: 0.3s;
         border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
     }
 
-    input:checked + span {
+    input:checked+span {
       background-color: #2b92bb;
     }
 
-    input:checked + span:before {
+    input:checked+span:before {
       transform: translateX(26px);
     }
   }
 
-  .toggle_para {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: #374151;
-  }
-
-  &:not(.light-theme) .toggle_para,
-  .dark-theme .toggle_para {
-    color: #f1f5f9 !important;
-  }
-
-  .flex_col {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 12px 0;
-  }
-
-  .textareastyle {
-    .text-input {
-      text-align: right !important;
-    }
-    
-    .text-input::placeholder {
-      text-align: left !important;
-    }
-  }
-
-  // Remove all borders and focus states
-  .item-inner {
-    border-bottom: none !important;
-  }
-
-  .item-md.item-input.input-has-focus .item-inner {
-    border-bottom-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  .list-md .item-input.input-has-focus:last-child {
-    border-bottom-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  .list-md .item-input.input-has-focus:last-child .item-inner {
-    box-shadow: none;
-  }
-
-  .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
-    border-bottom-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child {
-    border-bottom-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child .item-inner {
-    box-shadow: none;
-  }
-
-  .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner {
-    border-bottom-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  .list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):last-child {
-    border-bottom-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  // Public/Private buttons styling
-  .select-type {
-    background: #f1f5f9;
-    color: #64748b;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 11px;
-    height: 32px;
-    margin: 0;
-    padding: 0 6px;
-    min-width: 0;
-    width: 100%;
-    
-    ion-icon {
-      padding-right: 4px !important;
-      font-size: 14px;
-    }
-    
-    &.selected {
-      background: #2b92bb;
-      color: white;
-      border-color: #2b92bb;
-    }
-  }
-
-  // Dark theme for buttons
-  &:not(.light-theme),
-  .dark-theme {
-    .select-type {
-      background: #475569;
-      color: #94a3b8;
-      border-color: #64748b;
-      
-      &.selected {
-        background: #2b92bb;
-        color: white;
-        border-color: #2b92bb;
-      }
-    }
-  }
-
-  // Description textarea styling
-  ion-textarea {
-    --color: #1f2937 !important;
-    --placeholder-color: #9ca3af !important;
-    
-    .text-input {
-      color: #1f2937 !important;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 8px;
-    }
-    
-    .text-input::placeholder {
-      color: #9ca3af !important;
-    }
-  }
-
-  // Dark theme for textarea
-  &:not(.light-theme),
-  .dark-theme {
-    ion-textarea {
-      --color: #f1f5f9 !important;
-      --placeholder-color: #64748b !important;
-      
-      .text-input {
-        color: #f1f5f9 !important;
-        background: #475569;
-        border-color: #64748b;
-      }
-      
-      .text-input::placeholder {
-        color: #64748b !important;
-      }
-    }
-  }
-
-  // Footer styling
   ion-footer {
-    --background: #ffffff;
-    background: #ffffff !important;
-    border-top: 1px solid #e2e8f0;
-    .timekare-primary-btn {
-      background: #2b92bb;
-      color: white;
-      font-weight: 500;
+    background: #f8fafc !important;
+    box-shadow: none !important;
+    border: none !important;
+
+    &::before, &::after {
+      display: none !important;
+    }
+
+    .toolbar, .toolbar-background, .toolbar-background-md, .toolbar-background-ios {
+      background: #f8fafc !important;
+      border: none !important;
+    }
+
+    .glass-btn-wrap {
+      position: relative;
+      padding: 12px;
     }
   }
 
-  // Dark theme for footer
-  &:not(.light-theme),
-  .dark-theme {
-    ion-footer {
-      --background: #1e293b;
-      background: #1e293b !important;
-      border-top: 1px solid #475569;
-      .timekare-primary-btn {
-        background: #2b92bb;
-        color: white;
-      }
-    }
+  .btn-gradient-shine {
+    // styles in app.scss
   }
+
 }

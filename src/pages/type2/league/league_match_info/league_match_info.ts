@@ -1,14 +1,13 @@
-import { Component, Renderer2, ViewChild } from "@angular/core";
-import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, FabContainer, Events } from "ionic-angular";
+import { Component, Renderer2 } from "@angular/core";
+import { ActionSheetController, IonicPage, LoadingController, NavController, NavParams, AlertController, ModalController, Events } from "ionic-angular";
 import { Storage } from "@ionic/storage";
 import { SharedServices } from "../../../services/sharedservice";
 import { CommonService, ToastMessageType, ToastPlacement } from "../../../../services/common.service";
-import { Apollo } from "apollo-angular";
 import { LeagueMatchParticipantModel, LeagueParticipantModel, LeagueParticipationForMatchModel, Match } from "../models/league.model";
 import { TeamsForParentClubModel } from "../models/team.model";
 import { HttpService } from "../../../../services/http.service";
 import { API } from "../../../../shared/constants/api_constants";
-import { AppType } from "../../../../shared/constants/module.constants";
+import { AppType, ModuleTypes } from "../../../../shared/constants/module.constants";
 import { LeagueMatch } from "../models/location.model";
 import { LeagueParticipationStatus, LeagueTeamPlayerStatusType, LeaguePlayerInviteStatus, ActivityTypeEnum, LeagueMatchActionType } from "../../../../shared/utility/enums";
 import { GetPlayerModel } from "../../team/models/team.model";
@@ -17,6 +16,7 @@ import gql from "graphql-tag";
 import { Role } from "../../team/team.model";
 import { ModuleTypeForEmail } from "../../mailtomemberbyadmin/mailtomemberbyadmin";
 import { ThemeService } from "../../../../services/theme.service";
+import { DetailHeaderRow } from "../../../../shared/components/detail-header/detail-header.component";
 /**
  * Generated class for the LeagueMatchInfoPage page.
  *
@@ -31,11 +31,13 @@ import { ThemeService } from "../../../../services/theme.service";
   providers: [HttpService]
 })
 export class LeagueMatchInfoPage {
-  @ViewChild('fab') fab: FabContainer;
   currencyDetails: any;
   activeType: boolean = true;
   selectedHomeTeamText: string;
   selectedAwayTeamText: string;
+  isHomeExternal: boolean = false;
+  isAwayExternal: boolean = false;
+  cachedExternalTeams: LeagueParticipationForMatchModel[] = [];
 
   matchObj: LeagueMatch;
   leagueId: string; //league id from prev page
@@ -60,7 +62,8 @@ export class LeagueMatchInfoPage {
     app_type: 0,
     device_id: "",
     updated_by: "",
-    LeagueId: ""
+    LeagueId: "",
+    isExternal: false
   } //league participant for match input  
 
   //fetch api for teams and corresponding player details
@@ -167,11 +170,16 @@ export class LeagueMatchInfoPage {
     }
   ];
   parentClubKey: string;
+  showPlayerSheet: boolean = false;
+  selectedPlayer: LeagueMatchParticipantModel = null;
+  showTeamSheet: boolean = false;
+  teamSheetIsHome: boolean = true;
+  showTeamActionDropdown: boolean = false;
+  teamActionIsHome: boolean = true;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private apollo: Apollo,
     public commonService: CommonService,
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
@@ -210,7 +218,7 @@ export class LeagueMatchInfoPage {
 
         this.parentClubKey = val.UserInfo[0].ParentClubKey;
         this.leagueParticipantForMatchInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-        this.leagueParticipantForMatchInput.memberId = this.sharedservice.getLoggedInId();
+        this.leagueParticipantForMatchInput.memberId = this.sharedservice.getLoggedInUserId() || this.sharedservice.getLoggedInId();
         this.leagueParticipantForMatchInput.action_type = 0;
         this.leagueParticipantForMatchInput.app_type = AppType.ADMIN_NEW;
         this.leagueParticipantForMatchInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
@@ -218,14 +226,14 @@ export class LeagueMatchInfoPage {
         this.leagueParticipantForMatchInput.activityId = this.activityId; //not mandatory field, just added for sanity
 
         this.leagueMatchParticipantInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-        this.leagueMatchParticipantInput.memberId = this.sharedservice.getLoggedInId();
+        this.leagueMatchParticipantInput.memberId = this.sharedservice.getLoggedInUserId() || this.sharedservice.getLoggedInId();
         this.leagueMatchParticipantInput.action_type = 0;
         this.leagueMatchParticipantInput.app_type = AppType.ADMIN_NEW;
         this.leagueMatchParticipantInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
         this.leagueMatchParticipantInput.LeagueId = this.leagueId;
 
         this.UpdateLeagueFixtureInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-        this.UpdateLeagueFixtureInput.memberId = this.sharedservice.getLoggedInId();
+        this.UpdateLeagueFixtureInput.memberId = this.sharedservice.getLoggedInId() || this.sharedservice.getLoggedInId();
         this.UpdateLeagueFixtureInput.action_type = 0;
         this.UpdateLeagueFixtureInput.app_type = AppType.ADMIN_NEW;
         this.UpdateLeagueFixtureInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
@@ -233,14 +241,14 @@ export class LeagueMatchInfoPage {
         this.UpdateLeagueFixtureInput.MatchId = this.matchObj.match_id;
 
         this.updateLeagueMatchParticipantipationRoleInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-        this.updateLeagueMatchParticipantipationRoleInput.memberId = this.sharedservice.getLoggedInId();
+        this.updateLeagueMatchParticipantipationRoleInput.memberId = this.sharedservice.getLoggedInUserId() || this.sharedservice.getLoggedInId();
         this.updateLeagueMatchParticipantipationRoleInput.action_type = 0;
         this.updateLeagueMatchParticipantipationRoleInput.app_type = AppType.ADMIN_NEW;
         this.updateLeagueMatchParticipantipationRoleInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
         this.updateLeagueMatchParticipantipationRoleInput.activityId = this.activityId;
 
         this.updateLeagueMatchParticipationStatusInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-        this.updateLeagueMatchParticipationStatusInput.memberId = this.sharedservice.getLoggedInId();
+        this.updateLeagueMatchParticipationStatusInput.memberId = this.sharedservice.getLoggedInUserId() || this.sharedservice.getLoggedInId();
         this.updateLeagueMatchParticipationStatusInput.action_type = 0;
         this.updateLeagueMatchParticipationStatusInput.app_type = AppType.ADMIN_NEW;
         this.updateLeagueMatchParticipationStatusInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
@@ -249,29 +257,24 @@ export class LeagueMatchInfoPage {
 
         // Initialize updateLeagueMatchInviteStatusInput
         this.updateLeagueMatchInviteStatusInput.parentclubId = this.sharedservice.getPostgreParentClubId();
-        this.updateLeagueMatchInviteStatusInput.memberId = this.sharedservice.getLoggedInId();
+        this.updateLeagueMatchInviteStatusInput.memberId = this.sharedservice.getLoggedInUserId() || this.sharedservice.getLoggedInId();
         this.updateLeagueMatchInviteStatusInput.action_type = LeagueMatchActionType.LEAGUE;
         this.updateLeagueMatchInviteStatusInput.app_type = AppType.ADMIN_NEW;
         this.updateLeagueMatchInviteStatusInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
         this.updateLeagueMatchInviteStatusInput.MatchId = this.matchObj.match_id;
 
         this.getLeagueParticipantForMatch();
+        this.loadAllParticipantsForCounts();
+        this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
         this.getRoleForPlayers();
-        if (this.activeType && this.matchObj.home_team_id !== null) {
-          this.loadAllParticipantsForCounts().then(() => {
-            this.getLeagueMatchParticipant(1);
-          });
-        }
-
       }
     });
   }
 
-  closeFab() {
-    if (this.fab) {
-      this.fab.close();
-    }
-  }
+  get activeTabIndex(): number { return this.activeType ? 0 : 1; }
+
+  onTabChange(index: number) { this.changeType(index === 0); }
+
 
   ionViewWillEnter() {
     this.loadTheme();
@@ -281,6 +284,11 @@ export class LeagueMatchInfoPage {
     this.events.subscribe("theme:changed", (isDark) => {
       this.applyTheme(isDark);
     });
+
+    this.events.subscribe("team:refresh", () => {
+      this.getLeagueParticipantForMatch();
+    });
+    
   }
 
   ionViewDidEnter() {
@@ -291,6 +299,7 @@ export class LeagueMatchInfoPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe("theme:changed");
+    this.events.unsubscribe("team:refresh");
   }
 
   private loadTheme(): void {
@@ -369,7 +378,19 @@ export class LeagueMatchInfoPage {
     return this.allParticipants.length;
   }
 
-  getAcceptedCount(sectionItems: LeagueMatchParticipantModel[],section_index:number): number {
+  get headerAccentColor(): string {
+    return this.commonService.getTypeAccentColor(this.matchObj ? this.matchObj.league_type : undefined);
+  }
+
+  get headerDetailRows(): DetailHeaderRow[] {
+    const rows: DetailHeaderRow[] = [];
+    if (this.matchObj && this.matchObj.start_date) rows.push({ icon: 'calendar', text: this.matchObj.start_date });
+    if (this.matchObj && this.matchObj.formatted_round) rows.push({ icon: 'flag', text: 'Round: ' + this.matchObj.formatted_round });
+    if (this.matchObj && this.matchObj.club_name) rows.push({ icon: 'pin', text: this.matchObj.club_name });
+    return rows;
+  }
+
+  getAcceptedCount(sectionItems: LeagueMatchParticipantModel[], section_index: number): number {
     return sectionItems.filter(item =>
       item.invite_status === LeaguePlayerInviteStatus.Accepted ||
       item.invite_status === LeaguePlayerInviteStatus.AdminAccepted
@@ -406,10 +427,15 @@ export class LeagueMatchInfoPage {
     });
   }
 
+  gotoViewCoaches() {
+    this.navCtrl.push('ViewCoachesPage', { match_id: this.matchObj.match_id });
+  }
+
   gotoSummary() {
-    this.closeFab();
-    const homeTeam = this.leagueParticipantForMatchRes.find(team => team.parentclubteam.teamName === this.selectedHomeTeamText);
-    const awayTeam = this.leagueParticipantForMatchRes.find(team => team.parentclubteam.teamName === this.selectedAwayTeamText);
+
+    const allTeams = [...this.cachedClubTeams, ...this.cachedExternalTeams];
+    const homeTeam = allTeams.find(team => team.parentclubteam.teamName === this.selectedHomeTeamText);
+    const awayTeam = allTeams.find(team => team.parentclubteam.teamName === this.selectedAwayTeamText);
 
     if (this.selectedHomeTeamText != 'Home Team' && this.selectedAwayTeamText != 'Away Team') {
       const params = {
@@ -497,51 +523,22 @@ export class LeagueMatchInfoPage {
 
   //ActionSheet Controller
   presentActionSheet(member: LeagueMatchParticipantModel) {
-    // if (this.leagueMatchParticipantInput.leagueTeamPlayerStatusType !== LeagueTeamPlayerStatusType.All) {
-    //   this.commonService.toastMessage('Please select "All" filter to perform actions', 3000, ToastMessageType.Info);
-    //   return;
-    // }
+    this.selectedPlayer = member;
+    this.showPlayerSheet = true;
+  }
 
-    let actionSheet = this.actionSheetCtrl.create({
-      title: `${member.user.FirstName} ${member.user.LastName}`,
-      buttons: [
-        {
-          text: 'Confirmed',
-          icon: 'checkmark-circle',
-          cssClass: 'action-sheet-confirmed',
-          handler: () => {
-            this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminAccepted);
-          }
-        },
-        {
-          text: 'Maybe',
-          icon: 'help-circle',
-          cssClass: 'action-sheet-maybe',
-          handler: () => {
-            this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminMaybe);
-          }
-        },
-        {
-          text: 'Declined',
-          icon: 'close-circle',
-          cssClass: 'action-sheet-declined',
-          handler: () => {
-            this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminDeclined);
-          }
-        },
-        {
-          text: 'Update Role',
-          icon: 'people',
-          handler: () => {
-            this.showRoles(member);
-          }
-        },
-      ]
-    });
-    actionSheet.present();
+  onPlayerAction(action: string) {
+    this.showPlayerSheet = false;
+    const member = this.selectedPlayer;
+    if (!member) return;
+    switch (action) {
+      case 'confirmed': this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminAccepted); break;
+      case 'maybe': this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminMaybe); break;
+      case 'declined': this.updateLeagueMatchInviteStatus(member, LeaguePlayerInviteStatus.AdminDeclined); break;
+      case 'role': this.showRoles(member); break;
+    }
   }
   showRoles(member: LeagueMatchParticipantModel): void {
-    this.closeFab();
     if (this.roles.length > 0) {
 
       let alert = this.alertCtrl.create();
@@ -598,32 +595,12 @@ export class LeagueMatchInfoPage {
          }
        `;
     this.graphqlService.query(playernstaffrole, { activityDetails: this.teamRolesInput }, 0).subscribe((data: any) => {
-      // this.commonService.hideLoader();
       this.roles = data.data.getTeamRoles.teamRoles;
-
     },
       (error) => {
-
+        this.commonService.toastMessage("failed to fetch role", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
     )
-    this.apollo
-      .query({
-        query: playernstaffrole,
-        fetchPolicy: "network-only",
-        variables: {
-          activityDetails: this.teamRolesInput,
-        },
-      })
-      .subscribe(
-        ({ data }) => {
-          this.roles = data["getTeamRoles"]["teamRoles"];
-
-          // this.commonService.hideLoader();
-        },
-        (err) => {
-
-          this.commonService.toastMessage("failed to fetch role", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        })
   }
 
   updatePlayerRole(member: LeagueMatchParticipantModel) {
@@ -634,9 +611,7 @@ export class LeagueMatchInfoPage {
           var res = res.message;
 
           this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
-          this.loadAllParticipantsForCounts().then(() => {
-            this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.All);
-          });
+          this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.All);
         }
       },
       error: (err) => {
@@ -656,9 +631,7 @@ export class LeagueMatchInfoPage {
           var response = res.message;
           this.commonService.toastMessage(response, 3000, ToastMessageType.Success);
           // Refresh the participant data
-          this.loadAllParticipantsForCounts().then(() => {
-            this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.All);
-          });
+          this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.All);
         } else {
           this.commonService.toastMessage("Failed to update Invitation status", 3000, ToastMessageType.Error);
         }
@@ -669,7 +642,7 @@ export class LeagueMatchInfoPage {
     });
   }
 
-  selectTeamForEmail(match: LeagueMatch) {
+  selectTeamForEmail() {
     // const teams = [
     //   {
     //     name:'home_team_id',
@@ -742,55 +715,105 @@ export class LeagueMatchInfoPage {
   }
 
 
-  showAvailableTeams(isHomeTeam: boolean): void {
-    this.closeFab();
-    if (this.leagueParticipantForMatchRes.length > 0) {
-
-      let alert = this.alertCtrl.create();
-      alert.setTitle(`Select Team`);
-
-      for (let userIndex = 0; userIndex < this.leagueParticipantForMatchRes.length; userIndex++) {
-        alert.addInput({
-          type: 'radio',
-          label: this.leagueParticipantForMatchRes[userIndex].parentclubteam.teamName,
-          value: this.leagueParticipantForMatchRes[userIndex].id,
-          checked: isHomeTeam ? this.leagueParticipantForMatchRes[userIndex].parentclubteam.teamName == this.selectedHomeTeamText : this.leagueParticipantForMatchRes[userIndex].parentclubteam.teamName == this.selectedAwayTeamText
-        });
-      }
-
-      alert.addButton('Cancel');
-      alert.addButton({
-        text: 'OK',
-        handler: (selectedVal) => {
-          if (!selectedVal) {
-            this.commonService.toastMessage("Please select a team", 3000, ToastMessageType.Info);
-            return false; // prevent alert from dismissing          
-          }
-          this.selectedTeam = this.leagueParticipantForMatchRes.find(team => team.id === selectedVal);
-          if (isHomeTeam) {
-            if (selectedVal === this.selectedAwayTeamText) {
-              this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
-            } else {
-              this.UpdateLeagueFixtureInput.HomeParticipantId = selectedVal;
-              this.UpdateLeagueFixtureInput.AwayParticipantId = ""; //setting the deafult val to ""
-              this.updateLeagueFixture(isHomeTeam, this.selectedTeam.parentclubteam.teamName);
-            }
-          } else {
-            if (selectedVal === this.selectedHomeTeamText) {
-              this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
-            } else {
-              this.UpdateLeagueFixtureInput.AwayParticipantId = selectedVal;
-              this.UpdateLeagueFixtureInput.HomeParticipantId = ""; //setting the deafult val to ""
-              this.updateLeagueFixture(isHomeTeam, this.selectedTeam.parentclubteam.teamName);
-            }
-          }
-        }
+  gotoNotificationPage() {
+    if (this.leagueMatchParticipantRes.length > 0) {
+      const user_ids = this.leagueMatchParticipantRes.map(p =>
+        p.user.IsChild ? (p.user.ParentId || p.user.Id) : p.user.Id
+      );
+      const user_names = this.leagueMatchParticipantRes.map(p => p.user.FirstName + ' ' + p.user.LastName);
+      this.navCtrl.push("NotificationsPage", {
+        users: user_ids,
+        user_names: user_names,
+        type: ModuleTypes.LEAGUE,
+        heading: `Match: ${this.matchObj.match_title}`,
+        module_id: this.matchObj.fixture_id,
+        page_id: "LEAGUE_MATCH_INFO"
       });
+    } else {
+      this.commonService.toastMessage("No member(s) found in current session", 2500, ToastMessageType.Error);
+    }
+  }
 
-      alert.present();
+  toggleTeamDropdown(isHome: boolean) {
+    this.teamActionIsHome = isHome;
+    this.showTeamActionDropdown = true;
+  }
 
+  onTeamActionSelect(action: string) {
+    this.showTeamActionDropdown = false;
+    if (action === 'club') {
+      if (this.cachedClubTeams.length > 0) {
+        this.leagueParticipantForMatchRes = this.cachedClubTeams;
+        this.showAvailableTeams(this.teamActionIsHome);
+      } else {
+        this.fetchAndShowTeams(this.teamActionIsHome, false);
+      }
+    } else if (action === 'external') {
+      if (this.cachedExternalTeams.length > 0) {
+        this.leagueParticipantForMatchRes = this.cachedExternalTeams;
+        this.showAvailableTeams(this.teamActionIsHome);
+      } else {
+        this.fetchAndShowTeams(this.teamActionIsHome, true);
+      }
+    } else if (action === 'create_external') {
+      this.commonService.commonAlert_V4('External Team', 'You are about to create an external team. Do you want to continue?', 'Yes:Continue', 'No', () => {
+        this.navCtrl.push("CreateteamPage", { is_club_team: false, lock_club_team: true, activityCode: this.activityCode, leagueId: this.leagueId, activityId: this.activityId, onTeamCreated: () => { this.getLeagueParticipantForMatch(); } });
+      });
+    }
+  }
+
+  showAvailableTeams(isHomeTeam: boolean): void {
+    if (this.leagueParticipantForMatchRes.length > 0) {
+      this.teamSheetIsHome = isHomeTeam;
+      this.showTeamSheet = true;
     } else {
       this.commonService.toastMessage("No teams available", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+    }
+  }
+
+  fetchAndShowTeams(isHome: boolean, isExternal?: boolean) {
+    this.leagueParticipantForMatchInput.isExternal = isExternal === true;
+    this.httpService.post(`${API.Get_League_Participant_For_Match}`, this.leagueParticipantForMatchInput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.leagueParticipantForMatchRes = res.data;
+          if (isExternal) {
+            this.cachedExternalTeams = res.data || [];
+          } else {
+            this.cachedClubTeams = res.data || [];
+          }
+        }
+        this.showAvailableTeams(isHome);
+      },
+      error: () => {
+        this.commonService.toastMessage("Failed to fetch teams", 2500, ToastMessageType.Error);
+      }
+    });
+  }
+
+  onTeamSelected(team: LeagueParticipationForMatchModel): void {
+    this.showTeamSheet = false;
+    const isHomeTeam = this.teamSheetIsHome;
+    this.selectedTeam = team;
+
+    if (isHomeTeam) {
+      if (team.parentclubteam.teamName === this.selectedAwayTeamText) {
+        this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
+        return;
+      }
+      this.UpdateLeagueFixtureInput.HomeParticipantId = team.id;
+      this.UpdateLeagueFixtureInput.AwayParticipantId = "";
+      this.isHomeExternal = !team.parentclubteam.is_club_team;
+      this.updateLeagueFixture(isHomeTeam, team.parentclubteam.teamName);
+    } else {
+      if (team.parentclubteam.teamName === this.selectedHomeTeamText) {
+        this.commonService.toastMessage("Home and away teams can't be same", 3000, ToastMessageType.Info);
+        return;
+      }
+      this.UpdateLeagueFixtureInput.AwayParticipantId = team.id;
+      this.UpdateLeagueFixtureInput.HomeParticipantId = "";
+      this.isAwayExternal = !team.parentclubteam.is_club_team;
+      this.updateLeagueFixture(isHomeTeam, team.parentclubteam.teamName);
     }
   }
 
@@ -802,25 +825,48 @@ export class LeagueMatchInfoPage {
   changeType(val: boolean) {
     this.sections.forEach(section => section.items = []); // Clear the sections array
     this.activeType = val !== undefined ? val : !this.activeType;
-    this.getLeagueParticipantForMatch();
 
     // Load participants for the selected tab
     const teamId = this.activeType ? this.matchObj.home_team_id : this.matchObj.away_team_id;
     if (teamId !== null) {
-      this.loadAllParticipantsForCounts().then(() => {
-        this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
-      });
+      this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.All);
     }
     this.getFilteredSections();
   }
 
-  //to fetch list of avilable teams
+  detectExternalTeams() {
+    const input = { ...this.leagueParticipantForMatchInput, isExternal: true };
+    this.httpService.post(`${API.Get_League_Participant_For_Match}`, input).subscribe({
+      next: (res: any) => {
+        this.cachedExternalTeams = (res && res.data) ? res.data : [];
+        if (this.matchObj.home_team_id) {
+          this.isHomeExternal = this.cachedExternalTeams.some(t => t.parentclubteam.id === this.matchObj.home_team_id);
+        }
+        if (this.matchObj.away_team_id) {
+          this.isAwayExternal = this.cachedExternalTeams.some(t => t.parentclubteam.id === this.matchObj.away_team_id);
+        }
+      },
+      error: () => {
+        this.commonService.toastMessage("Failed to detect external teams", 2500, ToastMessageType.Error);
+      }
+    });
+  }
+
+  cachedClubTeams: LeagueParticipationForMatchModel[] = [];
+
+  //to fetch list of avilable teams and detect external teams
   getLeagueParticipantForMatch() {
     this.httpService.post(`${API.Get_League_Participant_For_Match}`, this.leagueParticipantForMatchInput).subscribe({
       next: (res: any) => {
         if (res) {
           this.leagueParticipantForMatchRes = res.data;
+          this.cachedClubTeams = res.data || [];
         }
+        // After fetching teams, detect external teams
+        this.detectExternalTeams();
+      },
+      error: () => {
+        this.commonService.toastMessage("Failed to fetch teams", 2500, ToastMessageType.Error);
       }
     });
   }
@@ -847,9 +893,7 @@ export class LeagueMatchInfoPage {
           // Only refresh data if we're on the tab that was just updated
           const shouldRefresh = (isHomeTeam && this.activeType) || (!isHomeTeam && !this.activeType);
           if (shouldRefresh) {
-            this.loadAllParticipantsForCounts().then(() => {
-              this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.PLAYING);
-            });
+            this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.All);
           }
         } else {
           this.commonService.toastMessage("Failed to update fixture", 3000, ToastMessageType.Error);
@@ -861,15 +905,7 @@ export class LeagueMatchInfoPage {
   //fetch api for teams and corresponding player details
   getLeagueMatchParticipant(par: LeagueTeamPlayerStatusType) {
     //this.commonService.showLoader("Fetching info ...");
-    let teamId: string | null = null;
-    if (this.selectedTeam) {
-      teamId = this.selectedTeam.parentclubteam.id;
-    } else
-      if (this.activeType && this.matchObj.home_team_id !== null) {
-        teamId = this.matchObj.home_team_id;
-      } else if (!this.activeType && this.matchObj.away_team_id !== null) {
-        teamId = this.matchObj.away_team_id;
-      }
+    const teamId = this.activeType ? this.matchObj.home_team_id : this.matchObj.away_team_id;
     this.leagueMatchParticipantInput.TeamId = teamId
     this.leagueMatchParticipantInput.leagueTeamPlayerStatusType = par
     this.leagueMatchParticipantInput.MatchId = this.matchObj.match_id;
@@ -877,6 +913,11 @@ export class LeagueMatchInfoPage {
       next: (res: any) => {
         if (res) {
           this.leagueMatchParticipantRes = res.data || [];
+
+          // Update allParticipants for accurate counts when fetching all
+          if (par === LeagueTeamPlayerStatusType.All) {
+            this.allParticipants = this.leagueMatchParticipantRes;
+          }
 
           this.sections.forEach(section => section.items = []);// Clear the sections array
           this.populateSections(); // Call populateSections after data is fetched
@@ -927,9 +968,7 @@ export class LeagueMatchInfoPage {
           var res = res.message;
 
           this.commonService.toastMessage(res, 3000, ToastMessageType.Success);
-          this.loadAllParticipantsForCounts().then(() => {
-            this.getLeagueMatchParticipant(0);
-          });
+          this.getLeagueMatchParticipant(LeagueTeamPlayerStatusType.All);
         }
       },
       error: (err) => {
@@ -1051,6 +1090,7 @@ export class LeagueParticipantForMatchInput {
   device_id: string;
   updated_by: string;
   LeagueId: string;
+  isExternal: boolean;
 }
 
 

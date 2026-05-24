@@ -181,8 +181,7 @@ page-tournament {
 
   .scroll-content {
     background: #0f172a !important;
-    padding: 6px !important;
-    margin-bottom: 60px;
+    padding: 0 !important;
   }
 
   .ion-card {
@@ -358,7 +357,7 @@ page-tournament {
     position: absolute;
     right: 12px;
     float: right;
-    bottom: 70px !important;
+    bottom: 100px !important;
   }
 
   .selected {
@@ -373,5 +372,61 @@ page-tournament {
     ion-icon {
       color: #60a5fa !important;
     }
+  }
+
+  .glass-fab {
+    position: fixed;
+    bottom: 85px; right: 16px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(43, 146, 187, 0.55);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 24px rgba(43, 146, 187, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    color: #fff; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 99; cursor: pointer;
+    transition: transform 0.2s ease;
+    &:active { transform: scale(0.9); }
+  }
+
+  &.light-theme .glass-fab {
+    background: rgba(43, 146, 187, 0.45);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  page-match, page-matchladder, page-matchhistory, page-leagueteamlisting {
+    display: block;
+    height: calc(100vh - 56px - 56px);
+
+    ion-content {
+      position: relative !important;
+      display: block !important;
+      height: 100% !important;
+      contain: none !important;
+    }
+
+    .scroll-content {
+      position: relative !important;
+      top: auto !important; bottom: auto !important;
+      left: auto !important; right: auto !important;
+      height: 100% !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 16px !important;
+    }
+
+    .page-scroll-area, .match-scroll-area { padding-bottom: 140px; }
+  }
+  // Lock outer scroll - child pages scroll internally
+  > ion-content > .scroll-content {
+    overflow: hidden !important;
+  }
+  .tournament-scroll {
+    height: calc(100vh - 56px - 56px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px 140px;
   }
 }

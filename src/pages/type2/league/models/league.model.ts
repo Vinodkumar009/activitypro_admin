@@ -126,6 +126,7 @@ export class LeagueParticipantModel {
   participant_status_text: string;
   participant_details: UserAndDetail;
   isSelected?: boolean;
+  _groupId?: string;
 }
 
 export class ClubModel {
@@ -158,6 +159,7 @@ export class ParentClubTeam {
   logo_url?: string;
   teamName: string;
   teamDescription: string;
+  is_club_team?: boolean;
 }
 
 export class User {

@@ -11,7 +11,6 @@ import { SchoolDetails } from '../schoolsession.model';
 import { AttendanceUpdate, SchoolSessionAttendees, SchoolUpdateAttendanceInput } from '../dto/school_ses_attendance.dto';
 import * as moment from 'moment';
 import { AppType } from '../../../../shared/constants/module.constants';
-
 /**
  * Generated class for the SchoolattendencePage page.
  *
@@ -99,7 +98,6 @@ export class SchoolattendencePage {
     this.attendance_status = this.navParams.get("attendance_status");
     this.attendanceInput.attedance_date = this.navParams.get("attendance_date");
     this.attendance_update.attendance_date = this.navParams.get("attendance_date");
-
     this.attendanceInput.AppType = AppType.ADMIN_NEW,
     this.attendanceInput.DeviceType = this.sharedservice.getPlatform() == "android" ? 1:2,
     this.attendanceInput.DeviceId = this.sharedservice.getDeviceId();

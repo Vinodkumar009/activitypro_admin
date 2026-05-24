@@ -1,0 +1,6 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+newsandevents-page {
+    @include android-sdk35-fixes;
+
+}

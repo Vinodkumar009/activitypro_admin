@@ -1,0 +1,19 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-termsandconditions {
+    @include android-sdk35-fixes;
+
+
+
+    .scroll-content {
+        background-image: none !important;
+        padding: 5px !important;
+    }
+    .cardleftborder {
+        border-left: 3px solid $themecardleftbordercolor;
+        // margin: 2px 0px 2px 0px;
+        // width: 100%;
+        margin: 7px 7px 7px 6px;
+        width: 96%;
+    }
+}

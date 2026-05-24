@@ -10,10 +10,6 @@ import moment from 'moment';
 import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
 
-
-// import { CommonService } from '../../../services/common.service';
-// import { IonicPage } from 'ionic-angular';
-
 @IonicPage()
 @Component({
     selector: 'page-walletreportbydate',
@@ -26,7 +22,6 @@ export class WalletReportByDate {
     currencyDetails: any;
     
     loading: any;
-    nestUrl: string;
     totalParentClubBalance: any;
     totalParentClubData = [];
   isAndroid: any;
@@ -59,7 +54,6 @@ export class WalletReportByDate {
             val = JSON.parse(val);
             if (val.$key != "") {
                 this.ParentClubKey = val.UserInfo[0].ParentClubKey;
-                this.nestUrl = this.sharedservice.getnestURL()
                 this.totalParentClubBalance = this.navParam.get('totalParentClubBalance')
                 this.getTotalBalanceReportByDate()
             }
@@ -132,7 +126,7 @@ export class WalletReportByDate {
   }
 
     getTotalBalanceReportByDate(){
-        const url = `${API.WALLET_PAYMENT_REPORT_BY_DATE}/${this.ParentClubKey}/${this.startDate}/${this.lastDate}`;
+       const url = `${API.WALLET_PAYMENT_REPORT_BY_DATE}/${this.ParentClubKey}/${this.startDate}/${this.lastDate}`;
         this.httpService.get(url, null, null, 1).subscribe({
           next: (res) => {
             if (res['data']){
@@ -143,9 +137,10 @@ export class WalletReportByDate {
                 this.TotTrnsAmt = this.TotTrnsAmt + amount
               });
               this.paidMemberListtemp = res['data']
-            } else {
-              this.paidMemberListtemp = []
             }
+          },
+          error: (err) => {
+            this.paidMemberListtemp = []
           }
         })
     }

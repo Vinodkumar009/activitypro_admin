@@ -1,4 +1,10 @@
-page-memberwalletreport{
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
+page-memberwalletreport {
+    @include android-sdk35-fixes;
+
+
+
     .transCashDiv{
         display: flex;
         justify-content: space-between;

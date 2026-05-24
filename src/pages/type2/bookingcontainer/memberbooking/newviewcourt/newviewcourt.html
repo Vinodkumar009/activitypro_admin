@@ -85,7 +85,7 @@
     <ion-card class="court" *ngFor="let court of slideInfo.slotData.slots" (click)="bookslot(court,slideInfo)"  [ngClass]="{'selected-court':court.IsBooked == true}" >
       <ion-card-content class="padding-0 slots" [ngClass]="{'booked-court':court.IsEnable == false, 'admin_back': court.MemberKey == 'admin'}" >
 
-       <span class="time">{{court.StartHour}}:{{court.StartMin}}</span>-<span class="time">{{court.EndHour}}:{{court.EndMin}}</span> 
+       <span class="time-range">{{court.StartHour}}:{{court.StartMin}} - {{court.EndHour}}:{{court.EndMin}}</span>
 
        <p class="amount" *ngIf="court.Price != 0 && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{court.Price}}</p>
        <!-- <img class="img-free" [src]="freeImageURl" *ngIf="court.Price == 0 && court.IsEnable == true"> -->

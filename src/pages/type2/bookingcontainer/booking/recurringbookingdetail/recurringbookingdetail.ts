@@ -12,7 +12,6 @@ import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
 
 
-
 /**
  * Generated class for the BookingPage page.
  *
@@ -41,7 +40,10 @@ export class RecurringBookingDetail {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public storage: Storage,
     public fb: FirebaseService, public commonService: CommonService,
-    public alertCtrl: AlertController,public events: Events , public loadingCtrl: LoadingController,public callNumber: CallNumber, public sharedService: SharedServices, public http: HttpClient, private httpService: HttpService) {
+    public alertCtrl: AlertController,public events: Events , 
+    public loadingCtrl: LoadingController,public callNumber: CallNumber, 
+    public sharedService: SharedServices, public http: HttpClient,
+    private httpService: HttpService) {
     //this.sharedService.get
       
     this.ParentClubKey  = this.navParams.get('ParentClubKey'),

@@ -16,7 +16,7 @@ export class Image{
     CreaterKey:any="";
     ParentClubName="";
     CategoryName:any="";
-    is_show_applus:boolean = true;
+    ShowInApPlus:boolean = true;
     ShowInMemberApp:boolean = true;
   }
   export class Category{

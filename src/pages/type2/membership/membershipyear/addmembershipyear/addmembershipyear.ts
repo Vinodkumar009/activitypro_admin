@@ -229,19 +229,25 @@ export default class AddmembershipYearPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:1
     }
-    this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe({
-      next: (res: any) => {
-        if(res && res.length > 0) {
-          this.membership_setups = res;
-          this.dataexists = true;
-          this.getEndYearData(res[0]);
-        }else{
-          this.getEndYearData();
-          this.dataexists = false;
-          this.comonService.toastMessage("Setup not found", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
+    this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe((res: any) => {
+      if(res && res.length > 0) {
+        this.membership_setups = res;
+        this.dataexists = true;
+        this.getEndYearData(res[0]);
+
+      }else{
+        
+        this.getEndYearData();
+        this.dataexists = false;
+        this.comonService.toastMessage("Setup not found", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
-    })
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
   
   getEndYearData(endYear?) {
@@ -301,16 +307,21 @@ export default class AddmembershipYearPage {
     //     this.YearlyFixedEndDate.FinancialYear.EndMonth = data[0].EndMonth
     //   }
     // })
-    this.httpService.get(`${API.PARENTCLUB_FINANCIAL_YEAR}/${this.postgre_parentclub_id}`).subscribe({
-      next: (res: any) => {
-        console.table(`financial_years:${res}`)
-        if(res){
-          this.financial_years = res as FinancialYearDto;
-          this.YearlyFixedEndDate.FinancialYear.StartMonth = moment(res.financial_year_start,"YYYY-MM").format("MMM")
-          this.YearlyFixedEndDate.FinancialYear.EndMonth = moment(res.financial_year_end,"YYYY-MM").format("MMM")
-        }
+    this.httpService.get(`${API.PARENTCLUB_FINANCIAL_YEAR}/${this.postgre_parentclub_id}`).subscribe((res: any) => {
+      console.table(`financial_years:${res}`)
+      if(res){
+        this.financial_years = res as FinancialYearDto;
+        this.YearlyFixedEndDate.FinancialYear.StartMonth = moment(res.financial_year_start,"YYYY-MM").format("MMM")
+        this.YearlyFixedEndDate.FinancialYear.EndMonth = moment(res.financial_year_end,"YYYY-MM").format("MMM")
+        
       }
-    })
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
 
     let year = new Date().getFullYear()
     if (year % 400 == 0) {
@@ -396,15 +407,20 @@ export default class AddmembershipYearPage {
 
   //updating membership as micropart/microservice
   updateMembershipYear(setup_payload,type:number) {//get 
-    this.httpService.put(`${API.MEMBERSHIP_SETUP_UPDATE}/${this.membership_setups[0].id}`,setup_payload).subscribe({
-      next: (res: any) => {
-        this.isAdded = true;
-        this.comonService.toastMessage("Setup updated successfully", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-        if(type == 2){
-          this.navCtrl.pop();
-        }
+    this.httpService.put(`${API.MEMBERSHIP_SETUP_UPDATE}/${this.membership_setups[0].id}`,setup_payload).subscribe((res: any) => {
+      //let key = this.fb.saveReturningKey("Membership/MembershipSetup/" + this.parentClubKey + "/" + this.selectedClubKey + "/MembershipYear", this.YearlyFixedEndDate)
+      this.isAdded = true;
+      this.comonService.toastMessage("Setup updated successfully", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+      if(type == 2){
+        this.navCtrl.pop();
       }
-    })
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Setup update failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   selectEndDate() {}
@@ -478,13 +494,18 @@ export default class AddmembershipYearPage {
             this.membership_setup_input.membership_disclaimer = this.disclaimer;
             this.membership_setup_input.charge_prorata = this.charge_prorata ? 1 : 0;
             this.membership_setup_input.auto_renewal = this.auto_renewal ? 1 : 0;
-            this.httpService.post(API.MEMBERSHIP_SETUP_CREATION,this.membership_setup_input).subscribe({
-              next: (res: any) => {
-                this.isAdded = true;
-                this.comonService.toastMessage("Membership setup created", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-                this.navCtrl.pop()
-              }
-            })
+            this.httpService.post(API.MEMBERSHIP_SETUP_CREATION,this.membership_setup_input).subscribe((res: any) => {
+              //let key = this.fb.saveReturningKey("Membership/MembershipSetup/" + this.parentClubKey + "/" + this.selectedClubKey + "/MembershipYear", this.YearlyFixedEndDate)
+              this.isAdded = true;
+              this.comonService.toastMessage("Membership setup created", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+              this.navCtrl.pop()
+            },
+           (error) => {
+                //this.commonService.hideLoader();
+                console.error("Error in fetching:", error);
+                this.comonService.toastMessage("Membership setup creation failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+               // Handle the error here, you can display an error message or take appropriate action.
+           })
           }
         }
       }catch(err){

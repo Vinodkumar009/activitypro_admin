@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-bookingsetup {
+    @include android-sdk35-fixes;
+
+
+
     .name{
         text-transform: capitalize;
         font-weight: 500;

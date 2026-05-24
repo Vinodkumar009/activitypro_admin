@@ -62,7 +62,7 @@
                         <ion-label>{{LangObj.report_ses_activity}}</ion-label>
                         <ion-select [(ngModel)]="selectedActivity" (ionChange)="onChangeActivity()">
                             <!--<ion-option value="All">All</ion-option>-->
-                            <ion-option *ngFor="let activity of activityList" value={{activity.Key}}>{{activity.ActivityName}}</ion-option>
+                            <ion-option *ngFor="let activity of activityList" value={{activity.ActivityKey}}>{{activity.ActivityName}}</ion-option>
                         </ion-select>
                     </ion-item>
                     <ion-item>
@@ -134,21 +134,6 @@
 
                 </ion-row>
             </ion-card>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </ion-list>
         <ion-list *ngSwitchCase="'Past'">
 

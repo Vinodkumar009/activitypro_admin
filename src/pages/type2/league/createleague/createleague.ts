@@ -4,7 +4,8 @@ import {
   LoadingController,
   NavController,
   NavParams,
-  PopoverController
+  PopoverController,
+  Events
 } from 'ionic-angular';
 import {
   CommonService,
@@ -26,6 +27,7 @@ import { ClubActivityInput, IClubDetails } from '../../../../shared/model/club.m
 import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
 import { AppType } from '../../../../shared/constants/module.constants';
+import { ThemeService } from '../../../../services/theme.service';
 
 
 /**
@@ -157,7 +159,9 @@ export class CreateleaguePage {
     public popoverCtrl: PopoverController,
     private graphqlService: GraphqlService,
     private httpService: HttpService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private themeService: ThemeService,
+    public events: Events
   ) {
 
     this.min = new Date().toISOString();
@@ -180,6 +184,13 @@ export class CreateleaguePage {
 
   ionViewWillEnter() {
     console.log("ionViewDidLoad CreateleaguePage");
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.applyTheme(isDark);
+    });
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
       if (val.$key != "") {
@@ -368,34 +379,26 @@ export class CreateleaguePage {
 
   //Coach List Api Binding
   getCoachList() {
-    //this.commonService.showLoader("fetching Coach");
-    const CoachFetchInput = {
-      parentclub: this.sharedservice.getPostgreParentClubId()
-    }
-    const getCoaches = gql`
-    query fetchCoaches($coachFetchInput: CoachFetchInput!){
-      fetchCoaches(coachFetchInput:$coachFetchInput){
-        Id
-       first_name
-       last_name
-       phone_no
-       email_id
-      }
-    }
-    `;
-    this.graphqlService.query(getCoaches, { coachFetchInput: CoachFetchInput }, 0)
-      .subscribe((res: any) => {
-        //  this.commonService.hideLoader();
-        this.coaches = res.data.fetchCoaches;
+    const payload = {
+      ...this.commonInput,
+      parentclubId: this.sharedservice.getPostgreParentClubId(),
+      id: '',
+      email_id: '',
+      fetch_from: 1
+    };
+    this.httpService.post(`${API.FETCH_COACHES}`, payload).subscribe({
+      next: (res: any) => {
+        this.coaches = res.data || [];
         if (this.coaches.length > 0) {
           this.leagueCreationInput.league.coachId = this.coaches[0].Id;
-          this.updateContactInfo(); // Set initial contact info
+          this.updateContactInfo();
         }
       },
-        (error) => {
-          this.commonService.toastMessage("Coach fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-          console.error("Error in fetching:", error);
-        })
+      error: (error) => {
+        this.commonService.toastMessage("Coach fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        console.error("Error in fetching:", error);
+      }
+    });
   }
 
   updateContactInfo() {
@@ -702,18 +705,21 @@ export class CreateleaguePage {
 
   ionViewWillLeave() {
     this.commonService.updateCategory("");
+    this.events.unsubscribe('theme:changed');
   }
 
   async loadTheme() {
-    const theme = await this.storage.get('selectedTheme');
-    this.applyTheme(theme || 'dark');
+    const isDarkTheme = await this.storage.get('dashboardTheme');
+    const isDark = isDarkTheme !== null ? isDarkTheme : true;
+    this.isDarkTheme = isDark;
+    this.applyTheme(isDark);
   }
 
-  applyTheme(theme: string) {
-    this.isDarkTheme = theme === 'dark';
+  applyTheme(isDark: boolean) {
+    this.isDarkTheme = isDark;
     const pageElement = document.querySelector('page-createleague');
     if (pageElement) {
-      if (this.isDarkTheme) {
+      if (isDark) {
         this.renderer.removeClass(pageElement, 'light-theme');
       } else {
         this.renderer.addClass(pageElement, 'light-theme');

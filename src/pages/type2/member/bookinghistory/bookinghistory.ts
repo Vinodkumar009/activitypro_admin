@@ -169,7 +169,6 @@ export class BookinghistoryPage implements OnInit, OnDestroy {
   isNoBookings: boolean = false;
   tot_family: ITotalFamily[] = [];
   courtbooking: ICourtBooking[] = [];
-  nestUrl: any;
   courtbookingactive: boolean = false;
   memberkey: any;
 
@@ -189,7 +188,6 @@ export class BookinghistoryPage implements OnInit, OnDestroy {
     this.selectedType = 0;
     storage.get('Currency').then((val) => {
       this.currencyDetails = JSON.parse(val);
-      this.nestUrl = this.sharedService.getnestURL();
     }).catch(error => { });
   }
 
@@ -564,192 +562,207 @@ export class BookinghistoryPage implements OnInit, OnDestroy {
 
   //fetch pending payments for term sessions
   getTermPendingPayments() {
-    this.httpService.post(`${API.GetTermPendingPayments}`, this.getTermPendingPaymentsInput).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.termPendingPaymentsRes = res.data
-          this.commonService.toastMessage(
-            `${this.termPendingPaymentsRes.length } Term Sessions Found`,
-            2500,
-            ToastMessageType.Success,
-            ToastPlacement.Bottom
-          );
-          console.log("GetTermPendingPayments RESPONSE", JSON.stringify(res.data));
-        } else {
-          console.log("error in fetching",)
-        }
+    // this.setupPendingPaymentInputs();
+    this.commonService.showLoader("Fetching info ...");
+    this.httpService.post(`${API.GetTermPendingPayments}`, this.getTermPendingPaymentsInput).subscribe((res: any) => {
+      if (res) {
+        this.commonService.hideLoader();
+        this.termPendingPaymentsRes = res.data
+        // this.commonService.toastMessage(
+        //   `${this.termPendingPaymentsRes.totalCount } Term Sessions Found`,
+        //   2500,
+        //   ToastMessageType.Success,
+        //   ToastPlacement.Bottom
+        // );
+        this.commonService.toastMessage(
+          `${this.termPendingPaymentsRes.length } Term Sessions Found`,
+          2500,
+          ToastMessageType.Success,
+          ToastPlacement.Bottom
+        );
+        console.log("GetTermPendingPayments RESPONSE", JSON.stringify(res.data));
+      } else {
+        this.commonService.hideLoader();
+        console.log("error in fetching",)
       }
-    });
+    })
   }
   //fetch pending payments for weekly sessions
   GetPendingPaymentWeekly() {
-    this.httpService.post(`${API.GetPendingPaymentWeekly}`, this.getWeeklyPendingPaymentsInput).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.weeklyPendingPaymentsRes = res  // the response structure is not wrapped within 'data' object, so using res directly
-          this.commonService.toastMessage(
-            `${this.weeklyPendingPaymentsRes.totalCount} Weekly Sessions Found`,
-            2500,
-            ToastMessageType.Success,
-            ToastPlacement.Bottom
-          );
-          console.log("GetPendingPaymentWeekly RESPONSE", JSON.stringify(res));
-        } else {
-          console.log("error in fetching",)
-        }
+    // this.setupPendingPaymentInputs();
+    // this.commonService.showLoader("Fetching info ...");
+    this.httpService.post(`${API.GetPendingPaymentWeekly}`, this.getWeeklyPendingPaymentsInput).subscribe((res: any) => {
+      if (res) {
+        this.commonService.hideLoader();
+        this.weeklyPendingPaymentsRes = res  // the response structure is not wrapped within 'data' object, so using res directly
+        this.commonService.toastMessage(
+          `${this.weeklyPendingPaymentsRes.totalCount} Weekly Sessions Found`,
+          2500,
+          ToastMessageType.Success,
+          ToastPlacement.Bottom
+        );
+        console.log("GetPendingPaymentWeekly RESPONSE", JSON.stringify(res));
+      } else {
+        // this.commonService.hideLoader();
+        console.log("error in fetching",)
       }
-    });
+    })
   }
 
   //fetch pending payments for monthly sessions
   MonthlyPendingPayment() {
-    this.httpService.post(`${API.MonthlyPendingPayment}`, this.monthlyPendingPaymentInput).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.monthlyPendingPaymentRes = res.data;
-          this.commonService.toastMessage(
-            `${this.monthlyPendingPaymentRes.totalCount} Monthly Sessions Found`,
-            2500,
-            ToastMessageType.Success,
-            ToastPlacement.Bottom
-          );
-          console.log("MonthlyPendingPayment RESPONSE", JSON.stringify(res.data));
-        } else {
-          console.log("error in fetching",)
-        }
+    // this.setupPendingPaymentInputs();
+    this.commonService.showLoader("Fetching info ...");
+    this.httpService.post(`${API.MonthlyPendingPayment}`, this.monthlyPendingPaymentInput).subscribe((res: any) => {
+      if (res) {
+        this.commonService.hideLoader();
+        this.monthlyPendingPaymentRes = res.data;
+        this.commonService.toastMessage(
+          `${this.monthlyPendingPaymentRes.totalCount} Monthly Sessions Found`,
+          2500,
+          ToastMessageType.Success,
+          ToastPlacement.Bottom
+        );
+        console.log("MonthlyPendingPayment RESPONSE", JSON.stringify(res.data));
+      } else {
+        this.commonService.hideLoader();
+        console.log("error in fetching",)
       }
-    });
+    })
   }
   //fetch pending payments for school sessions
   SchoolSessionPendingPayment() {
-    this.httpService.post(`${API.SchoolSessionPendingPayment}`, this.schoolSessionPendingPaymentInput).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.schoolSessionPendingPaymentRes = res.data;
-          this.commonService.toastMessage(
-            `${this.schoolSessionPendingPaymentRes.totalCount} School Sessions Found`,
-            2500,
-            ToastMessageType.Success,
-            ToastPlacement.Bottom
-          );
-          console.log("SchoolSessionPendingPayment RESPONSE", JSON.stringify(res.data));
-        } else {
-          console.log("error in fetching",)
-        }
+    this.commonService.showLoader("Fetching info ...");
+    this.httpService.post(`${API.SchoolSessionPendingPayment}`, this.schoolSessionPendingPaymentInput).subscribe((res: any) => {
+      if (res) {
+        this.commonService.hideLoader();
+        this.schoolSessionPendingPaymentRes = res.data;
+        this.commonService.toastMessage(
+          `${this.schoolSessionPendingPaymentRes.totalCount} School Sessions Found`,
+          2500,
+          ToastMessageType.Success,
+          ToastPlacement.Bottom
+        );
+        console.log("SchoolSessionPendingPayment RESPONSE", JSON.stringify(res.data));
+      } else {
+        this.commonService.hideLoader();
+        console.log("error in fetching",)
       }
-    });
+    })
   }
 
   //fetch pending payments for Holiday Camp sessions
   HolidayCampPendingPayment() {
-    this.httpService.post(`${API.EnrolmentDetails}`, this.holdiayCampPendingPaymentInput).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.holidaycampPendingPaymentRes = res   // the response structure is not wrapped within 'data' object, so using res directly
-          this.commonService.toastMessage(`${this.holidaycampPendingPaymentRes.totalCount} Hoiday Camps Found`,2500,ToastMessageType.Success,ToastPlacement.Bottom);
-          console.log("HolidayCampPendingPayment RESPONSE", JSON.stringify(res));
-        } else {
-          console.log("error in fetching",)
-        }
+    this.commonService.showLoader("Fetching info ...");
+    this.httpService.post(`${API.EnrolmentDetails}`, this.holdiayCampPendingPaymentInput).subscribe((res: any) => {
+      if (res) {
+        this.commonService.hideLoader();
+        this.holidaycampPendingPaymentRes = res   // the response structure is not wrapped within 'data' object, so using res directly
+        this.commonService.toastMessage(`${this.holidaycampPendingPaymentRes.totalCount} Hoiday Camps Found`,2500,ToastMessageType.Success,ToastPlacement.Bottom);
+        console.log("HolidayCampPendingPayment RESPONSE", JSON.stringify(res));
+      } else {
+        this.commonService.hideLoader();
+        console.log("error in fetching",)
       }
-    });
+    })
   }
 
   // 📡 Getting term session details of parent & family by parent postgre_id & firebasekey
   getTermSessionBookings() {
-    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/term`, this.booking_input).subscribe({
-      next: (result: any) => {
-        console.log("✅ Term sessions loaded");
-        this.term_session_list = [...result.data, ...this.term_session_list];
-        let amount = 0;
-        let discount = 0;
-        for (let i = 0; i < this.term_session_list.length; i++) {
-          amount += parseFloat(this.term_session_list[i].paid_amount);
-          discount += parseFloat(this.term_session_list[i].transaction.total_discount);
-        }
-        this.historyObj.PaidAmount = amount.toString();
-        this.historyObj.Discount = discount.toString();
+    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/term`, this.booking_input).subscribe((result: any) => {
+      console.log("✅ Term sessions loaded");
+      this.term_session_list = [...result.data, ...this.term_session_list];
+      let amount = 0;
+      let discount = 0;
+      for (let i = 0; i < this.term_session_list.length; i++) {
+        amount += parseFloat(this.term_session_list[i].paid_amount);
+        discount += parseFloat(this.term_session_list[i].transaction.total_discount);
       }
+      this.historyObj.PaidAmount = amount.toString();
+      this.historyObj.Discount = discount.toString();
+    }, (error) => {
+      console.error("❌ Term session fetch failed:", error);
+      this.commonService.toastMessage("Term session fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
     });
 
     this.subscriptions.push(subscription);
   }
 
   getWeeklySessionBookings() {
-    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/weekly`, this.booking_input).subscribe({
-      next: (result: any) => {
-        console.log("✅ Weekly sessions loaded");
-        this.weekly_session_list = [...result.data, ...this.weekly_session_list];
-        let amount = 0;
-        let discount = 0;
-        for (let i = 0; i < this.weekly_session_list.length; i++) {
-          amount += (this.weekly_session_list[i].amount_paid);
-          discount += (this.weekly_session_list[i].total_discount);
-        }
-        this.historyObj.PaidAmount = amount.toString();
-        this.historyObj.Discount = discount.toString();
+    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/weekly`, this.booking_input).subscribe((result: any) => {
+      console.log("✅ Weekly sessions loaded");
+      this.weekly_session_list = [...result.data, ...this.weekly_session_list];
+      let amount = 0;
+      let discount = 0;
+      for (let i = 0; i < this.weekly_session_list.length; i++) {
+        amount += (this.weekly_session_list[i].amount_paid);
+        discount += (this.weekly_session_list[i].total_discount);
       }
+      this.historyObj.PaidAmount = amount.toString();
+      this.historyObj.Discount = discount.toString();
+    }, (error) => {
+      console.error("❌ Weekly session fetch failed:", error);
+      this.commonService.toastMessage("Weekly session fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
     });
 
     this.subscriptions.push(subscription);
   }
 
   getMonthlySessionBookings() {
-    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/monthly`, this.booking_input).subscribe({
-      next: (result: any) => {
-        console.log("✅ Monthly sessions loaded");
-        this.monthly_session_list = [...result.data, ...this.monthly_session_list];
-        let amount = 0;
-        let discount = 0;
-        for (let i = 0; i < this.monthly_session_list.length; i++) {
-          amount += (this.monthly_session_list[i].amount_paid);
-          discount += (this.monthly_session_list[i].total_discount);
-        }
-        this.historyObj.PaidAmount = amount.toString();
-        this.historyObj.Discount = discount.toString();
+    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/monthly`, this.booking_input).subscribe((result: any) => {
+      console.log("✅ Monthly sessions loaded");
+      this.monthly_session_list = [...result.data, ...this.monthly_session_list];
+      let amount = 0;
+      let discount = 0;
+      for (let i = 0; i < this.monthly_session_list.length; i++) {
+        amount += (this.monthly_session_list[i].amount_paid);
+        discount += (this.monthly_session_list[i].total_discount);
       }
+      this.historyObj.PaidAmount = amount.toString();
+      this.historyObj.Discount = discount.toString();
+    }, (error) => {
+      console.error("❌ Monthly session fetch failed:", error);
+      this.commonService.toastMessage("Monthly session fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
     });
 
     this.subscriptions.push(subscription);
   }
 
   getHolidayCampsBookings() {
-    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/holidaycamp`, this.booking_input).subscribe({
-      next: (result: any) => {
-        console.log("✅ Holiday camps loaded");
-        this.holidaycamp_list = [...result.data, ...this.holidaycamp_list];
-        let amount = 0;
-        let discount = 0;
-        for (let i = 0; i < this.holidaycamp_list.length; i++) {
-          amount += parseFloat(this.holidaycamp_list[i].amount_paid);
-          discount += parseFloat(this.holidaycamp_list[i].total_discount);
-        }
-        this.historyObj.PaidAmount = amount.toString();
-        this.historyObj.Discount = discount.toString();
-      },
-      error: (err) => {
-        console.error("❌ Holiday camps fetch failed:", err);
-        this.commonService.toastMessage("Holiday camps fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
+    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/holidaycamp`, this.booking_input).subscribe((result: any) => {
+      console.log("✅ Holiday camps loaded");
+      this.holidaycamp_list = [...result.data, ...this.holidaycamp_list];
+      let amount = 0;
+      let discount = 0;
+      for (let i = 0; i < this.holidaycamp_list.length; i++) {
+        amount += parseFloat(this.holidaycamp_list[i].amount_paid);
+        discount += parseFloat(this.holidaycamp_list[i].total_discount);
       }
+      this.historyObj.PaidAmount = amount.toString();
+      this.historyObj.Discount = discount.toString();
+    }, (err) => {
+      console.error("❌ Holiday camps fetch failed:", err);
+      this.commonService.toastMessage("Holiday camps fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
     });
 
     this.subscriptions.push(subscription);
   }
 
   getSchoolSessionBookings() {
-    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/school`, this.booking_input).subscribe({
-      next: (result: any) => {
-        console.log("✅ School sessions loaded");
-        this.school_session_list = [...result.data, ...this.school_session_list];
-        let amount = 0;
-        let discount = 0;
-        for (let i = 0; i < this.school_session_list.length; i++) {
-          amount += parseFloat(this.school_session_list[i].amount_paid);
-          discount += parseFloat(this.school_session_list[i].total_discount);
-        }
-        this.historyObj.PaidAmount = amount.toString();
-        this.historyObj.Discount = discount.toString();
+    const subscription = this.httpService.post(`${API.BOOKING_HISTORY}/school`, this.booking_input).subscribe((result: any) => {
+      console.log("✅ School sessions loaded");
+      this.school_session_list = [...result.data, ...this.school_session_list];
+      let amount = 0;
+      let discount = 0;
+      for (let i = 0; i < this.school_session_list.length; i++) {
+        amount += parseFloat(this.school_session_list[i].amount_paid);
+        discount += parseFloat(this.school_session_list[i].total_discount);
       }
+      this.historyObj.PaidAmount = amount.toString();
+      this.historyObj.Discount = discount.toString();
+    }, (error) => {
+      console.error("❌ School session fetch failed:", error);
+      this.commonService.toastMessage("School session fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom);
     });
 
     this.subscriptions.push(subscription);

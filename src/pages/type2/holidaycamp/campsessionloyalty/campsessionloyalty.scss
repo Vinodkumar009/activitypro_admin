@@ -1,5 +1,8 @@
-campsessionloyalty-page{
-    .social-cards ion-col {
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+campsessionloyalty-page {
+    @include android-sdk35-fixes;
+.social-cards ion-col {
         padding: 0;
      }
      .btn-clr{
@@ -135,5 +138,4 @@ campsessionloyalty-page{
         color: rgba(0,0,0,0.5);
         font-size: 14px;
     }
-
 }

@@ -1,5 +1,8 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-editothermember {
-    .scroll-content {
+    @include android-sdk35-fixes;
+.scroll-content {
         background-image: none !important;
         padding: 0px !important;
         background-color: #f7f7f7;
@@ -101,6 +104,4 @@ page-editothermember {
             }
         }
     }
-
-
 }

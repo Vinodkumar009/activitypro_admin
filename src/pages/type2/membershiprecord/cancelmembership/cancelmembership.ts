@@ -36,7 +36,6 @@ export class CancelMembershipPage {
   cancelText = '';
   loading: any;
   nodeUrl: string;
-  nestUrl: string;
   cancel_input: MemberShipInput = {
     parentclubId: "",
     clubId: "",

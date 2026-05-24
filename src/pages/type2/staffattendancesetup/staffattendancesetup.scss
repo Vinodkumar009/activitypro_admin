@@ -1,0 +1,42 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-staffattendancesetup {
+    @include android-sdk35-fixes;
+
+
+
+    ion-label{
+        flex: 0px !important;
+        font-size: 15px !important;
+        color: gray !important;
+    }
+    .scroll-content {
+        background-image: none !important;
+    }
+    .customRadiobtn{
+        height: 30px;
+        width: 50px;
+        background-color: #dddddd;
+       
+    }
+    .selected{
+        background-color: #227a8f !important;
+        color:white;
+    }
+    .day-btn{
+        height: 44px;
+        width: 44px;
+        border-radius: 50%;
+        margin-left: 5px;
+        border: 2px solid #e2756e;
+        background-color: white;
+    }
+    .selectedDays{
+        background-color: #e2756e !important;
+        color:white;
+    }
+    .save-btn{
+        background-color: #227a8f !important;
+        color:white;
+    }
+}

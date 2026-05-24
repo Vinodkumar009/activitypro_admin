@@ -12,6 +12,11 @@ import { CommonService } from '../../../../services/common.service';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
+import gql from "graphql-tag";
+import { GraphqlService } from '../../../../services/graphql.service';
+import { ThemeService } from '../../../../services/theme.service';
+import { IClubDetails } from '../../../../shared/model/club.model';
+import { AppType } from '../../../../shared/constants/module.constants';
 
 
 /**
@@ -30,6 +35,7 @@ export class FacilityReportPage {
   @ViewChild('myslider') myslider: Slides;
   @ViewChild(Content) content: Content;
   isSearchEnabled: boolean = false;
+  isDarkTheme: boolean = true;
   isFirstTime: boolean = true;
   paymentReportType: any;
   LangObj: any = {};//by vinod
@@ -91,15 +97,13 @@ export class FacilityReportPage {
   maxDate: any;
   minDate: any;
   currencyDetails: any = "";
-  nestUrl: string;
   constructor(public events: Events, public sharedService: SharedServices, public commonService: CommonService, public loadingCtrl: LoadingController, platform: Platform, public storage: Storage, public fb: FirebaseService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController,
-    private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, public actionSheetCtrl: ActionSheetController, private httpService: HttpService) {
+    private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, public actionSheetCtrl: ActionSheetController, private httpService: HttpService, private graphqlService: GraphqlService, private themeService: ThemeService) {
     
     this.userData = this.sharedService.getUserData();
     this.themeType = sharedservice.getThemeType();
     this.isAndroid = platform.is('android');
     console.log(this.isAndroid);
-    this.nestUrl = this.sharedService.getnestURL()
     this.reportType = "Paid";
 
     this.startDate = moment((moment().subtract(7, 'days'))).format("YYYY-MM-DD");;
@@ -113,7 +117,7 @@ export class FacilityReportPage {
     }).catch(error => {
     });
 
-
+    this.loadTheme();
 
   }
 
@@ -256,16 +260,38 @@ export class FacilityReportPage {
 
 
   getClubList() {
-    console.log("/Club/Type2/" + this.parentClubKey);
-    this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-      this.clubs = data;
-      if (this.clubs.length != 0) {
-        this.selectedClub = "All";
-        this.selectedCurrentClub = "All";
-        //this.getActiveBookings();
-        this.getactivebookingDetails()
+    const clubs_input = {
+      parentclub_id: this.sharedservice.getPostgreParentClubId(),
+      user_postgre_metadata: {
+        UserMemberId: this.sharedservice.getLoggedInId()
+      },
+      user_device_metadata: {
+        UserAppType: AppType.ADMIN_NEW,
+        UserDeviceType: this.sharedservice.getPlatform() == "android" ? 1 : 2
       }
-    });
+    };
+    const clubs_query = gql`
+      query getVenuesByParentClub($clubs_input: ParentClubVenuesInput!){
+        getVenuesByParentClub(clubInput:$clubs_input){
+          Id
+          ClubName
+          FirebaseId
+          MapUrl
+          sequence
+        }
+      }
+    `;
+    this.graphqlService.query(clubs_query, { clubs_input: clubs_input }, 0)
+      .subscribe((res: any) => {
+        this.clubs = res.data.getVenuesByParentClub as IClubDetails[];
+        if (this.clubs.length != 0) {
+          this.selectedClub = "All";
+          this.selectedCurrentClub = "All";
+          this.getactivebookingDetails();
+        }
+      }, (error) => {
+        console.error("Error fetching clubs:", error);
+      });
   }
 
   Search(){
@@ -280,7 +306,6 @@ export class FacilityReportPage {
 
    
   getActivityName(key, slot){
-  
     return new Promise((res, rej)=>{
       if( slot.CourtInfo.ClubKey){
         let x = this.fb.getAllWithQuery("/Activity/" + this.parentClubKey + "/" + slot.CourtInfo.ClubKey, { orderByKey: true, equalTo: key }).subscribe((data) => {
@@ -354,10 +379,21 @@ export class FacilityReportPage {
     this.paidMemberListtemp = [];
     this.TotTrnsAmt = 0.0;
     this.TotTransc = 0;
-    const club = this.selectedClub.toLowerCase() == "all" ? 'nil' : this.selectedClub;
-    const url = `${API.ACTIVE_BOOKING_IN_RANGE_BY_CLUB}/${this.userData.UserInfo[0].ParentClubKey}/${club}/${this.paymentObj.startDate}/${this.paymentObj.lasttDate}`;
 
-    this.httpService.get(url, null, null, 1).subscribe({
+    let clubId: string = undefined;
+    if (this.selectedClub.toLowerCase() !== "all") {
+      const selectedClubObj = this.clubs.find((c: IClubDetails) => c.FirebaseId === this.selectedClub || c.Id === this.selectedClub);
+      clubId = selectedClubObj ? selectedClubObj.Id : undefined;
+    }
+
+    const body = {
+      parentclub_id: this.sharedservice.getPostgreParentClubId(),
+      club_id: clubId,
+      startdate: this.paymentObj.startDate,
+      enddate: this.paymentObj.lasttDate
+    };
+
+    this.httpService.post(API.ACTIVE_BOOKING_IN_RANGE_BY_CLUB, body, null, 1).subscribe({
       next: (data: any) => {
         this.paidMemberListtemp = data['data']
         this.paidMemberListtemp.forEach(slot => {
@@ -376,7 +412,7 @@ export class FacilityReportPage {
     this.amountPaid = "0.00";
     if (this.selectedClub != "All") {
       console.log(this.selectedClub);
-      this.paymentObj.clubKey = this.selectedClub;
+      //this.paymentObj.clubKey = this.selectedClub;
       // this.fb.getAll("/Club/Type2/" + this.parentClubKey + "/" + this.selectedClub + "/Coach/").subscribe((data) => {
       //   this.coaches = data;
       //   this.selectedCoach = "All";
@@ -491,6 +527,21 @@ export class FacilityReportPage {
       parentclubKey: this.parentClubKey
     })
 
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('page-facilityreport');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
   }
 
 

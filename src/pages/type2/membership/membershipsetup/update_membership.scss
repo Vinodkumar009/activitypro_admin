@@ -1,4 +1,8 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-membershipupdate {
+    @include android-sdk35-fixes;
+
     ion-card-content {
         padding: 0px !important;
     }
@@ -310,6 +314,6 @@ page-membershipupdate {
         border-bottom: none !important;
         box-shadow: none !important;
       }
-    
-    
 }
+
+

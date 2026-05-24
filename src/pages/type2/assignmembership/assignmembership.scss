@@ -1,0 +1,58 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+assignmembership-page {
+    @include android-sdk35-fixes;
+.margin{
+        margin-bottom: 10px;
+    }
+     .text-color{
+        color:red;
+    }
+
+    .list{
+    margin:0px;
+}
+.list-header-md {
+     margin-bottom: 0px; 
+   
+    margin-top: 3px;
+}
+.list > .list-header-md {
+    
+   
+    margin-top: 0px;
+}
+.list-modifier{
+
+    font-size: 1.8rem;
+    background-color: #d6d6d6;
+    color: #030303;
+}
+.distance-bottom{
+    margin-bottom: 10px;
+}
+ .scroll-content{
+    padding: 16px 9px !important;
+}
+.card-view{
+        margin:0px;
+        width:100%;
+        margin-top: 7px;
+        box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+    }
+    .slidingcards {
+    // margin-bottom: 5px;
+    // border-top: 6px solid rgba(94, 199, 130, 0.79);
+    // margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // margin-bottom: 4px;
+    // border-top: 7px solid rgba(236, 117, 21, 0.63);
+    // border-bottom: 2px solid rgba(180, 24, 148, 0.73);
+    //  margin-bottom: 7px;
+    // border-top: 5px solid rgba(25, 92, 170, 0.79);
+    // border-bottom: 2px solid rgba(236, 117, 21, 0.63);
+    //box-shadow: 5px 5px 5px rgba(142, 151, 152, 0.39);
+    margin-bottom: 7px;
+    border-top: 5px solid rgba(25, 92, 170, 0.79);
+  }
+}

@@ -1,357 +1,81 @@
-@import "../../_league-theme.scss";
 @import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-potm {
-  @include league-theme-base;
   @include android-sdk35-fixes;
 
-  // Dark theme
-  &:not(.light-theme) {
-    .scroll-content {
-      background: #1e293b !important;
-    }
+  .scroll-content { padding: 0 !important; overflow: hidden !important; background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
 
-    .selection-info {
-      background: #334155 !important;
-      border-bottom-color: #475569 !important;
-
-      .selection-count {
-        color: #2b92bb !important;
-      }
-    }
-
-    .team-header {
-      h4 {
-        color: #fff !important;
-      }
-
-      &.home-team {
-        background: linear-gradient(135deg, #2b92bb, #1e7a8a) !important;
-      }
-
-      &.away-team {
-        background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
-      }
-    }
-
-    .player-list {
-      background: #334155 !important;
-    }
-
-    .player-item {
-      background: #334155 !important;
-      border-bottom-color: #475569 !important;
-
-      &.selected {
-        background-color: #1e293b !important;
-
-        .player-label h3 {
-          color: #2b92bb !important;
-        }
-      }
-
-      &.disabled {
-        .player-label h3 {
-          color: #64748b !important;
-        }
-      }
-
-      .player-label {
-        h3 {
-          color: #f1f5f9 !important;
-        }
-
-        &.home-player h3 {
-          color: #2b92bb !important;
-        }
-
-        &.away-player h3 {
-          color: #dc2626 !important;
-        }
-      }
-    }
-
-    .no-players {
-      background: #334155 !important;
-
-      p {
-        color: #94a3b8 !important;
-      }
-    }
+  ion-navbar { background: #0f172a !important;
+    .toolbar-background { background: #0f172a !important; }
+    .toolbar-title { color: #f1f5f9 !important; }
+    .bar-button { color: #f1f5f9 !important; }
   }
+
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-fixed-header { flex-shrink: 0; background: #0f172a; z-index: 10; }
+  .page-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 4px 80px; }
+
+  .selection-badge {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 16px; margin: 8px 12px;
+    background: rgba(43, 146, 187, 0.15); border: 1px solid rgba(43, 146, 187, 0.3);
+    border-radius: 10px; color: #3fbcd3; font-size: 13px; font-weight: 700;
+    .badge-icon { font-size: 16px; }
+  }
+
+  .team-col { padding: 0 4px !important; }
+  .team-header {
+    padding: 8px 10px; margin-bottom: 6px; border-radius: 8px;
+    &.home { background: rgba(16, 185, 129, 0.15); .team-name { color: #10b981; } }
+    &.away { background: rgba(239, 68, 68, 0.15); .team-name { color: #ef4444; } }
+    .team-name { font-size: 12px; font-weight: 700; }
+  }
+
+  app-list-card { display: block; margin-bottom: 4px; }
+  .player-row {
+    display: flex; align-items: center; gap: 8px; padding: 10px;
+    background: linear-gradient(145deg, rgba(43, 146, 187, 0.3) 0%, rgba(53, 173, 255, 0.12) 40%, transparent 75%);
+    cursor: pointer; transition: opacity 0.2s;
+    &.selected { background: rgba(16, 185, 129, 0.15); }
+    &.disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+  .player-avatar {
+    width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(16, 185, 129, 0.15); color: #10b981;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    &.away { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+  }
+  .player-info { flex: 1; min-width: 0; }
+  .player-name {
+    font-size: 12px; font-weight: 700; color: #f1f5f9; margin: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .check-icon { font-size: 18px; color: #10b981; flex-shrink: 0; }
+
+  .empty-state { padding: 20px 10px; text-align: center; }
+  .empty-text { font-size: 12px; color: #64748b; margin: 0; }
 
   // Light theme
   &.light-theme {
-    .scroll-content {
-      background: #f7f7f7 !important;
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .page-fixed-header { background: #f8fafc; }
+    ion-navbar { background: #f8fafc !important;
+      .toolbar-background { background: #f8fafc !important; }
+      .toolbar-title { color: #1e293b !important; }
+      .bar-button { color: #1e293b !important; }
     }
-
-    .selection-info {
-      background: #fff !important;
-      border-bottom-color: #e0e0e0 !important;
-
-      .selection-count {
-        color: #2b92bb !important;
-      }
-    }
-
-    .team-header {
-      h4 {
-        color: #fff !important;
-      }
-
-      &.home-team {
-        background: linear-gradient(135deg, #4CAF50, #45a049) !important;
-      }
-
-      &.away-team {
-        background: linear-gradient(135deg, #f44336, #d32f2f) !important;
-      }
-    }
-
-    .player-list {
-      background: #fff !important;
-    }
-
-    .player-item {
-      background: #fff !important;
-      border-bottom-color: #f0f0f0 !important;
-
-      &.selected {
-        background-color: #e8f5e8 !important;
-
-        .player-label h3 {
-          color: #2e7d32 !important;
-        }
-      }
-
-      &.disabled {
-        .player-label h3 {
-          color: #999 !important;
-        }
-      }
-
-      .player-label {
-        h3 {
-          color: #333 !important;
-        }
-
-        &.home-player h3 {
-          color: #2e7d32 !important;
-        }
-
-        &.away-player h3 {
-          color: #c62828 !important;
-        }
-      }
-    }
-
-    .no-players {
-      background: #fff !important;
-
-      p {
-        color: #999 !important;
-      }
-    }
-  }
-  .scroll-content {
-    background: #f7f7f7 !important;
+    .selection-badge { background: rgba(43, 146, 187, 0.1); border-color: rgba(43, 146, 187, 0.2); }
+    .team-header .team-name { color: #1e293b; }
+    .player-row { background: linear-gradient(145deg, rgba(43, 146, 187, 0.25) 0%, rgba(53, 173, 255, 0.1) 40%, transparent 75%); }
+    .player-name { color: #1e293b; }
   }
 
-  ion-title {
-    background-color: #2b92bb !important;
-
-    div {
-      color: #fff !important;
-    }
-  }
-
-  .toolbar-background-md {
-    background-color: #2b92bb;
-  }
-
-  ion-item {
-    padding-left: 5px !important;
-  }
-
-
-
-  // Selection info
-  .selection-info {
-    padding: 12px 16px;
-    background: #fff;
-    border-bottom: 1px solid #e0e0e0;
-
-    .selection-count {
-      margin: 0;
-      font-weight: 600;
-      color: #2b92bb;
-      text-align: center;
-      font-size: 16px;
-    }
-  }
-
-  // Teams container
-  .teams-container {
-    padding: 8px;
-  }
-
-  .team-column {
-    padding: 4px;
-  }
-
-  .team-header {
-    padding: 12px 8px;
-    border-radius: 8px 8px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    h4 {
-      margin: 0;
-      color: #fff;
-      font-weight: 600;
-      font-size: 16px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    &.home-team {
-      background: linear-gradient(135deg, #4CAF50, #45a049);
-    }
-
-    &.away-team {
-      background: linear-gradient(135deg, #f44336, #d32f2f);
-    }
-  }
-
-  // Player list
-  .player-list {
-    margin: 0;
-    border-radius: 0 0 8px 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .player-item {
-    border-bottom: 1px solid #f0f0f0;
-    transition: all 0.2s ease;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &.selected {
-      background-color: #e8f5e8;
-
-      .player-label h3 {
-        color: #2e7d32;
-        font-weight: 600;
-      }
-    }
-
-    &.disabled {
-      opacity: 0.5;
-
-      .player-label h3 {
-        color: #999;
-      }
-    }
-
-    .player-label {
-      h3 {
-        margin: 8px 0;
-        font-size: 14px;
-        font-weight: 500;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-
-      &.home-player h3 {
-        color: #2e7d32;
-      }
-
-      &.away-player h3 {
-        color: #c62828;
-      }
-    }
-
-
-  }
-
-  ion-checkbox {
-    margin: 0 5px 0 0 !important;
-    padding: 0 !important;
-  }
-
-  // No players message
-  .no-players {
-    padding: 20px;
-    text-align: center;
-    background: #fff;
-    border-radius: 0 0 8px 8px;
-
-    p {
-      margin: 0;
-      color: #999;
-      font-style: italic;
-    }
-  }
-
-  .save-btn {
-    //background-color: #5be283;
-    height: 3.6rem;
-    font-size: 1.4rem;
-    color: white;
-
-    &:disabled {
-      background-color: #ccc;
-      color: #999;
-    }
-  }
-
-  // Footer styling
-  ion-footer {
-    --background: #ffffff;
-    background: #ffffff !important;
-    border-top: 1px solid #e2e8f0;
-    
-    .timekare-primary-btn {
-      background: #2b92bb;
-      color: white;
-      font-weight: 500;
-    }
-  }
-
-  // Dark theme for footer
-  &:not(.light-theme),
-  .dark-theme {
-    ion-footer {
-      --background: #1e293b !important;
-      background: #1e293b !important;
-      border-top: 1px solid #475569;
-      
-      .timekare-primary-btn {
-        background: #2b92bb;
-        color: white;
-      }
-    }
-  }
-
-
-  // Responsive adjustments
-  @media (max-width: 480px) {
-    .team-header h4 {
-      font-size: 14px;
-    }
-
-    .player-item .player-label h3 {
-      font-size: 13px;
-    }
-
-    .selection-info .selection-count {
-      font-size: 14px;
-    }
+  @media (max-width: 359px) {
+    .player-name { font-size: 11px; }
+    .player-avatar { width: 24px; height: 24px; font-size: 10px; }
+    .player-row { padding: 8px; gap: 6px; }
   }
 }

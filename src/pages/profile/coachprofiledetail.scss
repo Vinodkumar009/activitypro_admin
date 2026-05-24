@@ -1,4 +1,7 @@
-coachprofiledetail-page{
+@import '../../theme/android-sdk35-fixes.scss';
+
+coachprofiledetail-page {
+    @include android-sdk35-fixes;
     ion-item{
         .item-inner{
             border-bottom: 0.55px solid #c8c7cc !important;

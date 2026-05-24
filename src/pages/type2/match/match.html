@@ -1,106 +1,99 @@
 <ion-content class="modern-matches">
-  <!-- Header Stats Card -->
-  <div class="modern-header-card">
-    <div class="stats-container">
-      <div class="stat-item">
-        <span class="stat-number">{{Today}}</span>
-        <span class="stat-label">Today</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-number">{{matchlist?.length}}</span>
-        <span class="stat-label">Total</span>
-      </div>
+  <div class="match-layout">
+    <div class="match-fixed-header">
+      <p class="context-line">{{todayLabel}} · {{Today}} match{{Today === 1 ? '' : 'es'}} today</p>
+      <app-search-bar
+        placeholder="Search by Title, Activity, Players"
+        [(value)]="searchInput"
+        [count]="filteredMatchlist.length"
+        (search)="getFilterEvents($event)">
+      </app-search-bar>
     </div>
-  </div>
 
-  <!-- Search Card -->
-  <div class="compact-search-card">
-    <div class="search-content">
-      <ion-searchbar class="sleek-searchbar" placeholder="Search by Title, Activity, Players" [(ngModel)]="searchInput"
-        (ionInput)="getFilterEvents($event)" autocorrect="off" showCancelButton="never">
-      </ion-searchbar>
-    </div>
-  </div>
-
-  <!-- Matches Container -->
-  <div class="matches-container" *ngIf="filteredMatchlist.length > 0">
-    <div class="modern-card" *ngFor="let match of filteredMatchlist" (click)="gotoMatchdetailsPage(match)">
-      <!-- Card Header -->
-      <div class="card-header">
-        <div class="card-icon-wrapper match-bg">
-          <ion-icon name="trophy" class="card-icon"></ion-icon>
-        </div>
-        <div class="card-info">
-          <div class="card-title">{{match.MatchTitle}}</div>
-          <div class="card-subtitle">{{formatMatchStartDate(match.MatchStartDate)}}</div>
-        </div>
-        <div class="match-type-badge">
-          <span class="badge-text" [style.background-color]="getMatchTypeColorByName(getMatchTypeName(match.MatchType))"
-            style="color: white !important;">{{getMatchTypeName(match.MatchType)}}</span>
-        </div>
-      </div>
-
-      <!-- Card Body -->
-      <div class="card-body">
-        <div class="match-details">
-          <!-- Activity & Venue Row -->
-          <div class="detail-row">
-            <div class="detail-item">
-              <ion-icon name="fitness" class="detail-icon"></ion-icon>
-              <span class="detail-text">{{match.ActivityName}}</span>
+    <div class="match-scroll-area">
+      <div class="revamp-card" *ngFor="let match of filteredMatchlist"
+        (click)="gotoMatchdetailsPage(match)">
+        <div class="card-accent" [style.background]="getMatchTypeColorByName(getMatchTypeName(match.MatchType))"></div>
+        <div class="card-content">
+          <div class="corner-ribbon" [class.private]="match.MatchVisibility==1">
+            <ion-icon [name]="match.MatchVisibility==0 ? 'globe' : 'lock'"></ion-icon>
+          </div>
+          <div class="card-top-row">
+            <div class="card-icon-wrapper match-bg">
+              <ion-icon [name]="getActivityIcon(match.ActivityName)" class="card-icon"></ion-icon>
             </div>
-            <div class="detail-item venue">
-              <ion-icon name="location" class="detail-icon"></ion-icon>
-              <span class="detail-text">{{match.VenueName}}</span>
+            <div class="card-info">
+              <h3 class="card-title">{{match.Date}}</h3>
+              <p class="card-subtitle">{{match.MatchTitle}}</p>
+              <p class="card-activity">{{match.ActivityName}} <span class="round-type-text" *ngIf="match.Round">{{match.Round}}</span></p>
             </div>
           </div>
-
-          <!-- Players Row -->
-          <div class="players-section" *ngIf="match.homeUserName && match.awayUserName">
-            <div class="player-vs-container">
-              <div class="player-name">
-                <span></span>{{match.homeUserName}}
-                <ion-icon name="trophy" style="color:#ffd700 !important"
-                  *ngIf="match.ResultStatus == 1 && match.is_home_team_winner"></ion-icon>
-              </div>
-              <div class="vs-badge">VS</div>
-              <div class="player-name">
-                <span>{{match.awayUserName}}</span>
-                <ion-icon name="trophy" style="color:#ffd700 !important"
-                  *ngIf="match.ResultStatus == 1 && match.is_away_team_winner"></ion-icon>
-              </div>
+          <div class="card-divider"></div>
+          <div class="scoreboard">
+            <div class="sb-team sb-home">
+              <span class="sb-label">HOME</span>
+              <span class="sb-name" [class.tbd]="!match.homeUserName || !match.homeUserName.trim()">{{(match.homeUserName && match.homeUserName.trim()) ? match.homeUserName.trim() : 'TBD'}}
+                <ion-icon name="trophy" class="winner-icon" *ngIf="match.ResultStatus == 1 && match.is_home_team_winner"></ion-icon>
+              </span>
+            </div>
+            <div class="sb-center">
+              <span class="sb-score" *ngIf="match.ResultStatus == 1 && (match.home_team_score != null || match.away_team_score != null)">{{match.home_team_score || '-'}} : {{match.away_team_score || '-'}}</span>
+              <span class="sb-vs" *ngIf="match.ResultStatus != 1 || (match.home_team_score == null && match.away_team_score == null)">VS</span>
+            </div>
+            <div class="sb-team sb-away">
+              <span class="sb-label">AWAY</span>
+              <span class="sb-name" [class.tbd]="!match.awayUserName || !match.awayUserName.trim()">{{(match.awayUserName && match.awayUserName.trim()) ? match.awayUserName.trim() : 'TBD'}}
+                <ion-icon name="trophy" class="winner-icon" *ngIf="match.ResultStatus == 1 && match.is_away_team_winner"></ion-icon>
+              </span>
             </div>
           </div>
-
-          <div class="result-status-lineup-container">
-            <div class="result-status" [ngClass]="match.ResultStatus == 1 ? 'status-published' : 'status-pending'">
-              <ion-icon [name]="match.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
-              <span>{{match.ResultStatus == 1 ? match.result_status_text : 'Result Pending'}}</span>
+          <div class="card-divider"></div>
+          <div class="card-footer">
+            <span class="tag type-tag" [style.background]="getMatchTypeColorByName(getMatchTypeName(match.MatchType))">{{getMatchTypeName(match.MatchType)}}</span>
+            <div class="footer-center">
+              <span class="footer-status" [class.published]="match.ResultStatus == 1">
+                <ion-icon [name]="match.ResultStatus == 1 ? 'checkmark-circle' : 'time'"></ion-icon>
+                {{match.ResultStatus == 1 ? match.result_status_text : 'Result Pending'}}
+              </span>
             </div>
-            <div class="score-display" *ngIf="match.ResultStatus == 1 && (match.home_team_score != null || match.away_team_score != null)">
-              <span class="score-value">{{match.home_team_score || '-'}} : {{match.away_team_score || '-'}}</span>
-            </div>
-            <button ion-button small class="lineup-action-btn" *ngIf="match.MatchType === 3"
+            <button ion-button small class="lineup-btn" *ngIf="match.MatchType === 3"
               (click)="goToLineup(match); $event.stopPropagation()">
-              <ion-icon name="football"></ion-icon>&nbsp;
-              Lineup
+              <ion-icon name="football"></ion-icon> Lineup
             </button>
           </div>
+          <div class="card-venue-footer" (click)="$event.stopPropagation()">
+            <app-map-picker [address]="match.location && match.location !== '' ? match.location : match.VenueName" [readOnly]="true"></app-map-picker>
+          </div>
+        </div>
+      </div>
 
+      <div class="modern-empty-state" *ngIf="filteredMatchlist.length === 0">
+        <div class="empty-illustration">
+          <ion-icon name="trophy" class="empty-icon"></ion-icon>
+        </div>
+        <div class="empty-text">
+          <div class="empty-title">No Matches Found</div>
+          <div class="empty-description">There are no matches to display at the moment.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Empty State -->
-  <div class="modern-empty-state" *ngIf="filteredMatchlist.length === 0">
-    <div class="empty-illustration">
-      <ion-icon name="trophy" class="empty-icon"></ion-icon>
+  <app-bottom-sheet [(visible)]="showLineupSheet" title="Select Lineup" [bottomOffset]="110">
+    <div class="sheet-empty" *ngIf="lineupFormations.length === 0">
+      <ion-icon name="information-circle"></ion-icon>
+      <span>No saved lineups available</span>
     </div>
-    <div class="empty-text">
-      <div class="empty-title">No Matches Found</div>
-      <div class="empty-description">There are no matches to display at the moment.</div>
+    <div class="sheet-item" *ngFor="let f of lineupFormations" (click)="selectFormation(f)">
+      <ion-icon name="grid" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info">
+        <span class="sheet-item-name">{{f.lineup_name || 'Lineup'}} ({{f.formation_name}})</span>
+        <span class="sheet-item-team" *ngIf="f.team_name">{{f.team_name}}</span>
+      </div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
     </div>
-  </div>
+    <button class="sheet-create-btn" (click)="createNewLineup()">
+      <ion-icon name="add-circle"></ion-icon> Create New Lineup
+    </button>
+  </app-bottom-sheet>
 </ion-content>

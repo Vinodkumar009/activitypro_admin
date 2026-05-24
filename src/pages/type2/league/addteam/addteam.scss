@@ -1,198 +1,83 @@
-@import "../_league-theme.scss";
 @import '../../../../theme/android-sdk35-fixes.scss';
 
 page-addteam {
-  @include league-theme-base;
   @include android-sdk35-fixes;
-  // .foobtn {
-  //   background-color: #5be283;
-  //   height: 3.6rem;
-  //   font-size: 1.4rem;
-  // }
 
-  .scroll-content {
-    padding: 8px !important;
-    background-image: none !important;
-    background-color: #f7f7f7;
+  .scroll-content { padding: 0 !important; overflow: hidden !important; background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
+
+  ion-navbar { background: #0f172a !important;
+    .toolbar-background { background: #0f172a !important; }
+    .toolbar-title { color: #f1f5f9 !important; }
+    .bar-button, .back-button-icon { color: #f1f5f9 !important; }
   }
 
-  // Compact Search Card (Dark Theme)
-  .compact-search-card {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    padding: 8px;
-    margin: 16px 8px 8px 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-fixed-header { flex-shrink: 0; background: #0f172a; z-index: 10; }
+  .page-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 8px 80px; }
 
-    .search-content {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+  .section-header { display: flex; align-items: center; padding: 10px 16px 8px; }
+  .section-title { font-size: 15px; font-weight: 700; color: #f1f5f9; }
 
-    .sleek-searchbar {
-      flex: 1;
-      padding: 0;
-      margin: 0;
-      min-height: 36px;
-      background: transparent;
-      border: none !important;
-      box-shadow: none !important;
-      -webkit-box-shadow: none !important;
-
-      .searchbar-input {
-        color: #f1f5f9 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        -webkit-box-shadow: none !important;
-        border: none !important;
-        border-bottom: none !important;
-
-        &::placeholder {
-          color: #94a3b8 !important;
-        }
-      }
-
-      .searchbar-search-icon {
-        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(148, 163, 184, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(148, 163, 184, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
-      }
-
-      .searchbar-clear-icon {
-        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(148, 163, 184, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
-      }
-    }
+  app-list-card { display: block; margin-bottom: 6px; }
+  .team-row {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    background: linear-gradient(145deg, rgba(43, 146, 187, 0.3) 0%, rgba(53, 173, 255, 0.12) 40%, transparent 75%);
+    cursor: pointer;
+  }
+  .team-avatar {
+    width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(43, 146, 187, 0.15); color: #3fbcd3;
+    font-size: 14px; font-weight: 700; text-transform: uppercase;
+  }
+  .team-info { flex: 1; min-width: 0; }
+  .team-name {
+    font-size: 14px; font-weight: 700; color: #f1f5f9; margin: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .team-tag {
+    display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
+    border-radius: 20px; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px;
+    &.existing { background: rgba(100, 116, 139, 0.2); color: #64748b; }
   }
 
-  // Checkbox styling with enhanced visibility
   ion-checkbox {
-    --color: #2b92bb !important;
-    --color-checked: #2b92bb !important;
-    --checkmark-color: #ffffff !important;
-    --border-color: #94a3b8 !important;
-    --border-color-checked: #2b92bb !important;
-    --background: transparent !important;
-    --background-checked: #2b92bb !important;
-    --size: 20px !important;
-    --checkmark-width: 2px !important;
-    
-    .checkbox-icon {
-      border-width: 2px !important;
-      border-color: #94a3b8 !important;
-    }
-    
-    .checkbox-checked {
-      background-color: #2b92bb !important;
-      border-color: #2b92bb !important;
-      
-      .checkbox-inner {
-        border-color: #ffffff !important;
-      }
-    }
+    --background: #334155; --background-checked: #2b92bb;
+    --border-color: #475569; --border-color-checked: #2b92bb;
+    --checkmark-color: #fff; flex-shrink: 0;
+  }
+
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 8px;
+    .empty-icon { font-size: 40px; color: #334155; }
+    .empty-text { font-size: 14px; color: #64748b; margin: 0; }
   }
 
   &.light-theme {
-    ion-checkbox {
-      --border-color: #64748b !important;
-      
-      .checkbox-icon {
-        border-color: #64748b !important;
-      }
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .page-fixed-header { background: #f8fafc; }
+    ion-navbar { background: #f8fafc !important;
+      .toolbar-background { background: #f8fafc !important; }
+      .toolbar-title { color: #1e293b !important; }
+      .bar-button, .back-button-icon { color: #1e293b !important; }
     }
+    .section-title { color: #1e293b; }
+    .team-row { background: linear-gradient(145deg, rgba(43, 146, 187, 0.25) 0%, rgba(53, 173, 255, 0.1) 40%, transparent 75%); }
+    .team-name { color: #1e293b; }
+    ion-checkbox { --background: #fff; --border-color: #d1d5db; }
+    .empty-state .empty-icon { color: #cbd5e1; }
   }
 
-  // Light Theme for Search Card
-  &.light-theme {
-    .compact-search-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-      .sleek-searchbar {
-        .searchbar-input {
-          color: #1e293b !important;
-
-          &::placeholder {
-            color: #64748b !important;
-          }
-        }
-
-        .searchbar-search-icon {
-          background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(100, 116, 139, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(100, 116, 139, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
-        }
-
-        .searchbar-clear-icon {
-          background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(100, 116, 139, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
-        }
-      }
-    }
+  @media (max-width: 359px) {
+    .page-scroll-area { padding: 0 4px 80px; }
+    .team-name { font-size: 13px; }
+    .team-avatar { width: 28px; height: 28px; font-size: 12px; }
   }
-
-  .btn-clr {
-    color: $dashoboard-icon-color;
-  }
-
-  .button {
-    font-size: 2rem;
-  }
-
-  .align {
-    margin-top: 5px;
-    margin-left: 9px;
-    margin-right: 9px;
-  }
-
-  .label {
-    margin: 0px !important;
-  }
-
-  .session_header,
-  ion-list {
-    margin-bottom: 0px !important;
-    // border-bottom: 1px solid #f6ae4d;
-  }
-
-  .block_height {
-    height: 80%;
-  }
-
-  .block_height1 {
-    margin-top: 5px;
-    height: 90%;
-
-    .margin {
-      padding: 0px 11px 0px 11px;
-    }
-  }
-
-  .block_height2 {
-    height: 32%;
-  }
-
-  .ion_list1 {
-    margin-top: 10px;
-  }
-
-  .p_selected {
-    ion-card-content {
-      border-bottom: 1px solid #d1d1d5;
-      padding: 5px 0px 5px 13px;
-      color: rgba(0, 0, 0, 0.89);
-      font-size: 17px;
-    }
-  }
-
-  .ion-item-lable {
-    div {
-      ion-icon {
-        margin: 0px 0px 9px 0px !important;
-      }
-
-      div {
-        ion-label {
-          margin: 0px 0px 0px 0px;
-        }
-      }
-    }
+  @media (min-width: 768px) {
+    .page-scroll-area { padding: 0 16px 80px; }
+    .team-name { font-size: 15px; }
+    .team-avatar { width: 40px; height: 40px; font-size: 16px; }
   }
 }

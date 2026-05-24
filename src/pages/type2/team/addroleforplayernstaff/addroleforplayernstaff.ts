@@ -82,10 +82,6 @@ export class AddroleforplayernstaffPage {
     private events: Events) {
 
     this.team = this.navParams.get("team");
-    
-    this.events.subscribe('theme:changed', (theme) => {
-      this.isDarkTheme = theme === 'dark';
-    });
     this.playerId = this.navParams.get("memberId");
     this.currentRole = this.navParams.get("currentRole"); // 🎯 Get current role data
     console.log(this.playerId);
@@ -112,13 +108,37 @@ export class AddroleforplayernstaffPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddroleforplayernstaffPage');
-    this.storage.get('dashboardTheme').then((theme) => {
-      this.isDarkTheme = theme === 'dark' || theme === true;
-      const themeClass = this.isDarkTheme ? 'dark-theme' : 'light-theme';
-      document.body.classList.remove('dark-theme', 'light-theme');
-      document.body.classList.add(themeClass);
-    });
+    this.loadTheme();
+  }
+
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => { this.applyTheme(isDark); });
+    this.events.subscribe('theme:changed', (isDark) => { this.applyTheme(isDark); });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => { this.applyTheme(true); });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-addroleforplayernstaff');
+    if (el) {
+      isDark ? el.classList.remove('light-theme') : el.classList.add('light-theme');
+    } else {
+      setTimeout(() => {
+        const el2 = document.querySelector('page-addroleforplayernstaff');
+        if (el2) { isDark ? el2.classList.remove('light-theme') : el2.classList.add('light-theme'); }
+      }, 100);
+    }
   }
 
   selectRoleToUpdate(role) {

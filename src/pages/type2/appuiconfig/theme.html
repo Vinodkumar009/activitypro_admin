@@ -1,0 +1,103 @@
+<!--
+  Generated template for the ThemePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Theme Setup</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <div>
+    <ion-row>
+      <ion-col col-12 no-padding [ngStyle]="{'background-color':SetupObj.HeaderBG,'color':SetupObj.HeaderText}">
+        <p text-center>App Header</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="tab_row">
+      <ion-col col-4 style="border-bottom:2px solid rgb(255, 255, 255);"
+        [ngStyle]="{'background-color':SetupObj.TabBG,'color':SetupObj.TabText}">
+        <p text-center>Home</p>
+      </ion-col>
+      <ion-col col-4 [ngStyle]="{'background-color':SetupObj.TabBG,'color':SetupObj.TabText}">
+        <p text-center>Sessions</p>
+      </ion-col>
+      <ion-col col-4 [ngStyle]="{'background-color':SetupObj.TabBG,'color':SetupObj.TabText}">
+        <p text-center>Events</p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <!-- <div class="input_div">
+    <ion-item>
+      <ion-label>Header Background</ion-label>
+      <ion-input type="text" [readonly]="true" (click)="showPop($event,1)" [(ngModel)]="SetupObj.HeaderBG"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Header Text</ion-label>
+      <ion-input type="text"  [readonly]="true" (click)="showPop($event,2)" [(ngModel)]="SetupObj.HeaderText"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Tab Background</ion-label>
+      <ion-input type="text" [readonly]="true" (click)="showPop($event,3)"  [(ngModel)]="SetupObj.TabBG"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Tab Text</ion-label>
+      <ion-input type="text" [readonly]="true" (click)="showPop($event,4)"  [(ngModel)]="SetupObj.TabText"></ion-input>
+    </ion-item>
+  </div> -->
+  <div class="input_div">
+    <ion-row (click)="showPop(SetupObj.HeaderBG,1)">
+      <ion-col col-6><p>Header Background</p></ion-col>
+      <ion-col col-6 text-center><p>{{SetupObj.HeaderBG}}</p></ion-col>
+    </ion-row>
+    <ion-row (click)="showPop(SetupObj.HeaderText,2)">
+      <ion-col col-6><p>Header Text</p></ion-col>
+      <ion-col col-6 text-center><p>{{SetupObj.HeaderText}}</p></ion-col>
+    </ion-row>
+    <ion-row (click)="showPop(SetupObj.TabBG,3)">
+      <ion-col col-6><p>Tab Background</p></ion-col>
+      <ion-col col-6 text-center><p>{{SetupObj.TabBG}}</p></ion-col>
+    </ion-row>
+    <ion-row (click)="showPop(SetupObj.TabText,4)">
+      <ion-col col-6><p>Tab Text</p></ion-col>
+      <ion-col col-6 text-center><p>{{SetupObj.TabText}}</p></ion-col>
+    </ion-row>
+  </div>
+
+  <hr>
+
+  <div class="input_div" text-center>
+    <p text-center style="font-style:italic">Below setting is for NextGenApp</p>
+    <ion-row (click)="showPop(SetupObj.DashboardBG,5)">
+      <ion-col col-6><p>Dashboard Background</p></ion-col>
+      <ion-col col-6 text-center><p>{{SetupObj.DashboardBG}}</p></ion-col>
+    </ion-row>
+    <ion-row (click)="showPop(SetupObj.HomepageBG,6)">
+      <ion-col col-6><p>Homepage Background</p></ion-col>
+      <ion-col col-6 text-center><p>{{SetupObj.HomepageBG}}</p></ion-col>
+    </ion-row>
+  </div>
+  
+  <div class="note_div">
+    <p>Please choose app header, tab and text colour.</p>
+  </div>
+
+  <div id="myModal" class="modal" *ngIf="IsShowModal">
+    <span class="headerText" (colorPickerSelect)="CaptureColor($event)" [cpOKButtonClass]="'btn-primary'" [cpCancelButton]="true"
+     (colorPickerCancel)="this.IsShowModal = false" [cpToggle]="true" [cpOKButton]="true"
+       [cpCancelButtonClass]="'btn_cancel'" [cpDialogDisplay]="popup" [cpSaveClickOutside]="false"
+      [(colorPicker)]="selectedColor"> </span>
+  </div>
+  
+  <ion-footer>
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button block class="timekare-primary-btn" (click)="UpdateConfig()">Update</button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+</ion-content>

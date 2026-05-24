@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-createsetup {
+    @include android-sdk35-fixes;
+
+
+
     .label{
         // transform: translate3d(0, 0px, 0) !important;
         // font-size: 14px !important;
@@ -185,5 +191,4 @@ page-createsetup {
         margin-top: -33px;
         margin-right: -14px;
     }
-
 }

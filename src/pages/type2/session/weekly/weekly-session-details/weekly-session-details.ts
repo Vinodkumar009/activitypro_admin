@@ -315,7 +315,7 @@ export class WeeklySessionDetailsPage {
       const member_data = await this.getSessionDets(sesData) as WeeklySessionMember[];
       if (member_data.length > 0) {
         const member_ids = member_data.map(enrol_member => enrol_member.member.IsChild ? enrol_member.member.ParentId:enrol_member.member.Id);
-        this.navCtrl.push("Type2NotificationSession",{
+        this.navCtrl.push("NotificationsPage",{
             users:member_ids,
             type:ModuleTypes.WEEKLYSESSION,
             heading:`Enrolment:${this.weeklyDets.session_name}(${sesData.session_name},${sesData.session_date})`,
@@ -872,7 +872,7 @@ export class WeeklySessionDetailsPage {
   }
 
   getWaitingListData() {
-    //this.commonService.showLoader("Loading waiting list...");
+    this.commonService.showLoader("Loading waiting list...");
     
     const requestBody = {
       module_id: this.sessionId,
@@ -889,6 +889,7 @@ export class WeeklySessionDetailsPage {
     this.httpService.post(API.WAITING_LIST_GET_BY_MODULE, requestBody)
       .subscribe({
         next: (data: any[]) => {
+          this.commonService.hideLoader();
           this.waitingListData = data.map(item => ({
             ...item,
             member_name: (item.member && item.member.FirstName && item.member.LastName) 
@@ -899,6 +900,11 @@ export class WeeklySessionDetailsPage {
               : 'Unknown Session'
           }));
           console.log('Waiting list data:', this.waitingListData);
+        },
+        error: (error) => {
+          this.commonService.hideLoader();
+          console.error('Error fetching waiting list:', error);
+          this.commonService.toastMessage("Failed to load waiting list", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         }
       });
   }
@@ -969,6 +975,7 @@ export class WeeklySessionDetailsPage {
     this.httpService.post(API.WAITING_LIST_UPDATE_STATUS, requestBody)
       .subscribe({
         next: (data) => {
+          this.commonService.hideLoader();
           const successMessage = status === 1 ? 'Member approved successfully' : 
                                 status === 2 ? 'Member rejected successfully' : 
                                 'Moved back to waiting list successfully';
@@ -977,6 +984,17 @@ export class WeeklySessionDetailsPage {
           if (status === 1) {
             this.weeklySessionDetails();
           }
+        },
+        error: (error) => {
+          this.commonService.hideLoader();
+          if(error && error.error && error.error.message){
+            this.commonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            return;
+          }else{
+            console.error('Error updating waiting list status:', error);
+            this.commonService.toastMessage("Failed to update status", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+          //this.commonService.toastMessage("Failed to update status", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
         }
       });
   }

@@ -1,0 +1,67 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-staffattendance {
+    @include android-sdk35-fixes;
+
+
+
+    .margin-0{
+        margin: 0px !important;
+    }
+    .calender-slide{
+        height: 70px !important;
+    }
+    .scroll-content{
+        background-image: none !important;
+    }
+      .color-white-background{
+        background-color: #bc2119 !important;
+        color: white !important;
+      }
+      .align{
+          margin-top: -1px !important;
+      }
+      .font-size-14{
+        font-size: 14px !important;
+      }
+      .mar-top-10{
+        margin-top: -10px !important;
+      }
+      .mar-top-4{
+        margin-top: -4px !important;
+      }
+      .date{
+        font-size: 16px !important;
+      }
+      .month-name{
+        padding-bottom: 7px !important;
+      }
+      .label-date{
+        text-align: -webkit-center;
+        font-size: 16px;
+        color: #bc2119;
+        font-weight: 500;
+        margin: 0;
+        padding-top: 5px;
+      }
+      .coach-name{
+        font-size: 17px !important;
+      }
+      .coach-slide{
+          height: 30px !important;
+      }
+      .club-names{
+        font-size: 16px;
+        color: gray;
+      }
+      .padding-0{
+        padding: 0px !important;
+      }
+      .padd-both{
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+      }
+      .border-bottm{
+        border-bottom: 1px solid gray;
+      }
+}

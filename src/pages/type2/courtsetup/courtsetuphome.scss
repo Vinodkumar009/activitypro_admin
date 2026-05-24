@@ -1,5 +1,8 @@
-courtsetuphome-page{
-    .scroll-content{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+courtsetuphome-page {
+    @include android-sdk35-fixes;
+.scroll-content{
         padding: 16px 9px !important;
         background-image: none !important;
 
@@ -83,8 +86,3 @@ courtsetuphome-page{
     
     .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
 }
-
-
-
-
-

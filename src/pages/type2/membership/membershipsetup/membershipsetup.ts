@@ -287,14 +287,18 @@ export class MembershipSetupPage {
       module:ModuleTypes.MEMBERSHIP,
       account_type:ParentclubAccountType.MEMBERSHIP
     }
-    this.httpService.post(API.CHECK_STRIPE_AVAILABILITY,get_tiers_list).subscribe({
-      next: (res: any) => {
-        this.isPaymentgatewayAvail = res.data;
-        if(!this.isPaymentgatewayAvail){
-          this.comonService.toastMessage("No payment setup available for the selected venue", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
+    this.httpService.post(API.CHECK_STRIPE_AVAILABILITY,get_tiers_list).subscribe((res: any) => {
+      this.isPaymentgatewayAvail = res.data;
+      if(!this.isPaymentgatewayAvail){
+        this.comonService.toastMessage("No payment setup available for the selected venue", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
-    })    
+    },
+   (ex) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", ex);
+        this.comonService.toastMessage(ex.error.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })    
   }
 
   //getting mester templates, these are used while creation
@@ -306,21 +310,26 @@ export class MembershipSetupPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:AppType.ADMIN_NEW
     }
-    this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES,get_templates_payload).subscribe({
-      next: (res: any) => {
-        if(res && res.length > 0) {
-         this.master_templates = res.map((template) => {
-          return {
-            header: template.header,
-            description: template.description,
-            title: template.title,
-            id:template.id,
-            is_selected:true
-          }
-         });
+    this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES,get_templates_payload).subscribe((res: any) => {
+      if(res && res.length > 0) {
+       //this.is_existed = true;
+       this.master_templates = res.map((template) => {
+        return {
+          header: template.header,
+          description: template.description,
+          title: template.title,
+          id:template.id,
+          is_selected:true
         }
+       });
       }
-    })  
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("No templates found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })  
   }
 
   getClubActivities() {
@@ -332,18 +341,22 @@ export class MembershipSetupPage {
       device_id:this.sharedservice.getDeviceId(),
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2
     }
-    this.httpService.post(API.CLUB_ACTIVITIES,club_activity_input).subscribe({
-      next: (res: any) => {
-        if(res.data && res.data.club_activities.length > 0){
-          res.data.club_activities.forEach(obj => {
-            Object.assign(obj, { is_selected: false });
-          });
-          this.Activities = res.data.club_activities;
-        }else{
-          this.comonService.toastMessage("No activities available for the selected venue", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-        }
+    this.httpService.post(API.CLUB_ACTIVITIES,club_activity_input).subscribe((res: any) => {
+      if(res.data && res.data.club_activities.length > 0){
+        res.data.club_activities.forEach(obj => {
+          Object.assign(obj, { is_selected: false });
+        });
+        this.Activities = res.data.club_activities;
+      }else{
+        this.comonService.toastMessage("No activities available for the selected venue", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       }
-    })
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Membership tiers fetch failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   getTiersSetup() {//get tiers setup call
@@ -354,26 +367,35 @@ export class MembershipSetupPage {
       device_id:this.sharedservice.getDeviceId(),
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2
     }
-    this.httpService.post(API.MEMBERSHIP_TIERS_LIST,get_tiers_list).subscribe({
-      next: (res: any) => {
-        this.membership_tiers = res;
-        if(this.membership_tiers.categories && this.membership_tiers.categories.length > 0){
-          this.membership_tiers.categories.forEach(obj => {
-            Object.assign(obj, { is_selected: false });
-          });
-        }
-        if(this.membership_tiers.subcategories && this.membership_tiers.subcategories.length > 0){
-          this.membership_tiers.subcategories.forEach(obj => {
-            Object.assign(obj, { is_selected: false });
-          });
-        }
-        if(this.membership_tiers.times && this.membership_tiers.times.length > 0){
-          this.membership_tiers.times.forEach(obj => {
-            Object.assign(obj, { is_selected: false });
-          });
-        }
+    this.httpService.post(API.MEMBERSHIP_TIERS_LIST,get_tiers_list).subscribe((res: any) => {
+      this.membership_tiers = res;
+      if(this.membership_tiers.categories && this.membership_tiers.categories.length > 0){
+        this.membership_tiers.categories.forEach(obj => {
+          Object.assign(obj, { is_selected: false });
+        });
       }
-    })
+      if(this.membership_tiers.subcategories && this.membership_tiers.subcategories.length > 0){
+        this.membership_tiers.subcategories.forEach(obj => {
+          Object.assign(obj, { is_selected: false });
+        });
+      }
+      // if(this.membership_tiers.activities && this.membership_tiers.activities.length > 0){
+      //   this.membership_tiers.activities.forEach(obj => {
+      //     Object.assign(obj, { is_selected: false });
+      //   });
+      // }
+      if(this.membership_tiers.times && this.membership_tiers.times.length > 0){
+        this.membership_tiers.times.forEach(obj => {
+          Object.assign(obj, { is_selected: false });
+        });
+      }
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Membership tiers fetch failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
   
 
@@ -496,20 +518,27 @@ export class MembershipSetupPage {
       device_id:this.sharedservice.getDeviceId(),
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2
     }
-    this.httpService.post(API.MEMBERSHIP_TIERS_ADD,membership_tier_create).subscribe({
-      next: (res: any) => {
-        this.comonService.toastMessage("Membership tier updated", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-        if(option === 1){
-          this.membership_tiers.categories.push(res);
-        }
-        if(option === 2){
-          this.membership_tiers.subcategories.push(res);
-        }
-        if(option === 4){
-          this.membership_tiers.times.push(res);
-        }
+    this.httpService.post(API.MEMBERSHIP_TIERS_ADD,membership_tier_create).subscribe((res: any) => {
+      this.comonService.toastMessage("Membership tier updated", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+      if(option === 1){
+        this.membership_tiers.categories.push(res);
       }
-    })
+      if(option === 2){
+        this.membership_tiers.subcategories.push(res);
+      }
+      // if(option === 3){
+      //   this.membership_tiers.activities.push(res);
+      // }
+      if(option === 4){
+        this.membership_tiers.times.push(res);
+      }
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Membership tier save failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   async next() {
@@ -553,13 +582,17 @@ export class MembershipSetupPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:AppType.ADMIN_NEW
     }
-    this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe({
-      next: (res: any) => {
-        if(res.length > 0) {
-          this.MembershipObj.membership_setup_id = res[0].id;
-        }
+    this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe((res: any) => {
+      if(res.length > 0) {
+        this.MembershipObj.membership_setup_id = res[0].id;
       }
-    })
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   async showPaymentInfoPrompt(){
@@ -695,22 +728,23 @@ export class MembershipSetupPage {
            }))
           }
           console.table(membership);
-          this.httpService.post(API.MEMBERSHIP_ADD,membership).subscribe({
-            next: (res: any) => {
-              this.comonService.toastMessage("Membership created successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-              this.comonService.updateCategory("update_membership_list");
-              this.navCtrl.pop();
-            },
-            error: (error) => {
+          this.httpService.post(API.MEMBERSHIP_ADD,membership).subscribe((res: any) => {
+            this.comonService.hideLoader();
+            this.comonService.toastMessage("Membership created successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+            this.comonService.updateCategory("update_membership_list");
+            this.navCtrl.pop();
+          },
+          (error) => {
+              this.comonService.hideLoader();
               console.error("Error in fetching:", error.message);
               if(error.error && error.error.message){
                 this.comonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
               }else{
                 this.comonService.toastMessage("Membership creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
               }
-            }
           })
       }catch(err){
+        this.comonService.hideLoader();
         this.comonService.toastMessage(err.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
       }
     }

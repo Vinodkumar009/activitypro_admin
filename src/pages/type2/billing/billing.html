@@ -1,0 +1,102 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Billing</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid class="nopad">
+        <ion-row class="border-bottom-2px ">
+
+            <ion-item class="venueionitem">
+                <ion-select class="venuedropdown" [(ngModel)]="selectedClubKey" (ionChange)="getAllBills()">
+                    <ion-option *ngFor="let club of Venues" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+        </ion-row>
+    </ion-grid>
+
+    <ion-row style="margin-bottom:15px">
+        <ion-segment [(ngModel)]="ActiveBills">
+            <ion-segment-button value="Active">
+                Current Month
+            </ion-segment-button>
+            <ion-segment-button value="Past">
+                Past
+            </ion-segment-button>
+        </ion-segment>
+    </ion-row>
+    <div [ngSwitch]="ActiveBills">
+        <div ng-if *ngSwitchCase="'Active'">
+
+            <ion-row>
+                <ion-col class="totalAmount">
+                    <p class="amount">Total: <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{totalCurrentAmount}}</p>
+                </ion-col>
+                <ion-col class="totalDue">
+                    <p class="amount">Due: <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{dueCurrentAmount}}</p>
+                </ion-col>
+            </ion-row>
+
+
+            <div *ngIf="currentBills.length>0">
+                <ion-row *ngFor="let item of currentBills">
+                    <ion-card (click)="showOptions(item)"></ion-card>
+                        <ion-card (click)="showOptions(item)" class="bill-card">
+                            <p class="Bill-name">{{item.MemberName}} </p>
+                            <p class="Bill-body">{{item.BillDate}}/{{item.SelectedBillType}}/{{item.IsPaid}}</p>
+                            <p class="Bill-body">Amount :<span *ngIf="currencyDetails!=undefined" style="color:green">{{currencyDetails.CurrencySymbol}}</span>{{item.TotalAmount}}</p>
+
+                        </ion-card>
+                </ion-row>
+            </div>
+        </div>
+        <div *ngSwitchCase="'Past'">
+            <ion-row>
+                <ion-col class="totalAmount">
+                    <p class="amount">Total: <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{totalPastAmount}}</p>
+                </ion-col>
+                <ion-col class="totalDue">
+                    <p class="amount">Due: <span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{duePastAmount}}</p>
+                </ion-col>
+            </ion-row>
+
+
+            <div *ngIf="pastBills.length>0">
+                <ion-row *ngFor="let item of pastBills">
+
+                    <ion-card (click)="showOptions(item)" class="bill-card">
+                        <p class="Bill-name">{{item.MemberName}} </p>
+                        <p class="Bill-body">{{item.BillDate}}/{{item.SelectedBillType}}/{{item.IsPaid}}</p>
+                        <p class="Bill-body">Amount :<span *ngIf="currencyDetails!=undefined" style="color:green"> {{currencyDetails.CurrencySymbol}}</span>{{item.TotalAmount}}</p>
+
+                    </ion-card>
+                </ion-row>
+            </div>
+        </div>
+    </div>
+
+
+    <ion-fab mini right bottom #fab>
+        <!-- <p *ngIf="isShowNewPost" class="newPost">New Post</p> -->
+        <button style="background-color:#2b92bb !important; color: white !important" ion-fab mini>
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+
+            <span class="fabEmailText" (tap)="addBill()" style="margin-left: -99px!important;">Add Bill</span>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="addBill()">
+                <ion-icon name="md-create"></ion-icon>
+            </button>
+
+            <span class="fabEmailText" (tap)="notifyPending()" style="margin-right: 56px">Notify Pending</span>
+            <button style="background-color:#2b92bb !important; color: white !important" ion-fab class="fabTop" (tap)="notifyPending()">
+                <ion-icon name="timer"></ion-icon>
+
+            </button>
+
+        </ion-fab-list>
+
+    </ion-fab>
+</ion-content>

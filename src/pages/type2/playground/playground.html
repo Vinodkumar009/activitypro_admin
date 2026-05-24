@@ -1,0 +1,102 @@
+<!--
+  Generated template for the PlaygroundPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Playground</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div style="height: 100%; width: 100%">
+    <div style="height: 9%; width: 100%">
+      <ion-item class="search_add">
+        <ion-searchbar
+          placeholder="Search Feeds"
+          [(ngModel)]="searchInput"
+          (ionInput)="getFilterItems($event)"
+          autocorrect="off"
+          showCanelButton="shouldShowCancel"
+          animated>
+        </ion-searchbar>
+      </ion-item>
+    </div>
+    <div (click)="gotoPlaygroundPost()" class="writesome">
+      <p style="margin: 4%">Write something here...</p>
+    </div>
+    <div style="height: 90%;width: 100%;margin-top: 3%;overflow: hidden;overflow-y: scroll;">
+      <ion-row *ngIf="filteredFeeds.length>0">
+        <ion-col col-12 style="padding-left: 25px; padding-right: 10px" *ngFor="let play of filteredFeeds">
+          <div class="circle_outter" *ngIf="play.images.length==0"></div>
+          <div class="circle" *ngIf="play.images.length==0">
+            <img class="profile-img" [src]="play.imageUrl" />
+          </div>
+          <ion-card (click)="gotoComments(play)" [style.padding-left]="play.images.length>0?'5px':'30px'">
+            <ion-card-header style="padding: 5px">
+              <ion-row>
+                <p class="card-header">
+                  {{formatMatchStartDate(play.created_at)}}
+                </p>
+              </ion-row>
+            </ion-card-header>
+            <ion-card-content style="padding: 0px 10px !important">
+              <ion-row>
+                <div class="collection" *ngIf="play.images.length>0">
+                  <div class="collection-item" style="display: flex">
+                    <img [src]="play.images[0].image_url" />
+                  </div>
+                  <div class="img_icon_dev">
+                    <ion-icon name="ios-images"></ion-icon>
+                  </div>
+                  <!-- <p>{{play.images.length}}</p> -->
+                </div>
+                <div style=" width: 100%; ">
+                  <p class="feedtext">{{play.feedText}}</p>
+                </div>
+                <div class="readmore" *ngIf="play.feedText.length>140">
+                  <span>Read More...</span>
+                </div>
+              </ion-row>
+              <ion-row
+                row-3
+                style="width: 100%;  bottom: 0px;margin-top: 10px;text-align: center;display: flex;align-items: center"
+              >
+                <ion-col class="flex_col">
+                  <div class="props">
+                    <div class="badgering"></div>
+                    <div class="badge">
+                      <p style="text-align: center">{{play.likesCount}}</p>
+                    </div>
+                    <ion-col style="display: flex">
+                      <ion-icon
+                        name="thumbs-up"
+                        style="padding-right: 5px; color: white"
+                      ></ion-icon>
+                      <p>Give Props</p>
+                    </ion-col>
+                  </div>
+                  <div class="comments">
+                    <div class="badgering"></div>
+                    <div class="badge">
+                      <p style="text-align: center">{{play.commentsCount}}</p>
+                    </div>
+                    <ion-col style="display: flex">
+                      <ion-icon
+                        name="chatbubbles"
+                        style="padding-right: 5px; color: white"
+                      ></ion-icon>
+                      <p>Comments</p>
+                    </ion-col>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

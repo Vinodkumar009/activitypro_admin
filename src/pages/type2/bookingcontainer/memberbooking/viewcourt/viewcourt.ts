@@ -11,12 +11,10 @@ import { RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { SharedServices } from '../../../../services/sharedservice';
 import * as $ from 'jquery';
-import { dateValueRange } from 'ionic-angular/umd/util/datetime-util';
 import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../../shared/dtos/club.dto';
 import { AppType } from '../../../../../shared/constants/module.constants';
 import { API } from '../../../../../shared/constants/api_constants';
 import { HttpService } from '../../../../../services/http.service';
-
 /**
  * Generated class for the ViewcourtPage page.
  *
@@ -92,16 +90,14 @@ export class ViewcourtPage {
 
   recuringBookDetails:any = [];
   recuringBookingAvailabledays:any = [];
-
   recurringSubjectSet:Set<String> = new Set<String>();
   recurringSubjectArray:Array<String> = ["Coaching Session","Member Session","Special Event","Sports Day","Tournament","Others"];
-  nestUrl: string;
   courtSelected = '';
   slotofAllCourt=[]
   showCalender=false;
   selectedDate: string;
   showDate: string;
-  
+
   allCourts=[];
   courtInfo: any;
   indexOfSelectedCourt: any;
@@ -111,7 +107,6 @@ export class ViewcourtPage {
   ActivityList=[];
   selectedActivity: string;
   courts=[];
-
   courtsList = [];
   constructor(public sharedService:SharedServices,public alertCtrl:AlertController,
     public actionSheetCtrl:ActionSheetController,
@@ -177,15 +172,7 @@ export class ViewcourtPage {
     
   }
   getClubDetails() {
-    // this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-    //   this.clubs = data;
-    //   if (data.length != 0) {
-    //     this.selectedClubKey = this.clubs[0].$key;
-    //     this.getAllActivity();
-    //   }
-    // });
-
-    const body: GetParentClubVenuesRequestDto = {
+        const body: GetParentClubVenuesRequestDto = {
           parentclub_id: this.sharedService.getPostgreParentClubId(),
           app_type: AppType.ADMIN_NEW,
           device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,

@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-schoolattendence {
+    @include android-sdk35-fixes;
+
+
+
     .ion_list{
         margin-bottom: 3px;
     }

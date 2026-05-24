@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-showvideofromlist {
+    @include android-sdk35-fixes;
     .swiper-slide {
         display: block !important;
         .slide-zoom{

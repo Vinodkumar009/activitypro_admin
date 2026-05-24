@@ -1,0 +1,57 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>Performance</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            Template
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-item>
+        <ion-label>Activities</ion-label>
+        <ion-select [(ngModel)]="selectedActivity" (ionChange)="getTemplate()">
+            <ion-option *ngFor="let activities of activityList" value={{activities.ActivityName}}>{{activities.ActivityName}}</ion-option>
+          </ion-select>
+    </ion-item>
+    <ion-card *ngIf="templateList.length == 0">
+        <ion-card-content class="ion_card_content" >
+                <p style="color:red">No template found</p>
+        </ion-card-content>
+    </ion-card>
+    <ion-card  *ngFor="let items of templateList" (click)="presentActionSheet(items.$key)" class="ion_card" >      
+        <ion-card-content  *ngIf="templateList.length > 0" class="ion_card_content">
+                <p class="names"><span >Template Name - </span>{{items.TemplateName}}</p>
+                <p class="card_content"><span>Summary - </span>{{items.Summary}}</p>
+        </ion-card-content>
+      </ion-card>
+  
+   
+
+
+  <ion-fab bottom right >
+      <button ion-fab style="background-color:#2b92bb !important; color: white !important" (click)="gotoCreatetemplatePage()"><ion-icon name="add" ></ion-icon></button>
+  </ion-fab>
+</ion-content>

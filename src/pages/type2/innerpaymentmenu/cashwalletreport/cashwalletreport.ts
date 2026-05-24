@@ -6,13 +6,8 @@ import { FirebaseService } from '../../../../services/firebase.service';
 import { SharedServices } from '../../../services/sharedservice';
 import { CommonService } from '../../../../services/common.service';
 import { HttpClient } from '@angular/common/http';
-import moment from 'moment';
 import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
-
-
-// import { CommonService } from '../../../services/common.service';
-// import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -27,7 +22,6 @@ export class CashWalletReport {
     currencyDetails: any;
     
     loading: any;
-    nestUrl: string;
     totalParentClubBalance: any;
     totalParentClubData = [];
     
@@ -42,15 +36,15 @@ export class CashWalletReport {
         public loadingCtrl : LoadingController,
         public http:  HttpClient,
         public sharedservice: SharedServices,
-        private toastCtrl: ToastController, public commonService: CommonService,
+        public commonService: CommonService,
         private httpService: HttpService
+
     ) {
         this.platform = this.sharedservice.getPlatform();
         storage.get('userObj').then((val) => {
             val = JSON.parse(val);
             if (val.$key != "") {
                 this.ParentClubKey = val.UserInfo[0].ParentClubKey;
-                this.nestUrl = this.sharedservice.getnestURL()
                 this.getTotalBalance()
                 this.getTotalBalanceReport()
           
@@ -64,14 +58,18 @@ export class CashWalletReport {
 
 
     getTotalBalance(){
+        this.commonService.showLoader('Please wait...')
         const url = `${API.WALLET_TOTAL_BALANCE}/${this.ParentClubKey}`;
         this.httpService.get(url, null, null, 1).subscribe({
           next: (res) => {
+            this.commonService.hideLoader();
             if (res['data']){
               this.totalParentClubBalance = res['data']['totalparentclubbalance']
-            } else {
-              this.totalParentClubBalance = 0
             }
+          },
+          error: (err) => {
+            this.commonService.hideLoader()
+            this.totalParentClubBalance = 0
           }
         })
     }
@@ -82,9 +80,10 @@ export class CashWalletReport {
           next: (res) => {
             if (res['data']){
               this.totalParentClubData = res['data']
-            } else {
-              this.totalParentClubData = []
             }
+          },
+          error: (err) => {
+            this.totalParentClubData = []
           }
         })
     }

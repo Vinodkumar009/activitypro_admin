@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 editholidaycamp-page {
+    @include android-sdk35-fixes;
     .scroll-content {
         // background-image: url("../assets/images/background/innerbg.png");
         background-size: 100% 100%;
@@ -203,5 +206,4 @@ editholidaycamp-page {
         height: 30px;
         line-height: 30px;
     }
-
 }

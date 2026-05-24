@@ -1,10 +1,13 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 campdetails-page {
+    @include android-sdk35-fixes;
     $themelistotheritemcolor1: #7F7F7F;
     $themelistheaderitemcolor: #00BED3;
     $themecolor: #35adff;
 
     .scroll-content {
-        margin-top: 44px !important;
+        margin-top: 60px !important;
         padding: 0px !important;
         background-image: none !important;
     }
@@ -213,7 +216,7 @@ campdetails-page {
 
     .block {
         background-color: #F2F5FA;
-        padding: 12px;
+        padding: 25px 12px 12px 12px;
         border-bottom: 2px solid #faae4e !important;
     }
 
@@ -532,7 +535,4 @@ campdetails-page {
         -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
         box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
     }
-
-
-
 }

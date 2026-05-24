@@ -1,6 +1,8 @@
-renewalmembershipprint-page{
+@import '../../../../../theme/android-sdk35-fixes.scss';
 
-    .no-margin{
+renewalmembershipprint-page {
+    @include android-sdk35-fixes;
+.no-margin{
         margin:0px;
         width:100%;
         background-color: rgba(255, 255, 255, 0);
@@ -200,5 +202,4 @@ renewalmembershipprint-page{
 
 
   }
- 
 }

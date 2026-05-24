@@ -173,9 +173,9 @@ export class Type2Term {
   }
   gotoAddTerm() {
     if (this.term == "current") {
-      this.navCtrl.push("Type2AddTerm", { financialYearKey: this.financialYear1Key, financialYear: this.term,FinancialYerarDetials: this.financialYear1, bothCurrentNextFinanYear: [{'currentYear':this.financialYear1, 'nextYear':this.financialYear2}]});
+      this.navCtrl.push("Type2AddTerm", { financialYearKey: this.financialYear1Key, financialYear: this.term,FinancialYerarDetials: this.financialYear1, bothCurrentNextFinanYear: [{'currentYear':this.financialYear1, 'nextYear':this.financialYear2}], selectedClubKey: this.selectedClubKey});
     } else if (this.term == "next") {
-      this.navCtrl.push("Type2AddTerm", { financialYearKey: this.financialYear2Key, financialYear: this.term, FinancialYerarDetials: this.financialYear2});
+      this.navCtrl.push("Type2AddTerm", { financialYearKey: this.financialYear2Key, financialYear: this.term, FinancialYerarDetials: this.financialYear2, selectedClubKey: this.selectedClubKey});
     }
 
   }

@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 addmembertournament-page {
+    @include android-sdk35-fixes;
     .social-cards ion-col {
         padding: 0;
     }

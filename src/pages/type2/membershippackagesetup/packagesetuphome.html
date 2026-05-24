@@ -1,0 +1,225 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Package Setup</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Package Setup
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <ion-item class="margin">
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClubKey" (ionChange)="onClubChange()">
+            <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-list class="card-view" *ngFor="let fm of mebershipPackage">
+        <!--<ion-item-sliding #item  class="slidingcards">-->
+        <ion-item class="ion_item_1">
+            <p>
+                <span class="font-color">Package: {{fm.PackageName}}</span>
+            </p>
+
+
+
+            <!--<div>
+                    <ion-label>Add</ion-label>
+                    <ion-checkbox color="blue"  [(ngModel)]="fm.IsSelected" ></ion-checkbox>
+                </div>-->
+
+        </ion-item>
+        <ion-checkbox color="dark" checked="true" [(ngModel)]="fm.IsSelected"></ion-checkbox>
+        <!--<ion-item-options side="right">
+        <button ion-button class="timekare-primary-btn" (click)="viewPackageList(fm)">
+          <ion-icon name="create"></ion-icon>
+            View
+        </button>
+        <button ion-button class="timekare-primary-btn" (click)="makeitAsDeafault(fm)">
+          <ion-icon name="create"></ion-icon>
+            Default
+        </button>
+      </ion-item-options>
+
+      <ion-item-options side="left">
+        <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="editPackageList(fm)">
+          <ion-icon name="create"></ion-icon>
+            Edit
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>-->
+
+    </ion-list>
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelMembershipPackageSetup()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="addMembershipPackageSetup()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <!--
+    <ion-item class="margin">
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClub" (ionChange)="onClubChange()">
+            <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Package Name</ion-label>
+        <ion-input type="text" [(ngModel)]="packageDetails.PackageName"></ion-input>
+    </ion-item>
+
+    <ion-card class="card">
+        <ion-card-header class="card_header">
+            Activity
+        </ion-card-header>
+        <ion-card-content>
+            <ion-row class="days">
+                <ion-col *ngFor="let item of allActivityArr; let i = index;">
+                    <p (click)="selectActivity(item,i)" [ngClass]="{'select1': item.isSelect,'unselect': !item.isSelect}">{{item.ActivityName}}</p>
+                </ion-col>
+            </ion-row>
+
+            <ion-col *ngIf="allActivityArr.length == 0">
+                <p class="text-color">It seems there are no activity present in this club</p>
+            </ion-col>
+
+            <ion-item *ngFor="let item of selectedActivityArr">
+                <ion-label floating>Free Booking Minutes for {{item.ActivityName}}</ion-label>
+                <ion-input type="text" [(ngModel)]="item.FreeBookingHoursForActivity"   ></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="card">
+        <ion-card-header class="card_header">
+            Member Category
+        </ion-card-header>
+        <ion-card-content>
+
+            <ion-row class="days">
+                <ion-col *ngFor="let item of allCategory; let i = index;">
+                    <p (click)="selectCategory(item,i)" [ngClass]="{'select1': myIndex==i,'unselect': !(myIndex!=i)}">{{item.MemeberCategoryName}}</p>
+                </ion-col>
+            </ion-row>
+
+            <ion-col *ngIf="allCategory.length == 0">
+                <p class="text-color">It seems there are no member category present in this club</p>
+            </ion-col>
+        </ion-card-content>
+
+        <div *ngIf="allSubCategory.length > 0">
+            <ion-card-header class="card_header">
+                Member Sub Category
+            </ion-card-header>
+            <ion-card-content>
+
+                <ion-row class="days">
+                    <ion-col *ngFor="let item of allSubCategory; let j = index;">
+                        <p (click)="selectSubCategory(item,j)" [ngClass]="{'select1': myIndex1==j,'unselect': !(myIndex1 !=j)}">{{item.MembershipSubCategoryName}}</p>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+        </div>
+
+       
+    </ion-card>
+
+
+
+
+    <ion-item>
+        <ion-label floating>Monthly Fees</ion-label>
+        <ion-input type="text" [(ngModel)]="packageDetails.MonthlyFees" (input)="monthlyFeesFieldCheck()"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Quaterly Fees</ion-label>
+        <ion-input type="text" [(ngModel)]="packageDetails.QuaterlyFees" (input)="quaterlyFeesFieldCheck()"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Half Yearly Fees</ion-label>
+        <ion-input type="text" [(ngModel)]="packageDetails.HalfYearlyFees" (input)="halfyearlyFeesFieldCheck()"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label floating>Yearly Fees</ion-label>
+        <ion-input type="text" [(ngModel)]="packageDetails.YearlyFees" (input)="yearlyFeesFieldCheck()"></ion-input>
+    </ion-item>
+
+    <ion-list radio-group>
+        <ion-card class="card">
+            <ion-card-header class="card_header">
+                Choose Default Fees
+            </ion-card-header>
+            <ion-card-content>
+                <ion-item *ngFor="let item of defaultFeesArr">
+                    <ion-radio (click)="toggolSelectionDefaultFees(item)"></ion-radio>
+                    <ion-label>{{item.FeesName}}</ion-label>
+                </ion-item>
+
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
+
+    <ion-card class="card">
+        <ion-card-content>
+            <ion-item>
+                <ion-label>Can Book Court Free?</ion-label>
+                <ion-checkbox color="blue" checked="packageDetails.IsCourtBooking" [(ngModel)]="packageDetails.IsCourtBooking"></ion-checkbox>
+            </ion-item>
+            <ion-item *ngIf="packageDetails.IsCourtBooking">
+                <ion-label floating>Maximum Free Booking Minutes</ion-label>
+                <ion-input type="text" [(ngModel)]="packageDetails.FreeBookingHours"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Is Adult?</ion-label>
+                <ion-checkbox color="blue" checked="packageDetails.IsAdult" [(ngModel)]="packageDetails.IsAdult"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Comments</ion-label>
+                <ion-input type="text" [(ngModel)]="packageDetails.Comments"></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+
+
+    <ion-grid>
+        <ion-row>
+            <ion-col width-50>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelMembershipPackageSetup()">Cancel</button>
+            </ion-col>
+            <ion-col width-50>
+                <button ion-button block class="timekare-primary-btn" (click)="saveMembershipPackageSetup()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>-->
+</ion-content>

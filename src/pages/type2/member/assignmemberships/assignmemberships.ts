@@ -298,12 +298,17 @@ export class AssignmembershipsPage {
 
     
     familyMemberDetails(){
-        this.httpService.post(`${API.GET_FAMILY_MEMBER}`,this.inputObj).subscribe({
-            next: (res:any)=>{
-                this.familyMemberInfo = res.data;
-                this.is_no_members = this.familyMemberInfo.every(member => member.member_enrolled);
-            }
-        });
+        this.comonService.showLoader("Please wait")
+        this.httpService.post(`${API.GET_FAMILY_MEMBER}`,this.inputObj).subscribe((res:any)=>{
+            this.comonService.hideLoader();
+            this.familyMemberInfo = res.data;
+            this.is_no_members = this.familyMemberInfo.every(member => member.member_enrolled);
+        },
+        (error)=>{
+            if(error){
+                this.comonService.hideLoader();
+            }     
+        })
     }
 
     //assigning membership
@@ -312,17 +317,21 @@ export class AssignmembershipsPage {
         const confirm_msg = "Are you sure, want to enrol?"
         this.comonService.commonAlert_V4(confirm_title,confirm_msg,"Enrol","Cancel",()=>{
             try {
+                this.comonService.showLoader("Please wait...")
                 this.enrolInput.start_month = this.startDate;
-                this.httpService.post(`${API.ENROL_USER_INTO_MEMBERSHIP}`,this.enrolInput).subscribe({
-                    next: (data) => {
+                this.httpService.post(`${API.ENROL_USER_INTO_MEMBERSHIP}`,this.enrolInput).subscribe(data => {
+                        this.comonService.hideLoader();
                         console.log(data)
+                        // if(data['status'] == 200){
                         this.comonService.toastMessage('Membership assigned successfully', 2500, ToastMessageType.Success, ToastPlacement.Bottom)
                         this.comonService.updateCategory("update_user_memberships_list");
                         this.navCtrl.pop();
-                    }
-                });
+                },
+                error => {
+                    this.comonService.hideLoader();
+                })
             } catch (error) {
-                // Error handling is centralized in http.service
+                this.comonService.hideLoader();
             }
         })
     }
@@ -402,43 +411,53 @@ export class AssignmembershipsPage {
 
     
     getMemberShipDetails() {
-        this.httpService.post(`${API.MEMBERSHIP_DETAILS}`, this.inputObj).subscribe({
-            next: (res: any) => {
-                this.memberShipData = res.data;
-                this.minMember = res.data.min_member;
-                this.maxMember = res.data.max_member;
+        //this.inputObj.memberId = this.ActiveSetups[0].id
+        this.httpService.post(`${API.MEMBERSHIP_DETAILS}`, this.inputObj).subscribe((res: any) => {
+            // this.selectedMembers = res.data.enrolled_members || []; // Initialize as empty array if no members
+            this.memberShipData = res.data;
+            this.minMember = res.data.min_member;
+            this.maxMember = res.data.max_member;
 
-                if (this.memberShipData.monthly) {
-                    this.monthly = true;
-                } if (this.memberShipData.yearly) {
-                    this.yearly = true;
-                }
-
-                this.minDate = moment(this.memberShipData.membership_setup.start_date).format("YYYY-MM-DD");
-                this.maxDate = moment(this.memberShipData.membership_setup.end_date).format("YYYY-MM-DD");
+            if (this.memberShipData.monthly) {
+                this.monthly = true;
+            } if (this.memberShipData.yearly) {
+                this.yearly = true;
             }
-        });
+
+            this.minDate = moment(this.memberShipData.membership_setup.start_date).format("YYYY-MM-DD");
+            this.maxDate = moment(this.memberShipData.membership_setup.end_date).format("YYYY-MM-DD");
+
+            //  this.enrolledMembers = res.data.enrolled_members || [];
+            // this.getFamilyDetails();
+
+        }, (error) => {
+            this.comonService.toastMessage("Member Fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        })
     }
 
     getActiveMemberShipDetails(isEditMode: boolean = false) {
         this.isEditing = isEditMode;
-        this.httpService.post(`${API.ACTIVE_MEMBERSHIP_DETAILS}`, this.inputObj).subscribe({
-            next: (res: any) => {
-                console.log(res.data);
-                if (res && res.data) {
-                    this.memberShipData = res.data;
-                    this.minMember = res.data.min_member;
-                    this.maxMember = res.data.max_member;
-                    if (this.memberShipData.plan.plan_name == 'Monthly') {
-                        this.Duration = 'monthly';
-                        this.monthly = true;
-                    } else if (this.memberShipData.plan.plan_name == 'Yearly') {
-                        this.Duration = 'yearly';
-                        this.yearly = true;
-                    }
+        this.comonService.showLoader("Please wait...");
+        this.httpService.post(`${API.ACTIVE_MEMBERSHIP_DETAILS}`, this.inputObj).subscribe((res: any) => {
+            this.comonService.hideLoader();
+            console.log(res.data);
+            if (res && res.data) {
+                this.memberShipData = res.data;
+                this.minMember = res.data.min_member;
+                this.maxMember = res.data.max_member;
+                if (this.memberShipData.plan.plan_name == 'Monthly') {
+                    this.Duration = 'monthly';
+                    this.monthly = true;
+                } else if (this.memberShipData.plan.plan_name == 'Yearly') {
+                    this.Duration = 'yearly';
+                    this.yearly = true;
                 }
+
             }
-        });
+        }, (error) => {
+            this.comonService.toastMessage("Member Fetch failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+            this.comonService.hideLoader();
+        })
     }
 
     getFamilyDetails() {
@@ -497,21 +516,21 @@ export class AssignmembershipsPage {
     }
 
     getEnrolledUserInMemberShip() {
-        this.httpService.post(`${API.GET_ENROLLED_USER_INTO_MEMBERSHIP}`, this.inputObj).subscribe({
-            next: (res: any) => {
-                this.enrolledMembers = res.data;
-                this.isAssigned = true;
-                this.enrolInput.user_ids = [];
-                this.availableFamilyMembers.forEach(familyMember => {
-                    // Check if this family member is in the list of enrolled members
-                    const isEnrolled = this.enrolledMembers.some(enrolledMember => enrolledMember.family_member.Id === familyMember.Id);
-                    familyMember.IsSelect = isEnrolled;  // Set the checkbox to checked if enrolled
-                    if (isEnrolled) {
-                        this.enrolInput.user_ids.push(familyMember.Id);
-                    }
-                });
-            }
-        });
+        this.httpService.post(`${API.GET_ENROLLED_USER_INTO_MEMBERSHIP}`, this.inputObj).subscribe((res: any) => {
+            this.enrolledMembers = res.data;
+            this.isAssigned = true;
+            this.enrolInput.user_ids = [];
+            this.availableFamilyMembers.forEach(familyMember => {
+                // Check if this family member is in the list of enrolled members
+                const isEnrolled = this.enrolledMembers.some(enrolledMember => enrolledMember.family_member.Id === familyMember.Id);
+                familyMember.IsSelect = isEnrolled;  // Set the checkbox to checked if enrolled
+                if (isEnrolled) {
+                    this.enrolInput.user_ids.push(familyMember.Id);
+                }
+            });
+        }, (error) => {
+            this.comonService.toastMessage("Enrolled member fetch failed", 3000, ToastMessageType.Error, ToastPlacement.Bottom)
+        })
     }
     // filterFamilyMembers() {
 
@@ -603,22 +622,28 @@ export class AssignmembershipsPage {
             this.enrolInput.plan_type = this.Duration == "monthly" ? 1 : 2;
             this.enrolInput.membership_package_id = this.memberShipData.membership_package.id;
 
-            this.httpService.post(`${API.ADD_USER_INTO_MEMBERSHIP}`, this.enrolInput).subscribe({
-                next: (data) => {
+            this.httpService.post(`${API.ADD_USER_INTO_MEMBERSHIP}`, this.enrolInput)
+                .subscribe(data => {
+                    this.comonService.hideLoader();
                     console.log(data);
                     this.comonService.toastMessage('membership assigned successfully...', 2500, ToastMessageType.Success, ToastPlacement.Bottom)
                     this.navCtrl.pop();
+
                 },
-                error: (error) => {
-                    if (error) {
-                        this.comonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-                    } else {
-                        // Fallback to show a generic error message if needed
-                        this.comonService.toastMessage('An error occurred. Please try again.', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+                    error => {
+                        this.comonService.hideLoader();
+                        if (error) {
+                            this.comonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+                        } else {
+                            // Fallback to show a generic error message if needed
+                            this.comonService.toastMessage('An error occurred. Please try again.', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+                        }
+
+
                     }
-                }
-            });
+                )
         } catch (error) {
+            this.comonService.hideLoader();
             this.comonService.toastMessage(error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom)
         }
 
@@ -671,18 +696,21 @@ export class AssignmembershipsPage {
         }
         console.log(JSON.stringify(input));
 
-        this.httpService.post(`${API.REMOVE_USER_FROM_MEMBERSHIP}`, input).subscribe({
-            next: (data) => {
+        this.httpService.post(`${API.REMOVE_USER_FROM_MEMBERSHIP}`, input)
+            .subscribe(data => {
+                this.comonService.hideLoader();
                 console.log(data)
+
                 this.comonService.toastMessage('Membership Removed...', 2500, ToastMessageType.Success, ToastPlacement.Bottom)
                 this.navCtrl.pop()
+
             },
-            error: (error) => {
-                if (error) {
-                    this.comonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom)
-                }
-            }
-        });
+            error => {
+                    this.comonService.hideLoader();
+                    if (error) {
+                        this.comonService.toastMessage(error.error.message, 2500, ToastMessageType.Error, ToastPlacement.Bottom)
+                    }
+            })
 
     }
 

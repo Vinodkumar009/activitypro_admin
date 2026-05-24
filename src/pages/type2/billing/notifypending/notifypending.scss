@@ -1,0 +1,15 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+notifypending-page {
+    @include android-sdk35-fixes;
+   .item-inner{
+        border: none !important;
+    box-shadow: none !important
+    }
+    .scroll-content {
+        padding: 6px !important;
+        background: white !important;
+        margin: 2px;
+    }
+    
+}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, Alert, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, Alert, AlertController, Events } from 'ionic-angular';
 import * as moment from 'moment';
 import { Storage } from '@ionic/storage';
 import { TSMap } from 'typescript-map';
@@ -14,6 +14,7 @@ import * as $ from 'jquery';
 import { dateValueRange } from 'ionic-angular/umd/util/datetime-util';
 import { HttpService } from '../../../../../../services/http.service';
 import { API } from '../../../../../../shared/constants/api_constants';
+import { ThemeService } from '../../../../../../services/theme.service';
 /**
  * Generated class for the ViewcourtPage page.
  *
@@ -29,7 +30,6 @@ import { API } from '../../../../../../shared/constants/api_constants';
 export class BookingCourt {
   @ViewChild(Content) content: Content;
   loading: any;
-  nestUrl: string;
   parentClubKey: any;
   selectedClubKey: any;
   courtSelected: any;
@@ -76,13 +76,23 @@ export class BookingCourt {
   userKey: any;
   selectedDate: any;
   roleType: any;
-  constructor(public sharedService: SharedServices, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public fb: FirebaseService, public storage: Storage, public commonService: CommonService, public http: HttpClient, public loadingCtrl: LoadingController, private httpService: HttpService) {
+  isDarkTheme: boolean = false;
+  constructor(public sharedService: SharedServices, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public fb: FirebaseService, public storage: Storage, public commonService: CommonService, public http: HttpClient, public loadingCtrl: LoadingController, private httpService: HttpService, private themeService: ThemeService, public events: Events) {
    
-    this.nestUrl = sharedService.getnestURL();
     
   }
 
   ionViewWillEnter(){
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    });
+
     this.parentClubKey = this.navParams.get('parentClubKey');
     this.selectedSlots= this.navParams.get('selectedSlots');
     this.selectedClubKey= this.navParams.get('clubKey');
@@ -126,6 +136,8 @@ export class BookingCourt {
         this.paymentDEtails.purpose = this.purpose
 
         const creatTime = new Date(`${this.dmmmyyyformatDtae} 12:00`).getTime()
+        this.paymentDEtails.slots = []
+        this.paymentDEtails.members = []
         for (let i = 0; i < this.selectedSlots.length; i++) {
           const obj = {
             Price: this.selectedSlots[i].Price,
@@ -168,5 +180,28 @@ export class BookingCourt {
       }
     })
   }
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null ? isDarkTheme : true;
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    }).catch(() => {
+      this.isDarkTheme = true;
+      this.applyTheme(true);
+    });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    const el = document.querySelector("page-bookingcourt");
+    if (el) {
+      isDark ? el.classList.remove("light-theme") : el.classList.add("light-theme");
+      isDark ? document.body.classList.remove("light-theme") : document.body.classList.add("light-theme");
+    }
+  }
+
   //.....................getting Booking releted information........................
 }

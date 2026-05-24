@@ -169,7 +169,6 @@ export class Type2ManageSession {
   sessionType: boolean = false;
   activeSessionList = [];
   pastSessionList = [];
-  nestUrl: string = "";
   selectedActivity = "";
 
   past = [];
@@ -245,7 +244,6 @@ export class Type2ManageSession {
     private graphqlService: GraphqlService,
     public themeService: ThemeService
   ) {
-    this.nestUrl = this.sharedservice.getnestURL();
     this.themeType = sharedservice.getThemeType();
     this.isAndroid = platform.is("android");
     // this.dockedHeight = this.isAndroid ? 40 : 60;

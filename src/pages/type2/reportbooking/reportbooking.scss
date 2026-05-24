@@ -1,12 +1,118 @@
-reportbooking-page{
-//    .scroll-content{
-//         background-image: url("../assets/images/background/innerbg.png");
-//         background-size: 100% 100%;
-//     }
-    .social-cards ion-col {
-        padding: 8px;
-     }
-     .right{
-         float: right;
-     }
+@import '../../../theme/android-sdk35-fixes.scss';
+
+reportbooking-page {
+  @include android-sdk35-fixes;
+
+  .home_btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  ion-content {
+    background: #f5f7fa;
+  }
+
+  .report-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    padding: 20px;
+  }
+
+  .report-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    ion-icon {
+      font-size: 32px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+
+  .card-body {
+    padding: 24px;
+  }
+
+  .info-section {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    ion-textarea {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+      background: #fafafa;
+      transition: all 0.3s ease;
+
+      &:focus {
+        border-color: #667eea;
+        background: white;
+      }
+    }
+  }
+
+  .date-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    background: #f0f4ff;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+
+    ion-icon {
+      font-size: 20px;
+      color: #667eea;
+    }
+
+    span {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+    }
+  }
+
+  .card-actions {
+    padding: 20px 24px;
+    background: #fafafa;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid #e0e0e0;
+
+    button {
+      margin: 0;
+      text-transform: none;
+      font-weight: 600;
+      height: 42px;
+      border-radius: 8px;
+    }
+  }
 }

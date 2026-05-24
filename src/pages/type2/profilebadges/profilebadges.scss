@@ -1,0 +1,18 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+
+page-profilebadges {
+    @include android-sdk35-fixes;
+    .scroll-content {
+    padding: 0px !important;
+    background-image: none !important;
+    // background: white !important;
+    background: #f4efef !important;
+    // margin-bottom: 60px;
+  }
+  .img {
+    // background-image: url("https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y");
+    background-size: cover;
+    min-height: 200px;
+  }
+}

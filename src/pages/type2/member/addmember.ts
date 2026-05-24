@@ -8,6 +8,7 @@ import { IonicPage } from 'ionic-angular';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../services/common.service';
 import gql from "graphql-tag";
 import { GraphqlService } from '../../../services/graphql.service';
+import { ThemeService } from '../../../services/theme.service';
 import { IClubDetails } from '../../../shared/model/club.model';
 import { AddMemberDTO } from './model/member';
 import { catchError, map } from 'rxjs/operators';
@@ -22,6 +23,7 @@ import { of } from 'rxjs/observable/of';
 export class Type2AddMember {
   @ViewChild(Content) content: Content;
   @ViewChild('myslider') myslider: Slides;
+  isDarkTheme: boolean = true;
   LangObj:any = {};//by vinod
   divNo: number = 1;
   divType: string = '';
@@ -88,7 +90,8 @@ export class Type2AddMember {
       public fb: FirebaseService, 
       public popoverCtrl: PopoverController, 
       public alertCtrl: AlertController, 
-      private graphqlService: GraphqlService,) {
+      private graphqlService: GraphqlService,
+      private themeService: ThemeService) {
       this.divType = navParams.get('divType');
 
       this.memberObj.IsTakenConcentForm = true;
@@ -101,6 +104,7 @@ export class Type2AddMember {
       this.memberObj.IsChild = false;
       this.memberObj.ParentClubId = this.sharedservice.getParentclubKey();
       this.getClubList();
+      this.loadTheme();
    }
   ionViewDidLoad() {
     this.getLanguage();
@@ -208,7 +212,8 @@ export class Type2AddMember {
         return data["checkUserEmailExistance"];
       }),
       catchError(() => {
-        return of(true); // Assuming you want to return `true` on error
+        this.commonService.toastMessage("Unable to verify email, please try again", 3000, ToastMessageType.Error);
+        return of(null);
       })
     ); 
   }
@@ -258,32 +263,32 @@ export class Type2AddMember {
       const message = "Please enter valid email";
       this.commonService.toastMessage(message, 3000,ToastMessageType.Error);
       return false;
-    }else if ((this.memberObj.FirstName).trim() == "" || this.memberObj.FirstName == undefined) {
+    }else if (!this.memberObj.FirstName || this.memberObj.FirstName.trim() == "") {
       const message = "Please enter first name";
       this.commonService.toastMessage(message, 3000,ToastMessageType.Error);
       return false;
     }
-    else if ((this.memberObj.LastName).trim() == "" || this.memberObj.LastName == undefined) {
+    else if (!this.memberObj.LastName || this.memberObj.LastName.trim() == "") {
       const message = "Please enter last name";
-      this.commonService.toastMessage(message, 3000,ToastMessageType.Error)
+      this.commonService.toastMessage(message, 3000,ToastMessageType.Error);
       return false;
     }
-    else if (this.memberObj.DOB == "" || this.memberObj.DOB == undefined) {
+    else if (!this.memberObj.DOB || this.memberObj.DOB == "") {
       const message = "Please enter DOB";
       this.commonService.toastMessage(message, 3000,ToastMessageType.Error);
       return false;
     }
-    else if (this.memberObj.Gender == "" || this.memberObj.Gender == undefined) {
+    else if (!this.memberObj.Gender || this.memberObj.Gender == "") {
       const message = "Please select gender";
       this.commonService.toastMessage(message, 3000,ToastMessageType.Error);
       return false;
     }
-    else if (this.memberObj.Phone.toString().trim().length < 7 || this.memberObj.Phone == undefined) {
+    else if (!this.memberObj.Phone || this.memberObj.Phone.toString().trim().length < 7) {
       const message = "Please enter valid phoneno";
       this.commonService.toastMessage(message, 3000,ToastMessageType.Error);
       return false;
     }
-    else if ((this.memberObj.Medical_Condition).toString().trim() == "" || this.memberObj.Medical_Condition == undefined) {
+    else if (!this.memberObj.Medical_Condition || this.memberObj.Medical_Condition.toString().trim() == "") {
       const message = "Please enter medical condition";
       this.commonService.toastMessage(message, 3000,ToastMessageType.Error);
       return false;
@@ -294,6 +299,9 @@ export class Type2AddMember {
       return false;
     }else {
       const isAlreadyExists = await this.checkForUnique(this.memberObj.Email).toPromise();
+      if (isAlreadyExists === null) {
+        return false;
+      }
       if (isAlreadyExists) {
         const message = "Emailid is already present";
         this.commonService.toastMessage(message, 2500, ToastMessageType.Error);
@@ -307,9 +315,14 @@ export class Type2AddMember {
 
   //parent creation confirm alert
   async showConfirm() {
-    if (await this.validBasic()) {
-      this.memberObj.Email = this.memberObj.Email.toLowerCase();
-      this.clubMemberCreation();
+    try {
+      if (await this.validBasic()) {
+        this.memberObj.Email = this.memberObj.Email.toLowerCase();
+        this.clubMemberCreation();
+      }
+    } catch (err) {
+      console.error("Error in showConfirm:", err);
+      this.commonService.toastMessage("Something went wrong, please try again", 3000, ToastMessageType.Error);
     }
   }
 
@@ -455,7 +468,20 @@ export class Type2AddMember {
     });
   }
 
-  
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('addmember-page');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
+  }
 
 }
 

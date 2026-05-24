@@ -1,27 +1,6 @@
-addnewschool-page{
+@import '../../../../theme/android-sdk35-fixes.scss';
 
-  
-   
- 
+addnewschool-page {
+    @include android-sdk35-fixes;
 
-
-    .ion-item-lable{
-        div{
-            ion-icon{
-                margin:0px 0px 9px 0px !important;
-            }
-            div{
-                ion-label{
-                    margin: 0px 0px 0px 0px;
-                }
-            }
-        }
-    }
- 
-
-    .nonmemcard {
-        padding: 14px 0;
-    }
-
-    
 }

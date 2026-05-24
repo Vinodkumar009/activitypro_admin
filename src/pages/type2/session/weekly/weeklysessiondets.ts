@@ -519,7 +519,7 @@ export class WeeklysessiondetsPage {
 
   sendNotification(enrol_member: WeeklySessionMember) {
     const member_ids = [enrol_member.member.IsChild ? enrol_member.member.ParentId:enrol_member.member.Id];
-    this.navCtrl.push("Type2NotificationSession",{
+    this.navCtrl.push("NotificationsPage",{
       users:member_ids,
       type:ModuleTypes.WEEKLYSESSION,
       heading:`Enrolment:${this.weeklyData.session_name}`,

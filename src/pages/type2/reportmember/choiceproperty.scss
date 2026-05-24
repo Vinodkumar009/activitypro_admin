@@ -1,5 +1,8 @@
-choiceproperty-page{
-    .scroll-content{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+choiceproperty-page {
+    @include android-sdk35-fixes;
+.scroll-content{
         //padding: 16px 9px !important;
         background-image: none !important;
         padding: 0px !important; 

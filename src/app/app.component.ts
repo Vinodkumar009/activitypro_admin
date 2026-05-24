@@ -45,7 +45,7 @@ export class MyApp {
     private oneSignal: OneSignal,
     private device: Device // public cache: CacheService
   ) {
-    let isProduction = true;
+    let isProduction = false;
     let emailUrl = "";
     let nodeURL = "";
     let nestURL = "";
@@ -79,12 +79,12 @@ export class MyApp {
       group_session_apikey = "";
       aws_cloudfrontURL = "https://d2ert9om2cv970.cloudfront.net";
       aws_presignedUrl = "https://i97kakk5tk.execute-api.eu-west-2.amazonaws.com/Dev/generatesignedurl";
-      SuperAdminKey = "-KoGLONcroK1vB02b9Gg"; 
+      SuperAdminKey = "-KoGLONcroK1vB02b9Gg";
       graphql_url = "https://api-dev.activitypro.co.uk/graphql"
     }
 
     //intialize url
-    
+
     this.sharedservice.setEmailUrl(emailUrl);
     this.sharedservice.setnodeURL(nodeURL);
     this.sharedservice.setnestURL(nestURL);
@@ -101,13 +101,14 @@ export class MyApp {
   initializeApp() {
     this.platform.ready().then(() => {
       //this.fb.loginToFirebaseAuth().then((val)=>{
-      this.statusBar.backgroundColorByHexString("#f7f7f7"); //#f7f7f7
-      this.statusBar.styleDefault();
+      // this.statusBar.backgroundColorByHexString("#f7f7f7"); //#f7f7f7
+      // this.statusBar.styleDefault();
       //this.keyboard.disableScroll(false);
       //this.splashScreen.hide();
       // this.androidPermissions.requestPermissions([
       //   this.androidPermissions.PERMISSION.CALL_PHONE,
       // ]);
+      this.configureStatusBar();
       this.setRootPage();//need to remove this while build
       this.getAppVersion();
       this.ga
@@ -122,12 +123,12 @@ export class MyApp {
       //   IsEnable: true,
       //   CreatedDate: new Date().getTime()
       // })
-    // }).catch((err)=>{
-    //   console.log(err);
-    // });
-  }).catch((err)=>{
-    console.log(err);
-  })
+      // }).catch((err)=>{
+      //   console.log(err);
+      // });
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
 
@@ -144,7 +145,7 @@ export class MyApp {
             this.appVersion.getVersionNumber().then((appversion) => {
               let presentVersion = appversion.toString().split(".").join("0");
               let playstoreVersion = data[0].new_admin_version
-              .toString()
+                .toString()
                 .split(".")
                 .join("0");
               if (appversion) {
@@ -152,7 +153,7 @@ export class MyApp {
                   if (!data[0].force_update) {
                     this.isShowCancelBtn = true;
                   }
-                  this.checkForceUpdate(playstoreVersion);
+                  this.checkForceUpdate(data[0].new_admin_url);
                 } else {
                   this.setRootPage();
                 }
@@ -183,7 +184,7 @@ export class MyApp {
                   if (!data[0].force_update) {
                     this.isShowCancelBtn = true;
                   }
-                  this.checkForceUpdate(data[0].new_admin_version);
+                  this.checkForceUpdate(data[0].new_admin_url);
                 } else {
                   this.setRootPage();
                 }
@@ -215,27 +216,31 @@ export class MyApp {
         this.initializeOnesignal();
       }
       this.layoutRootPage = "MenuOrDashboard";
-      //custom splash
-      // const splash = document.getElementById('custom-splash');
-      // if (splash) {
-      //   splash.style.display = 'block';
-      // }
-
-      // // Hide custom splash image after 2 seconds (adjust duration as needed)
-      // setTimeout(() => {
-      //   if (splash) {
-      //     splash.style.display = 'none';
-      //   }
-      //   this.layoutRootPage = "MenuOrDashboard";
-      //   // Your app initialization code here
-      // }, 2000);
     }
   }
 
-  checkForceUpdate(appVersion: any) {
-    let appUrl = this.platform.is("android")
-      ? "com.kare4u.tkadminapp"
-      : "https://apps.apple.com/us/app/activitypro-club-management/id1210271311?ls=1";
+  configureStatusBar() {
+    // Configure status bar for Android SDK 35+
+    try {
+      if (this.statusBar && this.platform.is('android') && this.platform.is('cordova')) {
+        // Always add Android SDK 35 class for Android devices
+        document.body.classList.add('android-sdk35');
+        
+        // Configure for edge-to-edge display on all Android versions
+        this.statusBar.overlaysWebView(false);
+        this.statusBar.backgroundColorByHexString('#2b92bb');
+        this.statusBar.styleDefault();
+        console.log('Android SDK 35 fixes applied');
+      }
+    } catch (error) {
+      console.log('Status bar configuration error:', error);
+    }
+  }
+
+  checkForceUpdate(new_admin_url:string) {
+    // let appUrl = this.platform.is("android")
+    //   ? "com.kare4u.tkadminapp"
+    //   : "https://apps.apple.com/us/app/activitypro-club-management/id1210271311?ls=1";
     const alert = this.alertCtrl.create({
       title: "Update Available!",
       message: "Please update to the latest version to get more features",
@@ -257,7 +262,7 @@ export class MyApp {
         {
           text: "Update",
           handler: () => {
-            this.market.open(appUrl);
+            this.market.open(new_admin_url);
           },
         },
       ],

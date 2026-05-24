@@ -9,6 +9,7 @@ import { IonicPage } from 'ionic-angular';
 import gql from 'graphql-tag';
 import { HttpService } from '../../../../services/http.service';
 import { GraphqlService } from '../../../../services/graphql.service';
+import { ThemeService } from '../../../../services/theme.service';
 import { IClubCoaches, IClubDetails } from '../../../../shared/model/club.model';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
 import { API } from '../../../../shared/constants/api_constants';
@@ -28,6 +29,7 @@ export class MonthlySessionReport {
   isDateRange: boolean = true;
   @ViewChild(Content) content: Content;
   isSearchEnabled: boolean = false;
+  isDarkTheme: boolean = true;
   isDuePaymentLoaded: boolean = false;
   LangObj: any = {};//by vinod
   isMonthSelected: boolean = false;
@@ -99,10 +101,12 @@ export class MonthlySessionReport {
     private elementRef: ElementRef, 
     public actionSheetCtrl: ActionSheetController,
     private graphqlService: GraphqlService,
-    private httpService: HttpService) {
+    private httpService: HttpService,
+    private themeService: ThemeService) {
 
     // Setup initial values and configuration
     this.setupInitialConfig();
+    this.loadTheme();
 
   }
 
@@ -221,7 +225,7 @@ export class MonthlySessionReport {
       this.report_input.end_date = moment().format("YYYY-MM-DD");
     } else {
       // Set date range for the selected month and year
-      const startOfMonth = moment(`${selectedMonth.year}-${selectedMonth.month}-01`,'YYYY-MMM-DD').startOf('month');
+      const startOfMonth = moment(`${selectedMonth.year}-${selectedMonth.month}-01`).startOf('month');
       const endOfMonth = moment(startOfMonth).endOf('month');
 
       this.report_input.start_date = startOfMonth.format("YYYY-MM-DD");
@@ -545,6 +549,21 @@ export class MonthlySessionReport {
       if(this.reportType=="Paid"){
         this.paidMemberListtemp = this.paidMemberList;
       }
+    }
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('monthlysesreport-page');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
     }
   }
 

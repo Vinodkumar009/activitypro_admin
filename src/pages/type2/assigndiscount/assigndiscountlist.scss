@@ -1,5 +1,8 @@
-assigndiscountlist-page{
-    .heading-padding{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+assigndiscountlist-page {
+    @include android-sdk35-fixes;
+.heading-padding{
         padding-left: 20px;
         text-decoration: underline;
     }

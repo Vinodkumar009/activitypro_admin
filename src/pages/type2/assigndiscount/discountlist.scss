@@ -1,5 +1,8 @@
-discountlist-page{
-    .scroll-content{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+discountlist-page {
+    @include android-sdk35-fixes;
+.scroll-content{
         background-image: none !important;
         background-color: #f7f7f7 !important;
     }

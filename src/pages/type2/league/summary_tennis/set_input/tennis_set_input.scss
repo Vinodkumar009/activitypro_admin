@@ -1,428 +1,108 @@
-@import "../../_league-theme.scss";
 @import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-tennis-set-input {
-  @include league-theme-base;
   @include android-sdk35-fixes;
 
-  // Dark theme
-  &:not(.light-theme) {
-    .scroll-content {
-      background: #1e293b !important;
-    }
+  .scroll-content { padding: 0 !important; overflow: hidden !important; background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
 
-    .header-section {
-      .team-info h3 {
-        color: #f1f5f9 !important;
-      }
-      .subtitle {
-        color: #94a3b8 !important;
-      }
-    }
-
-    .summary-section {
-      background: #334155 !important;
-      border-color: #475569 !important;
-
-      h4 {
-        color: #f1f5f9 !important;
-      }
-
-      .summary-card {
-        background: #475569 !important;
-
-        .summary-header span {
-          color: #f1f5f9 !important;
-        }
-
-        .summary-row .team-summary {
-          label {
-            color: #94a3b8 !important;
-          }
-
-          .summary-value {
-            color: #2b92bb !important;
-          }
-        }
-
-        .summary-row .vs-separator {
-          color: #2b92bb !important;
-        }
-      }
-    }
-
-    .set-card {
-      background: #334155 !important;
-      border-left-color: #2b92bb !important;
-
-      .set-header .set-number {
-        color: #f1f5f9 !important;
-      }
-
-      .score-inputs .team-score {
-        label {
-          color: #94a3b8 !important;
-        }
-
-        .score-input {
-          background: #475569 !important;
-          border-color: #64748b !important;
-          color: #f1f5f9 !important;
-
-          .text-input {
-            color: #f1f5f9 !important;
-          }
-        }
-      }
-
-      .vs-divider {
-        color: #2b92bb !important;
-      }
-    }
-
-    .custom-footer {
-      background: #1e293b !important;
-      border-top-color: #475569 !important;
-    }
+  ion-navbar { background: #0f172a !important;
+    .toolbar-background { background: #0f172a !important; }
+    .toolbar-title { color: #f1f5f9 !important; }
+    .bar-button { color: #f1f5f9 !important; }
   }
+
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-fixed-header { flex-shrink: 0; background: #0f172a; z-index: 10; }
+  .page-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 12px 80px; }
+
+  // Match badge
+  .match-badge {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 16px; margin: 8px 12px;
+    background: rgba(43, 146, 187, 0.15); border: 1px solid rgba(43, 146, 187, 0.3);
+    border-radius: 10px; color: #3fbcd3; font-size: 14px; font-weight: 700;
+    .badge-icon { font-size: 18px; }
+  }
+
+  // Set cards
+  .set-card {
+    background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(71, 85, 105, 0.4);
+    border-radius: 12px; border-left: 4px solid #2b92bb;
+    padding: 14px; margin-bottom: 10px;
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  }
+  .set-label { font-size: 13px; font-weight: 700; color: #94a3b8; text-align: center; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .score-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .score-team { flex: 1; text-align: center; }
+  .score-team-name { display: block; font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .score-input {
+    background: #334155 !important; border: 2px solid #475569; border-radius: 10px;
+    text-align: center; font-size: 20px; font-weight: 800; height: 48px; color: #f1f5f9;
+    .text-input { text-align: center !important; color: #f1f5f9 !important; font-size: 20px !important; font-weight: 800 !important; }
+    .text-input::placeholder { color: #64748b !important; }
+  }
+  .score-vs { font-size: 18px; font-weight: 800; color: #2b92bb; }
+
+  // Set actions
+  .set-actions { display: flex; gap: 10px; justify-content: center; margin: 12px 0 20px; }
+  .set-action-btn {
+    display: flex; align-items: center; gap: 4px; padding: 8px 16px;
+    border-radius: 20px; border: 1px solid #475569; background: transparent;
+    color: #94a3b8; font-size: 12px; font-weight: 700; cursor: pointer;
+    ion-icon { font-size: 14px; }
+    &.add { border-color: #2b92bb; color: #2b92bb; }
+    &.remove { border-color: #ef4444; color: #ef4444; }
+    &:disabled { opacity: 0.3; cursor: not-allowed; }
+  }
+
+  // Summary
+  .summary-block { margin-top: 4px; }
+  .summary-title { font-size: 14px; font-weight: 700; color: #f1f5f9; text-align: center; margin-bottom: 10px; }
+  .summary-card {
+    background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(71, 85, 105, 0.4);
+    border-radius: 10px; padding: 12px; margin-bottom: 8px;
+  }
+  .summary-label {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 10px;
+    ion-icon { font-size: 14px; color: #2b92bb; }
+  }
+  .summary-scores { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .summary-team { flex: 1; text-align: center; }
+  .summary-name { display: block; font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 4px; }
+  .summary-val { font-size: 24px; font-weight: 800; color: #2b92bb; }
+  .summary-vs { font-size: 14px; font-weight: 700; color: #2b92bb; }
 
   // Light theme
   &.light-theme {
-    .scroll-content {
-      background: #f1f5f9 !important;
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .page-fixed-header { background: #f8fafc; }
+    ion-navbar { background: #f8fafc !important;
+      .toolbar-background { background: #f8fafc !important; }
+      .toolbar-title { color: #1e293b !important; }
+      .bar-button { color: #1e293b !important; }
     }
-
-    .header-section {
-      .team-info h3 {
-        color: #2c3e50 !important;
-      }
-      .subtitle {
-        color: #7f8c8d !important;
-      }
+    .match-badge { background: rgba(43, 146, 187, 0.1); border-color: rgba(43, 146, 187, 0.2); }
+    .set-card { background: rgba(255, 255, 255, 0.55); border-color: rgba(226, 232, 240, 0.6); }
+    .set-label { color: #64748b; }
+    .score-team-name { color: #64748b; }
+    .score-input { background: #f1f5f9 !important; border-color: #e2e8f0;
+      .text-input { color: #1e293b !important; }
     }
-
-    .summary-section {
-      background: white !important;
-      border-color: #e9ecef !important;
-
-      h4 {
-        color: #2c3e50 !important;
-      }
-
-      .summary-card {
-        background: #f8f9fa !important;
-
-        .summary-header span {
-          color: #2c3e50 !important;
-        }
-
-        .summary-row .team-summary {
-          label {
-            color: #7f8c8d !important;
-          }
-
-          .summary-value {
-            color: #2b92bb !important;
-          }
-        }
-
-        .summary-row .vs-separator {
-          color: #2b92bb !important;
-        }
-      }
+    .set-action-btn { border-color: #cbd5e1; color: #64748b;
+      &.add { border-color: #2b92bb; color: #2b92bb; }
+      &.remove { border-color: #ef4444; color: #ef4444; }
     }
-
-    .set-card {
-      background: white !important;
-      border-left-color: #3498db !important;
-
-      .set-header .set-number {
-        color: #2c3e50 !important;
-      }
-
-      .score-inputs .team-score {
-        label {
-          color: #7f8c8d !important;
-        }
-
-        .score-input {
-          background: #f8f9fa !important;
-          border-color: #e9ecef !important;
-          color: #2c3e50 !important;
-
-          .text-input {
-            color: #2c3e50 !important;
-          }
-        }
-      }
-
-      .vs-divider {
-        color: #3498db !important;
-      }
-    }
-
-    .custom-footer {
-      background: white !important;
-      border-top-color: #e9ecef !important;
-    }
-  }
-  .scroll-content {
-    background-image: none !important;
-    padding: 16px !important;
+    .summary-card { background: rgba(255, 255, 255, 0.55); border-color: rgba(226, 232, 240, 0.6); }
+    .summary-title { color: #1e293b; }
+    .summary-name { color: #64748b; }
   }
 
-  ion-title {
-    background-color: #2b92bb !important;
-
-    div {
-      color: #fff !important;
-    }
+  @media (max-width: 359px) {
+    .page-scroll-area { padding: 0 8px 80px; }
+    .score-input { height: 40px; font-size: 18px; .text-input { font-size: 18px !important; } }
+    .score-team-name { font-size: 10px; }
   }
-
-  ion-buttons {
-    button {
-      color: #fff !important;
-    }
-  }
-
-  .toolbar-background-md {
-    background-color: #2b92bb;
-  }
-
-  .set-input-content {
-    padding-bottom: 80px;
-  }
-
-  .header-section {
-    text-align: center;
-    margin-bottom: 24px;
-
-    .team-info {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 8px;
-
-      h3 {
-        margin: 0;
-        color: #2c3e50;
-        font-weight: 600;
-      }
-    }
-
-    .subtitle {
-      color: #7f8c8d;
-      margin: 0;
-      font-size: 14px;
-    }
-  }
-
-  .sets-container {
-    margin-bottom: 24px;
-  }
-
-  .set-card {
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-left: 4px solid #3498db;
-
-    .set-header {
-      text-align: center;
-      margin-bottom: 16px;
-
-      .set-number {
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 16px;
-      }
-    }
-
-    .score-inputs {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-
-      .team-score {
-        text-align: center;
-        flex: 1;
-
-        label {
-          display: block;
-          font-size: 12px;
-          color: #7f8c8d;
-          margin-bottom: 8px;
-          font-weight: 500;
-        }
-
-        .score-input {
-          background: #f8f9fa;
-          border: 2px solid #e9ecef;
-          border-radius: 8px;
-          text-align: center;
-          font-size: 18px;
-          font-weight: 600;
-          height: 50px;
-
-          .text-input {
-            text-align: center !important;
-          }
-
-          &:focus {
-            border-color: #3498db;
-          }
-        }
-      }
-
-      .vs-divider {
-        font-size: 20px;
-        font-weight: 600;
-        color: #3498db;
-        margin: 0 8px;
-      }
-    }
-  }
-
-  .action-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-bottom: 16px;
-
-    button {
-      border-radius: 20px;
-      font-weight: 500;
-
-      ion-icon {
-        padding: 0px 5px;
-        font-size: 1.5em;
-      }
-    }
-  }
-
-  .summary-section {
-    margin-top: 24px;
-    padding: 16px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    border: 2px solid #e9ecef;
-
-    h4 {
-      text-align: center;
-      color: #2c3e50;
-      margin: 0 0 16px 0;
-      font-weight: 600;
-    }
-
-    .summary-card {
-      background: white;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      .summary-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        margin-bottom: 12px;
-
-        span {
-          font-weight: 600;
-          color: #2c3e50;
-        }
-      }
-
-      .summary-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-
-        .team-summary {
-          text-align: center;
-          flex: 1;
-
-          label {
-            display: block;
-            font-size: 12px;
-            color: #7f8c8d;
-            margin-bottom: 4px;
-            font-weight: 500;
-          }
-
-          .summary-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2b92bb;
-          }
-        }
-
-        .vs-separator {
-          font-size: 16px;
-          font-weight: 600;
-          color: #2b92bb;
-        }
-      }
-    }
-  }
-
-  .custom-footer {
-    padding: 10px 16px;
-    .footer-buttons {
-      display: flex;
-      gap: 12px;
-
-      button {
-        flex: 1;
-        height: 40px;
-        font-size: 1em !important;
-
-        ion-icon {
-          padding: 0px 5px !important;
-          font-size: 1.5em !important;
-        }
-      }
-    }
-  }
-
-
-  // Footer styling
-  ion-footer {
-    --background: #ffffff;
-    background: #ffffff !important;
-    border-top: 1px solid #e2e8f0;
-    
-    .timekare-primary-btn {
-      background: #2b92bb;
-      color: white;
-      font-weight: 500;
-    }
-  }
-
-  // Dark theme for footer
-  &:not(.light-theme),
-  .dark-theme {
-    ion-footer {
-      --background: #1e293b !important;
-      background: #1e293b !important;
-      border-top: 1px solid #475569;
-      
-      .timekare-primary-btn {
-        background: #2b92bb;
-        color: white;
-      }
-    }
-  }
-
-
-
 }

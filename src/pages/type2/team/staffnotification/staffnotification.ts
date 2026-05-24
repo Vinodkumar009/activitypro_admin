@@ -28,32 +28,32 @@ import gql from 'graphql-tag';
 })
 export class StaffnotificationPage {
   mlist: GetStaffModel;
-  notificationObj = { CreatedTime: "", Message: '', SendTo: '', SendBy: '', ComposeOn: '', Purpose: '', sendByRole: "", Status: "Unread"};
-  parentClubKey:any;
+  notificationObj = { CreatedTime: "", Message: '', SendTo: '', SendBy: '', ComposeOn: '', Purpose: '', sendByRole: "", Status: "Unread" };
+  parentClubKey: any;
   popoverCtrl: any;
 
   constructor(public navCtrl: NavController,
-     public navParams: NavParams,
-     private apollo: Apollo,
-     private httpLink: HttpLink,
-     public actionSheetCtrl: ActionSheetController,
-     public loadingCtrl: LoadingController,
-     public storage: Storage,
-     public platform: Platform,
-     public fb: FirebaseService,
-     public alertCtrl: AlertController,
-     public commonService: CommonService,
-     private toastCtrl: ToastController,
-     public sharedservice: SharedServices,
-     public modalCtrl: ModalController,
-     popoverCtrl:PopoverController) {
-      this.mlist=this.navParams.get("staff");
-      console.log('data for notification:',this.mlist);
-      this.notificationObj.Message="Hi "+this.mlist.StaffDetail.name+" ";
+    public navParams: NavParams,
+    private apollo: Apollo,
+    private httpLink: HttpLink,
+    public actionSheetCtrl: ActionSheetController,
+    public loadingCtrl: LoadingController,
+    public storage: Storage,
+    public platform: Platform,
+    public fb: FirebaseService,
+    public alertCtrl: AlertController,
+    public commonService: CommonService,
+    private toastCtrl: ToastController,
+    public sharedservice: SharedServices,
+    public modalCtrl: ModalController,
+    popoverCtrl: PopoverController) {
+    this.mlist = this.navParams.get("staff");
+    console.log('data for notification:', this.mlist);
+    this.notificationObj.Message = "Hi " + this.mlist.StaffDetail.name + " ";
 
-      this.parentClubKey = navParams.get('ParentClubKey');
-      console.log("Parent Club Id is:",typeof this.parentClubKey)
-      
+    this.parentClubKey = navParams.get('ParentClubKey');
+    console.log("Parent Club Id is:", typeof this.parentClubKey)
+
   }
 
   ionViewDidLoad() {
@@ -76,7 +76,7 @@ export class StaffnotificationPage {
   }
 
   sendNotification() {
-  
+
     let alert = this.alertCtrl.create({
       subTitle: 'Send notification',
       message: 'Are you sure want to send notification ?',
@@ -97,7 +97,7 @@ export class StaffnotificationPage {
       ]
     });
     alert.present();
-  } 
+  }
 
 
   showToast(m: string, d: number) {
@@ -110,7 +110,7 @@ export class StaffnotificationPage {
   }
 
 
-  notify(){
+  notify() {
     const notifyUser = gql`
     query notifyUser($parentClub: String!, $heading:String!, $message:String! , $userFirebaseId:String!) {
       notifyUser(parentClub:$parentClub, heading:$heading ,message:$message, userFirebaseId:$userFirebaseId) 
@@ -119,43 +119,43 @@ export class StaffnotificationPage {
       }
 
   `;
-  this.apollo
-    .query({
-      query: notifyUser,
-      fetchPolicy: "network-only",
-      variables: {
-        parentClub:this.parentClubKey,
-        heading:"",
-        message:this.notificationObj.Message,
-        userFirebaseId:"-MP3ld83zU7MCJjU0JQy"
+    this.apollo
+      .query({
+        query: notifyUser,
+        fetchPolicy: "network-only",
+        variables: {
+          parentClub: this.parentClubKey,
+          heading: "",
+          message: this.notificationObj.Message,
+          userFirebaseId: "-MP3ld83zU7MCJjU0JQy"
 
 
-      },
-    })
-    .subscribe(({ data }) => {
-      this.commonService.hideLoader();
+        },
+      })
+      .subscribe(({ data }) => {
+        this.commonService.hideLoader();
         this.commonService.toastMessage(
           "Notification Send Successfully",
           2500,
           ToastMessageType.Success,
           ToastPlacement.Bottom
         );
-        console.log("Notification Data:" +data[notifyUser]);
+        // console.log("Notification Data:" +data[notifyUser]);
 
         this.navCtrl.pop();
 
 
-     
-    });
-  (err) => {
-    // this.commonService.hideLoader();
-    console.log(JSON.stringify(err));
-    this.commonService.toastMessage(
-      "Notification failed",
-      2500,
-      ToastMessageType.Error,
-      ToastPlacement.Bottom
-    );
-  };
+
+      });
+    (err) => {
+      // this.commonService.hideLoader();
+      console.log(JSON.stringify(err));
+      this.commonService.toastMessage(
+        "Notification failed",
+        2500,
+        ToastMessageType.Error,
+        ToastPlacement.Bottom
+      );
+    };
   }
 }

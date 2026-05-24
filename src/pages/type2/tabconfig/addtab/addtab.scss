@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-addtab {
+    @include android-sdk35-fixes;
+
+
+
     .no-app, .scroll-content,ion-row,ion-col{
         padding: 0px !important;
     }

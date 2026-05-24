@@ -1,181 +1,93 @@
-<!--
-  Generated template for the EditmatchPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <ion-title>Edit Match</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content >
-  <div>
-    <ion-list class="ionlist">
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <ion-list>
+    <app-form-field [isDark]="isDarkTheme">
       <ion-item>
-        <ion-label floating>Match Title</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-label>Match Title</ion-label>
+        <ion-input type="text" [(ngModel)]="data.MatchTitle"></ion-input>
       </ion-item>
+    </app-form-field>
 
+    <app-form-field [isDark]="isDarkTheme">
       <ion-item>
-        <ion-label>Venue</ion-label>
-        <ion-select (ionChange)="getAllActivities()">
-          <ion-option *ngFor="let club of clubVenues" value="{{club.ClubKey}}">
-            {{club.ClubName}}</ion-option>
-        </ion-select>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}" [(ngModel)]="start_date"></ion-datetime>
       </ion-item>
+    </app-form-field>
 
+    <app-form-field [isDark]="isDarkTheme">
       <ion-item>
-        <ion-label>Location</ion-label>
-        <ion-input
-        class="allign-right"
-        [(ngModel)]="LocationName"
-        (click)="onChangeLocation()"
-        disabled="true"
-      >
-        <!-- <ion-icon ios="ios-arrow-down" md="md-arrow-down"></ion-icon> -->
-      </ion-input>
-      </ion-item>
-
-
-      <ion-item>
-        <ion-label>Team 1</ion-label>
-        <!--- <ion-input type="text"></ion-input>-->
-        <ion-select>
-          <ion-option value="0">teamname1</ion-option>
-          <ion-option value="1">teamname2 </ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>Team 2</ion-label>
-        <!--- <ion-input type="text"></ion-input>-->
-        <ion-select>
-          <ion-option value="0">teamname1</ion-option>
-          <ion-option value="1">teamname2 </ion-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Round</ion-label>
-        <ion-select>
-          <ion-option value="0">1st Round</ion-option>
-          <ion-option value="1">2nd Round</ion-option>
-          <ion-option value="2">3rd Round</ion-option>
-          <ion-option value="3">Quarter</ion-option>
-          <ion-option value="4">Semis</ion-option>
-          <ion-option value="5">Final</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Match Date</ion-label>
-        <ion-datetime 
-        displayFormat="DD/MM/YYYY" 
-        pickerFormat="DD MM YYYY"
-        min="{{min}}"
-        max="{{max}}" ></ion-datetime>
-      </ion-item>
-
-
-      <ion-item>
-        <ion-label>Time</ion-label>
-        <ion-datetime 
-        displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
-          [(ngModel)]="startTime"></ion-datetime>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Early Arrival</ion-label>
+        <ion-label>Start Time</ion-label>
         <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
-          [(ngModel)]="startTime"></ion-datetime>
+          [(ngModel)]="start_time"></ion-datetime>
       </ion-item>
+    </app-form-field>
 
+    <app-form-field [isDark]="isDarkTheme">
       <ion-item>
-        <ion-label floating>Capacity</ion-label>
-        <ion-input type="text"></ion-input>
-      </ion-item>
-
-
-
-      <ion-item>
-        <ion-row>
-          <ion-col col-6>
-            <p class="match-acess">Match Access</p>
-          </ion-col>
-          <ion-col col-3>
-            <button ion-button class="select-type" (click)="changeType('public')" [class.selected]="publicType">
-              <ion-icon style="padding-right: 10px" name="globe"></ion-icon>
-              Public
-            </button>
-          </ion-col>
-          <ion-col col-3>
-            <button ion-button class="select-type" (click)="changeType('private')" [class.selected]="!publicType">
-              <ion-icon style="padding-right: 10px" name="ios-lock-outline"></ion-icon>
-              Private
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-      <!-- <ion-item>
-        <ion-label>Paid</ion-label>
-        <ion-select>
-          <ion-option value="0">No</ion-option>
-          <ion-option value="1">Yes</ion-option>
+        <ion-label>Duration <span class="optional-tag">(Optional)</span></ion-label>
+        <ion-select [(ngModel)]="selectedDuration" placeholder="Select duration">
+          <ion-option *ngFor="let d of durations" [value]="d.id">{{d.duration}} mins</ion-option>
         </ion-select>
-      </ion-item> -->
-
-
-      <ion-item>
-        <ion-row>
-            <ion-col col-12 no-padding class="flex_col">
-                <p class="toggle_para">Paid</p>
-                <label class="toggle">
-                    <input type="checkbox" >
-                    <span data-unchecked="No" data-checked="Yes"></span>
-                </label>
-            </ion-col>
-        </ion-row>
-    </ion-item>
-   
-      <ion-item>
-        <ion-label floating>Fee per Player(£)</ion-label>
-        <ion-input type="text"></ion-input>
       </ion-item>
-    </ion-list>
-  </div>
+    </app-form-field>
 
-  <div>
-    <ion-card style="padding: 10px 10px 10px 0px; width: 100%; margin: 0px">
+    <app-map-picker [address]="mapLocationAddress" (locationSelected)="onMapLocationSelected($event)"></app-map-picker>
+
+    <app-form-field [isDark]="isDarkTheme">
       <ion-item>
-        <ion-label class="details">Additional Details(optional)</ion-label>
-        <button ion-button item-right clear>
-          <ion-icon (click)="arrow = ! arrow" name="ios-arrow-down" style="float: right;"></ion-icon>
-        </button>
+        <ion-label>Round/Stage <span class="optional-tag">(Optional)</span></ion-label>
+        <ion-select [(ngModel)]="data.Round" placeholder="Select round">
+          <ion-option *ngFor="let r of roundTypes" [value]="r.name">{{r.name}}</ion-option>
+        </ion-select>
       </ion-item>
-      <div *ngIf="arrow">
-        <ion-item>
-          <ion-label floating style="padding-left: 10px">Match Description</ion-label>
-          <ion-textarea style="
-            border: 0.5px solid #707070;
-            border-radius: 5px;
-            padding-left: 10px;
-          " type="text" rows="5" maxLength="500"></ion-textarea>
-        </ion-item>
-      </div>
+    </app-form-field>
 
-    </ion-card>
-  </div>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Match Type</ion-label>
+        <ion-select [(ngModel)]="data.MatchType">
+          <ion-option *ngFor="let t of leagueType" [value]="t.value">{{t.key}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
+
+    <app-form-field [isDark]="isDarkTheme">
+      <app-access-toggle [(isPublic)]="publicType"
+        (isPublicChange)="changeType($event ? 'public' : 'private')" label="Status">
+      </app-access-toggle>
+    </app-form-field>
+
+    <app-expandable-section label="FEE" [(expanded)]="isChecked" (expandedChange)="updateMatchPaymentType($event)">
+      <ion-item>
+        <ion-label fixed>Member Fee
+          <span *ngIf="currency">({{currency}})</span>
+        </ion-label>
+        <ion-input type="number" placeholder="Enter fee" [(ngModel)]="data.MemberFees"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Non Member Fee
+          <span *ngIf="currency">({{currency}})</span>
+        </ion-label>
+        <ion-input type="number" placeholder="Enter fee" [(ngModel)]="data.NonMemberFees"></ion-input>
+      </ion-item>
+    </app-expandable-section>
+
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item class="description-item">
+        <ion-label stacked>Description <span class="optional-tag">(Optional)</span></ion-label>
+        <ion-textarea type="text" rows="5" placeholder="Match instructions, rules, or notes..."
+          [(ngModel)]="data.Details"></ion-textarea>
+      </ion-item>
+    </app-form-field>
+  </ion-list>
 </ion-content>
 
-<ion-footer>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-12>
-        <button ion-button large block class="timekare-primary-btn" (click)="saveLeagueDetails()">
-          Update
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-footer no-border [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <app-glass-button label="Update" (btnClick)="updateMatchConfirm()"></app-glass-button>
 </ion-footer>

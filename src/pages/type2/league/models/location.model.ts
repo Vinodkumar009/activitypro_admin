@@ -59,6 +59,7 @@ export class LeagueMatch {
     result_status_text: boolean;
     result_id:string;
     ResultStatus:number
+    result_json?: any
 }
 
 export class MatchEditInput {

@@ -123,15 +123,19 @@ export class UpdateMembershipPage {
       app_type:AppType.ADMIN_NEW//new admin
     }      
     
-    this.httpService.post(API.MEMBERSHIP_DETAILS,get_membership_payload).subscribe({
-      next: (res: any) => {
-        this.membership_dets = res.data;
-        if(this.membership_dets.membership_template.length > 0){
-          this.readTemplates(this.membership_dets.membership_template)
-        }
-        this.getAllVenue();
+    this.httpService.post(API.MEMBERSHIP_DETAILS,get_membership_payload).subscribe((res: any) => {
+      this.membership_dets = res.data;
+      if(this.membership_dets.membership_template.length > 0){
+        this.readTemplates(this.membership_dets.membership_template)
       }
-    });
+      this.getAllVenue();
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Membership tiers fetch failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })    
   }
 
 
@@ -178,7 +182,13 @@ export class UpdateMembershipPage {
             this.Venues = res.data.getVenuesByParentClub as IClubDetails[];
             //console.log("clubs lists:", JSON.stringify(this.clubs));
             if(this.Venues.length > 0) this.selectedClubKey = this.Venues.find(venue => venue.Id === this.membership_dets.club.Id).FirebaseId;
-          })    
+          },
+         (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage(error.message, 2500,ToastMessageType.Error, ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         })    
   }
 
   onVenueChange() {
@@ -199,16 +209,20 @@ export class UpdateMembershipPage {
       module:ModuleTypes.MEMBERSHIP,
       account_type:ParentclubAccountType.MEMBERSHIP
     }
-    this.httpService.post(API.CHECK_STRIPE_AVAILABILITY,get_tiers_list).subscribe({
-      next: (res: any) => {
-        this.isPaymentgatewayAvail = res.data;
-        if(!this.isPaymentgatewayAvail){
-          this.showPaymentInfoPrompt();
-        }else{
-          this.checkforSetup();
-        }
+    this.httpService.post(API.CHECK_STRIPE_AVAILABILITY,get_tiers_list).subscribe((res: any) => {
+      this.isPaymentgatewayAvail = res.data;
+      if(!this.isPaymentgatewayAvail){
+        this.showPaymentInfoPrompt();
+      }else{
+        this.checkforSetup();
       }
-    });
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Membership tiers fetch failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })    
   }
 
   async showPaymentInfoPrompt(){
@@ -243,15 +257,19 @@ export class UpdateMembershipPage {
         device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
         app_type:AppType.ADMIN_NEW
       }
-      this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe({
-        next: (res: any) => {
-          if(res.length == 0 || !res[0].hasOwnProperty('admin_fees')) {
-              this.comonService.commonAlter2('No membership year setup', 'Membership year setup is mandatory.', ()=>{
-                this.navCtrl.push("AddmembershipYearPage");
-              })
-          }
+      this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe((res: any) => {
+        if(res.length == 0 || !res[0].hasOwnProperty('admin_fees')) {
+            this.comonService.commonAlter2('No membership year setup', 'Membership year setup is mandatory.', ()=>{
+              this.navCtrl.push("AddmembershipYearPage");
+            })
         }
-      });
+      },
+     (error) => {
+          //this.commonService.hideLoader();
+          console.error("Error in fetching:", error);
+          this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+         // Handle the error here, you can display an error message or take appropriate action.
+     })        
   }
 
   //getting mester templates, these are used while creation
@@ -263,14 +281,18 @@ export class UpdateMembershipPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:AppType.ADMIN_NEW
     }
-    this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES,get_templates_payload).subscribe({
-      next: (res: any) => {
-        if(res && res.length > 0) {
-         //this.is_existed = true;
-         this.readTemplates(this.master_templates);
-        }
+    this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES,get_templates_payload).subscribe((res: any) => {
+      if(res && res.length > 0) {
+       //this.is_existed = true;
+       this.readTemplates(this.master_templates);
       }
-    });
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("No templates found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })  
   }
 
   editMembershipInfo(prop_index:number){
@@ -459,13 +481,21 @@ export class UpdateMembershipPage {
       app_type:AppType.ADMIN_NEW,
       updated_by:this.sharedservice.getLoggedInId()
     })
-    this.httpService.post(API.MEMBERSHIP_UPDATE,update_memberships_payload).subscribe({
-      next: (res: any) => {
-        this.comonService.updateCategory("update_membership_list");
-        this.comonService.toastMessage("Updated successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
-        this.getMembershipDets(this.membership_id);
-      }
-    });
+    this.httpService.post(API.MEMBERSHIP_UPDATE,update_memberships_payload).subscribe((res: any) => {
+      this.comonService.updateCategory("update_membership_list");
+      this.comonService.toastMessage("Updated successfully", 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      this.getMembershipDets(this.membership_id);
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error.message);
+        if(error.error.message){
+          this.comonService.toastMessage(`${error.error.message}`, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+        }else{
+          this.comonService.toastMessage("Update failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+        }
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
 
@@ -487,13 +517,17 @@ export class UpdateMembershipPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:AppType.ADMIN_NEW
     }
-    this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe({
-      next: (res: any) => {
-        if(res.length > 0) {
-          //this.MembershipObj.membership_setup_id = res[0].id;
-        }
+    this.httpService.post(API.MEMBERSHIP_SETUP_LIST,get_memberships_payload).subscribe((res: any) => {
+      if(res.length > 0) {
+        //this.MembershipObj.membership_setup_id = res[0].id;
       }
-    });
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   

@@ -1,4 +1,10 @@
-page-walletreportbydate{
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
+page-walletreportbydate {
+    @include android-sdk35-fixes;
+
+
+
     .social-cards ion-col {
         padding: 8px;
      }
@@ -7,7 +13,6 @@ page-walletreportbydate{
      }
 .margin_top{
     margin-top: 5px;
-}
 .scroll-content{
     background-image: none !important;
     background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
@@ -494,5 +499,6 @@ ion-select{
     ion-icon {
         font-size: 30px;
     }
+}
 }
 }

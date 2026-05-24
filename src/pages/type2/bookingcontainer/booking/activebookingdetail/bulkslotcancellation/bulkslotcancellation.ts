@@ -49,7 +49,6 @@ export class BulkSlotCancellation {
   selectedActivity = "";
   selectedCourt = "all";
   loading: any;
-  nestUrl: string = "";
   selectedTabInd = 0;
   Todayslots: any[];
   isClearStorage = false;
@@ -69,7 +68,6 @@ export class BulkSlotCancellation {
 
 
   ionViewWillEnter() {
-    this.nestUrl = this.sharedService.getnestURL();
     this.storage.get('userObj').then((val) => {
       val = JSON.parse(val);
       this.userkey = val.$key

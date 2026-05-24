@@ -133,6 +133,40 @@ export class MembersModel {
 
 //   }
 
+export class UpdateLeagueCoachData {
+  id: string;
+  coach_id: string;
+  first_name: string;
+  last_name: string;
+  profile_image: string;
+}
+
+export class UpdateLeagueCoachResponse {
+  status: number;
+  message: string;
+  data: UpdateLeagueCoachData[];
+  type: string;
+  isArray: boolean;
+}
+
+export class MatchCoachData {
+  id: string;
+  coach: {
+    Id: string;
+    first_name: string;
+    last_name: string;
+    profile_image: string;
+  };
+}
+
+export class MatchCoachResponse {
+  status: number;
+  message: string;
+  data: MatchCoachData[];
+  type: string;
+  isArray: boolean;
+}
+
 export class FetchAllMatchesInput {
   parentclubId: string; // 🏢 Parent club ID
   clubId: string; // 🏢 Club ID

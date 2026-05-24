@@ -558,36 +558,27 @@ export class CommonService {
     placement = ToastPlacement.Bottom,
     closeButton = false
   ) {
+    const isLight = !document.body.classList.contains('light-theme') ? false : true;
+    const typeClass = msgType == ToastMessageType.Success ? 'success' : msgType == ToastMessageType.Error ? 'error' : 'info';
+    const themeClass = isLight ? 'toast-light' : 'toast-dark';
     let toast = this.toastCtrl.create({
       message: m,
       duration: howLongToShow,
       position: placement == ToastPlacement.Bottom ? "bottom" : "top",
-      cssClass:
-        msgType == ToastMessageType.Success
-          ? "success"
-          : msgType == ToastMessageType.Error
-          ? "error"
-          : "info",
+      cssClass: typeClass + ' ' + themeClass,
       showCloseButton: closeButton,
     });
     toast.present();
   }
 
   showLoader(loadertext?: string) {
-    //call this fn to show loader
+    const isLight = document.body.classList.contains('light-theme');
     this.loader = this.loadingCtrl.create({
-      content: loadertext,
+      spinner: 'hide',
+      content: '<div class="custom-loader"><div class="loader-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>' + (loadertext ? '<p class="loader-text">' + loadertext + '</p>' : '') + '</div>',
+      cssClass: isLight ? 'light-loader' : 'dark-loader'
     });
     this.loader.present();
-    
-      // let imgContent = '<div class="spinner1"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
-      // this.safeImage = this.sanitizer.bypassSecurityTrustHtml(imgContent);
-      // this.loader = this.loadingCtrl.create({
-      //     spinner: 'hide',
-      //     content: this.safeImage,
-      // });
-      // this.loader.present();
-  
   }
 
   hideLoader() {
@@ -1116,6 +1107,15 @@ export class CommonService {
   
 
 
+
+  getTypeAccentColor(type: number): string {
+    switch (type) {
+      case 1: return '#35adff';
+      case 2: return '#f76e04';
+      case 3: return '#a78bfa';
+      default: return '#2b92bb';
+    }
+  }
 
 }
 export enum ToastMessageType {

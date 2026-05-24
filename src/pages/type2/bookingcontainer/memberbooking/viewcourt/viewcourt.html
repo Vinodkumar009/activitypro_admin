@@ -7,7 +7,7 @@
 </ion-header> -->
 
 
-<ion-content >
+<ion-content [ngClass]="{'light-theme': !isDarkTheme}">
   <!-- <ion-row class="top-row">
     <ion-col col-12 class="padding-0 allign-center">
         <label class="toggle">
@@ -75,7 +75,7 @@
           <ion-card class="court" *ngFor="let court of slideInfo.Slots"  [ngClass]="{'selected-court':court.IsBooked == true}" >
             <ion-card-content class="padding-0 slots" (click)="book(court,slideInfo)" [ngClass]="{'booked-court':court.IsEnable == false}">
 
-             <span class="time">{{court.StartHour}}:{{court.StartMin}}</span>-<span class="time">{{court.EndHour}}:{{court.EndMin}}</span> 
+             <span class="time-range">{{court.StartHour}}:{{court.StartMin}} - {{court.EndHour}}:{{court.EndMin}}</span>
 
              <p class="amount" *ngIf="court.Price != 0 && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{court.Price}}</p>
           
@@ -106,7 +106,7 @@
           <ion-card class="court" *ngFor="let court of slideInfo.Slots"  [ngClass]="{'selected-court':court.IsBooked == true}" >
             <ion-card-content class="padding-0 slots" (click)="book(court,slideInfo)" [ngClass]="{'booked-court':court.IsEnable == false,'admin_back': court.MemberKey == 'admin'}">
       
-              <span class="time">{{court.StartHour}}:{{court.StartMin}}</span>-<span class="time">{{court.EndHour}}:{{court.EndMin}}</span> 
+              <span class="time-range">{{court.StartHour}}:{{court.StartMin}} - {{court.EndHour}}:{{court.EndMin}}</span> 
 
               <p class="amount" *ngIf="court.Price != 0 && court.IsEnable == true"><span *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span>{{court.Price}}</p>
               <!-- <img class="img-free" [src]="freeImageURl" *ngIf="court.Price == 0 && court.IsEnable == true"> -->

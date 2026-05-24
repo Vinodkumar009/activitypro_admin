@@ -1,4 +1,10 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-adddiscount {
+    @include android-sdk35-fixes;
+
+
+
     ion-card {
         margin: 0px !important;
         width: 100% !important;

@@ -1,18 +1,57 @@
 @import '../../../theme/android-sdk35-fixes.scss';
 
-addmember-page{
-    @include android-sdk35-fixes;
-    // .scroll-content{
-    //     background-image: url("../assets/images/background/innerbg.png");
-    //     background-size: 100% 100%;
-    // }
-    .condition{
-        margin-left: 6px;
-        margin-top: 4px;
-        font-size: 16px;
-        color: black;
+editfamilymember-page {
+  @include android-sdk35-fixes;
+
+  // ── Base (Dark Theme) ──
+  .scroll-content {
+    padding: 0 !important;
+    background-color: #0f172a !important;
+    background-image: none !important;
+  }
+
+  ion-content { padding: 12px !important; }
+
+  ion-item {
+    background-color: #1e293b !important;
+    border-radius: 12px !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    padding-left: 16px !important;
+    margin-bottom: 8px !important;
+
+    .item-inner { border-bottom: none !important; box-shadow: none !important; padding-right: 16px; }
+
+    ion-label {
+      color: #94a3b8 !important; font-weight: 700 !important;
+      font-size: 11px !important; text-transform: uppercase !important; letter-spacing: 0.6px !important;
     }
-    .condition_block{
-        margin-top: 19px;
+
+    ion-input, ion-select, ion-datetime { color: #f1f5f9 !important; font-size: 15px !important; font-weight: 600 !important; }
+    .text-input, .select-text, .datetime-text { color: #f1f5f9 !important; font-size: 15px !important; font-weight: 600 !important; }
+  }
+
+  .condition { color: #cbd5e1; margin-left: 6px; margin-top: 4px; font-size: 16px; }
+  .condition_block { margin-top: 19px; }
+
+  .timekare-primary-btn {
+    background: linear-gradient(135deg, rgba(43,146,187,0.85), rgba(53,173,255,0.75)) !important;
+    color: white !important; border-radius: 8px !important; font-weight: 700 !important; font-size: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 20px rgba(43, 146, 187, 0.25) !important;
+  }
+
+  // ── Light Theme ──
+  &.light-theme {
+    .scroll-content { background-color: #f8fafc !important; }
+
+    ion-item {
+      background-color: #ffffff !important; border-color: #e2e8f0 !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+      ion-label { color: #64748b !important; }
+      ion-input, ion-select, ion-datetime { color: #0f172a !important; }
+      .text-input, .select-text, .datetime-text { color: #0f172a !important; }
     }
+    .condition { color: #1e293b; }
+  }
 }

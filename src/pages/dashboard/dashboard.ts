@@ -117,7 +117,6 @@ export class Dashboard {
   isIOS: boolean = false;
   isAppAdminLoggedin: boolean = false;
   type = 0;
-  nestUrl: any;
   backUrl =
     "https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2Factivitypro-main-dashboard.png?alt=media&token=d6f852c2-56ad-47a8-9467-db3987c908ae";
   getactivebookinInfo: any;
@@ -127,6 +126,7 @@ export class Dashboard {
   constructor(
     public events: Events,
     // private cache: CacheService,
+    private langService: LanguageService,
     public toastCtrl: ToastController,
     //private ga: GoogleAnalytics,
     public storage: Storage,
@@ -142,7 +142,6 @@ export class Dashboard {
     public parentClubService: ParentClubService,
     private httpService: HttpService
   ) {
-    this.nestUrl = this.sharedService.getnestURL();
   }
 
   ionViewDidLoad() {
@@ -155,8 +154,8 @@ export class Dashboard {
     this.checkDeviceToken();
     this.commonService.screening("DashBoard");
     this.getCurrencyDetials();
-    this.getPostgreParentclub();
     this.getParentClubDetails();
+    this.getPostgreParentclub();
     this.getFooterMenus();
     this.authenticate();
     
@@ -382,7 +381,7 @@ export class Dashboard {
     
     // Load all other storage data in parallel
     Promise.all([
-      //this.storage.get("postgre_parentclub"),
+      this.storage.get("postgre_parentclub"),
       this.storage.get("sessionDetails"),
       this.storage.get("session_enroldets"),
       this.storage.get("scl_session_enroldets"),
@@ -394,12 +393,19 @@ export class Dashboard {
       this.storage.get("loggedin_user"),
       this.storage.get("dashboardTheme")
     ])
-    .then(([sessionDetails, sessionEnrolDets, sclSessionEnrolDets, 
+    .then(([parentClub, sessionDetails, sessionEnrolDets, sclSessionEnrolDets, 
            monthlySessionEnrolDets, memberDetails, coachDetails, activeBookings, eventDetails, loggedinuser, isDarkTheme]) => {
       
       if(loggedinuser){
         const loggedin_user_info = JSON.parse(loggedinuser);
         this.sharedService.setLoggedInUserId(loggedin_user_info.id);
+      }
+
+      // Handle parent club data
+      if (parentClub != null && parentClub != undefined) {
+        this.sharedService.setPostgreParentClubId(parentClub.Id);
+      } else {
+        this.getPostgreParentclub();
       }
       
       // Handle session details
@@ -908,14 +914,17 @@ export class Dashboard {
 
   // }
   getMemberDetails() {
-    this.http
-      .get(
-        `${this.nestUrl}/user/usercount/${this.userData.UserInfo[0].ParentClubKey}`
-      )
-      .subscribe((resp) => {
-        this.memberDetails = resp["data"];
-        this.storage.set("memberDetails", this.memberDetails);
-      });
+    const parentclub = this.sharedService.getPostgreParentClubId();
+    this.httpService.get(`${API.GET_USER_COUNT}/${parentclub}`)
+      .subscribe({
+        next: (resp: any) => {
+          this.memberDetails = resp["data"];
+          this.storage.set("memberDetails", this.memberDetails);
+        },
+        error: (err) => {
+          console.error('Error fetching member details:', err);
+        }
+    });
   }
 
 

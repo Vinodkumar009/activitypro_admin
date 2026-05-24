@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-newcreatepriceband {
+    @include android-sdk35-fixes;
+
+
+
     .label{
         transform: translate3d(0, 0px, 0) !important;
        //color:#488aff !important;

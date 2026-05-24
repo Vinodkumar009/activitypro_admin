@@ -2,7 +2,6 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TournamentPage } from './tournament';
 import { SharedmoduleModule } from '../../../pages/sharedmodule/sharedmodule.module';
-import { TabService } from './tab.service';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import { TabService } from './tab.service';
   exports: [
     TournamentPage
   ],
-  providers : [TabService],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class TournamentPageModule {}

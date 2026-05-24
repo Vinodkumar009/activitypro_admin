@@ -1,3 +1,5 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
 .color-theme-5 {
 $toolbar-background-color5:#96AA39;
 $toolbar-button-text-color5:#ffffff;
@@ -67,4 +69,6 @@ $button-save-bg-clr-color5:#879933;
      .card-h2-style{
          color: $toolbar-background-color5 !important;
      }
+}
+app.color5-page {
 }

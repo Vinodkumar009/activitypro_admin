@@ -1,542 +1,140 @@
-@import "../../_league-theme.scss";
 @import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-score-input {
   @include android-sdk35-fixes;
 
-  // Dark theme
-  &:not(.light-theme) {
-    .scroll-content {
-      background: #1e293b !important;
-    }
-
-    .loading-container {
-      color: #94a3b8 !important;
-
-      p {
-        color: #94a3b8 !important;
-      }
-    }
-
-    .no-goals-container {
-      color: #94a3b8 !important;
-
-      .no-goals-icon {
-        color: #64748b !important;
-      }
-
-      h3 {
-        color: #f1f5f9 !important;
-      }
-
-      p {
-        color: #94a3b8 !important;
-      }
-    }
-
-    .team-header {
-      background: #334155 !important;
-      border-color: #475569 !important;
-
-      ion-icon {
-        color: #f1f5f9 !important;
-      }
-
-      h4 {
-        color: #f1f5f9 !important;
-      }
-    }
-
-    .goal-card {
-      background: #334155 !important;
-      border-color: #475569 !important;
-
-      &.completed {
-        border-color: #2b92bb !important;
-        background: #1e293b !important;
-      }
-    }
-
-    .goal-header {
-      border-bottom-color: #475569 !important;
-
-      .goal-number {
-        ion-icon {
-          color: #94a3b8 !important;
-
-          &.completed-icon {
-            color: #2b92bb !important;
-          }
-        }
-
-        span {
-          color: #f1f5f9 !important;
-        }
-      }
-    }
-
-    .input-group {
-      .item-md {
-        background: #475569 !important;
-        border-color: #64748b !important;
-
-        &.item-has-focus {
-          border-color: #2b92bb !important;
-        }
-      }
-
-      ion-label[stacked] {
-        color: #f1f5f9 !important;
-      }
-
-      ion-select,
-      ion-input,
-      ion-datetime {
-        color: #f1f5f9 !important;
-      }
-
-      .select-placeholder {
-        color: #94a3b8 !important;
-      }
-
-      .goal-datetime {
-        .datetime-text {
-          color: #f1f5f9 !important;
-        }
-
-        .datetime-placeholder {
-          color: #94a3b8 !important;
-        }
-
-        &[disabled] {
-          .datetime-text,
-          .datetime-placeholder {
-            color: #64748b !important;
-          }
-        }
-      }
-    }
-
-    .goal-summary {
-      background: #1e293b !important;
-      border-left-color: #2b92bb !important;
-
-      span {
-        color: #f1f5f9 !important;
-      }
-    }
+  .scroll-content { padding: 0 !important; overflow: hidden !important; background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
+  ion-navbar { background: #0f172a !important;
+    .toolbar-background { background: #0f172a !important; }
+    .toolbar-title { color: #f1f5f9 !important; }
+    .bar-button { color: #f1f5f9 !important; }
   }
 
-  // Light theme
-  &.light-theme {
-    .scroll-content {
-      background: #ffffff !important;
-    }
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 12px 80px; }
 
-    .loading-container {
-      color: #666 !important;
-
-      p {
-        color: #666 !important;
-      }
-    }
-
-    .no-goals-container {
-      color: #666 !important;
-
-      .no-goals-icon {
-        color: #ccc !important;
-      }
-
-      h3 {
-        color: #333 !important;
-      }
-
-      p {
-        color: #666 !important;
-      }
-    }
-
-    .team-header {
-      background: #f8f9fa !important;
-      border-color: #e9ecef !important;
-
-      ion-icon {
-        color: #495057 !important;
-      }
-
-      h4 {
-        color: #495057 !important;
-      }
-    }
-
-    .goal-card {
-      background: #ffffff !important;
-      border-color: #e9ecef !important;
-
-      &.completed {
-        border-color: #28a745 !important;
-        background: #f8fff9 !important;
-      }
-    }
-
-    .goal-header {
-      border-bottom-color: #e9ecef !important;
-
-      .goal-number {
-        ion-icon {
-          color: #6c757d !important;
-
-          &.completed-icon {
-            color: #28a745 !important;
-          }
-        }
-
-        span {
-          color: #495057 !important;
-        }
-      }
-    }
-
-    .input-group {
-      .item-md {
-        background: #ffffff !important;
-        border-color: #ced4da !important;
-
-        &.item-has-focus {
-          border-color: #495057 !important;
-        }
-      }
-
-      ion-label[stacked] {
-        color: #495057 !important;
-      }
-
-      ion-select,
-      ion-input,
-      ion-datetime {
-        color: #495057 !important;
-      }
-
-      .select-placeholder {
-        color: #6c757d !important;
-      }
-
-      .goal-datetime {
-        .datetime-text {
-          color: #495057 !important;
-        }
-
-        .datetime-placeholder {
-          color: #6c757d !important;
-        }
-
-        &[disabled] {
-          .datetime-text,
-          .datetime-placeholder {
-            color: #adb5bd !important;
-          }
-        }
-      }
-    }
-
-    .goal-summary {
-      background: #d4edda !important;
-      border-left-color: #28a745 !important;
-
-      span {
-        color: #155724 !important;
-      }
-    }
+  // ── Goals Header ──
+  .goals-header { margin-bottom: 16px; }
+  .goals-count-badge {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px; margin-bottom: 10px;
+    background: rgba(43, 146, 187, 0.12); border: 1px solid rgba(43, 146, 187, 0.25);
+    border-radius: 12px;
+    ion-icon { font-size: 20px; color: #2b92bb; }
+    span { font-size: 16px; font-weight: 800; color: #3fbcd3; }
   }
-  .scroll-content {
-    background-image: none !important;
+  .goals-progress { display: flex; align-items: center; gap: 10px; }
+  .progress-bar {
+    flex: 1; height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden;
   }
-
-  ion-title {
-    background-color: #2b92bb !important;
-
-    div {
-      color: #fff !important;
-    }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, #2b92bb, #10b981);
+    border-radius: 3px; transition: width 0.4s ease;
   }
+  .progress-text { font-size: 11px; font-weight: 700; color: #64748b; white-space: nowrap; }
 
-  .toolbar-background-md {
-    background-color: #2b92bb;
-  }
-
-  .scroll-content {
-    background: #ffffff;
-    padding: 0 !important;
-  }
-
-  // Loading State
-  .loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    color: #666;
-
-    ion-spinner {
-      margin-bottom: 16px;
-    }
-
-    p {
-      font-size: 16px;
-      margin: 0;
-    }
-  }
-
-  // No Goals State
-  .no-goals-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    padding: 20px;
-    text-align: center;
-    color: #666;
-
-    .no-goals-icon {
-      font-size: 64px;
-      color: #ccc;
-      margin-bottom: 16px;
-    }
-
-    h3 {
-      margin: 8px 0;
-      color: #333;
-    }
-
-    p {
-      margin: 0;
-      font-size: 14px;
-    }
-  }
-
-  // Goals Container
-  .goals-container {
-    padding: 12px;
-  }
-
-  .team-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-    padding: 12px 16px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-
-    ion-icon {
-      font-size: 20px;
-      color: #495057;
-      margin-right: 8px;
-    }
-
-    h4 {
-      margin: 0;
-      color: #495057;
-      font-weight: 500;
-      font-size: 16px;
-    }
-  }
-
-  // Goal Cards
+  // ── Goal Card ──
   .goal-card {
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e9ecef;
-    background: #ffffff;
-
-    &.completed {
-      border-color: #28a745;
-      background: #f8fff9;
-    }
+    background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(71, 85, 105, 0.35);
+    border-radius: 14px; padding: 0; margin-bottom: 12px; overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    &.active { border-color: rgba(43, 146, 187, 0.4); box-shadow: 0 0 0 1px rgba(43, 146, 187, 0.15); }
+    &.completed { border-color: rgba(16, 185, 129, 0.35); }
   }
 
-  .goal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px 8px;
-    border-bottom: 1px solid #e9ecef;
-
-    .goal-number {
-      display: flex;
-      align-items: center;
-
-      ion-icon {
-        font-size: 16px;
-        color: #6c757d;
-        margin-right: 6px;
-
-        &.completed-icon {
-          color: #28a745;
-        }
-      }
-
-      span {
-        font-weight: 500;
-        color: #495057;
-        font-size: 14px;
-      }
-    }
-
-    ion-badge {
-      font-size: 10px;
-      padding: 2px 6px;
-    }
+  .goal-top {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px 0;
+  }
+  .goal-number-badge {
+    width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(71, 85, 105, 0.3); color: #64748b;
+    ion-icon { font-size: 15px; }
+    &.done { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+  }
+  .goal-title { display: flex; flex-direction: column; }
+  .goal-num { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+  .goal-status { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #10b981;
+    &.pending { color: #64748b; }
   }
 
-  .goal-content {
-    padding: 12px 16px 16px;
+  .goal-body { padding: 12px 16px 14px; display: flex; gap: 10px; }
+  .goal-field { flex: 1; }
+  .field-header {
+    display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
+    ion-icon { font-size: 13px; color: #2b92bb; }
+    span { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+  }
+  .field-select-wrap { position: relative; }
+  .field-select {
+    width: 100%; background: #1e293b !important; border: 1px solid #334155;
+    border-radius: 10px; color: #f1f5f9 !important; font-size: 13px; font-weight: 600;
+    padding: 10px 12px; max-width: 100%;
+    .select-text, .datetime-text { color: #f1f5f9 !important; }
+  }
+  .select-chevron { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #64748b; pointer-events: none; }
+
+  // ── Confirmed Summary ──
+  .goal-confirmed { padding: 0 16px 14px; }
+  .confirmed-line { height: 1px; background: rgba(16, 185, 129, 0.2); margin-bottom: 10px; }
+  .confirmed-content {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; background: rgba(16, 185, 129, 0.08); border-radius: 10px;
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    ion-icon { font-size: 16px; color: #10b981; flex-shrink: 0; }
+  }
+  .confirmed-player { flex: 1; font-size: 13px; font-weight: 700; color: #10b981; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .confirmed-time {
+    font-size: 12px; font-weight: 800; color: #2b92bb;
+    padding: 2px 8px; background: rgba(43, 146, 187, 0.12); border-radius: 6px;
   }
 
-  .input-group {
-    margin-bottom: 12px;
+  // ── Empty State ──
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 20px; gap: 12px;
+  }
+  .empty-icon-wrap {
+    width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
+    background: rgba(43, 146, 187, 0.1); border: 1px solid rgba(43, 146, 187, 0.2);
+    ion-icon { font-size: 32px; color: #2b92bb; }
+  }
+  .empty-title { font-size: 18px; font-weight: 700; color: #f1f5f9; margin: 0; }
+  .empty-text { font-size: 13px; color: #64748b; margin: 0; text-align: center; }
 
-    .item-md {
-      padding: 8px 12px;
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: 1px solid #ced4da;
-      background: #ffffff;
-
-      &.item-has-focus {
-        border-color: #495057;
-      }
+  // ── Light Theme ──
+  &.light-theme {
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    ion-navbar { background: #f8fafc !important;
+      .toolbar-background { background: #f8fafc !important; }
+      .toolbar-title { color: #1e293b !important; }
+      .bar-button { color: #1e293b !important; }
     }
-
-    ion-label[stacked] {
-      color: #495057;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 6px;
+    .goals-count-badge { background: rgba(43, 146, 187, 0.08); border-color: rgba(43, 146, 187, 0.15); }
+    .progress-bar { background: #e2e8f0; }
+    .goal-card { background: rgba(255, 255, 255, 0.6); border-color: rgba(226, 232, 240, 0.6);
+      &.completed { border-color: rgba(16, 185, 129, 0.3); }
     }
-
-    ion-select,
-    ion-input,
-    ion-datetime {
-      font-size: 14px;
-      color: #495057;
+    .goal-num { color: #1e293b; }
+    .goal-number-badge { background: rgba(226, 232, 240, 0.5); color: #94a3b8; }
+    .field-header span { color: #64748b; }
+    .field-select { background: #f1f5f9 !important; border-color: #e2e8f0; color: #1e293b !important;
+      .select-text, .datetime-text { color: #1e293b !important; }
     }
-
-    .select-placeholder {
-      color: #6c757d;
-    }
-
-    // DateTime Styles
-    .goal-datetime {
-      width: 100%;
-      text-align: center;
-
-      .datetime-text {
-        color: #495057;
-        font-size: 16px;
-        font-weight: 500;
-        text-align: center;
-      }
-
-      .datetime-placeholder {
-        color: #6c757d;
-        font-size: 14px;
-      }
-
-      &[disabled] {
-        opacity: 0.5;
-        pointer-events: none;
-
-        .datetime-text,
-        .datetime-placeholder {
-          color: #adb5bd;
-        }
-      }
-    }
-
-    .time-input {
-      .item-inner {
-        justify-content: center;
-      }
-    }
+    .confirmed-content { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.1); }
+    .empty-icon-wrap { background: rgba(43, 146, 187, 0.06); border-color: rgba(43, 146, 187, 0.12); }
+    .empty-title { color: #1e293b; }
   }
 
-  .goal-summary {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    background: #d4edda;
-    border-radius: 4px;
-    border-left: 3px solid #28a745;
-    margin-top: 8px;
-
-    ion-icon {
-      font-size: 16px;
-      margin-right: 6px;
-    }
-
-    span {
-      color: #155724;
-      font-size: 13px;
-      font-weight: 500;
-    }
-  }
-
-  // DateTime picker overlay styles
-  .picker-wrapper {
-    .picker-toolbar {
-      background: #495057;
-
-      .picker-toolbar-button {
-        color: #ffffff;
-      }
-    }
-
-    .picker-columns {
-      background: #ffffff;
-
-      .picker-col {
-        .picker-opt {
-          color: #495057;
-          font-size: 16px;
-        }
-
-        .picker-opt.picker-opt-selected {
-          color: #28a745;
-          font-weight: 600;
-        }
-      }
-    }
-  }
-
- // Footer styling
-  ion-footer {
-    --background: #ffffff;
-    background: #ffffff !important;
-    border-top: 1px solid #e2e8f0;
-    
-    .timekare-primary-btn {
-      background: #2b92bb;
-      color: white;
-      font-weight: 500;
-    }
-  }
-
-  // Dark theme for footer
-  &:not(.light-theme),
-  .dark-theme {
-    ion-footer {
-      --background: #1e293b !important;
-      background: #1e293b !important;
-      border-top: 1px solid #475569;
-      
-      .timekare-primary-btn {
-        background: #2b92bb;
-        color: white;
-      }
-    }
+  // ── Responsive ──
+  @media (max-width: 359px) {
+    .page-scroll-area { padding: 12px 8px 80px; }
+    .goal-body { flex-direction: column; gap: 8px; }
+    .goal-top { padding: 12px 12px 0; }
+    .goal-body { padding: 10px 12px 12px; }
+    .goal-confirmed { padding: 0 12px 12px; }
   }
 }

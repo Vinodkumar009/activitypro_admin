@@ -6,11 +6,34 @@ import { CommonService, ToastMessageType, ToastPlacement } from "../../../../ser
 import { SharedServices } from "../../../services/sharedservice";
 import { HttpService } from "../../../../services/http.service";
 import { API } from "../../../../shared/constants/api_constants";
+import {
+    PlayerPosition,
+    ApiPosition,
+    TEAM_SIZES,
+    Player,
+    Formation,
+    TeamFormation,
+    TeamSizeFormation,
+    TeamFormationsApiResponse,
+    ParticipantApiInput,
+    LeagueParticipantApiInput,
+    FormationApiInput,
+    UpdateParticipationApiInput,
+    SaveLineupApiInput,
+    DeleteLineupApiInput,
+    PositionPayload,
+    SubstitutePayload,
+    ApiResponse,
+    SaveLineupResponse,
+    TeamOption,
+    VisibilityOption,
+    LineupDismissData,
+} from "../../league/models/lineup.model";
 import { LineupVisibility, LeagueTeamPlayerStatusType, LeagueMatchActionType, LeagueParticipationStatus } from "../../../../shared/utility/enums";
 import { GetIndividualMatchParticipantModel } from "../../../../shared/model/match.model";
 import { LeagueMatchParticipantModel } from "../../league/models/league.model";
 import { AppType } from "../../../../shared/constants/module.constants";
-import { ApiPosition, ApiResponse, DeleteLineupApiInput, Formation, FormationApiInput, LeagueParticipantApiInput, LineupDismissData, ParticipantApiInput, Player, PlayerPosition, SaveLineupApiInput, SaveLineupResponse, TEAM_SIZES, TeamFormation, TeamFormationsApiResponse, TeamOption, TeamSizeFormation, UpdateParticipationApiInput, VisibilityOption } from "../../league/models/lineup.model";
+import { DetailHeaderRow } from "../../../../shared/components/detail-header/detail-header.component";
 
 /**
  * Interface for storing team lineup state
@@ -40,7 +63,7 @@ export class LineupPage {
     // ===========================================
     // Theme State
     // ===========================================
-    isDarkTheme: boolean = false;
+    isDarkTheme: boolean = true;
 
     // ===========================================
     // Lineup Configuration
@@ -61,7 +84,7 @@ export class LineupPage {
     visibilityOptions: VisibilityOption[] = [
         { value: LineupVisibility.ALL_INVITEES, label: 'All invitees' },
         { value: LineupVisibility.TEAM_ONLY, label: 'Team only' },
-        { value: LineupVisibility.ADMIN_COACH, label: 'Coaches only' }
+        { value: LineupVisibility.COACHES_ONLY, label: 'Coaches only' }
     ];
     teams: TeamOption[] = [];
     availablePlayers: Player[] = [];
@@ -85,8 +108,8 @@ export class LineupPage {
     showFormationDropdown: boolean = false;
     showVisibilityDropdown: boolean = false;
     showPlayerSelection: boolean = false;
-    private dropdownSelectionGuard: boolean = false; // 🛡️ Prevents toggle re-fire on mobile touch events
     showPlayerOptions: boolean = false;
+    private dropdownSelectionGuard: boolean = false; // 🛡️ Prevents toggle re-fire on mobile touch events
     activePosition: PlayerPosition | null = null;
     selectedSubstitute: Player | null = null;
     recentlyReplacedPlayer: Player | null = null;
@@ -343,12 +366,12 @@ export class LineupPage {
 
     private loadTheme(): void {
         this.storage.get('dashboardTheme').then((theme) => {
-            const isDark = theme === 'dark' || theme === true;
+            const isDark = theme === 'dark' || theme === true || theme === null;
             this.isDarkTheme = isDark;
             this.applyTheme(isDark);
         }).catch(() => {
-            this.isDarkTheme = false;
-            this.applyTheme(false);
+            this.isDarkTheme = true;
+            this.applyTheme(true);
         });
     }
 
@@ -357,15 +380,9 @@ export class LineupPage {
             const el = document.querySelector("page-lineup");
             if (el) {
                 if (isDark) {
-                    el.classList.add("dark-theme");
                     el.classList.remove("light-theme");
-                    document.body.classList.add("dark-theme");
-                    document.body.classList.remove("light-theme");
                 } else {
-                    el.classList.remove("dark-theme");
                     el.classList.add("light-theme");
-                    document.body.classList.remove("dark-theme");
-                    document.body.classList.add("light-theme");
                 }
                 return true;
             }
@@ -379,10 +396,9 @@ export class LineupPage {
 
     private forceThemeCheck(): void {
         this.storage.get("dashboardTheme").then((storageTheme) => {
-            const bodyHasDarkTheme = document.body.classList.contains("dark-theme");
-            let isDark = storageTheme === 'dark' || storageTheme === true;
-            if (storageTheme === null && bodyHasDarkTheme) {
-                isDark = true;
+            let isDark = true;
+            if (storageTheme === 'light' || storageTheme === false) {
+                isDark = false;
             }
             this.isDarkTheme = isDark;
             this.applyTheme(isDark);
@@ -482,7 +498,7 @@ export class LineupPage {
     }
 
     private mapParticipantToPlayer(participant: GetIndividualMatchParticipantModel): Player {
-        const profileImage = participant.user && participant.user.profile_image_url ? participant.user.profile_image_url : null;
+        const profileImage = participant.user ? participant.user.profile_image_url : null;
         return {
             playerid: participant.user.Id,
             participationId: participant.id,
@@ -559,7 +575,7 @@ export class LineupPage {
     }
 
     private handleFormationsResponse(res: TeamFormationsApiResponse): void {
-        const data = res && res.data ? res.data : null;
+        const data = res ? res.data : null;
         if (data && data.length > 0) {
             this.allTeamFormations = data;
 
@@ -648,7 +664,7 @@ export class LineupPage {
 
     get selectedFormationName(): string {
         const formations = this.getAvailableFormations();
-        if (!formations || formations.length === 0) return this.selectedFormation;
+        if (!formations || !formations.length) return this.selectedFormation;
 
         const formation = formations.find((f: Formation) => f.id === this.selectedFormation);
         if (formation) return formation.formation_name;
@@ -687,13 +703,13 @@ export class LineupPage {
             // Priority 2: Check if there's an existing player assignment for this role (from cache)
             if (!assignedPlayer) {
                 assignedPlayer = this.findExistingPlayerForRole(pos.role);
-                assignedImage = assignedPlayer && assignedPlayer.image ? assignedPlayer.image : null;
+                assignedImage = (assignedPlayer ? assignedPlayer.image : null) || null;
             }
 
             return {
                 ...pos,
                 player: assignedPlayer,
-                playerid: assignedPlayer && assignedPlayer.playerid ? assignedPlayer.playerid : (pos.playerid || null),
+                playerid: (assignedPlayer ? assignedPlayer.playerid : null) || pos.playerid || null,
                 image: assignedImage || pos.image || null
             };
         });
@@ -701,7 +717,7 @@ export class LineupPage {
 
     private findExistingPlayerForRole(role: string): Player | null {
         const existing = this.currentPositions.find((p: PlayerPosition) => p.role === role);
-        return existing && existing.player ? existing.player : null;
+        return (existing ? existing.player : null) || null;
     }
 
     private getFormationData(): PlayerPosition[] {
@@ -786,7 +802,44 @@ export class LineupPage {
 
     get visibilityLabel(): string {
         const option = this.visibilityOptions.find(o => o.value === this.visibility);
-        return option && option.label ? option.label : '';
+        return (option ? option.label : '') || '';
+    }
+
+    // ===========================================
+    // Detail Header Computed Properties
+    // ===========================================
+
+    get headerTitle(): string {
+        if (!this.match) return '';
+        return (this.isLeague ? (this.match as any).match_title : (this.match as any).MatchTitle) || '';
+    }
+
+    get headerSubtitle(): string {
+        if (!this.match) return '';
+        const activity = this.isLeague ? (this.match as any).activity_name : (this.match as any).ActivityName;
+        return (activity || 'Activity') + ' · Lineup';
+    }
+
+    get headerAccentColor(): string {
+        if (!this.match) return '#2b92bb';
+        const m = this.match as any;
+        return this.commonService.getTypeAccentColor(this.isLeague ? m.league_type : m.MatchType);
+    }
+
+    get headerDetailRows(): DetailHeaderRow[] {
+        if (!this.match) return [];
+        const m = this.match as any;
+        const rows: DetailHeaderRow[] = [];
+        if (this.isLeague) {
+            if (m.homeusername || m.awayusername) rows.push({ icon: 'people', text: `${m.homeusername || 'Home'} vs ${m.awayusername || 'Away'}` });
+            if (m.start_date) rows.push({ icon: 'calendar', text: m.start_date });
+            if (m.league_name) rows.push({ icon: 'trophy', text: m.league_name });
+        } else {
+            if (m.homeUserName || m.awayUserName) rows.push({ icon: 'people', text: `${m.homeUserName} vs ${m.awayUserName}` });
+            if (m.Date) rows.push({ icon: 'calendar', text: `${m.Date}${m.Time ? ' · ' + m.Time : ''}` });
+            if (m.VenueName) rows.push({ icon: 'pin', text: m.VenueName });
+        }
+        return rows;
     }
 
     // ===========================================
@@ -927,7 +980,7 @@ export class LineupPage {
                     },
                     (error: { error?: { message?: string } }) => {
                         this.commonService.hideLoader();
-                        this.commonService.toastMessage(error && error.error && error.error.message ? error.error.message : "Failed to update", 2500, ToastMessageType.Error);
+                        this.commonService.toastMessage((error && error.error && error.error.message) ? error.error.message : "Failed to update", 2500, ToastMessageType.Error);
                     }
                 );
         }
@@ -1123,7 +1176,7 @@ export class LineupPage {
                 (error: { error?: { message?: string } }) => {
                     this.commonService.hideLoader();
                     console.error('Error saving lineup:', error);
-                    const errorMessage = error && error.error && error.error.message ? error.error.message : "Failed to save lineup";
+                    const errorMessage = (error && error.error && error.error.message) ? error.error.message : "Failed to save lineup";
                     this.commonService.toastMessage(errorMessage, 2500, ToastMessageType.Error);
                 }
             );
@@ -1181,7 +1234,7 @@ export class LineupPage {
                 (error: { error?: { message?: string } }) => {
                     this.commonService.hideLoader();
                     console.error('Error deleting lineup:', error);
-                    const errorMessage = error && error.error && error.error.message ? error.error.message : "Failed to delete lineup";
+                    const errorMessage = (error && error.error && error.error.message) ? error.error.message : "Failed to delete lineup";
                     this.commonService.toastMessage(errorMessage, 2500, ToastMessageType.Error);
                 }
             );

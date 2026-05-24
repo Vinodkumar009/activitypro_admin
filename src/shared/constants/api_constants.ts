@@ -89,6 +89,7 @@ export const API = {
     REMOVE_COUPON: `events/coupons/delete_coupon`,
     EVENT_PRINT_REPORT: `events/bookings/printeventreport`,
     GET_LEAGUE_MATCHES: `league/getLeagueMatches`,
+    GET_ALL_LEAGUES: `league/get-all-leagues`,
     DELETE_LEAGUE_MATCHES: `league/deleteLeagueMatches`,
     Get_League_Participant_For_Match: `league/GetLeagueParticipantForMatch`,
     Update_League_Fixture: `league/UpdateLeagueFixture`,
@@ -98,6 +99,10 @@ export const API = {
     GET_LEAGUE_OR_MATCH_TYPES: `league/getTypes`,
     GET_LEAGUE_CATEGORIES:`league/getCategories`,
     Get_Round_Types: `league/getRoundTypes`,
+    GET_DURATIONS: `utility/getDurations`,
+    CREATE_MATCH: `match/CreateMatch`,
+    CREATE_RECURRING_MATCHES: `match/CreateRecurringMatches`,
+    EDIT_MATCH: `match/EditMatch`,
     GENERATE_MATCHES: `league/generate-matches`,
     Get_League_Match_Result: `LeagueResult/getLeagueMatchResult`,
     Publish_League_Result_For_Activities: `LeagueResult/publishLeagueResultForActivities`,
@@ -109,10 +114,16 @@ export const API = {
     PAUSE_MONTHLY_SUBSCRIPTION: `pause_monthly_subscription`,
     GET_SUBSCRIPTION_PAUSE_MONTHS: `monthly_session/getSubscriptionPauseMonths`,
     GET_ACTIVIY_SPECIFIC_TEAM: `league/getActivitySpecificTeam`,
+    GET_TEAMS_FOR_PARENT_CLUB: `league/get-teams-for-parent-club`,
+    CREATE_TEAM: `league/create-team`,
     CREATE_CLUB: `club/create_club`,
     GetTeamsByMatch: `match/get_teams_by_match`,
+    GetMatchTeamsByMatchId: `match/get-match-teams-by-match-id`,
     GetIndividualMatchParticipant: `match/GetIndividualMatchParticipant`,
     FetchAllMatches: `match/FetchAllMatches`,
+    FETCH_COACHES: `coach/FetchCoaches`,
+    UPDATE_LEAGUE_COACH: `league/updateLeagueCoach`,
+    GET_MATCH_COACHES: `league/getMatchCoaches`,
     UPDATE_RESULT_ENTITY: `LeagueResult/updateResultEntity`,
     GET_RESULT_STATUS_BY_ACTIVITY: `LeagueResult/getResultStatusByActivity`,
     UpdateLeagueMatchInviteStatus: `league/UpdateLeagueMatchInviteStatus`,
@@ -161,5 +172,45 @@ export const API = {
     SAVE_TEAM_FORMATION: 'league/lineup/saveTeamFormation',
     DELETE_TEAM_FORMATION: 'league/lineup/deleteTeamFormation',
     GET_SAVED_FORMATIONS: 'league/lineup/getSavedFormationsForMatch',
-    SEND_PUSH_NOTIFICATION: 'notifications/send-push-notification'
+    SEND_PUSH_NOTIFICATION: 'notifications/send-push-notification',
+    GET_NOTIFICATIONS: 'notifications/get-notifications',
+    DELETE_NOTIFICATION: 'notifications/delete-notification',
+    GET_SUPERADMIN_MEMBER_COUNT: 'superadmin/membercount',
+    GET_APKIDS_LOGIN_STATUS: 'apkids/loginstatus',
+    SUBADMIN_RESET_PASSWORD: 'parentclubuser/subadmin/resetpassword',
+    DELETE_VENUE: 'club/deleteVenue',
+
+    
+    // ─── Ladder ───
+    LADDER_GET_CONFIGS: 'ladder/getConfigs',
+    LADDER_SAVE_CONFIG: 'ladder/saveConfig',
+    LADDER_GET_RANKINGS: 'ladder/getRankings',
+    LADDER_INIT_RANKINGS: 'ladder/initRankings',
+    LADDER_ISSUE_CHALLENGE: 'ladder/issueChallenge',
+    LADDER_GET_CHALLENGES: 'ladder/getChallenges',
+    LADDER_RESPOND_CHALLENGE: 'ladder/respondChallenge',
+    LADDER_CANCEL_CHALLENGE: 'ladder/cancelChallenge',
+
+    // ─── Leaderboard ───
+    LEADERBOARD_GET_AGE_CATEGORIES: 'leaderboard/getAgeCategories',
+    LEADERBOARD_GET_USER_LEADERBOARD: 'leaderboard/getUserLeaderboard',
+
+    // ─── Groups ───
+    GET_GROUPS: 'league/getGroups',
+    GET_PARTICIPANT_GROUPS: 'league/getParticipantGroups',
+    ASSIGN_PARTICIPANT_TO_GROUP: 'league/assignParticipantToGroup',
+    CREATE_GROUPS: 'league/createGroups',
+    RENAME_GROUP: 'league/renameGroup',
+    DELETE_GROUP: 'league/deleteGroup',
+
+    // ─── Pairs (Doubles) ───
+    CREATE_PAIR: 'league/createPair',
+    GET_PAIRS: 'league/getPairs',
+    REMOVE_PAIR: 'league/removePair',
+
+    // ─── Match Players ───
+    GET_MATCH_PARTICIPANTS: 'match/getMatchParticipants',
+    ADD_PLAYERS_TO_MATCH: 'match/AddPlayersToMatch',
+    UPDATE_STANDALONE_PARTICIPATION_STATUS: 'match/UpdateStandaloneParticipationStatus',
+    PUBLISH_RESULT_STANDALONE: 'match/PublishResultStandAlone'
 }

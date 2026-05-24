@@ -67,7 +67,6 @@ export class CampRelatedDetailsPage {
   block = "";
   blockIndex = -1;
   communicationBlockIndex = -1;
-  nestUrl: string = "";
   SessionDate: any;
   inclusionList: Array<String> = ["", " ", "-", ".", "..", "...", "A", "adhd", "fit", "good", "great", "healthy",
         "n", "n/a", "N/a", "na", "Na", "NA", "nil", "no", "No", "no e", "nobe", "non", "not applicable", "none", "nope", "None", "None ", "Non", "None\n", "None\n\n", "Nope", "nothing", "Nothing", "ok", "Ok", "okay", "no problem",
@@ -120,7 +119,6 @@ export class CampRelatedDetailsPage {
   ionViewWillEnter() {
     this.themeType = this.sharedservice.getThemeType();
     this.isAndroid = this.platform.is("android");
-    this.nestUrl = this.sharedservice.getnestURL();
     // this.campDetails = this.navParams.get("CampDetails");
     // this.sessionList = this.navParams.get("SessionList");
     // this.memberLists = this.navParams.get("MemberList");
@@ -547,13 +545,15 @@ export class CampRelatedDetailsPage {
       updated_by:this.sharedservice.getLoggedInId()                 
     }
     
-    this.httpService.post(API.CAMP_SESSION_CAPACITY_UPDATE,groupSizeInput).subscribe({
-      next: (res: any) => {
-        this.selectedSessionObj.capacity = res.data.updated_capacity;
-        const message = "Capacity updated successfully";
-        this.commonService.toastMessage(message, 2500, ToastMessageType.Success,ToastPlacement.Bottom);
-      }
-    }) 
+    this.httpService.post(API.CAMP_SESSION_CAPACITY_UPDATE,groupSizeInput).subscribe((res: any) => {
+      this.selectedSessionObj.capacity = res.data.updated_capacity;
+      const message = "Capacity updated successfully";
+      this.commonService.toastMessage(message, 2500, ToastMessageType.Success,ToastPlacement.Bottom);
+   },
+   (error) => {
+    console.error("Error in fetching:", error);
+    this.commonService.toastMessage("Capacity updation failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+   }) 
 
   }
 

@@ -1,0 +1,54 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-createtemplate {
+    @include android-sdk35-fixes;
+
+
+
+.lab{
+    font-size: 13px;
+btn_col{
+    text-align: center;
+}
+.btn{
+    width: 120px;
+}
+
+.items{
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+    div {
+        border-bottom: 0px !important;
+        padding-right: 0px!important;
+        div {
+            border-right: 0.001em ridge #CBD9DC;
+        }
+    }
+
+}
+.scroll-content {
+    padding: 16px 0px !important;
+    background-color: rgb(234, 243, 248) !important;
+}
+
+.elipsesdot {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 73px;
+    display: block;
+    overflow: hidden;
+}
+.items2{
+   width: 103% !important;
+   margin-left: -1.3% !important;
+}
+
+#template_name,#summary{
+    margin-top: -6px 
+}
+.p_clubName {
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+}
+}

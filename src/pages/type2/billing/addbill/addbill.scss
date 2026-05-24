@@ -1,0 +1,203 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+addbill-page {
+    @include android-sdk35-fixes;
+    // .item-inner {
+    //     border: none !important;
+    //     box-shadow: none !important
+    // }
+    ion-item {
+        ion-label {
+            color: #b5b2ae;
+            //margin-top: -1px !important;
+        }
+        .act {
+            margin-top: 15px !important;
+        } // border-bottom: 1px solid #dedede !important;
+        // box-shadow: inset 0 -1px 0 0 #dedede!important;
+    }
+    .input-has-focus .item-inner {
+        border-bottom-color: #dedede !important;
+        box-shadow: inset 0 -1px 0 0 #dedede !important;
+    }
+    .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        border-bottom-color: #dedede;
+        box-shadow: inset 0 -1px 0 0 #dedede;
+    }
+    .item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+    .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+        border-bottom-color: #dedede;
+        box-shadow: inset 0 -1px 0 0 #dedede;
+    }
+
+    .width100 {
+        max-width: 100% !important;
+    }
+
+    .scroll-content {
+        padding: 6px !important;
+        background: white !important;
+        margin: 2px;
+    }
+
+    .venueionitem {
+        color: #faae4e !important;
+        text-align: center;
+    }
+
+    .searchInLine {
+        width: 100%
+    }
+
+    .sub-container {
+        button {
+            padding: 9px 10px;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 86% !important;
+            margin-top: 2px !important;
+            padding: 2px 0px
+        }
+
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+
+        .searchbar-search-icon {
+            display: none !important;
+        }
+
+        ion-icon {
+            font-size: 20px;
+        }
+
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow: none
+        }
+    }
+
+    .fixed-button {
+        position: absolute;
+        bottom: 1em;
+        z-index: 11111;
+
+        ion-row {
+            height: 2em !important;
+
+        }
+    }
+
+    .block_height1 {
+        margin-top: 5px;
+        height: 30em;
+
+        .margin {
+            padding: 0px 11px 0px 11px;
+        }
+    }
+
+    .nopad {
+        padding: 0px;
+        margin: 6px;
+    }
+
+    .border-bottom-2px {
+        border-bottom: 1px solid #faae4e !important;
+        margin: 0 0 0 -12px;
+    }
+
+    .venuedropdown {
+        padding: 0px 3px 3px 0px;
+        max-width: none;
+        font-size: larger;
+        margin: auto;
+    }
+
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        text-align: left;
+        padding-right: 5px;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    ion-select {
+        display: -webkit-box;
+        max-width: 100%;
+        width: 100%;
+    }
+    .ionselect{
+        .select-icon{
+             margin-right: 1.2rem;
+        }
+    }
+
+    .select-icon {
+        position: relative !important;
+        width: 20px !important;
+        height: 20px !important;
+        background: #f0dcbc !important;
+        border-radius: 50% !important;
+        color: white !important;
+
+        .select-icon-inner {
+            left: 5px !important;
+            top: 46% !important;
+            margin-top: -2px !important;
+            position: absolute !important;
+            width: 0 !important;
+            height: 0 !important;
+            border-top: 5px solid !important;
+            border-right: 5px solid transparent !important;
+            border-left: 5px solid transparent !important;
+            color: white !important;
+            pointer-events: none !important;
+        }
+    }
+
+    .custom-select {
+        margin-bottom: 5px;
+        box-shadow: 0px 11px 17px -4px #b8b7b7;
+        border-left: 1px solid #f8ba5d;
+        border-bottom: 1px solid #f8ba5d;
+
+        span {
+            font-size: 13px;
+            color: gray;
+            float: right;
+        }
+    }
+
+    .right-input {
+        .text-input {
+            text-align: right;
+
+        }
+    }
+
+    .width50 {
+        width: 50% !important
+    }
+
+    .currency {
+        position: relative;
+        z-index: 11111;
+    }
+}

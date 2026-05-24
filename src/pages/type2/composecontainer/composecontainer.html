@@ -1,0 +1,33 @@
+<!--
+  Generated template for the ComposecontainerPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{header}}</ion-title>
+    
+    <ion-buttons end>
+      <button ion-button icon-only (click)="send()">
+        <ion-icon name="ios-send-outline" class="ico"  ></ion-icon>
+      </button>
+  </ion-buttons>
+  </ion-navbar>
+  
+</ion-header>
+
+
+<ion-content>
+    <ion-slides pager="true" (ionSlideDidChange)="slideChanged()">
+        <ion-slide >
+          <page-composenotification  #notification></page-composenotification>
+        </ion-slide>
+      
+        <ion-slide >
+          <page-composeemial #email></page-composeemial>
+        </ion-slide>
+    
+      </ion-slides>
+</ion-content>

@@ -1,204 +1,112 @@
 <ion-content class="modern-history">
-  <!-- Modern Tab Selector -->
-  <div class="modern-tab-selector">
-    <button class="modern-tab" [class.active]="activeIndex==0" (click)="changeType(0)">
-      <div class="tab-icon-wrapper">
-        <ion-icon name="trophy"></ion-icon>
-      </div>
-      <span>Competitions</span>
-    </button>
-    <button class="modern-tab" [class.active]="activeIndex==1" (click)="changeType(1)">
-      <div class="tab-icon-wrapper">
-        <ion-icon name="american-football"></ion-icon>
-      </div>
-      <span>Matches</span>
-    </button>
-  </div>
-<!-- the commented code below is the original match history display code, and it shows matches(singles/doubles) which are published -->
-<!-- <ion-row style="width: 100%; height: 100%">
-  <div style="width: 100%; height: 100%">
-   
-    <ion-list *ngIf="filteredMatches.length>0">
-      <ion-card
-        (click)="gotoMatchdetailsPage(history)"
-        class="matchcard"
-        *ngFor="let history of filteredMatches"
-      >
-        <ion-card-content>
-          <ion-row style="margin-bottom: 10px; padding-top: 5px">
-            <ion-col col-12 no-padding>
-              <p class="dets_para">
-                <span float-left>{{history.MatchTitle}}</span>
-                <span float-right
-                  >{{formatMatchStartDate(history.MatchStartDate)}}</span
-                >
-               
-              </p>
-              <p
-                class="dets_para"
-                style="margin-top: 21px !important; font-size: 12px !important"
-              >
-                {{history.Activity.ActivityName}}
-              </p>
-            </ion-col>
-          </ion-row>
-          <ion-row
-            *ngFor="let team of history.Teams;let j=index;"
-            class="participant_row"
-          >
-            <ion-col
-              col-8
-              style="padding: 5px 5px 5px 0px !important"
-              [style.border-bottom]="j==0 ? '1px solid #b4b0b0' : 'none'"
-            >
-              <p class="users_para commman_para">
-                <span
-                  *ngFor="let participant of team.Participants;let k=index;"
-                  [style.color]="team.IsWinner ? 'green' : 'red'"
-                  >{{participant.User.FirstName}}
-                  <span *ngIf="k!=team.Participants.length-1">,</span>
-                </span>
-                <span *ngIf="team.IsWinner" style="margin-right: 5px">
-                  <ion-icon name="md-trophy"></ion-icon>
-                </span>
-              </p>
-            </ion-col>
-            <ion-col col-4 style="padding: 6px 5px 5px 10px !important">
-              <p class="sets_para commman_para" style="">
-                <span *ngFor="let set of team.Sets_Points;let l=index"
-                  >{{set}}</span
-                >
-              </p>
-            </ion-col>
-          </ion-row>
-          <ion-row style="margin-top: 10px">
-            <ion-col col-12 no-padding>
-              <p class="dets_para" style="color: rgba(0, 0, 0, 0.3) !important">
-                <span float-left>{{history.VenueName}}</span>
-              </p>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
-  </div>
-</ion-row> -->
-
-
-  <!-- Competitions Tab Content -->
-  <div *ngIf="activeIndex==0" class="tab-content">
-    <!-- Modern Search Card -->
-    <div class="modern-search-card">
-      <ion-searchbar class="sleek-searchbar" placeholder="Search competitions, activities, venues..."
-        [(ngModel)]="searchInput" (ionInput)="getLeagueSearch($event)" autocorrect="off"
-        showCancelButton="focus"></ion-searchbar>
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <app-pill-tabs leftLabel="Competitions" rightLabel="Matches"
+        leftIcon="trophy" rightIcon="american-football"
+        [(activeIndex)]="activeIndex" (activeIndexChange)="changeType($event)">
+      </app-pill-tabs>
+      <app-search-bar *ngIf="activeIndex==0"
+        placeholder="Search competitions, activities, venues..."
+        [(value)]="searchInput"
+        [count]="filteredleagues.length"
+        (search)="getLeagueSearch($event)">
+      </app-search-bar>
+      <app-search-bar *ngIf="activeIndex==1"
+        placeholder="Search matches, activities, players..."
+        [(value)]="matchSearchInput"
+        [count]="filteredMatchlist.length"
+        (search)="getFilterEvents($event)">
+      </app-search-bar>
     </div>
 
-    <!-- Competitions Grid -->
-    <div class="competitions-container" *ngIf="filteredleagues.length > 0">
-      <div class="modern-card competition-card" *ngFor="let league of filteredleagues"
-        (click)="gotoLeaguedetailsPage(league)">
-        <div class="card-header">
-          <div class="card-icon-wrapper competition-bg">
-            <ion-icon name="trophy" class="card-icon"></ion-icon>
-          </div>
-          <div class="card-info">
-            <h3 class="card-title">{{league.league_name | titlecase}}</h3>
-            <p class="card-subtitle">{{league.activity.ActivityName}}</p>
-          </div>
-          <div class="visibility-badge" [class.private]="league.league_visibility==1">
-            <ion-icon [name]="league.league_visibility==0 ? 'globe' : 'lock'"></ion-icon>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="competition-details">
-            <div class="detail-row">
-              <div class="detail-item">
-                <ion-icon name="calendar" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{league.start_date}}</span>
+    <div class="page-scroll-area">
+      <!-- Competitions Tab -->
+      <div *ngIf="activeIndex==0" class="tab-content">
+
+        <div class="items-container" *ngIf="filteredleagues.length > 0">
+          <div class="revamp-card" *ngFor="let league of filteredleagues"
+            (click)="gotoLeaguedetailsPage(league)">
+            <div class="card-accent" [style.background]="getLeagueTypeColor(league.league_type_text)"></div>
+            <div class="card-content">
+              <div class="corner-ribbon" [class.private]="league.league_visibility==1">
+                <ion-icon [name]="league.league_visibility==0 ? 'globe' : 'lock'"></ion-icon>
               </div>
-              <div class="detail-item type-badge">
-                <span class="badge-text">{{league.league_type_text}}</span>
+              <div class="card-top-row">
+                <div class="card-icon-wrapper competition-bg">
+                  <ion-icon [name]="getActivityIcon(league.activity?.ActivityName)" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-title">{{league.start_date}}</h3>
+                  <p class="card-subtitle">{{league.league_name | titlecase}}</p>
+                  <p class="card-activity">{{league.activity?.ActivityName}}</p>
+                </div>
               </div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-item">
-                <ion-icon name="pin" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{league.club.ClubName}}</span>
+              <div class="card-divider"></div>
+              <div class="card-tags">
+                <span class="tag type-tag" [style.background]="getLeagueTypeColor(league.league_type_text)">{{league.league_type_text}}</span>
+                <span class="tag category-tag" *ngIf="league.league_category_text">{{league.league_category_text}}<span *ngIf="league.league_age_group">/{{league.league_age_group}}</span></span>
               </div>
-              <div class="detail-item category-badge" *ngIf="league.league_category_text">
-                <span class="badge-text">{{league.league_category_text}}<span
-                    *ngIf="league.league_age_group">/{{league.league_age_group}}</span></span>
+              <div class="card-venue-footer">
+                <ion-icon name="pin" class="venue-icon"></ion-icon>
+                <span class="venue-text">{{league.club?.ClubName}}</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Empty State -->
-    <div class="modern-empty-state" *ngIf="filteredleagues.length === 0">
-      <div class="empty-illustration">
-        <ion-icon name="trophy" class="empty-icon"></ion-icon>
-      </div>
-      <div class="empty-text">
-        <h2 class="empty-title">No Competitions Found</h2>
-        <p class="empty-description">No competitions available at the moment</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Matches Tab Content -->
-  <div *ngIf="activeIndex==1" class="tab-content">
-    <!-- Modern Search Card -->
-    <div class="modern-search-card">
-      <ion-searchbar class="sleek-searchbar" placeholder="Search matches, activities, venues..."
-        (ionInput)="getFilterEvents($event)" autocorrect="off" showCancelButton="focus"></ion-searchbar>
-    </div>
-
-    <!-- Matches Grid -->
-    <div class="matches-container" *ngIf="filteredMatchlist.length > 0">
-      <div class="modern-card match-card" *ngFor="let match of filteredMatchlist" (click)="gotoMatchdetailsPage(match)">
-        <div class="card-header">
-          <div class="card-icon-wrapper matches-bg">
-            <ion-icon name="american-football" class="card-icon"></ion-icon>
-          </div>
-          <div class="card-info">
-            <h3 class="card-title">{{match.MatchTitle | titlecase}}</h3>
-            <p class="card-subtitle">{{match.ActivityName}}</p>
-          </div>
+        <div class="modern-empty-state" *ngIf="filteredleagues.length === 0">
+          <ion-icon name="trophy" class="empty-icon"></ion-icon>
+          <div class="empty-title">No Competitions Found</div>
+          <div class="empty-description">No competitions available at the moment</div>
         </div>
-        <div class="card-body">
-          <div class="match-details">
-            <div class="detail-row">
-              <div class="detail-item">
-                <ion-icon name="calendar" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{match.MatchStartDate}}</span>
+      </div>
+
+      <!-- Matches Tab -->
+      <div *ngIf="activeIndex==1" class="tab-content">
+
+        <div class="items-container" *ngIf="filteredMatchlist.length > 0">
+          <div class="revamp-card" *ngFor="let match of filteredMatchlist"
+            (click)="gotoMatchdetailsPage(match)">
+            <div class="card-accent" [style.background]="getMatchTypeColor(match.MatchType)"></div>
+            <div class="card-content">
+              <div class="card-top-row">
+                <div class="card-icon-wrapper match-bg">
+                  <ion-icon [name]="getActivityIcon(match.ActivityName)" class="card-icon"></ion-icon>
+                </div>
+                <div class="card-info">
+                  <h3 class="card-title">{{match.Date}}</h3>
+                  <p class="card-subtitle">{{match.MatchTitle | titlecase}}</p>
+                  <p class="card-activity">{{match.ActivityName}}</p>
+                </div>
               </div>
-              <div class="detail-item venue-badge">
-                <ion-icon name="pin" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{match.VenueName}}</span>
+              <div class="card-divider"></div>
+              <div class="scoreboard">
+                <div class="sb-team sb-home">
+                  <span class="sb-label">HOME</span>
+                  <span class="sb-name" [class.tbd]="!match.homeUserName || !match.homeUserName.trim()">{{(match.homeUserName && match.homeUserName.trim()) ? match.homeUserName.trim() : 'TBD'}}</span>
+                </div>
+                <div class="sb-center">
+                  <span class="sb-score" *ngIf="match.home_team_score != null || match.away_team_score != null">{{match.home_team_score || '-'}} : {{match.away_team_score || '-'}}</span>
+                  <span class="sb-vs" *ngIf="match.home_team_score == null && match.away_team_score == null">VS</span>
+                </div>
+                <div class="sb-team sb-away">
+                  <span class="sb-label">AWAY</span>
+                  <span class="sb-name" [class.tbd]="!match.awayUserName || !match.awayUserName.trim()">{{(match.awayUserName && match.awayUserName.trim()) ? match.awayUserName.trim() : 'TBD'}}</span>
+                </div>
               </div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-item players">
-                <ion-icon name="people" class="detail-icon"></ion-icon>
-                <span class="detail-text">{{match.homeUserName}} vs {{match.awayUserName}}</span>
+              <div class="card-venue-footer">
+                <ion-icon name="pin" class="venue-icon"></ion-icon>
+                <span class="venue-text">{{match.location && match.location !== '' ? match.location : match.VenueName}}</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Empty State -->
-    <div class="modern-empty-state" *ngIf="filteredMatchlist.length === 0">
-      <div class="empty-illustration">
-        <ion-icon name="american-football" class="empty-icon"></ion-icon>
-      </div>
-      <div class="empty-text">
-        <h2 class="empty-title">No Matches Found</h2>
-        <p class="empty-description">No matches available at the moment</p>
+        <div class="modern-empty-state" *ngIf="filteredMatchlist.length === 0">
+          <ion-icon name="american-football" class="empty-icon"></ion-icon>
+          <div class="empty-title">No Matches Found</div>
+          <div class="empty-description">No matches available at the moment</div>
+        </div>
       </div>
     </div>
   </div>

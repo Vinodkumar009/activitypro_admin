@@ -1,5 +1,7 @@
-page-activitymodal {
+@import '../../../theme/android-sdk35-fixes.scss';
 
+page-activitymodal {
+    @include android-sdk35-fixes;
         width: 85% !important;
         margin-top: 35% !important;
         margin-left: 7% !important;

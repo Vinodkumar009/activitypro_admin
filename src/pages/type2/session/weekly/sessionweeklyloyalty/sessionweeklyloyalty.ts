@@ -68,7 +68,6 @@ export class SessionWeeklyLoyalty {
   loyaltySetup = {};
   sessionType = '';
   user: any;
-  nestUrl: any;
   isReview = false;
   coachInfo: any;
   clubName: any;
@@ -106,7 +105,6 @@ export class SessionWeeklyLoyalty {
             member['IsSelect'] = false
             member['Loyaltyrefund'] = 0
           });
-          this.nestUrl = sharedservice.getnestURL()
           this.getWallet()
         }
     })
@@ -213,10 +211,14 @@ export class SessionWeeklyLoyalty {
   
         this.httpService.post(API.LOYALTY_REWARD_POINTS_BULK_V2, this.rewardAPIData, null, 1).subscribe({
           next: (res: any) => {
+            this.loading.dismiss()
             if (res) {
               this.cm.toastMessage('Loyalty Points Awarded Successfully', 2000)
               this.navCtrl.pop()
             }
+          },
+          error: (err) => {
+            this.loading.dismiss()
           }
         })
       })

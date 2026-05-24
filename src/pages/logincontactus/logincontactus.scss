@@ -1,4 +1,7 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
 logincontactus-page {
+    @include android-sdk35-fixes;
     .scroll-content {
         padding: 0px !important;
         background-image: none !important; // background: white !important;

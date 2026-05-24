@@ -30,154 +30,39 @@ page-lineup {
             }
         }
 
-        .cancel-btn,
-        .save-btn {
+        .cancel-btn {
             color: #fff;
             font-size: 16px;
             text-transform: none;
         }
-
-        .save-btn {
-            font-weight: 600;
-        }
     }
 
-    // Match Info Header (Premium Modern Version)
-    .match-info-header {
-        background: #00796b; // Richer, more vivid teal for light theme
-        padding: 26px 22px;
-        color: #fff;
-        position: relative;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-        .match-activity-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 4px 16px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .match-title-text {
-            font-size: 16px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 16px;
-            display: block;
-            letter-spacing: 0.2px;
-            text-transform: capitalize;
-        }
-
-        .match-main-info {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .match-teams-row {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 12px;
-            flex-wrap: wrap;
-
-            .team-name {
-                font-size: 24px; // Slightly larger for impact
-                font-weight: 800;
-                color: #ffffff;
-                white-space: normal;
-                word-wrap: break-word;
-                line-height: 1.1;
-                letter-spacing: -0.4px;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .vs-label {
-                font-size: 15px;
-                font-weight: 700;
-                color: rgba(255, 255, 255, 0.45);
-                font-style: italic;
-                font-family: "Georgia", serif;
-                padding: 0 6px;
-                position: relative;
-                top: 2px;
-            }
-        }
-
-        .match-meta-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin-top: 8px;
-
-            .meta-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 14px;
-                color: rgba(255, 255, 255, 0.9);
-                font-weight: 600;
-
-                .meta-icon {
-                    font-size: 18px;
-                    color: #4db6ac; // Lighter teal for prominence
-                    background: rgba(255, 255, 255, 0.1);
-                    padding: 5px;
-                    border-radius: 6px;
-                }
-
-                .venue-text {
-                    white-space: normal;
-                    word-wrap: break-word;
-                }
-            }
-        }
-    }
-
-    // Content container
+    // Content container - dark by default (no class needed)
     .lineup-container {
-        background: #f5f5f5;
+        background: #0f172a !important;
         min-height: 100%;
     }
 
-    // Lineup name section
-    .lineup-name-section {
-        background: #fff;
-        padding: 12px 16px;
-        border-bottom: 1px solid #e0e0e0;
-
-        .lineup-name-input {
-            font-size: 16px;
-            color: #333;
-            --placeholder-color: #999;
-        }
+    .scroll-content {
+        background: #0f172a !important;
     }
 
-    // Settings section
-    .settings-section {
-        background: #fff;
-        margin-top: 8px;
+    ion-content {
+        background: #0f172a !important;
+    }
+
+    // Form section
+    .lineup-form-section {
+        padding: 12px;
     }
 
     .setting-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 16px;
-        border-bottom: 1px solid #f0f0f0;
+        padding: 10px 0;
         position: relative;
-
-        &:last-child {
-            border-bottom: none;
-        }
+        cursor: pointer;
 
         .setting-left {
             display: flex;
@@ -204,12 +89,15 @@ page-lineup {
 
             .setting-icon {
                 font-size: 20px;
-                color: #2b92bb;
+                color: #3fbcd3;
             }
 
             .setting-label {
-                font-size: 15px;
-                color: #333;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+                color: #94a3b8;
             }
         }
 
@@ -219,13 +107,14 @@ page-lineup {
             gap: 8px;
 
             .setting-value {
-                font-size: 15px;
-                color: #666;
+                font-size: 16px;
+                font-weight: 600;
+                color: #fff;
             }
 
             .dropdown-arrow {
                 font-size: 14px;
-                color: #999;
+                color: #64748b;
             }
         }
     }
@@ -788,45 +677,7 @@ page-lineup {
     }
 
     // Theme support for modals
-    &.dark-theme,
-    .dark-theme & {
-        .match-info-header {
-            background: #1e293b !important; // Matches the app's modern card background
-            border-bottom: 1px solid #334155;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-
-            .match-activity-badge {
-                background: rgba(0, 181, 160, 0.1); // Low-opacity brand teal
-                border-color: rgba(0, 181, 160, 0.3);
-                color: #00b4a0; // Brand teal for consistency with light mode
-                box-shadow: none;
-            }
-
-            .match-title-text {
-                color: #94a3b8; // Sophisticated slate gray
-                font-weight: 600;
-            }
-
-            .team-name {
-                color: #f1f5f9;
-                text-shadow: none;
-            }
-
-            .vs-label {
-                color: #475569;
-            }
-
-            .meta-item {
-                color: #94a3b8;
-
-                .meta-icon {
-                    color: #00b4a0; // Brand teal icons
-                    background: rgba(0, 181, 160, 0.08);
-                    opacity: 1;
-                }
-            }
-        }
-
+    &:not(.light-theme) {
         .modal-card {
             background: #1e293b;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -902,21 +753,29 @@ page-lineup {
         }
     }
 
-    // Light theme styles
+    // Light theme styles - only when explicitly set
     &.light-theme,
-    .light-theme & {
+    .light-theme {
         .scroll-content {
-            background: #f5f5f5;
+            background: #f8fafc !important;
+        }
+
+        &.scroll-content {
+            background: #f8fafc !important;
         }
 
         .lineup-container {
-            background: #f5f5f5;
+            background: #f8fafc !important;
         }
+
+        .setting-label { color: #64748b !important; }
+        .setting-value { color: #0f172a !important; }
+        .setting-icon { color: #2b92bb !important; }
+        .dropdown-arrow { color: #94a3b8 !important; }
     }
 
-    // Dark theme styles
-    &.dark-theme,
-    .dark-theme & {
+    // Dark theme styles (default state - no .light-theme class means dark)
+    &:not(.light-theme) {
         .scroll-content {
             background: #0f172a !important;
         }
@@ -925,40 +784,37 @@ page-lineup {
             background: #0f172a !important;
         }
 
-        .lineup-name-section {
-            background: #334155;
-            border-bottom-color: #475569;
+        .setting-label { color: #94a3b8 !important; }
+        .setting-value { color: #ffffff !important; }
+        .setting-icon { color: #00b4a0 !important; }
+        .dropdown-arrow { color: #64748b !important; }
 
-            .lineup-name-input {
-                color: #f1f5f9;
-                --placeholder-color: #94a3b8;
-            }
-        }
+        .substitutes-section {
+            .section-title { color: #94a3b8; }
 
-        .settings-section {
-            background: #334155;
-        }
+            .substitutes-container {
+                background: #334155;
 
-        .setting-row {
-            border-bottom-color: #475569;
+                .sub-item {
+                    .player-avatar-container {
+                        .player-image-wrapper {
+                            border-color: #475569;
+                            background: #1e293b;
+                        }
 
-            .setting-left {
-                .setting-icon {
-                    color: #94a3b8;
-                }
+                        .player-name-badge span {
+                            color: #f1f5f9;
+                        }
+                    }
 
-                .setting-label {
-                    color: #f1f5f9;
-                }
-            }
+                    &.add-sub .node-circle {
+                        border-style: dashed;
+                        border-color: #475569;
 
-            .setting-right {
-                .setting-value {
-                    color: #cbd5e1;
-                }
-
-                .dropdown-arrow {
-                    color: #64748b;
+                        .node-icon {
+                            color: #94a3b8;
+                        }
+                    }
                 }
             }
         }
@@ -1115,5 +971,27 @@ page-lineup {
 
     .toolbar-title {
         color: #fff;
+    }
+
+    ion-footer {
+        background: #0f172a !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding-bottom: 0 !important;
+
+        &::before, &::after { display: none !important; }
+
+        .toolbar, .toolbar-background, .toolbar-background-md, .toolbar-background-ios {
+            background: #0f172a !important;
+            border: none !important;
+        }
+    }
+
+    &.light-theme ion-footer,
+    .light-theme ion-footer {
+        background: #f8fafc !important;
+        .toolbar, .toolbar-background, .toolbar-background-md, .toolbar-background-ios {
+            background: #f8fafc !important;
+        }
     }
 }

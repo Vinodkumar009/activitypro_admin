@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides, AlertController, LoadingController} from 'ionic-angular';
-import moment from 'moment';
+import { IonicPage, NavController, NavParams,LoadingController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { HttpClient } from '@angular/common/http';
+import { HttpService } from '../../../services/http.service';
 import { CommonService } from '../../../services/common.service';
 import { FirebaseService } from '../../../services/firebase.service';
 import { SharedServices } from '../../services/sharedservice';
+import { API } from '../../../shared/constants/api_constants';
 
 /**
  * Generated class for the FilterbookingsPage page.
@@ -23,18 +23,17 @@ export class SuperDashboardDetailsPage {
   TempParentClubs=[];
   parentclubs=[];
   totalmembercount: any;
-  nestUrl: any;
+  
   countparentClubs = []
   constructor(public navCtrl: NavController, 
     public loadingCtrl: LoadingController, 
     public storage: Storage,
-    private http:HttpClient,
     public commonService: CommonService,
     public fb: FirebaseService,
-     public navParams: NavParams,
-     public sharedService:SharedServices) {
+    public navParams: NavParams,
+    public sharedService:SharedServices,
+    private httpService: HttpService,) {
       console.log('ionViewDidLoad AppadmindashboardPage');
-      this.nestUrl = this.sharedService.getnestURL();
       //this.userData = this.sharedService.getUserData();
       //console.log(this.userData);
       this.parentclubs = this.navParams.get('parentclubs')
@@ -42,25 +41,21 @@ export class SuperDashboardDetailsPage {
   }
 
   getParentClubs() {
-    //https://activitypro-nest-261607.appspot.com
     this.commonService.showLoader('Fetching...');
-    this.http.get(`${this.nestUrl}/superadmin/membercount`).subscribe((res:any) => {
+    this.httpService.get(API.GET_SUPERADMIN_MEMBER_COUNT, null, null, 1).subscribe((res:any) => {
       this.commonService.hideLoader();
       if (res.data) {
-        //this.parentclubs = this.commonService.convertFbObjectToArray(res.data);
         this.countparentClubs = res.data.memberForParentClub;
-        this.totalmembercount = res.data.totalmembercount
-        //console.log(this.parentclubs);
-        //
-        this.parentclubs.forEach(clubs =>{
+        this.totalmembercount = res.data.totalmembercount;
 
-          const parent = this.countparentClubs.filter((clubs) => {clubs.parentclubfirebasekey == clubs.Key})
-          if (parent.length > 0){
-            clubs['membercount'] = parent[0]['memberCount']
-          }
-          else
-          clubs['membercount'] = 0
-        })
+        const countMap = new Map();
+        this.countparentClubs.forEach(club => {
+          countMap.set(club.parentclubfirebasekey, club.membercount);
+        });
+
+        this.parentclubs.forEach(clubs => {
+          clubs['membercount'] = countMap.get(clubs.FireBaseId) || 0;
+        });
       }
     }, (err) => {
       this.commonService.hideLoader();

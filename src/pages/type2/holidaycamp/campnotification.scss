@@ -1,5 +1,8 @@
-campnotification-page{
-    .margin_top{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+campnotification-page {
+    @include android-sdk35-fixes;
+.margin_top{
         margin-top: 10px;
     }
     .padding_class{

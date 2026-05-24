@@ -1,11 +1,10 @@
+@import '../../theme/android-sdk35-fixes.scss';
 page-appadmindashboard {
+    @include android-sdk35-fixes;
     .scroll-content {
-        //background-image: url("../assets/images/background/backgroundimg1.png") !important;
-        //background-image: none !important;
         background-size: 100% 100%;
         margin-top: 57px;
         padding: 14px 8px 8px 8px !important;
-        //background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
     }
     .parentimg {
         width: 30%;

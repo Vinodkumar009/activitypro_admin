@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-membership {
+    @include android-sdk35-fixes;
+
+
+
     ion-card {
         border-radius: 4px !important;
         margin: 0px !important;
@@ -236,5 +242,4 @@ page-membership {
             box-shadow:none
         }
     }
-
 }

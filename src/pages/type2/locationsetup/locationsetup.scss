@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-locationsetup {
+    @include android-sdk35-fixes;
+
+
+
 
     ion-card{
         margin:0px !important;
@@ -64,7 +70,6 @@ border-bottom: yellow;
     position: absolute;
     top: 33px;
     left: 7px;
-}
   .name{
     color: #5ea68d;
     font-size: 18px !important;
@@ -75,5 +80,6 @@ border-bottom: yellow;
 }
  .card-text > span {
     color: gray;
+}
 }
 }

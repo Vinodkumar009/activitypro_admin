@@ -97,18 +97,21 @@ export class Type2AddTerm {
 
 
   getClubList() {
+    const passedClubKey = this.navParams.get('selectedClubKey');
     let clubSubscriber = this.fb.getAll("/Club/Type2/" + this.parentClubKey).subscribe((data) => {
       if (data.length > 0) {
-
-
         for (let i = 0; i < data.length; i++) {
           if (data[i].IsEnable) {
             this.allClub.push(data[i]);
           }
         }
 
-
-        this.selectedClub = "All";
+        if (passedClubKey && this.allClub.some(c => c.$key === passedClubKey)) {
+          this.selectedClub = passedClubKey;
+          this.onChangeClub();
+        } else {
+          this.selectedClub = "All";
+        }
       }
       clubSubscriber.unsubscribe();
     });
@@ -154,7 +157,10 @@ export class Type2AddTerm {
         }
       }
       activitySubscriber.unsubscribe();
-
+      // Ensure all checkboxes reflect the "All Activity" state
+      if (this.termObj.isForAllActivity) {
+        this.allActivityChange();
+      }
     });
   }
 
@@ -207,6 +213,7 @@ export class Type2AddTerm {
         for (let j = 0; j < this.activity[i].length; j++) {
           if (this.activity[i][j]["ClubKey"] == this.selectedClub) {
             this.desiredActivity.push(this.activity[i][j]);
+            this.desiredActivity[this.desiredActivity.length - 1]["IsSelected"] = this.termObj.isForAllActivity;
           }
         }
       }

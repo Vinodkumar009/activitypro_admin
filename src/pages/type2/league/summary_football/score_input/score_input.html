@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>{{teamName}}</ion-title>
+    <ion-title>{{teamName}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()" style="color:#fff">
+      <button ion-button icon-only (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
@@ -10,69 +10,89 @@
 </ion-header>
 
 <ion-content>
+  <div class="page-layout">
+    <div class="page-scroll-area">
+      <!-- No Goals -->
+      <div *ngIf="score === 0" class="empty-state">
+        <div class="empty-icon-wrap">
+          <ion-icon name="football"></ion-icon>
+        </div>
+        <p class="empty-title">No Goals to Record</p>
+        <p class="empty-text">This team didn't score any goals in this match.</p>
+      </div>
 
+      <!-- Goals -->
+      <div *ngIf="score > 0">
+        <div class="goals-header">
+          <div class="goals-count-badge">
+            <ion-icon name="football"></ion-icon>
+            <span>{{score}} Goal{{score > 1 ? 's' : ''}}</span>
+          </div>
+          <div class="goals-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="getCompletedGoalsPercent()"></div>
+            </div>
+            <span class="progress-text">{{getCompletedGoalsCount()}}/{{score}} recorded</span>
+          </div>
+        </div>
 
-  <!-- No Goals State -->
-  <div *ngIf="score === 0" class="no-goals-container">
-    <ion-icon name="football" class="no-goals-icon"></ion-icon>
-    <h3>No Goals to Record</h3>
-    <p>This team didn't score any goals in this match.</p>
-  </div>
+        <div class="goal-card" *ngFor="let i of getNumberArray(score); let idx = index"
+          [class.completed]="isGoalComplete(idx)" [class.active]="!isGoalComplete(idx) && selectedPlayer[idx]">
 
-  <!-- Goals Input -->
-  <div *ngIf="score > 0" class="goals-container">
-    <div class="team-header">
-      <ion-icon name="football"></ion-icon>
-      <h4>Goals ({{score}})</h4>
+          <div class="goal-top">
+            <div class="goal-number-badge" [class.done]="isGoalComplete(idx)">
+              <ion-icon [name]="isGoalComplete(idx) ? 'checkmark' : 'football'"></ion-icon>
+            </div>
+            <div class="goal-title">
+              <span class="goal-num">Goal {{idx + 1}}</span>
+              <span class="goal-status" *ngIf="isGoalComplete(idx)">Recorded</span>
+              <span class="goal-status pending" *ngIf="!isGoalComplete(idx)">Pending</span>
+            </div>
+          </div>
+
+          <div class="goal-body">
+            <div class="goal-field">
+              <div class="field-header">
+                <ion-icon name="person"></ion-icon>
+                <span>Scorer</span>
+              </div>
+              <div class="field-select-wrap">
+                <ion-select [(ngModel)]="selectedPlayer[idx]" (ionChange)="onPlayerSelect(idx)"
+                  placeholder="Select player" class="field-select">
+                  <ion-option *ngFor="let player of participantData" [value]="player.user.Id">
+                    {{getPlayerDisplayName(player)}}
+                  </ion-option>
+                </ion-select>
+                <ion-icon name="chevron-down" class="select-chevron"></ion-icon>
+              </div>
+            </div>
+
+            <div class="goal-field">
+              <div class="field-header">
+                <ion-icon name="time"></ion-icon>
+                <span>Time</span>
+              </div>
+              <div class="field-select-wrap">
+                <ion-datetime displayFormat="mm:ss" pickerFormat="mm:ss" [(ngModel)]="goalDateTime[idx]"
+                  (ionChange)="onGoalTimeChange(idx)" placeholder="00:00" class="field-select"
+                  [disabled]="!selectedPlayer[idx]">
+                </ion-datetime>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isGoalComplete(idx)" class="goal-confirmed">
+            <div class="confirmed-line"></div>
+            <div class="confirmed-content">
+              <ion-icon name="football"></ion-icon>
+              <span class="confirmed-player">{{getPlayerDisplayName(getPlayerById(selectedPlayer[idx]))}}</span>
+              <span class="confirmed-time">{{getFormattedTime(idx)}}'</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <ion-card class="goal-card" *ngFor="let i of getNumberArray(score); let idx = index"
-      [class.completed]="isGoalComplete(idx)">
-      <ion-card-header class="goal-header">
-        <div class="goal-number">
-          <ion-icon name="radio-button-on" [class.completed-icon]="isGoalComplete(idx)"></ion-icon>
-          <span>Goal {{idx + 1}}</span>
-        </div>
-      </ion-card-header>
-
-      <ion-card-content class="goal-content">
-        <div class="input-group">
-          <ion-item class="player-select">
-            <ion-label stacked>Select Player</ion-label>
-            <ion-select [(ngModel)]="selectedPlayer[idx]" (ionChange)="onPlayerSelect(idx)"
-              placeholder="Choose a player">
-              <ion-option *ngFor="let player of participantData" [value]="player.user.Id">
-                {{getPlayerDisplayName(player)}}
-              </ion-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item class="time-input">
-            <ion-label stacked>Goal Time (MM:SS)</ion-label>
-            <ion-datetime displayFormat="mm:ss" pickerFormat="mm:ss" [(ngModel)]="goalDateTime[idx]"
-              (ionChange)="onGoalTimeChange(idx)" placeholder="00:00" class="goal-datetime"
-              [disabled]="!selectedPlayer[idx]">
-            </ion-datetime>
-          </ion-item>
-        </div>
-
-        <!-- Goal Summary -->
-        <div *ngIf="isGoalComplete(idx)" class="goal-summary">
-          <ion-icon name="checkmark-circle" color="success"></ion-icon>
-          <span>{{getPlayerDisplayName(getPlayerById(selectedPlayer[idx]))}}
-            scored at {{getFormattedTime(idx)}}</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
   </div>
-</ion-content>
 
-<ion-footer>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-12>
-        <button class="timekare-primary-btn" ion-button block (click)="saveGoal()">Add Goal</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
+  <app-glass-button label="Save Goals" (btnClick)="saveGoal()"></app-glass-button>
+</ion-content>

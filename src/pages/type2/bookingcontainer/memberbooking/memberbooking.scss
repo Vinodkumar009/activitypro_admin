@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-memberbooking {
+    @include android-sdk35-fixes;
+
+
+
     .club-slider{
         width: 100%;
         height: 55px;

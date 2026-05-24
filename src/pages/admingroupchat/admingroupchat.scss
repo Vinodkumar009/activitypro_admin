@@ -1,11 +1,9 @@
-page-admingroupchat {
-  // .ion-avatar {
-  //   img {
-  //     border-radius: 50%;
-  //   }
-  // }
+@import '../../theme/android-sdk35-fixes.scss';
 
-  .group-icon {
+
+page-admingroupchat {
+    @include android-sdk35-fixes;
+    .group-icon {
     font-size: 30px;
   }
   .latest_message {

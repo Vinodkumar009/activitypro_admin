@@ -1,0 +1,107 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+page-addrecurringmatches {
+  @include android-sdk35-fixes;
+  .scroll-content {
+    background-color: #f8fafc !important;
+  }
+
+  ion-list {
+    margin: 12px !important;
+    background: transparent !important;
+  }
+
+  .item, .item-inner, .item-block {
+    background-color: transparent !important;
+    border: none !important;
+  }
+
+  ion-item {
+    background-color: #ffffff !important;
+    border-radius: 12px !important;
+    margin-bottom: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03) !important;
+    padding-left: 16px;
+    align-items: center;
+
+    .item-inner {
+      border-bottom: none !important;
+      padding-right: 16px;
+      box-shadow: none !important;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    ion-label {
+      color: #64748b !important;
+      font-weight: 700 !important;
+      font-size: 11px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.6px !important;
+    }
+
+    ion-input, ion-datetime {
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      text-align: right !important;
+    }
+
+    .text-input, .datetime-text {
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      color: #0f172a !important;
+      text-align: right !important;
+    }
+  }
+
+  .day-chips-section {
+    padding: 12px 16px;
+  }
+
+  .day-chips-label {
+    color: #64748b;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 10px 0;
+  }
+
+  .day-chips {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+
+  .day-chip {
+    padding: 8px 14px; border-radius: 20px; border: 1px solid #e2e8f0;
+    background: transparent; font-size: 13px; font-weight: 600;
+    color: #64748b; cursor: pointer; transition: all 0.2s ease;
+    &.selected { background: #2b92bb; color: #fff; border-color: #2b92bb; }
+  }
+  .recurring-hint {
+    padding: 4px 16px 8px; margin: 0; font-size: 12px; color: #64748b; font-weight: 400;
+    strong { font-weight: 700; color: #2b92bb; }
+  }
+
+  // DARK THEME
+  &:not(.light-theme) {
+    .scroll-content { background-color: #0f172a !important; }
+    .recurring-hint { color: #94a3b8; strong { color: #3fbcd3; } }
+    ion-item {
+      background-color: #1e293b !important;
+      border-color: #334155 !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+
+      ion-label { color: #94a3b8 !important; }
+      ion-input, ion-datetime { color: #ffffff !important; }
+      .text-input, .datetime-text { color: #ffffff !important; }
+    }
+
+    .day-chips-label { color: #94a3b8; }
+
+    .day-chip {
+      border-color: #334155; color: #94a3b8;
+      &.selected { background: #2b92bb; color: #fff; border-color: #2b92bb; }
+    }
+  }
+}

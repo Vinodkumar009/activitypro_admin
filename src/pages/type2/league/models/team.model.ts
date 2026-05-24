@@ -33,7 +33,40 @@ export class TeamsForParentClubModel {
   }
   isSelect: boolean;
   logo_url: string;
+  is_club_team: boolean;
 
+}
+
+export interface TeamDetail {
+  TeamName: string;
+  Id: string;
+  logo_url: string;
+  teams_primary_color: string | null;
+  activityId: string;
+  ageGroup: string;
+  teamStatus: number;
+  venueType: number;
+  team_type: number;
+  teamDescription: string;
+  club_id: string;
+  NoOfPlayers: string;
+  ActivityName: string;
+  ActivityImageURL: string;
+  UpcomingMatchesCount: string;
+  parentClubId: string;
+  processed_video_count: string;
+  teamVisibility: number;
+  is_club_team: boolean;
+  club: {
+    Id: string;
+    ClubName: string;
+    ClubShortName: string;
+    FirebaseId: string;
+    City: string;
+    PostCode: string;
+    MapLatitude: string;
+    MapLongitude: string;
+  };
 }
 
 export class EditTeamsForParentClubModel {

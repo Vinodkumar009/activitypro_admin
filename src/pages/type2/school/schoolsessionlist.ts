@@ -381,6 +381,11 @@ export class Type2SchoolSessionList {
                    last_name
                    profile_image
                  }
+                ActivityDetails{
+                   Id
+                   ActivityName
+                   ActivityCode
+                }
                 ParentClubSchool{
                   parentclub{
                     Id

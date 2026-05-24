@@ -183,21 +183,22 @@ export class MembershipRecord {
     getRenewalCount() {
         const get_renewal_count_payload = {
             parentclubId:this.postgre_parentclub_id,
+            //clubId:this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
             action_type:1,
             device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
-            app_type:AppType.ADMIN_NEW
+            app_type:AppType.ADMIN_NEW//new admin
           }
-          this.httpService.post(API.GET_NEXT_RENEWAL_COUNT,get_renewal_count_payload).subscribe({
-            next: (res: any) => {
-                if(res && res.data) {
-                    this.renewal_count = res.data.member_count;
-                }
-            },
-            error: (error) => {
-                console.error("Error in fetching:", error);
-                this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+          this.httpService.post(API.GET_NEXT_RENEWAL_COUNT,get_renewal_count_payload).subscribe((res: any) => {
+            if(res && res.data) {
+                this.renewal_count = res.data.member_count;
             }
-          });
+          },
+         (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         })          
     }
 
     gotoDets(membership,type:number){
@@ -210,28 +211,65 @@ export class MembershipRecord {
 
     //get list of memberships             
     getSetupByVenue(){
+     
             this.SetupDisplay = [];
+            
+            // try {
+            //   this.loading = this.loadingCtrl.create({
+            //     content: 'Please wait...'
+            //   });
+            //   this.loading.present();
+        
+           
+            //   this.nodeUrl = "https://activitypro-node-admin.appspot.com";
+            
+            //   this.http.post(`${this.nodeUrl}/membership/description`, {
+            //     parentCLubKey: this.ParentClubKey,
+            //     clubKey: selectedClubKey,
+            //     selectedSetupKey: '',
+            //     memberkey: '',
+            //     wantmemberlist: true
+            //   }).subscribe((res) => {
+            //     this.loading.dismiss()
+            //     if (res['eachMembershipDetails']){
+            //         res['eachMembershipDetails'].forEach(eachSetup => {
+            //             if(eachSetup.IsActive){
+            //                 eachSetup['memberPresent'] = eachSetup['memberPresent'].filter(ele => ele.IsActive)
+            //                 eachSetup['memberPresentCount'] = eachSetup['memberPresent'].length
+            //                 this.SetupDisplay.push(eachSetup)
+            //             }
+            //           });
+            //     }
+                  
+            //   },
+            //   err =>{
+            //     this.loading.dismiss();
+            //   })
+            // } catch (err) {
+            //   this.loading.dismiss();
+            // }
             const get_memberships_payload = {
                 parentclubId:this.postgre_parentclub_id,
                 clubId:this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
                 action_type:1,
                 device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
-                app_type:AppType.ADMIN_NEW
+                app_type:AppType.ADMIN_NEW//new admin
               }
-              this.httpService.post(API.MEMBERSHIP_ACTIVE_LIST,get_memberships_payload).subscribe({
-                next: (res: any) => {
-                    if(res && res.data && res.data.memberships.length > 0) {
-                        this.Memberships = res.data && res.data.memberships ? res.data.memberships : [];
-                        this.SetupDisplay = JSON.parse(JSON.stringify(this.Memberships));
-                    }else{
-                        this.comonService.toastMessage("No memberships found", 2500, ToastMessageType.Error, ToastPlacement.Bottom)
-                    }
-                },
-                error: (error) => {
-                    console.error("Error in fetching:", error);
-                    this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+              this.httpService.post(API.MEMBERSHIP_ACTIVE_LIST,get_memberships_payload).subscribe((res: any) => {
+                if(res && res.data && res.data.memberships.length > 0) {
+                    this.Memberships = res.data && res.data.memberships ? res.data.memberships : [];
+                    this.SetupDisplay = JSON.parse(JSON.stringify(this.Memberships));
+                }else{
+                    this.comonService.toastMessage("No memberships found", 2500, ToastMessageType.Error, ToastPlacement.Bottom)
                 }
-              });                        
+              },
+             (error) => {
+                  //this.commonService.hideLoader();
+                  console.error("Error in fetching:", error);
+                  this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+                 // Handle the error here, you can display an error message or take appropriate action.
+             })                        
+          
     }
 
   

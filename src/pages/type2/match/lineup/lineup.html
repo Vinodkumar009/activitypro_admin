@@ -11,69 +11,30 @@
                 <span class="sub-title">Team Lineup</span>
             </div>
         </ion-title>
-        <ion-buttons right>
-            <button ion-button clear class="save-btn" (click)="save()">Save</button>
-        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme" (click)="closeAllDropdowns()">
-    <!-- Match Info Header (Regular Match - when NOT from league) -->
-    <div class="match-info-header" *ngIf="match && !isLeague">
-        <div class="match-activity-badge">{{ match.ActivityName }}</div>
-        <div class="match-title-text" *ngIf="match.MatchTitle">{{ match.MatchTitle }}</div>
-        <div class="match-main-info">
-            <div class="match-teams-row">
-                <span class="team-name">{{ match.homeUserName }}</span>
-                <span class="vs-label">VS</span>
-                <span class="team-name">{{ match.awayUserName }}</span>
-            </div>
-            <div class="match-meta-info">
-                <div class="meta-item">
-                    <ion-icon name="calendar" class="meta-icon"></ion-icon>
-                    <span>{{ match.Date }} • {{ match.Time }}</span>
-                </div>
-                <div class="meta-item">
-                    <ion-icon name="pin" class="meta-icon"></ion-icon>
-                    <span class="venue-text">{{ match.VenueName }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- League Match Info Header (when from league) -->
-    <div class="match-info-header" *ngIf="match && isLeague">
-        <div class="match-activity-badge">{{ match.activity_name || 'Activity' }}</div>
-        <div class="match-title-text" *ngIf="match.match_title">{{ match.match_title }}</div>
-        <div class="match-main-info">
-            <div class="match-teams-row">
-                <span class="team-name">{{ match.homeusername || 'Home' }}</span>
-                <span class="vs-label">VS</span>
-                <span class="team-name">{{ match.awayusername || 'Away' }}</span>
-            </div>
-            <div class="match-meta-info">
-                <div class="meta-item">
-                    <ion-icon name="calendar" class="meta-icon"></ion-icon>
-                    <span>{{ match.start_date }}</span>
-                </div>
-                <div class="meta-item" *ngIf="match.league_name">
-                    <ion-icon name="trophy" class="meta-icon"></ion-icon>
-                    <span class="venue-text">{{ match.league_name }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Match Detail Header -->
+    <app-detail-header *ngIf="match"
+        [title]="headerTitle"
+        [subtitle]="headerSubtitle"
+        [detailRows]="headerDetailRows"
+        [accentColor]="headerAccentColor">
+    </app-detail-header>
 
     <div class="lineup-container">
+    <div class="lineup-form-section">
         <!-- Lineup Name Input -->
-        <div class="lineup-name-section">
-            <ion-input [(ngModel)]="lineupName" [placeholder]="isCreateNew ? 'Enter lineup name here' : ''"
-                class="lineup-name-input"></ion-input>
-        </div>
+        <app-form-field [isDark]="isDarkTheme">
+            <ion-item>
+                <ion-label>Lineup Name</ion-label>
+                <ion-input [(ngModel)]="lineupName" [placeholder]="isCreateNew ? 'Enter lineup name' : ''"></ion-input>
+            </ion-item>
+        </app-form-field>
 
-        <!-- Settings Section -->
-        <div class="settings-section">
-            <!-- Team Selection -->
+        <!-- Team Selection -->
+        <app-form-field [isDark]="isDarkTheme">
             <div class="setting-row" (click)="toggleTeamDropdown(); $event.stopPropagation()">
                 <div class="setting-left">
                     <div class="team-logo-container">
@@ -98,8 +59,10 @@
                     </div>
                 </div>
             </div>
+        </app-form-field>
 
-            <!-- Visibility -->
+        <!-- Visibility -->
+        <app-form-field [isDark]="isDarkTheme">
             <div class="setting-row" (click)="toggleVisibilityDropdown(); $event.stopPropagation()">
                 <div class="setting-left">
                     <ion-icon name="eye" class="setting-icon"></ion-icon>
@@ -120,8 +83,10 @@
                     </div>
                 </div>
             </div>
+        </app-form-field>
 
-            <!-- Team Size -->
+        <!-- Team Size -->
+        <app-form-field [isDark]="isDarkTheme">
             <div class="setting-row" (click)="toggleTeamSizeDropdown(); $event.stopPropagation()">
                 <div class="setting-left">
                     <ion-icon name="people" class="setting-icon"></ion-icon>
@@ -142,8 +107,10 @@
                     </div>
                 </div>
             </div>
+        </app-form-field>
 
-            <!-- Formation -->
+        <!-- Formation -->
+        <app-form-field [isDark]="isDarkTheme">
             <div class="setting-row" (click)="toggleFormationDropdown(); $event.stopPropagation()">
                 <div class="setting-left">
                     <ion-icon name="grid" class="setting-icon"></ion-icon>
@@ -164,7 +131,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </app-form-field>
+    </div>
 
         <!-- Football Pitch -->
         <div class="pitch-container">
@@ -257,6 +225,11 @@
     </div>
 
 </ion-content>
+
+<ion-footer no-border [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <app-glass-button label="Save" (btnClick)="save()"></app-glass-button>
+</ion-footer>
+
 
 <!-- Modals Overlay Section -->
 <div class="modals-overlay" *ngIf="showPlayerSelection || showPlayerOptions" (click)="closeAllDropdowns()">

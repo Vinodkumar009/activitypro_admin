@@ -1,40 +1,66 @@
 <ion-header *ngIf="themeType == 1">
-    <ion-navbar>
-        <button ion-button menuToggle>
+  <ion-navbar>
+    <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-        <ion-title>Booking</ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only (click)="presentPopover($event)"> 
+    <ion-title>Report Booking</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="more"></ion-icon>
       </button>
-        </ion-buttons>
-    </ion-navbar>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
-<ion-header>
-    <ion-navbar *ngIf="themeType == 2">
-        <button ion-button icon-only menuToggle>
+
+<ion-header *ngIf="themeType == 2">
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
       <ion-icon name="apps"></ion-icon>
     </button>
-        <ion-title>
-            Booking
-        </ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only (click)="goToDashboardMenuPage()">
-                 <img src="assets/images/home.svg" class="home_btn">
-            </button>
-
-
-            <button ion-button icon-only (click)="presentPopover($event)"> 
+    <ion-title>Report Booking</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToDashboardMenuPage()">
+        <img src="assets/images/home.svg" class="home_btn">
+      </button>
+      <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="more"></ion-icon>
       </button>
-        </ion-buttons>
-    </ion-navbar>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
+<ion-content>
+  <div class="report-container">
+    <div class="report-card">
+      <div class="card-header">
+        <ion-icon name="document-text"></ion-icon>
+        <h2>Booking Report</h2>
+      </div>
 
-<ion-content padding>
+      <div class="card-body">
+        <div class="info-section">
+          <label>Payment Details</label>
+          <ion-textarea
+            [(ngModel)]="obj.Message"
+            rows="4"
+            placeholder="Enter payment details..."
+          ></ion-textarea>
+        </div>
 
+        <div class="date-info">
+          <ion-icon name="calendar"></ion-icon>
+          <span>{{ obj.Message }}</span>
+        </div>
+      </div>
 
-
+      <div class="card-actions">
+        <button ion-button outline color="medium" (click)="cancel()">
+          Cancel
+        </button>
+        <button ion-button color="primary" (click)="pay()">
+          Submit Report
+        </button>
+      </div>
+    </div>
+  </div>
 </ion-content>

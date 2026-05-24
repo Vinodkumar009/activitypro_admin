@@ -389,6 +389,25 @@ export class AddingtornamentmemberPage {
 
 
 
+  toggleMember(member: MemberModel) {
+    member.isSelected = !member.isSelected;
+    if (member.isSelected) {
+      if (this.checkCapacityAvailability()) {
+        this.capacity_left--;
+        this.leagueParticipantInput.participantsIds.push(member.Id);
+      } else {
+        member.isSelected = false;
+        this.commonService.toastMessage("Group size is full, Please increase the capacity", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    } else {
+      const idx = this.leagueParticipantInput.participantsIds.indexOf(member.Id);
+      if (idx > -1) {
+        this.leagueParticipantInput.participantsIds.splice(idx, 1);
+        this.capacity_left++;
+      }
+    }
+  }
+
   onMemberConfirm() {
     this.commonService.commonAlert_V4("Add Member(s)", "Are you sure you want to add the member(s)?", "Yes:Add", "No", () => {
       this.submitMembers();

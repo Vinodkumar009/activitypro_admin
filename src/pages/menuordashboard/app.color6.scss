@@ -1,3 +1,5 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
 .color-theme-6 {
 $toolbar-background-color6:#4BB368;
 $toolbar-button-text-color6:#ffffff;
@@ -5,11 +7,11 @@ $toolbar-title-color6:#ffffff;
 $color6-inner-background-image: '../assets/images/background/color6bg.png';
 $color6-login-background-image: '../assets/images/background/loginbg.png';
 
-$segment-ios-button-clr-color6:#2C6B3E;
-$segment-md-button-act-border-clr-color6:#2C6B3E;
+$segment-ios-button-clr-color6:#2b92bb;//#2C6B3E;
+$segment-md-button-act-border-clr-color6:#2b92bb;//#2C6B3E;
 $segment-wp-button-text-clr-color6:#ffffff;
 
-$button-save-bg-clr-color6:#2C6B3E;
+$button-save-bg-clr-color6:#2b92bb;//#2C6B3E;
 
 
   .toolbar-title {
@@ -68,4 +70,6 @@ $button-save-bg-clr-color6:#2C6B3E;
      .card-h2-style{
          color: $toolbar-background-color6 !important;
      }
+}
+app.color6-page {
 }

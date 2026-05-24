@@ -1,4 +1,10 @@
-page-cashwalletreport{
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-cashwalletreport {
+    @include android-sdk35-fixes;
+
+
+
 
     .circleProgress{
         border: 8px solid #e4e4e4;

@@ -13,8 +13,10 @@ import gql from 'graphql-tag';
 import { GraphqlService } from '../../../services/graphql.service';
 import { IClubDetails } from '../session/sessions_club.model';
 import { HttpService } from '../../../services/http.service';
+import { ThemeService } from '../../../services/theme.service';
 import { IClubCoaches } from '../../../shared/model/club.model';
 import { DueMemberDetails, PaidMemberDetails, payment_email, report_model } from './model/report.model';
+import { ModuleReportTypeForEmail } from '../mailtomemberbyadmin/mailtomemberbyadmin';
 @IonicPage()
 @Component({
   selector: 'payment-page',
@@ -28,6 +30,7 @@ export class Payment {
   @ViewChild(Content) content: Content;
   isSearchEnabled: boolean = false;
   isDuePaymentLoaded: boolean = false;
+  isDarkTheme: boolean = true;
   paymentReportType: any;
   LangObj: any = {};//by vinod
   isMonthSelected: boolean = false;
@@ -60,7 +63,6 @@ export class Payment {
   }
 
   paymentObj = { ParentClubKey: "", CoachKey: "All", VenueKey: "All", MemberKey: "", SelectedMonth: "", Type: 1, Channel: "Mobile" };
-  nestUrl: string = "";
   currentFinacialYearTermList = [];
   financialYear1Key: any;
   financialYear1: any;
@@ -75,10 +77,10 @@ export class Payment {
     Message: ''
   }
   sessionFolder = [];
-  clubs: IClubDetails[] = [];
+  clubs: IClubDetails[];
   selectedClub = "";
   selectedCurrentClub = "";
-  coaches: IClubCoaches[] = [];
+  coaches: IClubCoaches[];
   selectedCoach = "";
   selectedCurrentCoach = "";
   memberList = [];
@@ -118,10 +120,12 @@ export class Payment {
     private elementRef: ElementRef, 
     public actionSheetCtrl: ActionSheetController,
     private graphqlService: GraphqlService,
-     private httpService: HttpService) {
+     private httpService: HttpService,
+     private themeService: ThemeService) {
 
     // Setup initial values and configuration
     this.setupInitialConfig(platform);
+    this.loadTheme();
   
 
   }
@@ -142,7 +146,6 @@ export class Payment {
       this.postgre_parentclub_id = postgre_parentclub.Id;
       this.userData = this.sharedService.getUserData();
       this.themeType = this.sharedservice.getThemeType();
-      this.nestUrl = this.sharedService.getnestURL();
       this.isAndroid = platform.is('android');
       this.startDate = moment().subtract(10, 'days').format("YYYY-MM-DD");
       this.endDate = moment().format("YYYY-MM-DD");
@@ -181,8 +184,8 @@ export class Payment {
         val = JSON.parse(val);
         this.parentClubKey = val.UserInfo[0].ParentClubKey;
         this.paymentObj.ParentClubKey = this.parentClubKey;
-        this.clubs = [];
         this.getPayment();
+        this.getClubList();
         //this.getAllPendingPayment();
       }
     });
@@ -218,7 +221,7 @@ export class Payment {
       this.inputObj.end_date = moment().format("YYYY-MM-DD");
     } else {
       // Set date range for the selected month and year
-      const startOfMonth = moment(`${selectedMonth.year}-${selectedMonth.month}-01`,'YYYY-MMM-DD').startOf('month');
+      const startOfMonth = moment(`${selectedMonth.year}-${selectedMonth.month}-01`).startOf('month');
       const endOfMonth = moment(startOfMonth).endOf('month');
 
       this.inputObj.start_date = startOfMonth.format("YYYY-MM-DD");
@@ -257,22 +260,10 @@ export class Payment {
 
   paymentTabClick(type: string) {
     this.reportType = type;
-    // console.log(this.reportType);
-    // console.log(this.dueMemberListtemp.length);
     if (type == "Paid") {
-      if (this.isAndroid) {
-        this.renderer.removeClass(this.scrollContent, "androidMargin");
-      } else {
-        this.renderer.removeClass(this.scrollContent, "iosMargin");
-      }
       this.getPayment();
     } else {
-        if (this.isAndroid) {
-          this.renderer.addClass(this.scrollContent, "androidMargin");
-        } else {
-          this.renderer.addClass(this.scrollContent, "iosMargin");
-        }
-        this.getAllPendingPayment();        
+      this.getAllPendingPayment();        
     }
   }
 
@@ -561,13 +552,13 @@ export class Payment {
     actionSheet = this.actionSheetCtrl.create({
       //title: 'Modify your album',
       buttons: [
-        {
-          text: 'Notify',
-          icon: 'md-notifications',
-          handler: () => {
-            this.notify(record, "Due");
-          }
-        },
+        // {
+        //   text: 'Notify',
+        //   icon: 'md-notifications',
+        //   handler: () => {
+        //     this.notify(record, "Due");
+        //   }
+        // },
         {
           text: 'Email',
           icon: 'mail',
@@ -592,29 +583,21 @@ export class Payment {
 
 
   mailToIndividualMember(member: any) {
-    let data = [];
-    // if (isMonthly) {
-    //   data.push(
-    //     {
-    //       coachName: session.CoachName,
-    //       FirstName: session.FirstName,
-    //       LastName: session.LastName,
-    //       SessionName: session.SessionName,
-    //       ClubName: session.ClubName,
-    //       IsActive: true,
-    //       EmailID: emailid
-    //     })
-    // } else {
-    //   data.push(session);
-    // }
-    data.push(member);
-    this.slectedList = JSON.parse(JSON.stringify(data));
-    let memberList = this.slectedList;
-    this.navCtrl.push("PaymentstatusemailPage", {
-      memberList: memberList,
-      type: this.reportType,
-      parentclubKey: this.parentClubKey
-    })
+    const member_list = {
+          IsChild:member.is_child ? true:false,
+          ParentId:member.is_child ? member.parent_key:"",
+          MemberId:member.user_id, 
+          MemberEmail:member.is_child ? member.ParentEmailID:member.email ||'', 
+          MemberName: member.FirstName+" "+member.LastName
+      }    
+
+                                
+      const email_modal = {
+          module_info:null,
+          email_users:[member_list],
+          type:ModuleReportTypeForEmail.TERMSESSION_REPORT,
+      }
+        this.navCtrl.push("PaymentstatusemailPage", { email_modal });              
   }
 
   notify(member, pagename) {
@@ -816,12 +799,29 @@ export class Payment {
     .subscribe({
         next: (res) => {
           this.paidMemberList = res.data;
-          this.paidMemberListtemp = JSON.parse(JSON.stringify(this.paidMemberList));
-          this.TotTrnsAmt = this.paidMemberList.reduce((accumulator,item) => {return accumulator +=parseFloat(item.amount_paid)},0);
-          this.TotTransc = this.paidMemberList.length;
-          if(this.clubs.length == 0)this.getClubList();
+          this.paidMemberListtemp=JSON.parse(JSON.stringify(this.paidMemberList));
+          this.TotTrnsAmt= this.paidMemberList.reduce((accumulator,item) => {return accumulator +=parseFloat(item.amount_paid)},0);
+          this.TotTransc=this.paidMemberList.length;
+        },
+        error: () => {
+          this.commonService.toastMessage('Failed to fetch payment',2500,ToastMessageType.Error,ToastPlacement.Bottom);
         }
       });
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('payment-page');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
   }
 
 

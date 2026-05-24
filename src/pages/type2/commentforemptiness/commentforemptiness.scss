@@ -1,4 +1,10 @@
-page-commentforemptiness{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-commentforemptiness {
+    @include android-sdk35-fixes;
+
+
+
     .nonmembercard{
        // margin-top: 30px !important;
         margin:30px 0px 0px 0px !important;

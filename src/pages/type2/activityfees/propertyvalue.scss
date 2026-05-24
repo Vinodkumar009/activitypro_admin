@@ -1,5 +1,8 @@
-propertyvalue-page{
-    .scroll-content{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+propertyvalue-page {
+    @include android-sdk35-fixes;
+ .scroll-content{
         padding: 16px 9px !important;
     }
     .no-margin{

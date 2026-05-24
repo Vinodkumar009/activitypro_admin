@@ -1,105 +1,115 @@
 @import '../../../theme/android-sdk35-fixes.scss';
 
-addmember-page{
-    @include android-sdk35-fixes;
-    .scroll-content {
-     padding: 6px !important;
-     background-image: none !important;
-    }
-     .condition{
-         margin-left: 6px;
-         margin-top: 4px;
-         font-size: 16px;
-         color: black;
-     }
-     .condition_block{
-         margin-top: 19px;
-     }
-   .left_margin{
-       padding-left: 5px;
-       ion-checkbox{
-          // margin: 9px 14px 9px 4px !important;
-       }
-       ion-label{
-               white-space: pre-wrap !important;
-       }
-   }
-   .line{
-       color:gray;
-       font-size: 20px;
-   }
-   .line1{
-       //color:  #488aff;  
-   }
-   .btn{
-     height: 35px;
-     width: 35px;
-     border-radius: 50%;
-     background-color: gray;
-     color:white;
-   }
-    .btn1,.btn2{
-        background-color: #488aff;
-    }
-    .btn-container{
-        text-align: center;
-    }
-    .checkbox_item{
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        ion-label{
-            margin-top: 10px !important;
-        }
-        ion-checkbox{
-            margin: 9px 20px 9px 4px !important; 
-        }
-    }
-    .btn-next{
-        width:30%;
-        border-radius:5%;
-    }
-    .animate-zoom {animation:animatezoom 0.6s}@keyframes animatezoom{from{transform:scale(0)} to{transform:scale(1)}}
-    // .chk{
-    //     transform: translate(0%,50%);
-    // }
-    .lab_dec{
-        font-size:15px;
-        color: rgb(10, 8, 8);
-    }
-    .lab_head{
-        font-size: 18px;
-        color: #488aff;
-    }
-    .rows{
-        margin-top: -10px;
-    }
-    
-    .con{
-        background: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 255, 255));
-    }
-    .items,.rows{
-        background: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 255, 255));
-    }
-    .lab{
-        font-size: 18px;
-       // margin-bottom: -5px;
-    }    
-    .text{
-        margin-bottom: -5px;
-        color: rgb(87, 86, 86);
-    }
-    .dob{
-       // margin-bottom: -30px !important;
-    }
-    .fin{
-        font-size: 10px;
-    }
-    .select{
-        .select-text{
-            padding: 5px 0px;
-        }
+addmember-page {
+  @include android-sdk35-fixes;
+
+  // ── Base (Dark Theme) ──
+  .scroll-content {
+    padding: 0 !important;
+    background-color: #0f172a !important;
+    background-image: none !important;
+  }
+
+  .con { background: transparent !important; }
+
+  ion-slides { background: transparent !important; }
+  ion-slide { background: transparent !important; }
+  .grid { padding: 12px !important; }
+
+  // Step indicators
+  .btn-container { text-align: center; margin-bottom: 8px; }
+  .line { color: #475569; font-size: 20px; }
+  .btn {
+    height: 35px; width: 35px; border-radius: 50%;
+    background-color: #334155; color: #94a3b8;
+  }
+  .btn1, .btn2 { background-color: #2b92bb; color: #fff; }
+  .fin { font-size: 10px; }
+
+  .lab_head { font-size: 16px; font-weight: 700; color: #38bdf8; margin-bottom: 4px; }
+
+  // ── Form Fields (creatematch style) ──
+  .items {
+    background-color: #1e293b !important;
+    border-radius: 12px !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    padding-left: 16px !important;
+    margin-bottom: 4px !important;
+
+    .item-inner {
+      border-bottom: none !important;
+      box-shadow: none !important;
+      padding-right: 16px;
     }
 
- }
- 
+    ion-label {
+      color: #94a3b8 !important;
+      font-weight: 700 !important;
+      font-size: 11px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.6px !important;
+    }
+
+    ion-input, ion-select, ion-datetime, ion-textarea {
+      color: #f1f5f9 !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+    }
+
+    .text-input, .select-text, .datetime-text {
+      color: #f1f5f9 !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+    }
+  }
+
+  .rows { margin-top: -4px; background: transparent !important; }
+
+  // Checkbox items
+  .checkbox_item {
+    display: flex; justify-content: space-between; align-items: baseline;
+    background: transparent !important;
+    ion-label { margin-top: 10px !important; }
+    ion-checkbox { margin: 9px 20px 9px 4px !important; }
+  }
+  .lab_dec { font-size: 14px; color: #cbd5e1; }
+
+  // Buttons
+  .timekare-primary-btn {
+    background: linear-gradient(135deg, rgba(43,146,187,0.85), rgba(53,173,255,0.75)) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 20px rgba(43, 146, 187, 0.25) !important;
+  }
+
+  .text { color: #f1f5f9 !important; }
+  .lab { font-size: 11px !important; }
+
+  // ── Light Theme ──
+  &.light-theme {
+    .scroll-content { background-color: #f8fafc !important; }
+
+    .btn { background-color: #e2e8f0; color: #64748b; }
+    .btn1, .btn2 { background-color: #2b92bb; color: #fff; }
+    .line { color: #cbd5e1; }
+    .lab_head { color: #2b92bb; }
+
+    .items {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+
+      ion-label { color: #64748b !important; }
+
+      ion-input, ion-select, ion-datetime, ion-textarea { color: #0f172a !important; }
+      .text-input, .select-text, .datetime-text { color: #0f172a !important; }
+    }
+
+    .lab_dec { color: #1e293b; }
+    .text { color: #0f172a !important; }
+  }
+}

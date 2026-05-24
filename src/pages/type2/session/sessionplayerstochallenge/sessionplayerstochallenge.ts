@@ -75,7 +75,6 @@ export class SessionPlayerstoChallenge {
   loyaltySetup = {};
   sessionType = '';
   user: any;
-  nestUrl: any;
   isReview = false;
   coachInfo: any;
   clubName: any;
@@ -110,7 +109,6 @@ export class SessionPlayerstoChallenge {
           this.Member.forEach(member => {
             member['IsSelect'] = false
           });
-          this.nestUrl = sharedservice.getnestURL()
        
           
         }

@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-holidaycamppaymentreport {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         padding: 0px !important;
    }

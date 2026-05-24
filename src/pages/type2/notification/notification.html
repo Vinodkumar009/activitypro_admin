@@ -1,0 +1,91 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Notifications</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>Notifications</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="modern-notifications" padding>
+    <div *ngIf="loading" class="loading-container">
+        <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <div *ngIf="!loading && notifications.length === 0" class="empty-state">
+        <div class="empty-icon-wrapper">
+            <ion-icon name="notifications-off"></ion-icon>
+        </div>
+        <h2>All Caught Up!</h2>
+        <p>You have no new notifications.</p>
+    </div>
+
+    <ion-list *ngIf="notifications.length > 0" class="notification-list" [class.ripple-active]="isRippling" no-lines>
+        <div class="notification-wrapper" *ngFor="let item of notifications; let i = index;">
+            <ion-item-sliding #slidingItem>
+                
+                <ion-item class="notification-item">
+                    <div class="notification-card" [ngClass]="{'status-red': isNegativeNotification(item.message_header), 'status-green': !isNegativeNotification(item.message_header), 'expanded': i === blockIndex}" (tap)="showBlock($event, i)">
+                        <div class="card-main">
+                            <div class="content-container">
+                                <div class="header-row">
+                                    <h3 class="notification-title">{{item.message_header || 'Notification'}}</h3>
+                                    <span class="notification-time">{{item.created_at}}</span>
+                                </div>
+                                
+                                <p class="notification-preview" *ngIf="i !== blockIndex">{{item.message_body}}</p>
+                                
+                                <div class="expanded-details" *ngIf="i === blockIndex">
+                                    <p class="full-message">{{item.message_body}}</p>
+                                    <div class="action-footer">
+                                        <button ion-button clear small class="action-btn copy-btn" (click)="copy(item.message_body); $event.stopPropagation()">
+                                            <ion-icon name="clipboard"></ion-icon>&nbsp;&nbsp;Copy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ion-item>
+
+                <!-- Swipe to delete action -->
+                <ion-item-options side="right" (ionSwipe)="deleteNotification(item, i)">
+                    <button ion-button expandable class="swipe-delete-btn" (click)="deleteNotification(item, i)">
+                        <div class="delete-content">
+                            <ion-icon name="trash"></ion-icon>
+                            <span>Delete</span>
+                        </div>
+                    </button>
+                </ion-item-options>
+                
+            </ion-item-sliding>
+        </div>
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)" [enabled]="nextCursor != null">
+        <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

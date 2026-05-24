@@ -1,4 +1,8 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+
 page-campcheckin {
+    @include android-sdk35-fixes;
     .ion_list {
         margin-bottom: 3px;
     }

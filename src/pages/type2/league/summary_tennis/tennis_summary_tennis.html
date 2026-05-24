@@ -6,299 +6,193 @@
 
 <ion-content class="tennis-summary-content">
   <!-- Match Header -->
-  <div class="match-header">
-    <div class="match-title">
-      <h2>{{matchTitle}}</h2>
-    </div>
-    <div class="match-details">
-      <div class="detail-item">
-        <ion-icon name="calendar"></ion-icon>
-        <span>{{matchDate}}</span>
+  <div class="header-wrap">
+    <app-list-card [accentColor]="'#10b981'">
+      <div class="hero-content">
+        <div class="hero-icon"><ion-icon name="tennisball"></ion-icon></div>
+        <div class="hero-info">
+          <h2 class="hero-title">{{matchTitle}}</h2>
+          <div class="hero-details">
+            <span class="hero-tag"><ion-icon name="calendar"></ion-icon> {{matchDate}}</span>
+            <span class="hero-tag" *ngIf="matchLocation"><ion-icon name="pin"></ion-icon> {{matchLocation}}</span>
+          </div>
+        </div>
       </div>
-      <div class="detail-item" *ngIf="matchLocation">
-        <ion-icon name="pin"></ion-icon>
-        <span>{{matchLocation}}</span>
-      </div>
-    </div>
+    </app-list-card>
   </div>
 
-  <!-- Score Section -->
-  <div class="score-section">
-    <!-- Home Team -->
-    <div class="team-card" (click)="gotoSetInputPage(true)">
-      <div class="team-logo-container">
-        <img class="team-logo" [src]="homeTeamLogo" [alt]="homeTeamName + ' logo'">
-        <!-- <ion-icon name="create" class="edit-icon"></ion-icon> -->
+  <!-- Scorecard -->
+  <div class="scorecard">
+    <div class="scorecard-top">
+      <div class="sc-team home">
+        <div class="sc-logo-wrap" (click)="gotoSetInputPage(true)">
+          <img class="sc-logo" [src]="homeTeamLogo" [alt]="homeTeamName">
+        </div>
+        <span class="sc-team-name">{{homeTeamName}}</span>
       </div>
-      <div class="team-details">
-        <div class="team-name">{{homeTeamName}}</div>
-        <div class="team-score">{{homeScore}}</div>
+      <div class="sc-score-block" (click)="gotoResultInputPage()">
+        <div class="sc-scores">
+          <span class="sc-score home">{{homeScore}}</span>
+          <span class="sc-dash">-</span>
+          <span class="sc-score away">{{awayScore}}</span>
+        </div>
+        <div class="sc-edit-hint"><ion-icon name="create"></ion-icon> Edit</div>
+      </div>
+      <div class="sc-team away">
+        <div class="sc-logo-wrap" (click)="gotoSetInputPage(false)">
+          <img class="sc-logo" [src]="awayTeamLogo" [alt]="awayTeamName">
+        </div>
+        <span class="sc-team-name">{{awayTeamName}}</span>
       </div>
     </div>
 
-    <!-- VS Section -->
-    <div class="vs-container" (click)="gotoResultInputPage()">
-      <div class="vs-text">VS</div>
-      <ion-icon name="create" class="vs-edit-icon"></ion-icon>
-    </div>
-
-    <!-- Away Team -->
-    <div class="team-card" (click)="gotoSetInputPage(false)">
-      <div class="team-details away">
-        <div class="team-name">{{awayTeamName}}</div>
-        <div class="team-score">{{awayScore}}</div>
-      </div>
-      <div class="team-logo-container">
-        <img class="team-logo" [src]="awayTeamLogo" [alt]="awayTeamName + ' logo'">
-        <!-- <ion-icon name="create" class="edit-icon"></ion-icon> -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Set Scores Display -->
-  <div class="set-scores-section" *ngIf="result_json && result_json.SET_SCORES && result_json.SET_SCORES.length > 0"
-    (click)="gotoSetInputPage(true)">
-    <div class="section-header">
-      <ion-icon name="trophy"></ion-icon>
-      <h4>Set Scores</h4>
-    </div>
-    <div class="sets-grid">
-      <div class="set-item" *ngFor="let set of result_json.SET_SCORES; let i = index">
-        <div class="set-number">Set {{i + 1}}</div>
-        <div class="set-score">{{set.SCORE}}</div>
+    <!-- Set Scores -->
+    <div class="sc-divider" *ngIf="result_json?.SET_SCORES?.length > 0"></div>
+    <div class="sc-capsules" *ngIf="result_json?.SET_SCORES?.length > 0" (click)="gotoSetInputPage(true)">
+      <div class="sc-capsule" *ngFor="let set of result_json.SET_SCORES; let i = index">
+        <span class="sc-capsule-label">S{{i+1}}</span>
+        <span class="sc-capsule-score home" [class.won]="set.SCORE.split('-')[0] > set.SCORE.split('-')[1]">{{set.SCORE.split('-')[0]}}</span>
+        <span class="sc-capsule-divider"></span>
+        <span class="sc-capsule-score away" [class.won]="set.SCORE.split('-')[1] > set.SCORE.split('-')[0]">{{set.SCORE.split('-')[1]}}</span>
       </div>
     </div>
   </div>
 
   <!-- Match Stats Section -->
-  <div class="stats-section" *ngIf="result_json">
-    <div class="section-header">
-      <ion-icon name="analytics"></ion-icon>
-      <h4>Match Statistics</h4>
-    </div>
+  <div class="stats-wrap" *ngIf="result_json">
+    <div class="stats-section-label"><ion-icon name="analytics"></ion-icon> Match Statistics</div>
 
-    <div class="stats-grid">
-      <!-- Aces Section -->
-      <div class="stat-card">
-        <div class="stat-header">
-          <ion-icon name="flash" color="warning"></ion-icon>
-          <span class="stat-title">Aces</span>
-        </div>
-        <div class="stat-bars">
-          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.ACES, result_json.AWAY_TEAM.ACES, 'HOME_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.HOME_TEAM.ACES || '0'}}</span>
-          </div>
-          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.ACES, result_json.AWAY_TEAM.ACES, 'AWAY_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.AWAY_TEAM.ACES || '0'}}</span>
-          </div>
-        </div>
+    <div class="stats-card">
+      <div class="stats-legend">
+        <span class="legend-item home"><span class="legend-dot home"></span>{{homeTeamName}}</span>
+        <span class="legend-item away"><span class="legend-dot away"></span>{{awayTeamName}}</span>
       </div>
 
-      <!-- Double Faults Section -->
-      <div class="stat-card">
-        <div class="stat-header">
-          <ion-icon name="warning" color="danger"></ion-icon>
-          <span class="stat-title">Double Faults</span>
-        </div>
-        <div class="stat-bars">
-          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.DOUBLE_FAULTS, result_json.AWAY_TEAM.DOUBLE_FAULTS, 'HOME_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.HOME_TEAM.DOUBLE_FAULTS || '0'}}</span>
+      <div class="stat-row">
+        <span class="stat-val home" (click)="isHomeStatsPopupVisible = true">{{result_json.HOME_TEAM.ACES || '0'}}</span>
+        <div class="stat-center">
+          <div class="stat-bars-face">
+            <div class="bar-home" (click)="isHomeStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.ACES, result_json.AWAY_TEAM.ACES, 'HOME_TEAM')"></div>
+            <div class="bar-away" (click)="isAwayStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.ACES, result_json.AWAY_TEAM.ACES, 'AWAY_TEAM')"></div>
           </div>
-          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.DOUBLE_FAULTS, result_json.AWAY_TEAM.DOUBLE_FAULTS, 'AWAY_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.AWAY_TEAM.DOUBLE_FAULTS || '0'}}</span>
-          </div>
+          <span class="stat-name"><ion-icon name="flash" style="color:#f59e0b"></ion-icon> Aces</span>
         </div>
+        <span class="stat-val away" (click)="isAwayStatsPopupVisible = true">{{result_json.AWAY_TEAM.ACES || '0'}}</span>
       </div>
 
-      <!-- First Serve Percentage Section -->
-      <div class="stat-card">
-        <div class="stat-header">
-          <ion-icon name="checkmark-circle" color="success"></ion-icon>
-          <span class="stat-title">First Serve %</span>
-        </div>
-        <div class="stat-bars">
-          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE, result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE, 'HOME_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE || '0'}}%</span>
+      <div class="stat-divider"></div>
+
+      <div class="stat-row">
+        <span class="stat-val home" (click)="isHomeStatsPopupVisible = true">{{result_json.HOME_TEAM.DOUBLE_FAULTS || '0'}}</span>
+        <div class="stat-center">
+          <div class="stat-bars-face">
+            <div class="bar-home" (click)="isHomeStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.DOUBLE_FAULTS, result_json.AWAY_TEAM.DOUBLE_FAULTS, 'HOME_TEAM')"></div>
+            <div class="bar-away" (click)="isAwayStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.DOUBLE_FAULTS, result_json.AWAY_TEAM.DOUBLE_FAULTS, 'AWAY_TEAM')"></div>
           </div>
-          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE, result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE, 'AWAY_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE || '0'}}%</span>
-          </div>
+          <span class="stat-name"><ion-icon name="warning" style="color:#ef4444"></ion-icon> Double Faults</span>
         </div>
+        <span class="stat-val away" (click)="isAwayStatsPopupVisible = true">{{result_json.AWAY_TEAM.DOUBLE_FAULTS || '0'}}</span>
       </div>
 
-      <!-- Unforced Errors Section -->
-      <div class="stat-card">
-        <div class="stat-header">
-          <ion-icon name="close-circle" color="danger"></ion-icon>
-          <span class="stat-title">Unforced Errors</span>
-        </div>
-        <div class="stat-bars">
-          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.UNFORCED_ERRORS, result_json.AWAY_TEAM.UNFORCED_ERRORS, 'HOME_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.HOME_TEAM.UNFORCED_ERRORS || '0'}}</span>
+      <div class="stat-divider"></div>
+
+      <div class="stat-row">
+        <span class="stat-val home" (click)="isHomeStatsPopupVisible = true">{{result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE || '0'}}%</span>
+        <div class="stat-center">
+          <div class="stat-bars-face">
+            <div class="bar-home" (click)="isHomeStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE, result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE, 'HOME_TEAM')"></div>
+            <div class="bar-away" (click)="isAwayStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE, result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE, 'AWAY_TEAM')"></div>
           </div>
-          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.UNFORCED_ERRORS, result_json.AWAY_TEAM.UNFORCED_ERRORS, 'AWAY_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.AWAY_TEAM.UNFORCED_ERRORS || '0'}}</span>
-          </div>
+          <span class="stat-name"><ion-icon name="checkmark-circle" style="color:#10b981"></ion-icon> First Serve %</span>
         </div>
+        <span class="stat-val away" (click)="isAwayStatsPopupVisible = true">{{result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE || '0'}}%</span>
       </div>
 
-      <!-- Break Points Won Section -->
-      <div class="stat-card">
-        <div class="stat-header">
-          <ion-icon name="trophy" color="warning"></ion-icon>
-          <span class="stat-title">Break Points Won</span>
-        </div>
-        <div class="stat-bars">
-          <div class="stat-bar home" (click)="isHomeStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.BREAK_POINTS_WON, result_json.AWAY_TEAM.BREAK_POINTS_WON, 'HOME_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.HOME_TEAM.BREAK_POINTS_WON || '0'}}</span>
+      <div class="stat-divider"></div>
+
+      <div class="stat-row">
+        <span class="stat-val home" (click)="isHomeStatsPopupVisible = true">{{result_json.HOME_TEAM.UNFORCED_ERRORS || '0'}}</span>
+        <div class="stat-center">
+          <div class="stat-bars-face">
+            <div class="bar-home" (click)="isHomeStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.UNFORCED_ERRORS, result_json.AWAY_TEAM.UNFORCED_ERRORS, 'HOME_TEAM')"></div>
+            <div class="bar-away" (click)="isAwayStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.UNFORCED_ERRORS, result_json.AWAY_TEAM.UNFORCED_ERRORS, 'AWAY_TEAM')"></div>
           </div>
-          <div class="stat-bar away" (click)="isAwayStatsPopupVisible = true">
-            <div class="bar-container">
-              <div class="bar-fill"
-                [style.width.%]="getPercentage(result_json.HOME_TEAM.BREAK_POINTS_WON, result_json.AWAY_TEAM.BREAK_POINTS_WON, 'AWAY_TEAM')">
-              </div>
-            </div>
-            <span class="stat-value">{{result_json.AWAY_TEAM.BREAK_POINTS_WON || '0'}}</span>
-          </div>
+          <span class="stat-name"><ion-icon name="close-circle" style="color:#f76e04"></ion-icon> Unforced Errors</span>
         </div>
+        <span class="stat-val away" (click)="isAwayStatsPopupVisible = true">{{result_json.AWAY_TEAM.UNFORCED_ERRORS || '0'}}</span>
+      </div>
+
+      <div class="stat-divider"></div>
+
+      <div class="stat-row">
+        <span class="stat-val home" (click)="isHomeStatsPopupVisible = true">{{result_json.HOME_TEAM.BREAK_POINTS_WON || '0'}}</span>
+        <div class="stat-center">
+          <div class="stat-bars-face">
+            <div class="bar-home" (click)="isHomeStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.BREAK_POINTS_WON, result_json.AWAY_TEAM.BREAK_POINTS_WON, 'HOME_TEAM')"></div>
+            <div class="bar-away" (click)="isAwayStatsPopupVisible = true" [style.width.%]="getPercentage(result_json.HOME_TEAM.BREAK_POINTS_WON, result_json.AWAY_TEAM.BREAK_POINTS_WON, 'AWAY_TEAM')"></div>
+          </div>
+          <span class="stat-name"><ion-icon name="trophy" style="color:#8b5cf6"></ion-icon> Break Points Won</span>
+        </div>
+        <span class="stat-val away" (click)="isAwayStatsPopupVisible = true">{{result_json.AWAY_TEAM.BREAK_POINTS_WON || '0'}}</span>
       </div>
     </div>
   </div>
 </ion-content>
 
-<!-- Home Team Stats Popup -->
-<div class="custom-popup" *ngIf="isHomeStatsPopupVisible && result_json">
-  <div class="popup-container">
-    <div class="popup-header">
-      <h3>Update {{homeTeamName}} Stats</h3>
-      <button class="close-button" (click)="isHomeStatsPopupVisible=false">×</button>
+<!-- Home Team Stats Bottom Sheet -->
+<app-bottom-sheet [(visible)]="isHomeStatsPopupVisible" [title]="'Update ' + homeTeamName + ' Stats'" [bottomOffset]="0">
+  <div class="stats-sheet" *ngIf="result_json">
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Aces</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.HOME_TEAM.ACES" min="0"></ion-input>
     </div>
-
-    <div class="popup-content">
-      <ion-item class="input_item">
-        <ion-label>Aces</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.ACES" min="0"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>Double Faults</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.DOUBLE_FAULTS"
-          min="0"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>First Serve %</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE" min="0"
-          max="100"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>Unforced Errors</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.UNFORCED_ERRORS"
-          min="0"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>Break Points Won</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.HOME_TEAM.BREAK_POINTS_WON"
-          min="0"></ion-input>
-      </ion-item>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Double Faults</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.HOME_TEAM.DOUBLE_FAULTS" min="0"></ion-input>
     </div>
-
-    <div class="popup-buttons">
-      <button ion-button class="timekare-primary-btn" (click)="isHomeStatsPopupVisible=false">Cancel</button>
-      <button ion-button class="timekare-primary-btn" (click)="updateHomeTeamStats()">Update</button>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">First Serve %</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.HOME_TEAM.FIRST_SERVE_PERCENTAGE" min="0" max="100"></ion-input>
     </div>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Unforced Errors</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.HOME_TEAM.UNFORCED_ERRORS" min="0"></ion-input>
+    </div>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Break Points Won</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.HOME_TEAM.BREAK_POINTS_WON" min="0"></ion-input>
+    </div>
+    <button class="sheet-save-btn" (click)="updateHomeTeamStats()">
+      <ion-icon name="checkmark"></ion-icon> Update Stats
+    </button>
   </div>
-</div>
+</app-bottom-sheet>
 
-<!-- Away Team Stats Popup -->
-<div class="custom-popup" *ngIf="isAwayStatsPopupVisible && result_json">
-  <div class="popup-container">
-    <div class="popup-header">
-      <h3>Update {{awayTeamName}} Stats</h3>
-      <button class="close-button" (click)="isAwayStatsPopupVisible=false">×</button>
+<!-- Away Team Stats Bottom Sheet -->
+<app-bottom-sheet [(visible)]="isAwayStatsPopupVisible" [title]="'Update ' + awayTeamName + ' Stats'" [bottomOffset]="0">
+  <div class="stats-sheet" *ngIf="result_json">
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Aces</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.AWAY_TEAM.ACES" min="0"></ion-input>
     </div>
-
-    <div class="popup-content">
-      <ion-item class="input_item">
-        <ion-label>Aces</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.ACES" min="0"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>Double Faults</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.DOUBLE_FAULTS"
-          min="0"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>First Serve %</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE" min="0"
-          max="100"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>Unforced Errors</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.UNFORCED_ERRORS"
-          min="0"></ion-input>
-      </ion-item>
-
-      <ion-item class="input_item">
-        <ion-label>Break Points Won</ion-label>
-        <ion-input type="number" class="textright" [(ngModel)]="result_json.AWAY_TEAM.BREAK_POINTS_WON"
-          min="0"></ion-input>
-      </ion-item>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Double Faults</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.AWAY_TEAM.DOUBLE_FAULTS" min="0"></ion-input>
     </div>
-
-    <div class="popup-buttons">
-      <button ion-button class="timekare-primary-btn" (click)="isAwayStatsPopupVisible=false">Cancel</button>
-      <button ion-button class="timekare-primary-btn" (click)="updateAwayTeamStats()">Update</button>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">First Serve %</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.AWAY_TEAM.FIRST_SERVE_PERCENTAGE" min="0" max="100"></ion-input>
     </div>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Unforced Errors</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.AWAY_TEAM.UNFORCED_ERRORS" min="0"></ion-input>
+    </div>
+    <div class="sheet-stat-item">
+      <span class="sheet-stat-label">Break Points Won</span>
+      <ion-input type="number" class="sheet-stat-input" [(ngModel)]="result_json.AWAY_TEAM.BREAK_POINTS_WON" min="0"></ion-input>
+    </div>
+    <button class="sheet-save-btn" (click)="updateAwayTeamStats()">
+      <ion-icon name="checkmark"></ion-icon> Update Stats
+    </button>
   </div>
-</div>
+</app-bottom-sheet>

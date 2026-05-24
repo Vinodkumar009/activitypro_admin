@@ -1,0 +1,83 @@
+<ion-content class="coaches-listing">
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <div class="header-row">
+        <button ion-button icon-only clear class="back-btn" (click)="goBack()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+        <span class="header-title">Coaches</span>
+      </div>
+      <app-search-bar
+        placeholder="Search coaches..."
+        [(value)]="searchInput"
+        [count]="filteredCoaches.length"
+        (search)="onSearch($event)">
+      </app-search-bar>
+
+      <!-- Summary Bar -->
+      <div class="summary-bar" *ngIf="existingCoachIds.length > 0 || hasChanges()">
+        <span class="summary-item added" *ngIf="getAddedCount() > 0">
+          <span class="summary-dot"></span> {{getAddedCount()}} Added
+        </span>
+        <span class="summary-item new" *ngIf="getNewCount() > 0">
+          <span class="summary-dot"></span> {{getNewCount()}} New
+        </span>
+        <span class="summary-item removed" *ngIf="getRemovedCount() > 0">
+          <span class="summary-dot"></span> {{getRemovedCount()}} Will Remove
+        </span>
+      </div>
+    </div>
+
+    <div class="page-scroll-area">
+      <div class="items-container" *ngIf="filteredCoaches.length > 0">
+        <div class="revamp-card" *ngFor="let coach of filteredCoaches"
+          [class.selected]="isSelected(coach.Id)"
+          [class.removing]="isMarkedForRemoval(coach.Id)"
+          (click)="toggleCoach(coach.Id)">
+          <div class="card-accent"></div>
+          <div class="card-content">
+            <div class="card-top-row">
+              <div class="coach-avatar" *ngIf="!hasProfileImage(coach)">{{getInitials(coach)}}</div>
+              <img class="coach-avatar-img" *ngIf="hasProfileImage(coach)" [src]="coach.profile_image">
+              <div class="card-info">
+                <h3 class="card-title">{{coach.first_name}} {{coach.last_name}}</h3>
+                <p class="card-subtitle">{{coach.email_id}}</p>
+              </div>
+              <span class="existing-badge remove" *ngIf="isMarkedForRemoval(coach.Id)">Will Remove</span>
+              <span class="existing-badge" *ngIf="isExisting(coach.Id) && isSelected(coach.Id)">Added</span>
+              <div class="check-circle" [class.checked]="isSelected(coach.Id)">
+                <ion-icon name="checkmark" *ngIf="isSelected(coach.Id)"></ion-icon>
+              </div>
+            </div>
+            <!-- Coach Detail Chips -->
+            <div class="coach-chips" *ngIf="coach.title || coach.qualification">
+              <span class="coach-chip" *ngIf="coach.title">{{coach.title}}</span>
+              <span class="coach-chip qual" *ngIf="coach.qualification">{{coach.qualification}}</span>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-details">
+              <div class="detail-row">
+                <ion-icon name="call" class="detail-icon"></ion-icon>
+                <span class="detail-text">{{coach.phone_no || 'N/A'}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modern-empty-state" *ngIf="filteredCoaches.length === 0">
+        <ion-icon name="person" class="empty-icon"></ion-icon>
+        <div class="empty-title">No Coaches Found</div>
+        <div class="empty-description">No coaches available at the moment</div>
+      </div>
+
+      <!-- Hint text when no changes -->
+    </div>
+
+    <button class="btn-gradient-shine" [ngClass]="hasChanges() ? getButtonClass() : 'btn-disabled'"
+      [disabled]="!hasChanges()"
+      (click)="onButtonClick()">
+      {{hasChanges() ? getButtonLabel() : 'Tap to select or deselect coaches'}}
+    </button>
+  </div>
+</ion-content>

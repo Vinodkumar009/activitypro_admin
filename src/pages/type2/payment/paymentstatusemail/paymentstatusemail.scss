@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-paymentstatusemail {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         background-image: none !important;
         padding: 16px 9px !important;

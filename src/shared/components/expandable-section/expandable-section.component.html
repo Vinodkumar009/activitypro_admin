@@ -1,0 +1,10 @@
+<ion-item class="expandable-header">
+  <ion-label>{{label}}</ion-label>
+  <label class="toggle" item-end>
+    <input type="checkbox" [ngModel]="expanded" (ngModelChange)="onToggle($event)">
+    <span data-unchecked="No" data-checked="Yes"></span>
+  </label>
+</ion-item>
+<div class="expandable-body" [class.expanded]="expanded">
+  <ng-content></ng-content>
+</div>

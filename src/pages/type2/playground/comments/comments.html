@@ -1,0 +1,115 @@
+<!--
+  Generated template for the CommentsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Comments</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="deleteFeed()"> 
+        <ion-icon name="md-trash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div>
+    <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <div style="padding-bottom: 20px;width: 100%;">
+            <p class="feedtext">{{feedText}}</p>
+          </div>
+          
+        </ion-row>
+        <div style="margin-top: 10px" *ngIf="imageUrls.length > 0">
+          <ion-slides pager='true'>
+              <ion-slide *ngFor='let img of imageUrls;let i=index' >
+                <img class="profile-img" [src]="img.image_url" (click)="showFullViewImage(i)" />
+              </ion-slide>
+          </ion-slides>
+        </div>
+        <ion-row>
+          <ion-col col-6>
+            <div class="props">
+              <!-- <div class="badgering">
+                <img src="" alt="" />
+              </div> -->
+              <div class="badge" text-center>
+                <p>{{noOfLikes}}</p>
+              </div>
+              <div>
+                <button ion-button icon-only clear class="trans_btns" (click)="toggleLike()">
+                  <ion-icon name="thumbs-up" style="padding-right: 5px"></ion-icon>
+                  <span>GiveProps</span>
+                </button>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col col-6>
+            <div class="comments">
+              <!-- <div class="badgering2"></div> -->
+              <div class="badge2" text-center>
+                <p>{{commentsCount}}</p>
+              </div>
+              <div>
+                <button ion-button icon-only clear class="trans_btns">
+                  <ion-icon
+                    name="chatbubbles"
+                    style="padding-right: 5px"
+                  ></ion-icon>
+                  <span>Comments</span>
+                </button>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <ion-grid *ngFor="let com of comments" (click)="presentActionSheet(com)">
+    <ion-row style="margin: 1%">
+      <ion-col
+        style="border: 2px solid #2b92bb; border-radius: 12px"
+        col-12
+        no-padding
+      >
+        <ion-row class="message">
+          <ion-col col-2>
+            <img class="profile-img" [src]="imageUrl" />
+          </ion-col>
+          <ion-col col-8>
+            <p>{{formatMatchStartDate(com.created_at)}}</p>
+            <p class="username">{{com.user.FirstName}} {{com.user.LastName}}</p>
+            <p>{{com.comment}}</p>
+          </ion-col>
+          <ion-col col-2 text-right>
+            <ion-icon name="more"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-item>
+    <ion-input
+      autoGrow="true"
+      [(ngModel)]="currentMessage"
+      placeholder="Type a message"
+    ></ion-input>
+    <button ion-button item-right icon-only clear (click)="sendMessage()">
+      <ion-icon name="send" color="secondary"></ion-icon>
+    </button>
+  </ion-item>
+</ion-footer>
+
+<div class="img_viewer_wrapper" *ngIf="showFullImage">
+  <div class="img_viewer_div">
+    <ion-icon name="close-circle" (click)="showFullImage=false"></ion-icon>
+    <img src="{{full_view_img}}" alt="" srcset="">
+  </div>
+</div>

@@ -1,7 +1,6 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
 page-subadmin-edit {
-    .scroll-content {
-        background-image: none !important;
-        padding: 0px !important;
-        background-color: #f7f7f7;
-    }
+    @include android-sdk35-fixes;
+
 }

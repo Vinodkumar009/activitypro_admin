@@ -1,3 +1,5 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
 .color-theme-1 {
    // $toolbar-background-color1: #bc2219;
    $toolbar-background-color1:  #2b92bb;
@@ -13,7 +15,7 @@
     $segment-ios-button-clr-color1: #007A90;
     $segment-md-button-act-border-clr-color1: #007A90;
     $segment-wp-button-text-clr-color1: #ffffff;
-    $button-save-bg-clr-color1: #5be283;
+    $button-save-bg-clr-color1: #2b92bb;//#5be283;
     .toolbar-title {
         color: $toolbar-title-color1;
         //added after dashboard color change.
@@ -67,4 +69,6 @@
 
 
     
+}
+app.color1-page {
 }

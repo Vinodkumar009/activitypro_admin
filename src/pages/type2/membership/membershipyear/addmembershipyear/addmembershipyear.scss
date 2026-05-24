@@ -1,4 +1,10 @@
-page-addmembershipyear{
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
+page-addmembershipyear {
+    @include android-sdk35-fixes;
+
+
+
     .twelveMonth{
         margin-left: 15px !important;
         color: #dfc099;

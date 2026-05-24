@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ModalController, Events } from 'ionic-angular';
 import { Image } from '../../Model/ImageSection';
 import { FirebaseService } from '../../../services/firebase.service';
 import { Storage } from '@ionic/storage';
@@ -11,6 +11,8 @@ import { GetNewsAndPhoto, NewsAndPhotoResult } from './input_output_model/news_p
 import gql from 'graphql-tag';
 import { GraphqlService } from '../../../services/graphql.service';
 import { first } from "rxjs/operators";
+import * as moment from "moment";
+import { ThemeService } from '../../../services/theme.service';
 /**
  * Generated class for the EventsandnewsPage page.
  *
@@ -32,6 +34,7 @@ export class EventsandnewsPage {
   key: any = "";
   shareInfo: any = "";
   msg = "Check out the latest news from";
+  isDarkTheme: boolean = true;
 
 
   clubKeys: any = [];
@@ -59,11 +62,17 @@ export class EventsandnewsPage {
     public toastCtrl: ToastController, 
     public actionSheetCtrl: ActionSheetController, 
     public fb: FirebaseService, private storage: Storage, 
-    public navCtrl: NavController, public navParams: NavParams) {
-    
+    public navCtrl: NavController, public navParams: NavParams,
+    private themeService: ThemeService,
+    public events: Events) {
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
   }
 
   ionViewWillEnter() {
+    this.loadTheme();
     this.commonService.category.pipe(first()).subscribe((data) => {
       if(data == "refresh_news"){
         this.storage.get('userObj').then((val) => {
@@ -79,49 +88,100 @@ export class EventsandnewsPage {
 
   
 
-  getTime(timestamp: string) {
-    this.timeInterval = "";
-    let time = 0;
-    // Create a date object from the numeric value (timestamp in milliseconds)
-    const createdAt = new Date(Number(timestamp));
-    // Get the current time in milliseconds
-    const currentTime = new Date().getTime();
-    // Adjust for the time zone offset of the created date
-    const timeZoneOffset = createdAt.getTimezoneOffset() * 60000;
-    const localCreatedTime = createdAt.getTime() - timeZoneOffset;
-    // Calculate the time difference in milliseconds
-    let totalTimeInMiliSec = currentTime - localCreatedTime;
-    // Define time intervals
-    const sec = 1000;
-    const min = 60 * sec;
-    const hr = 60 * min;
-    const day = 24 * hr;
-    const month = 30 * day; // Approximate
-    const year = 365 * day; // Approximate
+  // getTime(timestamp: string) {
+  //   this.timeInterval = "";
+  // let time = 0;
 
-    // Determine the appropriate time interval
-    if (totalTimeInMiliSec < min) {
-      time = totalTimeInMiliSec / sec;
-      this.timeInterval = `${Math.floor(time)} sec${Math.floor(time) !== 1 ? 's' : ''}`;
-    } else if (totalTimeInMiliSec < hr) {
-      time = totalTimeInMiliSec / min;
-      this.timeInterval = `${Math.floor(time)} min${Math.floor(time) !== 1 ? 's' : ''}`;
-    } else if (totalTimeInMiliSec < day) {
-      time = totalTimeInMiliSec / hr;
-      this.timeInterval = `${Math.floor(time)} hr${Math.floor(time) !== 1 ? 's' : ''}`;
-    } else if (totalTimeInMiliSec < month) {
-      time = totalTimeInMiliSec / day;
-      this.timeInterval = `${Math.floor(time)} day${Math.floor(time) !== 1 ? 's' : ''}`;
-    } else if (totalTimeInMiliSec < year) {
-      time = totalTimeInMiliSec / month;
-      this.timeInterval = `${Math.floor(time)} month${Math.floor(time) !== 1 ? 's' : ''}`;
-    } else {
-      time = totalTimeInMiliSec / year;
-      this.timeInterval = `${Math.floor(time)} yr${Math.floor(time) !== 1 ? 's' : ''}`;
+  // // Create a date object from the numeric value (timestamp in milliseconds)
+  // const createdAt = new Date(Number(timestamp));
+
+  // // Get the current time in milliseconds
+  // const currentTime = new Date().getTime();
+
+  // // Adjust for the time zone offset of the created date
+  // const timeZoneOffset = createdAt.getTimezoneOffset() * 60000;
+  // const localCreatedTime = createdAt.getTime() - timeZoneOffset;
+
+  // // Calculate the time difference in milliseconds
+  // let totalTimeInMiliSec = currentTime - localCreatedTime;
+
+  // // Define time intervals
+  // const sec = 1000;
+  // const min = 60 * sec;
+  // const hr = 60 * min;
+  // const day = 24 * hr;
+  // const month = 30 * day; // Approximate
+  // const year = 365 * day; // Approximate
+
+  // // Determine the appropriate time interval
+  // if (totalTimeInMiliSec < min) {
+  //   time = totalTimeInMiliSec / sec;
+  //   this.timeInterval = `${Math.floor(time)} sec${Math.floor(time) !== 1 ? 's' : ''}`;
+  // } else if (totalTimeInMiliSec < hr) {
+  //   time = totalTimeInMiliSec / min;
+  //   this.timeInterval = `${Math.floor(time)} min${Math.floor(time) !== 1 ? 's' : ''}`;
+  // } else if (totalTimeInMiliSec < day) {
+  //   time = totalTimeInMiliSec / hr;
+  //   this.timeInterval = `${Math.floor(time)} hr${Math.floor(time) !== 1 ? 's' : ''}`;
+  // } else if (totalTimeInMiliSec < month) {
+  //   time = totalTimeInMiliSec / day;
+  //   this.timeInterval = `${Math.floor(time)} day${Math.floor(time) !== 1 ? 's' : ''}`;
+  // } else if (totalTimeInMiliSec < year) {
+  //   time = totalTimeInMiliSec / month;
+  //   this.timeInterval = `${Math.floor(time)} month${Math.floor(time) !== 1 ? 's' : ''}`;
+  // } else {
+  //   time = totalTimeInMiliSec / year;
+  //   this.timeInterval = `${Math.floor(time)} yr${Math.floor(time) !== 1 ? 's' : ''}`;
+  // }
+
+  //  return this.timeInterval;
+  // }
+
+  getTime(epochTimeString) {
+
+    let epochTimeMilliseconds = parseFloat(epochTimeString);
+    if (epochTimeMilliseconds.toString().length <= 10) {
+        epochTimeMilliseconds *= 1000; // Convert to milliseconds if it's in seconds
     }
-    return this.timeInterval;
+
+    // Parse as UTC, then convert to the user's local time
+    const localMoment = moment.utc(epochTimeMilliseconds).local(); // UTC to local
+    console.log("Local moment is:", localMoment.format("YYYY-MM-DD HH:mm:ss"));
+
+    // Get the current local time
+    const now = moment();
+    console.log("Now time is:", now.format("YYYY-MM-DD HH:mm:ss"));
+
+    // Calculate the difference between now and the given time
+    const diffMilliseconds = now.diff(localMoment);
+    console.log("Difference in milliseconds:", diffMilliseconds);
+
+    // Calculate time differences in various units
+    const duration = moment.duration(diffMilliseconds);
+
+    console.log("Duration breakdown - Years:", duration.years());
+    console.log("Months:", duration.months());
+    console.log("Days:", duration.days());
+    console.log("Hours:", duration.hours());
+    console.log("Minutes:", duration.minutes());
+    console.log("Seconds:", duration.seconds());
+    // Check each unit in descending order and return the first one with a non-zero value
+    if (duration.years() > 0) {
+      return `${duration.years()} year${duration.years() > 1 ? 's' : ''}`;
+    } else if (duration.months() > 0) {
+      return `${duration.months()} month${duration.months() > 1 ? 's' : ''}`;
+    } else if (duration.days() > 0) {
+      return `${duration.days()} day${duration.days() > 1 ? 's' : ''}`;
+    } else if (duration.hours() > 0) {
+      return `${duration.hours()} hour${duration.hours() > 1 ? 's' : ''}`;
+    } else if (duration.minutes() > 0) {
+      return `${duration.minutes()} minute${duration.minutes() > 1 ? 's' : ''}`;
+    } else if (duration.seconds() > 0) {
+      return `${duration.seconds()} second${duration.seconds() > 1 ? 's' : ''}`;
+    } else {
+      return 'just now';
+    }
   }
-  
   
   
   ionViewDidLoad() {
@@ -400,7 +460,9 @@ export class EventsandnewsPage {
             associated_activity
             category_name
             image_tag
+            
             image_title
+
             is_show_applus
             is_show_member
             ParentClub{
@@ -427,6 +489,7 @@ export class EventsandnewsPage {
               image_url
               sequence_no
               }
+         
            }
            newsphotosList{
             id
@@ -442,7 +505,9 @@ export class EventsandnewsPage {
             associated_activity
             category_name
             image_tag
+            
             image_title
+
             is_show_applus
             is_show_member
             ParentClub{
@@ -609,6 +674,54 @@ export class EventsandnewsPage {
 
   ionViewWillLeave(){
     this.commonService.updateCategory("");
+    this.events.unsubscribe('theme:changed');
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme')
+      .then((isDarkTheme) => {
+        if (isDarkTheme !== null) {
+          this.isDarkTheme = isDarkTheme;
+        } else {
+          this.isDarkTheme = true;
+        }
+        this.applyTheme();
+      })
+      .catch((error) => {
+        this.isDarkTheme = true;
+        this.applyTheme();
+      });
+
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const element = document.querySelector('page-eventsandnews');
+    if (element) {
+      if (this.isDarkTheme) {
+        element.classList.remove('light-theme');
+        document.body.classList.remove('light-theme');
+      } else {
+        element.classList.add('light-theme');
+        document.body.classList.add('light-theme');
+      }
+    } else {
+      setTimeout(() => {
+        const retryElement = document.querySelector('page-eventsandnews');
+        if (retryElement) {
+          if (this.isDarkTheme) {
+            retryElement.classList.remove('light-theme');
+            document.body.classList.remove('light-theme');
+          } else {
+            retryElement.classList.add('light-theme');
+            document.body.classList.add('light-theme');
+          }
+        }
+      }, 100);
+    }
   }
 
 }

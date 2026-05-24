@@ -25,6 +25,7 @@
         <ion-item class="venue-dropdown">
             <ion-label>Club</ion-label>
             <ion-select [(ngModel)]="selectedClubKey" (ionChange)="venueSelected()" class="full-width-select">
+                <ion-option value="All">All</ion-option>
                 <ion-option *ngFor="let club of clubs" [value]="club.Id">{{club.ClubName}}</ion-option>
             </ion-select>
         </ion-item>

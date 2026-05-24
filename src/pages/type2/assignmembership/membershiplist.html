@@ -1,0 +1,71 @@
+<ion-header *ngIf="themeType == 1">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Membership List</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+    <ion-title>
+      Membership List
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label>Club</ion-label>
+    <ion-select [(ngModel)]="selectedClubKey" (ionChange)="onClubChange()">
+      <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-card *ngFor="let item of allMemberCategory;let i = index" class="card-view">
+        <ion-card-content class="slidingcards">
+            <h2>Category Name:{{item.MemeberCategoryName}}</h2>
+                <h2>Category Code:{{item.MemeberCategoryCode}}</h2>
+                <div *ngIf='item.IsExistSubCategory == true'>
+                    <div *ngFor="let ac of memberSubCategoryArray[i]" class="box">
+                        <h2>Sub Category:{{ac.MembershipSubCategoryName}}</h2>
+                        <h2>SubCategory Code:{{ac.MembershipSubCategoryCode}}</h2>
+                    </div>
+                </div>
+                <button ion-button block class="timekare-primary-btn top-padding" (click)="addMemberSubCategory(item)">Add Member SubCategory</button>
+            
+        </ion-card-content>
+
+    </ion-card>
+
+    <ion-card *ngIf="allMemberCategory.length == 0" class="card-view">
+        <ion-card-content>
+            <p class="text-color">It seems there are no membership assign in this club</p>
+        </ion-card-content>
+    </ion-card>
+
+
+
+
+
+
+
+  <ion-fab right bottom>
+    <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" (click)="gotoAssignMembershipPage()" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>

@@ -250,6 +250,16 @@ export class ScoreInputPage {
     return !!(this.selectedPlayer[index] && this.goalTime[index] && this.goalTime[index] !== '0"00"');
   }
 
+  getCompletedGoalsCount(): number {
+    let count = 0;
+    for (let i = 0; i < this.score; i++) { if (this.isGoalComplete(i)) count++; }
+    return count;
+  }
+
+  getCompletedGoalsPercent(): number {
+    return this.score > 0 ? (this.getCompletedGoalsCount() / this.score) * 100 : 0;
+  }
+
   private isTimeSet(index: number): boolean {
     const dateTimeValue = this.goalDateTime[index];
     if (!dateTimeValue) return false;

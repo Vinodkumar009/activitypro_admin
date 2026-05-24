@@ -1,6 +1,8 @@
-venue-page{
-    
-    .social-cards {
+@import '../../../theme/android-sdk35-fixes.scss';
+
+venue-page {
+    @include android-sdk35-fixes;
+.social-cards {
         padding: 0;
      }
      .btn-clr{

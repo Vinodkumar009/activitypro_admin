@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-textareamodalcontroller {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         background-image: none !important;
     }

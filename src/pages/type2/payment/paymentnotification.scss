@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 paymentnotification-page {
+    @include android-sdk35-fixes;
     .margin_top {
         margin-top: 10px;
     }

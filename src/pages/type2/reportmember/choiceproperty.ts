@@ -489,7 +489,6 @@ export class Type2ChoiceProperty {
                 }
               }); 
             // $.ajax({
-            //   url:`${this.nestUrl}/session/printreport`,
             //   data: this.selectOBj,
             //   type: "POST",
             //    success: function (response) {

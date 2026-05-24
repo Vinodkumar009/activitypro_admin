@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-school_ses_attendance_days {
+    @include android-sdk35-fixes;
+
+
+
   .right{
     float: right;
   }

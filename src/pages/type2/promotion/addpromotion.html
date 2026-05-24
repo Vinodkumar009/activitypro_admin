@@ -1,0 +1,172 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Add Promotion</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Add Promotion
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <!-- <ion-grid class="nopadding" *ngIf="allClub.length > 0">
+        <ion-row class="rowAll">
+            <ion-col col-12 class="right_pad">
+                <ion-item>
+                    <ion-label>All</ion-label>
+                    <ion-checkbox style="margin: 0px 36px 0px -1px;" [(ngModel)]="isSelectAll" (click)="selectAllToggole()"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+           
+        </ion-row>
+
+        <ion-list class="margin marginleftright" style="margin-left: auto;margin-right: auto;width: 99%;">
+            <p *ngFor="let club of allClub" class="pmargin">
+                <ion-item>
+                    <ion-label>{{club.ClubName}}</ion-label>
+                    <ion-checkbox [(ngModel)]="club.isSelect" (click)="changeMembers()"></ion-checkbox>
+                </ion-item>
+            </p>
+        </ion-list>
+    </ion-grid> -->
+    <ion-slides class="group-slides" [slidesPerView]="2.2">
+       <ion-slide>
+                    <ion-card class="facilityCard" [class.selected]="isSelectAll" (click)="selectAllToggole()">
+                        <ion-card-content  >
+                            <p class="facilities-text">All</p>
+                        </ion-card-content>
+                    </ion-card>
+        </ion-slide>
+        <ion-slide *ngFor="let club of allClub">
+            <ion-card class="facilityCard" [class.selected]="club.isSelect" (click)="selectVenue(club)">
+                <ion-card-content >
+
+                    <p class="facilities-text">{{club.ClubName}}</p>
+
+                </ion-card-content>
+            </ion-card>
+        </ion-slide>
+       
+    </ion-slides>
+
+  
+        <ion-card *ngIf="allClub.length == 0" class="nonmembercard">
+            <ion-card-content style="text-align: center; padding:0px !important ;">
+                <p class="danger_color2 nonlocationcard">Select a Club</p>
+            </ion-card-content>
+        </ion-card>
+   
+    <ion-item >
+        <ion-label floating>Promotion Name</ion-label>
+        <ion-input type="text" [(ngModel)]="promotionObj.PromotionTitle"></ion-input>
+    </ion-item>
+    
+    <ion-item >
+        <ion-label floating>Description</ion-label>
+        <ion-textarea type="text" row="4" [(ngModel)]="promotionObj.Description"></ion-textarea>
+    </ion-item>
+    <ion-item >
+        <ion-label>Start Date</ion-label>
+        <ion-datetime pickerFormat="DD MM YYYY" [(ngModel)]="promotionObj.StartDate"></ion-datetime>
+    </ion-item>
+    <ion-item >
+        <ion-label>End Date</ion-label>
+        <ion-datetime pickerFormat="DD MM YYYY" [(ngModel)]="promotionObj.EndDate"  max="2030-12-31"></ion-datetime>
+    </ion-item>
+    
+    <ion-item >
+        <ion-label floating>Sequence</ion-label>
+        <button ion-button clear item-right class="help_btn" (click)="sequenceHint()">
+            <img style="width: 50%;"src="assets/images/info.svg">
+        </button>
+        <ion-input type="number" [(ngModel)]="promotionObj.Sequence"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+        <ion-label>Promotion Type</ion-label>
+        <ion-select [(ngModel)]="promotionObj.PromotionType">
+            <ion-option value="SlideShow">Slide Show</ion-option>
+            <ion-option value="LongScroll">Long Scroll</ion-option>
+        </ion-select>
+    </ion-item> -->
+    <!-- <ion-item *ngIf="promotionObj.PromotionType == 'SlideShow'">
+        <ion-label floating>Slide Show Speed</ion-label>
+        <ion-input type="text" [(ngModel)]="promotionObj.SlideShowSpeed"></ion-input>
+    </ion-item> -->
+    <ion-row class="addimagerow" (click)="addImages()">
+        <ion-col col-6>Add Images</ion-col>
+        <ion-col col-6 text-right> <ion-icon style= "font-size: 23px;color: #f6c992;" ios="ios-add-circle" md="md-add-circle"></ion-icon></ion-col>
+    </ion-row>
+   
+    <ion-row class="addimagerow" *ngIf="imageArr.length > 0 && imageArr[0].ImagePath != ''">
+            <ion-col col-3 *ngFor="let photo of imageArr;let i = index">
+              <img *ngIf="photo.ImagePath != ''" src={{photo.ImagePath}} class="sub-image" >
+            </ion-col>
+    </ion-row>
+    <div *ngFor="let item of imageArr;let i = index" class="image-div">
+            <ion-fab  right (click)="removeImage(index,imageArr)">
+                    <button ion-fab mini><ion-icon name="ios-remove-outline"></ion-icon></button>
+            </ion-fab>
+        <ion-row class="addimagerow" (click)="SelectProfImg(i)" >
+        
+            <ion-col col-2 style="padding: 5px 5px 5px 5px; "><img style="width: 90%;" src="assets/images/upload.svg"></ion-col>
+                <!-- <ion-col col-8 style="font-size: 16px;color: #cbc8c6;" text-left><p style="margin-left: 12px;">Upload Title Image </p></ion-col>
+                <ion-col col-4 text-right><img src="assets/images/upload.png"></ion-col> -->
+                <ion-col col-10 class="marginauto"text-left>Upload Image</ion-col>
+        </ion-row>
+        <ion-item >
+            <ion-label floating>Image Caption</ion-label>
+            <ion-input type="text" [(ngModel)]="promotionObj.Caption"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Redirect URL</ion-label>
+            <ion-input type="text" [(ngModel)]="item.ImageRedirectURL"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Show in the member app</ion-label>
+            <ion-checkbox color="blue" checked="item.ImageToShow" [(ngModel)]="item.ImageToShow"></ion-checkbox>
+        </ion-item>
+
+       
+    </div>
+
+
+    <!-- <button ion-button block class="timekare-primary-btn top-padding" style="margin-top: 30px;" (click)="addImages()">Add Images</button> -->
+
+
+
+
+
+</ion-content>
+<ion-footer>
+    <ion-grid style="padding: 0 !important">
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelPromotion()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="addPromotion()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

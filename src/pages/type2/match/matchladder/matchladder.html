@@ -1,138 +1,308 @@
-<ion-content class="modern-ladder">
-<div style="width: 100%; height: 100%">
-  <!-- Modern Tab Selector -->
-  <div class="modern-tab-selector">
-    <button class="modern-tab" [class.active]="isPoints=='Points'" (click)="isPoints='Points'">
-      <div class="tab-icon-wrapper">
-        <ion-icon name="trophy"></ion-icon>
+<ion-content>
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <!-- 3-Tab Navigation -->
+      <div class="three-tabs">
+        <button class="tab-btn" [class.active]="activeTab === 0" (click)="changeTab(0)">Points</button>
+        <button class="tab-btn" [class.active]="activeTab === 1" (click)="changeTab(1)">Bump Rank</button>
+        <button class="tab-btn" [class.active]="activeTab === 2" (click)="changeTab(2)">Challenges</button>
       </div>
-      <span>Points</span>
-    </button>
-    <button class="modern-tab" [class.active]="isPoints=='HeadtoHead'" (click)="isPoints='HeadtoHead'; callheadtohead()">
-      <div class="tab-icon-wrapper">
-        <ion-icon name="people"></ion-icon>
+
+      <!-- Points: Age Category Filter -->
+      <div class="filter-card" *ngIf="activeTab === 0">
+        <div class="filter-label">
+          <ion-icon name="funnel" class="filter-icon"></ion-icon>
+          <span>Age Category</span>
+        </div>
+        <div class="filter-select-wrap">
+          <ion-select class="filter-select" [(ngModel)]="selectedcat" (ionChange)="getLadderList()">
+            <ion-option *ngFor="let cat of ageCategories" value="{{cat.Id}}">{{cat.CategoryName}} ({{cat.AgeFrom}} - {{cat.AgeTo}})</ion-option>
+          </ion-select>
+          <ion-icon name="chevron-down" class="select-arrow"></ion-icon>
+        </div>
       </div>
-      <span>Head-to-Head</span>
-    </button>
+
+      <!-- Points: Duration Filter -->
+      <div class="period-pills" *ngIf="activeTab === 0">
+        <button *ngFor="let p of periodOptions" class="period-pill"
+          [class.active]="ladderPeriod === p.value" (click)="onPeriodChange(p.value)">{{p.label}}</button>
+      </div>
+
+      <!-- Bump Rank: Ladder Selector + Actions -->
+      <div class="filter-card" *ngIf="(activeTab === 1 || activeTab === 2) && ladderOptions.length > 0">
+        <div class="brl-header-row">
+          <div class="filter-select-wrap" style="flex:1">
+            <ion-select class="filter-select" [(ngModel)]="selectedLadderId" (ionChange)="onLadderChange()">
+              <ion-option *ngFor="let opt of ladderOptions" value="{{opt.id}}">{{opt.label}}</ion-option>
+            </ion-select>
+            <ion-icon name="chevron-down" class="select-arrow"></ion-icon>
+          </div>
+          <button class="brl-icon-btn" (click)="openConfig('edit')"><ion-icon name="settings"></ion-icon></button>
+          <button class="brl-icon-btn" (click)="openConfig('create')"><ion-icon name="add"></ion-icon></button>
+        </div>
+      </div>
+
+      <!-- Search (Points & Bump Rank) -->
+      <app-search-bar *ngIf="activeTab === 0 || activeTab === 1"
+        [placeholder]="'Search by name, rank...'"
+        [(value)]="searchInput"
+        [count]="searchCount"
+        (search)="onSearch($event)">
+      </app-search-bar>
+
+      <!-- Challenges: Filter Pills -->
+      <div class="ch-filters" *ngIf="activeTab === 2">
+        <button *ngFor="let f of challengeFilters" class="ch-filter-btn"
+          [class.active]="challengeStatusFilter === f.value"
+          (click)="onChallengeFilterChange(f.value)">{{f.label}}</button>
+      </div>
+    </div>
+
+    <div class="page-scroll-area">
+
+      <!-- ═══ Points Tab ═══ -->
+      <div *ngIf="activeTab === 0">
+        <app-list-card *ngFor="let ladder of filteredLadder" [accentColor]="'#2b92bb'">
+          <div class="ladder-row">
+            <div class="rank-badge">{{ladder.rank}}</div>
+            <div class="ladder-info">
+              <p class="ladder-name">{{ladder.FirstName}} {{ladder.LastName}}</p>
+              <p class="ladder-meta">
+                <span *ngIf="ladder.TotalMatches">{{ladder.TotalMatches}} matches</span>
+                <span *ngIf="ladder.TotalMatches && ladder.LastMatchPlayed"> · </span>
+                <span *ngIf="ladder.LastMatchPlayed">Last played: {{ladder.LastMatchPlayed}}</span>
+              </p>
+            </div>
+            <div class="points-badge">{{ladder.Points}} <span class="pts-label">pts</span></div>
+          </div>
+        </app-list-card>
+        <div class="empty-state" *ngIf="filteredLadder?.length === 0">
+          <ion-icon name="trophy" class="empty-icon"></ion-icon>
+          <p class="empty-text">No ladder data available</p>
+          <p class="empty-sub">Select an age category to view rankings</p>
+        </div>
+      </div>
+
+      <!-- ═══ Bump Rank Tab ═══ -->
+      <div *ngIf="activeTab === 1">
+        <!-- No ladder configs yet -->
+        <div *ngIf="ladderOptions.length === 0 && !bumpLoading" class="brl-setup">
+          <ion-icon name="podium" class="brl-setup-icon"></ion-icon>
+          <h4 class="brl-setup-title">Getting Started</h4>
+          <div class="brl-step">
+            <span class="brl-step-num">1</span>
+            <div class="brl-step-content">
+              <span class="brl-step-label">Create a Ladder</span>
+              <span class="brl-step-desc">Set up Singles or Doubles, define age band and challenge rules.</span>
+            </div>
+            <button class="brl-step-btn" (click)="openConfig('create')"><ion-icon name="add"></ion-icon> Create</button>
+          </div>
+          <div class="brl-step">
+            <span class="brl-step-num">2</span>
+            <div class="brl-step-content">
+              <span class="brl-step-label">Seed Players</span>
+              <span class="brl-step-desc">Add eligible members and assign initial positions.</span>
+            </div>
+          </div>
+          <div class="brl-step">
+            <span class="brl-step-num">3</span>
+            <div class="brl-step-content">
+              <span class="brl-step-label">Players Challenge Each Other</span>
+              <span class="brl-step-desc">Lower-ranked players challenge higher ones. Winner takes the position.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rankings empty (ladder exists but no players) -->
+        <div *ngIf="ladderOptions.length > 0 && rankings.length === 0 && !bumpLoading" class="brl-seed-section">
+          <ion-icon name="people" class="brl-setup-icon"></ion-icon>
+          <p class="brl-seed-title">No players seeded yet</p>
+          <p class="brl-seed-desc">Seed players to assign initial ladder positions.</p>
+          <div class="brl-seed-btns">
+            <button class="brl-seed-btn" (click)="initRankings('points')"><ion-icon name="trophy"></ion-icon> By Points</button>
+            <button class="brl-seed-btn" (click)="initRankings('alphabetical')"><ion-icon name="list"></ion-icon> Alphabetical</button>
+          </div>
+        </div>
+
+        <!-- Rankings List -->
+        <div *ngIf="rankings.length > 0">
+          <div class="brl-seed-bar">
+            <button class="brl-reseed-btn" (click)="initRankings('points')"><ion-icon name="refresh"></ion-icon> Re-seed</button>
+          </div>
+          <app-list-card *ngFor="let player of filteredRankings"
+            [accentColor]="player.rank <= 3 ? '#10b981' : '#2b92bb'">
+            <div class="ladder-row brl-row">
+              <div class="rank-badge" [class.top3]="player.rank <= 3">{{player.rank}}</div>
+              <div class="ladder-info">
+                <p class="ladder-name">{{player.name}}</p>
+                <p class="brl-stats">
+                  <span class="brl-w">{{player.wins}}W</span>
+                  <span class="brl-l">{{player.losses}}L</span>
+                  <span class="brl-m" *ngIf="player.matchesPlayed">{{player.matchesPlayed}} played</span>
+                </p>
+              </div>
+              <button class="brl-challenge-btn" (click)="issueChallenge(player)">Challenge</button>
+            </div>
+          </app-list-card>
+        </div>
+      </div>
+
+      <!-- ═══ Challenges Tab ═══ -->
+      <div *ngIf="activeTab === 2">
+        <div *ngIf="challenges.length === 0" class="empty-state">
+          <ion-icon name="flash" class="empty-icon"></ion-icon>
+          <p class="empty-text">No challenges found</p>
+        </div>
+        <div *ngFor="let ch of challenges" class="ch-row">
+          <div class="ch-players">
+            <span class="ch-rank">#{{ch.challengerRank}}</span>
+            <span class="ch-name">{{ch.challengerName}}</span>
+            <span class="ch-arrow">→</span>
+            <span class="ch-rank">#{{ch.challengedRank}}</span>
+            <span class="ch-name">{{ch.challengedName}}</span>
+          </div>
+          <div class="ch-bottom">
+            <span class="ch-status" [style.background]="getStatusColor(ch.status)">{{ch.status}}</span>
+            <span class="ch-date" *ngIf="ch.issuedAt">{{ch.issuedAt}}</span>
+            <div class="ch-actions">
+              <button class="ch-approve-btn" *ngIf="ch.status === 'pending'" (click)="openApprove(ch)">
+                <ion-icon name="checkmark"></ion-icon> Approve
+              </button>
+              <button class="ch-cancel-btn" *ngIf="ch.status === 'pending' || ch.status === 'accepted'" (click)="openCancel(ch)">
+                <ion-icon name="close"></ion-icon> Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div>
 
-    <!-- Modern Dropdown Card -->
-    <div class="modern-dropdown-card" *ngIf="isPoints == 'Points'">
-      <div class="dropdown-header">
-        <div class="dropdown-icon">
-          <ion-icon name="funnel"></ion-icon>
-        </div>
-        <span class="dropdown-label">Age Category</span>
+  <!-- ═══ Challenge Dialog ═══ -->
+  <div class="dialog-overlay" *ngIf="showChallengeDialog" (click)="showChallengeDialog = false">
+    <div class="dialog-box" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <span class="dialog-title">Issue Challenge</span>
+        <button class="dialog-close" (click)="showChallengeDialog = false"><ion-icon name="close"></ion-icon></button>
       </div>
-      <div class="dropdown-wrapper">
-        <ion-select class="modern-select" [(ngModel)]="selectedcat" (ionChange)="getLadderList()" interface="popover">
-          <ion-option *ngFor="let cat of ageCategories" value={{cat.Id}}>{{cat.CategoryName}} ({{cat.AgeFrom}} - {{cat.AgeTo}})</ion-option>
-        </ion-select>
-        <div class="dropdown-arrow">
-          <ion-icon name="chevron-down"></ion-icon>
-        </div>
+      <p class="dialog-msg" *ngIf="challengeTarget">
+        Challenge <strong>#{{challengeTarget.rank}} {{challengeTarget.name}}</strong>?
+      </p>
+      <p class="dialog-note">They will have 48 hours to respond. Match must be completed within 14 days.</p>
+      <div class="dialog-actions">
+        <button class="dialog-btn-cancel" (click)="showChallengeDialog = false">Cancel</button>
+        <button class="dialog-btn-confirm" (click)="confirmChallenge()">Send Challenge</button>
       </div>
     </div>
-
-    <!-- Modern Search Card -->
-    <div class="modern-search-card">
-      <div class="search-header">
-        <div class="search-icon">
-          <ion-icon name="search"></ion-icon>
-        </div>
-        <span class="search-label">Search Players</span>
-      </div>
-      <div class="search-wrapper">
-        <ion-searchbar class="sleek-searchbar" placeholder="Search by rank, name..."
-          [(ngModel)]="searchInput" (ionInput)="getFilterItems($event)" autocorrect="off"
-          showCancelButton="never"></ion-searchbar>
-      </div>
-    </div>
-
   </div>
-  <!-- <div>
-    <ion-card>
-      <ion-card-content>
-        <ion-row>
-          <ion-col class="headings" col-2>Rank</ion-col>
-          <ion-col class="headings" col-8>Names</ion-col>
-          <ion-col class="rightheading" col-2>Points</ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
-  </div> -->
 
-    <div [ngSwitch]="isPoints">
-      <div ng-if *ngSwitchCase="'Points'">
-        <ion-row>
-          <ion-col style="padding-left: 0px; padding-right: 0px">
-            <ion-item class="item" *ngFor="let ladder of filteredLadder">
-              <p
-                item-left
-                style="
-                  color: #4b6051;
-                  font-weight: 900 !important;
-                  font-size: 18px;
-                  padding-right: 10px;
-                "
-              >
-                {{ladder.rank}}
-              </p>
-              <p class="name" style="text-transform: capitalize">
-                {{ladder.FirstName}} {{ladder.LastName}}
-              </p>
-              <p
-                item-right
-                style="
-                  color: #2292bb;
-                  font-size: 18px;
-                  padding-left: 20px;
-                  padding-right: 10px;
-                "
-              >
-                {{ladder.Points}}
-              </p>
-            </ion-item>
-          </ion-col>
-        </ion-row>
+  <!-- ═══ Approve Dialog ═══ -->
+  <div class="dialog-overlay" *ngIf="showApproveDialog" (click)="showApproveDialog = false">
+    <div class="dialog-box" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <span class="dialog-title">Approve Challenge</span>
+        <button class="dialog-close" (click)="showApproveDialog = false"><ion-icon name="close"></ion-icon></button>
       </div>
-      <div ng-if *ngSwitchCase="'HeadtoHead'">
-        <ion-row>
-          <ion-col style="padding-left: 0px; padding-right: 0px">
-            <ion-item class="item" *ngFor="let ladder of filteredLadderHead">
-              <p
-                item-left
-                style="
-                  color: #4b6051;
-                  font-weight: 900 !important;
-                  font-size: 18px;
-                  padding-right: 10px;
-                "
-              >
-                {{ladder.rank}}
-              </p>
-              <p class="name" style="text-transform: capitalize">
-                {{ladder.FirstName}} {{ladder.LastName}}
-              </p>
-              <!-- <p
-                item-right
-                style="
-                  color: #2292bb;
-                  font-size: 18px;
-                  padding-left: 20px;
-                  padding-right: 10px;
-                "
-              >
-                {{ladder.Points}}
-              </p> -->
-            </ion-item>
-          </ion-col>
-        </ion-row>
+      <p class="dialog-msg" *ngIf="approveTarget">
+        Approve: <strong>{{approveTarget.challengerName}}</strong> vs <strong>{{approveTarget.challengedName}}</strong>?
+      </p>
+      <div class="dialog-actions">
+        <button class="dialog-btn-cancel" (click)="showApproveDialog = false">Cancel</button>
+        <button class="dialog-btn-confirm approve" (click)="confirmApprove()">Approve</button>
       </div>
     </div>
-   
-     
+  </div>
 
-</div>
+  <!-- ═══ Cancel Dialog ═══ -->
+  <div class="dialog-overlay" *ngIf="showCancelDialog" (click)="showCancelDialog = false">
+    <div class="dialog-box" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <span class="dialog-title">Cancel Challenge</span>
+        <button class="dialog-close" (click)="showCancelDialog = false"><ion-icon name="close"></ion-icon></button>
+      </div>
+      <p class="dialog-msg" *ngIf="cancelTarget">
+        Cancel: <strong>{{cancelTarget.challengerName}}</strong> vs <strong>{{cancelTarget.challengedName}}</strong>?
+      </p>
+      <p class="dialog-note">Both players will be notified.</p>
+      <div class="dialog-actions">
+        <button class="dialog-btn-cancel" (click)="showCancelDialog = false">Keep</button>
+        <button class="dialog-btn-confirm danger" (click)="confirmCancel()">Cancel Challenge</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Config Dialog ═══ -->
+  <div class="dialog-overlay" *ngIf="showConfigDialog" (click)="showConfigDialog = false">
+    <div class="dialog-box config-dialog" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <span class="dialog-title">{{configMode === 'create' ? 'Create New Ladder' : 'Ladder Settings'}}</span>
+        <button class="dialog-close" (click)="showConfigDialog = false"><ion-icon name="close"></ion-icon></button>
+      </div>
+      <div class="config-form">
+        <div class="config-field">
+          <label>Match Type</label>
+          <select [(ngModel)]="ladderConfig.matchType">
+            <option [ngValue]="1">Singles</option>
+            <option [ngValue]="2">Doubles</option>
+          </select>
+        </div>
+        <div class="config-row">
+          <div class="config-field">
+            <label>Age From</label>
+            <input type="number" [(ngModel)]="ladderConfig.ageBandFrom">
+          </div>
+          <div class="config-field">
+            <label>Age To</label>
+            <input type="number" [(ngModel)]="ladderConfig.ageBandTo">
+          </div>
+        </div>
+        <div class="config-row">
+          <div class="config-field">
+            <label>Challenge Range Up</label>
+            <input type="number" [(ngModel)]="ladderConfig.challengeRangeUp">
+          </div>
+          <div class="config-field">
+            <label>Challenge Range Down</label>
+            <input type="number" [(ngModel)]="ladderConfig.challengeRangeDown">
+          </div>
+        </div>
+        <div class="config-row">
+          <div class="config-field">
+            <label>Deadline (days)</label>
+            <input type="number" [(ngModel)]="ladderConfig.challengeDeadlineDays">
+          </div>
+          <div class="config-field">
+            <label>Response (hours)</label>
+            <input type="number" [(ngModel)]="ladderConfig.responseDeadlineHours">
+          </div>
+        </div>
+        <div class="config-field">
+          <label>Inactivity Threshold (days)</label>
+          <input type="number" [(ngModel)]="ladderConfig.inactivityDays">
+        </div>
+        <div class="config-toggle">
+          <label>Wildcard Enabled</label>
+          <input type="checkbox" [(ngModel)]="ladderConfig.wildcardEnabled">
+        </div>
+        <div class="config-row" *ngIf="ladderConfig.wildcardEnabled">
+          <div class="config-field">
+            <label>Wildcards Per Player</label>
+            <input type="number" [(ngModel)]="ladderConfig.wildcardsPerPlayer">
+          </div>
+          <div class="config-field">
+            <label>Earn After (matches)</label>
+            <input type="number" [(ngModel)]="ladderConfig.wildcardEarnAfterMatches">
+          </div>
+        </div>
+        <div class="config-toggle">
+          <label>Tournament results affect ladder</label>
+          <input type="checkbox" [(ngModel)]="ladderConfig.affectsLadderFromTournament">
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button class="dialog-btn-cancel" (click)="showConfigDialog = false">Cancel</button>
+        <button class="dialog-btn-confirm" (click)="saveConfig()">Save Configuration</button>
+      </div>
+    </div>
+  </div>
 </ion-content>

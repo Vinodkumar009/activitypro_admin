@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 holidaycampmembers-page {
+    @include android-sdk35-fixes;
     ion-card {
         margin-left: 0px !important;
         margin-right: 0px !important;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, Events } from 'ionic-angular';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { SharedServices } from '../../../services/sharedservice';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../../services/common.service';
@@ -8,6 +8,8 @@ import gql from "graphql-tag";
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { GraphqlService } from '../../../../services/graphql.service';
+import { ThemeService } from '../../../../services/theme.service';
+import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 
 /**
@@ -24,11 +26,11 @@ import { Subscription } from 'rxjs';
 })
 export class UpdateprofilePage implements OnInit {
   private updateSubscription: Subscription;
+  isDarkTheme: boolean = true;
   memberObj:VenueUser;
   existing_email:string = "";
   preparedAllClubMemberArr = [];
   selectedParentClubKey = "";
-  nestUrl:string;
   membertype:string;
   ngOnInit(): void {
     this.memberObj = this.navParams.get('memberInfo');
@@ -50,8 +52,11 @@ export class UpdateprofilePage implements OnInit {
     public navCtrl: NavController, 
     public navParams: NavParams,
     private graphqlService:GraphqlService,
+    private themeService: ThemeService,
+    public storage: Storage,
+    public events: Events
     ) {
-      this.nestUrl = this.sharedService.getnestURL();
+      this.loadTheme();
   }
 
   ionViewDidLoad() {
@@ -180,6 +185,22 @@ async validBasic():Promise<boolean> {
   ionViewWillLeave() {
     if (this.updateSubscription) {
       this.updateSubscription.unsubscribe();
+    }
+    this.events.unsubscribe('theme:changed');
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('page-updateprofile');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
     }
   }
 

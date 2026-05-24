@@ -1,0 +1,52 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-assignmembertochallenge {
+    @include android-sdk35-fixes;
+
+
+
+    .headerP{
+        margin-left: 18px !important;
+        color: rgba(0,0,0,0.65);
+        font-size: 14px;
+    }
+    .sub-container {
+        button {
+            width: 80%;
+            height: 76%;
+            margin-top: 4px;
+            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
+            border-radius: 5px;
+            color: white;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+        }
+
+        .searchbar {
+            border: none !important;
+            background: #ffffff !important;
+            border-radius: 5px !important;
+            height: 73% !important;
+            margin-top: 4px !important;
+            padding: 2px 0px
+        }
+
+        .searchbar-input {
+            padding-left: 15px !important;
+            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
+
+        }
+
+        .searchbar-search-icon {
+            display: none !important;
+        }
+
+        ion-icon {
+            font-size: 20px;
+        }
+
+        .searchbar-clear-icon {
+            margin: 0;
+            box-shadow:none
+        }
+    }
+}

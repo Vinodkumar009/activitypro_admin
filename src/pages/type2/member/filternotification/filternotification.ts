@@ -16,6 +16,7 @@ import { UsersListInput } from '../model/member';
 import { AppType, ModuleTypes } from '../../../../shared/constants/module.constants';
 import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../shared/dtos/club.dto';
 /**
  * Generated class for the FilternotificationPage page.
  *
@@ -43,7 +44,7 @@ export class Filternotification {
   themeType: number;
   isAndroid: boolean = false;
   parentClubKey: any;
-  clubs: IClubDetails[] = [];
+  clubs: ClubVenueDto[] = [];
   selectedClub: any;
   memberList:UsersModel[] = [];
   notificationObj = { CreatedTime: "", Message: '', SendTo: '', SendBy: '', ComposeOn: '', Purpose: '', sendByRole: "", Status: "Unread", SessionName: '' };
@@ -91,42 +92,65 @@ export class Filternotification {
   }
 
   getClubList() {
-    const clubs_input = {
-      parentclub_id:this.sharedservice.getPostgreParentClubId(),
-      user_postgre_metadata:{
-        UserMemberId:this.sharedservice.getLoggedInId()
-      },
-      user_device_metadata:{
-        UserAppType:0,
-        UserDeviceType:this.sharedservice.getPlatform() == "android" ? 1:2
-      }
-    }
-    const clubs_query = gql`
-        query getVenuesByParentClub($clubs_input: ParentClubVenuesInput!){
-          getVenuesByParentClub(clubInput:$clubs_input){
-                Id
-                ClubName
-                FirebaseId
-                MapUrl
-                sequence
-            }
-        }
-        `;
-          this.graphqlService.query(clubs_query,{clubs_input: clubs_input},0)
-            .subscribe((res: any) => {
-              this.clubs = res.data.getVenuesByParentClub as IClubDetails[];
-              //console.log("clubs lists:", JSON.stringify(this.clubs));
-              if(this.clubs.length > 0){
-                this.numberOfPeopleToSend
-                this.selectedClub = this.clubs[0].Id;
-                this.venus_user_input.club_id = this.selectedClub;
-                this.getMemberList();
-              }
-            },
-           (error) => {
-            this.commonService.toastMessage("Clubs fetch failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
-            console.error("Error in fetching:", error);
-           })
+    // const clubs_input = {
+    //   parentclub_id:this.sharedservice.getPostgreParentClubId(),
+    //   user_postgre_metadata:{
+    //     UserMemberId:this.sharedservice.getLoggedInId()
+    //   },
+    //   user_device_metadata:{
+    //     UserAppType:0,
+    //     UserDeviceType:this.sharedservice.getPlatform() == "android" ? 1:2
+    //   }
+    // }
+    // const clubs_query = gql`
+    //     query getVenuesByParentClub($clubs_input: ParentClubVenuesInput!){
+    //       getVenuesByParentClub(clubInput:$clubs_input){
+    //             Id
+    //             ClubName
+    //             FirebaseId
+    //             MapUrl
+    //             sequence
+    //         }
+    //     }
+    //     `;
+    //       this.graphqlService.query(clubs_query,{clubs_input: clubs_input},0)
+    //         .subscribe((res: any) => {
+    //           this.clubs = res.data.getVenuesByParentClub as IClubDetails[];
+    //           //console.log("clubs lists:", JSON.stringify(this.clubs));
+    //           if(this.clubs.length > 0){
+    //             this.numberOfPeopleToSend
+    //             this.selectedClub = this.clubs[0].Id;
+    //             this.venus_user_input.club_id = this.selectedClub;
+    //             this.getMemberList();
+    //           }
+    //         },
+    //        (error) => {
+    //         this.commonService.toastMessage("Clubs fetch failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+    //         console.error("Error in fetching:", error);
+    //        })
+
+      const body: GetParentClubVenuesRequestDto = {
+        parentclub_id: this.sharedservice.getPostgreParentClubId(),
+        app_type: AppType.ADMIN_NEW,
+        device_type: this.sharedservice.getPlatform() == 'android' ? 1 : 2,
+        device_id: this.sharedservice.getDeviceId() || 'web',
+        updated_by: this.sharedservice.getLoggedInUserId()
+      };
+              
+        this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+          next: (res: GetParentClubVenuesResponseDto) => {
+                    this.clubs = res.data;
+                    if (this.clubs.length > 0) {
+                      //this.numberOfPeopleToSend
+                     this.selectedClub = this.clubs[0].Id;
+                     this.venus_user_input.club_id = this.selectedClub;
+                     this.getMemberList();
+                    }
+                  },
+          error: (err) => {
+                    this.commonService.toastMessage("Clubs fetch failed",3000,ToastMessageType.Error,ToastPlacement.Bottom);
+          }
+        });
   }
 
   

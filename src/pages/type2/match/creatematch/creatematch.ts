@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import gql from "graphql-tag";
 import {
   IonicPage,
   LoadingController,
@@ -20,7 +19,6 @@ import { Storage } from "@ionic/storage";
 import { MatchModel } from "../models/match.model";
 import moment from "moment";
 import { ClubVenue, SchoolVenue } from "../models/venue.model";
-import { GraphqlService } from "../../../../services/graphql.service";
 import { Activities, Activity, ClubActivityInput, IClubDetails } from "../../../../shared/model/club.model";
 import { HttpService } from "../../../../services/http.service";
 import { API } from "../../../../shared/constants/api_constants";
@@ -28,6 +26,7 @@ import { RoundTypeInput, RoundTypesModel } from "../../../../shared/model/league
 import { AppType } from "../../../../shared/constants/module.constants";
 import { LeagueVenueType } from "../../../../shared/utility/enums";
 import { CatandType } from "../../league/models/location.model";
+import { MatchDuration } from "../../../../shared/model/match.model";
 /**
  * Generated class for the CreatematchPage page.
  *
@@ -48,6 +47,12 @@ export class CreatematchPage {
   selectedClub: any;
   clubs: IClubDetails[];
   roundTypes: RoundTypesModel[] = [];
+  durations: MatchDuration[] = [];
+  selectedDuration: number;
+  currency: string;
+  isRecurring: boolean = false;
+  recurringUntilWhen: string = moment().add(1, 'week').format('YYYY-MM-DD');
+  
 
   roundTypeInput: RoundTypeInput = {
     parentclubId: '',
@@ -61,6 +66,7 @@ export class CreatematchPage {
     updated_by: ''
   }
   leagueType: CatandType[] = [];
+  leagueCategory: CatandType[] = [];
   ActivityKey: string
   createMatchInput: CreateMatchInput = {
     Round: 0,
@@ -88,7 +94,8 @@ export class CreatematchPage {
     user_postgre_metadata: new UserPostgreMetadataField,
     user_device_metadata: new UserDeviceMetadataField,
     location_id: '',
-    location_type: 0
+    location_type: 0,
+    MatchDuration: ''
   };
   saveMatches: MatchModel[] = [];
   clubVenues: ClubVenue[] = [];
@@ -133,13 +140,13 @@ export class CreatematchPage {
     public fb: FirebaseService,
     public sharedservice: SharedServices,
     public popoverCtrl: PopoverController,
-    private graphqlService: GraphqlService,
     private httpService: HttpService,
     private themeService: ThemeService,
     private events: Events
   ) {
-    this.events.subscribe('theme:changed', (theme) => {
-      this.isDarkTheme = theme === 'dark';
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
     });
     this.startDate = moment().format("YYYY-MM-DD");
     this.startTime = "09:00";
@@ -148,22 +155,45 @@ export class CreatematchPage {
     // let now = moment().add(10, 'year');
     // this.maxDate = moment(now).format("YYYY-MM-DD");
     // this.minDate = moment().format("YYYY-MM-DD");
-    this.createMatchInput.CreatedBy = this.sharedservice.getLoggedInUserId();
-    this.createMatchInput.Hosts.UserId = this.sharedservice.getLoggedInUserId();
+    this.createMatchInput.CreatedBy = this.sharedservice.getLoggedInUserId() || this.sharedservice.getLoggedInId();
+    this.createMatchInput.Hosts.UserId = this.sharedservice.getLoggedInUserId() || this.sharedservice.getLoggedInId();
     this.createMatchInput.user_postgre_metadata.UserParentClubId = this.sharedservice.getPostgreParentClubId();
     this.createMatchInput.user_device_metadata.UserActionType = 2
   }
 
   ionViewDidLoad() {
-    this.storage.get('dashboardTheme').then((theme) => {
-      this.isDarkTheme = theme === 'dark' || theme === true;
-      const themeClass = this.isDarkTheme ? 'dark-theme' : 'light-theme';
-      document.body.classList.remove('dark-theme', 'light-theme');
-      document.body.classList.add(themeClass);
+    this.loadTheme();
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null ? isDarkTheme : true;
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
     });
   }
 
+  private applyTheme(isDark: boolean) {
+    this.isDarkTheme = isDark;
+    const pageElement = document.querySelector('page-creatematch');
+    if (pageElement) {
+      if (isDark) {
+        pageElement.classList.remove('light-theme');
+      } else {
+        pageElement.classList.add('light-theme');
+      }
+    }
+  }
+
   ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.applyTheme(isDark);
+    });
     console.log("ionViewDidLoad CreatematchPage");
     this.storage.get("userObj").then((val) => {
       val = JSON.parse(val);
@@ -173,12 +203,19 @@ export class CreatematchPage {
       this.roundTypeInput.device_type = this.sharedservice.getPlatform() == "android" ? 1 : 2;
       this.roundTypeInput.app_type = AppType.ADMIN_NEW;
 
+      this.commonInput.parentclubId = this.sharedservice.getPostgreParentClubId();
+
       // this.getAllActivities();
       // this.getClubVenues();
       // this.saveMatchDetails();
       this.getMatchTypes();
       this.getListOfClub();
       this.getRoundTypes();
+      this.getLeagueCategory();
+      this.getDurations();
+    });
+    this.storage.get('Currency').then((currency) => {
+      if (currency) { const c = JSON.parse(currency); this.currency = c.CurrencySymbol; }
     });
   }
 
@@ -198,11 +235,21 @@ export class CreatematchPage {
   getMatchTypes() {
     this.httpService.post(`${API.GET_LEAGUE_OR_MATCH_TYPES}`, this.commonInput).subscribe({
       next: (res: any) => {
-        this.leagueType = res["data"]
+        this.leagueType = res["data"];
       }
     });
   }
-  
+
+  getLeagueCategory() {
+    this.httpService.post(`${API.GET_LEAGUE_CATEGORIES}`, this.commonInput).subscribe({
+      next: (res: any) => {
+        this.leagueCategory = res["data"]
+        console.table(`${this.leagueCategory}`);
+        if (this.leagueCategory.length > 0) this.createMatchInput.GameType = 0;
+      }
+    });
+  }
+
   getRoundTypes() {
     this.httpService.post(`${API.Get_Round_Types}`, this.roundTypeInput).subscribe({
       next: (res: any) => {
@@ -213,6 +260,13 @@ export class CreatematchPage {
           console.log("error in fetching")
         }
       }
+    });
+  }
+
+  getDurations() {
+    const input = { ...this.commonInput, app_type: AppType.ADMIN_NEW };
+    this.httpService.post(`${API.GET_DURATIONS}`, input).subscribe({
+      next: (res: any) => { this.durations = res.data || []; if (this.durations.length > 0) this.selectedDuration = this.durations[0].id; }
     });
   }
 
@@ -230,47 +284,59 @@ export class CreatematchPage {
     this.createMatchInput.MatchPaymentType = isChecked ? 1 : 0;
   }
 
+  getRecurringDayName(): string {
+    return moment(this.startDate).format('dddd');
+  }
+
   getListOfClub() {
-    const clubs_input = {
+    const body = {
       parentclub_id: this.sharedservice.getPostgreParentClubId(),
-      user_postgre_metadata: {
-        UserMemberId: this.sharedservice.getLoggedInUserId()
-      },
-      user_device_metadata: {
-        UserAppType: 0,
-        UserDeviceType: this.sharedservice.getPlatform() == "android" ? 1 : 2
-      }
-    }
-    const clubs_query = gql`
-        query getVenuesByParentClub($clubs_input: ParentClubVenuesInput!){
-          getVenuesByParentClub(clubInput:$clubs_input){
-                Id
-                ClubName
-                FirebaseId
-                MapUrl
-                sequence
-            }
-        }
-        `;
-    this.graphqlService.query(clubs_query, { clubs_input: clubs_input }, 0)
-      .subscribe((res: any) => {
-        this.clubs = res.data.getVenuesByParentClub || [];
+      club_id: '',
+      activity_id: '',
+      member_id: this.sharedservice.getLoggedInUserId(),
+      action_type: 0,
+      device_type: this.sharedservice.getPlatform() == "android" ? 1 : 2,
+      app_type: AppType.ADMIN_NEW,
+      device_id: this.sharedservice.getDeviceId() || 'web',
+      updated_by: this.sharedservice.getLoggedInUserId()
+    };
+    this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+      next: (res: any) => {
+        this.clubs = res.data || [];
         if (this.clubs.length > 0) {
           this.selectedClub = this.clubs[0].Id;
+          this.autoFillLocation();
           this.getClubActivity();
         }
-
       },
-        (error) => {
-          this.commonService.toastMessage("No venues found", 2500, ToastMessageType.Error)
-          console.error("Error in fetching:", error);
-        })
+      error: () => {
+        this.commonService.toastMessage("No venues found", 2500, ToastMessageType.Error);
+      }
+    });
   }
 
 
   onChangeOfClub() {
     this.club_activities = [];
     this.getClubActivity();
+    this.autoFillLocation();
+  }
+
+  autoFillLocation() {
+    const club = this.clubs.find(c => c.Id === this.selectedClub);
+    if (!club) { this.mapLocationAddress = ''; this.mapLocationLat = null; this.mapLocationLng = null; return; }
+    const parts = [club.FirstLineAddress, club.PostCode].filter(Boolean);
+    this.mapLocationAddress = parts.join(', ');
+    this.mapLocationLat = club.MapLatitude ? parseFloat(club.MapLatitude) : null;
+    this.mapLocationLng = club.MapLongitude ? parseFloat(club.MapLongitude) : null;
+  }
+
+  mapLocationAddress: string = '';
+  mapLocationLat: number = null;
+  mapLocationLng: number = null;
+
+  onMapLocationSelected(location: any) {
+    this.mapLocationAddress = location.address || '';
   }
 
 
@@ -316,6 +382,14 @@ export class CreatematchPage {
       this.commonService.toastMessage(message, 2500, ToastMessageType.Error)
       return false;
     }
+    else if (this.isRecurring && !this.recurringUntilWhen) {
+      this.commonService.toastMessage("Select until when date", 2500, ToastMessageType.Error);
+      return false;
+    }
+    else if (this.isRecurring && moment(this.recurringUntilWhen).isSameOrBefore(moment(this.startDate))) {
+      this.commonService.toastMessage("Until when must be after start date", 2500, ToastMessageType.Error);
+      return false;
+    }
 
     return true;
   }
@@ -345,55 +419,69 @@ export class CreatematchPage {
         console.log(new Date(this.startDate + " " + 'this.startTime').getTime());
         this.createMatchInput.GameType = Number(this.createMatchInput.GameType);
         this.createMatchInput.MatchType = +this.createMatchInput.MatchType;
+        const selectedDur = this.durations.find(d => d.id === this.selectedDuration);
+        this.createMatchInput.MatchDuration = selectedDur ? String(selectedDur.duration) : '';
         console.log("MATCH Input", JSON.stringify(this.createMatchInput));
 
-        const createMatch = gql`
-              mutation saveMatchDeatils($matchInput: CreateMatchInput!) {
-                saveMatchDeatils(matchInput: $matchInput) {
-                  Id
-                  IsActive
-                  IsEnable
-                  Activity {
-                    ActivityName
-                    ActivityCode
-                  }
-                  Hosts {
-                    Name
-                  }
-                  MatchVisibility
-                  GameType
-                  MatchType
-                  PaymentType
-                  ResultStatus
-                  MatchStatus
-                  VenueName
-                  Details
-                  MatchStartDate
-                  Result {
-                    ResultStatus
-                    ResultDetails
-                  }
-                  Capacity
-                  MatchTitle
-                }
-              }
-            `;
-        const mutationVaribale = { matchInput: this.createMatchInput };
-        this.graphqlService.mutate(createMatch, mutationVaribale, 0).subscribe((res: any) => {
+        const restPayload = {
+          parentclubId: this.createMatchInput.user_postgre_metadata.UserParentClubId,
+          clubId: '',
+          activityId: '',
+          memberId: this.createMatchInput.CreatedBy,
+          action_type: 0,
+          device_type: this.createMatchInput.user_device_metadata.UserDeviceType,
+          app_type: AppType.ADMIN_NEW,
+          device_id: '',
+          updated_by: this.createMatchInput.CreatedBy,
+          parentclubTeamId: '',
+          Round: this.createMatchInput.Round,
+          MatchType: this.createMatchInput.MatchType,
+          MatchVenueName: this.createMatchInput.MatchVenueName,
+          MatchVenueId: this.createMatchInput.MatchVenueId,
+          MatchVenueKey: this.createMatchInput.MatchVenueKey,
+          GameType: this.createMatchInput.GameType,
+          MatchTitle: this.createMatchInput.MatchTitle,
+          CreatedBy: this.createMatchInput.CreatedBy,
+          MatchCreator: this.createMatchInput.MatchCreator,
+          MatchStartDate: this.createMatchInput.MatchStartDate,
+          MatchEndDate: this.createMatchInput.MatchEndDate,
+          MatchVisibility: this.createMatchInput.MatchVisibility,
+          Hosts: [this.createMatchInput.Hosts],
+          MatchStatus: this.createMatchInput.MatchStatus,
+          MatchDetails: this.createMatchInput.MatchDetails,
+          MatchPaymentType: this.createMatchInput.MatchPaymentType,
+          MemberFees: Number(this.createMatchInput.MemberFees) || 0,
+          NonMemberFees: Number(this.createMatchInput.NonMemberFees) || 0,
+          location_type: this.createMatchInput.location_type,
+          location_id: this.createMatchInput.location_id,
+          location: this.mapLocationAddress || '',
+          MatchDuration: this.createMatchInput.MatchDuration,
+          UserParentClubId: this.createMatchInput.user_postgre_metadata.UserParentClubId,
+          UserActivityId: this.createMatchInput.user_postgre_metadata.UserActivityId,
+          user_postgre_metadata: this.createMatchInput.user_postgre_metadata,
+          user_device_metadata: this.createMatchInput.user_device_metadata,
+          UserActionType:2,
+          UpdatedBy: this.createMatchInput.CreatedBy
+        };
+
+        if (this.isRecurring) {
+          restPayload['untilWhen'] = moment(this.recurringUntilWhen).format("YYYY-MM-DD");
+        }
+
+        const apiUrl = this.isRecurring ? API.CREATE_RECURRING_MATCHES : API.CREATE_MATCH;
+        const successMsg = this.isRecurring ? "Recurring matches created successfully" : "Match created successfully";
+
+        this.httpService.post(`${apiUrl}`, restPayload).subscribe((res: any) => {
           this.commonService.hideLoader();
-          const message = "Match created successfully";
           this.commonService.updateCategory("match");
-          this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+          this.events.publish('match:refresh');
+          this.commonService.toastMessage(successMsg, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
           this.navCtrl.pop();
-          //this.navCtrl.pop().then(() => this.navCtrl.pop());
         }, (err) => {
           this.commonService.hideLoader();
-          if (err.errors && err.errors.length > 0) {
-            this.commonService.toastMessage(err.errors[0].message, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-          } else {
-            this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
-          }
-          console.error("Error in fetching:", err);
+          const msg = (err.error && err.error.message) ? err.error.message : "Match creation failed";
+          this.commonService.toastMessage(msg, 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          console.error("Error:", err);
         })
       } catch (e) {
         this.commonService.hideLoader();
@@ -442,6 +530,7 @@ export class CreateMatchInput {
   user_device_metadata: UserDeviceMetadataField;
   location_id: string;
   location_type: number;
+  MatchDuration: string;
 }
 
 

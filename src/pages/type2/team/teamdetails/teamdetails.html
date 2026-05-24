@@ -1,166 +1,168 @@
-<!--
-  Generated template for the TeamdetailsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <ion-title>Team Details</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only>
-        <ion-icon name="home"></ion-icon>
-        <ion-icon name="more"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+<ion-content>
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <!-- Team Header -->
+      <app-detail-header *ngIf="teamsForParentClub"
+        [title]="teamsForParentClub.teamName"
+        [subtitle]="teamsForParentClub?.activity?.ActivityName"
+        [detailRows]="headerDetailRows"
+        [accentColor]="'#a78bfa'"
+        [visibilityIcon]="team?.teamVisibility==0?'globe':'lock'">
+        <div header-actions>
+          <button class="action-btn" (click)="gotoEditTeam()">
+            <ion-icon name="create"></ion-icon>
+          </button>
+          <button class="action-btn" (click)="!playerType ? gotoMemberemailPage():gotoMultiplayeremailPage()">
+            <ion-icon name="mail"></ion-icon>
+          </button>
+          <button class="action-btn danger" (click)="removeteam()">
+            <ion-icon name="trash"></ion-icon>
+          </button>
+        </div>
+      </app-detail-header>
 
-  <div *ngIf="teamsForParentClub">
-    <div style="padding:10px;">
-      <ion-row row-12>
-        <ion-col col-9 no-padding>
-          <ion-row class="cardrow">
-            <ion-col col-12>
-              <p style="font-weight: 600" class="largetext">
-                {{teamsForParentClub.teamName}}
-              </p>
-              <p class="largetext" *ngIf="teamsForParentClub?.activity">{{teamsForParentClub?.activity?.ActivityName}}</p>
-              <p class="smalltext">Age Group:{{teamsForParentClub.ageGroup}}</p>
-              <p class="smalltext">
-                <span><ion-icon class="smalltext" name="pin" style="color: #2b92bb"></ion-icon></span>
-                <span>{{teamsForParentClub.club.ClubName}}</span>
-              </p>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-
-        <ion-col col-3 text-right>
-          <div style="display: flex; align-items: center;justify-content: space-evenly">
-            <ion-icon style="color: #2b92bb; font-size: 1.5em"
-              [name]="team.teamVisibility==0?'ios-globe':'lock'"></ion-icon>
-            <p class="smalltext">{{team?.teamVisibility==0 ? "Public" : "Private"}}</p>
-          </div>
-          <div class="action_btns_div">
-            <button ion-button clear (click)="gotoEditTeam()">
-              <ion-icon name="create"></ion-icon>
-            </button>
-
-            <button ion-button clear (click)="!playerType ? gotoMemberemailPage():gotoMultiplayeremailPage()">
-              <ion-icon name="mail"></ion-icon>
-            </button>
-
-            <button ion-button clear (click)="removeteam()">
-              <ion-icon name="trash"></ion-icon>
-            </button>
-          </div>
-        </ion-col>
-      </ion-row>
+      <!-- Players / Staff Tabs -->
+      <app-pill-tabs
+        [leftLabel]="'Players(' + participantCount + ')'"
+        [rightLabel]="'Staff(' + staffCount + ')'"
+        leftIcon="people" rightIcon="person"
+        [activeIndex]="activeTabIndex"
+        (activeIndexChange)="onTabChange($event)">
+      </app-pill-tabs>
     </div>
-  </div>
 
+    <div class="page-scroll-area">
+      <!-- Players Tab -->
+      <div *ngIf="playerType">
+        <app-search-bar placeholder="Search Players by Name"
+          [(value)]="searchTerm" [count]="filteredParticipant?.length"
+          (search)="getFilteredPlayer($event)">
+        </app-search-bar>
 
+        <app-list-card *ngFor="let player of filteredParticipant"
+          [accentColor]="getInviteStatusColor(player.user.invite_status_text)"
+          (cardClick)="presentActionSheet(player)">
+          <div class="member-row">
+            <div class="member-avatar">{{player.user?.FirstName?.charAt(0)}}</div>
+            <div class="member-info">
+              <p class="member-name">{{player.user.FirstName}} {{player.user.LastName}} ({{player.user.age}})</p>
+              <p class="member-role">{{player.teamrole?.role_name}}</p>
+            </div>
+            <div class="member-status" [ngClass]="'status-bg-' + getInviteStatusIconByText(player.user.invite_status_text)">
+              <ion-icon [name]="getInviteStatusIconByText(player.user.invite_status_text)"
+                [style.color]="getInviteStatusColor(player.user.invite_status_text)"></ion-icon>
+              <span [style.color]="getInviteStatusColor(player.user.invite_status_text)">
+                {{player.user.invite_status_text}}
+              </span>
+            </div>
+          </div>
+        </app-list-card>
 
+        <div class="empty-state" *ngIf="filteredParticipant?.length === 0">
+          <ion-icon name="people" class="empty-icon"></ion-icon>
+          <p class="empty-text">No players found</p>
+        </div>
+      </div>
 
-  <!-- middle toggle button -->
-  <div style="padding-bottom: 10px">
-    <ion-card style="width: 100%; margin: 0px">
-      <ion-card-content style="padding: 0px">
-        <ion-row>
-          <ion-col col-6>
-            <button ion-button class="select-type" (click)="changeType(true)" [class.selected]="playerType">
-              Players({{participantCount}})
-            </button>
-          </ion-col>
-          <ion-col col-6>
-            <button ion-button class="select-type" (click)="changeType(false)" [class.selected]="!playerType">
-              Staffs({{staffCount}})
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
-  </div>
+      <!-- Staff Tab -->
+      <div *ngIf="!playerType">
+        <app-search-bar placeholder="Search Staff by Name"
+          [(value)]="searchTerm" [count]="filteredStaff?.length"
+          (search)="FilterStaffs($event)">
+        </app-search-bar>
 
-  <div *ngIf="playerType">
-    <div class="compact-search-card">
-      <div class="search-content">
-        <ion-searchbar class="sleek-searchbar" placeholder="Search Players by Name"
-          (ionInput)="getFilteredPlayer($event)" autocorrect="off"
-          showCancelButton="never"></ion-searchbar>
+        <app-list-card *ngFor="let staff of filteredStaff"
+          [accentColor]="'#2b92bb'"
+          (cardClick)="actionSheetforStaff(staff)">
+          <div class="member-row">
+            <div class="member-avatar">{{staff.StaffDetail?.name?.charAt(0)}}</div>
+            <div class="member-info">
+              <p class="member-name">{{staff.StaffDetail.name}}</p>
+              <p class="member-role">{{staff.role?.role_name}}</p>
+            </div>
+          </div>
+        </app-list-card>
+
+        <div class="empty-state" *ngIf="filteredStaff?.length === 0">
+          <ion-icon name="person" class="empty-icon"></ion-icon>
+          <p class="empty-text">No staff found</p>
+        </div>
       </div>
     </div>
-
-
-
-    <ion-card class="cardStyle" (click)="presentActionSheet(player)" *ngFor="let player of filteredParticipant">
-      <ion-row style="height: 100%;">
-        <ion-col col-7 class="team_left_card">
-          <p class="para_overflow" style="font-weight: 500;">{{player.user.FirstName}} {{player.user.LastName}}({{player.user.age}})</p>
-          <p class="para_overflow">{{player.teamrole.role_name}}</p>
-        </ion-col>
-        <ion-col col-5 class="status-col team_right_card">
-          <div class="status-container">
-            <ion-icon [name]="getInviteStatusIconByText(player.user.invite_status_text)"
-              [style.color]="getInviteStatusColor(player.user.invite_status_text)">
-            </ion-icon>
-            <span class="status-text para_overflow"
-              [style.color]="getInviteStatusColor(player.user.invite_status_text)">
-              {{player.user.invite_status_text}}
-            </span>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-card>
-
-
-
-    <!-- <ion-card class="cardStyle" (click)="presentActionSheet(member)" *ngFor="let player of roles">
-      <ion-row >
-        <ion-col col-6 class="applyPadding"> {{player.role_type}} {{player.role_name}}</ion-col>
-        <ion-col col-6 class="margin-auto">  </ion-col>
-      </ion-row>
-    </ion-card> -->
-
-
   </div>
 
-  <div *ngIf="!playerType">
-    <div class="compact-search-card">
-      <div class="search-content">
-        <ion-searchbar class="sleek-searchbar" placeholder="Search Staff by Name"
-          (ionInput)="FilterStaffs($event)" autocorrect="off"
-          showCancelButton="never"></ion-searchbar>
-      </div>
+  <!-- Player Bottom Sheet -->
+  <app-bottom-sheet [(visible)]="showPlayerSheet"
+    [title]="selectedPlayer?.user?.FirstName + ' ' + selectedPlayer?.user?.LastName"
+    [bottomOffset]="0">
+    <div class="sheet-item confirmed-item" (click)="onPlayerAction('confirmed')">
+      <ion-icon name="checkmark-circle" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Confirmed</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
     </div>
+    <div class="sheet-item maybe-item" (click)="onPlayerAction('maybe')">
+      <ion-icon name="help-circle" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Maybe</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item danger-item" (click)="onPlayerAction('declined')">
+      <ion-icon name="close-circle" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Declined</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item" (click)="onPlayerAction('role')">
+      <ion-icon name="people" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Update Role</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item" (click)="onPlayerAction('notify')">
+      <ion-icon name="notifications" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Send Notification</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item danger-item" (click)="onPlayerAction('remove')">
+      <ion-icon name="trash" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Remove Player</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+  </app-bottom-sheet>
 
-
-
-
-    <ion-card class="cardStyle" (click)="actionSheetforStaff(player)" *ngFor="let player of filteredStaff;">
-      <ion-row style="height: 100%;">
-        <ion-col col-7 class="team_left_card">
-          <p class="para_overflow" style="font-weight: 500;">{{player.StaffDetail.name}}</p></ion-col>
-        <ion-col col-5 class="status-col team_right_card"><p class="para_overflow">{{player.role.role_name}}</p></ion-col>
-      </ion-row>
-    </ion-card>
-  </div>
-
+  <!-- Staff Bottom Sheet -->
+  <app-bottom-sheet [(visible)]="showStaffSheet"
+    [title]="selectedStaff?.StaffDetail?.name"
+    [bottomOffset]="0">
+    <div class="sheet-item" (click)="onStaffAction('role')">
+      <ion-icon name="people" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Update Role</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item" (click)="onStaffAction('email')">
+      <ion-icon name="mail" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Send Email</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+    <div class="sheet-item danger-item" (click)="onStaffAction('remove')">
+      <ion-icon name="trash" class="sheet-item-icon"></ion-icon>
+      <div class="sheet-item-info"><span class="sheet-item-name">Remove Staff</span></div>
+      <ion-icon name="arrow-forward" class="sheet-item-chevron"></ion-icon>
+    </div>
+  </app-bottom-sheet>
 </ion-content>
 
-
-<ion-fab right bottom *ngIf="playerType">
-  <button ion-fab mini style="background-color: #2b92bb" (click)="gotoAddPlayer()"
-    style="background-color: #2b92bb !important; color: white !important">
+<ion-fab right bottom *ngIf="playerType && !showPlayerSheet && !showStaffSheet">
+  <button class="fab-main" ion-fab mini (click)="gotoAddPlayer()">
     <ion-icon name="md-person-add"></ion-icon>
   </button>
 </ion-fab>
 
-<ion-fab right bottom *ngIf="!playerType">
-  <button ion-fab mini style="background-color: #2b92bb" (click)="gotoAddStaff()"
-    style="background-color: #2b92bb !important; color: white !important">
+<ion-fab right bottom *ngIf="!playerType && !showPlayerSheet && !showStaffSheet">
+  <button class="fab-main" ion-fab mini (click)="gotoAddStaff()">
     <ion-icon name="md-person-add"></ion-icon>
   </button>
 </ion-fab>

@@ -18,7 +18,6 @@ export class MonthsListModal {
     platformType: string = "";
     ParentClubKey: any;
     currencyDetails: any; 
-    nestUrl: string;
     currencycode: any;
     Session: any;
     ClubKey: any;

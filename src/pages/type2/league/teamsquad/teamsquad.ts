@@ -43,7 +43,7 @@ export class TeamsquadPage {
   nteamType:boolean=true;
   items=[];
   reOrderToggle = false;
-  navText: string = "Re-order";nestUrl: any;
+  navText: string = "Re-order";
   ;
 
   constructor(

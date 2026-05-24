@@ -4,6 +4,11 @@ import { FirebaseService } from '../../../services/firebase.service';
 import { CommonService } from '../../../services/common.service';
 import { Storage } from '@ionic/storage';
 import { ActionSheetController } from 'ionic-angular'
+import { HttpService } from '../../../services/http.service';
+import { SharedServices } from '../../services/sharedservice';
+import { API } from '../../../shared/constants/api_constants';
+import { AppType } from '../../../shared/constants/module.constants';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../shared/dtos/club.dto';
 /**
  * Generated class for the BookingsetupPage page.
  *
@@ -26,7 +31,11 @@ export class BookingsetupPage {
   selectedClubKey = "";
   selectedActivity = "";
   canCreate:boolean = false;
-  constructor(public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,public navCtrl: NavController, public navParams: NavParams, public fb: FirebaseService, public commonService: CommonService, public storage: Storage) {
+  constructor(public actionSheetCtrl: ActionSheetController,public toastCtrl: ToastController,
+    public navCtrl: NavController, public navParams: NavParams, 
+    public fb: FirebaseService, public commonService: CommonService, 
+    public storage: Storage, private httpService: HttpService, 
+    private sharedservice: SharedServices) {
     }
 
   ionViewDidLoad() {
@@ -64,14 +73,28 @@ export class BookingsetupPage {
 }
 
 getAllClub() {
-this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data4) => {
-  if (data4.length > 0) {
-    this.allClub = data4;
-    this.selectedClubKey = this.allClub[0].$key;
-    this.checkPaymentSetup();
-    this.getAllActivity();
-  }
-})
+  const body: GetParentClubVenuesRequestDto = {
+    parentclub_id: this.sharedservice.getPostgreParentClubId(),
+    app_type: AppType.ADMIN_NEW,
+    device_type: this.sharedservice.getPlatform() == 'android' ? 1 : 2,
+    device_id: this.sharedservice.getDeviceId() || 'web',
+    updated_by: this.sharedservice.getLoggedInUserId()
+  };
+
+  this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+    next: (res: GetParentClubVenuesResponseDto) => {
+      this.allClub = res.data.map((club: ClubVenueDto) => ({ ...club, $key: club.FirebaseId, ClubKey: club.FirebaseId }));
+      if (this.allClub.length > 0) {
+        this.selectedClubKey = this.allClub[0].FirebaseId;
+        this.checkPaymentSetup();
+        this.getAllActivity();
+      }
+    },
+    error: (err) => {
+      this.allClub = [];
+      console.error('Error fetching clubs:', err);
+    }
+  });
 }
 
   //payment activity details

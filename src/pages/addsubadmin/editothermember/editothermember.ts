@@ -6,6 +6,8 @@ import { CommonService, ToastMessageType, ToastPlacement } from '../../../servic
 import { DefaultMenus } from '../../services/defaultmenus';
 import { SharedServices, Menu } from '../../services/sharedservice';
 import { HttpClient } from '@angular/common/http';
+import { HttpService } from '../../../services/http.service';
+import { API } from '../../../shared/constants/api_constants';
 /**
  * Generated class for the EditothermemberPage page.
  *
@@ -37,7 +39,12 @@ export class EditothermemberPage {
   Menus = [];
   isUserMenusAvailable = true;
   DefaultMenus = [];
-  constructor(public toastCtrl:ToastController,public navCtrl: NavController, public alertCtrl: AlertController, public navParams: NavParams,public storage: Storage,public fb:FirebaseService,public CommonService:CommonService, public sharedservice: SharedServices, public http: HttpClient,) {
+  constructor(public toastCtrl:ToastController,public navCtrl: NavController,
+     public alertCtrl: AlertController, public navParams: NavParams,
+     public storage: Storage,public fb:FirebaseService,
+     public CommonService:CommonService, public sharedservice: SharedServices, 
+     public http: HttpClient,
+     private httpService: HttpService) {
     this.nestUrl = sharedservice.getnestURL();
     storage.get('userObj').then((val) => {
       val = JSON.parse(val);
@@ -192,7 +199,7 @@ export class EditothermemberPage {
     this.CommonService.showLoader("Please wait");
       //this.nestUrl = "https://activitypro-nest-261607.appspot.com";
       //this.nestUrl = "http://localhost:3000";
-      this.http.post(`${this.nestUrl}/subadmin/resetpassword`, userObj)
+      this.httpService.post(API.SUBADMIN_RESET_PASSWORD, userObj, null, 1)
         .subscribe((res: any) => {
           this.CommonService.hideLoader();
           this.can_refresh_coachs = true;

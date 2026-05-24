@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-inbox {
+    @include android-sdk35-fixes;
+
+
+
   $toolbar-background-color1: #2b92bb;
   $toolbar-title-color1: #ffffff;
   $toolbar-button-text-color1: #ffffff;
@@ -15,7 +21,6 @@ page-inbox {
   .toolbar-ios{
     padding-top: 25px !important;
     //min-height: 60px !important;
-}
   .bar-button-default-ios,
   .bar-button-default.bar-button-ios-default,
   .bar-button-clear-ios-default {
@@ -155,4 +160,5 @@ page-inbox {
       transform: scale(1);
     }
   }
+}
 }

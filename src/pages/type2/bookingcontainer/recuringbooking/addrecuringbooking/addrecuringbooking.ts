@@ -3,9 +3,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
-import * as $ from "jquery";
 import { HttpClient } from '@angular/common/http';
-
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { SharedServices } from '../../../../services/sharedservice';
 import { FirebaseService } from '../../../../../services/firebase.service';
@@ -14,8 +12,6 @@ import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
 import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../../shared/dtos/club.dto';
 import { AppType } from '../../../../../shared/constants/module.constants';
-
-
 /**
  * Generated class for the AddrecuringbookingPage page.
  *
@@ -36,9 +32,8 @@ export class AddrecuringbookingPage {
   currencyDetails:any = "";
   slotsType:boolean = false;loading: any;
   userkey: any;
-  nestUrl: any;
   roletype: any;
-;
+
   clubs:ClubVenueDto[] = [];
   courts = [];
   ActivityList = [];
@@ -85,7 +80,12 @@ export class AddrecuringbookingPage {
   ]
   minuteValues:any = "00,";
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public http: HttpClient,public navParams: NavParams,public storage: Storage,public fb: FirebaseService,public commonService: CommonService,public alertCtrl: AlertController,public sharedService: SharedServices,public toastCtrl:ToastController, private httpService: HttpService) {
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, 
+    public http: HttpClient,public navParams: NavParams,
+    public storage: Storage,public fb: FirebaseService,
+    public commonService: CommonService,public alertCtrl: AlertController,
+    public sharedService: SharedServices,public toastCtrl:ToastController,
+    private httpService: HttpService) {
     this.minDate = (((new Date().getFullYear()))).toString();
     this.maxDate = (((new Date().getFullYear()) + 10) + "-" + 12 + "-" + 31).toString();
     
@@ -112,7 +112,6 @@ export class AddrecuringbookingPage {
         this.selectedParentClubKey = user.ParentClubKey;
         this.selectedClubKey = user.ClubKey;
         this.memberKey = user.MemberKey;
-        this.nestUrl = this.sharedService.getnestURL()
         this.getClubDetails();
       
         break;
@@ -132,21 +131,7 @@ export class AddrecuringbookingPage {
   }
 
   getClubDetails() {
-    // this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-    //   this.clubs = data;
-    //   if (data.length != 0) {
-    //     this.selectedClubKey = this.clubs[0].$key;
-    //     this.getAllActivity();
-    //     try {
-    //     }
-    //     catch (ex) {
-
-    //     } finally {
-          
-    //     }
-    //   }
-    // });
-const body: GetParentClubVenuesRequestDto = {
+            const body: GetParentClubVenuesRequestDto = {
               parentclub_id: this.sharedService.getPostgreParentClubId(),
               app_type: AppType.ADMIN_NEW,
               device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,
@@ -168,7 +153,7 @@ const body: GetParentClubVenuesRequestDto = {
               error: (err) => {
                 this.clubs = [];
               }
-            });    
+            });   
   }
   getAllActivity() {
     this.fb.getAll("/Activity/" + this.selectedParentClubKey + "/" + this.selectedClubKey + "/").subscribe((data) => {
@@ -382,27 +367,16 @@ const body: GetParentClubVenuesRequestDto = {
       this.httpService.put(API.CREATE_RECURRING_V3, params,null, 1).subscribe({
         next: (res) => {
           resolve('success')
+          this.commonService.hideLoader()
         },
         error: (err) => {
           console.log(err)
+          this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to create recurring slot", 2000)
           reject('fail')
         }
       })
     })
-    // return new Promise((resolve, reject) =>{
-    //   this.http.put(`${this.nestUrl}/courtbooking/createrecurring_v3?activitykey=${this.selectedActivity}&clubkey=${this.selectedClubKey}&parentclubkey=${this.selectedParentClubKey}&recurringkey=${key}&userkey=${this.userkey}&membertype=${this.roletype}`, null).subscribe((res) => {
-    //     resolve('success')
-    //     this.commonService.hideLoader()
-    //   },
-    //     err => {
-    //       console.log(err)
-    //       this.commonService.hideLoader() 
-    //       this.commonService.toastMessage("Unable to create recurring slot", 2000)
-    //       reject('fail')
-    //     })
-
-    // })
   }
 
   getSortedSlots(){

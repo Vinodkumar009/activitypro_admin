@@ -1,0 +1,74 @@
+<!--
+  Generated template for the SchoolesessiondetailsforattendancePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>School Attendance</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<!-- <ion-content >
+  <ion-row>
+    <ion-col col-4 *ngFor="let day of days" class="calender" (click)="goToSchooleAttendancePage(day)">
+      {{day.customDate}}  
+      {{day.day}}
+    </ion-col>
+  </ion-row>
+</ion-content> -->
+
+
+
+<ion-content class="padding_content">
+
+  <ion-card class="card_list hadder-card" *ngIf="sessionInfo">
+      <ion-card-content style="padding:0px !important">
+          <ion-col col-12 style="text-align:center;color:white">
+              <p class="dotted" style="font-size: 20px;">{{sessionInfo.CoachName}}</p>
+              <p class="dotted bottom-border-style" style="margin-top: -7px;"><span>{{sessionInfo.SessionName}}</span></p>
+              <p style="margin-top: -7px;color:white;font-size: 20px;">{{sessionInfo.StartTime}} - {{addmin(sessionInfo.StartTime,sessionInfo.Duration)}}</p>
+              <p class="dotted1" style="margin-top: -7px;">{{sessionInfo.Days}}</p>
+          </ion-col>
+      </ion-card-content>
+  </ion-card>
+
+  <ion-row>
+      <ion-col col-4>
+          <div class="left_1">
+              <div class="takenBox timekare-primary-btn">&nbsp;</div>
+              <div class="contentwrapper">Done</div>
+          </div>
+      </ion-col>
+      <ion-col col-4 class="textcenter">
+
+          <div class="margintop">
+              <div class="pendingBox">&nbsp;</div>
+              <div class="contentwrapper">Pending</div>
+          </div>
+      </ion-col>
+      <ion-col col-4>
+          <div class="margintop right_align">
+              <div class="cancelBox">&nbsp;</div>
+              <div class="contentwrapper">Cancelled</div>
+          </div>
+      </ion-col>
+  </ion-row>
+
+  <ion-row wrap class="row_class">
+      <ion-col col-4 *ngFor="let obj of days">
+          <ion-card class="cardlist" (click)="goToSchooleAttendancePage(obj)" [ngClass]="{'border-green': obj.status == 'Done','cancelSession':obj.status == 'Canceled','pending':obj.status == 'Pending'}">
+              <ion-card-content class="content_height">
+                  <p class="month_block">{{obj.date}}</p>
+                  <p class="day">{{obj.day}}</p>
+              </ion-card-content>
+          </ion-card>
+      </ion-col>
+  </ion-row>
+
+
+</ion-content>

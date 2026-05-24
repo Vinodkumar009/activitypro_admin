@@ -1,1 +1,6 @@
-courtbooking-page{}
+@import '../../../theme/android-sdk35-fixes.scss';
+
+courtsetup-page {
+    @include android-sdk35-fixes;
+
+}

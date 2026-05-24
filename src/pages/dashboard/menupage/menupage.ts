@@ -6,10 +6,14 @@ import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
 import { CommonService } from '../../../services/common.service';
 import { ThemeService } from '../../../services/theme.service';
+//import { PopoverPage } from ./popover';
+import * as moment from 'moment';
 // import { Setup } from './setup';
 import { Slides } from 'ionic-angular';
 import { ViewChild } from '@angular/core';
 import { HttpService } from '../../../services/http.service';
+import { AppType } from '../../../shared/constants/module.constants';
+import { API } from '../../../shared/constants/api_constants';
 import { ParentClubService } from '../../../services/parentclub.service';
 
 
@@ -81,8 +85,7 @@ export class MenupagePage {
      public popoverCtrl: PopoverController, public fb: FirebaseService, 
      public themeService: ThemeService,
      public httpService: HttpService,
-     public parentClubService: ParentClubService
-    ) {
+     public parentClubService: ParentClubService) {
     this.storage.get('userObj').then(async (val) => {
       this.userObj = JSON.parse(val);
       console.log(this.userObj)

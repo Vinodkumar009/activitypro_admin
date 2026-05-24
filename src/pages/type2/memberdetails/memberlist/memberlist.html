@@ -1,0 +1,112 @@
+<!--
+  Generated template for the MemberlistPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Members</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <!-- <div>
+    <ion-row class="sub-container rows-allign2">
+      <ion-col col-1 style="text-align: center; margin: auto; padding: 0px">
+        <ion-icon name="ios-search"></ion-icon>
+      </ion-col>
+      <ion-col col-11 class="search-bar">
+        <ion-searchbar placeholder="Search Members" id="customsearchbar" 
+          (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <p style="
+            margin: 10px 4px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0px 8px 0px 14px;
+      ">
+      Level Name
+    </p>
+    <ion-list style="overflow-y: scroll">
+      <ion-item *ngFor="let mem of filteredMembers" (click)="gotoNext(mem)" >
+        <ion-label *ngIf="mem.user" style=" text-transform: capitalize;">
+        {{mem.user.FirstName}}&nbsp;{{mem.user.LastName}}
+    </ion-label> -->
+  <!-- <ion-checkbox style="margin: 9px 20px 9px 4px" [(ngModel)]="chal.isSelect" [disabled]="chal.isAlreadExisted" (ionChange)="selectChallenges(chal,$event)"></ion-checkbox> -->
+  <!-- </ion-item>
+    </ion-list>
+  </div> -->
+  <div style="margin-bottom: 60px;">
+    <ion-row class="sub-container rows-allign2">
+      <ion-col col-1 style="text-align: center; margin: auto; padding: 0px">
+        <ion-icon name="ios-search"></ion-icon>
+      </ion-col>
+      <ion-col col-11 class="search-bar">
+        <ion-searchbar placeholder="Search Members" id="customsearchbar" (ionInput)="getFilterItems($event)"
+          autocorrect="off"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 text-center>
+        <div class="circleProgress">
+          <p><span>{{filteredMembers?.length}}</span></p>
+          <img src="assets/images/check-mark.svg">
+        </div>
+        <div>
+          <p class="progress_txt">{{level?.level_name}}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-12 style="padding:0px !important">
+        <ion-list style="padding-top: 10px;">
+          <ion-card *ngFor="let mem of filteredMembers" class="facilityCard seession-cards"
+            style="border-radius: 0px !important" (click)="gotoNext(mem)">
+            <ion-card-header style="padding: 0 !important; white-space: normal">
+              <ion-row style="margin: 0px 0px 0px 0px">
+                <ion-col col-8 class="mar-auto-all pad-left-15" style="margin:auto">
+                  <p *ngIf="mem.user" style=" text-transform: capitalize !important;"
+                    style="color:  rgba(0, 0, 0, 0.85);" class="mar0 member_name">
+                    {{mem.user.FirstName | titlecase}}&nbsp;{{mem.user.LastName | titlecase}}</p>
+                </ion-col>
+                <ion-col col-3 style="margin: auto">
+
+                  <p class="days_ago">{{calculateDaysElapsed(mem.created_at)}}</p>
+                  <p class="days_ago2" *ngIf="calculateDaysElapsed(mem.created_at) !== 'Today'">days</p>
+                  
+
+                </ion-col>
+                <ion-col col-1 style="margin: auto;">
+                  <ion-icon name="ios-arrow-forward"
+                    style="font-size: 21px; color: #499bbd !important;padding-top: 5px;">
+                  </ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+          </ion-card>
+        </ion-list>
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col col-12 *ngIf="filteredMembers.length == 0" text-center>
+              <p>No Members found for this Level</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+<!-- <ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block class="timekare-primary-btn" (click)="assignChallengeToLevel()">
+        Assign
+      </button>
+    </ion-col>
+    
+  </ion-row>
+</ion-footer> -->

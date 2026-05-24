@@ -1,0 +1,88 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            Edit Promotion</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+      <ion-icon name="apps" ></ion-icon>
+    </button>
+        <ion-title>
+            Edit Promotion
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <ion-item>
+        <ion-label float>Promotion Title</ion-label>
+        <ion-input type="text" [(ngModel)]="promoObj.PromotionTitle"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime pickerFormat="DD MM YYYY" [(ngModel)]="promoObj.StartDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime pickerFormat="DD MM YYYY" [(ngModel)]="promoObj.EndDate"  max="2030-12-31"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label float>Description</ion-label>
+        <ion-input type="text" [(ngModel)]="promoObj.Description"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label float>Sequence</ion-label>
+        <ion-input type="text" [(ngModel)]="promoObj.Sequence"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label>Promotion Type</ion-label>
+        <ion-select [(ngModel)]="promoObj.PromotionType">
+            <ion-option value="SlideShow">Slide Show</ion-option>
+            <ion-option value="LongScroll">Long Scroll</ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item *ngIf="promoObj.PromotionType == 'SlideShow'">
+        <ion-label floating>Slide Show Speed</ion-label>
+        <ion-input type="text" [(ngModel)]="promoObj.SlideShowSpeed"></ion-input>
+    </ion-item>
+    <div *ngFor="let item of imagesArr;let i = index" class="image-div">
+        <ion-item>
+            <ion-label floating>Image Path</ion-label>
+            <ion-input type="text" [(ngModel)]="item.ImagePath"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Redirect URL</ion-label>
+            <ion-input type="text" [(ngModel)]="item.ImageRedirectURL"></ion-input>
+        </ion-item>
+    </div>
+
+
+</ion-content>
+<ion-footer>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <button ion-button block style="background-color:#2b92bb !important; color: white !important" (click)="cancelPromotion()">Cancel</button>
+            </ion-col>
+            <ion-col col-6>
+                <button ion-button block class="timekare-primary-btn" (click)="editPromotion()">Save</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

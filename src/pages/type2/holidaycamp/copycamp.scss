@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-copycamp {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         // background-image: url("../assets/images/background/innerbg.png");
         

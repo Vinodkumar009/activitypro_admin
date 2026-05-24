@@ -1,0 +1,17 @@
+<ion-item>
+  <ion-row>
+    <ion-col col-6 style="margin: auto;" no-padding>
+      <p class="access-label">{{label}}</p>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-button class="access-btn" (click)="select('public')" [class.selected]="isPublic">
+        <ion-icon name="globe"></ion-icon> Public
+      </button>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-button class="access-btn" (click)="select('private')" [class.selected]="!isPublic">
+        <ion-icon name="ios-lock-outline"></ion-icon> Private
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-item>

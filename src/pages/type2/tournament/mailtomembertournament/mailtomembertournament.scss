@@ -1,6 +1,6 @@
-mailtomembertournament-page{
-    .item-inner{
-        border: none !important;
-    box-shadow: none !important
-    }
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+mailtomembertournament-page {
+    @include android-sdk35-fixes;
+
 }

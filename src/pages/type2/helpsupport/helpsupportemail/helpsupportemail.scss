@@ -1,4 +1,7 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 helpsupportemail-page {
+    @include android-sdk35-fixes;
     $toolbar-background-color1: #2b92bb ;
     $toolbar-title-color1: #ffffff;
     $toolbar-button-text-color1: #ffffff;

@@ -1,14 +1,13 @@
-school-page{
-    // .scroll-content{
-    //     background-image: url("../assets/images/background/innerbg.png");
-    //     background-size: 100% 100%;
-    // }
-    .social-cards ion-col {
-        padding: 0;
-     }
-     .btn-clr{
-         color: $dashoboard-icon-color;
-     }
+@import '../../../theme/android-sdk35-fixes.scss';
+
+school-page {
+    @include android-sdk35-fixes;
+    // .social-cards ion-col {
+    //     padding: 0;
+    //  }
+    //  .btn-clr{
+    //      color: $dashoboard-icon-color;
+    //  }
      ion-card{
         margin:0px !important;
         width:100% !important;
@@ -19,6 +18,7 @@ school-page{
       }
     }
     ion-card-content{
+        margin-top: 0px !important;
         padding: 0px !important;
     }
     .fabTop {
@@ -106,18 +106,14 @@ school-page{
     .scroll-content{
         background-image: none !important;
         background-color: #f4efef !important;
-        margin-top: 9% !important;
-        //padding: 6px !important;
-       // background-image: url("../assets/images/background/innerbg.png");
+        //top:60px !important;
         background-size: 100% 100%;
-      // padding:6px;
-      .slider_list_margin{
-            //  padding: 0px 14px;
-      }
+        .slider_list_margin{
+                //  padding: 0px 14px;
+        }
     }
     .nonmemcard {
         padding: 14px 0;
     }
 
-    
 }

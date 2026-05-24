@@ -207,13 +207,12 @@ export class CreteproductPage {
           });
       }catch(err){
         //this.commonService.toastMessage("Error in upload",2500,ToastMessageType.Error,ToastPlacement.Bottom);
-        alert(JSON.stringify(err));
+        console.log(JSON.stringify(err));
       }
       
     }, (err) => {
       //this.commonService.toastMessage("Error in upload",2500,ToastMessageType.Error,ToastPlacement.Bottom);
       console.log("imagepicker plugin issue");
-      alert(JSON.stringify(err));
       console.log(JSON.stringify(err));
      });
   }

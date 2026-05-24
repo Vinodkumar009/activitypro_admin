@@ -110,24 +110,28 @@ export class CreateDescription {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:1
     }
-    this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES,get_templates_payload).subscribe({
-      next: (res: any) => {
-        if(res && res.length > 0) {
-         this.is_existed = true;
-         this.descriptions = res.map((template) => {
-          return {
-            header: template.header,
-            description: template.description,
-            title: template.title,
-            id:template.id
-          }
-        });
-        }else{
-          this.is_existed = false;
-          this.descriptions = this.default_descriptions;
+    this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES,get_templates_payload).subscribe((res: any) => {
+      if(res && res.length > 0) {
+       this.is_existed = true;
+       this.descriptions = res.map((template) => {
+        return {
+          header: template.header,
+          description: template.description,
+          title: template.title,
+          id:template.id
         }
+      });
+      }else{
+        this.is_existed = false;
+        this.descriptions = this.default_descriptions;
       }
-    });
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("No templates found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }   
 
   ionViewDidLoad() {
@@ -149,11 +153,16 @@ export class CreateDescription {
         updated_by: "",
         template_id:template.id
       }
-      this.httpService.post(API.MEMBERSHIP_REMOVE_MASTER_TEMPLATE,memership_template_input).subscribe({
-        next: (res: any) => {
-          this.descriptions.splice(template_index, 1);
-          this.comonService.toastMessage(res.message, 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-        }
+      this.httpService.post(API.MEMBERSHIP_REMOVE_MASTER_TEMPLATE,memership_template_input).subscribe((res: any) => {
+        this.descriptions.splice(template_index, 1);
+        this.comonService.toastMessage(res.message, 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+      },(error) => {
+        if(error.error && error.error.message){
+          console.error("Error in fetching:", error);
+          this.comonService.toastMessage(error.error.message, 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+        }else{
+          this.comonService.toastMessage("template removal failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom); 
+        }    
       });
     }
   }
@@ -180,12 +189,16 @@ export class CreateDescription {
             }
           })
           console.log(this.memership_template_input)
-          this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES_CREATE,this.memership_template_input).subscribe({
-            next: (res: any) => {
-              this.comonService.toastMessage("Templates created", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-              this.navCtrl.pop();
-            }
-          });
+          this.httpService.post(API.MEMBERSHIP_MASTER_TEMPLATES_CREATE,this.memership_template_input).subscribe((res: any) => {
+          this.comonService.toastMessage("Templates created", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+          this.navCtrl.pop();
+          },
+         (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("Template creation failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         });
         }else{ //then updating templates
           this.memership_template_input.templates = this.descriptions.map((desc, index) => {
             return {
@@ -196,12 +209,16 @@ export class CreateDescription {
             }
           })
           console.log(this.memership_template_input)
-          this.httpService.put(API.MEMBERSHIP_MASTER_TEMPLATES_UPDATE,this.memership_template_input).subscribe({
-            next: (res: any) => {
-              this.comonService.toastMessage("Templates updated", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
-              this.navCtrl.pop();
-            }
-          });
+          this.httpService.put(API.MEMBERSHIP_MASTER_TEMPLATES_UPDATE,this.memership_template_input).subscribe((res: any) => {
+            this.comonService.toastMessage("Templates updated", 2500,ToastMessageType.Success,ToastPlacement.Bottom);
+            this.navCtrl.pop();
+          },
+         (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("Templates updation failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         });
         }
       }else{
         this.comonService.toastMessage("Please enter all fields", 2500, ToastMessageType.Error, ToastPlacement.Bottom);

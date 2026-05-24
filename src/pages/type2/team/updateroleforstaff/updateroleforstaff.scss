@@ -1,114 +1,53 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-updateroleforstaff {
-  .foobtn {
-    background-color: #5be283;
-    height: 3.6rem !important;
-    font-size: 1.4rem !important;
+  @include android-sdk35-fixes;
+
+  .scroll-content { padding: 0 !important; overflow: hidden !important; background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
+
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-fixed-header { flex-shrink: 0; background: #0f172a; z-index: 10; }
+  .page-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 8px 80px; }
+
+  .section-header { display: flex; align-items: center; padding: 16px 16px 8px; }
+  .section-title { font-size: 15px; font-weight: 700; color: #f1f5f9; }
+
+  app-list-card { display: block; margin-bottom: 6px; }
+  .role-row {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+    background: linear-gradient(145deg, rgba(43, 146, 187, 0.3) 0%, rgba(53, 173, 255, 0.12) 40%, transparent 75%);
+    cursor: pointer;
+  }
+  .role-avatar {
+    width: 28px; height: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    ion-icon { font-size: 22px; }
+  }
+  .role-info { flex: 1; min-width: 0; }
+  .role-name { font-size: 15px; font-weight: 700; color: #f1f5f9; margin: 0; }
+  .role-tag {
+    display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 10px;
+    border-radius: 20px; text-transform: uppercase; letter-spacing: 0.3px; flex-shrink: 0;
+    &.current { background: rgba(43, 146, 187, 0.2); color: #3fbcd3; }
   }
 
-  .scroll-content {
-    padding: 0px !important;
-    background-image: none !important;
-    // background: white !important;
-    background: #f4efef !important;
-    // margin-bottom: 60px;
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 8px;
+    .empty-icon { font-size: 40px; color: #334155; }
+    .empty-text { font-size: 14px; color: #64748b; margin: 0; }
   }
 
-  .searchbar-input {
-    border-bottom: 1px solid #141414;
-    box-shadow: none !important;
+  &.light-theme {
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .page-fixed-header { background: #f8fafc; }
+    .section-title { color: #1e293b; }
+    .role-row { background: linear-gradient(145deg, rgba(43, 146, 187, 0.25) 0%, rgba(53, 173, 255, 0.1) 40%, transparent 75%); }
+    .role-name { color: #1e293b; }
+    .empty-state .empty-icon { color: #cbd5e1; }
   }
 
-  .search_add {
-    background-color: transparent;
-    padding-left: 6px;
-  }
-
-  .search_add {
-    .item-inner {
-      border-bottom: 0px !important;
-
-      ion-icon {
-        margin-top: 18px;
-      }
-
-      div {
-        ion-label {
-          //margin-top: 0px;
-          margin-bottom: 0px;
-        }
-      }
-    }
-  }
-
-  .btn-clr {
-    color: $dashoboard-icon-color;
-  }
-
-  .button {
-    font-size: 2rem;
-  }
-
-  .align {
-    margin-top: 5px;
-    margin-left: 9px;
-    margin-right: 9px;
-  }
-
-  .label {
-    margin: 0px !important;
-  }
-
-  .session_header,
-  ion-list {
-    margin-bottom: 0px !important;
-    border-bottom: 1px solid #f6ae4d;
-  }
-
-  .timekare-primary-btn {
-    background-color: #f6ae4d !important;
-  }
-
-  .block_height {
-    height: 80%;
-  }
-
-  .block_height1 {
-    margin-top: 5px;
-    height: 90%;
-
-    .margin {
-      padding: 0px 11px 0px 11px;
-    }
-  }
-
-  .block_height2 {
-    height: 32%;
-  }
-
-  .ion_list1 {
-    margin-top: 10px;
-  }
-
-  .p_selected {
-    ion-card-content {
-      border-bottom: 1px solid #d1d1d5;
-      padding: 5px 0px 5px 13px;
-      color: rgba(0, 0, 0, 0.89);
-      font-size: 17px;
-    }
-  }
-
-  .ion-item-lable {
-    div {
-      ion-icon {
-        margin: 0px 0px 9px 0px !important;
-      }
-
-      div {
-        ion-label {
-          margin: 0px 0px 0px 0px;
-        }
-      }
-    }
-  }
+  @media (max-width: 359px) { .page-scroll-area { padding: 0 4px 80px; } .role-name { font-size: 14px; } }
+  @media (min-width: 768px) { .page-scroll-area { padding: 0 16px 80px; } .role-name { font-size: 16px; } .role-row { padding: 16px 20px; } }
 }

@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-gallery {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content {
         padding: 5px !important;
         background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
@@ -154,5 +160,4 @@ page-gallery {
         margin: auto;
     }
     
-
 }

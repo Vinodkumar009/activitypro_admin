@@ -14,271 +14,262 @@
 
 <ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
   <ion-list>
-    <ion-item>
-      <ion-label fixed>Competition Name</ion-label>
-      <ion-input placeholder="Enter Competition Name" type="text" [(ngModel)]="league.league_name"></ion-input>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Hosted By</ion-label>
-      <ion-select [(ngModel)]="venueKey" (ionChange)="getActivity()">
-        <ion-option *ngFor="let club of clubVenues" value="{{club.FirebaseId}}">
-          {{club.ClubName}}</ion-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Activity</ion-label>
-      <ion-select [(ngModel)]="league.activity.ActivityCode" disabled="true">
-        <ion-option *ngFor="let activity of activities" value="{{activity.ActivityCode}}">{{activity.ActivityName}}
-        </ion-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Competition Type</ion-label>
-      <ion-select [(ngModel)]="league.league_type" disabled="true">
-        <ion-option *ngFor="let type of leagueType" [value]="type.value">{{type.key}}</ion-option>
-      </ion-select>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label fixed>Competition Name</ion-label>
+        <ion-input placeholder="Enter Competition Name" type="text" [(ngModel)]="league.league_name"></ion-input>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item>
-      <ion-label>Location Type</ion-label>
-      <ion-select [(ngModel)]="league.location_type">
-        <ion-option [value]="1">Club</ion-option>
-        <ion-option [value]="2">Location</ion-option>
-        <ion-option [value]="3">School</ion-option>
-      </ion-select>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Hosted By</ion-label>
+        <ion-select [(ngModel)]="venueKey" (ionChange)="getActivity()">
+          <ion-option *ngFor="let club of clubVenues" value="{{club.FirebaseId}}">
+            {{club.ClubName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.location_type===1">
-      <ion-label>Club</ion-label>
-      <ion-select [(ngModel)]="selectedClubLocation">
-        <ion-option *ngFor="let club of clubVenues" value="{{club.Id}}">
-          {{club.ClubName}}</ion-option>
-      </ion-select>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="league.activity.ActivityCode" disabled="true">
+          <ion-option *ngFor="let activity of activities" value="{{activity.ActivityCode}}">{{activity.ActivityName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.location_type===2">
-      <ion-label>Location</ion-label>
-      <ion-select [(ngModel)]="selectedLocation">
-        <ion-option *ngFor="let location of locations" value="{{location.id}}">{{location.name}}</ion-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item *ngIf="league.location_type===3">
-      <ion-label>School</ion-label>
-      <ion-select [(ngModel)]="selectedSchoolLocation">
-        <ion-option *ngFor="let scl of schools" value="{{scl.id}}">{{scl.school_name}}</ion-option>
-      </ion-select>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Competition Type</ion-label>
+        <ion-select [(ngModel)]="league.league_type" disabled="true">
+          <ion-option *ngFor="let type of leagueType" [value]="type.value">{{type.key}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label>Category</ion-label>
-      <ion-select [(ngModel)]="league.league_category">
-        <ion-option *ngFor="let cat of leagueCategory" [value]="cat.value">{{cat.key}}</ion-option>
-      </ion-select>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Location Type</ion-label>
+        <ion-select [(ngModel)]="league.location_type">
+          <ion-option [value]="1">Club</ion-option>
+          <ion-option [value]="2">Location</ion-option>
+          <ion-option [value]="3">School</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item>
-      <ion-label>Start Date</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
-        [(ngModel)]="leagueEditInput.leagueDetails.start_date"></ion-datetime>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>End Date</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
-        [(ngModel)]="leagueEditInput.leagueDetails.end_date">
-      </ion-datetime>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.location_type===1">
+      <ion-item>
+        <ion-label>Club</ion-label>
+        <ion-select [(ngModel)]="selectedClubLocation">
+          <ion-option *ngFor="let club of clubVenues" value="{{club.Id}}">{{club.ClubName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label>Last Date For Enrolment</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
-        [(ngModel)]="enrol_date"></ion-datetime>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.location_type===2">
+      <ion-item>
+        <ion-label>Location</ion-label>
+        <ion-select [(ngModel)]="selectedLocation">
+          <ion-option *ngFor="let location of locations" value="{{location.id}}">{{location.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label>Last Date For Withdrawal</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
-        [(ngModel)]="withdrwal_date">
-      </ion-datetime>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.location_type===3">
+      <ion-item>
+        <ion-label>School</ion-label>
+        <ion-select [(ngModel)]="selectedSchoolLocation">
+          <ion-option *ngFor="let scl of schools" value="{{scl.id}}">{{scl.school_name}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label>Start Time</ion-label>
-      <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
-        class="textareastyle" [(ngModel)]="league.start_time"></ion-datetime>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="league.league_category">
+          <ion-option *ngFor="let cat of leagueCategory" [value]="cat.value">{{cat.key}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label>End Time</ion-label>
-      <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
-        class="textareastyle" [(ngModel)]="league.end_time"></ion-datetime>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
+          [(ngModel)]="leagueEditInput.leagueDetails.start_date"></ion-datetime>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label>Early Arrival</ion-label>
-      <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
-        class="textareastyle" [(ngModel)]="league.early_arrival_time"></ion-datetime>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
+          [(ngModel)]="leagueEditInput.leagueDetails.end_date"></ion-datetime>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label fixed>Season</ion-label>
-      <ion-input type="text" [(ngModel)]="league.season" class="textareastyle"></ion-input>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label>Last Date For Enrolment</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
+          [(ngModel)]="enrol_date"></ion-datetime>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label fixed>Capacity</ion-label>
-      <ion-input type="text" [(ngModel)]="league.capacity" class="textareastyle"></ion-input>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label>Last Date For Withdrawal</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" min="{{min}}" max="{{max}}"
+          [(ngModel)]="withdrwal_date"></ion-datetime>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label fixed>Grade</ion-label>
-      <ion-input type="text" [(ngModel)]="league.grade" class="textareastyle"></ion-input>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label>Start Time</ion-label>
+        <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
+          [(ngModel)]="league.start_time"></ion-datetime>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item>
-      <ion-label>Age Group(Optional)</ion-label>
-      <ion-input type="text" [(ngModel)]="league.league_age_group" class="textareastyle"></ion-input>
-      <button ion-button clear item-right class="help_btn" (click)="ageGroupHint()">
-        <img style="width: 70%;" src="assets/images/info.svg">
-      </button>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label>End Time</ion-label>
+        <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
+          [(ngModel)]="league.end_time"></ion-datetime>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item class="activity_select">
-      <ion-label>Coach</ion-label>
-      <ion-select [(ngModel)]="leagueEditInput.leagueDetails.coachId" (ionChange)="updateContactInfo()">
-        <ion-option *ngFor="let coach of coaches" [value]="coach.Id">
-          {{coach.first_name}} {{coach.last_name}}</ion-option>
-      </ion-select>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label>Early Arrival</ion-label>
+        <ion-datetime displayFormat="hh mm A" pickerFormat="hh mm A" minuteValues="0,10,20,30,40,50,60"
+          [(ngModel)]="league.early_arrival_time"></ion-datetime>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label fixed>Contact Mail</ion-label>
-      <ion-input type="text" [(ngModel)]="league.contact_email" class="input_txt_right"></ion-input>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label fixed>Season</ion-label>
+        <ion-input type="text" [(ngModel)]="league.season"></ion-input>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-label fixed>Contact Phone</ion-label>
-      <ion-input type="text" [(ngModel)]="league.contact_phone" class="input_txt_right"></ion-input>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label fixed>Capacity</ion-label>
+        <ion-input type="text" [(ngModel)]="league.capacity"></ion-input>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-row>
-        <ion-col col-12 no-padding class="flex_col">
-          <p class="toggle_para">Paid</p>
-          <label class="toggle">
-            <input type="checkbox" [(ngModel)]="league.is_paid">
-            <span data-unchecked="No" data-checked="Yes"></span>
-          </label>
-        </ion-col>
-      </ion-row>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label fixed>Grade</ion-label>
+        <ion-input type="text" [(ngModel)]="league.grade"></ion-input>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.is_paid && league.league_type != 3">
-      <ion-label fixed>Member Fee
-        <span *ngIf="currency != undefined">({{currency}})</span>
-      </ion-label>
-      <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
-        [(ngModel)]="league.member_price"></ion-input>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Age Group(Optional)</ion-label>
+        <ion-input type="text" [(ngModel)]="league.league_age_group"></ion-input>
+        <button ion-button clear item-right class="help_btn" (click)="ageGroupHint()">
+          <img style="width: 70%;" src="assets/images/info.svg">
+        </button>
+      </ion-item>
+    </app-form-field>
 
-    <ion-item *ngIf="league.is_paid && league.league_type != 3">
-      <ion-label>Non Member Fee
-        <span *ngIf="currency != undefined">({{currency}})</span>
-      </ion-label>
-      <ion-input type="number" class="textareastyle" placeholder="Please enter fee"
-        [(ngModel)]="league.non_member_price"></ion-input>
-    </ion-item>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item class="activity_select">
+        <ion-label>Coach</ion-label>
+        <ion-select [(ngModel)]="leagueEditInput.leagueDetails.coachId" (ionChange)="updateContactInfo()">
+          <ion-option *ngFor="let coach of coaches" [value]="coach.Id">
+            {{coach.first_name}} {{coach.last_name}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </app-form-field>
 
-    <div *ngIf="league.is_paid && league.league_type != 3">
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label fixed>Contact Mail</ion-label>
+        <ion-input type="text" [(ngModel)]="league.contact_email" class="input_txt_right"></ion-input>
+      </ion-item>
+    </app-form-field>
+
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label fixed>Contact Phone</ion-label>
+        <ion-input type="text" [(ngModel)]="league.contact_phone" class="input_txt_right"></ion-input>
+      </ion-item>
+    </app-form-field>
+
+    <app-expandable-section label="FEE" [(expanded)]="league.is_paid" *ngIf="league.league_type != 3">
+      <ion-item>
+        <ion-label fixed>Member Fee
+          <span *ngIf="currency != undefined">({{currency}})</span>
+        </ion-label>
+        <ion-input type="number" placeholder="Please enter fee" [(ngModel)]="league.member_price"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Non Member Fee
+          <span *ngIf="currency != undefined">({{currency}})</span>
+        </ion-label>
+        <ion-input type="number" placeholder="Please enter fee" [(ngModel)]="league.non_member_price"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-row><ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">Allow Pay Later</p>
+          <label class="toggle"><input type="checkbox" [(ngModel)]="league.is_pay_later" /><span data-unchecked="No" data-checked="Yes"></span></label>
+        </ion-col></ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row><ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">Allow BACS</p>
+          <label class="toggle"><input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_bacs" /><span data-unchecked="No" data-checked="Yes"></span></label>
+        </ion-col></ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row><ion-col col-12 no-padding class="flex_col">
+          <p class="toggle_para">Allow Cash</p>
+          <label class="toggle"><input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_cash" /><span data-unchecked="No" data-checked="Yes"></span></label>
+        </ion-col></ion-row>
+      </ion-item>
+    </app-expandable-section>
+
+    <app-form-field [isDark]="isDarkTheme" *ngIf="league.league_type != 3">
       <ion-item>
         <ion-row>
           <ion-col col-12 no-padding class="flex_col">
-            <p class="toggle_para">Allow Pay Later</p>
+            <p class="toggle_para">Show Participants</p>
             <label class="toggle">
-              <input type="checkbox" [(ngModel)]="league.is_pay_later" />
+              <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.show_participants" />
               <span data-unchecked="No" data-checked="Yes"></span>
             </label>
           </ion-col>
         </ion-row>
       </ion-item>
+    </app-form-field>
 
-      <ion-item *ngIf="league.league_type != 3">
-        <ion-row>
-          <ion-col col-12 no-padding class="flex_col">
-            <p class="toggle_para">Allow BACS</p>
-            <label class="toggle">
-              <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_bacs" />
-              <span data-unchecked="No" data-checked="Yes"></span>
-            </label>
-          </ion-col>
-        </ion-row>
+    <app-form-field [isDark]="isDarkTheme">
+      <app-access-toggle [(isPublic)]="publicType"
+        (isPublicChange)="changeType($event ? 'public' : 'private')" label="Status">
+      </app-access-toggle>
+    </app-form-field>
+
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item class="description-item">
+        <ion-label stacked>Description <span class="optional-tag">(Optional)</span></ion-label>
+        <ion-textarea type="text" rows="5" [(ngModel)]="league.league_description"
+          placeholder="Competition instructions, rules, or notes..."></ion-textarea>
       </ion-item>
-
-      <ion-item *ngIf="league.league_type != 3">
-        <ion-row>
-          <ion-col col-12 no-padding class="flex_col">
-            <p class="toggle_para">Allow Cash</p>
-            <label class="toggle">
-              <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.allow_cash" />
-              <span data-unchecked="No" data-checked="Yes"></span>
-            </label>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-    </div>
-
-    <ion-item *ngIf="league.league_type != 3">
-      <ion-row>
-        <ion-col col-12 no-padding class="flex_col">
-          <p class="toggle_para">Show Participants</p>
-          <label class="toggle">
-            <input type="checkbox" [(ngModel)]="leagueEditInput.leagueDetails.show_participants" />
-            <span data-unchecked="No" data-checked="Yes"></span>
-          </label>
-        </ion-col>
-      </ion-row>
-    </ion-item>
-
-    <ion-item>
-      <ion-row>
-        <ion-col col-6 style="margin: auto;" no-padding>
-          <p class="toggle_para">Status</p>
-        </ion-col>
-        <ion-col col-3>
-          <button ion-button class="select-type" (click)="changeType('public')" [class.selected]="publicType">
-            <ion-icon style="padding-right: 10px" name="globe"></ion-icon>
-            Public
-          </button>
-        </ion-col>
-        <ion-col col-3>
-          <button ion-button class="select-type" (click)="changeType('private')" [class.selected]="!publicType">
-            <ion-icon style="padding-right: 10px" name="ios-lock-outline"></ion-icon>
-            Private
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-item>
-
-    <ion-item>
-      <ion-textarea type="text" rows="5" [(ngModel)]="league.league_description"
-        placeholder="Description"></ion-textarea>
-    </ion-item>
-  </ion-list> 
-
+    </app-form-field>
+  </ion-list>
 </ion-content>
 
-<ion-footer [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
-  <ion-grid>
-    <ion-row>
-      <ion-col col-12>
-        <button ion-button block class="timekare-primary-btn" (click)="updateLeagueConfirm()">
-          Update
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-footer no-border [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <app-glass-button label="Update" (btnClick)="updateLeagueConfirm()"></app-glass-button>
 </ion-footer>

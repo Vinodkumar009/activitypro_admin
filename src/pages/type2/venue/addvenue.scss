@@ -1,12 +1,14 @@
 @import '../../../theme/android-sdk35-fixes.scss';
-addvenue-page{
+
+addvenue-page {
     @include android-sdk35-fixes;
-    .list{
+.list{
     margin:0px;
 }
 .list-header-md {
      margin-bottom: 0px; 
-        margin-top: 3px;
+   
+    margin-top: 3px;
 }
 .sub-container {
     button {

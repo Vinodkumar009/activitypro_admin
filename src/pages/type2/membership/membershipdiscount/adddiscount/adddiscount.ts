@@ -95,12 +95,16 @@ export default class AddDiscountPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:AppType.ADMIN_NEW
     }
-    this.httpService.post(API.MEMBERSHIP_MASTER_DISCOUNTS_TYPES,get_discounts_payload).subscribe({
-      next: (res: any) => {
-        if(res.data && res.data.membership_discounts.length > 0)
-        this.discount_types = res.data.membership_discounts;
-      }
-    });
+    this.httpService.post(API.MEMBERSHIP_MASTER_DISCOUNTS_TYPES,get_discounts_payload).subscribe((res: any) => {
+      if(res.data && res.data.membership_discounts.length > 0)
+      this.discount_types = res.data.membership_discounts;
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Discount types fetch failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   getDiscountData() {
@@ -112,20 +116,24 @@ export default class AddDiscountPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:AppType.ADMIN_NEW
     }
-    this.httpService.post(API.MEMBERSHIP_MASTER_DISCOUNTS_DETAILS,get_discounts_payload).subscribe({
-      next: (res: any) => {
-        if(res.data && res.data.discount){
-          this.discount = res.data.discount;
-          this.discountObj.DiscountName = this.discount.discount_name;
-          this.discountObj.Discount = this.discount.absolute;
-          this.discountObj.DiscountPercent = this.discount.percentage;
-          this.discountObj.Type = this.discount.type.toString();
-          this.discountObj.StartDate = moment(this.discount.start_date,"DD-MMM-YYYY").format("YYYY-MM-DD");
-          this.discountObj.EndDate = moment(this.discount.end_date,"DD-MMM-YYYY").format("YYYY-MM-DD");
-          this.dataexists = true;
-        }
+    this.httpService.post(API.MEMBERSHIP_MASTER_DISCOUNTS_DETAILS,get_discounts_payload).subscribe((res: any) => {
+      if(res.data && res.data.discount){
+        this.discount = res.data.discount;
+        this.discountObj.DiscountName = this.discount.discount_name;
+        this.discountObj.Discount = this.discount.absolute;
+        this.discountObj.DiscountPercent = this.discount.percentage;
+        this.discountObj.Type = this.discount.type.toString();
+        this.discountObj.StartDate = moment(this.discount.start_date,"DD-MMM-YYYY").format("YYYY-MM-DD");
+        this.discountObj.EndDate = moment(this.discount.end_date,"DD-MMM-YYYY").format("YYYY-MM-DD");
+        this.dataexists = true;
       }
-    });
+    },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Discounts fetch failed", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   //alert confirmation for create or update discount
@@ -139,28 +147,39 @@ export default class AddDiscountPage {
   updateDiscount() {
     if (this.validate()) { 
       if(!this.dataexists){//create 
+          //let discountKey = this.fb.saveReturningKey("Membership/MembershipSetup/" + this.parentClubKey + "/" + this.selectedClubKey + "/Discount", this.discountObj)
+          // console.log(this.discountObj, this.selectedClubKey, this.parentClubKey, discountKey)
           const discount_payload = new CreateMembershipDiscountMasterDto(this.discountObj);
           discount_payload.parentclubId = this.postgre_parentclub_id;
           discount_payload.clubId = this.selected_club_id;
           discount_payload.device_type = this.sharedservice.getPlatform() == "android" ? 1:2;
           discount_payload.device_id = this.sharedservice.getDeviceId();
-          this.httpService.post(API.MEMBERSHIP_CREATE_MASTER_DISCOUNTS,discount_payload).subscribe({
-            next: (res: any) => {
-              this.comonService.toastMessage("Discount added", 2500,ToastMessageType.Success);
-              this.comonService.updateCategory("update_membership_discounts_list")
-              this.navCtrl.pop();
-            }
-          });
+          this.httpService.post(API.MEMBERSHIP_CREATE_MASTER_DISCOUNTS,discount_payload).subscribe((res: any) => {
+            this.comonService.toastMessage("Discount added", 2500,ToastMessageType.Success);
+            this.comonService.updateCategory("update_membership_discounts_list")
+            this.navCtrl.pop();
+          },
+        (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("Failed to add discount", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+            // Handle the error here, you can display an error message or take appropriate action.
+        })
       }else { //update, as already there
+        // this.fb.update(this.discountKey, "Membership/MembershipSetup/" + this.parentClubKey + "/" + this.selectedClubKey + "/Discount", this.discountObj);
         const discount_payload = new UpdateMembershipDiscountMasterDto(this.discountObj);
         discount_payload.discount_id = this.navParams.get("DiscountKey");
-        this.httpService.post(API.MEMBERSHIP_UPDATE_MASTER_DISCOUNTS,discount_payload).subscribe({
-          next: (res: any) => {
-            this.comonService.toastMessage("Discount updated", 2500,ToastMessageType.Success);
-            this.comonService.updateCategory("update_membership_discounts_list")
-            this.navCtrl.pop()
-          }
-        });
+        this.httpService.post(API.MEMBERSHIP_UPDATE_MASTER_DISCOUNTS,discount_payload).subscribe((res: any) => {
+          this.comonService.toastMessage("Discount updated", 2500,ToastMessageType.Success);
+          this.comonService.updateCategory("update_membership_discounts_list")
+          this.navCtrl.pop()
+        },
+       (error) => {
+            //this.commonService.hideLoader();
+            console.error("Error in fetching:", error);
+            this.comonService.toastMessage("Failed to add discount", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+           // Handle the error here, you can display an error message or take appropriate action.
+       })
       }
     } 
   }

@@ -1,0 +1,146 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Create Billing</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div [ngSwitch]="billing">
+        <!-- <ion-item>
+            <ion-select [(ngModel)]="selectedClubKey" (ionChange)="selectVenue($event)" class="width100">
+                <ion-option *ngFor="let club of Venues" value={{club.$key}}>{{club.ClubName}}</ion-option>
+            </ion-select>
+        </ion-item> -->
+        <ion-grid class="nopad">
+            <ion-row class="border-bottom-2px ">
+
+                <ion-item class="venueionitem">
+                    <ion-select class="venuedropdown ionselect" [(ngModel)]="selectedClubKey" (ionChange)="selectVenue($event)">
+                        <ion-option *ngFor="let club of Venues" value={{club.$key}}>{{club.ClubName}}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+            </ion-row>
+        </ion-grid>
+        <div *ngSwitchCase="'firstpage'">
+            <ion-row class="sub-container ">
+                <ion-col col-2 style="text-align: -webkit-right;">
+                    <button>
+                        <ion-icon name="ios-search"></ion-icon>
+                    </button>
+                </ion-col>
+                <ion-col col-10 class="search-bar" style="margin-left: -8px;">
+                    <ion-searchbar placeholder="Search Name" id="customsearchbar" (ionInput)="getFilterItems($event)"
+                        autocorrect="off"></ion-searchbar>
+                </ion-col>
+
+            </ion-row>
+            <ion-scroll scrollY="true" class="block_height1">
+                <ion-list radio-group [(ngModel)]="bill.MemberName" class="margin">
+                    <ion-item class="custom-select" *ngFor="let member of memberDisplay;let i = index">
+                        <ion-label>{{member.DisplayName}} <span>{{member.Age}}Yrs /{{member.DOJ}}</span></ion-label>
+                        <ion-radio value={{member.DisplayName}} (tap)="selectMembers(member)"></ion-radio>
+                    </ion-item>
+                </ion-list>
+
+            </ion-scroll>
+            <ion-grid class="fixed-button">
+                <ion-row>
+                    <ion-col col-12 style="padding-left:5px;">
+                        <button ion-button block class="timekare-primary-btn" (click)="next()">Select Member</button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </div>
+
+
+        <div *ngSwitchCase="'secondpage'">
+            <ion-item class="custom_ionitem">
+                <ion-label> Billing to :</ion-label>
+                <ion-input type="text" class="right-input" [(ngModel)]="bill.MemberName" style="color:#000000 !important;" disabled=true></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Activity</ion-label>
+                <ion-select [(ngModel)]="bill.ActivityKey" (ionChange)="selectActivity($event)" class="width50">
+                    <ion-option *ngFor="let activity of Activities" value={{activity.$key}}>{{activity.ActivityName}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-list class="custom-list">
+                <ion-item>
+                    <ion-label>Select Type</ion-label>
+                    <ion-select [(ngModel)]="bill.SelectedBillType" class="width50">
+                        <ion-option value="Group Session">Group Session</ion-option>
+                        <ion-option value="One-One">One-One</ion-option>
+                        <ion-option value="Family Session">Family Session</ion-option>
+                        <ion-option value="Membership">Membership</ion-option>
+                        <ion-option value="Ball">Ball</ion-option>
+                        <ion-option value="Racket">Racket</ion-option>
+                        <ion-option value="Food & Drinks">Food & Drinks</ion-option>
+                        <ion-option value="Merchandising">Merchandising</ion-option>
+                        <ion-option value="Mics">Mics</ion-option>
+                        <ion-option value="Others">Others</ion-option>
+
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Billing Date</ion-label>
+                    <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" max={{today}} [(ngModel)]="bill.BillDate"></ion-datetime>
+                </ion-item>
+                <ion-item class="custom_ionitem">
+                    <ion-label> Bill Amount</ion-label>
+                    <ion-input type="number" class="right-input" [(ngModel)]="bill.BillAmount"  (ionBlur)="updatePayable()">
+                        <!-- <span class="currency" *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span> -->
+                    </ion-input>
+                </ion-item>
+                <ion-item class="custom_ionitem" *ngIf="bill.SelectedBillType != 'Group Session' && bill.SelectedBillType != 'Family Session' && bill.SelectedBillType != 'Membership'">
+                    <ion-label> Quantity</ion-label>
+                    <ion-input type="number" class="right-input" [(ngModel)]="bill.Quantity" (ionChange)="updatePayable()"></ion-input>
+                </ion-item>
+                <ion-item class="custom_ionitem">
+                    <ion-label> Discount Amount</ion-label>
+                    <ion-input type="number" class="right-input" [(ngModel)]="bill.DiscountAmount"  (ionBlur)="updatePayable()">
+                        <!-- <span class="currency" *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span> -->
+
+                    </ion-input>
+                </ion-item>
+                <ion-item class="custom_ionitem">
+                    <ion-label> Payable Amount</ion-label>
+                    <ion-input type="number" class="right-input" [(ngModel)]="bill.TotalAmount" (ionChange)="updatePayable()">
+                        <!-- <span class="currency" *ngIf="currencyDetails!=undefined">{{currencyDetails.CurrencySymbol}}</span> -->
+                    </ion-input>
+                </ion-item>
+                <ion-item class="custom_ionitem">
+                    <ion-label> Comments</ion-label>
+                    <ion-input type="text" class="right-input" [(ngModel)]="bill.Comments"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Send Notification</ion-label>
+                    <ion-checkbox (ionChange)="changeNotification()" [(ngModel)]="sendnotification"></ion-checkbox>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Send Email</ion-label>
+                    <ion-checkbox (ionChange)="changeEmail()" [(ngModel)]="sendEmail"></ion-checkbox>
+                </ion-item>
+            </ion-list>
+            <ion-row class="allign-assist">
+            </ion-row>
+            <ion-row class="allign-assist" *ngIf="!dataExixsts">
+                <ion-col col-6>
+                    <button ion-button block class="timekare-primary-btn" type="submit" (click)="back()">Back</button>
+                </ion-col>
+                <ion-col col-6>
+                    <button ion-button block class="timekare-primary-btn" type="submit" (click)="createBill()">Generate
+                        Bill</button>
+                </ion-col>
+            </ion-row>
+            <ion-row class="allign-assist" *ngIf="dataExixsts">
+
+                <ion-col>
+                    <button ion-button block class="timekare-primary-btn" type="submit" (click)="createBill()">Update
+                        Bill</button>
+                </ion-col>
+            </ion-row>
+        </div>
+    </div>
+</ion-content>

@@ -6,10 +6,11 @@ import { SharedServices } from '../../services/sharedservice';
 // import { PopoverPage } from '../../popover/popover';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
-import { LanguageService } from '../../../services/language.service';
-
 import { IonicPage } from 'ionic-angular';
-import { CommonService } from '../../../services/common.service';
+import { CommonService, ToastMessageType } from '../../../services/common.service';
+import { GraphqlService } from '../../../services/graphql.service';
+import gql from "graphql-tag";
+import { AppType } from '../../../shared/constants/module.constants';
 @IonicPage()
 @Component({
   selector: 'reportsession-page',
@@ -38,7 +39,15 @@ export class Type2ReportSession {
 
   sessionAllClubs = [];
 
-  constructor(public events: Events,public commonService: CommonService, public loadingCtrl: LoadingController, public storage: Storage, public fb: FirebaseService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController,private langService:LanguageService) {
+  constructor(public events: Events,
+    public commonService: CommonService,
+    public loadingCtrl: LoadingController, 
+    public storage: Storage, 
+    public fb: FirebaseService, 
+    public navCtrl: NavController, 
+    public sharedservice: SharedServices,
+    public popoverCtrl: PopoverController,
+    private graphqlService: GraphqlService,) {
     this.overAllMember = 0;
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -84,34 +93,65 @@ export class Type2ReportSession {
     this.navCtrl.setRoot("Dashboard");
   }
   getActivityList() {
-    this.fb.getAll("/Activity/" + this.parentClubKey).subscribe((data) => {
-      if (data.length > 0) {
-        this.activityfolder = data;
-        this.activityList = [];
-        for (let j = 0; j < data.length; j++) {
-          let ActivityList = this.commonService.convertFbObjectToArray(data[j]);
-          for (let k = 0; k < ActivityList.length; k++) {
-            let flag = true;
-            for (let i = 0; i < this.activityList.length; i++) {
-              if (ActivityList[k].IsEnable) {
-                if (ActivityList[k].Key == this.activityList[i].Key) {
-                  flag = false;
-                  break;
-                }
-              }
-            }
-            if (flag) {
-              this.activityList.push(ActivityList[k]);
-              this.selectedActivity = this.activityList[0].Key;
-              flag = false;
-            }
-          }
+    // this.fb.getAll("/Activity/" + this.parentClubKey).subscribe((data) => {
+    //   if (data.length > 0) {
+    //     this.activityfolder = data;
+    //     this.activityList = [];
+    //     for (let j = 0; j < data.length; j++) {
+    //       let ActivityList = this.commonService.convertFbObjectToArray(data[j]);
+    //       for (let k = 0; k < ActivityList.length; k++) {
+    //         let flag = true;
+    //         for (let i = 0; i < this.activityList.length; i++) {
+    //           if (ActivityList[k].IsEnable) {
+    //             if (ActivityList[k].Key == this.activityList[i].Key) {
+    //               flag = false;
+    //               break;
+    //             }
+    //           }
+    //         }
+    //         if (flag) {
+    //           this.activityList.push(ActivityList[k]);
+    //           this.selectedActivity = this.activityList[0].Key;
+    //           flag = false;
+    //         }
+    //       }
 
+    //     }
+    //   }
+    // });
+    const club_activity_input = {
+      ParentClubKey:this.sharedservice.getParentclubKey(),
+      AppType:AppType.ADMIN_NEW, //0-Admin
+      DeviceType:this.sharedservice.getPlatform() == "android" ? 1 : 2 //1-android,2-IOS
+    }
+      const clubs_activity_query = gql`
+      query getAllActiviesByParentClub($input_obj: CommonInputTypeDefs_V3!){
+        getAllActiviesByParentClub(venueDetailsInput:$input_obj){
+          ActivityCode
+          ActivityName
+          ActivityImageURL
+          FirebaseActivityKey
+          ActivityKey
         }
       }
-    });
-    this.getClubList();
+      `;
+      this.graphqlService.query(clubs_activity_query,{input_obj:club_activity_input},0)
+        .subscribe((res: any) => {
+          if(res.data.getAllActiviesByParentClub.length > 0){
+            this.activityList = res.data.getAllActiviesByParentClub;
+            this.selectedActivity = this.activityList[0].ActivityKey;
+          }else{  
+            this.commonService.toastMessage("No activities found",2500,ToastMessageType.Error)
+          }
+        },
+       (error) => {
+        this.commonService.toastMessage("Activities fetch failed",2500,ToastMessageType.Error);
+            console.error("Error in fetching:", error);
+           // Handle the error here, you can display an error message or take appropriate action.
+        }) 
+      this.getClubList();
   }
+
   getClubList() {
     this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
       this.clubs = [];
@@ -234,7 +274,7 @@ export class Type2ReportSession {
   }
 
   onChangeActivity() {
-
+    this.getAllSessionClubWise();
   }
   onChangeOfClub() {
     this.sessionAllClubs = [];

@@ -1,4 +1,7 @@
+@import '../../../../../theme/android-sdk35-fixes.scss';
+
 page-recurringbookingdetail {
+    @include android-sdk35-fixes;
     .scroll-content {
       //  padding: 16px 9px !important;
         background-image: none !important;
@@ -41,4 +44,4 @@ page-recurringbookingdetail {
         background-color: rgba(128, 128, 128, 0.35);
         float: right;
     }
-} 
+}

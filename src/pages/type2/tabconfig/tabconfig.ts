@@ -6,8 +6,8 @@ import { PopoverController, ToastController, NavController, Platform, ViewContro
 import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
 import { IonicPage, AlertController } from 'ionic-angular';
-import { CommonService, ToastMessageType, ToastPlacement } from "../../../services/common.service";
-import { Type2CourtBookListModule } from '../courtsetup/courtbooklist.module';
+import { CommonService } from "../../../services/common.service";
+// import { Type2CourtBookListModule } from '../courtsetup/courtbooklist.module';
 
 // import { reorderArray } from 'ionic-angular';
 @IonicPage()
@@ -35,7 +35,7 @@ export class Type2TabConfig {
 
     menuList: ReadonlyArray<Menus> = [
         { DefaultText: "Home", DisplayText: "Home", IsVisible: true, TabSequenceNo: 21, SuperMenuSequence: 0, Component: "VanuePage", Icon: "md-notifications", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
-     //   { DefaultText: "Show Tab View", DisplayText: "Show Tab View", IsVisible: true, TabSequenceNo: 0, SuperMenuSequence: 0, Component: "", Icon: "", Role: -1, Type: 2, Level: 0, IsApplicableVisibleFlag: true, IsTabView: false },
+        //   { DefaultText: "Show Tab View", DisplayText: "Show Tab View", IsVisible: true, TabSequenceNo: 0, SuperMenuSequence: 0, Component: "", Icon: "", Role: -1, Type: 2, Level: 0, IsApplicableVisibleFlag: true, IsTabView: false },
         { DefaultText: "Dashboard", DisplayText: "Dashboard", IsVisible: true, TabSequenceNo: 1, SuperMenuSequence: 0, Component: "dashboard", Icon: "speedometer", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: false },
         { DefaultText: "Session", DisplayText: "Session", IsVisible: true, TabSequenceNo: 2, SuperMenuSequence: 0, Component: "SessionList", Icon: "laptop", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: false },
         { DefaultText: "School Session", DisplayText: "School Session", IsVisible: false, TabSequenceNo: 3, SuperMenuSequence: 0, Component: "School", Icon: "school", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
@@ -47,27 +47,26 @@ export class Type2TabConfig {
         { DefaultText: "Court Booking", DisplayText: "Court Booking", IsVisible: true, TabSequenceNo: 7, SuperMenuSequence: 0, Component: "BookingPage", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
         //ends here
 
-     //   { DefaultText: "Club Calendar", DisplayText: "Club Calendar", IsVisible: false, TabSequenceNo: 8, SuperMenuSequence: 0, Component: "Holiday", Icon: "calendar", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
+        //   { DefaultText: "Club Calendar", DisplayText: "Club Calendar", IsVisible: false, TabSequenceNo: 8, SuperMenuSequence: 0, Component: "Holiday", Icon: "calendar", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
 
         //No Component starts here
-        { DefaultText: "Results", DisplayText: "Tournament", IsVisible: false, TabSequenceNo: 9, SuperMenuSequence: 0, Component: "TournamentPage", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
-      //  { DefaultText: "Coach Tips", DisplayText: "Coach Tips", IsVisible: false, TabSequenceNo: 10, SuperMenuSequence: 0, Component: "", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
+        //  { DefaultText: "Coach Tips", DisplayText: "Coach Tips", IsVisible: false, TabSequenceNo: 10, SuperMenuSequence: 0, Component: "", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
         //ends here
-       // { DefaultText: "Member Activities", DisplayText: "Member Activities", IsVisible: false, TabSequenceNo: 11, SuperMenuSequence: 0, Component: "MyActivity", Icon: "ios-construct", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
+        // { DefaultText: "Member Activities", DisplayText: "Member Activities", IsVisible: false, TabSequenceNo: 11, SuperMenuSequence: 0, Component: "MyActivity", Icon: "ios-construct", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
         //No Component starts here
-       // { DefaultText: "Contact Us", DisplayText: "Contact Us", IsVisible: false, TabSequenceNo: 12, SuperMenuSequence: 0, Component: "", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
+        // { DefaultText: "Contact Us", DisplayText: "Contact Us", IsVisible: false, TabSequenceNo: 12, SuperMenuSequence: 0, Component: "", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
         { DefaultText: "Misc Services", DisplayText: "Misc Services", IsVisible: false, TabSequenceNo: 13, SuperMenuSequence: 0, Component: "", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
         //{ DefaultText: "Promotions", DisplayText: "Promotions    ", IsVisible: false, TabSequenceNo: 14, SuperMenuSequence: 0, Component: "", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
         { DefaultText: "Others", DisplayText: "Others", IsVisible: false, TabSequenceNo: 15, SuperMenuSequence: 0, Component: "", Icon: "calendar", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
         //ends here
-     
+
         { DefaultText: "Coaches", DisplayText: "Coaches", IsVisible: true, TabSequenceNo: 16, SuperMenuSequence: 0, Component: "CoachList", Icon: "body", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
-     //   { DefaultText: "Fees", DisplayText: "Fees", IsVisible: false, TabSequenceNo: 17, SuperMenuSequence: 0, Component: "ActivityFees", Icon: "logo-foursquare", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
-      //  { DefaultText: "Payment", DisplayText: "Payment", IsVisible: false, TabSequenceNo: 19, SuperMenuSequence: 0, Component: "PaymentStatus", Icon: "card", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
-      //  { DefaultText: "Notification", DisplayText: "Notification", IsVisible: false, TabSequenceNo: 20, SuperMenuSequence: 0, Component: "NotificationDetails", Icon: "md-notifications", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
-         { DefaultText: "Partners", DisplayText: "Partners", IsVisible: false, TabSequenceNo: 21, SuperMenuSequence: 0, Component: "PartnersPage", Icon: "md-notifications", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
-       
-         { DefaultText: "Events", DisplayText: "Events", IsVisible: false, TabSequenceNo: 21, SuperMenuSequence: 0, Component: "EventDetailsPage", Icon: "md-notifications", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
+        //   { DefaultText: "Fees", DisplayText: "Fees", IsVisible: false, TabSequenceNo: 17, SuperMenuSequence: 0, Component: "ActivityFees", Icon: "logo-foursquare", Role: 2, Type: 2, Level: 1, IsApplicableVisibleFlag: true },
+        //  { DefaultText: "Payment", DisplayText: "Payment", IsVisible: false, TabSequenceNo: 19, SuperMenuSequence: 0, Component: "PaymentStatus", Icon: "card", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
+        //  { DefaultText: "Notification", DisplayText: "Notification", IsVisible: false, TabSequenceNo: 20, SuperMenuSequence: 0, Component: "NotificationDetails", Icon: "md-notifications", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
+        { DefaultText: "Partners", DisplayText: "Partners", IsVisible: false, TabSequenceNo: 21, SuperMenuSequence: 0, Component: "PartnersPage", Icon: "md-notifications", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
+
+        { DefaultText: "Events", DisplayText: "Events", IsVisible: false, TabSequenceNo: 21, SuperMenuSequence: 0, Component: "EventDetailsPage", Icon: "md-notifications", Role: 2, Type: 2, Level: 2, IsApplicableVisibleFlag: true },
     ];
 
 
@@ -146,7 +145,7 @@ export class Type2TabConfig {
                 currentInvokingObj.menuSetup();
             } else {
                 currentInvokingObj.tabs = currentInvokingObj.commonService.convertFbObjectToArray(x);
-                currentInvokingObj.tabs = currentInvokingObj.commonService.sortingObjects(currentInvokingObj.tabs, "TabSequenceNo",1)
+                currentInvokingObj.tabs = currentInvokingObj.commonService.sortingObjects(currentInvokingObj.tabs, "TabSequenceNo", 1)
 
                 let flag = false;
                 for (let i = 0; i < currentInvokingObj.tabs.length; i++) {
@@ -161,7 +160,7 @@ export class Type2TabConfig {
                 }
             }
         }, function (error) {
-            currentInvokingObj.commonService.toastMessage(error.message,2500,ToastMessageType.Error);
+            this.showToast(error.message, 3000);
         });
     }
     menuSetup() {
@@ -190,7 +189,7 @@ export class Type2TabConfig {
             this.fb.update(this.tabs[tabIndex].Key, "/TabConfig/Member/" + this.selectedParentClubKey, { TabSequenceNo: tabIndex });
         }
         let message = "Menus reorderd successfully."
-        this.commonService.toastMessage(message,2500,ToastMessageType.Success);
+        this.showToast(message, 2000);
         // } 
         // else {
         //     let message = "You can not reorder the first element.";
@@ -217,14 +216,8 @@ export class Type2TabConfig {
 
             if (!this.toggleAll && this.tabs[loop].IsApplicableVisibleFlag) {
                 // if (this.tabs[loop].DisplayText == 'Tournament' || this.tabs[loop].DisplayText == 'Tournaments') {
-                //     this.tabs[loop].IsAllowNotification = true;
-                //     this.fb.update(this.tabs[loop].Key, "/TabConfig/Member/" + this.selectedParentClubKey, {
-                //         IsVisible: true,
-                //         Component: 'TournamentPage'
-                //     });
-                // } else {
-                    this.tabs[loop].IsAllowNotification = true;
-                    this.fb.update(this.tabs[loop].Key, "/TabConfig/Member/" + this.selectedParentClubKey, { IsVisible: true });
+                this.tabs[loop].IsAllowNotification = true;
+                this.fb.update(this.tabs[loop].Key, "/TabConfig/Member/" + this.selectedParentClubKey, { IsVisible: true });
                 // }
             } else if (this.tabs[loop].IsApplicableVisibleFlag) {
                 this.tabs[loop].IsAllowNotification = false;
@@ -243,31 +236,22 @@ export class Type2TabConfig {
     //
     //<summary>
     changeNotificationToggle(tabItem, index) {
-        if (tabItem.DisplayText == 'Tournament' || tabItem.DisplayText == 'Tournaments') {
-
-            this.fb.update(tabItem.Key, "/TabConfig/Member/" + this.selectedParentClubKey, {
-                IsVisible: !tabItem.IsVisible,
-                Component: 'TournamentPage'
-            });
-        } else {
-            this.fb.update(tabItem.Key, "/TabConfig/Member/" + this.selectedParentClubKey, { IsVisible: !tabItem.IsVisible });
-            let flag = false;
-            for (let i = 0; i < this.tabs.length; i++) {
-                if (!tabItem.IsVisible) {
-                    this.toggleAll = true;
-                    flag = true;
-                    break;
-                }
-                if (this.tabs[i].IsVisible && i != index) {
-                    this.toggleAll = true;
-                    flag = true;
-                    break;
-                }
+        this.fb.update(tabItem.Key, "/TabConfig/Member/" + this.selectedParentClubKey, { IsVisible: !tabItem.IsVisible });
+        let flag = false;
+        for (let i = 0; i < this.tabs.length; i++) {
+            if (!tabItem.IsVisible) {
+                this.toggleAll = true;
+                flag = true;
+                break;
             }
-            if (!flag) {
-                this.toggleAll = false;
+            if (this.tabs[i].IsVisible && i != index) {
+                this.toggleAll = true;
+                flag = true;
+                break;
             }
-
+        }
+        if (!flag) {
+            this.toggleAll = false;
         }
     }
 
@@ -314,10 +298,10 @@ export class Type2TabConfig {
     validateInputs(data): boolean {
         if (data.DisplayText.length == 0 || data.DisplayText.length > 20) {
             if (data.DisplayText.length == 0) {
-                this.commonService.toastMessage("Display text must not be empty", 2500,ToastMessageType.Error);
+                this.showToast("Display text must not be empty.", 5000);
                 return false;
             } else {
-                this.commonService.toastMessage("Display text length must not exceed 20", 2500,ToastMessageType.Error);
+                this.showToast("Display text length must not exceed 20.", 5000);
                 return false;
             }
         } else {
@@ -328,27 +312,27 @@ export class Type2TabConfig {
     changeMemberTheme() {
         this.fb.update(this.tabs[0].Key, "/TabConfig/Member/" + this.selectedParentClubKey, { IsTabView: this.showTabView });
     }
-    goTocreatepage(){
+    goTocreatepage() {
         this.showalert("Please talk to ActivityPro support team if you want to add anything.")
         //this.navCtrl.push("AddtabPage");
     }
-    showalert(messege){
+    showalert(messege) {
         let alert = this.alertCtrl.create({
-          title: 'Attention!',
-          message:messege,
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => {
-                this.navCtrl.push('AddtabPage')
-              }   
-            },
-        
-          ]
+            title: 'Attention!',
+            message: messege,
+            buttons: [
+                {
+                    text: 'OK',
+                    handler: () => {
+                        this.navCtrl.push('AddtabPage')
+                    }
+                },
+
+            ]
         });
         alert.present();
-      }
-    
+    }
+
 }
 interface Menus {
     DefaultText: string;

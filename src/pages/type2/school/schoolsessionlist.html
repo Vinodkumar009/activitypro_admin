@@ -37,13 +37,14 @@
 <ion-content class="cards-bg social-cards" padding [ngClass]="isDarkTheme ? 'dark-theme' : 'light-theme'">
     <!-- Sticky Header Container -->
     <div class="sticky-header-container">
-        <!-- Compact Filters -->
-        <div class="compact-filter-card themed-card">
-            <ion-select class="compact-select themed-select" [(ngModel)]="selectedSchool" (ionChange)="onChangeOfSchool()" placeholder="School">
-                <ion-option *ngFor="let school of schools" value={{school.id}}>{{school.school_name}}</ion-option>
+        <!-- Full Width School Dropdown -->
+        <ion-item class="venue-dropdown">
+            <ion-label>School</ion-label>
+            <ion-select [(ngModel)]="selectedSchool" (ionChange)="onChangeOfSchool()" class="full-width-select">
                 <ion-option value='all'>{{LangObj.scl_ssn_all}}</ion-option>
+                <ion-option *ngFor="let school of schools" value={{school.id}}>{{school.school_name}}</ion-option>
             </ion-select>
-        </div>
+        </ion-item>
         
         <!-- Compact Search -->
         <div class="compact-search-card themed-card">
@@ -67,37 +68,49 @@
         
         <div *ngIf="filter_scl_sessions && filter_scl_sessions.length > 0">
             <div *ngFor="let session of filter_scl_sessions; let i=index" class="session-container">
-                <div class="modern-card session-card themed-session-card" (click)="gotoEachSessionDetails(session)">
+                <div class="modern-card session-card" (click)="gotoEachSessionDetails(session)">
                     <div class="card-header">
                         <div class="card-icon-wrapper school-bg">
                             <ion-icon name="school" class="card-icon"></ion-icon>
                         </div>
                         <div class="card-info">
-                            <h3 class="card-title">{{session.school_session_name}}</h3>
-                            <p class="card-subtitle">{{session.ParentClubSchool.school.school_name}}</p>
+                            <h3 class="card-title session-title-truncate">{{session.school_session_name}}</h3>
+                            <p class="card-subtitle">{{session.ActivityDetails.ActivityName}}/{{session.activity_category_name}}/{{session.activity_subcategory_name}}</p>
                         </div>
-                        <div class="enrollment-badge">
-                            <span class="badge-text">{{session.enrolled_count}}</span>
-                        </div>
+                        <!-- <ion-icon name="arrow-forward" class="arrow-icon"></ion-icon> -->
                     </div>
                     <div class="card-body">
                         <div class="session-details">
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="time" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
+                            <div class="session-info-left">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="time" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.days}} - {{session.start_time}}, {{session.duration}}min</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="person" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.coach_names}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="calendar" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{LangObj.scl_ssn_EndsOn}}: {{session.end_date}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <ion-icon name="pin" class="detail-icon"></ion-icon>
+                                        <span class="detail-text">{{session.ParentClubSchool.school.school_name}}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="person" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{session.coach_names}}</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-item">
-                                    <ion-icon name="calendar" class="detail-icon"></ion-icon>
-                                    <span class="detail-text">{{LangObj.scl_ssn_EndsOn}}: {{session.end_date}}</span>
+                            <div class="session-info-right">
+                                <div class="enrollment-count">
+                                    <span class="count-number">{{session.enrolled_count}}</span>
+                                    <!-- <span class="count-label">Enrolled</span> -->
                                 </div>
                             </div>
                         </div>

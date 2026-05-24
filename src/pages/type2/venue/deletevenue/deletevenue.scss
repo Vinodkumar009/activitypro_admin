@@ -1,5 +1,8 @@
-deletevenue-page{
-    .debitcheck{
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+deletevenue-page {
+    @include android-sdk35-fixes;
+ .debitcheck{
         background: rgba(255, 255, 255, 0%);
         .item-inner{
             border-bottom: none !important;
@@ -38,5 +41,4 @@ deletevenue-page{
         background: white;
     
     }
- 
 }

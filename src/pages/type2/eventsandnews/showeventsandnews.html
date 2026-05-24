@@ -25,7 +25,7 @@
       <h3>
         {{imgInfo.image_title}}
       </h3>
-      <p class="rest"><span class="leftspan">{{(imgInfo.created_at)}}</span> | <span class="rightspan"> {{ imgInfo.category_name}}</span></p>
+      <p class="rest"><span class="leftspan">{{getTime(imgInfo.created_at)}}</span> | <span class="rightspan"> {{ imgInfo.category_name}}</span></p>
       <p class="description" style="margin-top: -23px;" >
         {{imgInfo.image_description}}
       </p>    

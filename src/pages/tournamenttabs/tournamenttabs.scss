@@ -1,3 +1,6 @@
-page-tournamenttabs {
+@import '../../theme/android-sdk35-fixes.scss';
 
+
+page-tournamenttabs {
+    @include android-sdk35-fixes;
 }

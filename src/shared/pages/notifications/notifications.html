@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Send Notification</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="sendNotification()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="notif-header">
+    <div class="recipient-badge">
+      <ion-icon name="people"></ion-icon>
+      <span>{{numberOfPeople}}</span>
+    </div>
+    <div class="recipient-chips" *ngIf="userNames.length > 0">
+      <span class="recipient-chip" *ngFor="let name of userNames">{{name}}</span>
+    </div>
+    <div class="heading-display" *ngIf="notification_input.heading">
+      <ion-icon name="notifications"></ion-icon>
+      <span>{{notification_input.heading}}</span>
+    </div>
+  </div>
+
+  <ion-list>
+    <ion-item class="form-item description-item">
+      <ion-label stacked>Message</ion-label>
+      <ion-textarea rows="10" style="white-space:pre-wrap;" [(ngModel)]="notification_input.message" placeholder="Type a message here..."></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <div class="send-btn-wrap">
+    <button class="btn-send" (click)="sendNotification()">
+      <ion-icon name="send"></ion-icon> Send Notification
+    </button>
+  </div>
+</ion-content>

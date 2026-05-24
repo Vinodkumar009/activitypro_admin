@@ -5,7 +5,28 @@ export interface IClubDetails{
     ClubName:string
     FirebaseId:string
     MapUrl:string
-    sequence:string
+    sequence:number
+    CreatedAt?:string
+    CreatedBy?:string
+    UpdatedAt?:string
+    DeletedAt?:string | null
+    UpdatedBy?:string
+    IsActive?:boolean
+    IsEnable?:boolean
+    City?:string
+    ClubContactName?:string
+    ContactPhone?:string | null
+    ClubShortName?:string
+    CountryName?:string
+    FirstLineAddress?:string
+    SecondLineAddress?:string | null
+    ClubDescription?:string
+    PostCode?:string
+    State?:string
+    MapLatitude?:string
+    MapLongitude?:string
+    shop_pickup_location?:number
+    visible_at_signup?:number
 }
 
 export class IClubCoaches{
@@ -115,7 +136,28 @@ export interface IClubDetails{
   ClubName:string
   FirebaseId:string
   MapUrl:string
-  sequence:string
+  sequence:number
+  CreatedAt?:string
+  CreatedBy?:string
+  UpdatedAt?:string
+  DeletedAt?:string | null
+  UpdatedBy?:string
+  IsActive?:boolean
+  IsEnable?:boolean
+  City?:string
+  ClubContactName?:string
+  ContactPhone?:string | null
+  ClubShortName?:string
+  CountryName?:string
+  FirstLineAddress?:string
+  SecondLineAddress?:string | null
+  ClubDescription?:string
+  PostCode?:string
+  State?:string
+  MapLatitude?:string
+  MapLongitude?:string
+  shop_pickup_location?:number
+  visible_at_signup?:number
 }
 
 

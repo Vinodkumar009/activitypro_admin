@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-editvideo {
+    @include android-sdk35-fixes;
+
+
+
     ion-label{
         color: rgba(0,0,0,0.85);
     }
@@ -28,7 +34,6 @@ page-editvideo {
         margin-top: 15px !important;
     }
 
-}
 .toggle_row{
     .flex_col{
         //padding: 0px 0px 0px 10px !important;
@@ -65,5 +70,6 @@ page-editvideo {
     //   / margin: -1px !important;
        margin-left: -2px !important;
     }
+}
 }
 }

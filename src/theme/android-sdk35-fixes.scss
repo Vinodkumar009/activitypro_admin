@@ -31,6 +31,9 @@
     //Footer positioning
     ion-footer {
       padding-bottom: env(safe-area-inset-bottom, 16px) !important;
+      .glass-btn-wrap { padding-bottom: 12px !important; }
+      &.dark-theme { background-color: #0f172a !important; }
+      &.light-theme { background-color: #f8fafc !important; }
     }
 
     // Custom footer positioning

@@ -20,7 +20,7 @@
       </div>
 
       <!-- Modern Renewals Card -->
-      <div class="modern-renewal-card" (click)="gotoDets(membership,1); $event.stopPropagation()">
+      <div class="modern-renewal-card" *ngIf="renewal_count > 0" (click)="gotoDets(membership,1); $event.stopPropagation()">
         <div class="renewal-content">
           <div class="renewal-info">
             <div class="renewal-icon-wrapper">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import {
   Events,
   IonicPage,
@@ -23,6 +23,7 @@ import { GraphqlService } from '../../../../services/graphql.service';
 import { CoachList, SchoolList } from '../leaguemodels/creatematchforleague.dto';
 import { CatandType, Locations } from '../models/location.model';
 import { HttpService } from '../../../../services/http.service';
+import { ThemeService } from '../../../../services/theme.service';
 import { IClubDetails } from '../../../../shared/model/club.model';
 import { API } from '../../../../shared/constants/api_constants';
 
@@ -44,6 +45,7 @@ export class EditleaguePage {
   max: any;
   publicType: boolean = true;
   privateType: boolean = true;
+  isDarkTheme: boolean = true;
   coaches: CoachList[];
 
   leagueEditInput: LeagueEditInput = {
@@ -154,7 +156,8 @@ export class EditleaguePage {
     private graphqlService: GraphqlService,
     public events: Events,
     private httpService: HttpService,
-
+    private themeService: ThemeService,
+    private renderer: Renderer2
   ) {
     this.min = new Date().toISOString();
     this.max = "2049-12-31";
@@ -225,12 +228,32 @@ export class EditleaguePage {
   }
 
   ionViewWillEnter() {
-    console.log("ionViewDidLoad EditleaguePage");
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.applyTheme(isDark);
+    });
     this.storage.get('Currency').then((currency) => {
       let currencydets = JSON.parse(currency);
-      console.log(currencydets);
       this.currency = currencydets.CurrencySymbol;
     });
+  }
+
+  async loadTheme() {
+    const isDarkTheme = await this.storage.get('dashboardTheme');
+    const isDark = isDarkTheme !== null ? isDarkTheme : true;
+    this.applyTheme(isDark);
+  }
+
+  private applyTheme(isDark: boolean) {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-editleague');
+    if (el) {
+      isDark ? this.renderer.removeClass(el, 'light-theme')
+        : this.renderer.addClass(el, 'light-theme');
+    }
   }
 
   gotoDashboard() {
@@ -657,6 +680,7 @@ export class EditleaguePage {
           const message = "League Updated Successfully";
           this.commonService.toastMessage(message, 2500, ToastMessageType.Success, ToastPlacement.Bottom);
           this.commonService.updateCategory("leagueteamlisting");
+          this.events.publish('league:refresh');
           this.navCtrl.pop();
         }, (err) => {
           this.commonService.hideLoader();
@@ -716,6 +740,7 @@ export class EditleaguePage {
   }
 
   ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
     this.commonService.updateCategory("");
   }
 

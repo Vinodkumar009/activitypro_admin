@@ -29,7 +29,6 @@ export class MonthlyMemberListing {
     filterSetup = [];
     SetupDisplay = [];
     loading: any;
-    nestUrl: string;
     currencycode: any;
     Session: any;
     ClubKey: any;

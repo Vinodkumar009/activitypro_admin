@@ -1,4 +1,10 @@
-page-tournamentdetails{
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-tournamentdetails {
+    @include android-sdk35-fixes;
+
+
+
     
     $themelistotheritemcolor1: #7F7F7F;
     $themelistheaderitemcolor: #00BED3;

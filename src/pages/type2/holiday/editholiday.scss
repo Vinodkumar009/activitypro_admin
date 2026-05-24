@@ -1,1 +1,6 @@
-edit-holiday-page{}
+@import '../../../theme/android-sdk35-fixes.scss';
+
+edit-holiday-page {
+    @include android-sdk35-fixes;
+
+}

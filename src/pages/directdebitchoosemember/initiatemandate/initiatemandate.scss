@@ -1,12 +1,6 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-initiatemandate {
-    .scroll-content {
-        background-image: none !important;
-        padding: 6px !important;
-        background-color: #f7f7f7;
-    }
-    .no{
-        text-align: center;
-        margin-top: 20px;
-        font-size: 20px
-    }
+    @include android-sdk35-fixes;
+
 }

@@ -276,9 +276,10 @@ setup-page {
             left: 16px;
             right: 16px;
             z-index: 2;
+            background: none;
             
             .card-title {
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 600;
                 color: #ffffff;
                 margin: 0 0 4px 0;
@@ -359,7 +360,7 @@ setup-page {
                 right: 12px;
                 
                 .card-title {
-                    font-size: 17px;
+                    font-size: 15px;
                     line-height: 1.2;
                 }
                 
@@ -406,11 +407,11 @@ setup-page {
             
             .card-content {
                 bottom: 10px;
-                left: 10px;
-                right: 10px;
+                left: 5px;
+                right: 5px;
                 
                 .card-title {
-                    font-size: 15px;
+                    font-size: 13px;
                     line-height: 1.1;
                     margin-bottom: 2px;
                 }

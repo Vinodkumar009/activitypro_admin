@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
 schoolsessionlist-page {
+    @include android-sdk35-fixes;
+    
     // Default dark theme for the entire page
     background: #0f172a !important;
     
@@ -55,19 +58,17 @@ schoolsessionlist-page {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
-        // Light theme compact cards
-        .compact-filter-card {
+        // Light theme venue dropdown
+        .venue-dropdown {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             
-            .compact-select {
-                border: 1px solid #d1d5db;
-                color: #1e293b;
-                
-                .select-text {
-                    color: #1e293b !important;
-                }
+            ion-select .select-text {
+                color: #1e293b !important;
+            }
+            
+            ion-label {
+                color: #64748b !important;
             }
         }
         
@@ -77,12 +78,37 @@ schoolsessionlist-page {
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             
             .sleek-searchbar {
+                border: none;
+                
                 .searchbar-input {
                     color: #1e293b !important;
+                    padding: 8px 12px 8px 40px !important;
+                    box-shadow: none !important;
+                    -webkit-box-shadow: none !important;
+                    border: none !important;
                     
                     &::placeholder {
                         color: #64748b !important;
                     }
+                }
+                
+                .searchbar-search-icon,
+                .searchbar-md .searchbar-search-icon,
+                .searchbar-ios .searchbar-search-icon {
+                    color: #64748b !important;
+                    left: 12px !important;
+                    position: absolute !important;
+                    z-index: 2 !important;
+                    background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(100, 116, 139, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(100, 116, 139, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
+                    display: block !important;
+                }
+                
+                .searchbar-clear-icon,
+                .searchbar-md .searchbar-clear-icon,
+                .searchbar-ios .searchbar-clear-icon {
+                    color: #64748b !important;
+                    background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(100, 116, 139, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
+                    display: block !important;
                 }
             }
         }
@@ -298,38 +324,7 @@ schoolsessionlist-page {
         margin-top: -35px;
     }
     ion-select {
-        display: -webkit-box;
-        max-width: 100%;
-        width: 100%;
-        //padding: 0px 0px 0px 0px !important;
-    }
-    .select-text{
-        //padding-top: 10px !important;
-        color:#faae4e !important;
-    }
-    
-    .select-icon {
-        position: relative !important;
-        width: 25px !important;
-        height: 25px !important;
-        background: #faae4e !important;
-        border-radius: 50% !important;
-        color: white !important;
-        left: 0px !important;
-        //top: 6px;
-        .select-icon-inner{
-            left: 8px !important;
-            top: 48% !important;
-            margin-top: -2px !important;
-            position: absolute !important;
-            width: 0 !important;
-            height: 0 !important;
-            border-top: 5px solid !important;
-            border-right: 5px solid transparent !important;
-            border-left: 5px solid transparent !important;
-            color: white !important;
-            pointer-events: none !important;
-        }
+        padding: 0px 0px 0px 0px !important;
     }
     .label{
         margin: 7px 4px 0px 0 !important;
@@ -446,9 +441,8 @@ schoolsessionlist-page {
             padding-left: 4px !important;
             box-shadow: none !important;
             -webkit-box-shadow:none !important;
-            //border-bottom: 1px solid #34343442;
+            border: none !important;
             border-radius: 0;
-            //margin-left:-8px !important;
         }
 
         .searchbar-search-icon {
@@ -463,41 +457,45 @@ schoolsessionlist-page {
         padding:0px !important
     }
 
-    // Modern card styles matching managesession
+    // Modern card styles matching holidaycamp
     .sticky-header-container {
         position: sticky;
         top: 0;
-        z-index: 10;
+        z-index: 100;
         background: #0f172a;
-        padding-bottom: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        padding: 8px;
+        border-bottom: 1px solid #334155;
     }
 
-    .compact-filter-card {
+    // Full width venue dropdown
+    .venue-dropdown {
         background: #1e293b;
         border: 1px solid #334155;
         border-radius: 8px;
-        padding: 8px;
         margin-bottom: 8px;
         
-        .compact-select {
-            background: transparent !important;
-            border: 1px solid #475569 !important;
-            border-radius: 6px !important;
-            color: #f1f5f9 !important;
-            font-size: 14px !important;
-            padding: 12px 16px !important;
-            min-height: 44px !important;
+        .item-inner {
+            padding-right: 16px !important;
+            border-bottom: none !important;
+        }
+        
+        ion-select {
+            width: 100% !important;
             
             .select-text {
                 color: #f1f5f9 !important;
-                padding: 10px !important;
             }
             
             .select-icon {
-                background: #475569 !important;
                 color: #f1f5f9 !important;
+                right: 16px !important;
+                position: absolute !important;
             }
+        }
+        
+        ion-label {
+            color: #94a3b8 !important;
+            font-size: 14px !important;
         }
     }
 
@@ -515,7 +513,7 @@ schoolsessionlist-page {
             .sleek-searchbar {
                 flex: 1;
                 background: transparent;
-                border: 1px solid #475569;
+                border: none;
                 border-radius: 6px;
                 margin: 0;
                 padding: 0;
@@ -523,18 +521,34 @@ schoolsessionlist-page {
                 .searchbar-input {
                     background: transparent !important;
                     color: #f1f5f9 !important;
-                    padding: 8px 12px !important;
+                    padding: 8px 12px 8px 40px !important;
                     font-size: 14px !important;
                     box-shadow: none !important;
                     -webkit-box-shadow: none !important;
+                    border: none !important;
                     
                     &::placeholder {
                         color: #94a3b8 !important;
                     }
                 }
                 
-                .searchbar-search-icon {
-                    display: none;
+                .searchbar-search-icon,
+                .searchbar-md .searchbar-search-icon,
+                .searchbar-ios .searchbar-search-icon {
+                    color: #94a3b8 !important;
+                    left: 12px !important;
+                    position: absolute !important;
+                    z-index: 2 !important;
+                    background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(148, 163, 184, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(148, 163, 184, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
+                    display: block !important;
+                }
+                
+                .searchbar-clear-icon,
+                .searchbar-md .searchbar-clear-icon,
+                .searchbar-ios .searchbar-clear-icon {
+                    color: #94a3b8 !important;
+                    background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(148, 163, 184, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
+                    display: block !important;
                 }
             }
         }
@@ -635,7 +649,7 @@ schoolsessionlist-page {
     }
 
     .card-title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 600;
         color: #f1f5f9;
         margin: 0 0 4px 0;
@@ -643,14 +657,14 @@ schoolsessionlist-page {
     }
 
     .card-subtitle {
-        font-size: 13px;
+        font-size: 14px;
         color: #94a3b8;
         margin: 0;
         line-height: 1.2;
     }
 
     .enrollment-badge {
-        background: linear-gradient(135deg, #10b981, #059669);
+        background: #2b92bb;
         color: #ffffff;
         padding: 6px 10px;
         border-radius: 12px;
@@ -662,36 +676,87 @@ schoolsessionlist-page {
         }
     }
 
+    // Text truncation for session title
+    .session-title-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .arrow-icon {
+        font-size: 18px;
+        color: #94a3b8;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
     .session-details {
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+        display: flex;
+        gap: 16px;
+        
+        .session-info-left {
+            flex: 1;
             
-            &:last-child {
-                margin-bottom: 0;
+            .detail-row {
+                display: flex;
+                align-items: center;
+                margin-bottom: 8px;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+            
+            .detail-item {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                
+                .detail-icon {
+                    font-size: 14px;
+                    color: #60a5fa;
+                    width: 16px;
+                    flex-shrink: 0;
+                }
+                
+                .detail-text {
+                    font-size: 14px;
+                    color: #cbd5e1;
+                    margin: 0;
+                    line-height: 1.3;
+                }
             }
         }
         
-        .detail-item {
+        .session-info-right {
             display: flex;
             align-items: center;
-            gap: 6px;
-            flex: 1;
             
-            .detail-icon {
-                font-size: 14px;
-                color: #60a5fa;
-                width: 16px;
-                flex-shrink: 0;
-            }
-            
-            .detail-text {
-                font-size: 13px;
-                color: #cbd5e1;
-                margin: 0;
-                line-height: 1.3;
+            .enrollment-count {
+                text-align: center;
+                
+                .count-number {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 30px;
+                    height: 30px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: #ffffff;
+                    background-color: #2b92bb;
+                    border-radius: 50%;
+                    line-height: 1;
+                }
+                
+                .count-label {
+                    display: block;
+                    font-size: 12px;
+                    color: #94a3b8;
+                    font-weight: 500;
+                    margin-top: 4px;
+                }
             }
         }
     }

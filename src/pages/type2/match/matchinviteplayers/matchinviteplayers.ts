@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Renderer2 } from "@angular/core";
 import {
   AlertController,
   ViewController,
@@ -6,7 +6,9 @@ import {
   LoadingController,
   NavController,
   NavParams,
+  Events
 } from "ionic-angular";
+import { ThemeService } from "../../../../services/theme.service";
 import {
   CommonService,
   ToastMessageType,
@@ -38,6 +40,7 @@ import { AppType } from "../../../../shared/constants/module.constants";
 })
 export class MatchinviteplayersPage {
   private searchTerms = new Subject<string>();
+  isDarkTheme: boolean = true;
   themeType: number;
   FetchAPPlusMembers: FetchAPPlusMembers = {
     ParentClubKey: "",
@@ -75,7 +78,10 @@ export class MatchinviteplayersPage {
     public storage: Storage,
     private sharedservice: SharedServices,
     public viewCtrl: ViewController,
-    private graphqlService: GraphqlService
+    private graphqlService: GraphqlService,
+    private themeService: ThemeService,
+    private events: Events,
+    private renderer: Renderer2
   ) {
 
     console.log("MatchinviteplayersPage");
@@ -96,11 +102,13 @@ export class MatchinviteplayersPage {
       this.venus_user_input.limit = 18;
 
       if (search_term) {
+        this.search_term = search_term;
         this.venus_user_input.search_term = search_term != '' && search_term.length > 2 ? search_term.replace(/ /g, '') : '';
       } else {
+        this.search_term = '';
         this.venus_user_input.search_term = '';
       }
-      this.getParentClubAPPlusUsers();
+      this.getParentClubAPPlusUsers(2);
     })
 
 
@@ -122,19 +130,44 @@ export class MatchinviteplayersPage {
       this.invitationInput.InvitedBy = "476fd04d-4d42-42d4-865d-331c12a2a418";
       this.venus_user_input.parentclub_id = postgre_parentclub.Id;
       this.invitationInput.ParentClubId = postgre_parentclub.Id;
-      this.getParentClubAPPlusUsers()//first time call to get users
+      this.getParentClubAPPlusUsers(1)//first time call to get users
     }
   }
 
 
-  ionViewWillEnter() { }
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => { this.applyTheme(isDark); });
+    this.events.subscribe('theme:changed', (isDark) => { this.applyTheme(isDark); });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => { this.applyTheme(true); });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-matchinviteplayers');
+    if (el) {
+      isDark ? this.renderer.removeClass(el, 'light-theme') : this.renderer.addClass(el, 'light-theme');
+    } else {
+      setTimeout(() => {
+        const el2 = document.querySelector('page-matchinviteplayers');
+        if (el2) { isDark ? this.renderer.removeClass(el2, 'light-theme') : this.renderer.addClass(el2, 'light-theme'); }
+      }, 100);
+    }
+  }
 
   doInfinite(infiniteScroll) {
     this.venus_user_input.offset += this.venus_user_input.limit;
-    this.getParentClubAPPlusUsers();
-    setTimeout(() => {
-      infiniteScroll.complete();
-    }, 300);
+    this.getParentClubAPPlusUsers(1, infiniteScroll);
   }
 
 
@@ -149,6 +182,7 @@ export class MatchinviteplayersPage {
 
   getFilterItems(ev: any) {
     const searchTerm = ev.target.value;
+    this.search_term = searchTerm || '';
     this.searchTerms.next(searchTerm);
   }
 
@@ -206,9 +240,9 @@ export class MatchinviteplayersPage {
 
   }
 
-  getParentClubAPPlusUsers() {
+  getParentClubAPPlusUsers(type: number, infiniteScroll?: any) {
 
-    this.commonService.showLoader("Fetching users...");
+    if (!infiniteScroll) this.commonService.showLoader("Fetching users...");
     const userQuery = gql`
     query getAllMembersByParentClubNMemberType($list_input: UsersListInput!) {
       getAllMembersByParentClubNMemberType(userInput:$list_input) {
@@ -222,7 +256,8 @@ export class MatchinviteplayersPage {
 
     this.graphqlService.query(userQuery, { list_input: this.venus_user_input }, 0).subscribe(
       (res: any) => {
-        this.commonService.hideLoader();
+        if (!infiniteScroll) this.commonService.hideLoader();
+        if (infiniteScroll) infiniteScroll.complete();
         console.log("members are", res)
         this.members = [];
         if (res.data["getAllMembersByParentClubNMemberType"].length > 0) {
@@ -233,38 +268,17 @@ export class MatchinviteplayersPage {
           }));
         }
 
-
-        this.filteredMembers = [...this.filteredMembers, ...JSON.parse(JSON.stringify(this.members))];
+        if (type === 2) {
+          this.filteredMembers = JSON.parse(JSON.stringify(this.members));
+        } else {
+          this.filteredMembers = [...this.filteredMembers, ...JSON.parse(JSON.stringify(this.members))];
+        }
 
         this.checkForExistingUsers();
-        // this.members = res.data.getAllMembersByParentClubNMemberType as MembersModel[];
-        // console.log("Member data is:", this.members);
-
-        // if (this.members.length > 0) {
-        //   for (let i = 0; i < this.members.length; i++) {
-        //     this.members[i]["isSelect"] = false;
-        //     this.members[i]["isAlreadExisted"] = false;
-
-        //     if (this.existed_members && this.existed_members.length > 0) {
-        //       for (let j = 0; j < this.existed_members.length; j++) {
-        //         if (
-        //           this.existed_members[j] &&
-        //           this.existed_members[j].User &&
-        //           this.members[i].Id === this.existed_members[j].User.Id
-        //         ) {
-        //           this.members[i]["isSelect"] = true;
-        //           this.members[i]["isAlreadExisted"] = true;
-        //           break; // Optional: If you want to exit the inner loop when a match is found
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-
-        // this.filteredMembers = JSON.parse(JSON.stringify(this.members));
       },
       (error) => {
-        this.commonService.hideLoader();
+        if (!infiniteScroll) this.commonService.hideLoader();
+        if (infiniteScroll) infiniteScroll.complete();
         this.commonService.toastMessage("Fetching failed for member", 2500, ToastMessageType.Error);
         console.error("Error in fetching:", error);
         if (error.graphQLErrors) {

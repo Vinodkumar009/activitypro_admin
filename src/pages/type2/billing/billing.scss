@@ -1,0 +1,176 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+billing-page {
+    @include android-sdk35-fixes;
+    .item-inner {
+        border: none !important;
+        box-shadow: none !important
+    }
+
+    .width100 {
+        max-width: 100% !important;
+    }
+
+    .scroll-content {
+        padding: 6px !important;
+        background: white !important;
+        margin: 2px;
+    }
+
+    .nopad {
+        padding: 0px;
+        margin: 6px;
+    }
+
+    .border-bottom-2px {
+        border-bottom: 1px solid #faae4e !important;
+        margin: 0 0 0 -12px;
+    }
+
+    .venuedropdown {
+        padding: 0px 3px 3px 0px;
+        max-width: none;
+        font-size: larger;
+        margin: auto;
+    }
+
+
+    .select-text {
+        padding-top: 2px !important;
+        color: #faae4e !important;
+        text-align: left;
+        padding-right: 5px;
+    }
+
+    .select-icon .select-icon-inner {
+        left: 7px !important;
+        top: 49%;
+        color: white !important;
+    }
+
+    ion-select {
+        display: -webkit-box;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .select-icon {
+        position: relative !important;
+        width: 20px !important;
+        height: 20px !important;
+        background: #f0dcbc !important;
+        border-radius: 50% !important;
+        color: white !important;
+
+
+        .select-icon-inner {
+            left: 5px !important;
+            top: 46% !important;
+            margin-top: -2px !important;
+            position: absolute !important;
+            width: 0 !important;
+            height: 0 !important;
+            border-top: 5px solid !important;
+            border-right: 5px solid transparent !important;
+            border-left: 5px solid transparent !important;
+            color: white !important;
+            pointer-events: none !important;
+        }
+    }
+
+    .custom-select {
+        margin-bottom: 5px;
+        box-shadow: 0px 11px 17px -4px #b8b7b7;
+
+        span {
+            font-size: 13px;
+            color: gray;
+            float: right;
+        }
+    }
+
+    .totalAmount {
+        background-color: #11E092 !important;
+        border-radius: 7px;
+        margin-right: 4px
+    }
+
+    .totalDue {
+        background-color: #EA6248 !important;
+        border-radius: 7px;
+        margin-left: 4px
+    }
+
+    .amount {
+        font-size: 18px !important;
+        text-align: center;
+        font-weight: 500;
+        margin: 5px 0;
+        color: white;
+    }
+
+    .segment-activated {
+        color: white !important;
+        background-color: #f6ae4d !important;
+    }
+
+    ion-segment-button {
+        color: #aba5a5 !important;
+    }
+
+    .fabTop {
+        margin-bottom: 13px;
+    }
+
+    .fabEmailText {
+        margin-left: -115px;
+        background-color: #2b92bb !important;
+        margin-top: -47px;
+        padding: 5px 12px 5px 11px;
+        margin-bottom: 5px;
+        color: #ffffff;
+        border-radius: 3px;
+        margin-right: 36px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .all {
+        // border-left: 3px solid #35adff;
+        border-width: 1px;
+        border-style: solid;
+        -webkit-border-image:
+            -webkit-gradient(linear, 0 0, 0 100%, from(#35adff), to(#7dbce6)) 1 100%;
+        -webkit-border-image:
+            -webkit-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -moz-border-image:
+            -moz-linear-gradient(#35adff, #7dbce6) 1 100%;
+        -o-border-image:
+            -o-linear-gradient(#35adff, #7dbce6) 1 100%;
+        border-image:
+            linear-gradient(to bottom, #35adff, #7dbce6) 1 100%;
+    }
+
+    .border-left-style {
+        height: 70px;
+        position: absolute;
+        top: 16px;
+        left: 7px;
+    }
+
+    .Bill-name {
+        font-size: 1.2em;
+        color: #35adff
+    }
+
+    .Bill-body {
+        margin: 0;
+        color: gray
+    }
+
+    .bill-card {
+        padding: 0 0 5px 5px;
+        border-left: 2px solid #3db3fe;
+        box-shadow: 3px 3px 10px -5px #737070;
+    }
+}

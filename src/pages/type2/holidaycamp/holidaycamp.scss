@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
 holidaycamp-page {
+  @include android-sdk35-fixes;
+
   // Default dark theme for the entire page
   background: #0f172a !important;
   
@@ -302,7 +305,7 @@ holidaycamp-page {
     font-size: 2em !important;
     color: #3ebbd1;
     float: right;
-    margin-top: -16px;
+    margin-top: 0px;
   }
   .people_icon {
     font-size: 1.5em !important;
@@ -750,7 +753,7 @@ holidaycamp-page {
   }
 
   .enrollment-badge {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: #2b92bb;
     color: #ffffff;
     padding: 6px 10px;
     border-radius: 12px;

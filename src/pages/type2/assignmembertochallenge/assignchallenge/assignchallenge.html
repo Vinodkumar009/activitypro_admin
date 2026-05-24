@@ -1,0 +1,117 @@
+<!--
+  Generated template for the ChallengesreportPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>User Challenges</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  <div *ngIf="nextClicked == 'challenge'">
+    <ion-row class="sub-container rows-allign2">
+      <ion-col col-1 style="text-align:center;margin:auto;padding:0px">
+        <ion-icon name="ios-search"></ion-icon>
+      </ion-col>
+      <ion-col col-11 class="search-bar">
+        <ion-searchbar placeholder="Search Challenges" id="customsearchbar" (ionInput)="FilterChallenges($event)"
+          autocorrect="off"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <p style="color: rgba(0,0,0,0.65);
+    font-size: 14px;
+    margin: 8px 0px 6px 14px;">Select Challenges</p>
+    
+    <ion-list style="overflow-y: scroll;">
+      <ion-row *ngFor="let challenge of UserChallenges;let i=index" (click)="gotoNext()">
+        <ion-item>
+          <ion-label>{{challenge.ChallengeName}}</ion-label>
+          <ion-checkbox style="margin: 9px 20px 9px 4px;" [(ngModel)]="challenge.IsSelect"></ion-checkbox>
+        </ion-item>
+      </ion-row>
+    </ion-list>
+  </div>
+  <div *ngIf="nextClicked == 'player'">
+    <ion-row class="sub-container rows-allign2">
+      <ion-col col-1 style="text-align:center;margin:auto;padding:0px">
+        <ion-icon name="ios-search"></ion-icon>
+      </ion-col>
+      <ion-col col-11 class="search-bar">
+        <ion-searchbar placeholder="Search Members" id="customsearchbar" (ionInput)="FilterUsers($event)"
+          autocorrect="off"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <p style="color: rgba(0,0,0,0.65);
+    font-size: 14px;
+    margin: 2px 0px 8px 0px;">Select Players</p>
+    <ion-row *ngFor="let player of players">
+      <ion-item>
+        <ion-label>{{player.FirstName}} {{player.LastName}}</ion-label>
+        <ion-checkbox style="margin: 9px 20px 9px 4px;" [(ngModel)]="player.IsSelect"></ion-checkbox>
+      </ion-item>
+    </ion-row>
+  </div>
+  <div *ngIf="nextClicked == 'next'">
+    <p style="color: rgba(0,0,0,0.65);
+    font-size: 14px;
+    margin: 2px 0px 0px 0px;">Selected players</p>
+    <ion-row>
+      <ion-col>
+        <p class="listing" *ngFor="let player of selectedPlayer">{{player.FirstName}} {{player.LastName}}</p>
+      </ion-col>
+    </ion-row>
+    <p style="color: rgba(0,0,0,0.65); font-size: 14px; margin: 10px 0px 15px 0px;">Selected challenges</p>
+    <ion-row class="eachrow" *ngFor="let challenge of selectedChallenges">
+      <ion-col class="firstcol" col-12>
+        <p class="listing">{{challenge.ChallengeName}}</p>
+      </ion-col>
+      <ion-col class="othercol" col-12>
+        <ion-item>
+          <ion-label>Frequency</ion-label>
+          <ion-select [(ngModel)]="challenge.frequency" (ionChange)="checkValid()">
+            <ion-option *ngFor="let freq of frequencyList" value={{freq.id}}>{{freq.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col class="othercol" col-6>
+        <ion-item>
+          <ion-label>Start</ion-label>
+          <ion-datetime [(ngModel)]="challenge.startAt" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"
+            min="2020-01-01" max="2028-12-31"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col class="othercol" col-6>
+        <ion-item>
+          <ion-label>Until</ion-label>
+          <ion-datetime [(ngModel)]="challenge.endAt" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"
+            min="2020-01-01" max="2028-12-31"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block *ngIf="nextClicked == 'challenge'" class="timekare-primary-btn"
+        (click)="gotoplayer()">Next</button>
+    </ion-col>
+    <ion-col col-12>
+      <button ion-button block *ngIf="nextClicked == 'player'" class="timekare-primary-btn"
+        (click)="gotoNext()">Next</button>
+    </ion-col>
+    <ion-col col-12>
+      <button ion-button block *ngIf="nextClicked == 'next'" class="timekare-primary-btn" (click)="assign()"
+        [disabled]="isValid">Assign</button>
+    </ion-col>
+
+
+  </ion-row>
+</ion-footer>

@@ -1,4 +1,8 @@
-assignactivity-page{
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+assignactivity-page {
+    @include android-sdk35-fixes;
+
     .list{
     margin:0px;
 }
@@ -161,7 +165,7 @@ ion-item {
 }
 .scroll-content {
     overflow: hidden;
-    margin-top: 44px !important; 
+    margin-top: 62px !important; 
     //padding: 6px !important;
     background-image: none !important; // background: white !important;
     background: #f7f7f7 !important;

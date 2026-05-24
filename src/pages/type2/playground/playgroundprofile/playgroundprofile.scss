@@ -1,0 +1,60 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-playgroundprofile {
+    @include android-sdk35-fixes;
+
+
+
+  .scroll-content {
+    padding: 0px !important;
+    background-image: none !important;
+    background: white !important;
+  }
+
+  .inner-div {
+    height: 110px;
+    width: 100%;
+    border-radius: 0px 0px 220px 0px;
+    background: linear-gradient(
+      to right,
+      rgba(206, 181, 249, 1),
+      rgba(102, 175, 189, 1)
+    );
+  }
+  .circle {
+    right: 130px;
+    top: -100px;
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+    position: absolute;
+    background: white;
+    border: 10px solid indigo;
+  }
+  .name {
+    color: black;
+    opacity: 0.56;
+    font-size: 3rem;
+    position: absolute;
+    top: 15px;
+    right: 80px;
+    font-weight: bold;
+  }
+
+  .field {
+    color: black;
+    opacity: 0.4;
+    font-size: 2rem;
+    position: absolute;
+    top: 65px;
+    right: 125px;
+  }
+  .field2 {
+    color: black;
+    opacity: 0.4;
+    font-size: 2rem;
+    position: absolute;
+    top: 90px;
+    right: 130px;
+  }
+}

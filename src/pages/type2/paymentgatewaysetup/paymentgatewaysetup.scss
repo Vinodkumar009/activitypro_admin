@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-paymentgatewaysetup {
+    @include android-sdk35-fixes;
+
+
+
 
     .half_circle{
         //position: sticky;

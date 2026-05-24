@@ -1,0 +1,191 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-appsetup {
+    @include android-sdk35-fixes;
+
+
+
+    .tab_row{
+        ion-col{
+            //height:40px;
+            p{
+                margin:8px 0px;
+                //color: #fff;
+            }
+        }
+    }
+
+    .flex_col{
+     // border-bottom: 1px solid #f1c98d !important;
+      background: white;
+      padding: 10px 0 0 0;
+      display: flex;
+      justify-content: space-between;
+      p{
+          line-height: 30px;
+      }
+  }
+  .para{
+      color: #75716c;
+      margin-top: 2px !important;
+      padding-right: 1px;
+      margin-left: 10px;
+      font-size: 16px;
+  }
+  .toggle {
+      overflow: hidden;
+      display: inline-block;
+      width: 4em;
+      //background: #2f2a2a;
+      background-color: #ebf7fc;
+      //padding: 0.135em;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 8px;
+      border-radius: 50px;
+      height: 30px;
+  }
+  .toggle input {
+      position: absolute;
+      visibility: hidden;
+  }
+  .toggle span {
+      position: relative;
+      left: 0%;
+      display: block;
+      text-align: center;
+      -webkit-transition: left 200ms ease-out;
+      -moz-transition: left 200ms ease-out;
+      -o-transition: left 200ms ease-out;
+      transition: left 200ms ease-out;
+  }
+  .toggle :checked+span {
+      left: 50%;
+  }
+   /* Default unchecked state */
+   .toggle span:before {
+      content: attr(data-unchecked);
+      display: block;
+      width: 50%;
+      background-color: #f44336;
+      border-radius: 50px;
+      box-shadow: 0 10px 20px -8px #c5d6d6;
+      //box-shadow: inset 0 0.1em 0 rgba(255, 255, 255, 0.3);
+      color: white;
+      border-radius: 25px;
+      font-size: 16px;
+      height: 30px;
+      line-height: 30px;
+  }
+  /* Checked state */
+  .toggle :checked+span:before {
+      content: attr(data-checked);
+      background-color: #03A9F4;
+      color: white;
+      border-radius: 50px;
+      font-size: 16px;
+      height: 30px;
+      line-height: 30px;
+  }
+    
+
+    .input_div{
+      ion-row{
+        background: #fff;
+        margin-bottom:5px;
+        ion-col:nth-child(even) {
+          color: #777;
+          padding-left:15px;
+        }
+        ion-col:nth-child(odd) {
+          padding-left:15px;
+        }
+      }
+      
+      // ion-item{
+      //   margin-bottom:5px;
+      //   .text-input{
+      //     text-align: right;
+      //   }
+      // }
+    }
+    .note_div{
+      text-align: center;
+      font-style: italic;
+      font-size: 14px;
+    }
+
+    
+
+    .modal {
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+
+      //color picker dialogue style
+      .color-picker {
+          display: block !important;
+          visibility: visible !important;
+          width: 65% !important;
+          height: 54% !important;
+          top: 20% !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          position: fixed !important;
+      }
+      
+      
+      /* Modal Content/Box */
+      .headerText {
+        //background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        width: 80%; /* Could be more or less, depending on screen size */
+      }
+      .btn-primary{
+        height: 28px;
+        text-align: center; 
+        width: 80px;
+        //margin-right: 23%;
+        background: #5be283;
+        color: #fff;
+      }
+      .btn_cancel{
+        height: 28px;
+        background-color:#bc2219;
+        width: 80px;
+        color: #fff;
+      }
+      .color-picker .button-area {
+        padding: 0 16px 16px;
+        text-align: center;
+      }
+ 
+      //To remove item highlight border bottom colors
+    .item-md.item-input.input-has-focus .item-inner {
+      border-bottom-color: #dedede !important;
+      box-shadow: none !important;
+    }
+    
+    .list-md .item-input.input-has-focus:last-child {
+      border-bottom-color: #dedede !important;
+      box-shadow: none !important;
+    }
+    
+    .list-md .item-input.input-has-focus:last-child .item-inner {
+      box-shadow: none;
+    }
+    
+    .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+      border-bottom-color: #dedede !important;
+      box-shadow: none !important;
+    }
+    
+}

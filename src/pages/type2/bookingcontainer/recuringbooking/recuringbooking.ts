@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ActionSheetController,AlertOptions } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
-import * as $ from "jquery";
-
 import { SharedServices } from '../../../services/sharedservice';
 import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { CommonService } from '../../../../services/common.service';
@@ -47,7 +45,12 @@ export class RecuringbookingPage {
   is_initial:boolean = true;
   recuringBookDetails:any = [];
   daysDetails = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  constructor(public navCtrl: NavController,public http: HttpClient, public navParams: NavParams,public storage: Storage,public fb: FirebaseService,public commonService: CommonService,public alertCtrl: AlertController,public sharedService: SharedServices,public actionSheetCtrl: ActionSheetController,public toastCtrl:ToastController, private httpService: HttpService) {
+  constructor(public navCtrl: NavController,public http: HttpClient, 
+    public navParams: NavParams,public storage: Storage,
+    public fb: FirebaseService,public commonService: CommonService,
+    public alertCtrl: AlertController,public sharedService: SharedServices,
+    public actionSheetCtrl: ActionSheetController,
+    public toastCtrl:ToastController, private httpService: HttpService) {
     // this.storage.get('userObj').then((val) => {
     //   val = JSON.parse(val);
     //   this.userKey = val.$key
@@ -95,19 +98,7 @@ export class RecuringbookingPage {
   }
 
   getClubDetails() {
-
-    // this.fb.getAllWithQuery("/Club/Type2/" + this.selectedParentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-    //   this.clubs = data;
-    //   if (data.length != 0) {
-    //     this.selectedClubKey = this.clubs[0].$key;
-    //     this.getAllActivity();
-       
-    //   }else{
-    //     this.ActivityList = [];
-    //     this.selectedActivity = "";
-    //   }
-    // });
-    const body: GetParentClubVenuesRequestDto = {
+          const body: GetParentClubVenuesRequestDto = {
               parentclub_id: this.sharedService.getPostgreParentClubId(),
               app_type: AppType.ADMIN_NEW,
               device_type: this.sharedService.getPlatform() == 'android' ? 1 : 2,
@@ -131,6 +122,7 @@ export class RecuringbookingPage {
               }
             });
   }
+  
   getAllActivity() {
     this.fb.getAll("/Activity/" + this.selectedParentClubKey + "/" + this.selectedClubKey + "/").subscribe((data) => {
         // this.ActivityList = [];
@@ -187,11 +179,13 @@ export class RecuringbookingPage {
   // }
 
   getrecuringBookDetails(){
+    this.commonService.showLoader('Please wait');
     const url = `${API.GET_RECURRING_LIST}/${this.selectedParentClubKey}/${this.selectedCourt}`;
     
     this.httpService.get(url, null, null, 1).subscribe({
       next: (data:any) => {
         this.recuringBookDetails = []
+        this.commonService.hideLoader()
         const activityname = this.ActivityList.filter((act) => this.selectedActivity == act.$key)[0].ActivityName
 
         for(let i = 0; i <  data.data.length ;i++){
@@ -326,9 +320,11 @@ export class RecuringbookingPage {
       this.httpService.put(API.CANCEL_RECURRING_V3, data, null, 1).subscribe({
         next: (res) => {
           resolve('success')
+          this.commonService.hideLoader()
         },
         error: (err) => {
           console.log(err)
+          this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to create recurring slot", 2000)
           reject('fail')
         }
@@ -347,10 +343,12 @@ export class RecuringbookingPage {
       this.httpService.put(API.CANCEL_RECURRING_BY_ID, data, null, 1).subscribe({
         next: (res) => {
           resolve('success')
+          this.commonService.hideLoader()
           this.navCtrl.pop()
         },
         error: (err) => {
           console.log(err)
+          this.commonService.hideLoader() 
           this.commonService.toastMessage("Unable to cancel recurring slot", 2000)
           reject('fail')
         }

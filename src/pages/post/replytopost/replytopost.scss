@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-replytopost {
+  @include android-sdk35-fixes;
   $toolbar-background-color1: #2b92bb;
   $toolbar-title-color1: #ffffff;
   $toolbar-button-text-color1: #ffffff;
@@ -194,5 +197,4 @@ page-replytopost {
         box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
     }
   }
-
 }

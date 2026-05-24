@@ -1,0 +1,176 @@
+<!--
+  Generated template for the BookingsetupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Flood Light Setup</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row class="dropdownrow">
+    <ion-col col-6 text-left>
+      <ion-select [(ngModel)]="selectedClubKey" [disabled]="isupdate" (ionChange)="getAllActivity()" >
+        <ion-option *ngFor="let club of allClub" value={{club.$key}}>{{club.ClubName}}</ion-option>
+      </ion-select>
+    </ion-col>
+     <ion-col col-6 text-right>
+      <ion-select [(ngModel)]="selectedActivity" [disabled]="isupdate" (ionChange)="getBookingSetup()" disabled>
+        <ion-option *ngFor="let item of allActivityArr" value={{item.$key}}>{{item.ActivityName}}</ion-option>
+      </ion-select>
+   
+     </ion-col>
+      
+  </ion-row>
+
+<ion-grid>
+  <ion-row class="tit-row">
+    <ion-col col-4>
+      <p>Title</p>
+    </ion-col>
+    <ion-col col-8 text-right>
+      <ion-input type="text" placeholder='Flood Light Title' [(ngModel)]="floodlight.Title"></ion-input>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="tit-row">
+    <ion-col *ngIf="currencyDetails" col-5>
+      <p class="pmargin" style="color: rgba(0, 0, 0, 0.85);">Price:</p>
+      <p>1st {{bookingDuration}} mins ({{currencyDetails.CurrencySymbol}})</p>
+      <p>After {{bookingDuration}} mins ({{currencyDetails.CurrencySymbol}})</p>   
+    </ion-col>
+ 
+    <ion-col col-3>
+      <p class="pmargin" style="color: rgba(0, 0, 0, 0.85);">Member</p>
+      <ion-input class="ioninput" type="number" [(ngModel)]="floodlight.FirstSixtyMemberFloodLightFess" (ionChange)="convertTofloat($event)"></ion-input>
+      <ion-input class="ioninput" type="number" [(ngModel)]="floodlight.AfterSixtyMemberFloodLightFess" (ionChange)="convertTofloat($event)"></ion-input>
+    </ion-col>
+    
+    <ion-col col-4>   
+      <p class="pmargin" style="color: rgba(0, 0, 0, 0.85);">Non Member</p>
+      <ion-input class="ioninput" type="number" [(ngModel)]="floodlight.FirstSixtyNonMemberFloodLightFess" (ionChange)="convertTofloat($event)"></ion-input>
+      <ion-input class="ioninput" type="number" [(ngModel)]="floodlight.AfterSixtyNonMemberFloodLightFess" (ionChange)="convertTofloat($event)"></ion-input>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-3 text-left>
+        <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+            (click)="saveFloodLight()">Save</button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<p *ngIf="floodlight.floodlightConfigurations.length == 0" class="ptext">Click <span style="    color: #2b92bb;
+  font-size: 18px;">+</span> to add configurations to your floodLight</p>
+<ion-row *ngIf="floodlight.floodlightConfigurations.length > 0">
+  <ion-card *ngFor="let flood of floodlight.floodlightConfigurations; let i = index" class="flood-card">
+    <ion-card-content >
+
+
+      <ion-row class="tit-row">
+         <ion-col col-3>
+          <p>Start Date</p>
+        </ion-col>
+        <ion-col class="datetimecol" col-3 >
+          <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="flood.StartDate" (ngModelChange)="updateEndDate($event, flood, 'start')" [min]="minDate" [max]="maxDate"></ion-datetime>
+        
+        </ion-col>
+        <ion-col col-3>
+          <p>End Date</p>
+        </ion-col>
+        <ion-col class="datetimecol" col-3 >
+          <ion-datetime displayFormat="DD/MM/YYYY" (ngModelChange)="updateEndDate($event, flood, 'end')" pickerFormat="DD MM YYYY" [(ngModel)]="flood.EndDate"
+          [min]="minDate" [max]="maxDate"></ion-datetime>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="tit-row">
+        <ion-col col-12>
+          <p style="color: rgba(0, 0, 0, 0.85);">Morning Time:</p>
+        </ion-col>
+       
+        <ion-col col-2>
+          <p>From </p>
+        </ion-col>
+        <ion-col class="datetimecol" col-2 >
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="flood.MornStartTime" (ionChange)="flood.have_to_save = true" ></ion-datetime>
+          
+        </ion-col>
+        <ion-col col-2>
+          <span>hrs</span>
+        </ion-col>
+        <ion-col col-2>
+          <p>To </p>
+        </ion-col>
+        <ion-col class="datetimecol"  col-2 >
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="flood.MornEndTime" (ionChange)="flood.have_to_save = true"></ion-datetime>
+       
+        </ion-col>
+        <ion-col col-2>
+          <span>hrs</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="tit-row">
+        <ion-col col-12>
+          <p style="color: rgba(0, 0, 0, 0.85);">Evening Time:</p>
+        </ion-col>
+     
+        <ion-col col-2>
+          <p>From </p>
+        </ion-col>
+        <ion-col class="datetimecol"  col-2 >
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="flood.EvenStartTime" (ionChange)="flood.have_to_save = true"></ion-datetime>
+      
+        </ion-col>
+        <ion-col col-2>
+          <span>hrs</span>
+        </ion-col>
+        <ion-col col-2>
+          <p>To </p>
+        </ion-col>
+        <ion-col class="datetimecol"  col-2 >
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="flood.EvenEndTime" (ionChange)="flood.have_to_save = true" ></ion-datetime>
+        </ion-col>
+        <ion-col col-2>
+          <span>hrs</span>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="btn-row">
+<!--        
+          <button ion-fab mini style="color: white !important"
+          (tap)="" >
+         <img src="assets/imgs/save.png">
+        </button> -->
+        <ion-col col-7 text-right>
+          <button ion-fab class="button1" mini style="background-color: rgba(43, 146, 187, 0.44) !important; color: white !important"
+          (tap)="delete(flood, i)">
+          <ion-icon style="font-size: 20px;" name="md-trash"></ion-icon>
+        </button>
+         </ion-col>
+        <ion-col col-5 text-left>
+          <button class="button1" ion-button block style="background-color:#2b92bb !important;    margin: 12px 0;
+          width:100%; color: white !important"
+              (click)="save(flood, i)">Save this card</button>
+       </ion-col>
+      
+         
+         
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-row>
+
+</ion-content>
+
+<ion-fab center bottom>
+    <button ion-fab mini style="background-color:#2b92bb !important; color: white !important"
+      (tap)="addFloodLightSetup()" style="background-color:#2b92bb !important; color: white !important">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>

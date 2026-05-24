@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Pipe } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, ActionSheetController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ActionSheetController, AlertController, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { FirebaseService } from '../../../services/firebase.service';
 import { CommonService, ToastMessageType, ToastPlacement } from '../../../services/common.service';
@@ -12,6 +12,7 @@ import gql from 'graphql-tag';
 import { GraphqlService } from '../../../services/graphql.service';
 import { Videos, VideosInput_V2 } from './models/videolisting.dto';
 import { first } from "rxjs/operators";
+import { ThemeService } from '../../../services/theme.service';
 // import { Video } from '../../../model/VideoSection';
 
 /**
@@ -46,6 +47,7 @@ export class VideomenueslistingPage {
   map = new Map();
   msg = "Check out the latest video from ";
   // headerUrl: any = "";
+  isDarkTheme: boolean = true;
 
   postgre_parentclub: string;
 
@@ -98,10 +100,16 @@ export class VideomenueslistingPage {
     public actionSheetCtrl: ActionSheetController, 
     public commonService: CommonService, 
     public fb: FirebaseService,
-   // private storage: Storage,
+    private storage: Storage,
     public navCtrl: NavController,
     public navParams: NavParams, 
-    private sharedService: SharedServices) {
+    private sharedService: SharedServices,
+    private themeService: ThemeService,
+    public events: Events) {
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
   }
 
   ionViewDidLoad() {
@@ -109,6 +117,7 @@ export class VideomenueslistingPage {
   }
 
   ionViewWillEnter(){
+    this.loadTheme();
     this.postgre_parentclub = this.sharedService.getPostgreParentClubId();
     this.commonService.category.pipe(first()).subscribe((data) => {
       if(data == "refresh_videos"){
@@ -672,7 +681,55 @@ export class VideomenueslistingPage {
   }
 
   ionViewWillLeave(){
+    this.events.unsubscribe('theme:changed');
     //this.commonService.updateCategory("");
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme')
+      .then((isDarkTheme) => {
+        if (isDarkTheme !== null) {
+          this.isDarkTheme = isDarkTheme;
+        } else {
+          this.isDarkTheme = true;
+        }
+        this.applyTheme();
+      })
+      .catch((error) => {
+        this.isDarkTheme = true;
+        this.applyTheme();
+      });
+
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme();
+    });
+  }
+
+  applyTheme() {
+    const element = document.querySelector('page-videomenueslisting');
+    if (element) {
+      if (this.isDarkTheme) {
+        element.classList.remove('light-theme');
+        document.body.classList.remove('light-theme');
+      } else {
+        element.classList.add('light-theme');
+        document.body.classList.add('light-theme');
+      }
+    } else {
+      setTimeout(() => {
+        const retryElement = document.querySelector('page-videomenueslisting');
+        if (retryElement) {
+          if (this.isDarkTheme) {
+            retryElement.classList.remove('light-theme');
+            document.body.classList.remove('light-theme');
+          } else {
+            retryElement.classList.add('light-theme');
+            document.body.classList.add('light-theme');
+          }
+        }
+      }, 100);
+    }
   }
 
 }

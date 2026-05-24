@@ -1,0 +1,95 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-addtemplate {
+    @include android-sdk35-fixes;
+
+
+
+    .scroll-content {
+        padding: 0px !important;
+        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1, #efefef) !important;
+        //margin-top:60px !important;
+    }
+    .item-inner {
+        border-bottom: 1px solid #faae4e !important;
+    }
+    .age_label{
+
+    }
+    .facilityCard{
+        border-radius: 0px !important;
+        box-shadow: 0 1px 7px rgba(10, 10, 10, 0.15);
+        margin: 5px 12px;
+        padding: 5px 5px 5px 5px;
+        border-radius: 2px;
+        border-left:2px solid #35ADFF;
+        //border-bottom: 2px solid #faae4e !important;
+        .age{
+            color:#5a809e;
+        }
+        
+        p{
+            line-height: 1.2 !important;
+        }
+        .p1 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom:3px;
+         }
+         .points{
+            font-weight: bold;
+            font-size: 16px;
+            color: #fab754 !important;
+        }
+        .pts_col{
+            margin:auto;
+            text-align:center;
+            button{
+                width: 35px;
+                height:30px;
+                ion-icon{
+                    color: #fab754 !important;
+                    font-size: 1.5em;
+                }
+            }
+        }
+        .paidmembercount {
+            color: rgba(36, 16, 16, 0.85);
+            font-weight: bold;
+            font-size: 16px;
+            //margin-top: 2px;
+        }
+    
+    }
+    .input_item{
+        padding-left: 5px !important;
+         ion-label{
+           color: #999 !important;
+           font-size:1.4rem !important;
+         }
+         ion-select{
+             max-width:100% !important;
+         }
+    }
+    .fabTop {
+        margin-bottom: 13px;
+    }
+    .fabEmailText {
+        margin-left: -122px;
+        background-color: #f0f0f3;
+        padding: 8px 12px 8px 11px;
+        margin-bottom: -44px;
+        color: #202021;
+        border-radius: 3px;
+        margin-right: 55px;
+        -webkit-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+    }
+    ion-fab {
+        bottom: 55px !important;
+    }
+    ion-fab button{
+        background-color: #2b92bb !important;
+        color: white !important;
+    }
+}

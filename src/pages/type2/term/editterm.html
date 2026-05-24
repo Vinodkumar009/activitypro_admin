@@ -69,13 +69,17 @@
     <div>
         <ion-card *ngFor="let item of activity">
             <ion-card-content>
+
                 <ion-item>
                     <ion-label>{{item.ActivityName}}</ion-label>
                     <ion-checkbox color="blue" checked="item.isSelect" [(ngModel)]="item.isSelect" (ionChange)="toggolSelectionActivity(item)"></ion-checkbox>
                 </ion-item>
             </ion-card-content>
         </ion-card>
+
     </div>
+
+
 
     <ion-grid>
         <ion-row>

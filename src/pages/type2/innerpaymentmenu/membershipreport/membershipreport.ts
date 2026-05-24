@@ -2,14 +2,16 @@ import { FirebaseService } from '../../../../services/firebase.service';
 import { Component, ViewChild, Renderer2, ElementRef, } from '@angular/core';
 import { NavController, PopoverController, Platform, ActionSheetController, LoadingController, Slides, Content } from 'ionic-angular';
 import { SharedServices } from '../../../services/sharedservice';
-// import { PopoverPage } from '../../popover/popover';
+
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
-// import { PaymentDetails } from './paymentdetails';
 import * as moment from 'moment';
 import { IonicPage } from 'ionic-angular';
-import { CommonService } from '../../../../services/common.service';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { CommonService, ToastMessageType } from '../../../../services/common.service';
+import { HttpClient } from '@angular/common/http';
+import { payment_email } from '../../payment/model/report.model';
+import { ModuleReportTypeForEmail } from '../../mailtomemberbyadmin/mailtomemberbyadmin';
+import { ThemeService } from '../../../../services/theme.service';
 
 /**
  * Generated class for the MembershipreportPage page.
@@ -27,6 +29,7 @@ export class MembershipreportPage {
   @ViewChild('myslider') myslider: Slides;
   @ViewChild(Content) content: Content;
   isSearchEnabled: boolean = false;
+  isDarkTheme: boolean = true;
   isFirstTime: boolean = true;
   paymentReportType: any;
   LangObj: any = {};//by vinod
@@ -88,7 +91,7 @@ export class MembershipreportPage {
   minDate: any;
   currencyDetails: any = "";
   constructor(public events: Events, public sharedService: SharedServices, public commonService: CommonService, public loadingCtrl: LoadingController, platform: Platform, public storage: Storage, public fb: FirebaseService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController,
-    private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, public actionSheetCtrl: ActionSheetController, ) {
+    private renderer: Renderer2, private elementRef: ElementRef, private http: HttpClient, public actionSheetCtrl: ActionSheetController, private themeService: ThemeService) {
     
     this.userData = this.sharedService.getUserData();
     this.themeType = sharedservice.getThemeType();
@@ -108,7 +111,7 @@ export class MembershipreportPage {
     }).catch(error => {
     });
 
-
+    this.loadTheme();
 
   }
 
@@ -231,19 +234,19 @@ export class MembershipreportPage {
     if (this.reportType == "Paid") {
 
       this.showType('Paid');
-      if (this.isAndroid) {
-        this.renderer.removeClass(this.scrollContent, "androidMargin");
-      } else {
-        this.renderer.removeClass(this.scrollContent, "iosMargin");
-      }
+      // if (this.isAndroid) {
+      //   this.renderer.removeClass(this.scrollContent, "androidMargin");
+      // } else {
+      //   this.renderer.removeClass(this.scrollContent, "iosMargin");
+      // }
     } else {
 
       this.showType('Due');
-      if (this.isAndroid) {
-        this.renderer.addClass(this.scrollContent, "androidMargin");
-      } else {
-        this.renderer.addClass(this.scrollContent, "iosMargin");
-      }
+      // if (this.isAndroid) {
+      //   this.renderer.addClass(this.scrollContent, "androidMargin");
+      // } else {
+      //   this.renderer.addClass(this.scrollContent, "iosMargin");
+      // }
 
     }
 
@@ -277,6 +280,8 @@ export class MembershipreportPage {
     this.paidMemberListtemp = [];
     this.TotTrnsAmt = 0.0;
     this.TotTransc = 0;
+    this.TotDueTrnsAmt = 0.0;
+    this.TotDueTransc = 0;
 
   
     //this.nodeUrl = "http://localhost:5000"
@@ -293,6 +298,17 @@ export class MembershipreportPage {
       this.dueMemberList = res.data.duePaymentList;
 
       this.dueMemberList.forEach((member)=> member["IsActive"] = true);//need to remove once this filed got from api
+      
+      // Calculate due amounts and count
+      this.TotDueTrnsAmt = 0.0;
+      this.TotDueTransc = 0;
+      for (let i = 0; i < this.dueMemberList.length; i++) {
+        if (this.dueMemberList[i].Amount && this.dueMemberList[i].Amount != "NaN"){ 
+          this.TotDueTrnsAmt = parseFloat(this.TotDueTrnsAmt) + parseFloat(this.dueMemberList[i].Amount);
+          this.TotDueTrnsAmt = parseFloat(this.TotDueTrnsAmt).toFixed(2);
+        }
+        this.TotDueTransc = this.TotDueTransc + 1;
+      }
 
       for (let i = 0; i < this.paidMemberList.length; i++) {
         this.paidMemberList[i]["IsActive"] = true;//need to remove once this filed got from api
@@ -441,13 +457,55 @@ export class MembershipreportPage {
   sendMailStatus() {
     console.log(this.reportType)
     //let  memberList = this.reportType == "Due"?this.dueMemberListtemp:this.paidMemberListtemp
-    let memberList = this.slectedList;
-    this.navCtrl.push("PaymentstatusemailPage", {
-      memberList: this.reportType == "Due" ? this.dueMemberListtemp:this.paidMemberListtemp,
-      type: this.reportType,
-      parentclubKey: this.parentClubKey
-    })
+    // let memberList = this.slectedList;
+    // this.navCtrl.push("PaymentstatusemailPage", {
+    //   memberList: this.reportType == "Due" ? this.dueMemberListtemp:this.paidMemberListtemp,
+    //   type: this.reportType,
+    //   parentclubKey: this.parentClubKey
+    // })
 
+    try{
+          console.log(this.reportType)
+          const reportList = this.reportType == "Due" ? this.dueMemberListtemp : this.paidMemberListtemp;
+          if(reportList.length == 0){
+            this.commonService.toastMessage("No records found", 2500, ToastMessageType.Error)
+            return false;
+          }
+          const member_list = reportList.map((member,index) => {
+            return {
+                IsChild:false,
+                ParentId:"",
+                MemberId:"", 
+                MemberEmail:member.EmailID, 
+                MemberName: member.MemberName
+            }
+          })
+        
+          const email_modal = {
+              module_info:null,
+              email_users:member_list,
+              type:ModuleReportTypeForEmail.MEMBERSHIP,
+          }
+          this.navCtrl.push("PaymentstatusemailPage", { email_modal });
+        }catch(err){
+          this.commonService.toastMessage("Something went wrong", 2500, ToastMessageType.Error)
+        }
+
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('page-membershipreport');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
   }
 
 

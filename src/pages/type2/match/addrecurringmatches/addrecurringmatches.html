@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Recurring Matches</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content [class.dark-theme]="isDarkTheme" [class.light-theme]="!isDarkTheme">
+  <ion-list>
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Match</ion-label>
+        <ion-input type="text" [value]="match?.MatchTitle" disabled></ion-input>
+      </ion-item>
+    </app-form-field>
+
+    <app-form-field [isDark]="isDarkTheme">
+      <ion-item>
+        <ion-label>Until When</ion-label>
+        <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY"
+          [(ngModel)]="untilWhen" [min]="minDate" [max]="maxDate"></ion-datetime>
+      </ion-item>
+    </app-form-field>
+    <p class="recurring-hint" *ngIf="untilWhen">
+      Match will be created every week on <strong>{{getRecurringDayName()}}</strong> until <strong>{{untilWhen | date:'dd MMM yyyy'}}</strong>
+    </p>
+  </ion-list>
+
+  <app-glass-button label="Create Recurring Matches" (btnClick)="createRecurringMatches()"></app-glass-button>
+</ion-content>

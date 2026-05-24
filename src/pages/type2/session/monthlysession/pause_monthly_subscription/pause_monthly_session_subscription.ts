@@ -75,6 +75,7 @@ export class PauseMonthlySessionSubscriptionPage {
   async pauseSubscriptions(months_selected: string, enrolment_id?: string): Promise<void> {
     try {
       console.log('✅ Valid pause request');
+      this.commonService.showLoader("Please wait");
 
       const pauseSubscribeInput = {
         resume_for_months: months_selected,
@@ -88,6 +89,7 @@ export class PauseMonthlySessionSubscriptionPage {
       this.httpService.post(`${API.PAUSE_MONTHLY_SUBSCRIPTION}`, pauseSubscribeInput, null, 3)
         .subscribe({
           next: (res) => {
+            this.commonService.hideLoader();
             this.commonService.toastMessage(
               "Pause subscription successfully",
               2500,
@@ -95,10 +97,21 @@ export class PauseMonthlySessionSubscriptionPage {
               ToastPlacement.Bottom
             );
             this.navCtrl.pop();
+          },
+          error: (err) => {
+            this.commonService.hideLoader();
+            const errorMessage = err.message || 'Pause request failed';
+            this.commonService.toastMessage(
+              `❌ ${errorMessage}`,
+              2500,
+              ToastMessageType.Error,
+              ToastPlacement.Bottom
+            );
           }
         });
 
     } catch (err) {
+      this.commonService.hideLoader();
       this.commonService.toastMessage(
         'Pause request failed',
         2500,

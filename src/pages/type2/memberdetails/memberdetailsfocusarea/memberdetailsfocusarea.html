@@ -1,0 +1,62 @@
+<!--
+  Generated template for the MemberdetailsfocusareaPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Progress</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <p class="user_name">{{mem?.user?.FirstName}} {{mem?.user?.LastName}}</p>
+  <div class="stepper">
+    <div class="step " *ngFor="let step of userlevelProgress; let i = index"
+      [ngClass]="{'completed': step.is_completed,'selected':step.is_current_user_level}" (click)="onclicklevel(i)">
+      <span [style.color]="step.is_current_user_level? '#faae4e': 'BLACK'" class="step-label">{{
+        step.level_name}}</span>
+      <ion-icon class="step-number" [name]="step.is_completed==true?'checkmark-circle':'lock'"></ion-icon>
+      <ion-icon class="step-arrow" [name]="step.is_current_user_level ? 'ios-arrow-up' : ''"></ion-icon>
+      <span class="step-status" *ngIf="step.is_current_user_level">Current Level</span>
+    </div>
+  </div>
+
+  <ion-list>
+    <ion-card class="facilityCard seession-cards" (click)="gotoFocusProgressInfo(focus)"
+      *ngFor="let focus of userFocusAreaProgress">
+      <ion-card-header style="padding: 0 !important; white-space: normal">
+        <ion-row style="margin: 0px 0px 5px 0px">
+          <ion-col col-2 style="margin: auto">
+            <img [src]="focus.image_url" alt="Focus Area Image"
+              style="padding-left: 10px; font-size: 30px; color: #499bbd !important">
+          </ion-col>
+          <ion-col col-7 class="mar-auto-all pad-left-15">
+            <p class="focus_area_name">{{focus.focus_area_name}}</p>
+            <p class="p1" style="
+                font-size: 15px;
+                color: rgba(0, 0, 0, 0.65);
+                margin-top: 0px;
+              ">
+              <!-- Levels:<span>1</span> -->
+              <progress-bar [progress]="focus.percentage"></progress-bar>
+            </p>
+          </ion-col>
+          <ion-col class="mar_auto" col-2>
+            <p class="focus_area_name" style="text-align: center;">
+              {{focus.user_count|number:'1.0-0'}}/{{focus.total_count|number:'1.0-0'}}</p>
+          </ion-col>
+          <ion-col class="mar_auto" col-1>
+            <ion-icon name="ios-arrow-forward" style="padding-left: 10px; font-size: 30px; color: #499bbd !important">
+            </ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
+  <div>
+    <p class="upgrade_level" (click)="gotoNext()">Change Level</p>
+  </div>
+
+</ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, PopoverController, NavParams } from 'ionic-angular';
+import { NavController, PopoverController, NavParams, Events } from 'ionic-angular';
 import { SharedServices } from '../../services/sharedservice';
 import { Storage } from '@ionic/storage';
 import { FirebaseService } from '../../../services/firebase.service';
@@ -8,6 +8,7 @@ import { CommonService, ToastMessageType, ToastPlacement } from '../../../servic
 import { AddMemberDTO, VenueUser } from './model/member';
 import gql from 'graphql-tag';
 import { GraphqlService } from '../../../services/graphql.service';
+import { ThemeService } from '../../../services/theme.service';
 @IonicPage()
 @Component({
   selector: 'addmembertofamily-page',
@@ -15,6 +16,7 @@ import { GraphqlService } from '../../../services/graphql.service';
 })
 
 export class Type2AddFamilyMember {
+  isDarkTheme: boolean = true;
   divNo: number = 1;
   familyObj: AddMemberDTO = new AddMemberDTO();
   memberObj: VenueUser;
@@ -56,12 +58,15 @@ export class Type2AddFamilyMember {
   enitityName = "";
 
   constructor(public commonService: CommonService,
-     storage: Storage, public navCtrl: NavController, 
+     public storage: Storage, public navCtrl: NavController, 
      public navParams: NavParams, public sharedservice: SharedServices, 
      public popoverCtrl: PopoverController, public fb: FirebaseService,
-     private graphqlService: GraphqlService,) {
+     private graphqlService: GraphqlService,
+     private themeService: ThemeService,
+     public events: Events) {
 
     this.themeType = sharedservice.getThemeType();
+    this.loadTheme();
     
     this.memberObj = navParams.get('MemberDetails');
     this.divType = navParams.get('divType');
@@ -251,6 +256,21 @@ export class Type2AddFamilyMember {
         this.commonService.hideLoader();
         this.commonService.toastMessage("Familymember add failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
       });
+    }
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('addmembertofamily-page');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
     }
   }
 }

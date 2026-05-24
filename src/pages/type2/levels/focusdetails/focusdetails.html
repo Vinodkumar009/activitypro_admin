@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{focus?.focus_area_name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row>
+    <ion-col style="padding: 0px;" col-8>
+      <p class="challenges_title">Challenges</p>
+    </ion-col>
+    <ion-col style="padding: 0px;" col-4>
+      <p class="target_title">Target Areas</p>
+    </ion-col>
+  </ion-row>
+  <ion-list style="padding-top: 0px;">
+    <ion-card class="facilityCard seession-cards" style="border-radius: 0px !important" *ngFor="let chal of challenges"
+      (click)="presentActionSheet(chal)">
+      <ion-card-header style="padding: 0 !important; white-space: normal">
+        <ion-row style="margin: 0px 0px 5px 0px">
+          <ion-col col-8 class="mar-auto-all pad-left-15">
+            <p class="mar0 eventname">{{chal.challenge.ChallengeName}}</p>
+
+          </ion-col>
+          <ion-col col-4 style="margin: auto">
+            <ion-row *ngFor="let target of chal.target_area">
+              <p class="targetname">
+                {{target.target_area_name}}
+              </p>
+
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col col-12 *ngIf="challenges.length == 0" text-center>
+        <p>No Details available</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

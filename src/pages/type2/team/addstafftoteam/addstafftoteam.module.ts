@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { CommonService } from '../../../../services/common.service';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { AddstafftoteamPage } from './addstafftoteam';
+import { SharedComponentsModule } from '../../../../shared/components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { AddstafftoteamPage } from './addstafftoteam';
   ],
   imports: [
     IonicPageModule.forChild(AddstafftoteamPage),
+    SharedComponentsModule
   ],
   providers:[
     CommonService,

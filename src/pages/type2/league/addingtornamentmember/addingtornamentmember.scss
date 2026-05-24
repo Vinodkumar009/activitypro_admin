@@ -2,210 +2,82 @@
 
 page-addingtornamentmember {
   @include android-sdk35-fixes;
-  
-  // Override league theme with stronger specificity
-  background: #0f172a !important;
-  
-  ion-content {
-    background: #0f172a !important;
+
+  .scroll-content { padding: 0 !important; background: #0f172a !important; background-image: none !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
+
+  .page-fixed-header { position: sticky; top: 0; background: #0f172a; z-index: 10; }
+  .page-list-area { padding: 0 8px 80px; }
+
+  .section-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px 8px;
   }
-  
-  .scroll-content {
-    background: #0f172a !important;
-    padding: 0 !important;
+  .section-title { font-size: 15px; font-weight: 700; color: #f1f5f9; }
+
+  app-list-card { display: block; margin-bottom: 6px; }
+  .player-row {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    background: linear-gradient(145deg, rgba(43, 146, 187, 0.3) 0%, rgba(53, 173, 255, 0.12) 40%, transparent 75%);
+    cursor: pointer;
   }
-
-  // Compact Search Card (matching managesession exactly)
-  .compact-search-card {
-    background: #1e293b !important;
-    border: 1px solid #334155 !important;
-    border-radius: 8px !important;
-    padding: 8px !important;
-    margin: 16px 8px 8px 8px !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 10 !important;
+  .player-avatar {
+    width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(43, 146, 187, 0.15); color: #3fbcd3;
+    font-size: 14px; font-weight: 700; text-transform: uppercase;
   }
-
-  .search-content {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
+  .player-info { flex: 1; min-width: 0; }
+  .player-name {
+    font-size: 14px; font-weight: 700; color: #f1f5f9; margin: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
-
-  .sleek-searchbar {
-    flex: 1 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    min-height: 36px !important;
-    background: transparent !important;
-    --background: transparent !important;
-    --border-radius: 0 !important;
-    --box-shadow: none !important;
-    --icon-color: #94a3b8 !important;
-    --color: #f1f5f9 !important;
-    --placeholder-color: #94a3b8 !important;
-    --clear-button-color: #94a3b8 !important;
-
-    .searchbar-input {
-      color: #f1f5f9 !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      -webkit-box-shadow: none !important;
-      border: none !important;
-
-      &::placeholder {
-        color: #94a3b8 !important;
-      }
-    }
-
-    .searchbar-search-icon {
-      background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(148, 163, 184, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(148, 163, 184, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
-    }
-
-    .searchbar-clear-icon {
-      background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(148, 163, 184, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
-    }
+  .player-tag {
+    display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
+    border-radius: 20px; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px;
+    &.existing { background: rgba(100, 116, 139, 0.2); color: #64748b; }
   }
 
-  ion-list {
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
+  ion-checkbox {
+    --background: #334155; --background-checked: #2b92bb;
+    --border-color: #475569; --border-color-checked: #2b92bb;
+    --checkmark-color: #fff; flex-shrink: 0;
   }
 
-  ion-list-header {
-    background: #1e293b !important;
-    color: #f1f5f9 !important;
-    font-weight: 600 !important;
-    border-radius: 0 !important;
-    margin-bottom: 0 !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-    border: none !important;
-    border-bottom: 1px solid #334155 !important;
-    --background: #1e293b !important;
-    --color: #f1f5f9 !important;
-    position: sticky !important;
-    top: 60px !important;
-    z-index: 9 !important;
-  }
-
-  ion-item {
-    background: #1e293b !important;
-    color: #f1f5f9 !important;
-    border: none !important;
-    border-bottom: 1px solid #334155 !important;
-    border-radius: 0 !important;
-    margin-bottom: 0 !important;
-    box-shadow: none !important;
-    --background: #1e293b !important;
-    --color: #f1f5f9 !important;
-    --border-color: transparent !important;
-
-    ion-label {
-      color: #f1f5f9 !important;
-      font-weight: 500 !important;
-      font-size: 14px !important;
-    }
-
-    ion-checkbox {
-      --background: #334155 !important;
-      --background-checked: #007bff !important;
-      --border-color: #475569 !important;
-      --border-color-checked: #007bff !important;
-      --checkmark-color: #ffffff !important;
-    }
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 8px;
+    .empty-icon { font-size: 40px; color: #334155; }
+    .empty-text { font-size: 14px; color: #64748b; margin: 0; }
   }
 
   ion-footer {
-    background: #1e293b !important;
-    border-top: 1px solid #334155 !important;
-    --background: #1e293b !important;
-    
-    .timekare-primary-btn {
-      background: #2b92bb !important;
-      color: white !important;
-      font-weight: 500 !important;
-    }
+    background: #0f172a !important;
+    box-shadow: none !important; border: none !important;
+    &::before, &::after { display: none !important; }
+    .toolbar, .toolbar-background, .toolbar-background-md, .toolbar-background-ios { background: #0f172a !important; border: none !important; }
   }
 
-  // Light theme with stronger specificity
+  // Light theme
   &.light-theme {
-    background: #f8fafc !important;
-    
-    ion-content {
-      background: #f8fafc !important;
-    }
-    
-    .scroll-content {
-      background: #f8fafc !important;
-    }
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .page-fixed-header { background: #f8fafc; }
+    .section-title { color: #1e293b; }
+    .player-row { background: linear-gradient(145deg, rgba(43, 146, 187, 0.25) 0%, rgba(53, 173, 255, 0.1) 40%, transparent 75%); }
+    .player-name { color: #1e293b; }
+    ion-checkbox { --background: #fff; --border-color: #d1d5db; }
+    .empty-state .empty-icon { color: #cbd5e1; }
+    ion-footer { background: #f8fafc !important; .toolbar, .toolbar-background, .toolbar-background-md, .toolbar-background-ios { background: #f8fafc !important; } }
+  }
 
-    .compact-search-card {
-      background: #ffffff !important;
-      border: 1px solid #e2e8f0 !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .sleek-searchbar {
-      --icon-color: #64748b !important;
-      --color: #1e293b !important;
-      --placeholder-color: #64748b !important;
-      --clear-button-color: #64748b !important;
-
-      .searchbar-input {
-        color: #1e293b !important;
-
-        &::placeholder {
-          color: #64748b !important;
-        }
-      }
-
-      .searchbar-search-icon {
-        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'><path fill='rgba(100, 116, 139, 0.8)' d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1 M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0 L5,0z'/><line stroke='rgba(100, 116, 139, 0.8)' stroke-miterlimit='10' x1='12.6' y1='12.6' x2='8.2' y2='8.2'/></svg>") !important;
-      }
-
-      .searchbar-clear-icon {
-        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='rgba(100, 116, 139, 0.8)' d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>") !important;
-      }
-    }
-
-    ion-list-header {
-      background: #ffffff !important;
-      color: #1e293b !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-      border: none !important;
-      border-bottom: 1px solid #e2e8f0 !important;
-      --background: #ffffff !important;
-      --color: #1e293b !important;
-    }
-
-    ion-item {
-      background: #ffffff !important;
-      color: #1e293b !important;
-      border: none !important;
-      border-bottom: 1px solid #e2e8f0 !important;
-      box-shadow: none !important;
-      --background: #ffffff !important;
-      --color: #1e293b !important;
-
-      ion-label {
-        color: #1e293b !important;
-      }
-
-      ion-checkbox {
-        --background: #ffffff !important;
-        --background-checked: #007bff !important;
-        --border-color: #d1d5db !important;
-        --border-color-checked: #007bff !important;
-      }
-    }
-
-    ion-footer {
-      background: #ffffff !important;
-      border-top: 1px solid #e2e8f0 !important;
-      --background: #ffffff !important;
-    }
+  @media (max-width: 359px) {
+    .page-list-area { padding: 0 4px 80px; }
+    .player-name { font-size: 13px; }
+    .player-avatar { width: 28px; height: 28px; font-size: 12px; }
+  }
+  @media (min-width: 768px) {
+    .page-list-area { padding: 0 16px 80px; }
+    .player-name { font-size: 15px; }
+    .player-avatar { width: 40px; height: 40px; font-size: 16px; }
   }
 }

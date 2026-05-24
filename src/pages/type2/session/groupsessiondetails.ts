@@ -112,7 +112,6 @@ export class GroupsessiondetailsPage {
     directdebitInfo: any = "";
     directDebitMap: Map<string, Set<string>> = new Map();
     selectedMonthKey: any;
-    nestUrl: any;
 
     // new id filelds
     user_status_update:user_status_update_v1 = {
@@ -377,7 +376,7 @@ getSession(){
     async notifyGroupUsers(){
         if (this.term_ses_dets.session_members.length > 0) {
             const member_ids = this.term_ses_dets.session_members.map(member => member.is_child ? member.parent_id:member.user_id);
-            this.navCtrl.push("Type2NotificationSession",{
+            this.navCtrl.push("NotificationsPage",{
                 users:member_ids,
                 type:ModuleTypes.TERMSESSION,
                 heading:`Enrolment:${this.term_ses_dets.session.session_name}`,
@@ -828,12 +827,11 @@ async getProfile(session_member:TermSessionMembers) {
     }
 
     loyaltypoints() {
-        this.navCtrl.push('SessionLoyalty', { sessionDetails: this.term_ses_dets, clubName: this.term_ses_dets.session.ClubDetails.ClubName });
-
         // if (this.sessionDetails.PaymentOption == '100')
         //     this.navCtrl.push('SessionLoyalty', { sessionDetails: this.sessionDetails, clubName: this.clubName })
         // if (this.sessionDetails.PaymentOption == '101')
         //     this.navCtrl.push('SessionLoyalty', { sessionDetails: this.sessionDetails, clubName: this.clubName, monthStatus: this.selectedMonthKey, monthlyMember: ""})
+        this.navCtrl.push('SessionLoyalty', { sessionDetails: this.term_ses_dets, clubName: this.term_ses_dets.session.ClubDetails.ClubName });
     }
 
     ionViewWillLeave(){

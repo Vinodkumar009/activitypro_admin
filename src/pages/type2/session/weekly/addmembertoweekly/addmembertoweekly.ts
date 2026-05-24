@@ -9,9 +9,10 @@ import { CommonService, ToastMessageType, ToastPlacement } from '../../../../../
 import { WeeklySessionDateDetailsInput, WeeklySessionMember } from '../weeklydatedetails.model';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs'
-import { UsersListInput } from '../../../member/model/member';
-import { UsersModel } from '../../../holidaycamp/addmembertocamp';
+
 import { AppType } from '../../../../../shared/constants/module.constants';
+import { UsersListInput } from '../../../../../shared/model/members.model';
+import { UsersModel } from '../../../../../shared/model/holidaycamp.model';
 /**
  * Generated class for the AddmembertoweeklyPage page.
  *
@@ -54,28 +55,28 @@ export class AddmembertoweeklyPage {
     weekly_session_id: '',
     MemberIds: [],
     ParentClubId: '', //ParentClub Id
-    MemberId:'',
-    AppType:AppType.ADMIN_NEW,
-    DeviceType:1
+    MemberId: '',
+    AppType: AppType.ADMIN_NEW,
+    DeviceType: 1
   }
   private searchTerms = new Subject<string>();
   existedPlayer: WeeklySessionMember[] = []
-  venus_user_input:UsersListInput = {
-    parentclub_id:"",
-    club_id:"",
-    search_term:"",
-    member_type:1,
-    limit:18,
-    offset:0,
+  venus_user_input: UsersListInput = {
+    parentclub_id: "",
+    club_id: "",
+    search_term: "",
+    member_type: 1,
+    limit: 18,
+    offset: 0,
   }
-  capacity_left:number = 0;
+  capacity_left: number = 0;
   constructor(public navCtrl: NavController,
-     public navParams: NavParams, 
-     private graphqlService: GraphqlService,
-     public popoverCtrl: PopoverController,
-     private sharedService: SharedServices, 
-     public storage: Storage,
-     private commonService: CommonService) {
+    public navParams: NavParams,
+    private graphqlService: GraphqlService,
+    public popoverCtrl: PopoverController,
+    private sharedService: SharedServices,
+    public storage: Storage,
+    private commonService: CommonService) {
 
     this.themeType = sharedService.getThemeType();
     this.weeklySessionId = this.navParams.get("weeklySessionId"); //WeeklySession Ids
@@ -109,12 +110,12 @@ export class AddmembertoweeklyPage {
       // Call your API here using the term
       this.venus_user_input.offset = 0;
       this.venus_user_input.limit = 18;
-      if(search_term){
-        this.venus_user_input.search_term = search_term!='' ? search_term.replace(/ /g, '') : '';
-      }else{
+      if (search_term) {
+        this.venus_user_input.search_term = search_term != '' ? search_term.replace(/ /g, '') : '';
+      } else {
         this.venus_user_input.search_term = '';
       }
-      
+
       this.getMembersData(2);
     });
 
@@ -161,7 +162,7 @@ export class AddmembertoweeklyPage {
     });
   }
 
-  
+
 
   weeklySessionDateDetails() {
     this.input.SessionDateId = this.individualSessionId
@@ -218,7 +219,7 @@ export class AddmembertoweeklyPage {
         });
   }
 
-  
+
   getMembersData(type: number) {
     this.allMemebers = [];
     const userQuery = gql`
@@ -245,95 +246,95 @@ export class AddmembertoweeklyPage {
       }
     }
   `;
-  this.graphqlService.query(
-    userQuery,
-    {list_input:this.venus_user_input},
-    0
-  ).subscribe(({ data }) => {
-        // Optionally, you may log or process the data here
-        this.members = [];
-        if(data["getAllMembersByParentClubNMemberType"].length > 0){
-          this.members = data["getAllMembersByParentClubNMemberType"].map((member: UsersModel) => ({
-            ...member,
-            isSelected: false,
-            isAlreadyExisted: false,
-          }));
+    this.graphqlService.query(
+      userQuery,
+      { list_input: this.venus_user_input },
+      0
+    ).subscribe(({ data }) => {
+      // Optionally, you may log or process the data here
+      this.members = [];
+      if (data["getAllMembersByParentClubNMemberType"].length > 0) {
+        this.members = data["getAllMembersByParentClubNMemberType"].map((member: UsersModel) => ({
+          ...member,
+          isSelected: false,
+          isAlreadyExisted: false,
+        }));
+      }
+
+      if (type === 2) {
+        this.filteredMembers = JSON.parse(JSON.stringify(this.members))
+      } else {
+        this.filteredMembers = [...this.filteredMembers, ...JSON.parse(JSON.stringify(this.members))];
+      }
+
+      // this.filteredMembers = [...this.filteredMembers,...JSON.parse(JSON.stringify(this.members))];
+      // console.log("Getting Staff Data", this.members);
+      this.checkForExistingUsers();
+    },
+      (error) => {
+        console.error("Error occurred while fetching data:");
+        if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+          console.error("GraphQL Errors:");
+          error.graphQLErrors.forEach((gqlError, index) => {
+            console.error(`Error ${index + 1}:`);
+            console.error("Message:", gqlError.message);
+            console.error("Extensions:", gqlError.extensions);
+          });
         }
 
-        if(type === 2){
-          this.filteredMembers = JSON.parse(JSON.stringify(this.members))
-        }else{
-          this.filteredMembers = [...this.filteredMembers,...JSON.parse(JSON.stringify(this.members))];
+        if (error.networkError) {
+          console.error("Network Error:", error.networkError);
         }
-       
-       // this.filteredMembers = [...this.filteredMembers,...JSON.parse(JSON.stringify(this.members))];
-       // console.log("Getting Staff Data", this.members);
-        this.checkForExistingUsers();
-      },
-        (error) => {
-          console.error("Error occurred while fetching data:");
-          if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-            console.error("GraphQL Errors:");
-            error.graphQLErrors.forEach((gqlError, index) => {
-              console.error(`Error ${index + 1}:`);
-              console.error("Message:", gqlError.message);
-              console.error("Extensions:", gqlError.extensions);
-            });
-          }
-
-          if (error.networkError) {
-            console.error("Network Error:", error.networkError);
-          }
-        }
-      )
+      }
+    )
 
   }
 
-//find existing users in sessions and make them disable
-checkForExistingUsers(){
-  // Initialize properties
-  // Check if the member is already selected
-  this.existedPlayer.forEach(existedMember => {
-    const matchingMember = this.filteredMembers.find((member) => member.Id === existedMember.member.Id);
-        if (matchingMember) {
-          matchingMember['isSelected'] = true;
-          matchingMember['isAlreadyExisted'] = true;
-        }
-  });//createEnrollment
-  this.selectedMembers.forEach(existedMember => {
-    const matchingMember = this.filteredMembers.find((member) => member.Id === existedMember.Id);
-        if (matchingMember) {
-          matchingMember['isSelected'] = true;
-        }
-  });
-  console.table(this.filteredMembers);
-}
+  //find existing users in sessions and make them disable
+  checkForExistingUsers() {
+    // Initialize properties
+    // Check if the member is already selected
+    this.existedPlayer.forEach(existedMember => {
+      const matchingMember = this.filteredMembers.find((member) => member.Id === existedMember.member.Id);
+      if (matchingMember) {
+        matchingMember['isSelected'] = true;
+        matchingMember['isAlreadyExisted'] = true;
+      }
+    });//createEnrollment
+    this.selectedMembers.forEach(existedMember => {
+      const matchingMember = this.filteredMembers.find((member) => member.Id === existedMember.Id);
+      if (matchingMember) {
+        matchingMember['isSelected'] = true;
+      }
+    });
+    console.table(this.filteredMembers);
+  }
 
 
-  onMemberSelectionChange(member: MemberModel,cbox:Checkbox) {
+  onMemberSelectionChange(member: MemberModel, cbox: Checkbox) {
     if (member.isSelected) {
-      if(this.capacity_left > 0){
+      if (this.capacity_left > 0) {
         this.selectedMembers.push(member);
         this.capacity_left--;
-      }else{
-        if (cbox.checked){
+      } else {
+        if (cbox.checked) {
           cbox.checked = false;
-          this.commonService.toastMessage("Session size is full, Please increase the capacity",2500,ToastMessageType.Error,ToastPlacement.Bottom);
+          this.commonService.toastMessage("Session size is full, Please increase the capacity", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
           //event.srcEvent.stopPropagation();
-          return 
+          return
         }
-        
+
       }
     } else {
       const index = this.selectedMembers.findIndex(selectedMember => selectedMember.Id === member.Id);
-      if (index!== -1) {
+      if (index !== -1) {
         this.selectedMembers.splice(index, 1);
         this.capacity_left++;
       }
     }
   }
- 
-  
+
+
 
   // Function to submit selected members
   submitMembers() {
@@ -406,7 +407,7 @@ export class CreateEnrollment {
   weekly_session_id: string
   MemberIds: string[]
   ParentClubId?: string; //ParentClub Id
-  MemberId?:string
-  AppType?:number
-  DeviceType?:number
+  MemberId?: string
+  AppType?: number
+  DeviceType?: number
 }

@@ -124,25 +124,27 @@ export class membershipMemberListing {
         const get_memberships_payload = {
             parentclubId:this.postgre_parentclub_id,
             membership_id:this.membership.id,
+            //clubId:this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
             action_type:this.type,
             device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
-            app_type:AppType.ADMIN_NEW
+            app_type:AppType.ADMIN_NEW//new admin
           }
-          this.httpService.post(API.MEMBERSHIP_ENROLS,get_memberships_payload).subscribe({
-            next: (res: any) => {
-                console.table(`enrols:${res}`);
-                if(res && res.data) {
-                    this.membership_users = res.data.enrols as MembershipEnrolUsers[];
-                    this.enrol_count = res.data.enrol_count;
-                    this.paid_member_count = res.data.paid_count;
-                    this.pending_member_count = res.data.pending_count;
-                }
-            },
-            error: (error) => {
-                console.error("Error in fetching:", error);
-                this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+          this.httpService.post(API.MEMBERSHIP_ENROLS,get_memberships_payload).subscribe((res: any) => {
+            console.table(`enrols:${res}`);
+            this.comonService.hideLoader();
+            if(res && res.data) {
+                this.membership_users = res.data.enrols as MembershipEnrolUsers[];
+                this.enrol_count = res.data.enrol_count;
+                this.paid_member_count = res.data.paid_count;
+                this.pending_member_count = res.data.pending_count;
             }
-          });
+          },
+         (error) => {
+              this.comonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         })
     }
 
     getMembershipRenewalEnrols(){
@@ -152,21 +154,24 @@ export class membershipMemberListing {
             parentclubId:this.postgre_parentclub_id,
             action_type:this.type,
             device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
-            app_type:AppType.ADMIN_NEW
+            app_type:AppType.ADMIN_NEW//new admin
           }
-          this.httpService.post(API.GET_NEXT_RENEWALS,get_memberships_payload).subscribe({
-            next: (res: any) => {
-                console.table(`enrols:${res}`);
-                if(res && res.data) {
-                    this.enrol_count = res.data.enrol_count;
-                    this.membership_users = res.data.enrols as MembershipEnrolUsers[];
-                }
-            },
-            error: (error) => {
-                console.error("Error in fetching:", error);
-                this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+          this.httpService.post(API.GET_NEXT_RENEWALS,get_memberships_payload).subscribe((res: any) => {
+            console.table(`enrols:${res}`);
+            this.comonService.hideLoader();
+            if(res && res.data) {
+                this.enrol_count = res.data.enrol_count;
+                this.membership_users = res.data.enrols as MembershipEnrolUsers[];
+                // this.paid_member_count = res.data.paid_count;
+                // this.pending_member_count = res.data.pending_count;
             }
-          });
+          },
+         (error) => {
+              this.comonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         }) 
     }
 
     openActionSheet(member:MembershipEnrolUsers) {

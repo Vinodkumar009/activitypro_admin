@@ -1,0 +1,131 @@
+<!--
+  Generated template for the MemberdetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Member Details</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<!-- <ion-content padding>
+  <ion-list style="overflow-y: scroll">
+    <ion-card *ngFor="let level of levelsList"  class="facilityCard seession-cards"
+      style="border-radius: 0px !important" (click)="gotoMemberlist(level)">
+      <ion-card-header style="padding: 0 !important; white-space: normal">
+        <ion-row style="margin: 0px 0px 5px 0px">
+          <ion-col col-8 class="mar-auto-all pad-left-15">
+            <p class="mar0 eventname">{{level.level_name}}</p> -->
+<!-- <p class="p1" style="
+                font-size: 15px;
+                color: rgba(0, 0, 0, 0.65);
+                margin-top: 0px;
+              ">
+              Levels:<span>1</span>
+            </p> -->
+<!-- </ion-col>
+          <ion-col col-4 style="margin: auto">
+            <ion-row style="justify-content:space-between;"> -->
+<!-- <div class="circle" float-right> -->
+<!-- <p class="paidmembercount" style="font-size: 30px; padding-left: 50px">
+                {{level.count}}
+              </p>
+              <ion-icon name="ios-arrow-forward"
+                style="padding-left: 10px; font-size: 30px; color: #499bbd !important">
+              </ion-icon>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
+</ion-content> -->
+
+<ion-content>
+  <ion-grid class="nopad">
+    <ion-row class="border-bottom-2px ">
+      <ion-item class="activity">
+        <ion-label style="text-align: left;padding-left: 10px;    font-weight: 500;">Activity</ion-label>
+        <ion-select [(ngModel)]="selectedActivity" (ionChange)="getUserLevelStats()">
+          <ion-option *ngFor="let act of activities" value="{{act.ActivityKey}}">{{act.ActivityName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
+  <!-- <ion-list class="margin_bottom">
+    <ion-col col-12 style="padding-left: 10px">
+      <div class="all border-left-style"></div>
+      <ion-card *ngFor="let level of levelsList" (click)="gotoMemberlist(level)">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-8 class="mar_auto">
+              <p class="name">{{level.level_name}}</p>
+            </ion-col>
+            <ion-col col-4>
+              <div class="circle" float-right>
+                <p class="paidmembercount" style="font-size: 20px; padding-left: 0px">
+                  {{level.count}}
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-list> -->
+  <ion-list style="padding-top: 10px;">
+    <ion-card *ngFor="let level of levelsList" class="facilityCard seession-cards" style="border-radius: 0px !important"
+      (click)="gotoMemberlist(level)">
+      <ion-card-header style="padding: 0 !important; white-space: normal">
+        <ion-row style="margin: 0px 0px 0px 0px">
+          <ion-col col-8 class="mar-auto-all pad-left-15" style="margin:auto">
+            <p style="color:  rgba(0, 0, 0, 0.85);" class="mar0 eventname">{{level.level_name}}</p>
+          </ion-col>
+          <ion-col col-3 style="margin: auto">
+            <p style="font-size: 20px; padding-left: 50px;color: rgba(0, 0, 0, 0.85);padding-top: 5px;">
+              {{level.count}}
+            </p>
+
+          </ion-col>
+          <ion-col col-1 style="margin: auto;">
+            <ion-icon name="ios-arrow-forward" style="font-size: 21px; color: #499bbd !important;padding-top: 5px;">
+            </ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col col-12 *ngIf="levelsList.length == 0" text-center>
+        <p>No Levels found for this activity</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div>
+    <p class="approve" (click)="gotoNext()">Approve Members</p>
+  </div>
+</ion-content>
+
+
+
+
+
+
+
+
+
+<!-- <ion-row>
+          <ion-card *ngIf="Setups.length == 0 && SetupDisplay.length == 0" class="nonmembercard">
+              <ion-card-content style="text-align: center;color: #bc2a26;">
+                  <p class="danger_color2 nonmemcard"> No Membership Added</p>
+              </ion-card-content>
+          </ion-card>
+          <ion-card *ngIf="Setups.length > 0 && SetupDisplay.length == 0" class="nonmembercard">
+              <ion-card-content style="text-align: center;color: #bc2a26;">
+                  <p class="danger_color2 nonmemcard"> No Membership Found</p>
+              </ion-card-content>
+          </ion-card>
+      </ion-row> -->

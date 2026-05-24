@@ -1,0 +1,103 @@
+
+<ion-header *ngIf="themeType == 1">
+        <ion-navbar>
+            <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+            <ion-title>Edit Template</ion-title>
+            <ion-buttons end>
+                <button ion-button icon-only (click)="presentPopover($event)"> 
+            <ion-icon name="more"></ion-icon>
+          </button>
+            </ion-buttons>
+        </ion-navbar>
+    </ion-header>
+    <ion-header>
+        <ion-navbar *ngIf="themeType == 2">
+            <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+          <ion-icon name="apps"></ion-icon>
+        </button>
+            <ion-title>
+                Edit Template
+            </ion-title>
+            <ion-buttons end>
+                <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                     <img src="assets/images/home.svg" class="home_btn">
+                </button>
+                <button ion-button icon-only (click)="presentPopover($event)"> 
+            <ion-icon name="more"></ion-icon>
+          </button>
+            </ion-buttons>
+        </ion-navbar>
+    </ion-header>
+    <ion-content padding class="card-background-page">
+            <ion-grid style="margin-top:3px;" *ngIf="parentClubDetails.length>0">
+                    <ion-row>
+                        <ion-col col-2> <img src={{parentClubDetails[0].ParentClubAppIconURL}}></ion-col>
+                        <ion-col col-10>
+                            <p class="p_clubName">{{parentClubDetails[0].ParentClubName}}</p>
+                        </ion-col>
+            
+                    </ion-row>
+                </ion-grid>
+       
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                    <ion-item class="items2" id="activity">
+                            <ion-label>Activities</ion-label>
+                            <ion-select [(ngModel)]="templateDetails.ActivityName" disabled="true">
+                                <ion-option *ngFor="let activities of activityList;let i = index">{{activities.ActivityName}}</ion-option>
+                              </ion-select>
+                        </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-item class="items2" id="template_name">
+                        <ion-input type="text" placeholder="Template Name" [(ngModel)]="templateDetails.TemplateName" ></ion-input>
+                      </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                    <ion-col>
+                        <ion-item class="items2" id="summary">
+                            <ion-textarea type="text" rows="8" placeholder="Summary" [(ngModel)]="templateDetails.Summary"  ></ion-textarea>
+                        </ion-item>
+                    </ion-col>
+                  </ion-row>
+            <ion-list>
+                    <ion-item-group>
+                        <div  *ngFor="let items of template.EvaluationCriteria;let i = index;"  class="cont">
+                                <ion-item style="border-bottom: .01em solid #ccd3d4;" class="items" >
+                                        <ion-label>
+                                            <ion-grid class="grids">
+                                                <ion-row>
+                                                    <ion-col col-11 (click)="makeDiv(i,items)"> <span  class="DisplayTextspan">{{items.DisplayText}} </span></ion-col>
+                                                    <ion-col col-1> <ion-icon ios="ios-create" md="md-create" class="icons" (click)="showPrompt(items)"></ion-icon></ion-col>
+                                                </ion-row>
+                                            </ion-grid>
+                                             
+                                        </ion-label> 
+                                        <ion-toggle [(ngModel)]="items.IsActive" (ionChange)="updateToggle(items)"></ion-toggle>
+    
+                                </ion-item>
+                                <ion-textarea [(ngModel)]="items.Comments" rows="5" *ngIf="status[i] == true" class="area animate-zoom" placeholder="comments"></ion-textarea>
+                        </div>
+                           
+                            
+                    </ion-item-group>
+                </ion-list>
+            <ion-row>
+                    <ion-col col-1></ion-col>
+                    <ion-col class="btn_col">
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" class="btn" (click)="clearTemplate()">Cancel</button>
+                            <button ion-button color="primary" class="btn"  (click)="updateTemplate()">Update</button>
+                    </ion-col>
+                    <ion-col col-1></ion-col>
+                </ion-row>
+          </ion-grid>
+    </ion-content>
+    
+    
+              

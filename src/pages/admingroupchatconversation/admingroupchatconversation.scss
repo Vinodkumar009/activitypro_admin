@@ -1,5 +1,9 @@
+@import '../../theme/android-sdk35-fixes.scss';
+
+
 page-admingroupchatconversation {
-  .back {
+    @include android-sdk35-fixes;
+    .back {
     background-image: url(../../assets/images/membergroupchatbackground.jpg) !important;
     background-repeat: no-repeat;
     background-attachment: fixed;

@@ -50,15 +50,13 @@ export class ImageUploadService {
     }
     return new Blob(byteArrays, { type: contentType });
   }
-  
+
   // Function to upload image using pre-signed URL
   async uploadImage(presignedUrl: string, base64Image: string): Promise<any> {
     try {
       return new Promise(async(resolve, reject) => {
         // Convert base64 data to Blob
-        //const blobData = await fetch(base64Image).then(response => response.blob());
         const blobData = this.base64ToBlob(base64Image, 'image/jpeg');
-        //console.log(`blobData: ${blobData}`);
         // Set up headers for the PUT request
         let headers = new HttpHeaders();
         headers.append('Content-Type', 'image/jpeg');

@@ -1,4 +1,10 @@
-page-membershiprenewal{
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+page-membershiprenewal {
+    @include android-sdk35-fixes;
+
+
+
     .button-md {
         background-color: #f6f8fa;
     }

@@ -33,7 +33,6 @@ export class NewViewcourtPage {
 
 
 
-  nestUrl: string;
   courtSelected = 'all';
   slotofAllCourt = []
   showCalender = false;
@@ -115,7 +114,6 @@ export class NewViewcourtPage {
           }
           break;
         }   
-        this.nestUrl = this.sharedService.getnestURL()
         this.getClubDetails();
         // this.events.subscribe('reload', (load) => {
         //   if(load){

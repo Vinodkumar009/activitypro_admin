@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import {
   AlertController,
   IonicPage,
@@ -6,6 +6,7 @@ import {
   NavController,
   NavParams,
   PopoverController,
+  Events
 } from 'ionic-angular';
 import {
   CommonService,
@@ -25,6 +26,7 @@ import { HttpService } from '../../../../services/http.service';
 import { API } from '../../../../shared/constants/api_constants';
 import { AppType } from '../../../../shared/constants/module.constants';
 import { RoundTypeInput, RoundTypesModel } from '../../../../shared/model/league.model';
+import { ThemeService } from '../../../../services/theme.service';
 
 
 /**
@@ -44,6 +46,7 @@ export class CreatematchleaguePage {
   min: any;
   max: any;
   publicType: boolean = true;
+  isDarkTheme: boolean = true;
   privateType: boolean = true;
   parentClubKey: string = "";
   // saveLeagues: LeaguesForParentClubModel[] = [];
@@ -126,6 +129,7 @@ export class CreatematchleaguePage {
   filteredParticipantData: LeagueParticipantModel[];
   filteredPrimaryParticipants: LeagueParticipantModel[];
   filteredSecondaryParticipants: LeagueParticipantModel[];
+  pairs: any[] = [];
 
   selectedParticipant1: LeagueParticipantModel;
   location_id: string;
@@ -146,6 +150,9 @@ export class CreatematchleaguePage {
     public popoverCtrl: PopoverController,
     private graphqlService: GraphqlService,
     private sharedService: SharedServices,
+    private themeService: ThemeService,
+    private events: Events,
+    private renderer: Renderer2
   ) {
 
     this.leagueId = this.navParams.get("leagueId");
@@ -171,7 +178,7 @@ export class CreatematchleaguePage {
     this.inputObj.user_device_metadata.UserActionType = 0;
     this.inputObj.user_device_metadata.UserAppType = 0;
     this.inputObj.user_device_metadata.UserDeviceType = this.sharedservice.getPlatform() == "android" ? 1 : 2;
-    this.inputObj.CreatedBy = this.sharedservice.getLoggedInUserId();
+    this.inputObj.CreatedBy = this.sharedservice.getLoggedInUserId() || this.sharedService.getPostgreParentClubId();
     this.inputObj.LeagueId = this.leagueId;
     this.inputObj.match_type = +this.navParams.get("league_type");
     const inputFormat = 'DD-MMM-YYYY, ddd';
@@ -189,6 +196,9 @@ export class CreatematchleaguePage {
 
     this.getLoggedInData();
     this.getParticipants();
+    if (this.inputObj.match_type === 2) {
+      this.loadPairs();
+    }
 
   }
 
@@ -204,7 +214,7 @@ export class CreatematchleaguePage {
       this.parentClubKey = JSON.parse(login_obj).UserInfo[0].ParentClubKey;
       const val = JSON.parse(login_obj);
       this.roundTypeInput = new RoundTypeInput();
-      this.roundTypeInput.updated_by = this.sharedservice.getLoggedInUserId();
+      this.roundTypeInput.updated_by = this.sharedservice.getLoggedInUserId() || this.sharedService.getPostgreParentClubId();
       this.roundTypeInput.device_id = this.sharedservice.getDeviceId() || "";
       this.roundTypeInput.parentclubId = this.sharedservice.getPostgreParentClubId();
       this.roundTypeInput.clubId = val.$key;
@@ -240,6 +250,32 @@ export class CreatematchleaguePage {
   ionViewDidLoad() {
     console.log("ionViewDidLoad CreatematchleaguePage");
   }
+
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => { this.applyTheme(isDark); });
+    this.events.subscribe('theme:changed', (isDark) => { this.applyTheme(isDark); });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  async loadTheme() {
+    const isDarkTheme = await this.storage.get('dashboardTheme');
+    const isDark = isDarkTheme !== null ? isDarkTheme : true;
+    this.isDarkTheme = isDark;
+    this.applyTheme(isDark);
+  }
+
+  applyTheme(isDark: boolean) {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-creatematchleague');
+    if (el) {
+      isDark ? this.renderer.removeClass(el, 'light-theme')
+             : this.renderer.addClass(el, 'light-theme');
+    }
+  }
   saveLeagueDetails() {
     this.navCtrl.push("LeaguelistingPage");
   }
@@ -255,7 +291,7 @@ export class CreatematchleaguePage {
     const clubs_input = {
       parentclub_id: this.postgre_parentclub_id,
       user_postgre_metadata: {
-        UserMemberId: this.sharedservice.getLoggedInUserId()
+        UserMemberId: this.sharedservice.getLoggedInUserId() || this.sharedService.getPostgreParentClubId()
       },
       user_device_metadata: {
         UserAppType: 0,
@@ -559,6 +595,7 @@ export class CreatematchleaguePage {
         }
 
         this.inputObj.match_type = +this.inputObj.match_type;
+        this.inputObj.CreatedBy = this.sharedService.getLoggedInUserId() || this.sharedService.getPostgreParentClubId();
         if (this.inputObj.MatchPaymentType != 1) {
           this.inputObj.Member_Fee = "0.00";
           this.inputObj.Non_Member_Fee = "0.00";
@@ -598,10 +635,31 @@ export class CreatematchleaguePage {
     } catch (error) {
       this.commonService.hideLoader();
       console.log("Error:", error);
-      this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom)
+      this.commonService.toastMessage("Match creation failed", 2500, ToastMessageType.Error, ToastPlacement.Bottom);
     }
   }
 
+  loadPairs() {
+    this.httpService.post(API.GET_PAIRS, { league_id: this.leagueId }).subscribe({
+      next: (res: any) => { this.pairs = res.data || []; },
+      error: () => {}
+    });
+  }
 
+  onHomePairSelect(pairId: string) {
+    var pair = this.pairs.find(function(p) { return p.pair_id === pairId; });
+    if (pair && pair.players && pair.players.length >= 2) {
+      this.inputObj.primary_participant_id = pair.players[0].id;
+      this.inputObj.primary_participant_id2 = pair.players[1].id;
+    }
+  }
+
+  onAwayPairSelect(pairId: string) {
+    var pair = this.pairs.find(function(p) { return p.pair_id === pairId; });
+    if (pair && pair.players && pair.players.length >= 2) {
+      this.inputObj.secondary_participant_id = pair.players[0].id;
+      this.inputObj.secondary_participant_id2 = pair.players[1].id;
+    }
+  }
 }
 

@@ -30,7 +30,6 @@ export class CancelMonthlySesSubscription {
   cancelText = '';
   loading: any;
   nodeUrl: string;
-  nestUrl: string;
   expirationDate: any
   session_dets:MonthlySessionDets;
   user_subscription:MonthlySessionMember;
@@ -53,7 +52,6 @@ export class CancelMonthlySesSubscription {
       public navParam: NavParams,
       private graphqlService: GraphqlService,
     ) {
-      this.nestUrl = sharedservice.getnestURL();
       this.storage.get('userObj').then((val) => {
       val = JSON.parse(val);
       if (val.$key != "") {

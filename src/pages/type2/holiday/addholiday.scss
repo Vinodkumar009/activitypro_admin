@@ -1,5 +1,6 @@
-add-holiday-page{
-     .text-color{
-        color: red;
-    }
+@import '../../../theme/android-sdk35-fixes.scss';
+
+add-holiday-page {
+    @include android-sdk35-fixes;
+
 }

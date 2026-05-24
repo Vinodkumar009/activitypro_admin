@@ -28,6 +28,7 @@ import { AppType } from "../../../../shared/constants/module.constants";
 import { ParticipantModel } from "../../match/matchdetails/matchdetails";
 import { MatchType } from "../../../../shared/utility/enums";
 import { ThemeService } from "../../../../services/theme.service";
+import { DetailHeaderRow } from "../../../../shared/components/detail-header/detail-header.component";
 import { SavedFormation } from "../models/lineup.model";
 /**
  * Generated class for the LeaguedetailsPage page.
@@ -50,7 +51,7 @@ export class LeaguedetailsPage {
   MatchesType: boolean = true;
   league: LeaguesForParentClubModel;
   parentClubKey: string;
-  activeIndex: any;
+  activeIndex: number = 0;
   currencyDetails: any;
   match: LeagueMatch[];
   leagueStandingInput: LeagueStandingInput = {
@@ -95,7 +96,40 @@ export class LeaguedetailsPage {
   startDate: string;
   startTime: string;
   matchesLength: number;
+  groups: any[] = [];
+  participantGroups: any[] = [];
+  pairs: any[] = [];
+  showCreatePairDialog: boolean = false;
+  pairPlayer1: any = null;
+  pairPlayer2: any = null;
+  selectedGroupPlayer: any = null;
+  showCreateGroupDialog: boolean = false;
+  numberOfGroups: number = 2;
+  showRenameGroupDialog: boolean = false;
+  renameGroupId: string = '';
+  renameGroupValue: string = '';
+  showDeleteGroupConfirm: boolean = false;
+  groupToDelete: string = '';
+
+  get matchesTabIndex(): number {
+    return (this.individualLeague && this.individualLeague.league_type !== 3) ? 2 : 1;
+  }
+
+  get boxLeagueTabIndex(): number {
+    return (this.individualLeague && this.individualLeague.league_type !== 3) ? 3 : 2;
+  }
+
+  get statsTabIndex(): number {
+    return (this.individualLeague && this.individualLeague.league_type !== 3) ? 4 : 3;
+  }
   partcipantDataCount: number;
+  showLineupSheet: boolean = false;
+  lineupFormations: SavedFormation[] = [];
+  selectedLineupMatch: LeagueMatch = null;
+  showParticipantSheet: boolean = false;
+  selectedParticipant: LeagueParticipantModel = null;
+  showTeamSheet: boolean = false;
+  selectedTeam: LeagueStandingModel = null;
 
   constructor(
     public navCtrl: NavController,
@@ -131,8 +165,14 @@ export class LeaguedetailsPage {
     this.events.subscribe("theme:changed", (isDark) => {
       this.applyTheme(isDark);
     });
+    this.events.subscribe("league:refresh", () => {
+      this.getLeagueDetails();
+      this.getLeagueMatches();
+    });
     this.league_id = this.navParams.get("league_id");
     console.log("teams are", this.league_id);
+    this.fetchGroups();
+    this.fetchPairs();
     const [userobj, currency] = await Promise.all([
       this.storage.get("userObj"),
       this.storage.get('Currency')
@@ -162,10 +202,22 @@ export class LeaguedetailsPage {
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad LeaguedetailsPage");
-    this.activeIndex = "0";
+    this.activeIndex = 0;
     setTimeout(() => {
       this.loadTheme();
     }, 100);
+  }
+
+  get headerAccentColor(): string {
+    return this.commonService.getTypeAccentColor(this.individualLeague ? this.individualLeague.league_type : undefined);
+  }
+
+  get headerDetailRows(): DetailHeaderRow[] {
+    const rows: DetailHeaderRow[] = [];
+    const l = this.individualLeague;
+    if (l && l.start_date) rows.push({ icon: 'calendar', text: l.start_date + (l.end_date ? ' → ' + l.end_date : '') });
+    if (l && l.club && l.club.ClubName) rows.push({ icon: 'pin', text: l.club.ClubName });
+    return rows;
   }
 
   ionViewDidEnter() {
@@ -174,6 +226,7 @@ export class LeaguedetailsPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe("theme:changed");
+    this.events.unsubscribe("league:refresh");
   }
 
   private loadTheme(): void {
@@ -466,89 +519,27 @@ export class LeaguedetailsPage {
   }
 
   private presentLineupActionSheet(match: LeagueMatch, savedFormations: SavedFormation[]) {
-    // Team validation - use lowercase property names for LeagueMatch
     if (!match.homeusername || !match.awayusername) {
       this.commonService.toastMessage('Please assign teams first', 2500, ToastMessageType.Error);
       return;
     }
-
     if (this.individualLeague.activity.Id !== 'd47c2ac4-e571-488f-a895-c1940726900f') {
       this.commonService.toastMessage('Team lineup data is not available for this activity', 2500, ToastMessageType.Info);
       return;
     }
+    this.selectedLineupMatch = match;
+    this.lineupFormations = savedFormations;
+    this.showLineupSheet = true;
+  }
 
-    const buttons: any[] = [];
+  selectFormation(f: SavedFormation) {
+    this.showLineupSheet = false;
+    this.navigateToLineup(this.selectedLineupMatch, f.lineup_name, false, f.formation_setup_id, f.team_id, f.team_size);
+  }
 
-    if (savedFormations.length === 0) {
-      buttons.push({
-        text: 'No saved lineups available',
-        icon: 'information-circle',
-        cssClass: 'no-lineups-text',
-        handler: () => {
-          // Do nothing, just informational
-          return false;
-        }
-      });
-    } else {
-      savedFormations.forEach((formation: SavedFormation) => {
-        // Use a separator that we can split later in the injection script
-        const lineupLabel = `${formation.lineup_name || 'Lineup'} (${formation.formation_name})`;
-        const displayText = formation.team_name
-          ? `${lineupLabel}|${formation.team_name}`
-          : lineupLabel;
-
-        buttons.push({
-          text: displayText,
-          icon: 'grid',
-          cssClass: 'saved-formation-row',
-          handler: () => {
-            this.navigateToLineup(match, formation.lineup_name, false, formation.formation_setup_id, formation.team_id, formation.team_size);
-          }
-        });
-      });
-    }
-
-    // Always add Create New Formation button
-    buttons.push({
-      text: 'Create New Lineup',
-      icon: 'add-circle',
-      cssClass: 'create-new-button',
-      handler: () => {
-        this.navigateToLineup(match, '', true);
-      }
-    });
-
-    // Add Cancel button
-    // buttons.push({
-    //   text: 'Cancel',
-    //   role: 'cancel',
-    //   icon: 'close',
-    //   cssClass: 'action-sheet-cancel',
-    //   handler: () => {
-    //     console.log('Cancel clicked');
-    //   }
-    // });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Select Lineup',
-      cssClass: 'lineup-action-sheet',
-      buttons: buttons
-    });
-
-    actionSheet.present().then(() => {
-      // Small delay to ensure the DOM is ready
-      setTimeout(() => {
-        const buttonElements = document.querySelectorAll('.saved-formation-row .button-inner');
-        buttonElements.forEach((btn: any) => {
-          const content = btn.innerHTML;
-          if (content.includes('|')) {
-            const parts = content.split('|');
-            // Reconstruct the HTML with styled spans for different colors
-            btn.innerHTML = `<span class="l-part">${parts[0]}</span><span class="t-part"> - ${parts[1]}</span>`;
-          }
-        });
-      }, 50);
-    });
+  createNewLineup() {
+    this.showLineupSheet = false;
+    this.navigateToLineup(this.selectedLineupMatch, '', true);
   }
 
   private navigateToLineup(match: LeagueMatch, lineupName: string = '', isCreateNew: boolean = false, formationSetupId: string = '', teamId: string = '', teamSize: number = 0) {
@@ -743,55 +734,29 @@ export class LeaguedetailsPage {
   }
 
   ActionSheet(participant: LeagueParticipantModel) {
-    const actionType = participant.amount_pay_status === 0 ? 1 : 2;
-    const actionText = participant.amount_pay_status === 0 ? 'Remove' : 'Withdraw';
+    this.selectedParticipant = participant;
+    this.showParticipantSheet = true;
+  }
 
-    let buttons = [
-      {
-        text: 'Update Payment',
-        handler: () => {
-          this.updatePayment(participant);
-        }
-      },
-      {
-        text: 'Profile',
-        handler: () => {
-          this.getProfile(participant);
-        }
-      },
-      {
-        text: 'Send Email',
-        handler: () => {
-          this.sendEmailToMember(participant);
-        }
-      }
-    ];
-
-    // Conditionally add the "Withdraw" button
-    if (participant.participant_status_text !== 'Withdrawn') {
-      buttons.push({
-        text: actionText,
-        handler: () => {
-          this.removeTeam(participant, actionType);
-        }
-      });
+  onParticipantAction(action: string) {
+    this.showParticipantSheet = false;
+    const participant = this.selectedParticipant;
+    if (!participant) return;
+    switch (action) {
+      case 'payment': this.updatePayment(participant); break;
+      case 'profile': this.getProfile(participant); break;
+      case 'email': this.sendEmailToMember(participant); break;
+      case 'remove':
+        const actionType = participant.amount_pay_status === 0 ? 1 : 2;
+        this.removeTeam(participant, actionType);
+        break;
     }
-
-    // Create the ActionSheet with the dynamic buttons array
-    let actionSheet = this.actionSheetCtrl.create({
-      buttons: buttons
-    });
-
-    // Present the ActionSheet
-    actionSheet.present();
   }
 
   gotoTeamDetails(team) {
     this.navCtrl.push("TeamdetailsPage", {
-      "team": team.parentclubteam,
-
+      "team": { ...team.parentclubteam, Id: team.parentclubteam.id }
     })
-
   }
 
 
@@ -1073,39 +1038,23 @@ export class LeaguedetailsPage {
 
   tDetails(team: LeagueStandingModel) {
     this.navCtrl.push("TeamdetailsPage", {
-      "team": team.parentclubteam,
-      // teamName:team.parentclubteam.teamName,
-      // venue:team.parentclubteam.venue.VenueName,
-      // ageGroup:team.parentclubteam.ageGroup,
-      // visibility:team.parentclubteam.teamVisibility,
+      "team": { ...team.parentclubteam, Id: team.parentclubteam.id }
     })
   }
 
   openTeamActions(team: LeagueStandingModel) {
-    //this.navCtrl.push("LeaguematchdetailsPage");
-    //this.navCtrl.push("UpdateleaguematchPage", { leagueId: this.individualLeague.id });
+    this.selectedTeam = team;
+    this.showTeamSheet = true;
+  }
 
-    let actionSheet = this.actionSheetCtrl.create({
-
-      buttons: [
-        {
-          text: "View Team",
-          handler: () => {
-            this.navCtrl.push("TeamdetailsPage", {
-              "team": team.parentclubteam
-            })
-          }
-        },
-        {
-          text: "Remove Team",
-          handler: () => {
-            this.removeTeam(team, 1)
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-
+  onTeamAction(action: string) {
+    this.showTeamSheet = false;
+    const team = this.selectedTeam;
+    if (!team) return;
+    switch (action) {
+      case 'view': this.navCtrl.push("TeamdetailsPage", { "team": { ...team.parentclubteam, Id: team.parentclubteam.id } }); break;
+      case 'remove': this.removeTeam(team, 1); break;
+    }
   }
 
   //Get teams for a league
@@ -1285,28 +1234,788 @@ export class LeaguedetailsPage {
 
   getLeagueMatches() {
     this.commonInput.league_id = this.league_id;
+    this.commonInput.action_type = 2;
 
     this.httpService.post(API.GET_LEAGUE_MATCHES, this.commonInput).subscribe({
       next: (res: any) => {
         this.match = res.data;
         this.matchesLength = this.match.length;
+        this.computeStats();
       }
     });
   }
 
-  showMatchActionSheet(match: LeagueMatch) {
-    //if (this.individualLeague.league_type === 3) {
-      //this.commonService.showMatchActionSheet(match, {
-      //onViewDetails: () => this.gotoLeagueMatchInfoPage(match),//this.gotoLeagueMatchInfoPage(match),
-      //onEdit: () => this.navCtrl.push("UpdateleaguematchPage", { match }),
-      // onDelete: () => this.removeMatch(match),
-      // onUpdateResult: () => this.updateResult(match)
-      //});
-      this.gotoLeagueMatchInfoPage(match);
-    //} else {
-      this.gotoMatchDetails(match);
-    //}
-    this.gotoMatchDetails(match);
+  statsData: any[] = [];
+  activeBoxGroup: number = 0;
+
+  computeStats() {
+    const stats: any = {};
+    if (!this.match) { this.statsData = []; return; }
+    this.match.forEach((m: any) => {
+      if (!m.result_json) return;
+      var json: any;
+      try { json = typeof m.result_json === 'string' ? JSON.parse(m.result_json) : m.result_json; } catch (e) { return; }
+      var homeId = json && json.HOME_TEAM && json.HOME_TEAM.TEAM_ID;
+      var awayId = json && json.AWAY_TEAM && json.AWAY_TEAM.TEAM_ID;
+      var winnerId = json && json.RESULT && json.RESULT.WINNER_ID;
+      if (!homeId || !awayId) return;
+      var homeName = m.homeusername || 'Home';
+      var awayName = m.awayusername || 'Away';
+      if (!stats[homeName]) stats[homeName] = { name: homeName, played: 0, won: 0, lost: 0, setsWon: 0, setsLost: 0, ptsWon: 0, ptsLost: 0 };
+      if (!stats[awayName]) stats[awayName] = { name: awayName, played: 0, won: 0, lost: 0, setsWon: 0, setsLost: 0, ptsWon: 0, ptsLost: 0 };
+      stats[homeName].played++;
+      stats[awayName].played++;
+      if (winnerId === homeId) { stats[homeName].won++; stats[awayName].lost++; }
+      else if (winnerId === awayId) { stats[awayName].won++; stats[homeName].lost++; }
+      var sets = (json.SET_SCORES || []).filter(function(s) { return s.SCORE && s.SCORE !== '0-0'; });
+      sets.forEach(function(s) {
+        var parts = (s.SCORE || '0-0').split('-').map(Number);
+        if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+          stats[homeName].ptsWon += parts[0]; stats[homeName].ptsLost += parts[1];
+          stats[awayName].ptsWon += parts[1]; stats[awayName].ptsLost += parts[0];
+          if (parts[0] > parts[1]) { stats[homeName].setsWon++; stats[awayName].setsLost++; }
+          else if (parts[1] > parts[0]) { stats[awayName].setsWon++; stats[homeName].setsLost++; }
+        }
+      });
+    });
+    this.statsData = Object.keys(stats).map(function(k) {
+      var s = stats[k];
+      return { name: s.name, played: s.played, won: s.won, lost: s.lost, setsWon: s.setsWon, setsLost: s.setsLost, ptsWon: s.ptsWon, ptsLost: s.ptsLost, winPct: (s.ptsWon + s.ptsLost) > 0 ? Math.round((s.ptsWon / (s.ptsWon + s.ptsLost)) * 100) : 0 };
+    }).sort(function(a, b) { return b.won - a.won || b.winPct - a.winPct; });
+  }
+
+  getBoxParticipants(): any[] {
+    if (this.groups.length > 1) {
+      var grouped = this.getGroupedParticipants();
+      var group = grouped[this.activeBoxGroup];
+      var names = (group && group.playerNames) ? group.playerNames : [];
+      var self = this;
+      return names.map(function(name) {
+        return self.partcipantData.find(function(p) { return p.participant_name === name; }) || { participant_name: name };
+      }).sort(function(a, b) { return (a.participant_name || '').localeCompare(b.participant_name || ''); });
+    }
+    return (this.partcipantData || []).slice().sort(function(a, b) { return (a.participant_name || '').localeCompare(b.participant_name || ''); });
+  }
+
+  getBoxScore(i: number, j: number): string {
+    var players = this.getBoxParticipants();
+    var home = players[i] ? (players[i].participant_name || '').trim().toLowerCase() : '';
+    var away = players[j] ? (players[j].participant_name || '').trim().toLowerCase() : '';
+    if (!this.match || !home || !away) return '';
+    var m = this.match.find(function(mat) {
+      var mHome = (mat.homeusername || '').trim().toLowerCase();
+      var mAway = (mat.awayusername || '').trim().toLowerCase();
+      return (mHome === home && mAway === away) || (mHome === away && mAway === home);
+    });
+    if (!m || !m.result_json) return '';
+    try {
+      var json = typeof m.result_json === 'string' ? JSON.parse(m.result_json) : m.result_json;
+      var sets = (json.SET_SCORES || []).filter(function(s) { return s.SCORE && s.SCORE !== '0-0'; });
+      if (sets.length === 0) return '';
+      var scores = sets.map(function(s) { return s.SCORE; });
+      var mHome = (m.homeusername || '').trim().toLowerCase();
+      if (mHome === home) return scores.join(' ');
+      return scores.map(function(s) { return s.split('-').reverse().join('-'); }).join(' ');
+    } catch (e) { return ''; }
+  }
+
+  getBoxPoints(i: number): number {
+    var players = this.getBoxParticipants();
+    var player = players[i] ? (players[i].participant_name || '').trim().toLowerCase() : '';
+    if (!this.match) return 0;
+    return this.match.filter(function(m) {
+      if (!m.result_json) return false;
+      try {
+        var json = typeof m.result_json === 'string' ? JSON.parse(m.result_json) : m.result_json;
+        var winnerId = json && json.RESULT ? json.RESULT.WINNER_ID : null;
+        if (!winnerId) return false;
+        if ((m.homeusername || '').trim().toLowerCase() === player && winnerId === m.home_participant_id) return true;
+        if ((m.awayusername || '').trim().toLowerCase() === player && winnerId === m.away_participant_id) return true;
+        return false;
+      } catch (e) { return false; }
+    }).length * 3;
+  }
+
+  onBoxCellClick(i: number, j: number) {
+    var players = this.getBoxParticipants();
+    var home = players[i] ? players[i] : null;
+    var away = players[j] ? players[j] : null;
+    if (!home || !away) return;
+    var homeName = home.participant_name || '';
+    var awayName = away.participant_name || '';
+    var homeNameLc = homeName.trim().toLowerCase();
+    var awayNameLc = awayName.trim().toLowerCase();
+    var m = this.match ? this.match.find(function(mat) {
+      var mH = (mat.homeusername || '').trim().toLowerCase();
+      var mA = (mat.awayusername || '').trim().toLowerCase();
+      return (mH === homeNameLc && mA === awayNameLc) || (mH === awayNameLc && mA === homeNameLc);
+    }) : null;
+    if (m) {
+      this.openPublishDialog(m);
+    } else {
+      this.selectedMatchForAction = {
+        fixture_id: '',
+        match_id: '',
+        homeusername: homeName,
+        awayusername: awayName,
+        home_participant_id: home.id || '',
+        away_participant_id: away.id || '',
+        ResultStatus: 0,
+        result_json: null
+      } as any;
+      this.openPublishDialog(this.selectedMatchForAction);
+    }
+  }
+
+  // ─── Doubles Box League ───
+  getDoublesBoxScore(i: number, j: number): string {
+    var homePair = this.pairs[i];
+    var awayPair = this.pairs[j];
+    if (!homePair || !awayPair || !this.match) return '';
+    var homeIds = homePair.players ? homePair.players.map(function(p) { return p.id; }) : [];
+    var awayIds = awayPair.players ? awayPair.players.map(function(p) { return p.id; }) : [];
+    var m = this.match.find(function(mat) {
+      if (!mat.result_json) return false;
+      try {
+        var json = typeof mat.result_json === 'string' ? JSON.parse(mat.result_json) : mat.result_json;
+        var hId = json && json.HOME_TEAM ? json.HOME_TEAM.TEAM_ID : '';
+        var aId = json && json.AWAY_TEAM ? json.AWAY_TEAM.TEAM_ID : '';
+        return (homeIds.indexOf(hId) > -1 && awayIds.indexOf(aId) > -1) ||
+               (awayIds.indexOf(hId) > -1 && homeIds.indexOf(aId) > -1);
+      } catch (e) { return false; }
+    });
+    if (!m || !m.result_json) return '';
+    try {
+      var json = typeof m.result_json === 'string' ? JSON.parse(m.result_json) : m.result_json;
+      var sets = (json.SET_SCORES || []).filter(function(s) { return s.SCORE && s.SCORE !== '0-0'; });
+      if (sets.length === 0) return '';
+      var hId = json.HOME_TEAM ? json.HOME_TEAM.TEAM_ID : '';
+      var rowIsHome = homeIds.indexOf(hId) > -1;
+      return sets.map(function(s) {
+        var parts = s.SCORE.split('-');
+        return rowIsHome ? s.SCORE : parts[1] + '-' + parts[0];
+      }).join(' ');
+    } catch (e) { return ''; }
+  }
+
+  getDoublesBoxPoints(i: number): number {
+    var pair = this.pairs[i];
+    if (!pair || !this.match) return 0;
+    var playerIds = pair.players ? pair.players.map(function(p) { return p.id; }) : [];
+    return this.match.filter(function(m) {
+      if (!m.result_json) return false;
+      try {
+        var json = typeof m.result_json === 'string' ? JSON.parse(m.result_json) : m.result_json;
+        var winnerId = json && json.RESULT ? json.RESULT.WINNER_ID : '';
+        return winnerId && playerIds.indexOf(winnerId) > -1;
+      } catch (e) { return false; }
+    }).length * 3;
+  }
+
+  onDoublesBoxCellClick(i: number, j: number) {
+    var homePair = this.pairs[i];
+    var awayPair = this.pairs[j];
+    if (!homePair || !awayPair) return;
+    var homeIds = homePair.players ? homePair.players.map(function(p) { return p.id; }) : [];
+    var awayIds = awayPair.players ? awayPair.players.map(function(p) { return p.id; }) : [];
+
+    // Find existing match
+    var m = this.match ? this.match.find(function(mat) {
+      var homeNameLc = (mat.homeusername || '').trim().toLowerCase();
+      var awayNameLc = (mat.awayusername || '').trim().toLowerCase();
+      var homePairName = (homePair.pair_name || '').trim().toLowerCase();
+      var awayPairName = (awayPair.pair_name || '').trim().toLowerCase();
+      return (homeNameLc === homePairName && awayNameLc === awayPairName) ||
+             (homeNameLc === awayPairName && awayNameLc === homePairName);
+    }) || this.match.find(function(mat) {
+      if (!mat.result_json) return false;
+      try {
+        var json = typeof mat.result_json === 'string' ? JSON.parse(mat.result_json) : mat.result_json;
+        var hId = json && json.HOME_TEAM ? json.HOME_TEAM.TEAM_ID : '';
+        var aId = json && json.AWAY_TEAM ? json.AWAY_TEAM.TEAM_ID : '';
+        return (homeIds.indexOf(hId) > -1 && awayIds.indexOf(aId) > -1) ||
+               (awayIds.indexOf(hId) > -1 && homeIds.indexOf(aId) > -1);
+      } catch (e) { return false; }
+    }) : null;
+
+    if (m) {
+      this.openPublishDialog(m);
+    } else {
+      this.selectedMatchForAction = {
+        fixture_id: '',
+        match_id: '',
+        homeusername: homePair.pair_name,
+        awayusername: awayPair.pair_name,
+        home_participant_id: homeIds[0] || '',
+        away_participant_id: awayIds[0] || '',
+        home_participant_id2: homeIds[1] || '',
+        away_participant_id2: awayIds[1] || '',
+        ResultStatus: 0,
+        result_json: null
+      } as any;
+      this.openPublishDialog(this.selectedMatchForAction);
+    }
+  }
+
+  fetchGroups() {
+    this.httpService.post(API.GET_GROUPS, { league_id: this.league_id }).subscribe({
+      next: (res: any) => {
+        this.groups = res.data || [];
+        this.httpService.post(API.GET_PARTICIPANT_GROUPS, { league_id: this.league_id }).subscribe({
+          next: (pgRes: any) => { this.participantGroups = pgRes.data || []; },
+          error: () => {}
+        });
+      },
+      error: () => {}
+    });
+  }
+
+  fetchPairs() {
+    this.httpService.post(API.GET_PAIRS, { league_id: this.league_id }).subscribe({
+      next: (res: any) => { this.pairs = res.data || []; },
+      error: () => {}
+    });
+  }
+
+  openCreatePair() {
+    this.pairPlayer1 = null;
+    this.pairPlayer2 = null;
+    this.showCreatePairDialog = true;
+  }
+
+  selectPairPlayer(player: any) {
+    if (!this.pairPlayer1) {
+      this.pairPlayer1 = player;
+    } else if (!this.pairPlayer2 && player.id !== this.pairPlayer1.id) {
+      this.pairPlayer2 = player;
+    }
+  }
+
+  resetPairSelection() {
+    this.pairPlayer1 = null;
+    this.pairPlayer2 = null;
+  }
+
+  createPair() {
+    if (!this.pairPlayer1 || !this.pairPlayer2) return;
+    this.httpService.post(API.CREATE_PAIR, {
+      league_id: this.league_id,
+      player1_id: this.pairPlayer1.id,
+      player2_id: this.pairPlayer2.id
+    }).subscribe({
+      next: () => {
+        this.showCreatePairDialog = false;
+        this.fetchPairs();
+        this.commonService.toastMessage('Pair created', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: (err) => {
+        this.commonService.toastMessage((err && err.error && err.error.message) || 'Failed to create pair', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+  removePair(pairId: string) {
+    this.httpService.post(API.REMOVE_PAIR, { pair_id: pairId }).subscribe({
+      next: () => {
+        this.fetchPairs();
+        this.commonService.toastMessage('Pair removed', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: () => {
+        this.commonService.toastMessage('Failed to remove pair', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+  getPlayerPairName(playerId: string): string {
+    var pair = this.pairs.find(function(p) {
+      return p.players && p.players.some(function(pl) { return pl.id === playerId; });
+    });
+    return pair ? pair.pair_name : '';
+  }
+
+  getGroupedParticipants(): any[] {
+    if (this.groups.length === 0) return [];
+    return this.groups.map(g => {
+      var players = this.partcipantData.filter(p => {
+        var assignment = this.participantGroups.find(a => a.id === p.id);
+        return assignment && assignment.group_id === g.id;
+      });
+      return { id: g.id, name: g.name, playerNames: players.map(p => p.participant_name) };
+    });
+  }
+
+  getGroupStats(playerNames: string[]): any[] {
+    var nameSet = {};
+    playerNames.forEach(function(n) { nameSet[n] = true; });
+    return this.statsData.filter(function(s) { return nameSet[s.name]; });
+  }
+
+  getGroupedPlayersForDisplay(): any[] {
+    var self = this;
+    var grouped = [];
+    var groupIds = {};
+    this.groups.forEach(function(g) { groupIds[g.id] = true; });
+
+    if (this.groups.length > 0) {
+      grouped = this.groups.map(function(g) {
+        var players = (self.partcipantData || []).filter(function(p) {
+          var assignment = self.participantGroups.find(function(a) { return a.id === p.id; });
+          return assignment && assignment.group_id === g.id;
+        });
+        players.forEach(function(p) { p._groupId = g.id; });
+        return { id: g.id, name: g.name, players: players };
+      });
+    }
+
+    // Unassigned = players whose group_id is null/empty or doesn't match any existing group
+    var unassigned = (self.partcipantData || []).filter(function(p) {
+      var assignment = self.participantGroups.find(function(a) { return a.id === p.id; });
+      return !assignment || !assignment.group_id || !groupIds[assignment.group_id];
+    });
+    if (unassigned.length > 0) {
+      unassigned.forEach(function(p) { p._groupId = '__unassigned__'; });
+      grouped.unshift({ id: '__unassigned__', name: 'Unassigned', players: unassigned });
+    }
+    return grouped;
+  }
+
+  selectGroupPlayer(player: any) {
+    if (this.selectedGroupPlayer && this.selectedGroupPlayer.id === player.id) {
+      this.selectedGroupPlayer = null;
+    } else {
+      this.selectedGroupPlayer = player;
+    }
+  }
+
+  movePlayerToGroup(groupId: string) {
+    if (!this.selectedGroupPlayer) return;
+    if (groupId === '__unassigned__') return;
+    if (this.selectedGroupPlayer._groupId === groupId) { this.selectedGroupPlayer = null; return; }
+    this.httpService.post(API.ASSIGN_PARTICIPANT_TO_GROUP, {
+      participant_id: this.selectedGroupPlayer.id,
+      group_id: groupId
+    }).subscribe({
+      next: () => {
+        this.selectedGroupPlayer = null;
+        this.fetchGroups();
+        this.commonService.toastMessage('Player moved', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: () => {
+        this.commonService.toastMessage('Failed to move player', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+  createGroups() {
+    this.httpService.post(API.CREATE_GROUPS, {
+      league_id: this.league_id,
+      number_of_groups: this.numberOfGroups,
+      auto_assign: true
+    }).subscribe({
+      next: () => {
+        this.showCreateGroupDialog = false;
+        this.fetchGroups();
+        this.commonService.toastMessage('Groups created', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: (err) => {
+        this.commonService.toastMessage((err && err.error && err.error.message) || 'Failed to create groups', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+  addGroup() {
+    this.httpService.post(API.CREATE_GROUPS, {
+      league_id: this.league_id,
+      number_of_groups: 1,
+      auto_assign: false
+    }).subscribe({
+      next: () => {
+        this.fetchGroups();
+        this.commonService.toastMessage('Group added', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: (err) => {
+        this.commonService.toastMessage((err && err.error && err.error.message) || 'Failed to add group', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+  startRenameGroup(group: any, event: Event) {
+    event.stopPropagation();
+    this.renameGroupId = group.id;
+    this.renameGroupValue = group.name;
+    this.showRenameGroupDialog = true;
+  }
+
+  confirmRenameGroup() {
+    if (!this.renameGroupValue) return;
+    this.httpService.post(API.RENAME_GROUP, {
+      group_id: this.renameGroupId,
+      name: this.renameGroupValue
+    }).subscribe({
+      next: () => {
+        this.showRenameGroupDialog = false;
+        this.fetchGroups();
+        this.commonService.toastMessage('Group renamed', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: (err) => {
+        this.commonService.toastMessage((err && err.error && err.error.message) || 'Failed to rename group', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+  deleteGroup(groupId: string, event: Event) {
+    event.stopPropagation();
+    this.groupToDelete = groupId;
+    this.showDeleteGroupConfirm = true;
+  }
+
+  confirmDeleteGroup() {
+    this.httpService.post(API.DELETE_GROUP, { group_id: this.groupToDelete }).subscribe({
+      next: () => {
+        this.showDeleteGroupConfirm = false;
+        this.fetchGroups();
+        this.commonService.toastMessage('Group deleted', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+      },
+      error: (err) => {
+        this.showDeleteGroupConfirm = false;
+        this.commonService.toastMessage((err && err.error && err.error.message) || 'Failed to delete group', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
+  }
+
+  getActivityIcon(activityName: string): string {
+    if (!activityName) return 'trophy';
+    const name = activityName.toLowerCase();
+    const map: { [key: string]: string } = {
+      'tennis': 'tennisball', 'padel tennis': 'tennisball', 'table tennis': 'tennisball',
+      'football': 'football', 'badminton': 'tennisball', 'basketball': 'basketball',
+      'cricket': 'baseball', 'golf': 'golf', 'swimming': 'water', 'fitness': 'fitness',
+      'gymnastics': 'body', 'boxing': 'hand', 'dance': 'musical-notes', 'sing': 'mic',
+      'education': 'school', 'netball': 'basketball', 'dodgeball': 'baseball',
+      'squash': 'tennisball', 'bar n restaurant': 'restaurant', 'act': 'film',
+      'private coaching': 'person'
+    };
+    return map[name] || 'trophy';
+  }
+
+  // Singles/Doubles match action sheet & publish result
+  showMatchSheet: boolean = false;
+  showResultDialog: boolean = false;
+  selectedMatchForAction: LeagueMatch = null;
+  resultType: string = 'normal';
+  retiredPlayer: string = '';
+  matchFormat: string = '3';
+  sets: { home: string; away: string; tbHome: string; tbAway: string }[] = [
+    { home: '', away: '', tbHome: '', tbAway: '' },
+    { home: '', away: '', tbHome: '', tbAway: '' }
+  ];
+  publishing: boolean = false;
+
+  onMatchCardClick(mat: LeagueMatch) {
+    if (this.individualLeague.league_type === 3) {
+      this.gotoLeagueMatchInfoPage(mat);
+      return;
+    }
+    this.selectedMatchForAction = mat;
+    this.showMatchSheet = true;
+  }
+
+  onMatchAction(action: string) {
+    this.showMatchSheet = false;
+    const mat = this.selectedMatchForAction;
+    if (!mat) return;
+    switch (action) {
+      case 'result': this.openPublishDialog(mat); break;
+      case 'view': this.openPublishDialog(mat); break;
+      case 'edit': this.gotoEditPage(mat); break;
+      case 'delete': this.removeMatch(mat); break;
+    }
+  }
+
+  openPublishDialog(mat: LeagueMatch) {
+    this.selectedMatchForAction = mat;
+    this.resultType = 'normal';
+    this.retiredPlayer = '';
+    this.matchFormat = '3';
+    this.sets = [
+      { home: '', away: '', tbHome: '', tbAway: '' },
+      { home: '', away: '', tbHome: '', tbAway: '' }
+    ];
+
+    // Pre-populate from existing result_json
+    if (mat.result_json) {
+      try {
+        var json = typeof mat.result_json === 'string' ? JSON.parse(mat.result_json) : mat.result_json;
+        if (json && json.SET_SCORES) {
+          var existingSets = (json.SET_SCORES || []).filter(function(s) { return s.SCORE && s.SCORE !== '0-0'; });
+          if (existingSets.length > 0) {
+            this.sets = existingSets.map(function(s) {
+              var parts = (s.SCORE || '0-0').split('-');
+              return { home: parts[0] || '', away: parts[1] || '', tbHome: '', tbAway: '' };
+            });
+            if (existingSets.length === 1) this.matchFormat = '1';
+            else if (existingSets.length <= 3) this.matchFormat = '3';
+            else this.matchFormat = '5';
+          }
+        }
+        if (json && json.RESULT) {
+          var status = +(json.RESULT.RESULT_STATUS || 0);
+          if (status === 4) { this.resultType = 'walkover'; this.retiredPlayer = 'home'; }
+          else if (status === 5) { this.resultType = 'retired'; this.retiredPlayer = 'home'; }
+        }
+      } catch (e) {}
+    }
+
+    this.showResultDialog = true;
+  }
+
+  onResultTypeChange() {
+    if (this.resultType === 'walkover') {
+      this.sets = [{ home: '', away: '', tbHome: '', tbAway: '' }];
+    }
+  }
+
+  onFormatChange() {
+    const max = parseInt(this.matchFormat);
+    this.sets = max === 1
+      ? [{ home: '', away: '', tbHome: '', tbAway: '' }]
+      : [{ home: '', away: '', tbHome: '', tbAway: '' }, { home: '', away: '', tbHome: '', tbAway: '' }];
+  }
+
+  addSet() {
+    if (this.sets.length < parseInt(this.matchFormat)) {
+      this.sets.push({ home: '', away: '', tbHome: '', tbAway: '' });
+    }
+  }
+
+  removeSet(i: number) {
+    if (this.sets.length > 1) this.sets.splice(i, 1);
+  }
+
+  onScoreInput(i: number, field: string, val: string) {
+    this.sets[i][field] = val;
+    const v = parseInt(val);
+    if (isNaN(v)) return;
+    const other = field === 'home' ? 'away' : 'home';
+    if (!this.sets[i][other]) {
+      if (v >= 0 && v <= 4) this.sets[i][other] = '6';
+      else if (v === 5) this.sets[i][other] = '7';
+    }
+    if (this.sets[i].home && this.sets[i].away && !this.isMatchDecided() && i === this.sets.length - 1 && this.sets.length < parseInt(this.matchFormat)) {
+      this.sets.push({ home: '', away: '', tbHome: '', tbAway: '' });
+    }
+  }
+
+  needsTiebreak(set: any): boolean {
+    return (set.home == '7' && set.away == '6') || (set.home == '6' && set.away == '7');
+  }
+
+  getHomeSets(): number {
+    return this.sets.filter(s => parseInt(s.home) > parseInt(s.away)).length;
+  }
+
+  getAwaySets(): number {
+    return this.sets.filter(s => parseInt(s.away) > parseInt(s.home)).length;
+  }
+
+  isMatchDecided(): boolean {
+    const setsToWin = Math.ceil(parseInt(this.matchFormat) / 2);
+    return this.getHomeSets() >= setsToWin || this.getAwaySets() >= setsToWin;
+  }
+
+  getScoreText(): string {
+    return this.sets.filter(s => s.home && s.away).map(s => {
+      const base = `${s.home}-${s.away}`;
+      return this.needsTiebreak(s) && s.tbHome && s.tbAway ? `${base}(${s.tbHome}-${s.tbAway})` : base;
+    }).join('  ');
+  }
+
+  getWinner(): string {
+    const mat = this.selectedMatchForAction;
+    if (this.resultType === 'walkover' || this.resultType === 'retired') {
+      return this.retiredPlayer === 'home' ? (mat && mat.awayusername || '') : (mat && mat.homeusername || '');
+    }
+    const h = this.getHomeSets(), a = this.getAwaySets();
+    return h > a ? (mat && mat.homeusername || '') : a > h ? (mat && mat.awayusername || '') : '';
+  }
+
+  publishResult() {
+    this.publishing = true;
+    const mat = this.selectedMatchForAction;
+
+    if (!mat.match_id) {
+      // No match exists — create one first via GraphQL
+      const today = new Date();
+      const datePart = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+      const createPayload = {
+        MatchName: mat.homeusername + ' vs ' + mat.awayusername,
+        CreatedBy: this.sharedservice.getLoggedInUserId(),
+        LeagueId: this.league_id,
+        GroupId: '',
+        Stage: 0,
+        Round: 1,
+        MatchVisibility: 0,
+        MatchDetails: '',
+        StartDate: datePart + ' 09:00',
+        EndDate: datePart + ' 23:59',
+        primary_participant_id: mat.home_participant_id || '',
+        secondary_participant_id: mat.away_participant_id || '',
+        primary_participant_id2: (mat as any).home_participant_id2 || '',
+        secondary_participant_id2: (mat as any).away_participant_id2 || '',
+        match_type: this.individualLeague.league_type === 2 ? 2 : 1,
+        user_postgre_metadata: {
+          UserParentClubId: this.sharedservice.getPostgreParentClubId(),
+          UserActivityId: ''
+        },
+        user_device_metadata: {
+          UserAppType: AppType.ADMIN_NEW,
+          UserActionType: 0,
+          UserDeviceType: this.sharedservice.getPlatform() === 'android' ? 1 : 2
+        },
+        location_id: this.individualLeague.location_id || '',
+        location_type: 1,
+        MatchPaymentType: 0,
+        Member_Fee: '0.00',
+        Non_Member_Fee: '0.00'
+      };
+
+      const addMatchMutation = gql`
+        mutation addMatchToLeague($createLeagueMatchInput: CreateLeagueMatchInput!) {
+          addMatchToLeague(createLeagueMatchInput: $createLeagueMatchInput) {
+            match { Id }
+          }
+        }
+      `;
+
+      this.graphqlService.mutate(addMatchMutation, { createLeagueMatchInput: createPayload }, 0).subscribe(
+        (res: any) => {
+          const matchId = res.data && res.data.addMatchToLeague && res.data.addMatchToLeague.match ? res.data.addMatchToLeague.match.Id : '';
+          if (matchId) {
+            // Fetch league matches to get fixture_id for the new match
+            this.commonInput.league_id = this.league_id;
+            this.commonInput.action_type = 2;
+            this.httpService.post(API.GET_LEAGUE_MATCHES, this.commonInput).subscribe({
+              next: (matchRes: any) => {
+                this.match = matchRes.data;
+                this.matchesLength = this.match ? this.match.length : 0;
+                this.computeStats();
+                var newMatch = (matchRes.data || []).find(function(m) { return m.match_id === matchId; });
+                if (newMatch) {
+                  this.selectedMatchForAction = Object.assign({}, mat, {
+                    match_id: newMatch.match_id,
+                    fixture_id: newMatch.fixture_id,
+                    homeusername: newMatch.homeusername || mat.homeusername,
+                    awayusername: newMatch.awayusername || mat.awayusername
+                  });
+                } else {
+                  this.selectedMatchForAction = Object.assign({}, mat, { match_id: matchId });
+                }
+                this.doPublishResult();
+              },
+              error: () => {
+                this.selectedMatchForAction = Object.assign({}, mat, { match_id: matchId });
+                this.doPublishResult();
+              }
+            });
+          } else {
+            this.publishing = false;
+            this.commonService.toastMessage('Failed to create match', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+          }
+        },
+        () => {
+          this.publishing = false;
+          this.commonService.toastMessage('Failed to create match', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+        }
+      );
+    } else {
+      this.doPublishResult();
+    }
+  }
+
+  private doPublishResult() {
+    const mat = this.selectedMatchForAction;
+    const homeSets = this.getHomeSets();
+    const awaySets = this.getAwaySets();
+    const winnerId = this.getWinner() === mat.homeusername ? mat.home_participant_id : mat.away_participant_id;
+    const loserId = winnerId === mat.home_participant_id ? mat.away_participant_id : mat.home_participant_id;
+    const resultStatus = this.resultType === 'walkover' ? 4 : this.resultType === 'retired' ? 5 : 1;
+
+    const setScores = this.sets.filter(s => s.home && s.away).map((s, i) => {
+      const homeWon = parseInt(s.home) > parseInt(s.away);
+      return {
+        SET_NUMBER: String(i + 1),
+        SCORE: `${s.home}-${s.away}`,
+        WINNER: homeWon ? mat.homeusername : mat.awayusername,
+        WINNER_TEAM_ID: homeWon ? mat.home_participant_id : mat.away_participant_id
+      };
+    });
+
+    const payload = {
+      parentclubId: this.sharedservice.getPostgreParentClubId(),
+      clubId: '',
+      activityId: this.individualLeague.activity.Id,
+      memberId: this.sharedservice.getLoggedInUserId(),
+      action_type: 0,
+      device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
+      app_type: AppType.ADMIN_NEW,
+      device_id: '',
+      updated_by: this.sharedservice.getLoggedInUserId(),
+      created_by: this.sharedservice.getLoggedInUserId(),
+      activityCode: this.individualLeague.activity.ActivityCode,
+      leaguefixtureId: mat.match_id,
+      homeLeagueParticipationId: mat.home_participant_id || '',
+      awayLeagueParticipationId: mat.away_participant_id || '',
+      Tennis: {
+        LEAGUE_FIXTURE_ID: mat.fixture_id,
+        POTM: [],
+        RESULT: {
+          RESULT_STATUS: String(resultStatus),
+          WINNER_ID: winnerId || '',
+          LOSER_ID: loserId || '',
+          DESCRIPTION: this.resultType === 'retired'
+            ? `${this.retiredPlayer === 'home' ? mat.homeusername : mat.awayusername} retired`
+            : this.resultType === 'walkover'
+              ? `${this.retiredPlayer === 'home' ? mat.homeusername : mat.awayusername} withdrew`
+              : ''
+        },
+        HOME_TEAM: {
+          TEAM_NAME: mat.homeusername,
+          TEAM_ID: mat.home_participant_id,
+          SETS_WON: String(homeSets),
+          GAMES_WON: '0',
+          ACES: '0',
+          DOUBLE_FAULTS: '0',
+          FIRST_SERVE_PERCENTAGE: '0',
+          UNFORCED_ERRORS: '0',
+          BREAK_POINTS_WON: '0'
+        },
+        AWAY_TEAM: {
+          TEAM_NAME: mat.awayusername,
+          TEAM_ID: mat.away_participant_id,
+          SETS_WON: String(awaySets),
+          GAMES_WON: '0',
+          ACES: '0',
+          DOUBLE_FAULTS: '0',
+          FIRST_SERVE_PERCENTAGE: '0',
+          UNFORCED_ERRORS: '0',
+          BREAK_POINTS_WON: '0'
+        },
+        SET_SCORES: setScores
+      }
+    };
+
+    this.httpService.post(API.Publish_League_Result_For_Activities, payload).subscribe({
+      next: (res: any) => {
+        this.publishing = false;
+        this.showResultDialog = false;
+        this.commonService.toastMessage('Result published successfully', 2500, ToastMessageType.Success, ToastPlacement.Bottom);
+        this.getLeagueMatches();
+      },
+      error: (err) => {
+        this.publishing = false;
+        this.commonService.toastMessage('Failed to publish result', 2500, ToastMessageType.Error, ToastPlacement.Bottom);
+      }
+    });
   }
 
 

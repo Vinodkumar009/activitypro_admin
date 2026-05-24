@@ -1,4 +1,10 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-matchsetup {
+    @include android-sdk35-fixes;
+
+
+
   .flex_col{
     border-bottom: 1px solid #f1c98d !important;
     background: white;
@@ -8,7 +14,6 @@ page-matchsetup {
     p{
         line-height: 30px;
     }
-}
 .para{
     color: #75716c;
     margin-top: 2px !important;
@@ -77,4 +82,5 @@ page-matchsetup {
     line-height: 30px;
 }
  
+}
 }

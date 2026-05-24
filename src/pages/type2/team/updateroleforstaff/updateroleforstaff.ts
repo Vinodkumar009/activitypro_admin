@@ -9,6 +9,7 @@ import {
   ToastController,
   AlertController,
   ViewController,
+  Events
 } from "ionic-angular";
 import {
   CommonService,
@@ -25,6 +26,7 @@ import { SharedServices } from "../../../services/sharedservice";
 import { MembersModel, TeamsForParentClubModel } from "../models/team.model";
 import { Role } from "../team.model";
 import { GraphqlService } from "../../../../services/graphql.service";
+import { ThemeService } from "../../../../services/theme.service";
 /**
  * Generated class for the UpdateroleforstaffPage page.
  *
@@ -42,6 +44,7 @@ export class UpdateroleforstaffPage {
 
   team: TeamsForParentClubModel;
   parentClubKey: string;
+  isDarkTheme: boolean = true;
   roles: Role[];
   currentRole: any; // 🎯 Current staff role data
   selectedRoleId: string = ''; // 🎯 Selected role ID for preselection
@@ -77,7 +80,9 @@ export class UpdateroleforstaffPage {
     private toastCtrl: ToastController,
     public sharedservice: SharedServices,
     public navParams: NavParams,
-    public viewCtrl: ViewController) {
+    public viewCtrl: ViewController,
+    private themeService: ThemeService,
+    private events: Events) {
 
     this.team = this.navParams.get("team");
     this.staffId = this.navParams.get("staffId");
@@ -105,7 +110,37 @@ export class UpdateroleforstaffPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UpdateroleforstaffPage');
+    this.loadTheme();
+  }
+
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => { this.applyTheme(isDark); });
+    this.events.subscribe('theme:changed', (isDark) => { this.applyTheme(isDark); });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('theme:changed');
+  }
+
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => { this.applyTheme(true); });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-updateroleforstaff');
+    if (el) {
+      isDark ? el.classList.remove('light-theme') : el.classList.add('light-theme');
+    } else {
+      setTimeout(() => {
+        const el2 = document.querySelector('page-updateroleforstaff');
+        if (el2) { isDark ? el2.classList.remove('light-theme') : el2.classList.add('light-theme'); }
+      }, 100);
+    }
   }
 
   selectRoleToUpdate(role: Role) {

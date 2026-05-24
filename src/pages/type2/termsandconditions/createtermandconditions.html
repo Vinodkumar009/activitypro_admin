@@ -1,0 +1,92 @@
+<!--
+  Generated template for the CreatetermandconditionsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{editabletermsandcondition ? 'Update Terms & conditions' : 'Create Terms & conditions'}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label>Purpose</ion-label>
+    <ion-select [(ngModel)]="selectedpurpose" [disabled]="purposeDisabled" (ionChange)="changePurpose()">
+      <ion-option *ngFor="let purpose of purposeList" value={{purpose.code}}>{{purpose.category}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Title</ion-label>
+    <ion-input type="text" [(ngModel)]="termsAndCondition.Title"></ion-input>
+  </ion-item>
+  <ion-row style="background: #ffffff;" radio-group [(ngModel)]="termsAndCondition.termsType">
+    <ion-col col-6>
+      <ion-item>
+        <ion-label>Text</ion-label>
+        <ion-radio value="0"></ion-radio>
+      </ion-item>
+    </ion-col>
+    <ion-col col-6>
+      <ion-item>
+        <ion-label>Url</ion-label>
+        <ion-radio value="1"></ion-radio>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-item *ngIf="termsAndCondition.termsType==1">
+    <ion-label floating>Content URL</ion-label>
+    <!-- <ion-input type="text" [(ngModel)]="TermsAndCondition.ContentUrl"></ion-input> -->
+    <ion-textarea type="text" rows="2" [(ngModel)]="termsAndCondition.ContentUrl"></ion-textarea>
+    <button ion-button clear item-right class="help_btn" (click)="showUrlHint()">
+      <img style="width: 50%;" src="assets/images/info.svg">
+    </button>
+  </ion-item>
+  <ion-item *ngIf="termsAndCondition.termsType==0">
+    <ion-label floating>Legal Notification Text</ion-label>
+    <!-- <ion-input type="text" [(ngModel)]="TermsAndCondition.LegalNotificationText"></ion-input> -->
+    <ion-textarea type="text" rows="6" [(ngModel)]="termsAndCondition.LegalNotificationText"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Button1 Text</ion-label>
+    <ion-input type="text" [(ngModel)]="termsAndCondition.Button1Text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Button2 Text</ion-label>
+    <ion-input type="text" [(ngModel)]="termsAndCondition.Button2Text"></ion-input>
+  </ion-item>
+  <!-- <ion-item style="margin-top:3px;" *ngIf="!reOrderToggle">
+    <ion-label *ngIf="!toggleAll">Off</ion-label>
+    <ion-label *ngIf="toggleAll">On </ion-label>
+    <ion-toggle checked="{{toggleAll}}" [(ngModel)]="toggleAll" (tap)="changeNotificationToggleAll()"></ion-toggle>
+</ion-item> -->
+
+  <ion-item style="margin-top:3px;">
+
+
+    <ion-label>Show to user</ion-label>
+    <ion-toggle [(ngModel)]="termsAndCondition.IsSwitchedOn"></ion-toggle>
+  </ion-item>
+
+
+  <ion-grid style="margin-bottom:60%">
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button block style="background-color:#2b92bb !important; color: white !important"
+          (click)="cancel()">Cancel</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button block class="timekare-primary-btn"
+          (click)="createTermsandCondition()">{{editabletermsandcondition ? 'Update' : 'Create'}}</button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

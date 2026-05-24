@@ -1,0 +1,127 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-competition-tabs {
+  @include android-sdk35-fixes;
+
+  background: #0f172a !important;
+  width: 100%;
+
+  // ── Dark Theme (Default) ──
+  ion-header ion-navbar {
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    ion-title { color: #f1f5f9; }
+    ion-buttons button { color: #cbd5e1; }
+  }
+
+  ion-content, ion-content .scroll-content, ion-content .fixed-content {
+    background: #0f172a !important;
+  }
+
+  .scroll-content { padding: 0 !important; }
+
+  .footer_div {
+    position: absolute;
+    background: #1e293b;
+    border-top: 1px solid #334155;
+    bottom: 0; width: 100%; z-index: 999;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+
+    ion-col {
+      text-align: center; font-size: 13px;
+      padding: 8px 12px; transition: all 0.2s ease;
+      p { color: #94a3b8 !important; margin: 2px 0 0 0; font-weight: 500; font-size: 14px; }
+    }
+
+    ion-icon {
+      font-size: 28px; color: #60a5fa !important;
+      transition: all 0.2s ease;
+      &:active { transform: scale(0.95); color: #3b82f6 !important; }
+    }
+  }
+
+  .selected {
+    background-color: rgba(43, 146, 187, 0.15) !important;
+    border-radius: 8px;
+    p { color: #60a5fa !important; font-weight: 600; }
+    ion-icon { color: #60a5fa !important; }
+  }
+
+  .glass-fab {
+    position: fixed;
+    bottom: 85px; right: 16px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(43, 146, 187, 0.55);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 24px rgba(43, 146, 187, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    color: #fff; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 99; cursor: pointer;
+    transition: transform 0.2s ease;
+    &:active { transform: scale(0.9); }
+  }
+
+  page-match, page-matchladder, page-matchhistory, page-leagueteamlisting {
+    display: block;
+    height: calc(100vh - 56px - 56px);
+
+    ion-content {
+      position: relative !important;
+      display: block !important;
+      height: 100% !important;
+      contain: none !important;
+    }
+
+    .scroll-content {
+      position: relative !important;
+      top: auto !important; bottom: auto !important;
+      left: auto !important; right: auto !important;
+      height: 100% !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 16px !important;
+    }
+
+    .page-scroll-area, .match-scroll-area { padding-bottom: 140px; }
+  }
+
+  > ion-content > .scroll-content { overflow: hidden !important; }
+
+  // ── Light Theme ──
+  &.light-theme {
+    background: #f8fafc !important;
+
+    ion-header ion-navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      ion-title { color: #1e293b; }
+      ion-buttons button { color: #64748b; }
+    }
+
+    ion-content, ion-content .scroll-content, ion-content .fixed-content {
+      background: #f8fafc !important;
+    }
+
+    .footer_div {
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+      p { color: #64748b !important; }
+      ion-icon { color: #2b92bb !important; }
+    }
+
+    .selected {
+      background-color: rgba(43, 146, 187, 0.15) !important;
+      p { color: #2b92bb !important; }
+      ion-icon { color: #2b92bb !important; }
+    }
+
+    .glass-fab {
+      background: rgba(43, 146, 187, 0.45);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+  }
+}

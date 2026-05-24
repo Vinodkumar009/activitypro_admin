@@ -122,10 +122,7 @@ export class Addplayertoteam {
     private renderer: Renderer2
   ) {
     this.themeType = sharedservice.getThemeType();
-    
-    this.events.subscribe('theme:changed', (theme) => {
-      this.isDarkTheme = theme === 'dark';
-    });
+
     this.existedPlayer = this.navParams.get("existedPlayer");
     this.teamMembersInput.teamId = this.navParams.get("teamid");
 
@@ -169,25 +166,38 @@ export class Addplayertoteam {
     await this.loadTheme();
   }
 
-  async loadTheme() {
-    const theme = await this.storage.get('selectedTheme');
-    this.applyTheme(theme || 'dark');
+  ionViewWillEnter() {
+    this.loadTheme();
+    this.themeService.isDarkTheme$.subscribe(isDark => {
+      this.applyTheme(isDark);
+    });
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.applyTheme(isDark);
+    });
   }
 
-  applyTheme(theme: string) {
-    this.isDarkTheme = theme === 'dark';
-    const pageElement = document.querySelector('page-addplayertoteam');
-    if (pageElement) {
-      if (this.isDarkTheme) {
-        this.renderer.removeClass(pageElement, 'light-theme');
-      } else {
-        this.renderer.addClass(pageElement, 'light-theme');
-      }
+  private loadTheme(): void {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.applyTheme(isDark);
+    }).catch(() => { this.applyTheme(true); });
+  }
+
+  private applyTheme(isDark: boolean): void {
+    this.isDarkTheme = isDark;
+    const el = document.querySelector('page-addplayertoteam');
+    if (el) {
+      isDark ? this.renderer.removeClass(el, 'light-theme') : this.renderer.addClass(el, 'light-theme');
+    } else {
+      setTimeout(() => {
+        const el2 = document.querySelector('page-addplayertoteam');
+        if (el2) { isDark ? this.renderer.removeClass(el2, 'light-theme') : this.renderer.addClass(el2, 'light-theme'); }
+      }, 100);
     }
   }
 
   ionViewWillLeave() {
-    // 🧹 Always cleanup subscriptions
+    this.events.unsubscribe('theme:changed');
     this.subscriptions.forEach(sub => {
       if (sub && !sub.closed) {
         sub.unsubscribe();
@@ -197,10 +207,7 @@ export class Addplayertoteam {
 
   doInfinite(infiniteScroll) {
     this.venus_user_input.offset += this.venus_user_input.limit;
-    this.getMembersData();
-    setTimeout(() => {
-      infiniteScroll.complete();
-    }, 300);
+    this.getMembersData(infiniteScroll);
   }
 
   getFilterItems(ev: any) {
@@ -225,6 +232,7 @@ export class Addplayertoteam {
     if (this.selectedMembersSet.has(member.Id)) {
       // 🗑️ Remove member
       this.selectedMembersSet.delete(member.Id);
+      member.isSelected = false;
       const memberIndex = this.teamMembersInput.members.findIndex(m => m.memberKey === member.Id);
       if (memberIndex > -1) {
         this.teamMembersInput.members.splice(memberIndex, 1);
@@ -232,6 +240,7 @@ export class Addplayertoteam {
     } else {
       // ➕ Add member
       this.selectedMembersSet.add(member.Id);
+      member.isSelected = true;
       this.teamMembersInput.members.push({ roleId: this.DEFAULT_ROLE_ID, memberKey: member.Id });
     }
   }
@@ -273,7 +282,7 @@ export class Addplayertoteam {
   }
 
 
-  getMembersData() {
+  getMembersData(infiniteScroll?) {
 
     const userQuery = gql`
     query getAllMembersByParentClubNMemberType($list_input: UsersListInput!) {
@@ -304,18 +313,25 @@ export class Addplayertoteam {
       { list_input: this.venus_user_input },
       0
     ).subscribe(({ data }) => {
-      this.members = [];
-      if (data["getAllMembersByParentClubNMemberType"].length > 0) {
-        this.members = data["getAllMembersByParentClubNMemberType"].map((member: UsersModel) => ({
+      const newMembers = data["getAllMembersByParentClubNMemberType"] || [];
+      if (newMembers.length > 0) {
+        this.members = newMembers.map((member: UsersModel) => ({
           ...member,
           isSelected: this.selectedMembersSet.has(member.Id) || this.existingPlayersSet.has(member.Id),
           isAlreadyExisted: this.existingPlayersSet.has(member.Id)
         }));
         this.filteredMembers.push(...this.members);
       }
+      if (infiniteScroll) {
+        infiniteScroll.complete();
+        if (newMembers.length < this.venus_user_input.limit) {
+          infiniteScroll.enable(false);
+        }
+      }
       this.updateMemberStates();
     },
       (error) => {
+        if (infiniteScroll) { infiniteScroll.complete(); }
         this.handleError(error, "Failed to fetch members data");
       }
     );
@@ -380,13 +396,9 @@ export class Addplayertoteam {
     if (memberlength > 0) {
       try {
         const addPlayer = gql`
-    mutation addPlayerToTeam($addPlayer: TeamMembersInput!){
-      addPlayerToTeam(addPlayer:$addPlayer)
-        
-       
-    
-  }
-`;
+          mutation addPlayerToTeam($addPlayer: TeamMembersInput!){
+             addPlayerToTeam(addPlayer:$addPlayer)
+          }`;
         const mutationVariables = { addPlayer: this.teamMembersInput }
 
         const saveSubscription = this.graphqlService.mutate(addPlayer, mutationVariables, 0).subscribe((res: any) => {

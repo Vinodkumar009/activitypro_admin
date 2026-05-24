@@ -1,0 +1,22 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+page-type2template {
+    @include android-sdk35-fixes;
+
+
+
+    .ion_card {
+        margin: 6px 0px;
+        width: 100%;
+        border-top: 4px solid rgb(98, 91, 160);
+    }
+    .ion_card_content {
+        padding-bottom: 5px;
+    }
+    .names{
+        font-size: 16px;
+    }
+    .card_content{
+        margin-left: 10px;
+    }
+}

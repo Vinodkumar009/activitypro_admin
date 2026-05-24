@@ -1,113 +1,83 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>Result</ion-title>
+    <ion-title>Result</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()" style="color:#fff">
+      <button ion-button icon-only (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <!-- Status Selection -->
-  <div class="result-card">
-    <div class="card-header">
-      <ion-icon name="flag"></ion-icon>
-      <span>Match Status</span>
-    </div>
-    <div class="custom-dropdown">
-      <div class="dropdown-trigger" 
-           [class.disabled]="!isEditable"
-           (click)="isEditable && toggleStatusDropdown()">
-        <span class="selected-text">{{selectedResultStatus?.status || 'Select Status'}}</span>
-        <ion-icon name="chevron-down" [class.rotated]="showStatusDropdown"></ion-icon>
+<ion-content>
+  <div class="page-layout">
+    <div class="page-fixed-header">
+      <div class="match-badge">
+        <ion-icon name="trophy" class="badge-icon"></ion-icon>
+        <span>{{homeTeamName}} vs {{awayTeamName}}</span>
       </div>
-      <div class="dropdown-options" *ngIf="showStatusDropdown">
-        <div *ngFor="let status of resultStatusList" 
-             class="dropdown-option" 
-             [class.selected]="selectedResultStatus?.status === status.status"
-             (click)="selectStatus(status)">
-          <span>{{status.status}}</span>
-          <ion-icon name="checkmark" *ngIf="selectedResultStatus?.status === status.status"></ion-icon>
+    </div>
+
+    <div class="page-scroll-area">
+      <!-- Match Status -->
+      <div class="result-card">
+        <div class="card-label"><ion-icon name="flag"></ion-icon> Match Status</div>
+        <div class="dropdown-trigger" [class.disabled]="!isEditable" (click)="isEditable && toggleStatusDropdown()">
+          <span class="dropdown-text">{{selectedResultStatus?.status || 'Select Status'}}</span>
+          <ion-icon name="chevron-down" [class.rotated]="showStatusDropdown"></ion-icon>
+        </div>
+        <div class="dropdown-list" *ngIf="showStatusDropdown">
+          <div *ngFor="let status of resultStatusList" class="dropdown-item"
+            [class.active]="selectedResultStatus?.status === status.status" (click)="selectStatus(status)">
+            <span>{{status.status}}</span>
+            <ion-icon name="checkmark" *ngIf="selectedResultStatus?.status === status.status"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Winner Selection -->
+      <div class="result-card" *ngIf="selectedResultStatus?.status?.toUpperCase() === 'WIN'">
+        <div class="card-label"><ion-icon name="trophy"></ion-icon> Winner Team</div>
+        <div class="dropdown-trigger" [class.disabled]="!isEditable" (click)="isEditable && toggleWinnerDropdown()">
+          <span class="dropdown-text">{{getSelectedWinnerName() || 'Select Winner Team'}}</span>
+          <ion-icon name="chevron-down" [class.rotated]="showWinnerDropdown"></ion-icon>
+        </div>
+        <div class="dropdown-list" *ngIf="showWinnerDropdown">
+          <div *ngFor="let team of TEAMS" class="dropdown-item"
+            [class.active]="selectedWinnerTeamId === team?.parentclubteam?.id"
+            (click)="selectWinnerTeam(team?.parentclubteam?.id)">
+            <span>{{team?.parentclubteam?.teamName}}</span>
+            <ion-icon name="checkmark" *ngIf="selectedWinnerTeamId === team?.parentclubteam?.id"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="result-card"
+        *ngIf="selectedResultStatus?.status?.toUpperCase() === 'DRAW' || selectedResultStatus?.status?.toUpperCase() === 'WIN'">
+        <div class="card-label"><ion-icon name="football"></ion-icon> Goals</div>
+        <div class="goals-row">
+          <div class="goal-team">
+            <span class="goal-team-name">{{homeTeamName}}</span>
+            <ion-input type="number" class="goal-input" [(ngModel)]="homeTeamGoals" min="0" max="150" placeholder="0" [disabled]="!isEditable"></ion-input>
+          </div>
+          <span class="goal-vs">-</span>
+          <div class="goal-team">
+            <span class="goal-team-name">{{awayTeamName}}</span>
+            <ion-input type="number" class="goal-input" [(ngModel)]="awayTeamGoals" min="0" max="150" placeholder="0" [disabled]="!isEditable"></ion-input>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="result-card">
+        <div class="card-label"><ion-icon name="create"></ion-icon> Description</div>
+        <div class="desc-wrap">
+          <ion-textarea [(ngModel)]="resultDescription" placeholder="Enter result description..." rows="3" [disabled]="!isEditable"></ion-textarea>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Winner Selection -->
-  <div class="result-card" *ngIf="selectedResultStatus?.status?.toUpperCase() === 'WIN'">
-    <div class="card-header">
-      <ion-icon name="trophy"></ion-icon>
-      <span>Winner Team</span>
-    </div>
-    <div class="custom-dropdown">
-      <div class="dropdown-trigger" 
-           [class.disabled]="!isEditable"
-           (click)="isEditable && toggleWinnerDropdown()">
-        <span class="selected-text">{{getSelectedWinnerName() || 'Select Winner Team'}}</span>
-        <ion-icon name="chevron-down" [class.rotated]="showWinnerDropdown"></ion-icon>
-      </div>
-      <div class="dropdown-options" *ngIf="showWinnerDropdown">
-        <div *ngFor="let team of TEAMS" 
-             class="dropdown-option" 
-             [class.selected]="selectedWinnerTeamId === team?.parentclubteam?.id"
-             (click)="selectWinnerTeam(team?.parentclubteam?.id)">
-          <span>{{team?.parentclubteam?.teamName}}</span>
-          <ion-icon name="checkmark" *ngIf="selectedWinnerTeamId === team?.parentclubteam?.id"></ion-icon>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <ion-card class="maincard"
-    *ngIf="selectedResultStatus?.status?.toUpperCase() === 'DRAW' || selectedResultStatus?.status?.toUpperCase() === 'WIN'">
-    <ion-card-header class="cardHeader">
-      <ion-card-title style="font-weight: 600; font-size: 20px; color: #154766; text-align: center;">
-        Enter Goal(s)
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content style="padding-right: 2px; padding-left: 5px; padding-top: 5px;">
-      <ion-list>
-        <ion-item>
-          <ion-label fixed style="flex: 1;">{{homeTeamName}}</ion-label>
-          <ion-input class="input-40px" style="flex: 2; font-size: 30px !important; text-align: right !important;"
-            type="number" [(ngModel)]="homeTeamGoals" min="0" max="150" placeholder="0" [disabled]="!isEditable"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label fixed style="flex: 1;">{{awayTeamName}}</ion-label>
-          <ion-input class="input-40px" style="flex: 2; font-size: 30px !important; text-align: right !important;"
-            type="number" [(ngModel)]="awayTeamGoals" min="0" max="150" placeholder="0" [disabled]="!isEditable"></ion-input>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Result Description Section - Always Visible -->
-  <ion-card class="descriptionCard">
-    <!-- <ion-card-header class="cardHeader">
-      <ion-card-title style="font-weight: 600; font-size: 18px; color: #154766; text-align: center;">
-        Description
-      </ion-card-title>
-    </ion-card-header> -->
-    <ion-card-content style="padding: 10px;">
-      <ion-item no-lines>
-        <ion-textarea [(ngModel)]="resultDescription" placeholder="Enter result description..." rows="3"
-          autosize="true" [disabled]="!isEditable">
-        </ion-textarea>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+  <app-glass-button label="Save" (btnClick)="saveResult()"></app-glass-button>
 </ion-content>
-
-<ion-footer>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-12>
-        <button class="timekare-primary-btn" ion-button block (click)="saveResult()" [disabled]="!isEditable">Save</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>

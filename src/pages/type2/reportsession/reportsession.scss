@@ -1,4 +1,7 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 reportsession-page {
+    @include android-sdk35-fixes;
     .scroll-content {
         //  margin-top: 56px !important;
         padding: 6px 0px !important;

@@ -1,0 +1,170 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
+addpromotion-page {
+    @include android-sdk35-fixes;
+.image-div{
+            border: 1px solid #efd9ba;
+    padding: 0px 2px 1px 0px;
+    }
+    .ion_list{
+            margin-bottom: 3px;
+    }
+    .marginauto{
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    .sub-image {
+        height: 50px;
+        width: 70px;
+    }
+    .help_btn {
+        padding: 0px !important;
+        font-size: 24px !important;
+        margin: 0px !important;
+        height: 42px !important;
+        width: 42px;
+        position: absolute;
+         right: -6px;
+    }
+    .nonmembercard {
+        margin-top: 30px !important;
+
+    }
+    .nonlocationcard {
+        padding: 14px 0;
+        color:#aba5a5 !important;
+    }
+    .color{
+        background: #2b92bb;
+    }
+    .scroll-content {
+      
+        padding: 6px !important;
+        background-image: none !important; // background: white !important;
+        background: #f4efef !important;
+    }
+    .selected .facilities-text {
+        color: #ffffff
+    }
+    .addimagerow{
+        padding-left: 16px;
+        font-size: 16px;
+        color: #b5b2ae;
+        border-bottom: 1px solid #f7bf7c;
+        padding: 5px 0 5px 9px;
+        background: white;
+    }
+    
+    .facilities-text{
+        color: #faae4e;
+        //padding: 14px 0px;
+    }
+    ion-item {
+        ion-label {
+            color: #b5b2ae !important;
+            margin-top: -1px !important;
+        }
+        .act {
+            margin-top: 15px !important;
+        }
+        border-bottom: 1px solid #f1c98d !important;
+        box-shadow: inset 0 -1px 0 0 #dedede!important;
+    }
+     .item-inner {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .group-slides .selected {
+        border: 1px solid #faae4e !important; // border-right: 3px solid #faae4e !important;
+        // border-bottom: 3px solid gray !important; // margin-left: -3px !important;
+        // margin-right: -3px !important;
+        // margin-bottom: -3px  !important;
+        transition: 80ms;
+        background-color: #faae4e !important;
+
+    }
+    .group-slides {
+        margin: 15px 5px;
+        height: 6.5em;
+    }
+    .facilityCard {
+        color: #918e8e;
+        background: #f5f2ef;
+        border-radius: 17px;
+        height: 4.5em;  
+        border: 1px solid #faae4e;
+       
+       
+        box-shadow: 3px 2px 9px -4px #9e8879;
+    }
+   .block_height {
+        height: 73%;
+    }
+    .right{
+        float: right;
+    }
+    .marginleftright{
+        margin-left: auto;
+        margin-right: auto;
+        width: 99%;
+        box-shadow: -1px 3px 5px rgba(142, 151, 152, 0.39)
+    }
+    .card_list{
+        margin-top: 12px;
+    }
+    .right_pad{
+        padding-right: 0px;
+    }
+     .left_pad{
+        padding-left: 0px;
+    }
+    ion-select{
+        padding:0px !important;
+        max-width: 100%;
+        .select-icon{
+            width: 17px !important;
+        }
+    }
+    .dropdown{
+        padding-left: 2px !important;
+    }
+    .margin_bottom{
+        margin-top: 6px !important;
+        min-height:3.3rem !important;
+        .item-inner{
+            padding-left: 5px !important;
+            border: 1px solid #eb464f !important;
+        }
+    }
+    .rowAll{
+        width: 99%;
+        margin-left: 0.2rem;
+        box-shadow: -1px 2px 5px rgba(142, 151, 152, 0.39)
+    }
+    .textcenter{
+        text-align: center;
+    }
+    .card_list {
+        margin: 1px !important;
+        width:100% !important;
+    }
+    .card_content{
+        padding: 2px !important;
+    }
+    .pmargin{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .scroll-content{
+        padding: 16px 9px !important;
+    }
+    .nopadding{
+        padding:0px;
+    }
+    .fab[mini] {
+        margin: 8px ;
+        width: 21px !important;
+        height: 20px !important;
+        line-height: 40px;
+    }
+}

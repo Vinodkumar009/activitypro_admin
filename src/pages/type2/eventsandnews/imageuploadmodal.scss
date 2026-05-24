@@ -1,14 +1,20 @@
+@import '../../../theme/android-sdk35-fixes.scss';
+
 page-imageuploadmodal {
+    @include android-sdk35-fixes;
+
+
+
     width: 85% !important;
     margin-top: 15% !important;
     margin-left: 7% !important;
     opacity: 0.9;
     height: 65% !important;
     //border: 2px solid #cec9c9;
-.scroll-content {
-    //padding: 6px !important;
-    background-image: none !important;
-    background:white !important;
-}
+    .scroll-content {
+        //padding: 6px !important;
+        background-image: none !important;
+        background:white !important;
 
+    }
 }

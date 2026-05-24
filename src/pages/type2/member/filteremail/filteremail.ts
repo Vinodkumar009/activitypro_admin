@@ -1,17 +1,20 @@
 import { Component, Input } from '@angular/core';
-import { LoadingController, AlertController, ModalController, ToastController, NavController, } from 'ionic-angular';
+import { LoadingController, AlertController, ModalController, ToastController, NavController, Events } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-// import { Dashboard } from './../../dashboard/dashboard';
-import * as $ from 'jquery';
 import { IonicPage } from 'ionic-angular';
 import { SharedServices } from '../../../services/sharedservice';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { CommonService,ToastPlacement, ToastMessageType } from '../../../../services/common.service';
+import { ThemeService } from '../../../../services/theme.service';
 import gql from 'graphql-tag';
 import { UsersModel } from '../../../../shared/model/users_list.model';
 import { GraphqlService } from '../../../../services/graphql.service';
-import { Club, UsersListInput } from '../model/member';
+import { UsersListInput } from '../model/member';
+import { ClubVenueDto, GetParentClubVenuesRequestDto, GetParentClubVenuesResponseDto } from '../../../../shared/dtos/club.dto';
+import { AppType } from '../../../../shared/constants/module.constants';
+import { API } from '../../../../shared/constants/api_constants';
+import { HttpService } from '../../../../services/http.service';
 
 /**
  * Generated class for the FilteremailPage page.
@@ -26,6 +29,7 @@ import { Club, UsersListInput } from '../model/member';
   templateUrl: 'filteremail.html',
 })
 export class Filteremail {
+  isDarkTheme: boolean = true;
   selectedEmailCategory: number = 0;
   EmailFilterCategory = [
       { CategoryText: "Member", CategoryVal: 0 },
@@ -42,7 +46,7 @@ export class Filteremail {
   isAndroid: boolean = false;
   parentClubKey: any;
   selectedTab: string = "Recents";
-  clubs: any;
+  clubs: ClubVenueDto[] = [];
   selectedClub: any;
   memberList = [];
   MemberListsForDeviceToken = [];
@@ -88,8 +92,12 @@ export class Filteremail {
     public navCtrl: NavController, 
     public sharedservice: SharedServices, 
     public popoverCtrl: PopoverController,
-    private graphqlService:GraphqlService) {
+    private graphqlService:GraphqlService,
+    private httpService: HttpService,
+    private themeService: ThemeService,
+    public events: Events) {
       this.themeType = sharedservice.getThemeType();
+      this.loadTheme();
       this.storage.get('userObj').then((val) => {
           val = JSON.parse(val);
           if (val.$key != "") {
@@ -117,45 +125,56 @@ export class Filteremail {
   }
 
   getClubList() {
-    //   this.fb.getAllWithQuery("/Club/Type2/" + this.parentClubKey, { orderByChild: "IsEnable", equalTo: true }).subscribe((data) => {
-    //       this.MemberListsForDeviceToken = [];
-    //       this.clubs = data;
-    //       if (this.clubs.length != 0) {
-    //           this.selectedClub = this.clubs[0].$key;
-    //           this.clubName = this.clubs[0].ClubName;
-    //           this.clubShortName = this.clubs[0].ClubShortName;
-    //           this.getParentClubUsers();//this is used before postgre user api
-    //       }
-    //   });
     try{
-        const clubQuery = gql`
-        query getParentClubVenues($firebase_parentclubId:String!) {
-          getParentClubVenues(firebase_parentclubId:$firebase_parentclubId){
-            Id
-            City
-            ClubContactName
-            ClubName
-            ClubShortName
-            CountryName
-            PostCode
-            ContactPhone
-            ClubDescription
-            sequence
-            FirebaseId
-          }
-        }
-      `;
-      this.graphqlService.query(clubQuery,{firebase_parentclubId:this.parentClubKey},0).subscribe(({data}) => {
-          this.clubs = JSON.parse(JSON.stringify(data["getParentClubVenues"] as Club[]));
-          console.table('clubs data' + data["getParentClubVenues"]);
-          if(this.clubs.length > 0){
-            this.selectedClub = this.clubs[0].Id;
-            this.venus_user_input.club_id = this.selectedClub;
-            this.getParentClubUsers();
-          } 
-        },(err)=>{
-          this.commonService.toastMessage("Clubs fetch failed",3000,ToastMessageType.Error,ToastPlacement.Bottom);
-        });
+      //   const clubQuery = gql`
+      //   query getParentClubVenues($firebase_parentclubId:String!) {
+      //     getParentClubVenues(firebase_parentclubId:$firebase_parentclubId){
+      //       Id
+      //       City
+      //       ClubContactName
+      //       ClubName
+      //       ClubShortName
+      //       CountryName
+      //       PostCode
+      //       ContactPhone
+      //       ClubDescription
+      //       sequence
+      //       FirebaseId
+      //     }
+      //   }
+      // `;
+      // this.graphqlService.query(clubQuery,{firebase_parentclubId:this.parentClubKey},0).subscribe(({data}) => {
+      //     this.clubs = JSON.parse(JSON.stringify(data["getParentClubVenues"] as Club[]));
+      //     console.table('clubs data' + data["getParentClubVenues"]);
+      //     if(this.clubs.length > 0){
+      //       this.selectedClub = this.clubs[0].Id;
+      //       this.venus_user_input.club_id = this.selectedClub;
+      //       this.getParentClubUsers();
+      //     } 
+      //   },(err)=>{
+      //     this.commonService.toastMessage("Clubs fetch failed",3000,ToastMessageType.Error,ToastPlacement.Bottom);
+      //   });
+            const body: GetParentClubVenuesRequestDto = {
+              parentclub_id: this.sharedservice.getPostgreParentClubId(),
+              app_type: AppType.ADMIN_NEW,
+              device_type: this.sharedservice.getPlatform() == 'android' ? 1 : 2,
+              device_id: this.sharedservice.getDeviceId() || 'web',
+              updated_by: this.sharedservice.getLoggedInUserId()
+            };
+          
+            this.httpService.post(API.GET_PARENT_CLUB_VENUES, body, null, 1).subscribe({
+              next: (res: GetParentClubVenuesResponseDto) => {
+                this.clubs = res.data;
+                if (this.clubs.length > 0) {
+                  this.selectedClub = this.clubs[0].Id;
+                  this.venus_user_input.club_id = this.selectedClub;
+                  this.getParentClubUsers();
+                }
+              },
+              error: (err) => {
+                this.commonService.toastMessage("Clubs fetch failed",3000,ToastMessageType.Error,ToastPlacement.Bottom);
+              }
+            });
       }catch(err){
         this.commonService.toastMessage("Clubs fetch failed",3000,ToastMessageType.Error,ToastPlacement.Bottom);
       }
@@ -482,6 +501,21 @@ async getParentClubUsers(){
 
   favorite(item) {
       console.log(item);
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('page-filteremail');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
   }
 
 }

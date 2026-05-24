@@ -1,4 +1,10 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
 page-printmembership {
+    @include android-sdk35-fixes;
+
+
+
     .scroll-content{
         //padding: 16px 9px !important;
         background-image: none !important;

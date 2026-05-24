@@ -1,83 +1,95 @@
 @import '../../../../theme/android-sdk35-fixes.scss';
 
 page-filtermember {
-    @include android-sdk35-fixes;
-    .scroll-content{
-        background-image: none !important;
-        background: linear-gradient(to bottom left, #f7f7f7, #f1f1f1,#efefef) !important;
-        padding: 0px !important;
+  @include android-sdk35-fixes;
+
+  // ── Base (Dark Theme) ──
+  .scroll-content {
+    padding: 0 !important;
+    background-color: #0f172a !important;
+    background-image: none !important;
+  }
+
+  .toolbar-background { background-color: #2b92bb !important; }
+  .toolbar-title { color: #ffffff; font-weight: 400; }
+  .pop-over ion-icon { color: #ffffff; }
+
+  // Search row
+  .sub-container {
+    border-bottom: 1px solid #334155;
+    padding: 8px 12px;
+    margin-top: 0;
+
+    button {
+      width: 90%; height: 86%; margin-top: 4px;
+      background: #2b92bb; border-radius: 8px;
+      color: white; border: none;
     }
-    .toolbar-background {
-        background-color: #2b92bb !important;
+
+    ion-icon { font-size: 20px; }
+
+    .searchbar, .searchbar-input {
+      background: #1e293b !important;
+      color: #f1f5f9 !important;
+      border-radius: 8px !important;
+      box-shadow: none !important;
     }
-    .toolbar-title {
-        color: #ffffff;
-        font-weight: 400;
+
+    .searchbar-search-icon { display: none !important; }
+    .searchbar-clear-icon { margin: 0; box-shadow: none; }
+  }
+
+  // Member list
+  ion-list {
+    background: transparent !important;
+
+    ion-item {
+      background: #1e293b !important;
+      border-bottom: 1px solid #334155 !important;
+      padding-left: 12px !important;
+
+      .item-inner { border-bottom: none !important; }
+
+      ion-label {
+        color: #f1f5f9 !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+      }
     }
-    .pop-over{
-        ion-icon{
-            color:#ffffff;
-        }
+
+    ion-icon { color: #64748b !important; }
+  }
+
+  ion-checkbox {
+    --background: #334155; --background-checked: #2b92bb;
+    --border-color: #475569; --border-color-checked: #2b92bb;
+    --checkmark-color: #fff;
+  }
+
+  // Footer
+  ion-footer {
+    button[ion-button] {
+      background: linear-gradient(135deg, rgba(43,146,187,0.85), rgba(53,173,255,0.75)) !important;
+      color: white !important; font-weight: 700 !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
     }
-    .parentimg {
-        width: 30%;
-        margin-top: 2%;
-    }
-    ion-list{
-        ion-item{
-            padding-left: 5px !important;
-        }
-        ion-icon{
-            font-size: 2.3rem !important;
-            color: rgba(128, 128, 128, 0.8);
-            margin-left: 0;
-            margin-top: 10px !important;
-            margin-bottom: 4px !important;
-        }
-    }
+  }
+
+  // ── Light Theme ──
+  &.light-theme {
+    .scroll-content { background-color: #f8fafc !important; }
+
     .sub-container {
-        border-bottom: 1px solid orange;
-        padding-bottom: 13px;
-        margin-top: 10px;
-        button {
-            width: 90%;
-            height: 86%;
-            margin-top: 4px;
-            background: linear-gradient(to right, #f3c686, rgba(250, 169, 40, 0.8274509803921568));
-            border-radius: 5px;
-            color: white;
-            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
-        }
-        .searchbar {
-            border: none !important;
-            background: #ffffff !important;
-            border-radius: 5px !important;
-            height: 86% !important;
-            margin-top: 4px !important;
-            padding: 2px 0px
-        }
-        .searchbar-input {
-            padding-left: 15px !important;
-            box-shadow: 2px 3px 5px -1px rgb(156, 156, 155)
-        }
-        .searchbar-ios .searchbar-input{
-            padding: 0 28px;
-            border-radius: 5px;
-            height: 4rem;
-            font-size: 1.4rem;
-            font-weight: 400;
-            color: #000;
-            background-color: #fff;
-        }
-        .searchbar-search-icon {
-            display: none !important;
-        }
-        ion-icon {
-            font-size: 20px;
-        }
-        .searchbar-clear-icon {
-            margin: 0;
-            box-shadow: none
-        }
+      border-bottom-color: #e2e8f0;
+      .searchbar, .searchbar-input { background: #ffffff !important; color: #0f172a !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; }
     }
+
+    ion-list ion-item {
+      background: #ffffff !important;
+      border-bottom-color: #e2e8f0 !important;
+      ion-label { color: #1e293b !important; }
+    }
+
+    ion-checkbox { --background: #fff; --border-color: #d1d5db; }
+  }
 }

@@ -1,5 +1,9 @@
+@import '../../../../theme/android-sdk35-fixes.scss';
+
+
 page-campcheckout {
-  .ion_list {
+    @include android-sdk35-fixes;
+    .ion_list {
     margin-bottom: 3px;
   }
 

@@ -129,6 +129,18 @@ export default class MembershipDiscountPage {
 
   getAllDiscounts() {
     this.discountArr = []
+    // this.fb.getAllWithQuery("Membership/MembershipSetup/" + this.ParentClubKey + "/" + ClubKey + "/Discount/", { orderByChild: "IsActive", equalTo: true })
+    //   .subscribe((data) => {
+    //     for (let i = data.length - 1; i >= 0; i--) {
+    //       if (data[i].IsActive == true) {
+    //         data[i].startDate = moment(data[i].StartDate).format('DD MMM YY')
+    //         data[i].endDate = moment(data[i].EndDate).format('DD MMM YY')
+
+    //         this.discountArr.push(data[i]);
+    //       }
+    //     }
+    //   })
+    // console.log(this.discountArr)
     const get_discounts_payload = {
       parentclubId:this.postgre_parentclub_id,
       clubId:this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
@@ -136,12 +148,16 @@ export default class MembershipDiscountPage {
       device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
       app_type:AppType.ADMIN_NEW
     }
-    this.httpService.post(API.MEMBERSHIP_MASTER_DISCOUNTS,get_discounts_payload).subscribe({
-      next: (res: any) => {
-        if(res.data && res.data.membership_discounts.length > 0)
-          this.discountArr = res.data.membership_discounts;
-      }
-    });
+    this.httpService.post(API.MEMBERSHIP_MASTER_DISCOUNTS,get_discounts_payload).subscribe((res: any) => {
+      if(res.data && res.data.membership_discounts.length > 0)
+        this.discountArr = res.data.membership_discounts;
+      },
+   (error) => {
+        //this.commonService.hideLoader();
+        console.error("Error in fetching:", error);
+        this.comonService.toastMessage("Failed to add discount", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+       // Handle the error here, you can display an error message or take appropriate action.
+   })
   }
 
   showOptions(discount:MembershipMasterDiscounts) {
@@ -185,12 +201,16 @@ export default class MembershipDiscountPage {
         device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
         app_type:AppType.ADMIN_NEW
       }
-      this.httpService.post(API.MEMBERSHIP_REMOVE_MASTER_DISCOUNTS,get_discounts_payload).subscribe({
-        next: (res: any) => {
-          this.comonService.toastMessage("Discount deleted", 2500,ToastMessageType.Success);
-          this.getAllDiscounts();
-        }
-      });
+      this.httpService.post(API.MEMBERSHIP_REMOVE_MASTER_DISCOUNTS,get_discounts_payload).subscribe((res: any) => {
+        this.comonService.toastMessage("Discount deleted", 2500,ToastMessageType.Success);
+        this.getAllDiscounts();
+      },
+     (error) => {
+          //this.commonService.hideLoader();
+          console.error("Error in fetching:", error);
+          this.comonService.toastMessage("Failed to add discount", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+         // Handle the error here, you can display an error message or take appropriate action.
+     })
     });
   }
 

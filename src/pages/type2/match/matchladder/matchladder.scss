@@ -1,594 +1,268 @@
 @import '../../../../theme/android-sdk35-fixes.scss';
+
 page-matchladder {
   @include android-sdk35-fixes;
-  .scroll-content {
-    padding: 0 !important;
+
+  .scroll-content { padding: 0 !important; overflow: hidden !important; background: #0f172a !important; }
+  ion-content { background: #0f172a !important; margin-bottom: 56px !important; }
+
+  // ── Layout ──
+  .page-layout { display: flex; flex-direction: column; height: 100%; }
+  .page-fixed-header { flex-shrink: 0; background: #0f172a; z-index: 10; }
+  .page-scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 8px 20px; }
+
+  // ── 3-Tab Navigation ──
+  .three-tabs {
+    display: flex; gap: 4px; padding: 10px 12px 6px; background: rgba(15, 23, 42, 0.95);
+  }
+  .tab-btn {
+    flex: 1; padding: 8px 4px; border-radius: 8px; border: none;
+    background: rgba(71, 85, 105, 0.2); color: #64748b;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
+    &.active { background: linear-gradient(135deg, #2b92bb, #1e6c8c); color: #fff; }
   }
 
-  // Light Theme Styles
+  // ── Filter Card ──
+  .filter-card {
+    margin: 6px 12px 6px; padding: 10px 14px;
+    background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(71, 85, 105, 0.4); border-radius: 12px;
+  }
+  .filter-label {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+    .filter-icon { font-size: 14px; color: #3fbcd3; }
+    span { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #64748b; }
+  }
+  .filter-select-wrap {
+    display: flex; align-items: center; position: relative;
+    .filter-select { width: 100%; background: transparent; border: none; color: #f1f5f9; font-size: 14px; font-weight: 600; padding: 0; max-width: 100%; }
+    .select-arrow { position: absolute; right: 0; font-size: 14px; color: #64748b; pointer-events: none; }
+  }
+  .brl-header-row { display: flex; align-items: center; gap: 8px; }
+  .brl-icon-btn {
+    width: 34px; height: 34px; border-radius: 8px; border: 1px solid rgba(43, 146, 187, 0.3);
+    background: rgba(43, 146, 187, 0.1); color: #3fbcd3; display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  // ── Ladder Items ──
+  app-list-card { display: block; margin-bottom: 6px; }
+  .ladder-row {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    background: linear-gradient(145deg, rgba(43, 146, 187, 0.3) 0%, rgba(53, 173, 255, 0.12) 40%, transparent 75%);
+  }
+  .rank-badge {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(43, 146, 187, 0.15); color: #3fbcd3; font-size: 16px; font-weight: 800;
+    &.top3 { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+  }
+  .ladder-info { flex: 1; min-width: 0; }
+  .ladder-name { font-size: 15px; font-weight: 700; color: #f1f5f9; margin: 0; text-transform: capitalize; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ladder-meta { font-size: 11px; color: #64748b; margin: 2px 0 0; }
+  .points-badge {
+    flex-shrink: 0; padding: 4px 12px; border-radius: 20px;
+    background: rgba(43, 146, 187, 0.15); border: 1px solid rgba(43, 146, 187, 0.3);
+    color: #2b92bb; font-size: 16px; font-weight: 800;
+    .pts-label { font-size: 10px; font-weight: 600; opacity: 0.7; text-transform: uppercase; }
+  }
+
+  // ── Period Pills ──
+  .period-pills {
+    display: flex; gap: 4px; padding: 4px 12px 8px; overflow-x: auto;
+  }
+  .period-pill {
+    padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(71, 85, 105, 0.3);
+    background: transparent; color: #64748b; font-size: 11px; font-weight: 700; white-space: nowrap;
+    &.active { background: linear-gradient(135deg, #2b92bb, #1e6c8c); color: #fff; border-color: #2b92bb; }
+  }
+
+  // ── Bump Rank ──
+  .brl-stats { font-size: 11px; color: #94a3b8; margin: 2px 0 0; display: flex; gap: 8px; }
+  .brl-w { color: #10b981; font-weight: 700; }
+  .brl-l { color: #ef4444; font-weight: 700; }
+  .brl-m { color: #64748b; }
+  .brl-challenge-btn {
+    padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(43, 146, 187, 0.4);
+    background: rgba(43, 146, 187, 0.1); color: #3fbcd3; font-size: 11px; font-weight: 700;
+  }
+  .brl-seed-bar { display: flex; justify-content: flex-end; padding: 4px 4px 8px; }
+  .brl-reseed-btn {
+    display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 6px;
+    border: 1px solid rgba(71, 85, 105, 0.4); background: transparent; color: #94a3b8; font-size: 11px; font-weight: 600;
+    ion-icon { font-size: 14px; }
+  }
+
+  // ── Bump Rank Setup ──
+  .brl-setup {
+    text-align: center; padding: 24px 16px; border-radius: 12px;
+    background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(71, 85, 105, 0.3); margin: 8px 0;
+  }
+  .brl-setup-icon { font-size: 40px; color: #3fbcd3; display: block; margin: 0 auto 12px; }
+  .brl-setup-title { font-size: 16px; font-weight: 700; color: #f1f5f9; margin: 0 0 16px; }
+  .brl-step {
+    display: flex; align-items: flex-start; gap: 12px; text-align: left;
+    padding: 12px; border-radius: 10px; margin-bottom: 8px;
+    background: rgba(43, 146, 187, 0.04); border: 1px solid rgba(71, 85, 105, 0.2);
+  }
+  .brl-step-num {
+    width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(43, 146, 187, 0.15); color: #3fbcd3; font-size: 12px; font-weight: 800;
+  }
+  .brl-step-content { flex: 1; }
+  .brl-step-label { font-size: 13px; font-weight: 700; color: #f1f5f9; display: block; }
+  .brl-step-desc { font-size: 11px; color: #64748b; display: block; margin-top: 2px; }
+  .brl-step-btn {
+    display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 6px;
+    border: none; background: linear-gradient(135deg, #2b92bb, #1e6c8c); color: #fff;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .brl-seed-section { text-align: center; padding: 32px 16px; }
+  .brl-seed-title { font-size: 14px; font-weight: 700; color: #f1f5f9; margin: 8px 0 4px; }
+  .brl-seed-desc { font-size: 12px; color: #64748b; margin: 0 0 16px; }
+  .brl-seed-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .brl-seed-btn {
+    display: flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 8px;
+    border: 1px solid rgba(43, 146, 187, 0.3); background: rgba(43, 146, 187, 0.08);
+    color: #3fbcd3; font-size: 12px; font-weight: 700;
+    ion-icon { font-size: 16px; }
+  }
+
+  // ── Challenges Tab ──
+  .ch-filters {
+    display: flex; gap: 4px; padding: 8px 12px; overflow-x: auto;
+  }
+  .ch-filter-btn {
+    padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(71, 85, 105, 0.3);
+    background: transparent; color: #64748b; font-size: 11px; font-weight: 700; white-space: nowrap;
+    &.active { background: #10b981; color: #fff; border-color: #10b981; }
+  }
+  .ch-row {
+    padding: 12px; border-radius: 10px; margin-bottom: 8px;
+    background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(71, 85, 105, 0.3);
+  }
+  .ch-players { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+  .ch-rank { font-size: 11px; font-weight: 800; color: #3fbcd3; }
+  .ch-name { font-size: 13px; font-weight: 600; color: #f1f5f9; }
+  .ch-arrow { color: #475569; font-size: 12px; margin: 0 2px; }
+  .ch-bottom { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ch-status {
+    padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;
+    color: #fff; text-transform: capitalize;
+  }
+  .ch-date { font-size: 10px; color: #64748b; }
+  .ch-actions { margin-left: auto; display: flex; gap: 6px; }
+  .ch-approve-btn {
+    display: flex; align-items: center; gap: 3px; padding: 4px 8px; border-radius: 5px;
+    border: 1px solid rgba(16, 185, 129, 0.3); background: transparent; color: #10b981;
+    font-size: 10px; font-weight: 700;
+  }
+  .ch-cancel-btn {
+    display: flex; align-items: center; gap: 3px; padding: 4px 8px; border-radius: 5px;
+    border: 1px solid rgba(239, 68, 68, 0.3); background: transparent; color: #ef4444;
+    font-size: 10px; font-weight: 700;
+  }
+
+  // ── Dialogs ──
+  .dialog-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;
+    background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .dialog-box {
+    width: 100%; max-width: 380px; border-radius: 16px; padding: 20px;
+    background: #1e293b; border: 1px solid rgba(71, 85, 105, 0.4);
+    &.config-dialog { max-width: 440px; max-height: 80vh; overflow-y: auto; }
+  }
+  .dialog-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .dialog-title { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+  .dialog-close { width: 28px; height: 28px; border-radius: 6px; border: none; background: rgba(71, 85, 105, 0.3); color: #94a3b8; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .dialog-msg { font-size: 14px; color: #f1f5f9; margin: 0 0 8px; strong { color: #3fbcd3; } }
+  .dialog-note { font-size: 12px; color: #64748b; margin: 0 0 16px; }
+  .dialog-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+  .dialog-btn-cancel {
+    padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(71, 85, 105, 0.4);
+    background: transparent; color: #94a3b8; font-size: 13px; font-weight: 600;
+  }
+  .dialog-btn-confirm {
+    padding: 8px 16px; border-radius: 8px; border: none;
+    background: linear-gradient(135deg, #2b92bb, #1e6c8c); color: #fff; font-size: 13px; font-weight: 700;
+    &.approve { background: linear-gradient(135deg, #10b981, #059669); }
+    &.danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  }
+
+  // ── Config Form ──
+  .config-form { display: flex; flex-direction: column; gap: 12px; }
+  .config-field {
+    display: flex; flex-direction: column; gap: 4px;
+    label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.3px; }
+    input, select {
+      width: 100%; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      border: 1px solid rgba(71, 85, 105, 0.4); background: rgba(15, 23, 42, 0.6); color: #f1f5f9;
+      &:focus { border-color: #2b92bb; outline: none; }
+    }
+    select { appearance: none; }
+  }
+  .config-row { display: flex; gap: 10px; .config-field { flex: 1; } }
+  .config-toggle {
+    display: flex; align-items: center; justify-content: space-between; padding: 8px 0;
+    label { font-size: 12px; font-weight: 600; color: #f1f5f9; flex: 1; }
+    input[type="checkbox"] { width: 20px; height: 20px; accent-color: #2b92bb; }
+  }
+
+  // ── Empty State ──
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 8px;
+    .empty-icon { font-size: 40px; color: #334155; }
+    .empty-text { font-size: 14px; color: #64748b; margin: 0; }
+    .empty-sub { font-size: 12px; color: #475569; margin: 0; }
+  }
+
+  // ── Light Theme ──
   &.light-theme {
-    .modern-ladder {
-      background: #f8fafc;
-      min-height: 100vh;
+    .scroll-content { background: linear-gradient(165deg, #f8fafc 0%, #eef4fb 50%, #f8fafc 100%) !important; }
+    ion-content { background: #f8fafc !important; }
+    .page-fixed-header { background: #f8fafc; }
+    .three-tabs { background: rgba(248, 250, 252, 0.95); }
+    .tab-btn { background: rgba(226, 232, 240, 0.5); color: #64748b; &.active { color: #fff; } }
+    .filter-card { background: rgba(255, 255, 255, 0.55); border-color: rgba(226, 232, 240, 0.6); }
+    .filter-label span { color: #94a3b8; }
+    .filter-select-wrap .filter-select { color: #1e293b; }
+    .ladder-name { color: #1e293b; }
+    .ladder-meta { color: #94a3b8; }
+    .rank-badge { background: rgba(43, 146, 187, 0.1); color: #2b92bb; &.top3 { background: rgba(16, 185, 129, 0.1); color: #059669; } }
+    .points-badge { background: rgba(43, 146, 187, 0.1); border-color: rgba(43, 146, 187, 0.2); }
+    .period-pill { border-color: rgba(226, 232, 240, 0.6); color: #64748b; &.active { color: #fff; } }
+    .brl-setup { background: rgba(255, 255, 255, 0.6); border-color: rgba(226, 232, 240, 0.6); }
+    .brl-setup-title { color: #1e293b; }
+    .brl-step { background: rgba(43, 146, 187, 0.03); border-color: rgba(226, 232, 240, 0.5); }
+    .brl-step-label { color: #1e293b; }
+    .ch-row { background: rgba(255, 255, 255, 0.6); border-color: rgba(226, 232, 240, 0.6); }
+    .ch-name { color: #1e293b; }
+    .dialog-box { background: #ffffff; border-color: rgba(226, 232, 240, 0.6); }
+    .dialog-title { color: #1e293b; }
+    .dialog-msg { color: #1e293b; }
+    .config-field {
+      input, select { background: #f8fafc; color: #1e293b; border-color: rgba(226, 232, 240, 0.8); }
+      label { color: #64748b; }
     }
-
-    .scroll-content {
-      background: #f8fafc !important;
-    }
-
-    ion-content {
-      background: #f8fafc !important;
-    }
-
-    .modern-tab-selector {
-      background: #ffffff;
-      border-bottom: 1px solid #e2e8f0;
-
-      .modern-tab {
-        background: transparent;
-        color: #64748b;
-        border-color: #e2e8f0;
-
-        &.active {
-          background: #e2e8f0;
-          color: #1e293b;
-          border-color: #cbd5e1;
-        }
-      }
-    }
-
-    // Modern Dropdown Card (Light Theme)
-    .modern-dropdown-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
-      .dropdown-header {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-
-        .dropdown-icon ion-icon {
-          color: #ffffff;
-        }
-
-        .dropdown-label {
-          color: #ffffff;
-        }
-      }
-
-      .dropdown-wrapper {
-        background: #ffffff;
-
-        .modern-select {
-          color: #1e293b;
-        }
-
-        .dropdown-arrow ion-icon {
-          color: #64748b;
-        }
-      }
-    }
-
-    // Modern Search Card (Light Theme)
-    .modern-search-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
-      .search-header {
-        background: linear-gradient(135deg, #10b981, #059669);
-
-        .search-icon ion-icon {
-          color: #ffffff;
-        }
-
-        .search-label {
-          color: #ffffff;
-        }
-      }
-
-      .search-wrapper {
-        background: #ffffff;
-
-        .sleek-searchbar {
-          background: transparent;
-          border: none;
-
-          .searchbar-input {
-            color: #1e293b;
-            background: transparent;
-
-            &::placeholder {
-              color: #64748b;
-            }
-          }
-
-          .searchbar-search-icon {
-            display: none;
-          }
-
-          .searchbar-clear-icon {
-            color: #64748b;
-          }
-        }
-      }
-    }
-
-    .segment-button {
-      color: #64748b !important;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-    }
-
-    .segment-activated {
-      color: #ffffff !important;
-      background-color: #2b92bb !important;
-      border-color: #2b92bb;
-    }
-
-    // Legacy dropdown styles (Light Theme)
-    .dropdownrow {
-      ion-item {
-        background: #ffffff;
-        color: #1e293b;
-        border: 1px solid #e2e8f0;
-      }
-
-      ion-select {
-        color: #1e293b;
-      }
-    }
-
-    .sub-container {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      margin: 8px;
-
-      ion-icon {
-        color: #64748b !important;
-      }
-
-      .searchbar {
-        background: #ffffff !important;
-        border: none !important;
-      }
-
-      .searchbar-input {
-        background-color: #ffffff !important;
-        color: #1e293b;
-        border-bottom: 1px solid #e2e8f0;
-
-        &::placeholder {
-          color: #64748b;
-        }
-      }
-    }
-
-    .item {
-      background: #ffffff;
-      color: #1e293b;
-
-      p {
-        color: #1e293b !important;
-      }
-
-      .name {
-        color: #1e293b !important;
-      }
-    }
-
-    .headings {
-      color: #1e293b;
-      border-right: 1px solid #e2e8f0;
-    }
-
-    .rightheading {
-      color: #1e293b;
-    }
-
-    // Light Theme Hover Effects
-    .modern-dropdown-card,
-    .modern-search-card {
-      &:hover {
-        box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.15);
-      }
-    }
+    .config-toggle label { color: #1e293b; }
+    .empty-state .empty-icon { color: #cbd5e1; }
+    .empty-state .empty-text { color: #94a3b8; }
   }
 
-  // Dark Theme Styles (Default)
-  .modern-ladder {
-    background: #0f172a;
-    min-height: 100vh;
+  // ── Responsive ──
+  @media (max-width: 359px) {
+    .page-scroll-area { padding: 0 4px 20px; }
+    .filter-card { margin: 4px 8px; padding: 8px 10px; }
+    .ladder-row { padding: 10px 10px; gap: 8px; }
+    .ladder-name { font-size: 13px; }
+    .rank-badge { width: 30px; height: 30px; font-size: 14px; border-radius: 8px; }
   }
-
-  .scroll-content {
-    background: #0f172a !important;
-    padding: 0px !important;
-  }
-
-  ion-content {
-    background: #0f172a !important;
-  }
-
-  // Modern Tab Selector (Dark Theme)
-  .modern-tab-selector {
-    background: #1e293b;
-    padding: 8px 4px;
-    border-bottom: 1px solid #334155;
-    margin-bottom: 8px;
-    display: flex;
-    gap: 4px;
-
-    .modern-tab {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 8px 12px;
-      background: transparent;
-      border: 1px solid #475569;
-      border-radius: 8px;
-      color: #94a3b8;
-      font-weight: 500;
-      cursor: pointer;
-
-      &.active {
-        background: #475569;
-        color: #f1f5f9;
-        border-color: #64748b;
-      }
-
-      .tab-icon-wrapper {
-        ion-icon {
-          font-size: 16px;
-        }
-      }
-
-      span {
-        font-size: 13px;
-      }
-    }
-  }
-
-  // Modern Dropdown Card (Dark Theme)
-  .modern-dropdown-card {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 12px;
-    margin: 8px 16px 12px 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-
-    .dropdown-header {
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .dropdown-icon {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        ion-icon {
-          font-size: 16px;
-          color: #ffffff;
-        }
-      }
-
-      .dropdown-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #ffffff;
-        letter-spacing: 0.025em;
-      }
-    }
-
-    .dropdown-wrapper {
-      background: #1e293b;
-      padding: 16px;
-      position: relative;
-
-      .modern-select {
-        width: 100%;
-        background: transparent;
-        border: none;
-        color: #f1f5f9;
-        font-size: 14px;
-        padding: 0;
-
-        .select-text {
-          color: #f1f5f9;
-        }
-      }
-
-      .dropdown-arrow {
-        position: absolute;
-        right: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
-
-        ion-icon {
-          font-size: 16px;
-          color: #94a3b8;
-        }
-      }
-    }
-  }
-
-  // Modern Search Card (Dark Theme)
-  .modern-search-card {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 12px;
-    margin: 8px 16px 12px 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-
-    .search-header {
-      background: linear-gradient(135deg, #10b981, #059669);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .search-icon {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        ion-icon {
-          font-size: 16px;
-          color: #ffffff;
-        }
-      }
-
-      .search-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #ffffff;
-        letter-spacing: 0.025em;
-      }
-    }
-
-    .search-wrapper {
-      background: #1e293b;
-      padding: 16px;
-
-      .sleek-searchbar {
-        background: transparent;
-        border: none;
-        margin: 0;
-        padding: 0;
-
-        .searchbar-input {
-          background: transparent;
-          border: none;
-          color: #f1f5f9;
-          padding: 0;
-          font-size: 14px;
-          box-shadow: none;
-          -webkit-box-shadow: none;
-
-          &::placeholder {
-            color: #94a3b8;
-          }
-        }
-
-        .searchbar-search-icon {
-          display: none;
-        }
-
-        .searchbar-clear-icon {
-          color: #94a3b8;
-          right: 0;
-        }
-      }
-    }
-  }
-
-  .segment-button {
-    color: #94a3b8 !important;
-    line-height: 1rem !important;
-    background: #1e293b;
-    border: 1px solid #334155;
-  }
-  .segment-activated {
-    color: white !important;
-    background-color: #2b92bb !important;
-    border-color: #2b92bb;
-  }
-  .sub-container {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    margin: 8px;
-
-    ion-icon {
-        width: 90%;
-        height: 46px;
-        background: transparent !important;
-        border-radius: 5px;
-        color: #94a3b8 !important;
-        font-size: 30px;
-    }
-
-    .search-bar{
-        padding: 0px 5px;
-    }
-    .searchbar {
-        border: none !important;
-        background: #1e293b !important;
-        border-radius: 5px !important;
-        height: 86% !important;
-        margin-top: 4px !important;
-        padding: 8px 5px;
-    }
-
-    .searchbar-input {
-        padding-left: 4px !important;
-        box-shadow: none !important;
-        -webkit-box-shadow:none !important;
-        border-bottom: 1px solid #334155;
-        border-radius: 0;
-        background-color: #1e293b !important;
-        color: #f1f5f9;
-
-        &::placeholder {
-          color: #94a3b8;
-        }
-    }
-
-    .searchbar-search-icon {
-        display: none !important;
-    }
-  }
-// Legacy dropdown styles - keeping for backward compatibility
-.dropdownrow{
-  ion-item{
-      width: 50%;
-      font-size: 16px;
-      color: #f1f5f9;
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-top-left-radius: 6px;
-      border-bottom-left-radius: 6px;
-      .item-inner{
-          border-bottom: none;
-      }
-  }
-  ion-select{
-      max-width: 100%;
-      padding: 7px;
-      color: #f1f5f9;
-  }
-}
-  // .scroll-content {
-  //   padding: 0px !important;
-  //   background-image: none !important;
-  //   // background: white !important;
-  //   background: #f4efef !important;
-  //   // margin-bottom: 60px;
-  // }
-  .card-content {
-    padding: 5px 10px;
-  }
-  .item {
-    background: #1e293b;
-    padding-bottom: 10px;
-    color: #f1f5f9;
-
-    p {
-      color: #f1f5f9 !important;
-    }
-  }
-  .line {
-    border-right: 2px solid #2b92bb;
-  }
-  .headings {
-    color: #f1f5f9;
-    font-weight: 600;
-    font-size: 16px;
-    border-right: 1px solid #334155;
-    padding-left: 5px;
-  }
-  .rightheading {
-    color: #f1f5f9;
-    font-weight: 600;
-    font-size: 16px;
-    padding-left: 5px;
-  }
-  .name {
-    font-size: 20px;
-    color: #cbd5e1 !important;
-  }
-
-  ion-item {
-    .item-inner {
-      border-bottom: none !important;
-    }
-  }
-
-  // Modern Card Hover Effects and Animations
-  .modern-dropdown-card,
-  .modern-search-card {
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4);
-    }
-
-    .dropdown-header,
-    .search-header {
-      transition: all 0.3s ease;
-    }
-
-    .dropdown-wrapper,
-    .search-wrapper {
-      transition: all 0.3s ease;
-    }
-  }
-
-  // Responsive Design
-  @media (max-width: 768px) {
-    .modern-dropdown-card,
-    .modern-search-card {
-      margin: 8px 12px;
-      
-      .dropdown-header,
-      .search-header {
-        padding: 10px 14px;
-        
-        .dropdown-label,
-        .search-label {
-          font-size: 13px;
-        }
-      }
-      
-      .dropdown-wrapper,
-      .search-wrapper {
-        padding: 14px;
-      }
-    }
-  }
-
-  @media (max-width: 480px) {
-    .modern-dropdown-card,
-    .modern-search-card {
-      margin: 6px 8px;
-      
-      .dropdown-header,
-      .search-header {
-        padding: 8px 12px;
-        
-        .dropdown-icon,
-        .search-icon {
-          width: 18px;
-          height: 18px;
-          
-          ion-icon {
-            font-size: 14px;
-          }
-        }
-        
-        .dropdown-label,
-        .search-label {
-          font-size: 12px;
-        }
-      }
-      
-      .dropdown-wrapper,
-      .search-wrapper {
-        padding: 12px;
-      }
-    }
+  @media (min-width: 768px) {
+    .page-scroll-area { padding: 0 16px 20px; }
+    .filter-card { margin: 6px 16px; padding: 12px 16px; }
+    .ladder-row { padding: 14px 18px; gap: 14px; }
+    .ladder-name { font-size: 16px; }
+    .rank-badge { width: 42px; height: 42px; font-size: 18px; }
   }
 }

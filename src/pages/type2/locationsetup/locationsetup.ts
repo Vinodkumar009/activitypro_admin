@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController,AlertController, ActionSheetController, Platform } from 'ionic-angular';
-
+import { Component, ViewChildren } from '@angular/core';
+import { IonicPage, NavController, NavParams, Slides, AlertController, ActionSheetController, Platform } from 'ionic-angular';
+import * as moment from 'moment';
 import { Storage } from '@ionic/storage';
 import { FirebaseService } from '../../../services/firebase.service';
+import { CommonService } from '../../../services/common.service';
 // import { IonicPage } from 'ionic-angular';
-import gql from "graphql-tag";
-import { GraphqlService } from '../../../services/graphql.service';
+
 @IonicPage()
 @Component({
     selector: 'page-locationsetup',
@@ -19,9 +19,8 @@ export class LocationsetupPage {
         public navCtrl: NavController,
         private fb: FirebaseService,
         public actionSheetCtrl: ActionSheetController,
-        storage: Storage, 
-        private platform: Platform,
-        private graphqlService: GraphqlService,
+        storage: Storage
+        , private platform: Platform
     ) {
         storage.get('userObj').then((val) => {
             val = JSON.parse(val);
@@ -86,7 +85,6 @@ export class LocationsetupPage {
                         console.log("Location/" + this.ParentClubKey + "/" + LocationKey)
                         this.fb.update(LocationKey, "Location/" + this.ParentClubKey, { IsActive: false });
                         // this.fb.deleteFromFb("Location/"+ this.ParentClubKey + "/" +LocationKey)
-                        //this.removeLocationInPostgre();
                     }
                 }
             ]
@@ -94,27 +92,8 @@ export class LocationsetupPage {
         alert.present();
     }
 
-
-    async removeLocationInPostgre(){
-        try{
-          const add_location_mutation = gql`
-              mutation deleteLocation($locationInput: locationId!) {
-                deleteLocation(locationdeleteInput: $locationInput)
-              }` 
-              
-              const remove_location_mutation_variable = { locationInput: "" };
-              this.graphqlService.mutate(add_location_mutation, remove_location_mutation_variable,0).subscribe((response)=>{
-                console.log(response);
-              },(err)=>{
-                console.log(err);;
-                //this.comonService.toastMessage("location add failed",2500,ToastMessageType.Error,ToastPlacement.Bottom);
-              });            
-        }catch(err){
-          console.log(err);
-        }       
-      }
-
     gotoAddLocation() {
         this.navCtrl.push("AddlocationPage");
+
     }
 }

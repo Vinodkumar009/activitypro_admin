@@ -1,0 +1,102 @@
+<!--
+  Generated template for the AssignlevelsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title style="text-align: center;">Assign Challenges</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <!-- <ion-row class="sub-container rows-allign2">
+      <ion-col col-1 style="text-align: center; margin: auto; padding: 0px">
+        <ion-icon name="ios-search"></ion-icon>
+      </ion-col>
+      <ion-col col-11 class="search-bar">
+        <ion-searchbar placeholder="Search Challenges" id="customsearchbar" [(ngModel)]="searchInput"
+          (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <p style="
+            margin: 10px 4px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0px 8px 0px 14px;
+      ">
+      Select Challenges
+    </p> -->
+    <ion-row class=" sub-container rows-allign2">
+      <ion-col col-1 style="text-align: center; margin: auto; padding: 0px">
+        <ion-icon name="ios-search"></ion-icon>
+      </ion-col>
+      <ion-col col-11 class="search-bar">
+        <ion-searchbar placeholder="Search Challenges" id="customsearchbar" [(ngModel)]="searchInput"
+          (ionInput)="getFilterItems($event)" autocorrect="off"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+
+    <!-- <ion-list class="ion_list">
+      <ion-list-header class="session_header" style="font-size: 18px">
+        Select Challenges
+      </ion-list-header>
+    </ion-list> -->
+    <ion-list>
+      <ion-item (click)="gotoNext()" *ngFor="let chal of filteredChallenges;">
+        <ion-label style=" text-transform: capitalize;">
+          <p style="font-size: 18;font-weight: 600;color: black;">{{chal.challenge.ChallengeName}}</p>
+          <div style="display: flex;">
+            <p style="color:  rgba(0, 0, 0, 0.85) !important">{{chal.focus_area.focus_area_name}} : </p>
+            <p *ngFor="let target of chal.target_area">
+              <span> {{target.target_area_name}}</span>
+            </p>
+          </div>
+
+        </ion-label>
+        <!-- <ion-checkbox style="margin: 9px 20px 9px 4px" [(ngModel)]="chal.isSelect" [disabled]="chal.isAlreadExisted" -->
+        <ion-checkbox style="margin: 9px 20px 9px 4px" (click)="selectChallenges(chal.id,$event)"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col col-12>
+      <button ion-button block style="background-color: #5be283;" (click)="assignChallengeToLevel()">
+        Assign
+      </button>
+    </ion-col>
+    <!-- <ion-col col-12>
+      <button
+        ion-button
+        block
+        *ngIf="nextClicked == 'player'"
+        class="timekare-primary-btn"
+        (click)="gotoNext()"
+      >
+        Next
+      </button>
+    </ion-col>
+    <ion-col col-12>
+      <button
+        ion-button
+        block
+        *ngIf="nextClicked == 'next'"
+        class="timekare-primary-btn"
+        (click)="assign()"
+        [disabled]="isValid"
+      >
+        Assign
+      </button>
+    </ion-col> -->
+  </ion-row>
+</ion-footer>

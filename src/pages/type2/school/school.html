@@ -29,8 +29,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content class="cards-bg social-cards"  [ngStyle]="{'margin-top.px': this.platform=='ios' ? 30 : 0 }">
-
+<ion-content class="cards-bg social-cards" >
     <ion-list *ngFor="let item of schools" class="slider_list_margin">
       <ion-item-sliding *ngIf="item.IsActive == true">
         <ion-item>
@@ -62,20 +61,12 @@
         </ion-card-content>
     </ion-card>
     </ion-list>
-    
-    
 
-    
-   
-
-  
-    <ion-fab mini right bottom #fab>
-     
+     <ion-fab mini right bottom #fab>
       <button ion-fab mini style="background-color:#2b92bb !important; color: white !important" style="background-color:#2b92bb !important; color: white !important"><ion-icon name="add"></ion-icon></button>
 
       <ion-fab-list side="top">
-  
-          <p class="fabEmailText" style="margin-left: -154px;" (click)="gotoAddSchool()">
+         <p class="fabEmailText" style="margin-left: -154px;" (click)="gotoAddSchool()">
           Find school</p>
           <button style="background-color: #2b92bb; color:white" ion-fab class="fabTop" (click)="gotoAddSchool()">
               <ion-icon name="ios-create-outline"></ion-icon>
@@ -90,6 +81,14 @@
       </ion-fab-list>
   
   </ion-fab>
+</ion-content>
+    
+
+    
+   
+
+  
+   
 
 
   <!-- <ion-fab right bottom>

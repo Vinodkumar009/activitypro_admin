@@ -1,0 +1,148 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>{{LangObj.report_schedule_title}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-header>
+    <ion-navbar *ngIf="themeType == 2">
+        <button ion-button icon-only menuToggle>
+      <ion-icon name="apps"></ion-icon>
+    </button>
+        <ion-title>
+            {{LangObj.report_schedule_title}}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToDashboardMenuPage()">
+                 <img src="assets/images/home.svg" class="home_btn">
+            </button>
+            <button ion-button icon-only (click)="presentPopover($event)"> 
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+
+    <ion-row [ngStyle]="{'margin-top.px': this.platformOS=='ios' ? 24 : -10 }" class="rows-align">
+
+        <ion-col col-12 class="padding-0">
+            <ion-item style="background-color: #efefefd9;" class="headitem">
+                <ion-select [(ngModel)]="selectedCoach" (ionChange)="onChangeCoach()">
+                    <ion-option *ngFor="let coach of coachList" value={{coach.$key}}>{{coach.FirstName}} {{coach.MiddleName}} {{coach.LastName}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-col>
+        <ion-col col-12 class="padding-0">
+            <ion-item style="background-color: #efefefd9;" class="headitem">
+                <ion-select [(ngModel)]="selectedClub" (ionChange)="onChangeOfClub()">
+                    <ion-option value="All">{{LangObj.report_schedule_all}}</ion-option>
+                    <ion-option *ngFor="let club of clubs" value={{club.ClubKey}}>{{club.ClubName}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col center text-center col-4 class="col-div" style="background-color: #38A7FF;">
+            <!-- <button ion-button icon-left clear small>
+                <div class="left-div  col-div-session">
+                    <span  class="font1"></span>
+                  
+                </div>
+              
+                 <div  class="icon-div"> <ion-icon name="ios-filing"></ion-icon></div>
+                </button> -->
+                <p class="tt">{{this.sessionList.length}}</p>
+                <p class="font2">{{LangObj.report_schedule_session}}</p>
+        </ion-col>  
+        <ion-col col-4 class="col-div " style="background-color: #11E092;">
+
+            <p class="tt">{{duration}}</p>
+            <p class="font2">{{LangObj.report_schedule_hrs}}</p>
+        </ion-col>
+        <ion-col col-4 class="col-div " style="background-color: #EA6248;"> 
+             <!-- <button ion-button icon-left clear small>
+                <div class="left-div col-div-member">
+                    <span  class="font1"> {{totalMember}}</span>
+                </div>
+               
+               <div class="icon-div"><ion-icon name="people"></ion-icon></div>
+            </button> -->
+            <p class="tt"> {{totalMember}}</p>
+            <p class="font2">{{LangObj.report_schedule_mems}}</p>
+        </ion-col>
+    </ion-row>
+    <ion-list style="margin-top: 10px;">
+        <div *ngFor="let d of data;let i=index" [ngClass]="{'item-div-style':sessionSummary[i].Session > 0}">
+            <ion-item class="ion_item_custom" padding   *ngIf="sessionSummary[i].Session > 0">
+                <ion-icon class="ion_icon1" item-right [name]="d.icon" (click)="toggleDetails(d)"></ion-icon>
+                {{d.title}}
+                <span (click)="toggleDetails(d)" class="summary">{{sessionSummary[i].Session}} {{LangObj.report_schedule_session}}, <ion-icon name="people"></ion-icon> {{sessionSummary[i].Member}}</span>
+                <div *ngIf="d.showDetails">
+    
+                    <ion-grid>
+                        <ion-row wrap>
+    
+                            <ion-col col-6 *ngFor="let session of sessionsDayWise[i]">
+                                <div class="outer_border">
+                                    <ion-row>
+                                        <ion-col col-6>
+                                            <div>
+                                                <button ion-button icon-left clear small class="button_custom">
+                                                    <ion-icon name="clock"></ion-icon> <div>{{session.StartTime}}</div> 
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button ion-button icon-left clear small class="button_custom">
+                                                    <ion-icon name="people"></ion-icon> <div>{{session.TotalMember}}</div>
+                                                </button>
+                                            </div>
+                                        </ion-col>
+                                        <ion-col col-6>
+                                            <div>
+                                                <button ion-button icon-right clear small class="button_custom">
+                                        <ion-icon class="no_padleft" name="stopwatch"></ion-icon><div class="duration">{{session.Duration}} {{LangObj.report_schedule_min}}</div>
+                                    </button>
+                                            </div>
+                                            <div>
+                                                <button ion-button icon-right clear small class="button_custom1">
+                                        <ion-icon class="no_padleft" name="pin"></ion-icon><div class="venue">{{session.ClubShortName}}</div>
+                                    </button>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </div>
+                                <!-- <p>{{session.StartDate}}</p>
+                                <p> {{session.EndDate}}</p> -->
+                            </ion-col>
+    
+                        </ion-row>
+                        <ion-row *ngIf="sessionsDayWise[i].length == 0">
+                            <ion-col col-12>
+                                <span class="noSession_message">{{LangObj.report_schedule_noses}}</span>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+    
+                </div>
+            </ion-item>
+        </div>
+        
+    </ion-list>
+
+
+
+
+
+
+
+
+
+</ion-content>

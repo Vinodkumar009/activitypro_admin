@@ -1,0 +1,441 @@
+<ion-header *ngIf="themeType == 1">
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Communincation</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="communicationType">
+            <ion-segment-button value="session">
+                Session
+            </ion-segment-button>
+            <ion-segment-button value="coach">
+                Coach
+            </ion-segment-button>
+            <ion-segment-button value="member">
+                Member
+            </ion-segment-button>
+            <ion-segment-button value="defaulter">
+                Defaulter
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="themeType == 2">
+    <ion-navbar>
+        <button ion-button icon-only menuToggle (click)="goToDashboardMenuPage()">
+            <ion-icon name="apps"></ion-icon>
+        </button>
+        <ion-title>
+            Communincation
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="communicationType">
+            <ion-segment-button value="session">
+                Session
+            </ion-segment-button>
+            <ion-segment-button value="coach">
+                Coach
+            </ion-segment-button>
+            <ion-segment-button value="member">
+                Member
+            </ion-segment-button>
+            <ion-segment-button value="defaulter">
+                Defaulter
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="cards-bg social-cards" padding>
+    <div [ngSwitch]="communicationType">
+        <ion-list *ngSwitchCase="'session'">
+            <ion-grid class="dropdown">
+                <ion-col col-12>
+
+                    <ion-item>
+                        <ion-label>Venue</ion-label>
+                        <ion-select [(ngModel)]="venue">
+                            <ion-option value="s">South Croydon</ion-option>
+                            <ion-option value="o">Oval</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label>Game</ion-label>
+                        <ion-select [(ngModel)]="game">
+                            <ion-option value="c">Cricket</ion-option>
+                            <ion-option value="t">Tennis</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-col col-12>
+
+                    <ion-item>
+                        <ion-label>Coach</ion-label>
+                        <ion-select [(ngModel)]="venue">
+                            <ion-option value="s">South Croydon</ion-option>
+                            <ion-option value="o">Oval</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-row>
+                    <ion-col col-3 class="padding_class">Category</ion-col>
+                    <ion-col col-9>
+                        <!--<ion-slides [options]="category" class="member_slider">
+                            <ion-slide>
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col>
+                                            R
+                                        </ion-col>
+                                        <ion-col>
+                                            G
+                                        </ion-col>
+                                        <ion-col>
+                                            B
+                                        </ion-col>
+                                        <ion-col>
+                                            Y
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-slide>
+
+                        </ion-slides>-->
+                    </ion-col>
+                </ion-row>
+
+                <ion-row>
+                    <ion-col col-3 class="padding_class">Age Group</ion-col>
+                    <ion-col col-9>
+                        <!--<ion-slides [options]="ageGroup" class="member_slider">
+                            <ion-slide>
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col>
+                                            12U
+                                        </ion-col>
+                                        <ion-col>
+                                            14U
+                                        </ion-col>
+                                        <ion-col>
+                                            16U
+                                        </ion-col>
+                                        <ion-col>
+                                            18U
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-slide>
+                        </ion-slides>-->
+
+
+                    </ion-col>
+                </ion-row>
+                <ion-item>
+                    <ion-label floating>Days</ion-label>
+                    <ion-input type="text"></ion-input>
+                </ion-item>
+                <br/>
+                <ion-item>
+                    <ion-label floating>Total Member : 200</ion-label>
+
+                </ion-item>
+                <br/>
+                <ion-list>
+                    <ion-item-sliding>
+                        <ion-item>
+                            <h2>South Croydon (CR27P0)</h2>
+
+
+                        </ion-item>
+
+
+                        <ion-item-options side="right">
+
+                            <button ion-button color="secondary" (click)="editCommunicationModal({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Edit
+      </button>
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="deleteCommunication({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Delete
+      </button>
+                        </ion-item-options>
+                    </ion-item-sliding>
+
+                </ion-list>
+                <ion-list>
+                    <ion-item-sliding>
+                        <ion-item>
+                            <h2>South Croydon (CR27P0)</h2>
+
+
+                        </ion-item>
+
+
+                        <ion-item-options side="right">
+                            <button ion-button color="secondary" (click)="editCommunicationModal({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Edit
+      </button>
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="deleteCommunication({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Delete
+      </button>
+                        </ion-item-options>
+                    </ion-item-sliding>
+
+                </ion-list>
+            </ion-grid>
+            <ion-grid>
+                <ion-row>
+
+                    <ion-col col-4>
+                        <button ion-button block style="background-color:#2b92bb !important; color: white !important">Send Email</button>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button ion-button block class="timekare-primary-btn">Send Noti</button>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button ion-button block class="timekare-primary-btn">Add</button>
+                    </ion-col>
+
+                </ion-row>
+            </ion-grid>
+        </ion-list>
+        <ion-list *ngSwitchCase="'coach'">
+            <ion-grid class="dropdown">
+                <ion-col col-12>
+
+                    <ion-item>
+                        <ion-label>Venue</ion-label>
+                        <ion-select [(ngModel)]="venue">
+                            <ion-option value="s">South Croydon</ion-option>
+                            <ion-option value="o">Oval</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label>Game</ion-label>
+                        <ion-select [(ngModel)]="game">
+                            <ion-option value="c">Cricket</ion-option>
+                            <ion-option value="t">Tennis</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-item>
+                    <ion-label floating>Total Member : 200</ion-label>
+
+                </ion-item>
+                <br/>
+                <ion-list>
+                    <ion-item-sliding>
+                        <ion-item>
+                            <h2>South Croydon (CR27P0)</h2>
+
+
+                        </ion-item>
+
+
+                        <ion-item-options side="right">
+
+                            <button ion-button color="secondary" (click)="editCommunicationModal({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Edit
+      </button>
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="deleteCommunication({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Delete
+      </button>
+                        </ion-item-options>
+                    </ion-item-sliding>
+
+                </ion-list>
+                <ion-list>
+                    <ion-item-sliding>
+                        <ion-item>
+                            <h2>South Croydon (CR27P0)</h2>
+
+
+                        </ion-item>
+
+
+                        <ion-item-options side="right">
+                            <button ion-button color="secondary" (click)="editCommunicationModal({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Edit
+      </button>
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="deleteCommunication({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Delete
+      </button>
+                        </ion-item-options>
+                    </ion-item-sliding>
+
+                </ion-list>
+            </ion-grid>
+            <ion-grid>
+                <ion-row>
+
+                    <ion-col col-4>
+                        <button ion-button block style="background-color:#2b92bb !important; color: white !important">Send Email</button>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button ion-button block class="timekare-primary-btn">Send Noti</button>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button ion-button block class="timekare-primary-btn" (click)="editCommunicationModal({charNum: 0})">Add</button>
+                    </ion-col>
+
+                </ion-row>
+            </ion-grid>
+        </ion-list>
+        <ion-list *ngSwitchCase="'member'">
+            <ion-grid class="dropdown">
+                <ion-col col-12>
+
+                    <ion-item>
+                        <ion-label>Venue</ion-label>
+                        <ion-select [(ngModel)]="venue">
+                            <ion-option value="s">South Croydon</ion-option>
+                            <ion-option value="o">Oval</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label>Game</ion-label>
+                        <ion-select [(ngModel)]="game">
+                            <ion-option value="c">Cricket</ion-option>
+                            <ion-option value="t">Tennis</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label>Coach</ion-label>
+                        <ion-select [(ngModel)]="game">
+                            <ion-option value="c">Cricket</ion-option>
+                            <ion-option value="t">Tennis</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+            </ion-grid>
+        </ion-list>
+        <ion-list *ngSwitchCase="'defaulter'">
+            <ion-grid class="dropdown">
+                <ion-col col-12>
+
+                    <ion-item>
+                        <ion-label>Venue</ion-label>
+                        <ion-select [(ngModel)]="venue">
+                            <ion-option value="s">South Croydon</ion-option>
+                            <ion-option value="o">Oval</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-col col-12>
+                    <ion-item>
+                        <ion-label>Game</ion-label>
+                        <ion-select [(ngModel)]="game">
+                            <ion-option value="c">Cricket</ion-option>
+                            <ion-option value="t">Tennis</ion-option>
+                        </ion-select>
+                    </ion-item>
+
+                </ion-col>
+                <ion-item>
+                    <ion-label floating>Total Member : 200</ion-label>
+
+                </ion-item>
+                <br/>
+                <ion-list>
+                    <ion-item-sliding>
+                        <ion-item>
+                            <h2>South Croydon (CR27P0)</h2>
+
+
+                        </ion-item>
+
+
+                        <ion-item-options side="right">
+
+                            <button ion-button color="secondary" (click)="editCommunicationModal({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Edit
+      </button>
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="deleteCommunication({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Delete
+      </button>
+                        </ion-item-options>
+                    </ion-item-sliding>
+
+                </ion-list>
+                <ion-list>
+                    <ion-item-sliding>
+                        <ion-item>
+                            <h2>South Croydon (CR27P0)</h2>
+
+
+                        </ion-item>
+
+
+                        <ion-item-options side="right">
+                            <button ion-button color="secondary" (click)="editCommunicationModal({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Edit
+      </button>
+                            <button ion-button style="background-color:#2b92bb !important; color: white !important" (click)="deleteCommunication({charNum: 0})">
+        <ion-icon name="ion-create"></ion-icon>
+        Delete
+      </button>
+                        </ion-item-options>
+                    </ion-item-sliding>
+
+                </ion-list>
+            </ion-grid>
+            <ion-grid>
+                <ion-row>
+
+                    <ion-col col-4>
+                        <button ion-button block style="background-color:#2b92bb !important; color: white !important">Send Email</button>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button ion-button block class="timekare-primary-btn">Send Noti</button>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button ion-button block class="timekare-primary-btn" (click)="editCommunicationModal({charNum: 0})">Add</button>
+                    </ion-col>
+
+                </ion-row>
+            </ion-grid>
+        </ion-list>
+
+    </div>
+</ion-content>

@@ -144,20 +144,22 @@ export class MonthlyRecord {
         const get_memberships_payload = {
             parentclubId:this.postgre_parentclub_id,
             membership_id:this.membership_user.membership_id,
+            //clubId:this.Venues.find(venue => venue.FirebaseId === this.selectedClubKey).Id,
             membership_package_id:this.membership_user.membership_package_id,
+            //action_type:1,
             device_type:this.sharedservice.getPlatform() == "android" ? 1:2,
-            app_type:AppType.ADMIN_NEW
+            app_type:AppType.ADMIN_NEW//new admin
           }
-          this.httpService.post(API.GET_MEMBERSHIP_ENROL_MONTHS,get_memberships_payload).subscribe({
-            next: (res: any) => {
-                console.table(`enrols:${res}`);
-                if(res && res.data) this.membershipMonths = res.data ;
-            },
-            error: (error) => {
-                console.error("Error in fetching:", error);
-                this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
-            }
-          });
+          this.httpService.post(API.GET_MEMBERSHIP_ENROL_MONTHS,get_memberships_payload).subscribe((res: any) => {
+            console.table(`enrols:${res}`);
+            if(res && res.data) this.membershipMonths = res.data ;
+          },
+         (error) => {
+              //this.commonService.hideLoader();
+              console.error("Error in fetching:", error);
+              this.comonService.toastMessage("No setups found", 2500,ToastMessageType.Error,ToastPlacement.Bottom);
+             // Handle the error here, you can display an error message or take appropriate action.
+         })
     }
 
     getAllPaymentGateWays() {

@@ -1,5 +1,8 @@
-profile-page{
-    .prifile-card{
+@import '../../theme/android-sdk35-fixes.scss';
+
+profile-page {
+    @include android-sdk35-fixes;
+.prifile-card{
        color: #ffffff;
        padding-left: 0px !important; 
     }

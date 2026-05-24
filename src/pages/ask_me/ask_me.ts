@@ -49,7 +49,7 @@ export class AskMePage {
 
   messages: ChatMessage[] = [
     {
-      text: `Hi! Welcome to ActivityPro. I'm here to help you.\nGet started using our quick links or feel free to type in the below box to ask your query.`,
+      text: `Hi! Welcome to ActivityPro. I'm here to help you.`,
       isUser: false,
       timestamp: this._getFormattedTimestamp()
     }
@@ -77,9 +77,9 @@ export class AskMePage {
     input.app_type = AppType.ADMIN_NEW;
     input.device_id = this.sharedservice.getDeviceId() ||'unknown';
     input.device_type = this.sharedservice.getPlatform() === 'android' ? 1 : 2;
-    input.updated_by = this.sharedservice.getLoggedInUserId();
+    input.updated_by = this.sharedservice.getLoggedInUserId() || 'superadmin';
 
-    this.httpService.post<AgentcoreResponse[]>(`${API.AGENT_CHAT_PROMPTS}/`, input)
+    this.httpService.post<AgentcoreResponse[]>(`${API.AGENT_CHAT_PROMPTS}`, input)
       .subscribe({
         next: (res) => {
           this.prompts = res;
@@ -183,7 +183,7 @@ export class AskMePage {
     };
 
     this.isThinking = true;
-    this.httpService.post<AgentInvokeResponse>(`${API.AGENT_CHAT_INVOKE}`, input, null, 3)
+    this.httpService.post<AgentInvokeResponse>(`${API.AGENT_CHAT_INVOKE}`, input, null, 4)
       .subscribe({
         next: (res) => {
           this.isThinking = false;
@@ -237,7 +237,7 @@ export class AskMePage {
       device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
       app_type: AppType.ADMIN_NEW,
       device_id: this.sharedservice.getDeviceId() || 'unknown',
-      updated_by: this.sharedservice.getLoggedInUserId(),
+      updated_by: this.sharedservice.getLoggedInUserId() || 'superadmin',
       interaction_id: interactionId
     };
 
@@ -294,7 +294,7 @@ export class AskMePage {
       device_type: this.sharedservice.getPlatform() === 'android' ? 1 : 2,
       app_type: AppType.ADMIN_NEW,
       device_id: this.sharedservice.getDeviceId() || 'unknown',
-      updated_by: this.sharedservice.getLoggedInUserId(),
+      updated_by: this.sharedservice.getLoggedInUserId() || 'superadmin',
       interaction_id: this.selectedInteractionId,
       user_id: this.sharedservice.getLoggedInUserId(),
       feedback_type: this.feedbackType,

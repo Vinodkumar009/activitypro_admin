@@ -5,6 +5,8 @@ import { NavController, PopoverController, Platform, LoadingController, AlertCon
 import { SharedServices } from '../../services/sharedservice';
 // import { PopoverPage } from '../../popover/popover';
 import { Storage } from '@ionic/storage';
+import { Events } from 'ionic-angular';
+import { ThemeService } from '../../../services/theme.service';
 
 // import { PaymentDetails } from './paymentdetails';
 
@@ -22,6 +24,7 @@ export class InnerPaymentMenu {
   termKey = "";
   themeType: number;
   isAndroid: boolean = false;
+  isDarkTheme: boolean = true;
 
   reportType = "Overall";
   loading: any;
@@ -50,7 +53,7 @@ export class InnerPaymentMenu {
   sessionImgurl="";
   membershipImgurl:string="";
 
-  constructor(public alertCtrl: AlertController, public loadingCtrl: LoadingController, platform: Platform, storage: Storage, public fb: FirebaseService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController) {
+  constructor(public alertCtrl: AlertController, public loadingCtrl: LoadingController, platform: Platform, public storage: Storage, public fb: FirebaseService, public navCtrl: NavController, public sharedservice: SharedServices, public popoverCtrl: PopoverController, public events: Events, private themeService: ThemeService) {
     this.sessionImgurl="https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FActivityIcons%2Fgroupsession.svg?alt=media&token=1f19b4aa-5051-4131-918d-4fa17091a7f9";
     this.membershipImgurl = "https://firebasestorage.googleapis.com/v0/b/activityprouk-b5815/o/ActivityPro%2FActivityIcons%2Fmembership.svg?alt=media&token=824fa9dd-a964-4eb9-a8f3-7ab8864c0a48";
     this.themeType = sharedservice.getThemeType();
@@ -63,6 +66,7 @@ export class InnerPaymentMenu {
 
     })
 
+    this.loadTheme();
   }
   goTo(obj) {
     if (obj.component != "Setup") {
@@ -110,6 +114,21 @@ export class InnerPaymentMenu {
       buttons: ['OK']
     });
     alert.present();
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('innerpaymentmenu-page');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
   }
 
 }

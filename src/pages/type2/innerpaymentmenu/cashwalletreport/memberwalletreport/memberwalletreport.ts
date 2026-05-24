@@ -11,9 +11,6 @@ import { HttpService } from '../../../../../services/http.service';
 import { API } from '../../../../../shared/constants/api_constants';
 
 
-// import { CommonService } from '../../../services/common.service';
-// import { IonicPage } from 'ionic-angular';
-
 @IonicPage()
 @Component({
     selector: 'page-memberwalletreport',
@@ -27,7 +24,6 @@ export class MemberWalletReport {
     currencyDetails: any;
     
     loading: any;
-    nestUrl: string;
     totalParentClubBalance: any;
     totalParentClubData = [];
   memberKey: any;
@@ -38,14 +34,13 @@ export class MemberWalletReport {
         public alertCtrl: AlertController,
         public navCtrl: NavController,
         public modalController: ModalController,
-        private fb: FirebaseService,
         public actionSheetCtrl: ActionSheetController,
         public storage: Storage,
         public loadingCtrl : LoadingController,
         public http:  HttpClient,
         private navParams : NavParams,
         public sharedservice: SharedServices,
-        private toastCtrl: ToastController, public commonService: CommonService,
+        public commonService: CommonService,
         private httpService: HttpService
     ) {
         this.platform = this.sharedservice.getPlatform();
@@ -54,7 +49,6 @@ export class MemberWalletReport {
             if (val.$key != "") {
               this.memberKey = this.navParams.get('memberKey')
                 this.ParentClubKey = val.UserInfo[0].ParentClubKey;
-                this.nestUrl = this.sharedservice.getnestURL()
           
                 this.getCashTransactionHistory()
           
@@ -75,14 +69,19 @@ export class MemberWalletReport {
     }
 
     getCashTransactionHistory(){
+       this.commonService.showLoader("Please wait...")
        const url = `${API.WALLET_TRANSACTIONS_BY_MEMBER}/${this.memberKey}`;
        this.httpService.get(url, null, null, 1).subscribe({
          next: (res) => {
+           this.commonService.hideLoader()
            if (res['data']){
              this.transactionCashHistory = res['data']
            }
+         },
+         error: (err) => {
+           this.commonService.hideLoader()
          }
-       })
+       });
      }
     
 }

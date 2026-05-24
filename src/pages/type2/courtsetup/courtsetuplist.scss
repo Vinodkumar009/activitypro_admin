@@ -1,5 +1,8 @@
-courtsetuplist-page{
-    .margin_member{
+@import '../../../theme/android-sdk35-fixes.scss';
+
+courtsetuplist-page {
+    @include android-sdk35-fixes;
+ .margin_member{
         margin-top: 2px;
         padding-bottom: 5px;
     }

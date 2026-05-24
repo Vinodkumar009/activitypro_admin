@@ -11,6 +11,7 @@ import { SharedServices } from "../../../services/sharedservice";
 import { FamilyMember, FamilyMemberInput, VenueUser } from "../model/member";
 import { HttpService } from "../../../../services/http.service";
 import { GraphqlService } from "../../../../services/graphql.service";
+import { ThemeService } from "../../../../services/theme.service";
 import { API } from "../../../../shared/constants/api_constants";
 import { first } from "rxjs/operators";
 import { ModuleTypes } from "../../../../shared/constants/module.constants";
@@ -29,6 +30,7 @@ import { ModuleTypes } from "../../../../shared/constants/module.constants";
 })
 export class MemberprofilePage implements OnInit {
   LangObj: any = {}; //by vinod
+  isDarkTheme: boolean = true;
   memberInfo = new VenueUser();
   type: string = "";
   family_members:FamilyMember[] = [];
@@ -76,10 +78,10 @@ export class MemberprofilePage implements OnInit {
     public navCtrl: NavController,
     public navParams: NavParams,
     private graphqlService:GraphqlService,
-    private httpService:HttpService
+    private httpService:HttpService,
+    private themeService: ThemeService
   ) {
-    
-      
+    this.loadTheme();
   }
 
 
@@ -540,7 +542,7 @@ export class MemberprofilePage implements OnInit {
       type:ModuleTypes.MEMBER,
       heading:`Hey:${this.memberInfo.parent_firstname} ${this.memberInfo.parent_lastname}`,
       page_id:"MEMBER_PROFILE_NOTIFY"
-    });            
+    });           
   }
 
   //sending email
@@ -741,6 +743,22 @@ export class MemberprofilePage implements OnInit {
 
   ionViewWillLeave() {
     //this.commonService.updateCategory("");
+    this.events.unsubscribe('theme:changed');
+  }
+
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('page-memberprofile');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
   }
 
 

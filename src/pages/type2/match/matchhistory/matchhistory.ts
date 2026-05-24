@@ -4,6 +4,7 @@ import {
   LoadingController,
   NavController,
   NavParams,
+  Events,
 } from "ionic-angular";
 import moment from "moment";
 import { Storage } from "@ionic/storage";
@@ -91,6 +92,7 @@ export class MatchhistoryPage {
     user_device_metadata: new UserDeviceMetadataField(),
   };
   isDarkTheme: boolean = false;
+  matchSearchInput: string = "";
   private subscriptions: any[] = [];
 
   constructor(
@@ -103,7 +105,8 @@ export class MatchhistoryPage {
     public sharedservice: SharedServices,
     public graphqlService: GraphqlService,
     private httpService: HttpService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private events: Events
   ) {
     this.commonService.category.pipe(first()).subscribe((data) => {
       if (data == "match_history") {
@@ -134,54 +137,37 @@ export class MatchhistoryPage {
 
   
   ionViewWillEnter() {
-    console.log("MatchhistoryPage - ionViewWillEnter");
-
-    // Load and apply theme immediately
     this.loadTheme();
 
     // Subscribe to theme changes
     const themeSubscription = this.themeService.isDarkTheme$.subscribe(
       (isDark) => {
-        console.log("MatchHistory page - theme service change:", isDark);
         this.isDarkTheme = isDark;
         this.applyTheme(isDark);
       }
     );
     this.subscriptions.push(themeSubscription);
+
+    // Listen for theme changes from other pages
+    this.events.subscribe('theme:changed', (isDark) => {
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    });
   }
 
   ionViewDidEnter() {
-    console.log("MatchHistory page - ionViewDidEnter");
-
-    // Apply theme again after view is fully loaded with multiple attempts
-    setTimeout(() => {
-      this.forceThemeCheck();
-    }, 50);
-
-    setTimeout(() => {
-      this.forceThemeCheck();
-    }, 200);
-
-    setTimeout(() => {
-      this.forceThemeCheck();
-    }, 500);
-
-    setTimeout(() => {
-      this.forceThemeCheck();
-    }, 1000);
+    setTimeout(() => this.forceThemeCheck(), 50);
+    setTimeout(() => this.forceThemeCheck(), 200);
+    setTimeout(() => this.forceThemeCheck(), 500);
+    setTimeout(() => this.forceThemeCheck(), 1000);
   }
 
   ionViewDidLoad() {
-    console.log("MatchHistory page - ionViewDidLoad");
-
-    // Force theme application on load
-    setTimeout(() => {
-      this.loadTheme();
-    }, 100);
+    setTimeout(() => this.loadTheme(), 100);
   }
 
   ionViewWillLeave() {
-    // Cleanup subscriptions
+    this.events.unsubscribe('theme:changed');
     this.subscriptions.forEach((sub) => {
       if (sub && !sub.closed) {
         sub.unsubscribe();
@@ -191,113 +177,48 @@ export class MatchhistoryPage {
   }
 
   private applyTheme(isDark: boolean): void {
-    console.log(
-      "MatchHistory page - applying theme:",
-      isDark ? "dark" : "light"
-    );
-
-    // Force apply theme immediately and with retries
     const applyThemeToElement = () => {
-      const historyElement = document.querySelector("page-matchhistory");
-
-      if (historyElement) {
-        if (isDark) {
-          historyElement.classList.remove("light-theme");
-          document.body.classList.remove("light-theme");
-        } else {
-          historyElement.classList.add("light-theme");
-          document.body.classList.add("light-theme");
-        }
-        console.log(
-          "MatchHistory page - theme applied successfully:",
-          isDark ? "dark" : "light"
-        );
+      const el = document.querySelector("page-matchhistory");
+      if (el) {
+        isDark ? el.classList.remove("light-theme") : el.classList.add("light-theme");
+        isDark ? document.body.classList.remove("light-theme") : document.body.classList.add("light-theme");
         return true;
       }
       return false;
     };
 
-    // Try to apply immediately
     if (!applyThemeToElement()) {
-      // If not found, retry multiple times
       let retryCount = 0;
-      const maxRetries = 5;
-
       const retryApply = () => {
-        if (retryCount < maxRetries) {
+        if (retryCount < 5 && !applyThemeToElement()) {
           retryCount++;
-          console.log(`MatchHistory page - retry ${retryCount}/${maxRetries}`);
-
-          if (!applyThemeToElement()) {
-            setTimeout(retryApply, 100 * retryCount); // Increasing delay
-          }
-        } else {
-          console.warn(
-            "MatchHistory page - failed to apply theme after all retries"
-          );
+          setTimeout(retryApply, 100 * retryCount);
         }
       };
-
       setTimeout(retryApply, 50);
     }
   }
 
   private loadTheme(): void {
-    this.storage
-      .get("dashboardTheme")
-      .then((isDarkTheme) => {
-        console.log(
-          "MatchHistory page - loaded theme from storage:",
-          isDarkTheme
-        );
-
-        // If theme is null/undefined, default to dark theme
-        const isDark =
-          isDarkTheme !== null && isDarkTheme !== undefined
-            ? isDarkTheme
-            : true;
-
-        console.log(
-          "MatchHistory page - applying theme:",
-          isDark ? "dark" : "light"
-        );
-        this.isDarkTheme = isDark;
-        this.applyTheme(isDark);
-      })
-      .catch((error) => {
-        console.log("MatchHistory page - error loading theme:", error);
-        this.isDarkTheme = true;
-        this.applyTheme(true); // Default to dark theme
-      });
+    this.storage.get("dashboardTheme").then((isDarkTheme) => {
+      const isDark = isDarkTheme !== null && isDarkTheme !== undefined ? isDarkTheme : true;
+      this.isDarkTheme = isDark;
+      this.applyTheme(isDark);
+    }).catch(() => {
+      this.isDarkTheme = true;
+      this.applyTheme(true);
+    });
   }
 
-  // Force theme check method
   private forceThemeCheck(): void {
-    console.log("MatchHistory page - forcing theme check");
-
-    // Check multiple sources for theme
     this.storage.get("dashboardTheme").then((storageTheme) => {
-      console.log("MatchHistory page - storage theme:", storageTheme);
-
-      // Also check if body has light-theme class
       const bodyHasLightTheme = document.body.classList.contains("light-theme");
-      console.log(
-        "MatchHistory page - body has light theme:",
-        bodyHasLightTheme
-      );
-
-      // Determine final theme
       let isDark = true;
       if (storageTheme !== null && storageTheme !== undefined) {
         isDark = storageTheme;
       } else if (bodyHasLightTheme) {
         isDark = false;
       }
-
-      console.log(
-        "MatchHistory page - force applying theme:",
-        isDark ? "dark" : "light"
-      );
       this.isDarkTheme = isDark;
       this.applyTheme(isDark);
     });
@@ -322,7 +243,7 @@ export class MatchhistoryPage {
 
   //function to get the list of league
   getLeaguesForParentClub = () => {
-    // this.commonService.showLoader("Fetching Leagues...");
+    this.commonService.showLoader("Fetching Competitions...");
     this.LeagueFetchInput.user_postgre_metadata.UserParentClubId =
       this.sharedservice.getPostgreParentClubId();
     this.LeagueFetchInput.user_device_metadata.UserAppType = 0;
@@ -366,14 +287,14 @@ export class MatchhistoryPage {
       )
       .subscribe(
         (res: any) => {
-          // this.commonService.hideLoader();
+          this.commonService.hideLoader();
           this.leaguesForParentClub = res.data.getLeaguesForParentClub;
           this.filteredleagues = JSON.parse(
             JSON.stringify(this.leaguesForParentClub)
           );
         },
         (error) => {
-          // this.commonService.hideLoader();
+          this.commonService.hideLoader();
           this.commonService.toastMessage(
             "Fetching failed for leagues",
             2500,
@@ -385,10 +306,12 @@ export class MatchhistoryPage {
   };
 
   fetchAllMatches() {
+    this.commonService.showLoader("Fetching Matches...");
     this.httpService
       .post(`${API.FetchAllMatches}`, this.fetchAllMatchesInput)
       .subscribe({
         next: (res: any) => {
+          this.commonService.hideLoader();
           if (res) {
             this.fetchAllMatchesRes = res.data;
             this.matchlist = this.fetchAllMatchesRes.AllMatches;
@@ -399,6 +322,7 @@ export class MatchhistoryPage {
           }
         },
         error: (error) => {
+          this.commonService.hideLoader();
           this.commonService.toastMessage(
             error.error.message,
             3000,
@@ -488,5 +412,38 @@ export class MatchhistoryPage {
 
   initializeItems() {
     this.filteredleagues = this.leaguesForParentClub;
+  }
+
+  getActivityIcon(activityName: string): string {
+    if (!activityName) return 'trophy';
+    const name = activityName.toLowerCase();
+    const map: { [key: string]: string } = {
+      'tennis': 'tennisball', 'padel tennis': 'tennisball', 'table tennis': 'tennisball',
+      'football': 'football', 'badminton': 'tennisball', 'basketball': 'basketball',
+      'cricket': 'baseball', 'golf': 'golf', 'swimming': 'water', 'fitness': 'fitness',
+      'gymnastics': 'body', 'boxing': 'hand', 'dance': 'musical-notes', 'sing': 'mic',
+      'education': 'school', 'netball': 'basketball', 'dodgeball': 'baseball',
+      'squash': 'tennisball', 'bar n restaurant': 'restaurant', 'act': 'film',
+      'private coaching': 'person'
+    };
+    return map[name] || 'trophy';
+  }
+
+  getLeagueTypeColor(typeText: string): string {
+    if (!typeText) return 'linear-gradient(180deg, #2b92bb, #1e6c8c)';
+    const t = typeText.toLowerCase();
+    if (t.includes('team')) return 'linear-gradient(180deg, #8b5cf6, #7c3aed)';
+    if (t.includes('singles') || t.includes('single')) return 'linear-gradient(180deg, #35adff, #007bff)';
+    if (t.includes('doubles') || t.includes('double')) return 'linear-gradient(180deg, #f76e04, #e85d00)';
+    return 'linear-gradient(180deg, #2b92bb, #1e6c8c)';
+  }
+
+  getMatchTypeColor(matchType: number): string {
+    switch (matchType) {
+      case 1: return 'linear-gradient(180deg, #35adff, #007bff)';
+      case 2: return 'linear-gradient(180deg, #f76e04, #e85d00)';
+      case 3: return 'linear-gradient(180deg, #8b5cf6, #7c3aed)';
+      default: return 'linear-gradient(180deg, #2b92bb, #1e6c8c)';
+    }
   }
 }

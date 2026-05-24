@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, Events } from 'ionic-angular';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { CommonService,ToastMessageType,ToastPlacement,} from "../../../../services/common.service";
 import { SharedServices } from '../../../services/sharedservice';
 import { FamilyMember, VenueUser } from '../model/member';
-//import { HttpService } from '../../../../services/http.service';
 import { GraphqlService } from '../../../../services/graphql.service';
+import { Storage } from '@ionic/storage';
+import { ThemeService } from '../../../../services/theme.service';
 import gql from "graphql-tag";
 /**
  * Generated class for the EditfamilyPage page.
@@ -21,6 +22,7 @@ import gql from "graphql-tag";
   //providers:[HttpService]
 })
 export class EditfamilyPage implements OnInit {
+  isDarkTheme: boolean = true;
   memberObj:FamilyMember;
   type:any = "";
   parentmemberObj:VenueUser;
@@ -49,9 +51,12 @@ export class EditfamilyPage implements OnInit {
     public commonService: CommonService,
     public toastCtrl: ToastController,public navCtrl: NavController, 
     public navParams: NavParams,
-    //private httpService:HttpService,
     private graphqlService:GraphqlService,
+    public storage: Storage,
+    public events: Events,
+    private themeService: ThemeService
     ) {
+    this.loadTheme();
   }
 
   ionViewDidLoad() {
@@ -273,6 +278,20 @@ export class EditfamilyPage implements OnInit {
     }
   }
   
+  loadTheme() {
+    this.storage.get('dashboardTheme').then((isDarkTheme) => {
+      this.isDarkTheme = isDarkTheme !== null ? isDarkTheme : true;
+      this.applyTheme();
+    }).catch(() => { this.isDarkTheme = true; this.applyTheme(); });
+    this.events.subscribe('theme:changed', (isDark) => { this.isDarkTheme = isDark; this.applyTheme(); });
+  }
+
+  applyTheme() {
+    const el = document.querySelector('page-editfamily');
+    if (el) {
+      if (this.isDarkTheme) { el.classList.remove('light-theme'); } else { el.classList.add('light-theme'); }
+    }
+  }
 }
 
 
